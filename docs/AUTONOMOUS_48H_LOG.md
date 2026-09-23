@@ -12,6 +12,33 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
+### Batch 51 — 2026-09-23 ~21:41 UTC (ALIGNED confirmation — rigorous re-verify)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~5.0h / 48h; not expired. Scientific effect: **NONE**.
+- **Verdict: `aligned=true`.** Default tip of `d6g8k5htny-coder/main` is ALIGNED after Path A (PR #2 merge). This batch re-ran every check; no status promotion.
+
+Evidence (captured this turn):
+
+1. `python3 scripts/audit_main_alignment.py` → **exit 0**; stderr `audit: OK — default tip carries q0 program or redirect notice.`; JSON:
+   - `default_tip_sha` = `b040bf0c30f33a9de220d19692e8dbcad9a1c5aa`
+   - `q0_or_notice_markers_present` = `["q0 Research Program", "SIDE24"]`
+   - `complexity_markers_present` = `[]`
+   - `root_has_AGENTS_md` = **true** (Path A, not Option-B-only)
+   - `scientific_effect` = `NONE`
+2. `gh pr view 2 -R d6g8k5htny-coder/main` → `state=MERGED`, `mergedAt=2026-09-23T21:27:14Z`, `mergeCommit.oid=b040bf0c30f33a9de220d19692e8dbcad9a1c5aa` (matches default tip).
+3. Default branch tip via API `git/ref/heads/main` = `b040bf0c30f33a9de220d19692e8dbcad9a1c5aa` (same SHA).
+4. README @ tip starts `# q0 Research Program — git home` (q0 + SIDE24 markers present); root `AGENTS.md` present (size 2294).
+5. `portable/EXPECTED_POST_ALIGNMENT.json` → **MATCH** (`EXPECTED_POST_ALIGNMENT_MATCH=true`): audit_exit 0, empty complexity markers, q0 any-of hit, `root_has_AGENTS_md`, scientific_effect NONE.
+6. `SKIP_PATH_C=1 bash portable/pr2-landing/VERIFY_AFTER_MERGE.sh` → **exit 0**; `state=ALIGNED`; `Aligned.` (alignment-only; Path C not applied here).
+7. `watch_main_alignment.py` → `state=ALIGNED`, `audit_exit=0`, tip `b040bf0c…`.
+
+Remaining after ALIGNED (not blocking alignment itself; from EXPECTED + Path C):
+
+- Working tip `chatgpt/drive-github-hardening-20260919` merged/retargeted onto new main as appropriate.
+- Owner Path C: `portable/patches/apply_all.sh` (0001–0004 + 0008–0014) on working tip when writable (`scripts/owner_land_path_c.sh`); write still **403** for this token.
+- `lemma_closed` must remain **false** until licensed predicates fire.
+- Portable pack still useful for engineering ResourceWarning/fixture fixes until Path C lands on main.
+
 ### Batch 50 — 2026-09-23 ~21:35 UTC (Path B probe; tip #29; ship portable 0014)
 
 - Window: start `2026-09-23T16:43:47Z`; elapsed ~4.9h / 48h; not expired. Scientific effect: **NONE**.
