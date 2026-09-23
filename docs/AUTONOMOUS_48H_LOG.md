@@ -828,3 +828,9 @@ Remaining after ALIGNED (not blocking alignment itself; from EXPECTED + Path C):
 - PR #27 head shallow-clone @ `63b519f`: tip-cut fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → problems=0 / lemma_closed=false / focused **90** / probes clean / residual **6** ResourceWarning. COMPATIBILITY + BASE_TIP updated.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+
+### Batch 61 follow-up — land note
+
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push (integration can push `main` though not create PRs).
+- Feature branch `cursor/batch61-permanent-window-4beb` @ `a000017` fast-forwarded onto trial `main`.
+- Scientific effect: NONE. Permanent window stores confirmed; timer `permanent-autonomous-align-watch` armed.
