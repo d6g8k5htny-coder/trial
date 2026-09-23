@@ -504,3 +504,16 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Main [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2): left **draft / untouched**. Claude comment [#issuecomment-5802102176](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5802102176) already reaffirms HOLD and asks CoS for **STATUS packet** + **chain-order vs hardening**. Agent reply comment → **403** (integration cannot comment on `main`); did **not** invent STATUS packet answers.
 - **HOLD stands.** Path B remains the preferred ALIGNED path for the default face (when writable / `MAIN_PUSH_TOKEN`). Path A inactive until Dylan lifts HOLD.
 - Not GOAL_COMPLETE_READY (not ALIGNED; not WRITABLE).
+
+### Batch 43 — 2026-09-23 20:25 UTC (Path B probe; ship portable 0009)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch with `origin/main` (fast-forward/merge trial PR #19).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `watch_main_alignment.py` → **MISALIGNED**; scientific_effect NONE.
+- Main PR #27 still **OPEN** (`mergedAt=null`) → did **not** drop tip-cut 0005/0006.
+- Tip vs BASE_TIP: live hardening **`b02efe2`** == BASE_TIP (no pack tip refresh).
+- Broader 0009 hunt @ tip `b02efe2` / CPython **3.11.16**: workflow_integrity **110**, run_checks **45**, registers **53**, ci_pins **25** all green; **claims** → **19** `ResourceWarning: unclosed file` from bare `json.load(open(...))` / `open(...).read()` on register JSON + mirror bytes.
+- **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).

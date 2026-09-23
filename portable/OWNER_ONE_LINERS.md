@@ -45,7 +45,7 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 # Do NOT: gh pr ready 2 / gh pr merge 2
 # ./scripts/owner_land_path_a.sh   # exits 1 under HOLD
 
-# Path C — after default tip is ALIGNED (Path B notice or post-HOLD Path A): apply_all 0001–0008
+# Path C — after default tip is ALIGNED (Path B notice or post-HOLD Path A): apply_all 0001–0009
 ./scripts/owner_land_path_c.sh
 # PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
 ```
@@ -107,7 +107,7 @@ PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
 
 ## Path C — engineering patches on working tip
 
-**After default tip is ALIGNED** (Path B notice preferred under HOLD; or Path A after HOLD lift): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0008**. Prefer the owner script (fail-closed without write):
+**After default tip is ALIGNED** (Path B notice preferred under HOLD; or Path A after HOLD lift): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0009**. Prefer the owner script (fail-closed without write):
 
 ```bash
 ./scripts/owner_land_path_c.sh
@@ -133,6 +133,6 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
 `apply_all` is findable and asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip).
 
-`apply_all.sh` includes **0001–0008** (0006 promoted after PR #20; 0007 inventable
-close-handles in batch 24; 0008 carriers/math_status close-handles in batch 25).
-No **0009** unless a new tip-level defect appears.
+`apply_all.sh` includes **0001–0009** (0006 promoted after PR #20; 0007 inventable
+close-handles in batch 24; 0008 carriers/math_status close-handles in batch 25;
+0009 claims close-handles in batch 43).

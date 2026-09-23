@@ -1,11 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~20:15 UTC (batch 41 PR #27 0005 analysis).
+Checked 2026-09-23 ~20:25 UTC (batch 43 portable 0009).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
-| Tip | SHA | apply 0001–0008 (tip-cut) | `math_status_check` | Focused tests* |
+| Tip | SHA | apply 0001–0009 (tip-cut) | `math_status_check` | Focused tests* |
 |-----|-----|---------------------------|---------------------|----------------|
-| hardening (post-#25) | `b02efe2` | OK | problems=0 | **90 passed** |
+| hardening (post-#25) | `b02efe2` | OK (+0009) | problems=0 | **90+47 claims** |
 | hardening (post-#23) | `3f85e93` | OK | problems=0 | **90 passed** |
 | hardening (post-#22) | `a89f9a7` | OK | problems=0 | **90 passed** |
 | hardening (post-#19) | `ae7daf7` | OK | problems=0 | **90 passed** |
@@ -60,6 +60,7 @@ alternate `0005-pr27-*.patch` shipped — defect gone; stack is **0001–0004 + 
 
 Notes:
 
+- Batch **43** (portable **0009**): tip still **`b02efe2`**. Broader hunt @ CPython **3.11**: workflow_integrity **110**, run_checks **45**, registers **53**, ci_pins **25** all green; **claims** had **19** unclosed-file ResourceWarnings → shipped **0009**. `apply_all` 0001–0009: problems=0 / lemma_closed=false / focused+claims **137 passed** / **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD; PR #27 still OPEN (0005/0006 not dropped). Default tip still MISALIGNED.
 - Batch **41** (PR #27 0005 analysis): tip still **`b02efe2`** (ls-remote match; no BASE_TIP refresh). Tip `apply_all` 0001–0008 `--check` OK. PR **#27** @ `8d023a9` + **0001–0004 + 0008** @ CPython **3.11**: problems=0 / lemma_closed=false / focused **90 passed** / probes clean; **no** alternate 0005 (isolation supersedes). Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **39** (align-watch): tip still **`b02efe2`** (ls-remote match). Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** PR **#27** head fails 0005 apply (test isolation rewrite) — batch 41 documents obsolescence + stack recipe above. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **38**: tip **`3f85e93` → `b02efe2`** (PR #25 merged — standing owner authorization for all research agents; no scientific status change). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.

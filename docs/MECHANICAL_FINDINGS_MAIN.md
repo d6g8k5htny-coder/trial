@@ -2,8 +2,18 @@
 
 Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `b02efe21d8d7475ac9b4aa25b3dcc26a5b6f4bf4`
 (PR #25 standing owner authorization; prior #15/#16/#17/#18/#19/#20/#22/#23).
-Host: CPython 3.12.3 + pytest (tip); PR #27 head also verified @ 3.11.
+Host: CPython 3.11.16 + pytest (tip batch 43); PR #27 head also verified @ 3.11.
 **Scientific effect: NONE.**
+
+## After portable patches 0001–0009 on `b02efe2` (batch 43)
+
+| Check | Result |
+|-------|--------|
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| focused + claims | **137 passed**; **0 ResourceWarning** |
+| broader: workflow_integrity / run_checks / registers / ci_pins | **110 / 45 / 53 / 25** passed |
+| `apply_all.sh --check` | OK (0001–0009) |
+| claims unclosed-file ResourceWarning | cleared by **0009** (was 19) |
 
 ## PR #27 head `8d023a9` + stack 0001–0004 + 0008 (batch 41)
 
@@ -48,6 +58,7 @@ Host: CPython 3.12.3 + pytest (tip); PR #27 head also verified @ 3.11.
 | instrumentation STATUS dirty digests (post-#20) | `0006-…` (**in** `apply_all.sh` since batch 21) |
 | inventable tests unclosed-file ResourceWarning | `0007-…` (**in** `apply_all.sh` since batch 24) |
 | carriers + math_status + `carriers_verify` unclosed-file ResourceWarning | `0008-…` (**in** `apply_all.sh` since batch 25) |
+| claims register-binding unclosed-file ResourceWarning | `0009-…` (**in** `apply_all.sh` since batch 43) |
 
 ## Alignment
 

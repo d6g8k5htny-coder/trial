@@ -89,7 +89,7 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 ## Stack note (2026-09-23 batch 39 align-watch)
 
-- Working tip still **`b02efe2`** (ls-remote match); **0001–0008** re-verified @ 3.12.3 (90 passed / 0 ResourceWarning). **No 0009.**
+- Working tip still **`b02efe2`** (ls-remote match); **0001–0009** in `apply_all.sh` (batch 43 shipped claims close-file-handles). Broader @ 3.11: workflow_integrity/run_checks/registers/ci_pins green; focused+claims **137** / **0 ResourceWarning**. PR #27 still OPEN — tip-cut 0005/0006 not dropped yet.
 - New open [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) (probe-test isolation) — UNSTABLE; portable 0005/0006 **do not apply** on that head; regen after merge.
 - Open drafts: #27/#26/#24/#21 UNSTABLE, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE** — **HOLD** (untouched).
 - Write still **403** (`probe_main_write.py` DENIED). Path B not landable; Path A on HOLD.
