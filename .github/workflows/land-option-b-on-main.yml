@@ -154,14 +154,10 @@ jobs:
           BODY="$(cat <<'EOF'
           Option-B default-branch notice from trial automation.
 
-          Scientific effect: **NONE**. Documentation-only redirect until Path A
-          (merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2)) lands the real q0 tree.
-
-          Prefer Path A when ready:
-          ```bash
-          gh pr ready 2 --repo d6g8k5htny-coder/main
-          gh pr merge 2 --repo d6g8k5htny-coder/main --merge
-          ```
+          Scientific effect: **NONE**. Documentation-only redirect on default
+          `main` (MISALIGNED after CoS PR #32). HOLD on PR #2 is **VOID**.
+          Path B preferred for ALIGNED. Optional Path A:
+          `PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh`
           EOF
           )"
           # Reuse existing open PR from this head if present

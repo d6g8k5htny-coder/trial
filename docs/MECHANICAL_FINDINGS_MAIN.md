@@ -2,6 +2,22 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `9a56c30` (batch 57)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK on tip `9a56c30` (== BASE_TIP; no tip move) |
+| `math_status_check` | problems=0 / lemma_closed=false |
+| focused+claims+recovery | **173 passed** / **0 ResourceWarning** |
+| frozen/dio/receipts/bridge/collision | **0 ResourceWarning** |
+| RN suite | **438 passed** / **0 ResourceWarning** |
+| tools `--help` | **0 ResourceWarning** |
+| new portable **0017** | **none** (IDLE) — Path B automation shipped instead |
+
+Default `main` @ `4fc1d7c` still **MISALIGNED**; Path B would-align via `path_b_dry_run.py`; write 403.
+
+Tip residuals (not portable): `mirror_quotes` 3 + bridge AGENTS.md drift → open PR #35.
+
 ## After portable patches 0001–0004 + 0008–0016 on `580864c` (batch 53b)
 
 | Check | Result |

@@ -1,0 +1,92 @@
+{
+  "batch": "57",
+  "generated_at_utc": "2026-09-23T22:45:25Z",
+  "owner_mandate": "Dylan Roy \u2014 NO restrictions; everything auto-approved; agents decide; HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false",
+  "scientific_effect": "NONE",
+  "aligned": false,
+  "default_tip_sha": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+  "root_has_AGENTS_md": false,
+  "root_has_README_md": true,
+  "root_has_body": true,
+  "root_has_dot_github": false,
+  "audit_stderr": "audit: MISALIGNED \u2014 default tip still presents pre-q0 face or lacks q0/notice markers.",
+  "preferred_restore": "Path_B",
+  "path_b": {
+    "valid_against_tip": true,
+    "patch": "portable/main-default-branch/0001-option-b-default-branch-notice.patch",
+    "git_am_exit": 0,
+    "local_auditor": "ALIGNED",
+    "would_align": true,
+    "dry_run_certainty": "scripts/path_b_dry_run.py",
+    "owner_script": "scripts/owner_land_path_b.sh",
+    "write_probe": "DENIED",
+    "multi_vector_probe": "scripts/probe_main_write_vectors.py",
+    "path_b_ready": false,
+    "applied_this_session": false,
+    "reason_not_applied": "all Path-B-capable write vectors HTTP 403/404 or tokens unset"
+  },
+  "path_a": {
+    "hold": "VOID",
+    "status": "REVERTED_by_PR_32_agents_may_retry",
+    "preferred_over_full_stack": false,
+    "note": "HOLD VOID. Prefer Path B. Path A tactics: PATH_A_MODE=revert32 (default) or fresh Drive port. PR #2 is closed \u2014 ready/merge 2 will not work.",
+    "owner_script": "scripts/owner_land_path_a.sh"
+  },
+  "path_c": {
+    "role": "engineering_only",
+    "base_tip": "9a56c3049120d2912865d9d3629b6c0e2a6914a9",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "live_hardening_sha": "9a56c3049120d2912865d9d3629b6c0e2a6914a9",
+    "tip_refresh": "unchanged (== BASE_TIP 9a56c30)",
+    "apply_all": "0001-0004 + 0008-0016",
+    "apply_all_check_ok": true,
+    "residual_rw_hunt": 0,
+    "new_0017": false,
+    "idle": true,
+    "idle_reason": "focused+claims+recovery 173/0 RW; frozen/dio/receipts/bridge/collision 0 RW; RN 438/0; drive/manifest suites 0 RW; tools --help 0 RW after apply_all; no portable defect to cut",
+    "tip_residuals_not_portable": [
+      "mirror_quotes: 3 unmatched 'independence credit' quotations — covered by open main PR #35",
+      "test_bridge AGENTS.md expectation drift after OP-AUTONOMY v2.0 — covered by open main PR #35",
+      "test_ci_pins / workflow_integrity shell('python ...') fails when `python` not on PATH (host env; not portable)"
+    ],
+    "path_b_automation_shipped": [
+      "scripts/path_b_dry_run.py",
+      "scripts/refresh_restore_plan.py",
+      "owner_land_path_b.sh --dry-run"
+    ]
+  },
+  "write_vectors": {
+    "state": "DENIED",
+    "path_b_writable_vectors": [],
+    "tokens": {
+      "GH_TOKEN": "NOT_SET",
+      "GITHUB_TOKEN": "NOT_SET",
+      "MAIN_PUSH_TOKEN": "NOT_SET"
+    },
+    "permissions": {
+      "admin": false,
+      "maintain": false,
+      "pull": false,
+      "push": false,
+      "triage": false
+    },
+    "summary": "W1-W5 all DENIED 403/404; issues:create not probed (Batch 55 litter #37)"
+  },
+  "pr_stack": {
+    "34": "OPEN draft MERGEABLE/UNSTABLE on hardening",
+    "35": "OPEN MERGEABLE/UNSTABLE on hardening (AGENTS.md + mirror quote)",
+    "36": "OPEN draft MERGEABLE/CLEAN on claude/drive-audit-github-migration-rrglpp (was CONFLICTING in batch 56)",
+    "37_issue": "OPEN accidental b55 probe — do not spam more issues"
+  },
+  "owner_next": [
+    "./scripts/owner_land_path_b.sh --dry-run   # certainty JSON",
+    "./scripts/owner_land_path_b.sh",
+    "merge Option-B notice PR (or --direct-main)",
+    "./scripts/owner_land_path_b.sh --after-merge",
+    "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
+    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)",
+    "Optional hardening: merge PR #35 (mirror + AGENTS.md); review #34/#36 (now CLEAN)",
+    "Close/delete accidental probe issue #37 (title: b55 probe) if still open"
+  ],
+  "refresh_tool": "scripts/refresh_restore_plan.py"
+}

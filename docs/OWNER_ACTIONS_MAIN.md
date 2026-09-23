@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 56 — MISALIGNED (`aligned_end=false`); unrestricted / auto-approve; HOLD VOID; Path C IDLE:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.** Default tip **`4fc1d7c`** after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Root has `README.md` + `body` only; **no** `AGENTS.md` / `.github`. Scientific effect: **NONE**.
-> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B notice still valid vs tip — `git am` OK / would-align) over re-merging the full PR #2 stack unless Path B is impossible. Path A default: `PATH_A_MODE=revert32`. Path C = engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `9a56c30`; residual RW **0** → **IDLE** / no 0017). Open hardening PRs **#34/#35/#36** (stack hygiene). Trial write still **403** → all Path-B-capable vectors DENIED (`probe_main_write_vectors.py`). Accidental probe issue **#37** (`b55 probe`) may be closed/deleted. See `portable/RESTORE_PLAN_56.json`.
+> **Batch 57 — MISALIGNED (`aligned_end=false`); unrestricted / auto-approve; HOLD VOID; Path C IDLE:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.** Default tip **`4fc1d7c`** after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Root has `README.md` + `body` only; **no** `AGENTS.md` / `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B notice still valid vs tip — `git am` OK / would-align via `scripts/path_b_dry_run.py`) over re-merging the full PR #2 stack unless Path B is impossible. Path A default: `PATH_A_MODE=revert32`. Path C = engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `9a56c30`; residual RW **0** → **IDLE** / no 0017). Open PRs **#34/#35/#36** (#36 now MERGEABLE/CLEAN onto migration base). Trial write still **403** → all Path-B-capable vectors DENIED. Issue **#37** (`b55 probe`) exists — do not spam more. See `portable/RESTORE_PLAN_57.json`.
 
 ### 1. Stop advertising the abandoned complexity-physics README
 
@@ -17,7 +17,7 @@ Default `main` @ `4fc1d7c` again shows the Dec 2025 complexity framework with �
 
 **Options (pick one):**
 
-- **B (PREFERRED):** On default `main` only, replace `README.md` with the Option-B q0 redirect and quarantine `body` under `quarantine/pre-q0-scaffolding/`. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
+- **B (PREFERRED):** On default `main` only, replace `README.md` with the Option-B q0 redirect and quarantine `body` under `quarantine/pre-q0-scaffolding/`. Owner script: `./scripts/owner_land_path_b.sh --dry-run` then `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
 - **A (HOLD VOID):** Restore q0 tree — `PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh` (or fresh Drive→git port). Prefer Path B when notice-only is enough. PR #2 is closed; `gh pr ready/merge 2` will not revive it.
 
 ### 2. Decide the public integration branch

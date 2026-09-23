@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 56:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide.** Default tip **MISALIGNED** @ `4fc1d7c` after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). `aligned_end=false`. Scientific effect: **NONE**.
+> **Batch 57:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide.** Default tip **MISALIGNED** @ `4fc1d7c` after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). `aligned_end=false`. Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B patch still valid — `git am` OK / would-align). Path A = `PATH_A_MODE=revert32` (or fresh OPEN port). Path C = portable engineering on hardening (BASE_TIP `9a56c30`; residual RW **0** → **IDLE** / no 0017).
-> Trial cloud tokens still cannot write to `main` (403) → Path B not applied from trial. All Path-B-capable vectors DENIED (`python3 scripts/probe_main_write_vectors.py`; see `RESTORE_PLAN_56.json`). Owner scripts = technical fallback for App 403 only.
+> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B patch still valid — `git am` OK / would-align; `./scripts/owner_land_path_b.sh --dry-run`). Path A = `PATH_A_MODE=revert32` (or fresh OPEN port). Path C = portable engineering on hardening (BASE_TIP `9a56c30`; residual RW **0** → **IDLE** / no 0017).
+> Trial cloud tokens still cannot write to `main` (403) → Path B not applied from trial. All Path-B-capable vectors DENIED (`python3 scripts/probe_main_write_vectors.py`; see `RESTORE_PLAN_57.json`). Owner scripts = technical fallback for App 403 only.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
@@ -42,9 +42,12 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 
 # Path B — PREFERRED for default-tip ALIGNED (Option-B notice)
+./scripts/owner_land_path_b.sh --dry-run    # certainty JSON; no push
 ./scripts/owner_land_path_b.sh
 ./scripts/owner_land_path_b.sh --after-merge
 # ./scripts/owner_land_path_b.sh --direct-main
+# Refresh restore plan currency:
+# python3 scripts/refresh_restore_plan.py --batch N
 
 # Path A — HOLD VOID. Default: revert #32. Prefer Path B when notice-only is enough.
 ./scripts/owner_land_path_a.sh
@@ -58,6 +61,7 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ### B0 — owner script (preferred)
 
 ```bash
+./scripts/owner_land_path_b.sh --dry-run    # certainty JSON; no push
 ./scripts/owner_land_path_b.sh              # branch + PR (default)
 ./scripts/owner_land_path_b.sh --after-merge
 # ./scripts/owner_land_path_b.sh --direct-main   # opt-in push to main

@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 56: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN` (Batch 56 Path C **IDLE** — no new 0017).
+Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 57: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN` (Batch 57 Path C **IDLE** — no new 0017). Path B dry-run certainty: `./scripts/owner_land_path_b.sh --dry-run` / `scripts/path_b_dry_run.py`.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
@@ -43,6 +43,8 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher
 - [`scripts/probe_main_write.py`](scripts/probe_main_write.py) — write probe (exit 0=writable, 1=denied, 2=transport)
 - [`scripts/probe_main_write_vectors.py`](scripts/probe_main_write_vectors.py) — multi-vector Path B probe dashboard
+- [`scripts/path_b_dry_run.py`](scripts/path_b_dry_run.py) — Path B dry-run certainty (would-align JSON; no push)
+- [`scripts/refresh_restore_plan.py`](scripts/refresh_restore_plan.py) — refresh `portable/RESTORE_PLAN_<N>.json` from live probes
 - [`scripts/print_owner_unblock.sh`](scripts/print_owner_unblock.sh) — dump OWNER_ONE_LINERS paths + live probe/audit one-liners
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).

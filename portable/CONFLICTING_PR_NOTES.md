@@ -89,11 +89,21 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 Closing or rebasing these drafts does not discharge OBL-H5-JETMOD or
 D3-LEMMA-RN-UNIF.
 
-## Batch 56 open-stack note (2026-09-23)
+## Batch 57 open-stack note (2026-09-23)
+
+| PR | State | Note |
+|----|-------|------|
+| #34 | OPEN draft / MERGEABLE UNSTABLE | Inventable probe index tip provenance — docs; not Path B |
+| #35 | OPEN / MERGEABLE UNSTABLE | Restores AGENTS.md bridge pointers + CLAUDE.md independence-credit quote; clears tip `mirror_quotes` 3 problems + bridge AGENTS.md drift |
+| #36 | OPEN draft / MERGEABLE **CLEAN** | Base `claude/drive-audit-github-migration-rrglpp` (not hardening). Was CONFLICTING/DIRTY in batch 56; now CLEAN — review before merge |
+| #33 | CLOSED (not merged) | Post-merge handoff onto default `main` — tip still MISALIGNED |
+| #37 | OPEN issue (`b55 probe`) | Accidental Batch 55 write-vector probe litter — owner may close/delete; do not spam more issues |
+
+## Batch 56 open-stack note (2026-09-23) — superseded by Batch 57 for #36
 
 | PR | State | Note |
 |----|-------|------|
 | #34 | OPEN draft / MERGEABLE UNSTABLE | Inventable probe index tip provenance — docs; not Path B |
 | #35 | OPEN / MERGEABLE UNSTABLE | Restores independence-credit quote in CLAUDE.md; clears tip `mirror_quotes` 3 problems |
-| #36 | OPEN draft / **CONFLICTING** DIRTY | Hardening lane bytes — do not force-merge; rebase or close |
+| #36 | OPEN draft / was **CONFLICTING** DIRTY | Hardening lane bytes — status refreshed in Batch 57 → MERGEABLE/CLEAN onto migration base |
 | #33 | CLOSED (not merged) | Post-merge handoff onto default `main` — tip still MISALIGNED |

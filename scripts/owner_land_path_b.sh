@@ -16,6 +16,7 @@
 #
 # Usage:
 #   ./scripts/owner_land_path_b.sh
+#   ./scripts/owner_land_path_b.sh --dry-run      # certainty JSON; no push/PR
 #   ./scripts/owner_land_path_b.sh --direct-main
 #   ./scripts/owner_land_path_b.sh --after-merge   # remote audit/watch only
 #   TRIAL_ROOT=/path/to/trial ./scripts/owner_land_path_b.sh
@@ -28,6 +29,7 @@ BRANCH="${PATH_B_BRANCH:-cursor/option-b-notice-from-owner}"
 WORKDIR="${PATH_B_WORKDIR:-}"
 DIRECT_MAIN=0
 AFTER_MERGE=0
+DRY_RUN=0
 
 die() {
   echo "owner_land_path_b: ERROR: $*" >&2
@@ -40,10 +42,12 @@ need_cmd() {
 
 usage() {
   cat <<'EOF'
-Usage: owner_land_path_b.sh [--direct-main | --after-merge] [--help]
+Usage: owner_land_path_b.sh [--dry-run | --direct-main | --after-merge] [--help]
 
   (default)     Clone default main, git am Option-B, push branch, open PR.
                 Then print merge instruction + local auditor result.
+  --dry-run     Certainty only: clone + git am + local auditor JSON via
+                scripts/path_b_dry_run.py. No push, no PR, no gh auth required.
   --direct-main Opt-in: commit Option-B onto default main and push (no PR).
   --after-merge Skip land; run remote audit_main_alignment + watch (expect ALIGNED).
 
@@ -58,6 +62,7 @@ EOF
 
 for arg in "$@"; do
   case "$arg" in
+    --dry-run) DRY_RUN=1 ;;
     --direct-main) DIRECT_MAIN=1 ;;
     --after-merge) AFTER_MERGE=1 ;;
     -h|--help) usage; exit 0 ;;
@@ -65,11 +70,11 @@ for arg in "$@"; do
   esac
 done
 
-if [[ "$DIRECT_MAIN" -eq 1 && "$AFTER_MERGE" -eq 1 ]]; then
-  die "choose at most one of --direct-main / --after-merge"
+MODE_COUNT=$((DRY_RUN + DIRECT_MAIN + AFTER_MERGE))
+if [[ "$MODE_COUNT" -gt 1 ]]; then
+  die "choose at most one of --dry-run / --direct-main / --after-merge"
 fi
 
-need_cmd gh
 need_cmd git
 need_cmd python3
 
@@ -77,18 +82,44 @@ PATCH="$TRIAL_ROOT/portable/main-default-branch/0001-option-b-default-branch-not
 AUDIT_LOCAL="$TRIAL_ROOT/scripts/audit_local_tree.py"
 AUDIT_REMOTE="$TRIAL_ROOT/scripts/audit_main_alignment.py"
 WATCH="$TRIAL_ROOT/scripts/watch_main_alignment.py"
+DRY_RUN_PY="$TRIAL_ROOT/scripts/path_b_dry_run.py"
 
 [[ -f "$PATCH" ]] || die "missing Option-B patch: $PATCH (set TRIAL_ROOT)"
 [[ -f "$AUDIT_LOCAL" ]] || die "missing $AUDIT_LOCAL"
 [[ -f "$AUDIT_REMOTE" ]] || die "missing $AUDIT_REMOTE"
 [[ -f "$WATCH" ]] || die "missing $WATCH"
+[[ -f "$DRY_RUN_PY" ]] || die "missing $DRY_RUN_PY"
 
 echo "=== owner_land_path_b ==="
 echo "repo=$REPO trial_root=$TRIAL_ROOT"
-echo "mode=$([ "$AFTER_MERGE" -eq 1 ] && echo after-merge || { [ "$DIRECT_MAIN" -eq 1 ] && echo direct-main || echo branch+PR; })"
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "mode=dry-run"
+elif [[ "$AFTER_MERGE" -eq 1 ]]; then
+  echo "mode=after-merge"
+elif [[ "$DIRECT_MAIN" -eq 1 ]]; then
+  echo "mode=direct-main"
+else
+  echo "mode=branch+PR"
+fi
 echo "scientific_effect=NONE"
 echo
 
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "--- path_b_dry_run certainty (no push) ---"
+  set +e
+  python3 "$DRY_RUN_PY"
+  dry_ec=$?
+  set -e
+  if [[ "$dry_ec" -ne 0 ]]; then
+    die "dry-run certainty failed (exit=$dry_ec). Patch may not would-align against live tip."
+  fi
+  echo
+  echo "owner_land_path_b: dry-run OK — would-align=true. Re-run without --dry-run to land."
+  echo "Scientific effect: NONE"
+  exit 0
+fi
+
+need_cmd gh
 if ! gh auth status >/dev/null 2>&1; then
   die "gh is not authenticated. Run: gh auth login  (owner account with write on $REPO)"
 fi
@@ -211,12 +242,12 @@ TITLE="docs: q0 redirect on default main (Option-B from owner script)"
 BODY="$(cat <<'EOF'
 Option-B default-branch notice via `scripts/owner_land_path_b.sh`.
 
-Scientific effect: **NONE**. Documentation-only redirect until Path A
-(merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2)) lands the real q0 tree.
+Scientific effect: **NONE**. Documentation-only redirect on default `main`
+(MISALIGNED after CoS PR #32 reverted PR #2). HOLD on PR #2 is **VOID**.
 
-Prefer Path A when ready:
+Path B is preferred for ALIGNED. Optional full-stack Path A:
 ```bash
-./scripts/owner_land_path_a.sh
+PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh
 ```
 
 After merging this notice PR, verify:

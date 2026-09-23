@@ -1,7 +1,7 @@
 # Autonomous 48h work log
 
 Window start (UTC): see `/cursor/stores/self/autonomous_48h_started_at.txt` on the agent host.
-Owner mandate (Dylan Roy, Batch 56 reaffirm): **NO restrictions. Everything auto-approved.
+Owner mandate (Dylan Roy, Batch 57 reaffirm): **NO restrictions. Everything auto-approved.
 Agents decide. Do not wait for permissions/approvals.** If going south he will step in.
 Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer Path B.
 
@@ -14,6 +14,22 @@ Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer
 5. Do not ask Dylan for approval in docs. Owner land scripts remain technical fallback for GitHub App 403 only.
 
 ## Batches
+
+### Batch 57 — 2026-09-23 ~22:46 UTC (MISALIGNED; Path B DENIED; Path C IDLE; Path B automation; LAND #36 CLEAN)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~6.0h / 48h. Scientific effect: **NONE**.
+- **OWNER (Dylan Roy):** NO restrictions; everything auto-approved; agents decide; HOLD **VOID**; Path A OR Path B OK; prefer Path B Option-B. Still never promote research status; `lemma_closed` stays false.
+- **Full `audit_main_alignment.py` / `watch_main_alignment.py`:** exit 1 / **MISALIGNED**; tip_sha `4fc1d7c1648086ac1589104232f5be6b4fc00286`; complexity markers present; q0/notice empty; `root_has_AGENTS_md=false`; scientific_effect NONE.
+- `probe_main_write.py` → **DENIED** HTTP 403. `probe_main_write_vectors.py` → **DENIED** (no Path-B-capable writable vector). Did **not** create issues (issue **#37** `b55 probe` already exists).
+- Option-B vs tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED** (would-align). Path B **not** applied (write 403).
+- Tip refresh: hardening still **`9a56c30`** (== BASE_TIP); no pack tip move. `apply_all --check` OK; apply OK; math_status problems=0 / lemma_closed=false.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused+claims+recovery **173**/0; frozen/dio/receipts/bridge/collision **0 RW**; RN **438**/0; drive/manifest suites **0 RW**; tools `--help` **0** → **IDLE** / **no 0017**.
+- Tip residuals (not portable): `mirror_quotes` 3 + bridge AGENTS.md drift → open [PR #35](https://github.com/d6g8k5htny-coder/main/pull/35); host `python` PATH flakes in ci_pins/workflow_integrity (env, not portable).
+- **Path B automation (no 0017):** shipped `scripts/path_b_dry_run.py` (certainty JSON); `owner_land_path_b.sh --dry-run`; `scripts/refresh_restore_plan.py` (restore plan currency). Stale Path A “merge PR #2” copy in owner PR body + Actions workflow updated (HOLD VOID / prefer B / revert32).
+- **LAND stack hygiene:** #34 MERGEABLE/UNSTABLE; #35 MERGEABLE/UNSTABLE (title now AGENTS.md + mirror quote); **#36 MERGEABLE/CLEAN** onto `claude/drive-audit-github-migration-rrglpp` (was CONFLICTING/DIRTY in batch 56). Restore plan: `portable/RESTORE_PLAN_57.json`.
+- Trial `pytest -q` → **17 passed**. Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- No research status promotion. `lemma_closed` untouched. `goal_complete=false` (not ALIGNED).
 
 ### Batch 56 — 2026-09-23 ~22:31 UTC (MISALIGNED; Path B DENIED; Path C IDLE; LAND stack +#34/#35/#36)
 
