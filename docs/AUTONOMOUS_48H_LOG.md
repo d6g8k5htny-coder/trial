@@ -24,7 +24,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - 0016 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0015, focused+claims+recovery+frozen/dio green / 0 RW; **`tests/test_receipts.py` + `tests/test_bridge.py`** → **24** ResourceWarning (bare `open()` / `json.load(open(...))` / `_text` / `_open_modes`).
 - **Shipped portable 0016** (`receipts-bridge-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0016**. Verify @ `890bb81`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery+frozen/dio **192 passed** / **0 ResourceWarning**; receipts+bridge **541 passed** / **0 ResourceWarning**.
 - Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403** (integration cannot open PRs). **Landed on trial `main`** via direct push `fbefe0f..e8d4494`.
 - No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
 
 ### Batch 52 — 2026-09-23 ~21:48 UTC (ALIGNED re-confirm; Path C landing; ship portable 0015)
