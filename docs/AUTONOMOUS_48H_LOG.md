@@ -34,3 +34,12 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 3. Watch inventable PR #15 CI on `main` (read-only); note failures in this log.
 4. Refresh OWNER_ACTIONS if the PR stack on `main` changes.
 5. Stop new work when wall-clock exceeds 48h from start; leave a final summary commit.
+
+### Timers armed (UTC)
+
+| Name | Role |
+|------|------|
+| autonomous-48h-hour1 | once @ +1h |
+| autonomous-48h-batch | every 3h |
+| autonomous-48h-finale | once @ ~+47.8h |
+| GitHub CI + PR #1 watches | through window end |
