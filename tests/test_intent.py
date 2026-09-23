@@ -115,6 +115,8 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "0008-carriers-math-status-close-file-handles.patch" in apply_all
     assert "0012-inventable-negative-tests-close-file-handles.patch" in apply_all
     assert "0014-collision-close-file-handles.patch" in apply_all
+    assert "0015-frozen-drive-index-close-file-handles.patch" in apply_all
+    assert "0016-receipts-bridge-close-file-handles.patch" in apply_all
     # Post-#27: tip-cut 0005/0006/0007 dropped from apply_all (kept on disk for history)
     assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all
     assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all
@@ -134,7 +136,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "8510874" in base_tip
+    assert "890bb81" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -187,6 +189,13 @@ def test_portable_patches_exist() -> None:
     assert "test_collision_proposal.py" in p14
     assert "0014-collision-close-file-handles.patch" in apply_all_txt
     assert "0013-verify-quarantine-close-file-handles.patch" in apply_all_txt
+    assert "0015-frozen-drive-index-close-file-handles.patch" in apply_all_txt
+    p16 = (ROOT / "portable" / "patches" / "0016-receipts-bridge-close-file-handles.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_receipts.py" in p16
+    assert "test_bridge.py" in p16
+    assert "0016-receipts-bridge-close-file-handles.patch" in apply_all_txt
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
@@ -327,8 +336,10 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0009" in patches_readme
     assert "0012" in patches_readme
     assert "0014" in patches_readme
+    assert "0015" in patches_readme
+    assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "8510874" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
+    assert "890bb81" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(

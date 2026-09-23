@@ -2,6 +2,20 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `890bb81` (batch 53)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK (0001–0004 + 0008–0016; 0005/0006/0007 dropped) |
+| `math_status_check` | problems=0 / lemma_closed=false / 0 ResourceWarning |
+| focused+claims+recovery+frozen/dio | **192 passed** / **0 ResourceWarning** |
+| receipts + bridge | **541 passed** / **0 ResourceWarning** (was 24 before 0016) |
+| collision checker/tests | **0 ResourceWarning** after 0014 |
+
+Residual hunt: no further bare-open ResourceWarnings in receipts/bridge after 0016.
+
+Post-#2 default `main` @ `b040bf0c` is ALIGNED but a different tree (no `docs/math_status/PACKET.json`) — Path C apply target remains hardening BASE_TIP (`890bb81` after PR #28).
+
 ## After portable patches 0001–0004 + 0008–0015 on `8510874` (batch 52)
 
 | Check | Result |
@@ -12,7 +26,7 @@ Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene not
 | frozen + drive-index overlay | **19 passed** / **0 ResourceWarning** (was 9+1 before 0015) |
 | collision checker/tests | **0 ResourceWarning** after 0014 |
 
-Residual (not shipped): `tests/test_receipts.py` / `tests/test_bridge.py` still emit bare-open ResourceWarnings.
+Residual (shipped in batch 53 as **0016**): `tests/test_receipts.py` / `tests/test_bridge.py` bare-open ResourceWarnings.
 
 Post-#2 default `main` @ `b040bf0c` is ALIGNED but a different tree (no `docs/math_status/PACKET.json`) — Path C apply target remains hardening BASE_TIP.
 

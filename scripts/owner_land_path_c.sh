@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0015) onto the
+# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0016) onto the
 # working tip of d6g8k5htny-coder/main, then push a branch / open a PR.
 #
 # Prerequisites:
@@ -54,7 +54,7 @@ usage() {
   cat <<'EOF'
 Usage: owner_land_path_c.sh [--direct-push] [--help]
 
-  (default)     Clone tip, apply_all 0001–0004 + 0008–0015, push branch, open PR.
+  (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 Env:
@@ -220,7 +220,7 @@ if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
     die "apply_all --check failed on apparently-patched tree. Resolve conflicts or reset to a clean tip."
   fi
 else
-  echo "--- apply_all 0001–0004 + 0008–0015 ---"
+  echo "--- apply_all 0001–0004 + 0008–0016 ---"
   if ! "$APPLY_ALL"; then
     die "apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches or rebase hardening onto post-#2 main first (PATH_C_REBASE_ONTO_MAIN=1)."
   fi
@@ -254,10 +254,10 @@ if git diff --quiet && git diff --cached --quiet; then
   echo "No uncommitted patch diffs (already applied upstream?)."
 else
   git add -A
-  git commit -m "fix: portable engineering patches 0001-0004+0008-0015 (Path C)
+  git commit -m "fix: portable engineering patches 0001-0004+0008-0016 (Path C)
 
 carriers pycache ignore, math_console paths, gaussian parametrize,
-git fixture timeout, close-file-handles through frozen/drive-index tests.
+git fixture timeout, close-file-handles through receipts/bridge tests.
 
 Scientific effect: NONE. lemma_closed stays false."
 fi
@@ -291,11 +291,11 @@ else
   PR_BASE="main"
 fi
 
-TITLE="fix: portable engineering patches 0001-0004+0008-0015 (Path C)"
+TITLE="fix: portable engineering patches 0001-0004+0008-0016 (Path C)"
 BODY="$(cat <<EOF
 Path C via \`scripts/owner_land_path_c.sh\`.
 
-Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0015**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
+Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0016**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
 
 Scientific effect: **NONE**. \`lemma_closed\` stays false. Green checks ≠ obligation discharge.
 

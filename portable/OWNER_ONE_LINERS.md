@@ -35,7 +35,7 @@ Poll until default tip is **ALIGNED** (scientific effect **NONE**):
 These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
 
 ```bash
-# Path C — PRIMARY remaining (default tip already ALIGNED): apply_all 0001–0004 + 0008–0015
+# Path C — PRIMARY remaining (default tip already ALIGNED): apply_all 0001–0004 + 0008–0016
 ./scripts/owner_land_path_c.sh
 # Optional: rebase hardening onto post-#2 main, then apply:
 # PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
@@ -94,9 +94,17 @@ MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 
 [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c`. Default tip ALIGNED.
 
+Historical (already executed; do not re-run):
+
+```bash
+# gh pr ready 2 --repo d6g8k5htny-coder/main
+# gh pr merge 2 --repo d6g8k5htny-coder/main --merge
+# ./scripts/owner_land_path_a.sh
+```
+
 ## Path C — engineering patches on working tip
 
-**After default tip is ALIGNED** (PR #2 merged @ `b040bf0c`; Path B optional): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0004 + 0008–0014**. Prefer the owner script (fail-closed without write):
+**After default tip is ALIGNED** (PR #2 merged @ `b040bf0c`; Path B optional): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0004 + 0008–0016**. Prefer the owner script (fail-closed without write):
 
 ```bash
 ./scripts/owner_land_path_c.sh
@@ -104,7 +112,7 @@ MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `8510874`). Post-#2 default `main` is a
+`portable/patches/BASE_TIP.txt` (currently `890bb81`). Post-#2 default `main` is a
 different tree — do not apply Path C there unless it already has PACKET.json:
 
 ```bash
@@ -117,12 +125,12 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ 8510874
+# expect: problems=0, lemma_closed=false; 90 passed @ 890bb81
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
 `apply_all` is findable and asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip).
 
-`apply_all.sh` includes **0001–0004 + 0008–0015** (tip-cut 0005/0006/0007 dropped after
-PR #27 merged @ `bf1fde3` in batch 48; 0008–0014 as in batches 25–50; **0015** frozen/
-drive-index overlay close-handles in batch 52).
+`apply_all.sh` includes **0001–0004 + 0008–0016** (tip-cut 0005/0006/0007 dropped after
+PR #27 merged @ `bf1fde3` in batch 48; 0008–0015 as in batches 25–52; **0016** receipts/
+bridge close-handles in batch 53).

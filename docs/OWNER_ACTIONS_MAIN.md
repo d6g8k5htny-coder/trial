@@ -9,7 +9,7 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 ## Priority order
 
 > **Path A MERGED (2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) @ `b040bf0c`. Default tip **ALIGNED**. Scientific effect: **NONE**.
-> Remaining: **Path C** on hardening tip (`scripts/owner_land_path_c.sh`; stack 0001–0004 + 0008–0015). Path B optional. Trial tokens still 403 on write.
+> Remaining: **Path C** on hardening tip (`scripts/owner_land_path_c.sh`; stack 0001–0004 + 0008–0016). Path B optional. Trial tokens still 403 on write.
 
 ### 1. Stop advertising the abandoned complexity-physics README
 
