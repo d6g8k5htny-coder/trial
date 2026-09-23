@@ -73,6 +73,13 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 **Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
 **Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
+## Stack note (2026-09-23 batch 41 PR #27 0005 analysis)
+
+- **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; Path A inactive. Path B preferred when writable.
+- Write still **403** (`probe_main_write.py` DENIED); Path B land skipped. Tip still **`b02efe2`** (no BASE_TIP refresh).
+- [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) head `8d023a9`: tip-cut `apply_all` fails at **0005** because isolation already fixes dirty receipts. Stack on that head = **0001–0004 + 0008** (skip 0005–0007). **After #27 merges, tip-cut 0005/0006 are obsolete** (drop from `apply_all`); no `0005-pr27-*` shipped. Verified @ 3.11: problems=0 / lemma_closed=false / focused **90 passed** / probes clean. Details: `portable/patches/COMPATIBILITY.md`.
+- Do **not** enable `research.yml` schedules for R2-06.
+
 ## Stack note (2026-09-23 batch 40 HOLD reaffirm)
 
 - **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; do not ready/merge/retarget. See [#issuecomment-5801736084](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084) and Claude [#issuecomment-5802102176](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5802102176) (asks CoS for STATUS packet + chain-order vs hardening). Agents must **not** invent STATUS packet answers.
