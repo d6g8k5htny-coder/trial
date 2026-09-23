@@ -483,6 +483,18 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack change: new [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) (probe isolation) OPEN UNSTABLE; `apply_all --check` fails on that head at 0005 — noted regen watch for 0005/0006 **after merge**. LAND / OWNER_ACTIONS / COMPATIBILITY refreshed.
 - Trial pytest: **17 passed**. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 41 — 2026-09-23 ~20:15 UTC (PR #27 0005 analysis; Path B probe)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Rules: main PR #2 **HOLD** — never Path A; Path B only if WRITABLE; no research status promotion.
+- Synced trial branch with `origin/main` (fast-forward incl. trial PR #18 merge).
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; Path B land **skipped** (not WRITABLE). No ALIGNED shout.
+- Tip vs BASE_TIP: live hardening **`b02efe2`** == BASE_TIP (ls-remote match; no pack tip refresh). Tip `apply_all` 0001–0008 `--check` OK.
+- Main [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) head `8d023a9` cloned: tip-cut `apply_all` fails at **0005** because the PR **already** isolates inventable/instrumentation runners under `tmp_path` + `_probe_snapshot()` (dirty-receipt defect fixed). **No** `0005-pr27-*` alternate. Documented obsolescence: after #27 merges, tip-cut **0005/0006 obsolete** (drop from `apply_all`; 0007 regen/drop). Exact head stack **0001–0004 + 0008**.
+- Verify on #27 head @ CPython **3.11**: apply 0001–0004+0008 → `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean; **6** residual ResourceWarning on negative-test bare `open()` only.
+- COMPATIBILITY / LAND / patches README / OWNER_ACTIONS refreshed. PR #2 left draft/untouched.
+- Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 40 — 2026-09-23 20:09 UTC (HOLD reaffirm; PR #17 merge)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.

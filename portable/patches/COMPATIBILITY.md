@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~20:05 UTC (batch 39 align-watch).
+Checked 2026-09-23 ~20:15 UTC (batch 41 PR #27 0005 analysis).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply 0001–0008 (tip-cut) | `math_status_check` | Focused tests* |
@@ -18,6 +18,7 @@ Checked 2026-09-23 ~20:05 UTC (batch 39 align-watch).
 | PR #22 (merged) | docs cross-links → `a89f9a7` | OK | problems=0 | **90 passed** |
 | PR #23 (merged) | PACKET tip-align → `3f85e93` | OK | problems=0 | **90 passed** |
 | PR #25 (merged) | standing owner authorization → `b02efe2` | OK | problems=0 | **90 passed** |
+| PR #27 head | `8d023a9` | **0001–0004 + 0008 only**‖ | problems=0 | **90 passed** @ 3.11 |
 
 \* Default slice @ `b02efe2`: carriers + math_status + inventable probes + gaussian + instrumentation STATUS.
 
@@ -29,9 +30,38 @@ Checked 2026-09-23 ~20:05 UTC (batch 39 align-watch).
 
 ¶ PR #21 is based on PR #3 (pre-inventable); inventable probe tests are absent. Head moved; mergeStateStatus CLEAN (batch 31).
 
+‖ See stack recipe below. Tip-cut `apply_all.sh` fails at 0005 on this head.
+
+## PR #27 stack recipe (`chatgpt/probe-test-isolation-20260923` @ `8d023a9a59a1c9c99c8120f5ec1e5505a84d3b9f`)
+
+```bash
+# From a clean PR #27 head checkout — do NOT run tip-cut apply_all.sh
+git apply …/0001-carriers-verify-ignore-bytecode-caches.patch
+git apply …/0002-math-console-path-honesty.patch
+git apply …/0003-gaussian-moments-parametrize-list.patch
+git apply …/0004-git-fixture-timeout-60s.patch
+# SKIP tip-cut 0005 / 0006 / 0007 — see below
+git apply …/0008-carriers-math-status-close-file-handles.patch
+```
+
+Why `apply_all` fails at **0005**: tip-cut 0005 expects the pre-isolation
+`test_runner_writes_refused_receipts_only` body (in-tree snapshot/`before` + no
+`tmp_path`). PR #27 already rewrote that test to run the probe runner under
+`tmp_path` and assert `_probe_snapshot()` unchanged on source receipts — so the
+dirty-receipt defect is **already fixed**, and tip-cut 0005/0006/0007 (which
+patch the restore/`open().read()` shape) cannot apply.
+
+**After #27 merges into hardening:** tip-cut **0005 and 0006 become obsolete**
+(drop from `apply_all.sh` or replace with no-ops). Tip-cut **0007** also needs
+regen/drop (it depends on the 0005/0006 restore shape). Residual on #27 head
+only: **6** `ResourceWarning` from bare `open()` in negative inventable/
+instrumentation tests (tmp_path copies — not tracked-receipt drift). No
+alternate `0005-pr27-*.patch` shipped — defect gone; stack is **0001–0004 + 0008**.
+
 Notes:
 
-- Batch **39** (align-watch): tip still **`b02efe2`** (ls-remote match). Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** PR **#27** head fails 0005 apply (test isolation rewrite) — watch for 0005/0006 regen **after merge**, not a tip-level 0009. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
+- Batch **41** (PR #27 0005 analysis): tip still **`b02efe2`** (ls-remote match; no BASE_TIP refresh). Tip `apply_all` 0001–0008 `--check` OK. PR **#27** @ `8d023a9` + **0001–0004 + 0008** @ CPython **3.11**: problems=0 / lemma_closed=false / focused **90 passed** / probes clean; **no** alternate 0005 (isolation supersedes). Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
+- Batch **39** (align-watch): tip still **`b02efe2`** (ls-remote match). Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** PR **#27** head fails 0005 apply (test isolation rewrite) — batch 41 documents obsolescence + stack recipe above. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **38**: tip **`3f85e93` → `b02efe2`** (PR #25 merged — standing owner authorization for all research agents; no scientific status change). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **35**: tip **`a89f9a7` → `3f85e93`** (PR #23 merged — docs tip-align PACKET base_commit/as_of). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.11.16: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path A/B still 403. Default tip still MISALIGNED.
 - Batch **31**: tip **`ae7daf7` → `a89f9a7`** (PR #22 merged — docs only). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path A/B/workflow_dispatch still 403. Default tip still MISALIGNED.

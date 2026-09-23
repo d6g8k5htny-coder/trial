@@ -44,6 +44,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 
 - `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current tip.
 - **0006** was optional until PR #20 merged (batch 21). It is now in `apply_all.sh`.
+- **PR #27** (`8d023a9`, probe-test isolation): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`). No `0005-pr27-*` alternate (defect gone).
 
 ### When 0006 was promoted
 
@@ -86,6 +87,11 @@ runs `inventable_jetmod_probes.py`, which rewrites `generated_at_*` and refreshe
 sha256/timestamp drift under `docs/math_status_probes/`. Restore in `finally`
 (including the index). Batch 17 re-cut against post-#17 EXPECTED/SHORTCUTS.
 No scientific change; `lemma_closed` stays false.
+
+**Obsolescence (PR #27):** open main PR #27 rewrites the same test to run under
+`tmp_path` and assert source receipts unchanged. After #27 merges into the
+hardening tip, tip-cut **0005 is obsolete** (drop from `apply_all.sh`); do not
+keep a parallel `0005-pr27-*` restore patch.
 
 ## 0006 — instrumentation STATUS test restores receipts
 

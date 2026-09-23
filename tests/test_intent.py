@@ -203,6 +203,14 @@ def test_land_sheet() -> None:
     assert "PR #2" in text
     assert "Scientific effect: NONE" in text
     assert "403" in text
+    assert "#27" in text
+    assert "0001–0004 + 0008" in text or "0001-0004 + 0008" in text
+    compat = (ROOT / "portable" / "patches" / "COMPATIBILITY.md").read_text(encoding="utf-8")
+    assert "PR #27" in compat
+    assert "8d023a9" in compat
+    assert "obsolete" in compat.lower()
+    assert "0001–0004 + 0008" in compat or "0001-0004 + 0008" in compat
+    assert "tmp_path" in compat
 
 
 def test_watch_main_alignment_and_expected_fixture() -> None:
