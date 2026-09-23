@@ -147,3 +147,11 @@ def test_conflicting_pr_notes() -> None:
     assert "math_console.py" in text
     assert "OPEN_PROBLEMS.md" in text
     assert "Scientific effect: NONE" in text
+
+
+def test_verify_after_merge_script() -> None:
+    path = ROOT / "portable" / "pr2-landing" / "VERIFY_AFTER_MERGE.sh"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    assert "watch_main_alignment.py" in text
+    assert "ALIGNED" in text

@@ -12,7 +12,9 @@ PR #2 is the Drive→git port onto default `main` (historically MERGEABLE/CLEAN)
 # As repo owner / write-enabled agent:
 gh pr ready 2 --repo d6g8k5htny-coder/main
 gh pr merge 2 --repo d6g8k5htny-coder/main --merge  # or --squash per your policy
+# Predicted merge commit (2026-09-23): 2a960674… — README becomes q0 program; AGENTS.md present.
 # Then retarget / rebase hardening (chatgpt/drive-github-hardening-20260919) onto new main
+python3 /path/to/trial/portable/pr2-landing/VERIFY_AFTER_MERGE.sh
 ```
 
 Verify visitors no longer see complexity-physics:
@@ -81,3 +83,11 @@ Attempts from the `trial` cloud token (2026-09-23):
 | GraphQL `markPullRequestReadyForReview` on PR #2 | FORBIDDEN |
 
 Owner (or a write-enabled `main` agent) must run Path A/B/C.
+
+
+## Patch regeneration watch
+
+Open drafts **#18 / #19 / #20** touch `docs/math_status/PACKET.json` (and related
+status tooling). After they merge into hardening, re-cut portable patch **0002**
+(and re-run `apply_all.sh` checks) so PACKET digests stay honest. Patches
+0001/0003/0004 were still `--check` clean on `1ea0ae8` as of batch 9.

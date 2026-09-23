@@ -62,3 +62,16 @@ As of batch 4, open drafts **PR #3** and **PR #12** report `CONFLICTING` /
 `DIRTY` against their bases because inventable #15 landed on hardening.
 Rebase or close them before further merges. PR #2 remains MERGEABLE/CLEAN onto
 default `main`. New docs PR #16 (cold-start nav) is independent on hardening.
+
+
+## Merge preview evidence (2026-09-23)
+
+GitHub reports PR #2 `mergeable=true`, `mergeable_state=clean`, predicted
+`merge_commit_sha=2a96067430da05bdded4227d2143cd207c456083`.
+
+That preview commit’s root `README.md` is already the **q0 Research Program**
+text and includes `AGENTS.md`. Prefer `gh pr merge 2` (or the UI) over a
+hand-rolled unrelated-histories merge — a naive local merge can add/add-conflict
+on `README.md` even when GitHub’s merge is clean.
+
+After merge, run [`VERIFY_AFTER_MERGE.sh`](VERIFY_AFTER_MERGE.sh).

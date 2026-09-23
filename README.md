@@ -29,7 +29,7 @@ This repository now:
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
 - [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
-- [`portable/pr2-landing/`](portable/pr2-landing/) — checklist to land MERGEABLE PR #2 on default `main`
+- [`portable/pr2-landing/`](portable/pr2-landing/) — checklist + `VERIFY_AFTER_MERGE.sh` for MERGEABLE PR #2
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
 - [`portable/patches/`](portable/patches/) — engineering patches (`carriers_verify` bytecode, `math_console` paths, gaussian parametrize)

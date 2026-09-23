@@ -88,3 +88,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Write access still 403. Watcher: MISALIGNED.
 - CI: earlier Option-B path failure fixed via GITHUB_WORKSPACE; `portable-patches-on-main` subsequently green.
 - Documented conflict paths for PR #12 (8 math_status files; recommend close/supersede) and PR #3 (4 files) in `portable/CONFLICTING_PR_NOTES.md`.
+
+### Batch 9 — 2026-09-23 17:17 UTC
+
+- Write access still 403; watcher MISALIGNED; trial CI portable job green.
+- PR #2 merge preview `2a960674…` already shows q0 README + AGENTS.md (Path A confirmed viable via GitHub merge).
+- Added `VERIFY_AFTER_MERGE.sh`. New open drafts #18–#20 touch PACKET.json — noted patch 0002 regen watch.
