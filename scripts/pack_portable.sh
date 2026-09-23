@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Build a tarball of the portable main-alignment pack for owner download.
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+OUT="${1:-$ROOT/../trial-portable-main-fixes.tgz}"
+tar -czf "$OUT" -C "$ROOT" \
+  portable/LAND.md \
+  portable/CONFLICTING_PR_NOTES.md \
+  portable/EXPECTED_POST_ALIGNMENT.json \
+  portable/main-default-branch \
+  portable/pr2-landing \
+  portable/patches \
+  scripts/audit_main_alignment.py \
+  scripts/alignment_status.py \
+  scripts/watch_main_alignment.py \
+  scripts/pack_portable.sh
+echo "wrote $OUT ($(wc -c <"$OUT") bytes)"

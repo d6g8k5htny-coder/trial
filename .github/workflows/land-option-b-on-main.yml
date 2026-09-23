@@ -1,0 +1,55 @@
+# Optional owner-triggered land of Option-B onto d6g8k5htny-coder/main.
+#
+# This does NOT run automatically. It requires:
+#   1. Repo secret MAIN_PUSH_TOKEN — a PAT/fine-grained token with Contents:Write
+#      (and PullRequests:Write) on d6g8k5htny-coder/main
+#   2. Manual workflow_dispatch from the Actions tab
+#
+# Scientific effect: NONE. Documentation-only redirect on default main.
+# Prefer merging PR #2 when ready (Path A). This is Path B automation.
+
+name: land-option-b-on-main
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "If true, apply+commit locally in the runner but do not push"
+        type: boolean
+        default: true
+
+jobs:
+  land:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require token unless dry-run
+        if: ${{ inputs.dry_run == false }}
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+        run: |
+          if [ -z "$MAIN_PUSH_TOKEN" ]; then
+            echo "Set repository secret MAIN_PUSH_TOKEN (write on d6g8k5htny-coder/main), or run with dry_run=true." >&2
+            exit 1
+          fi
+      - name: Clone default main and apply Option-B
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            git clone --depth 1 https://github.com/d6g8k5htny-coder/main.git main-land
+          else
+            git clone --depth 1 "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land
+          fi
+          cd main-land
+          git checkout -b cursor/option-b-notice-from-trial
+          git am ../portable/main-default-branch/0001-option-b-default-branch-notice.patch
+          echo "Applied Option-B. README head:"
+          head -8 README.md
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "dry_run=true — not pushing."
+            exit 0
+          fi
+          git push -u origin HEAD
+          echo "Pushed branch cursor/option-b-notice-from-trial. Open a PR into main and merge when satisfied."

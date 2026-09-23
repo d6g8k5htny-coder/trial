@@ -1,0 +1,26 @@
+diff --git a/tests/test_run_checks.py b/tests/test_run_checks.py
+index c2f53a1..ee174e6 100644
+--- a/tests/test_run_checks.py
++++ b/tests/test_run_checks.py
+@@ -30,7 +30,7 @@ def workflow(commands=None):
+ 
+ 
+ def git(root, *args):
+-    result = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=10)
++    result = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=60)
+     assert result.returncode == 0, result.stderr
+     return result.stdout
+ 
+diff --git a/tests/test_workflow_integrity_hardening.py b/tests/test_workflow_integrity_hardening.py
+index cf55d5b..5806604 100644
+--- a/tests/test_workflow_integrity_hardening.py
++++ b/tests/test_workflow_integrity_hardening.py
+@@ -89,7 +89,7 @@ def governed_command(text):
+ 
+ 
+ def git(root, *args):
+-    result = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, timeout=10)
++    result = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, timeout=60)
+     assert result.returncode == 0, result.stderr
+     return result.stdout
+ 

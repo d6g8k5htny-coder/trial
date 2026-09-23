@@ -1,0 +1,80 @@
+name: trial-ci
+
+on:
+  push:
+    branches: ["main", "cursor/**"]
+  pull_request:
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Intent suite
+        run: python -m pytest -q
+      - name: Alignment audit (read-only, expected MISALIGNED until main lands)
+        run: |
+          set +e
+          python scripts/audit_main_alignment.py
+          code=$?
+          set -e
+          # 1 = misalignment still present on upstream main (current truth)
+          # 0 = already fixed upstream
+          # 2 = transport failure (fail the job)
+          if [ "$code" -eq 2 ]; then exit 2; fi
+          exit 0
+      - name: Alignment watch (informational)
+        run: |
+          python scripts/watch_main_alignment.py | tee alignment-watch.json
+          # Do not fail the job on MISALIGNED; that is the known upstream state.
+
+  # Prove portable engineering patches still apply on the live working tip.
+  # Scientific effect: NONE. Does not push to main.
+  portable-patches-on-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: trial
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Shallow-clone main working tip
+        run: |
+          git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
+            https://github.com/d6g8k5htny-coder/main.git main-work
+          echo "TIP=$(git -C main-work rev-parse HEAD)"
+      - name: Apply portable patches
+        run: |
+          cd main-work
+          git apply --check ../trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
+          git apply --check ../trial/portable/patches/0002-math-console-path-honesty.patch
+          git apply --check ../trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
+          git apply --check ../trial/portable/patches/0004-git-fixture-timeout-60s.patch
+          git apply ../trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
+          git apply ../trial/portable/patches/0002-math-console-path-honesty.patch
+          git apply ../trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
+          git apply ../trial/portable/patches/0004-git-fixture-timeout-60s.patch
+      - name: Focused verification on patched tree
+        run: |
+          cd main-work
+          python tools/math_status_check.py
+          python -m pytest -q \
+            tests/test_carriers.py \
+            tests/test_math_status.py \
+            tests/test_inventable_jetmod_probes.py \
+            tests/test_gaussian_moments.py
+      - name: Option-B apply check against default main
+        run: |
+          git clone --depth 1 --branch main \
+            https://github.com/d6g8k5htny-coder/main.git main-default
+          git -C main-default apply --check \
+            "$GITHUB_WORKSPACE/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch"
+          echo "Option-B format-patch still applies on default main"

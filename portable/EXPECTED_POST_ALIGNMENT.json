@@ -1,0 +1,23 @@
+{
+  "scientific_effect": "NONE",
+  "description": "Expected audit_main_alignment.py shape after Path A (PR #2) or Path B (Option-B notice).",
+  "aligned_when": {
+    "audit_exit": 0,
+    "complexity_markers_present": [],
+    "any_of_q0_or_notice_markers_present": [
+      "q0 Research Program",
+      "SIDE24",
+      "chatgpt/drive-github-hardening-20260919",
+      "PR #2"
+    ],
+    "notes": [
+      "Path A also implies root_has_AGENTS_md true and a large tree.",
+      "Path B implies notice markers and usually root_has_body false after quarantine move."
+    ]
+  },
+  "still_required_after_alignment_for_full_program": [
+    "Working tip chatgpt/drive-github-hardening-20260919 merged or retargeted as appropriate",
+    "portable/patches apply_all.sh on working tip (engineering only)",
+    "lemma_closed remains false until licensed predicates fire"
+  ]
+}

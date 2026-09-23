@@ -1,0 +1,6 @@
+# Ignore local virtualenvs and caches; keep the sandbox tiny.
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
