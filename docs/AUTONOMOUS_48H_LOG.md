@@ -28,7 +28,7 @@ Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer
 - **Path B automation (no 0017):** shipped `scripts/path_b_dry_run.py` (certainty JSON); `owner_land_path_b.sh --dry-run`; `scripts/refresh_restore_plan.py` (restore plan currency). Stale Path A “merge PR #2” copy in owner PR body + Actions workflow updated (HOLD VOID / prefer B / revert32).
 - **LAND stack hygiene:** #34 MERGEABLE/UNSTABLE; #35 MERGEABLE/UNSTABLE (title now AGENTS.md + mirror quote); **#36 MERGEABLE/CLEAN** onto `claude/drive-audit-github-migration-rrglpp` (was CONFLICTING/DIRTY in batch 56). Restore plan: `portable/RESTORE_PLAN_57.json`.
 - Trial `pytest -q` → **17 passed**. Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `fde9066..95358c3`.
 - No research status promotion. `lemma_closed` untouched. `goal_complete=false` (not ALIGNED).
 
 ### Batch 56 — 2026-09-23 ~22:31 UTC (MISALIGNED; Path B DENIED; Path C IDLE; LAND stack +#34/#35/#36)
