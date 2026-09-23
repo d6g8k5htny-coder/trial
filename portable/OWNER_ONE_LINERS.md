@@ -27,6 +27,10 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ./scripts/owner_land_path_b.sh --after-merge
 # opt-in only: push Option-B straight onto default main (no PR)
 ./scripts/owner_land_path_b.sh --direct-main
+
+# Path C — after Path A: rebase hardening onto new main, then apply_all 0001–0008
+./scripts/owner_land_path_c.sh
+# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
 ```
 
 ## Path A — land the real tree (manual one-liners)
@@ -86,6 +90,14 @@ MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 
 ## Path C — engineering patches on working tip
 
+**After Path A (PR #2) merges:** rebase hardening onto new `main`, then apply
+`apply_all` **0001–0008**. Prefer the owner script (fail-closed without write):
+
+```bash
+./scripts/owner_land_path_c.sh
+# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # post-#2 default tip with research tree
+```
+
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
 `portable/patches/BASE_TIP.txt` (currently `ae7daf7`):
 
@@ -102,4 +114,9 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 # expect: problems=0, lemma_closed=false; 90 passed @ ae7daf7
 ```
 
-`apply_all.sh` now includes **0001–0007** (0006 promoted after PR #20 merge; 0007 inventable close-file-handles in batch 24).
+Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
+`apply_all` is findable and asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip).
+
+`apply_all.sh` includes **0001–0008** (0006 promoted after PR #20; 0007 inventable
+close-handles in batch 24; 0008 carriers/math_status close-handles in batch 25).
+No **0009** unless a new tip-level defect appears.

@@ -19,5 +19,6 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/print_owner_unblock.sh \
   scripts/owner_land_path_a.sh \
   scripts/owner_land_path_b.sh \
+  scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh
 echo "wrote $OUT ($(wc -c <"$OUT") bytes)"

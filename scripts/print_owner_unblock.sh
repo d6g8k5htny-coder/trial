@@ -41,6 +41,9 @@ echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
 echo "# Path B opt-in direct push to default main:"
 echo "$ROOT/scripts/owner_land_path_b.sh --direct-main"
+echo "# Path C — after Path A: rebase hardening onto new main, apply_all 0001–0008:"
+echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# PATH_C_BASE=main $ROOT/scripts/owner_land_path_c.sh   # post-#2 research tree on default tip"
 echo
 echo "=== copy-paste Path A (manual; needs write on main) ==="
 echo "gh pr ready 2 --repo d6g8k5htny-coder/main"
@@ -51,5 +54,10 @@ echo "# 1) Settings → Secrets → Actions → MAIN_PUSH_TOKEN (Contents:Write 
 echo "# 2) Actions → land-option-b-on-main → Run workflow → dry_run=false"
 echo "# 3) Merge the opened PR (or branch cursor/option-b-notice-from-trial) into default main"
 echo "gh workflow run land-option-b-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
+echo
+echo "=== copy-paste Path C (after Path A; needs write on main) ==="
+echo "# rebase hardening onto new main, then:"
+echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# or: $ROOT/portable/patches/apply_all.sh on a writable tip checkout"
 echo
 echo "Scientific effect: NONE"

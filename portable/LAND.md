@@ -43,20 +43,36 @@ Batch **22** local dry-run on default tip `f25b04bb`: `git am` OK; local auditor
 quarantined). Path B content is sufficient — landing blocked only by write/token.
 ## Path C — engineering patches on working tip
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `ae7daf7` — patches apply cleanly):
+**After Path A (PR #2) merges:** rebase hardening onto the new `main`, then
+apply portable `apply_all` **0001–0008**. Do not land Path C onto the abandoned
+pre-q0 default tip.
+
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `ae7daf7` — patches apply cleanly), or post-#2 `main` once the port is present:
 
 ```bash
+# Preferred (owner write creds):
+./scripts/owner_land_path_c.sh
+# After #2: PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
+
+# Manual:
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git fetch origin chatgpt/drive-github-hardening-20260919
+# After #2 merges first: git rebase origin/main   (on hardening) — then continue
 git checkout -b cursor/portable-engineering-patches origin/chatgpt/drive-github-hardening-20260919
-/path/to/trial/portable/patches/apply_all.sh
-# or copy apply_all.sh + patches into the tree
-python3 tools/math_status_check.py
+/path/to/trial/portable/patches/apply_all.sh   # 0001–0008
+python3 tools/math_status_check.py             # assert lemma_closed=false
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
 git commit -am "fix: carriers pycache, math_console paths, gaussian parametrize, probe restores, inventable close handles"
 git push -u origin HEAD
+```
+
+Post-merge verify from trial also runs Path C locally when `apply_all` is findable:
+
+```bash
+./portable/pr2-landing/VERIFY_AFTER_MERGE.sh          # ALIGNED + apply/assert
+SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 ```
 
 `lemma_closed` must stay false. Green checks ≠ obligation discharge.
@@ -117,6 +133,7 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 |--------|------|
 | `scripts/owner_land_path_a.sh` | `gh pr ready 2` + `gh pr merge 2 --merge`, then audit/watch → ALIGNED |
 | `scripts/owner_land_path_b.sh` | Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
+| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-#2 main) → `apply_all` 0001–0008 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
