@@ -48,19 +48,23 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 apply portable `apply_all` **0001–0004 + 0008–0014**. Default tip is ALIGNED; Path C
 is still the engineering stack on the hardening tip (diverged ahead of #2 merge).
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `8510874` — patches apply cleanly), or post-#2 `main` once rebased:
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `8510874` — patches apply cleanly).
+**Do not** apply onto post-#2 default `main` alone — that tip is ALIGNED but a different tree
+(no `docs/math_status/PACKET.json`). Rebase hardening onto `main` first if integrating.
 
 ```bash
 # Preferred (owner write creds):
 ./scripts/owner_land_path_c.sh
-# After #2: PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
+# Optional post-#2: rebase hardening onto new main, then apply:
+# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
+# PATH_C_BASE=main only if that tip already has hardening tooling + PACKET.json
 
 # Manual:
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git fetch origin chatgpt/drive-github-hardening-20260919
 # Optional: git rebase origin/main   (on hardening) — then continue
 git checkout -b cursor/portable-engineering-patches origin/chatgpt/drive-github-hardening-20260919
-/path/to/trial/portable/patches/apply_all.sh   # 0001–0004 + 0008–0014
+/path/to/trial/portable/patches/apply_all.sh   # 0001–0004 + 0008–0015
 python3 tools/math_status_check.py             # assert lemma_closed=false
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
@@ -82,7 +86,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 
 | PR | Role | Note |
 |----|------|------|
-| #2 | Port onto default `main` | **HOLD** — draft/untouched (Dylan/CoS); Path B preferred |
+| #2 | Port onto default `main` | **MERGED** @ `b040bf0c` (2026-09-23); default tip ALIGNED |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
@@ -95,8 +99,9 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #25 | standing owner authorization | **Merged** @ `b02efe2`; BASE_TIP refreshed (batch 38); no status flip |
 | #24 | inventable STATUS honesty cross-links | **Merged** @ `46af1ca`; BASE_TIP refreshed (batch 44); no status flip |
 | #26 | math_status README inventable probes honesty pointer | **Merged** @ `a8a5dd7`; BASE_TIP refreshed (batch 46); no status flip |
-| #27 | Isolate probe tests from tracked receipts | **Merged** @ `bf1fde3` (batch 48); tip-cut **0005/0006/0007 dropped** from `apply_all`; stack **0001–0004 + 0008–0012** |
+| #27 | Isolate probe tests from tracked receipts | **Merged** @ `bf1fde3` (batch 48); tip-cut **0005/0006/0007 dropped** from `apply_all`; stack now **0001–0004 + 0008–0015** |
 | #29 | R1 exact-byte custody | **Merged** @ `8510874` (batch 50); BASE_TIP refreshed; stack **0001–0004 + 0008–0014** |
+| #31 | Register source preflight (nonactivating) | OPEN MERGEABLE/UNSTABLE onto hardening |
 | #28 | STATUS_JETMOD inventable merge+promote REFUSED honesty | OPEN draft UNSTABLE |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
@@ -124,7 +129,9 @@ Path A is **MERGED** (default tip ALIGNED). Path B optional.
 
 ## Patch regeneration watch
 
-Working tip is **`8510874`** (PR #29 merged; batch 50). Default `main` **ALIGNED** via PR #2 @ `b040bf0c`.
+Working tip is **`8510874`** (PR #29; batch 52 re-verify — tip unchanged). Default `main` **ALIGNED** via PR #2 @ `b040bf0c`.
+Hardening is ~53 commits behind post-#2 `main` / 1 ahead — rebase before merging Path C into default if desired (`PATH_C_REBASE_ONTO_MAIN=1`).
+Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`**; probe DENIED; `apply_all` 0001–0004+0008–0015 `--check` OK; frozen/drive-index ResourceWarnings → shipped **0015**; owner_land_path_c auto stays on hardening (not post-#2 default main).
 Batch **50** (Path B probe + tip #29 + portable **0014**): tip **`bf1fde3` → `8510874`**; probe DENIED → Path B skipped; watch **ALIGNED** (PR #2 merged externally); collision ResourceWarnings → shipped **0014**; tip `apply_all` 0001–0004+0008–0014 @ 3.11 → **173** / **0 ResourceWarning**; collision **189** / **0 RW**.
 Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**; probe DENIED / then-MISALIGNED → Path B skipped; dropped tip-cut 0005/0006/0007; inventable-negative ResourceWarnings → shipped **0012**; tip `apply_all` 0001–0004+0008–0012 @ 3.11 → **173** / **0 ResourceWarning**.
 Batch **47** (Path B probe + portable **0011**): tip still **`a8a5dd7`**; probe DENIED / MISALIGNED → Path B skipped; PR #27 still OPEN → did **not** drop 0005/0006; `math_status_check` ResourceWarnings → shipped **0011**; tip `apply_all` 0001–0011 @ 3.11 → **173** / **0 ResourceWarning** (+ checker **0** ResourceWarning).
@@ -132,8 +139,8 @@ Batch **45** (Path B probe + portable **0010**): tip then **`46af1ca`**; probe D
 Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`**; BASE_TIP refreshed; tip `apply_all` 0001–0009 @ 3.11 → **137** / **0 ResourceWarning**. PR #27 head **`8d023a9` → `63b519f`**: tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → focused **90** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD.
 Batch **43** (portable **0009**): tip was **`b02efe2`**; broader hunt @ 3.11 found claims unclosed-file ResourceWarnings → shipped **0009** into `apply_all`. workflow_integrity/run_checks/registers/ci_pins green.
 Batch **41** (PR #27 0005 analysis): tip then **`b02efe2`**; tip `apply_all` 0001–0008 `--check` OK.
-PR **#27** **MERGED** @ `bf1fde3` (batch 48). Tip-cut **0005/0006/0007 dropped** from `apply_all.sh`; residual inventable-negative ResourceWarnings cleared by **0012**. Live stack: **0001–0004 + 0008–0012** → focused+claims+recovery **173 passed** @ 3.11 / **0 ResourceWarning** (see `patches/COMPATIBILITY.md`).
-Stack: #24/#25/#26/#27 **MERGED**; #28/#21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
+PR **#27** **MERGED** @ `bf1fde3` (batch 48). Tip-cut **0005/0006/0007 dropped** from `apply_all.sh`; residual inventable-negative ResourceWarnings cleared by **0012**. Live stack: **0001–0004 + 0008–0015** → focused+claims+recovery **173 passed** @ 3.11 / **0 ResourceWarning**; frozen+drive-index overlay **19** / **0 RW** (see `patches/COMPATIBILITY.md`).
+Stack: #2/#24/#25/#26/#27/#29 **MERGED**; #31 OPEN; #28/#30/#21 drafts; #3 CONFLICTING.
 Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.
@@ -147,9 +154,9 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 
 | Script | Role |
 |--------|------|
-| `scripts/owner_land_path_b.sh` | **PRIMARY under HOLD.** Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
-| `scripts/owner_land_path_a.sh` | **ON HOLD** — hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only). Would ready+merge PR #2. |
-| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0004 + 0008–0012 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
+| `scripts/owner_land_path_b.sh` | Optional (default tip already ALIGNED). Clone + `git am` Option-B → push branch + open PR. `--direct-main` opt-in. `--after-merge` remote verify. |
+| `scripts/owner_land_path_a.sh` | **DONE** — PR #2 merged @ `b040bf0c`. Script historical; not needed for alignment. |
+| `scripts/owner_land_path_c.sh` | Write probe → clone **hardening** (auto; not post-#2 default main) → optional `PATH_C_REBASE_ONTO_MAIN=1` → `apply_all` 0001–0004 + 0008–0015 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
@@ -161,6 +168,6 @@ Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/la
 2. Run workflow `land-option-b-on-main` with `dry_run=false`.
 3. Workflow `git am`s Option-B, runs `scripts/audit_local_tree.py` (must exit 0 /
    would-align), pushes `cursor/option-b-notice-from-trial` **and opens a PR**
-   into default `main` — merge that PR. (Path A remains on HOLD.)
+   into default `main` — merge that PR. (Path A already MERGED; Path B optional.)
 
 Default `dry_run=true` verifies `git am` + local auditor (no push).

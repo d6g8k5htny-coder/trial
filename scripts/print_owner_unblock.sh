@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
-# Print Path B/C (primary) + Path A HOLD notice + live probe/audit status.
+# Print Path C (primary remaining) + Path A MERGED notice + live probe/audit status.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# HOLD (Dylan/CoS 2026-09-23): Path A inactive; Path B preferred.
-# Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084
+# Path A MERGED 2026-09-23 @ b040bf0c — default tip ALIGNED.
+# Remaining owner land: Path C on hardening tip (BASE_TIP). Path B optional.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== HOLD — Path A inactive (Dylan/CoS) ==="
-echo "PR #2 stays draft / untouched. Do not ready/merge/retarget."
-echo "Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084"
-echo "Preferred unblock: Path B (Option-B notice) or grant App write for Path B only."
+echo "=== Path A MERGED — default tip ALIGNED ==="
+echo "PR #2 merged @ b040bf0c. Remaining: Path C on chatgpt/drive-github-hardening-20260919."
+echo "Post-#2 default main is a different tree — do not apply Path C there without PACKET.json."
 echo "Scientific effect: NONE"
 echo
 
@@ -48,31 +47,23 @@ echo "$ROOT/scripts/wait_until_aligned.sh"
 echo "$ROOT/scripts/wait_until_aligned.sh --verify"
 echo
 echo "=== owner land scripts (run with *owner* gh auth / write on main) ==="
-echo "# Path B — PRIMARY under HOLD: Option-B branch + PR; then --after-merge:"
+echo "# Path C — PRIMARY remaining: apply_all 0001–0004 + 0008–0015 on hardening tip:"
+echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# Optional rebase hardening onto post-#2 main first:"
+echo "# PATH_C_REBASE_ONTO_MAIN=1 $ROOT/scripts/owner_land_path_c.sh"
+echo "# Path B — optional (default tip already ALIGNED):"
 echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
-echo "# Path B opt-in direct push to default main:"
-echo "$ROOT/scripts/owner_land_path_b.sh --direct-main"
-echo "# Path A — ON HOLD (hard-refuses unless OWNER_FORCE_PATH_A=1 for Dylan only):"
-echo "# $ROOT/scripts/owner_land_path_a.sh   # exits 1 under HOLD"
-echo "# Path C — after default tip ALIGNED (Path B preferred): apply_all 0001–0004 + 0008–0012:"
-echo "$ROOT/scripts/owner_land_path_c.sh"
-echo "# PATH_C_BASE=main $ROOT/scripts/owner_land_path_c.sh   # post-alignment research tree on default tip"
+echo "# Path A — DONE (PR #2 merged @ b040bf0c)"
 echo
-echo "=== copy-paste Path B FIRST (trial Actions + MAIN_PUSH_TOKEN) ==="
+echo "=== copy-paste Path C (needs write on main) ==="
+echo "# apply on hardening BASE_TIP; optional PATH_C_REBASE_ONTO_MAIN=1:"
+echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# or: $ROOT/portable/patches/apply_all.sh on a writable hardening tip checkout"
+echo
+echo "=== copy-paste Path B (optional) ==="
 echo "# 1) Settings → Secrets → Actions → MAIN_PUSH_TOKEN (Contents:Write on main)"
 echo "# 2) Actions → land-option-b-on-main → Run workflow → dry_run=false"
-echo "# 3) Merge the opened PR (or branch cursor/option-b-notice-from-trial) into default main"
 echo "gh workflow run land-option-b-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
-echo
-echo "=== copy-paste Path A (ON HOLD — do not run unless Dylan lifts HOLD) ==="
-echo "# REFUSED under HOLD. Script exits 1 unless OWNER_FORCE_PATH_A=1 (Dylan only)."
-echo "# gh pr ready 2 --repo d6g8k5htny-coder/main"
-echo "# gh pr merge 2 --repo d6g8k5htny-coder/main --merge"
-echo
-echo "=== copy-paste Path C (after Path B / post-HOLD Path A; needs write on main) ==="
-echo "# rebase hardening onto new main if needed, then:"
-echo "$ROOT/scripts/owner_land_path_c.sh"
-echo "# or: $ROOT/portable/patches/apply_all.sh on a writable tip checkout"
 echo
 echo "Scientific effect: NONE"

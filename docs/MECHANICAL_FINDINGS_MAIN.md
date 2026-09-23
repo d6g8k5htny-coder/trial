@@ -1,3 +1,21 @@
+# Mechanical findings on `d6g8k5htny-coder/main` (hardening tip)
+
+Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
+
+## After portable patches 0001–0004 + 0008–0015 on `8510874` (batch 52)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK (0001–0004 + 0008–0015; 0005/0006/0007 dropped) |
+| `math_status_check` | problems=0 / lemma_closed=false / 0 ResourceWarning |
+| focused+claims+recovery | **173 passed** / **0 ResourceWarning** |
+| frozen + drive-index overlay | **19 passed** / **0 ResourceWarning** (was 9+1 before 0015) |
+| collision checker/tests | **0 ResourceWarning** after 0014 |
+
+Residual (not shipped): `tests/test_receipts.py` / `tests/test_bridge.py` still emit bare-open ResourceWarnings.
+
+Post-#2 default `main` @ `b040bf0c` is ALIGNED but a different tree (no `docs/math_status/PACKET.json`) — Path C apply target remains hardening BASE_TIP.
+
 # Mechanical findings from local clone of `d6g8k5htny-coder/main`
 
 Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `bf1fde30c7fc04c9919bf9172ee8a13e234c7664`

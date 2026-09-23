@@ -19,7 +19,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0014
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0015
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -45,7 +45,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_recovery.py
 # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ 8510874
 # and docs/math_status_probes/ stays clean in git status after inventable tests
-# focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0012
+# focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0015
 # math_status_check itself emits 0 ResourceWarning after 0011
 # verify_manifests + quarantine_check emit 0 ResourceWarning after 0013
 # collision_proposal_check + tests/test_collision_proposal.py emit 0 ResourceWarning after 0014
@@ -165,7 +165,7 @@ handles. Use `with open(...)`. No scientific change; `lemma_closed` stays false.
 
 ## 0013 — verify_manifests + quarantine_check close file handles
 
-Same class as 0008–0012 for `tools/verify_manifests.py` and
+Same class as 0008–0015 for `tools/verify_manifests.py` and
 `tools/quarantine_check.py`. On tip `bf1fde3` @ CPython 3.11, each tool still
 emitted **828** `ResourceWarning: unclosed file` lines from bare
 `for line in open(...)` over manifest `.jsonl` / `.sha256` files. Use
@@ -182,3 +182,9 @@ emitted **51** from helpers / digest asserts / sandbox overrides. Use
 `with open(...) as handle`. Output parity preserved (`failures=0` /
 **189 passed**). No scientific change; `lemma_closed` stays false.
 
+## 0015 — frozen / drive-index overlay close-file-handles (batch 52)
+
+Same class as 0008–0014 for `tests/test_frozen_check.py` and
+`tests/test_drive_index_overlay.py` bare `open()` calls that emit
+`ResourceWarning: unclosed file` under CPython 3.11 `-Wdefault`.
+Scientific effect: NONE.

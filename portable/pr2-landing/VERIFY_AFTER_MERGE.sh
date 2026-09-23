@@ -4,7 +4,7 @@
 #
 # After ALIGNED: when TRIAL_ROOT is set or this script is run from a trial
 # checkout (apply_all findable), optionally apply Path C portable patches
-# 0001–0010, run math_status_check + focused pytest, and assert
+# 0001–0004 + 0008–0015, run math_status_check + focused pytest, and assert
 # lemma_closed=false. Set SKIP_PATH_C=1 for alignment-only.
 #
 # Usage:
@@ -32,7 +32,7 @@ Usage: VERIFY_AFTER_MERGE.sh [--apply-path-c | --skip-path-c]
 
   After remote tip is ALIGNED:
     If trial apply_all.sh is findable (TRIAL_ROOT set or script in trial),
-    clone/use MAIN_CHECKOUT, apply_all 0001–0010, math_status + focused
+    clone/use MAIN_CHECKOUT, apply_all 0001–0004 + 0008–0015, math_status + focused
     pytest, assert lemma_closed=false.
   --skip-path-c   Alignment check only (never apply).
   --apply-path-c  Force Path C local verify (default when apply_all findable).
@@ -69,7 +69,7 @@ fi
 
 if [[ "$SKIP_PATH_C" == "1" ]]; then
   echo "SKIP_PATH_C=1 — not applying Path C."
-  echo "Next after PR #2: rebase hardening onto new main, then apply_all 0001–0010:"
+  echo "Next after PR #2: rebase hardening onto new main, then apply_all 0001–0004 + 0008–0015:"
   echo "  $TRIAL_ROOT/scripts/owner_land_path_c.sh"
   echo "Remember: lemma_closed must stay false; green ≠ discharge."
   exit 0

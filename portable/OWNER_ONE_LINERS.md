@@ -1,17 +1,18 @@
-# Owner one-liners (Path B primary / Path A HOLD / Path C)
+# Owner one-liners (Path A MERGED / Path C primary / Path B optional)
 
 Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **HOLD (Dylan / CoS, 2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) stays **draft / untouched**. Do **not** mark ready; do **not** merge; do **not** retarget. Fail-closed.  
-> Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084  
-> **Path A is inactive.** Preferred unblock is **Path B** (Option-B notice), or grant App write for Path B only. Agents must never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan explicitly lifts HOLD.
+> **Path A MERGED (2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) @ `b040bf0c`. Default tip **ALIGNED**. Scientific effect: **NONE**.
+>
+> Remaining owner work is **Path C** (portable engineering on hardening tip). Path B is optional.
+> Trial cloud tokens still cannot write to `main` (403).
 
-After merging the trial PR that adds `.cursor/environment.json`
+After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
-Cloud Agent on `trial` so the token picks up `main` write scope, then retry
-**Path B** (not Path A while HOLD). Scientific effect: **NONE**. Current runs stay scoped to `trial` only.
+Cloud Agent on `trial` so the token picks up `main` write scope, then run
+**Path C**. Scientific effect: **NONE**. Current runs stay scoped to `trial` only.
 
 **Scientific effect: NONE** for packaging lands below. Do not flip
 `lemma_closed` / prize / premise status.
@@ -34,23 +35,21 @@ Poll until default tip is **ALIGNED** (scientific effect **NONE**):
 These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
 
 ```bash
-# Path B — PRIMARY under HOLD: git am Option-B → push branch → open PR
-./scripts/owner_land_path_b.sh
-# after you merge that PR:
-./scripts/owner_land_path_b.sh --after-merge
-# opt-in only: push Option-B straight onto default main (no PR)
-./scripts/owner_land_path_b.sh --direct-main
-
-# Path A — ON HOLD (Dylan/CoS). Script hard-refuses unless OWNER_FORCE_PATH_A=1 (Dylan only).
-# Do NOT: gh pr ready 2 / gh pr merge 2
-# ./scripts/owner_land_path_a.sh   # exits 1 under HOLD
-
-# Path C — after default tip is ALIGNED (Path B notice or post-HOLD Path A): apply_all 0001–0004 + 0008–0012
+# Path C — PRIMARY remaining (default tip already ALIGNED): apply_all 0001–0004 + 0008–0015
 ./scripts/owner_land_path_c.sh
-# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
+# Optional: rebase hardening onto post-#2 main, then apply:
+# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
+# Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
+
+# Path B — optional (default tip already ALIGNED via Path A)
+./scripts/owner_land_path_b.sh
+./scripts/owner_land_path_b.sh --after-merge
+# ./scripts/owner_land_path_b.sh --direct-main
+
+# Path A — DONE (PR #2 merged @ b040bf0c). No further action.
 ```
 
-## Path B — honest redirect (PRIMARY while Path A on HOLD)
+## Path B — honest redirect (optional; default tip already ALIGNED)
 
 ### B0 — owner script (preferred)
 
@@ -91,19 +90,9 @@ gh pr create --repo d6g8k5htny-coder/main --base main \
 MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 ```
 
-## Path A — ON HOLD (struck as active)
+## Path A — DONE (MERGED)
 
-~~PR #2 ready → merge~~ — **inactive** until Dylan lifts HOLD.
-
-```bash
-# HARD REFUSE under HOLD (script exits 1 unless OWNER_FORCE_PATH_A=1 for Dylan only):
-./scripts/owner_land_path_a.sh
-# Do NOT run while HOLD is active:
-# gh pr ready 2 --repo d6g8k5htny-coder/main
-# gh pr merge 2 --repo d6g8k5htny-coder/main --merge
-```
-
-PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
+[PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c`. Default tip ALIGNED.
 
 ## Path C — engineering patches on working tip
 
@@ -111,11 +100,12 @@ PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
 
 ```bash
 ./scripts/owner_land_path_c.sh
-# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # post-alignment default tip with research tree
+# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # rebase hardening onto post-#2 main first
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `8510874`):
+`portable/patches/BASE_TIP.txt` (currently `8510874`). Post-#2 default `main` is a
+different tree — do not apply Path C there unless it already has PACKET.json:
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -133,9 +123,6 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
 `apply_all` is findable and asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip).
 
-`apply_all.sh` includes **0001–0004 + 0008–0014** (tip-cut 0005/0006/0007 dropped after
-PR #27 merged @ `bf1fde3` in batch 48; 0008 carriers/math_status close-handles in batch 25;
-0009 claims close-handles in batch 43; 0010 recovery close-handles in batch 45;
-0011 math_status_check close-handles in batch 47; 0012 inventable-negative close-handles
-in batch 48; 0013 verify/quarantine close-handles in batch 49; 0014 collision close-handles
-in batch 50).
+`apply_all.sh` includes **0001–0004 + 0008–0015** (tip-cut 0005/0006/0007 dropped after
+PR #27 merged @ `bf1fde3` in batch 48; 0008–0014 as in batches 25–50; **0015** frozen/
+drive-index overlay close-handles in batch 52).

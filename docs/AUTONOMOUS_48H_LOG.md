@@ -12,6 +12,21 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
+### Batch 52 — 2026-09-23 ~21:48 UTC (ALIGNED re-confirm; Path C landing; ship portable 0015)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~5.1h / 48h; not expired. Scientific effect: **NONE**.
+- Rules: never promote research status; `lemma_closed` stays false; Path A done; Path C engineering only.
+- `audit_main_alignment.py` / `watch_main_alignment.py` → **ALIGNED**; tip_sha `b040bf0c…`; scientific_effect NONE; `root_has_AGENTS_md=true`.
+- `probe_main_write.py` → **DENIED** HTTP 403; tip_sha `b040bf0c…`. **Not WRITABLE** → Path C not applied to remote `main`.
+- Tip vs BASE_TIP: live hardening still **`8510874`** (== BASE_TIP; no pack tip refresh). Hardening is **~53 behind / 1 ahead** of post-#2 `main` (rebase still pending for integration).
+- Open main PRs (read-only): #31 register-source preflight OPEN; #28/#30/#21/#12/#8/#7/#3 drafts; #2/#27/#29 MERGED.
+- Critical Path C fix: post-#2 default `main` is ALIGNED but **lacks** `docs/math_status/PACKET.json` — `apply_all` must stay on hardening. Updated `owner_land_path_c.sh` auto → hardening; added `PATH_C_REBASE_ONTO_MAIN=1`; refreshed LAND / OWNER_ONE_LINERS / print_owner_unblock.
+- 0015 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0014, focused+claims+recovery green / 0 RW; **`tests/test_frozen_check.py`** → **9** ResourceWarning; **`tests/test_drive_index_overlay.py`** → **1**.
+- **Shipped portable 0015** (`frozen-drive-index-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0015**. Verify @ `8510874`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery **173 passed** / **0 ResourceWarning**; frozen+drive-index overlay **19 passed** / **0 ResourceWarning**. Residual: `test_receipts` / `test_bridge` bare-open RW (not shipped).
+- Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
+- Draft/ready PR create via `gh` → expect **403**; land on trial `main` via direct push if needed.
+- No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
+
 ### Batch 51 — 2026-09-23 ~21:41 UTC (ALIGNED confirmation — rigorous re-verify)
 
 - Window: start `2026-09-23T16:43:47Z`; elapsed ~5.0h / 48h; not expired. Scientific effect: **NONE**.
