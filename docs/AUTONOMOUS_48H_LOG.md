@@ -441,4 +441,4 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
   - `/opt/cursor/artifacts/OWNER_UNBLOCK_ALIGNED.md` refreshed
 - Standing: never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan lifts HOLD. Never promote research status.
 - Probe + Path B: `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip `f25b04bb…`. **Did not** run Path B (not WRITABLE). **Did not** call `gh pr ready` / `gh pr merge` on PR #2. Path A script refuse gate verified (`exit 1` without `OWNER_FORCE_PATH_A`).
-- Trial pytest: see commit notes. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED; HOLD on #2).
+- Trial pytest: **17 passed**. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED; HOLD on #2).
