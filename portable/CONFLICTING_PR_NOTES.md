@@ -65,6 +65,8 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #24 | **Merged** @ `46af1ca` | inventable STATUS honesty cross-links; BASE_TIP → `46af1ca` (batch 44); no status flip |
 | #26 | **Merged** @ `a8a5dd7` | math_status README inventable probes honesty; BASE_TIP → `a8a5dd7` (batch 46); no status flip |
 | #27 | **Merged** @ `bf1fde3` | probe-test isolation; tip-cut 0005/0006/0007 dropped (batch 48); stack 0001–0004 + 0008–0012 |
+| #29 | **Merged** @ `8510874` | R1 exact-byte custody; BASE_TIP → `8510874` (batch 50); stack 0001–0004 + 0008–0014 |
+| #2 | **Merged** @ `b040bf0c` | Drive→git port onto default `main`; audit **ALIGNED** (batch 50 observe); **not** a lemma discharge |
 
 ## Merged since these notes started
 

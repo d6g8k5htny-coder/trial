@@ -107,7 +107,7 @@ PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
 
 ## Path C — engineering patches on working tip
 
-**After default tip is ALIGNED** (Path B notice preferred under HOLD; or Path A after HOLD lift): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0004 + 0008–0012**. Prefer the owner script (fail-closed without write):
+**After default tip is ALIGNED** (PR #2 merged @ `b040bf0c`; Path B optional): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0004 + 0008–0014**. Prefer the owner script (fail-closed without write):
 
 ```bash
 ./scripts/owner_land_path_c.sh
@@ -115,7 +115,7 @@ PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `bf1fde3`):
+`portable/patches/BASE_TIP.txt` (currently `8510874`):
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -127,14 +127,15 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ bf1fde3
+# expect: problems=0, lemma_closed=false; 90 passed @ 8510874
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
 `apply_all` is findable and asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip).
 
-`apply_all.sh` includes **0001–0004 + 0008–0012** (tip-cut 0005/0006/0007 dropped after
+`apply_all.sh` includes **0001–0004 + 0008–0014** (tip-cut 0005/0006/0007 dropped after
 PR #27 merged @ `bf1fde3` in batch 48; 0008 carriers/math_status close-handles in batch 25;
 0009 claims close-handles in batch 43; 0010 recovery close-handles in batch 45;
 0011 math_status_check close-handles in batch 47; 0012 inventable-negative close-handles
-in batch 48).
+in batch 48; 0013 verify/quarantine close-handles in batch 49; 0014 collision close-handles
+in batch 50).

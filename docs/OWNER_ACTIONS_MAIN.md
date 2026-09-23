@@ -73,6 +73,13 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 **Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
 **Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
+## Stack note (2026-09-23 batch 50 tip #29 + portable 0014 + PR #2 ALIGNED)
+
+- [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c` (owner/external; agents did not lift HOLD). Watch **ALIGNED**. Scientific effect **NONE**.
+- Write still **403** (`probe_main_write.py` DENIED); Path B land skipped (not needed for alignment).
+- Tip **`bf1fde3` → `8510874`** ([PR #29](https://github.com/d6g8k5htny-coder/main/pull/29) R1 exact-byte custody **MERGED**). BASE_TIP refreshed. Shipped portable **0014** (collision_proposal close-file-handles). Tip `apply_all` **0001–0004 + 0008–0014** @ 3.11: problems=0 / lemma_closed=false / focused+claims+recovery **173** / **0 ResourceWarning**; collision **189** / **0 ResourceWarning**.
+- Do **not** enable `research.yml` schedules for R2-06.
+
 ## Stack note (2026-09-23 batch 48 PR #27 merged + drop 0005/0006/0007 + portable 0012)
 
 - **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; Path A inactive. Path B preferred when writable.

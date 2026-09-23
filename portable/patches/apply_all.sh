@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 49: bf1fde3).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 50: 8510874).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -10,7 +10,7 @@
 #
 # Patches are checked/applied in order. After main PR #27 merged (batch 48),
 # tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
-# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0013.
+# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0014.
 # --check uses a disposable worktree.
 set -euo pipefail
 
@@ -45,6 +45,7 @@ PATCHES=(
   "$ROOT/0011-math-status-check-close-file-handles.patch"
   "$ROOT/0012-inventable-negative-tests-close-file-handles.patch"
   "$ROOT/0013-verify-quarantine-close-file-handles.patch"
+  "$ROOT/0014-collision-close-file-handles.patch"
 )
 
 apply_series() {
@@ -79,3 +80,4 @@ echo "  python3 tools/math_status_check.py"
 echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py tests/test_recovery.py"
 echo "  # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery passed; free of ResourceWarning"
 echo "  # math_status_check 0 RW after 0011; inventable negatives 0 after 0012; verify_manifests/quarantine 0 after 0013"
+echo "  # collision_proposal_check + tests/test_collision_proposal.py 0 RW after 0014"

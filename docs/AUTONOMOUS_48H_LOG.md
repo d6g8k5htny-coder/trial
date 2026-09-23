@@ -12,6 +12,22 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
+### Batch 50 — 2026-09-23 ~21:35 UTC (Path B probe; tip #29; ship portable 0014)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~4.9h / 48h; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (already at `0462e92` / Batch 49 land note).
+- Rules: main PR #2 was **HOLD** at batch start; Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- Mid-batch observation: [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c` (`mergedAt=2026-09-23T21:27:14Z`) by owner/external — this agent did **not** ready/merge #2.
+- `audit_main_alignment.py` / `watch_main_alignment.py` → **ALIGNED**; tip_sha `b040bf0c…`; scientific_effect NONE.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `b040bf0c…`. **Not WRITABLE** → Path B land **skipped** (alignment already achieved via Path A merge).
+- Tip vs BASE_TIP: live hardening **`bf1fde3` → `8510874`** ([PR #29](https://github.com/d6g8k5htny-coder/main/pull/29) R1 exact-byte custody merged) → BASE_TIP refreshed.
+- Open main PRs (read-only): #2 MERGED; #28/#30 docs drafts; #29 MERGED (no portable drop); #27 already merged.
+- 0014 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0013, focused+claims+recovery green / 0 ResourceWarning; **`tools/collision_proposal_check.py`** → **2** `ResourceWarning: unclosed file`; **`tests/test_collision_proposal.py`** → **51**.
+- **Shipped portable 0014** (`collision-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0014**. Verify @ `8510874`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery **173 passed** / **0 ResourceWarning**; collision checker **0 ResourceWarning**; collision tests **189 passed** / **0 ResourceWarning**.
+- Packed portable tarball → `docs/trial-portable-main-fixes.tgz` + `/opt/cursor/artifacts/trial-portable-main-fixes.tgz`.
+- Draft/ready PR create via `gh` → expect **403**; land on trial `main` via direct push when needed.
+- No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
+
 ### Batch 49 — 2026-09-23 ~21:22 UTC (Path B probe; ship portable 0013)
 
 - Window: start `2026-09-23T16:43:47Z`; elapsed ~4.6h / 48h; not expired. Scientific effect: **NONE**.

@@ -4,15 +4,14 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## Path A — ON HOLD (Dylan / CoS, 2026-09-23)
+> ## Path A — MERGED (observed 2026-09-23 ~21:27 UTC)
 >
-> **HOLD — stay draft / untouched.** Do **not** mark ready; do **not** merge; do **not** retarget. Fail-closed.  
-> Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084  
-> Preferred unblock is now **Path B** (Option-B notice), or grant App write for Path B only.  
-> `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only).  
-> Agents must never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan explicitly lifts HOLD.
+> [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c`. Default tip
+> now presents the q0 program (`audit_main_alignment` → **ALIGNED**). Agents did **not**
+> lift HOLD or merge #2 in this batch — owner/external land. Path B is no longer required
+> for default-tip alignment. Scientific effect remains **NONE** (no lemma/prize discharge).
 
-## Path B — honest redirect (PRIMARY while Path A on HOLD)
+## Path B — honest redirect (optional; default tip already ALIGNED)
 
 ```bash
 # Preferred owner script:
@@ -24,32 +23,32 @@ git checkout -b cursor/default-branch-notice
 git am /path/to/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch
 python3 /path/to/trial/scripts/audit_local_tree.py .   # expect ALIGNED (would-align)
 git push -u origin HEAD
-gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE. Path A (PR #2) on HOLD per Dylan/CoS."
+gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE."
 ```
 
-Batch **22** local dry-run on default tip `f25b04bb`: `git am` OK; local auditor
-**ALIGNED** (all four q0/notice markers; complexity markers cleared; `body`
-quarantined). Path B content is sufficient — landing blocked only by write/token.
+Batch **22** local dry-run on then-default tip `f25b04bb`: `git am` OK; local auditor
+**ALIGNED**. Default tip is now ALIGNED via Path A merge; Path B content remains useful
+as a redirect notice if the default face ever drifts.
 
-## Path A — land the real tree (INACTIVE — HOLD)
+## Path A — land the real tree (DONE — MERGED)
 
-~~Preferred~~ **On HOLD.** PR #2 is the Drive→git port onto default `main` (historically MERGEABLE/CLEAN) but must stay **draft / untouched** until Dylan lifts HOLD.
+PR #2 Drive→git port onto default `main` **merged** @ `b040bf0c` (2026-09-23).
 
 ```bash
-# Do NOT run while HOLD is active:
+# Historical (already done):
 # gh pr ready 2 --repo d6g8k5htny-coder/main
 # gh pr merge 2 --repo d6g8k5htny-coder/main --merge
-# ./scripts/owner_land_path_a.sh   # exits 1 unless OWNER_FORCE_PATH_A=1 (Dylan only)
+# ./scripts/owner_land_path_a.sh
 ```
 
 Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
-**After Path A (PR #2) merges:** rebase hardening onto the new `main`, then
-apply portable `apply_all` **0001–0004 + 0008–0012**. Do not land Path C onto the abandoned
-pre-q0 default tip.
+**After Path A (PR #2) merged:** rebase hardening onto the new `main` if needed, then
+apply portable `apply_all` **0001–0004 + 0008–0014**. Default tip is ALIGNED; Path C
+is still the engineering stack on the hardening tip (diverged ahead of #2 merge).
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `bf1fde3` — patches apply cleanly), or post-#2 `main` once the port is present:
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `8510874` — patches apply cleanly), or post-#2 `main` once rebased:
 
 ```bash
 # Preferred (owner write creds):
@@ -59,9 +58,9 @@ Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `bf1fde3` — patche
 # Manual:
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git fetch origin chatgpt/drive-github-hardening-20260919
-# After #2 merges first: git rebase origin/main   (on hardening) — then continue
+# Optional: git rebase origin/main   (on hardening) — then continue
 git checkout -b cursor/portable-engineering-patches origin/chatgpt/drive-github-hardening-20260919
-/path/to/trial/portable/patches/apply_all.sh   # 0001–0004 + 0008–0012
+/path/to/trial/portable/patches/apply_all.sh   # 0001–0004 + 0008–0014
 python3 tools/math_status_check.py             # assert lemma_closed=false
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
@@ -97,13 +96,14 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #24 | inventable STATUS honesty cross-links | **Merged** @ `46af1ca`; BASE_TIP refreshed (batch 44); no status flip |
 | #26 | math_status README inventable probes honesty pointer | **Merged** @ `a8a5dd7`; BASE_TIP refreshed (batch 46); no status flip |
 | #27 | Isolate probe tests from tracked receipts | **Merged** @ `bf1fde3` (batch 48); tip-cut **0005/0006/0007 dropped** from `apply_all`; stack **0001–0004 + 0008–0012** |
+| #29 | R1 exact-byte custody | **Merged** @ `8510874` (batch 50); BASE_TIP refreshed; stack **0001–0004 + 0008–0014** |
 | #28 | STATUS_JETMOD inventable merge+promote REFUSED honesty | OPEN draft UNSTABLE |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
 
 Point new cloud agents at `d6g8k5htny-coder/main` with write access and base
-`chatgpt/drive-github-hardening-20260919` (or default `main` after Path B / post-HOLD Path A).
+`chatgpt/drive-github-hardening-20260919` (or default `main` — now ALIGNED via PR #2).
 
 
 ## Automation blocked for this agent
@@ -118,13 +118,15 @@ Attempts from the `trial` cloud token (2026-09-23):
 | `gh pr merge 2` / GraphQL mergePullRequest | 403 — Resource not accessible by integration |
 | trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
-Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOLD) or Path C after alignment. Path A is on HOLD.
+Owner (or a write-enabled `main` agent) must run Path C for portable engineering patches.
+Path A is **MERGED** (default tip ALIGNED). Path B optional.
 
 
 ## Patch regeneration watch
 
-Working tip is **`bf1fde3`** (PR #27 merged; batch 48). Open drafts **#28**/**#21** (plus older stack).
-Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**; probe DENIED / MISALIGNED → Path B skipped; dropped tip-cut 0005/0006/0007; inventable-negative ResourceWarnings → shipped **0012**; tip `apply_all` 0001–0004+0008–0012 @ 3.11 → **173** / **0 ResourceWarning**.
+Working tip is **`8510874`** (PR #29 merged; batch 50). Default `main` **ALIGNED** via PR #2 @ `b040bf0c`.
+Batch **50** (Path B probe + tip #29 + portable **0014**): tip **`bf1fde3` → `8510874`**; probe DENIED → Path B skipped; watch **ALIGNED** (PR #2 merged externally); collision ResourceWarnings → shipped **0014**; tip `apply_all` 0001–0004+0008–0014 @ 3.11 → **173** / **0 ResourceWarning**; collision **189** / **0 RW**.
+Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**; probe DENIED / then-MISALIGNED → Path B skipped; dropped tip-cut 0005/0006/0007; inventable-negative ResourceWarnings → shipped **0012**; tip `apply_all` 0001–0004+0008–0012 @ 3.11 → **173** / **0 ResourceWarning**.
 Batch **47** (Path B probe + portable **0011**): tip still **`a8a5dd7`**; probe DENIED / MISALIGNED → Path B skipped; PR #27 still OPEN → did **not** drop 0005/0006; `math_status_check` ResourceWarnings → shipped **0011**; tip `apply_all` 0001–0011 @ 3.11 → **173** / **0 ResourceWarning** (+ checker **0** ResourceWarning).
 Batch **45** (Path B probe + portable **0010**): tip then **`46af1ca`**; probe DENIED / MISALIGNED → Path B skipped; PR #27 still OPEN → did **not** drop 0005/0006; recovery ResourceWarnings → shipped **0010**; tip `apply_all` 0001–0010 @ 3.11 → **173** / **0 ResourceWarning**.
 Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`**; BASE_TIP refreshed; tip `apply_all` 0001–0009 @ 3.11 → **137** / **0 ResourceWarning**. PR #27 head **`8d023a9` → `63b519f`**: tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → focused **90** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD.

@@ -1,13 +1,14 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `bf1fde30c7fc04c9919bf9172ee8a13e234c7664`
+`chatgpt/drive-github-hardening-20260919` @ `85108745ed4444adb838c53ae79cd603ed90f6fc`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
 PACKET base_commit/as_of tip-align #23, standing owner authorization #25,
 inventable STATUS honesty cross-links #24, math_status README inventable
-probes honesty pointer #26, and probe-test isolation #27).
+probes honesty pointer #26, probe-test isolation #27, and register R1
+exact-byte custody #29).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -18,7 +19,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0013
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0014
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -31,6 +32,7 @@ git apply /path/to/trial/portable/patches/0010-recovery-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0011-math-status-check-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0012-inventable-negative-tests-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0013-verify-quarantine-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0014-collision-close-file-handles.patch
 ```
 
 Verify:
@@ -41,11 +43,12 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py \
   tests/test_recovery.py
-# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ bf1fde3
+# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ 8510874
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0012
 # math_status_check itself emits 0 ResourceWarning after 0011
 # verify_manifests + quarantine_check emit 0 ResourceWarning after 0013
+# collision_proposal_check + tests/test_collision_proposal.py emit 0 ResourceWarning after 0014
 ```
 
 ## Historical / optional
@@ -168,4 +171,14 @@ emitted **828** `ResourceWarning: unclosed file` lines from bare
 `for line in open(...)` over manifest `.jsonl` / `.sha256` files. Use
 `with open(...) as handle`. Output parity preserved (`problems=0`). No scientific
 change; `lemma_closed` stays false.
+
+## 0014 — collision_proposal_check + tests close file handles
+
+Same class as 0008–0013 for `tools/collision_proposal_check.py` and
+`tests/test_collision_proposal.py`. On tip `8510874` @ CPython 3.11 (also on
+prior `bf1fde3`), the checker emitted **2** `ResourceWarning: unclosed file`
+from bare `open(...).read()` on the default proposal path, and the test module
+emitted **51** from helpers / digest asserts / sandbox overrides. Use
+`with open(...) as handle`. Output parity preserved (`failures=0` /
+**189 passed**). No scientific change; `lemma_closed` stays false.
 

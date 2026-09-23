@@ -114,6 +114,7 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "apply_series" in apply_all
     assert "0008-carriers-math-status-close-file-handles.patch" in apply_all
     assert "0012-inventable-negative-tests-close-file-handles.patch" in apply_all
+    assert "0014-collision-close-file-handles.patch" in apply_all
     # Post-#27: tip-cut 0005/0006/0007 dropped from apply_all (kept on disk for history)
     assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all
     assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all
@@ -133,7 +134,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "bf1fde3" in base_tip
+    assert "8510874" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -179,6 +180,13 @@ def test_portable_patches_exist() -> None:
     assert "test_inventable_jetmod_probes.py" in p12
     assert "test_inventable_jetmod_instrumentation_status.py" in p12
     assert "0012-inventable-negative-tests-close-file-handles.patch" in apply_all_txt
+    p14 = (ROOT / "portable" / "patches" / "0014-collision-close-file-handles.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "collision_proposal_check.py" in p14
+    assert "test_collision_proposal.py" in p14
+    assert "0014-collision-close-file-handles.patch" in apply_all_txt
+    assert "0013-verify-quarantine-close-file-handles.patch" in apply_all_txt
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
@@ -318,8 +326,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0008" in patches_readme
     assert "0009" in patches_readme
     assert "0012" in patches_readme
+    assert "0014" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "bf1fde3" in patches_readme or "PR #27" in patches_readme
+    assert "8510874" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(
@@ -369,7 +378,7 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "owner_land_path_a.sh" in unblock
     assert "owner_land_path_b.sh" in unblock
     assert "wait_until_aligned.sh" in unblock
-    # --after-merge must fail closed while default tip is MISALIGNED
+    # --after-merge: fail-closed while MISALIGNED; succeed once default tip is ALIGNED (PR #2).
     result = subprocess.run(
         ["bash", str(path_b), "--after-merge"],
         capture_output=True,
@@ -378,8 +387,21 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
         check=False,
         cwd=str(ROOT),
     )
-    assert result.returncode != 0
-    assert "ERROR" in (result.stderr + result.stdout)
+    watch = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "watch_main_alignment.py")],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    watch_state = __import__("json").loads(watch.stdout).get("state") if watch.returncode in (0, 1) else None
+    if watch_state == "ALIGNED":
+        assert result.returncode == 0
+        assert "ALIGNED" in (result.stderr + result.stdout)
+    else:
+        assert result.returncode != 0
+        assert "ERROR" in (result.stderr + result.stdout)
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "owner_land_path_a.sh" in pack
     assert "owner_land_path_b.sh" in pack
