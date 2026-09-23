@@ -15,20 +15,21 @@ Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer
 
 ## Batches
 
-### Batch 57 — 2026-09-23 ~22:46 UTC (MISALIGNED; Path B DENIED; Path C IDLE; Path B automation; LAND #36 CLEAN)
+### Batch 57 — 2026-09-23 ~22:50 UTC (MISALIGNED; tip `4fc1d7c`→`c2b0620`; Option-B RECUT; Path B DENIED; no 0017)
 
-- Window: start `2026-09-23T16:43:47Z`; elapsed ~6.0h / 48h. Scientific effect: **NONE**.
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~6.1h / 48h. Scientific effect: **NONE**.
 - **OWNER (Dylan Roy):** NO restrictions; everything auto-approved; agents decide; HOLD **VOID**; Path A OR Path B OK; prefer Path B Option-B. Still never promote research status; `lemma_closed` stays false.
-- **Full `audit_main_alignment.py` / `watch_main_alignment.py`:** exit 1 / **MISALIGNED**; tip_sha `4fc1d7c1648086ac1589104232f5be6b4fc00286`; complexity markers present; q0/notice empty; `root_has_AGENTS_md=false`; scientific_effect NONE.
-- `probe_main_write.py` → **DENIED** HTTP 403. `probe_main_write_vectors.py` → **DENIED** (no Path-B-capable writable vector). Did **not** create issues (issue **#37** `b55 probe` already exists).
-- Option-B vs tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED** (would-align). Path B **not** applied (write 403).
-- Tip refresh: hardening still **`9a56c30`** (== BASE_TIP); no pack tip move. `apply_all --check` OK; apply OK; math_status problems=0 / lemma_closed=false.
-- Residual RW hunt @ CPython **3.11** after apply_all: focused+claims+recovery **173**/0; frozen/dio/receipts/bridge/collision **0 RW**; RN **438**/0; drive/manifest suites **0 RW**; tools `--help` **0** → **IDLE** / **no 0017**.
-- Tip residuals (not portable): `mirror_quotes` 3 + bridge AGENTS.md drift → open [PR #35](https://github.com/d6g8k5htny-coder/main/pull/35); host `python` PATH flakes in ci_pins/workflow_integrity (env, not portable).
-- **Path B automation (no 0017):** shipped `scripts/path_b_dry_run.py` (certainty JSON); `owner_land_path_b.sh --dry-run`; `scripts/refresh_restore_plan.py` (restore plan currency). Stale Path A “merge PR #2” copy in owner PR body + Actions workflow updated (HOLD VOID / prefer B / revert32).
-- **LAND stack hygiene:** #34 MERGEABLE/UNSTABLE; #35 MERGEABLE/UNSTABLE (title now AGENTS.md + mirror quote); **#36 MERGEABLE/CLEAN** onto `claude/drive-audit-github-migration-rrglpp` (was CONFLICTING/DIRTY in batch 56). Restore plan: `portable/RESTORE_PLAN_57.json`.
+- **Start-of-batch tip** `4fc1d7c` (post-#32 complexity face). **Mid/end tip move (external):** Dylan commit `c2b0620` — honest program-map replace. Still **MISALIGNED** (`complexity-physics-framework` in withdrawal prose; no q0/SIDE24 notice; root still README+body).
+- **Full `audit_main_alignment.py` / `watch_main_alignment.py`:** exit 1 / **MISALIGNED**; tip_sha `c2b0620289fde84d721670cf14037fd5673654b7`; scientific_effect NONE.
+- `probe_main_write.py` / `probe_main_write_vectors.py` → **DENIED**. Did **not** create issues (issue **#37** `b55 probe` already exists).
+- Option-B: old patch **failed to apply** on `c2b0620`. **Recut** Option-B patch; `path_b_dry_run` / `owner_land_path_b --dry-run` → **would-align=true**. Tightened already-Option-B heuristic (honest map no longer false-skips `git am`). Path B **not** applied (write 403).
+- Tip refresh: hardening still **`9a56c30`** (== BASE_TIP). `apply_all --check` OK; math_status problems=0 / lemma_closed=false.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused **173**/0; receipts/bridge/collision **0 RW**; RN **438**/0; drive suites **0 RW**; tools `--help` **0** → **IDLE** / **no 0017**.
+- Tip residuals (not portable): `mirror_quotes` 3 + bridge AGENTS.md → [PR #35](https://github.com/d6g8k5htny-coder/main/pull/35).
+- **Path B automation:** `scripts/path_b_dry_run.py`; `owner_land_path_b.sh --dry-run`; `scripts/refresh_restore_plan.py`; Option-B recut vs `c2b0620`.
+- **LAND stack:** #34 MERGEABLE/UNSTABLE; #35 MERGEABLE/UNSTABLE; **#36 MERGEABLE/CLEAN** onto migration base (was CONFLICTING). Restore plan: `portable/RESTORE_PLAN_57.json`.
 - Trial `pytest -q` → **17 passed**. Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `fde9066..95358c3`.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push.
 - No research status promotion. `lemma_closed` untouched. `goal_complete=false` (not ALIGNED).
 
 ### Batch 56 — 2026-09-23 ~22:31 UTC (MISALIGNED; Path B DENIED; Path C IDLE; LAND stack +#34/#35/#36)

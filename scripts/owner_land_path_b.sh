@@ -192,10 +192,19 @@ else
   git checkout -B "$BRANCH"
 fi
 
-# Idempotent: skip am if already post-Option-B / q0 face.
-if grep -qE 'q0|option-b|drive-github-hardening|quarantine/pre-q0' README.md 2>/dev/null \
-   && ! grep -q 'Multiscale Retrodiction Complexity' README.md 2>/dev/null; then
-  echo "README already looks post-Option-B / q0; skipping git am."
+# Idempotent: skip am only when tip already carries the Option-B *notice*
+# (not Dylan's honest program-map, which still trips complexity markers).
+already_option_b() {
+  local readme="${1:-README.md}"
+  [[ -f "$readme" ]] || return 1
+  grep -q 'q0 Research Program' "$readme" 2>/dev/null \
+    && grep -qE 'SIDE24|default branch notice' "$readme" 2>/dev/null \
+    && ! grep -q 'complexity-physics-framework' "$readme" 2>/dev/null \
+    && ! grep -q 'Multiscale Retrodiction Complexity' "$readme" 2>/dev/null
+}
+
+if already_option_b README.md; then
+  echo "README already looks post-Option-B / q0 notice; skipping git am."
 else
   echo "--- git am Option-B format-patch ---"
   if ! git am "$PATCH"; then

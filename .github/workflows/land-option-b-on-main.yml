@@ -97,10 +97,12 @@ jobs:
           git config user.name "trial-land-option-b"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "${BRANCH}"
-          # Idempotent: if default tip already carries Option-B markers, skip am.
-          if grep -qE 'q0|option-b|drive-github-hardening|quarantine/pre-q0' README.md 2>/dev/null \
+          # Idempotent: skip am only for the Option-B *notice* (not honest program-map).
+          if grep -q 'q0 Research Program' README.md 2>/dev/null \
+             && grep -qE 'SIDE24|default branch notice' README.md 2>/dev/null \
+             && ! grep -q 'complexity-physics-framework' README.md 2>/dev/null \
              && ! grep -q 'Multiscale Retrodiction Complexity' README.md 2>/dev/null; then
-            echo "README already looks post-Option-B / q0; skipping git am (still push/PR if requested)."
+            echo "README already looks post-Option-B / q0 notice; skipping git am (still push/PR if requested)."
           else
             if ! git am "$PATCH"; then
               echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."

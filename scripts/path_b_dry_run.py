@@ -131,13 +131,15 @@ def main() -> int:
 
         readme = clone_dir / "README.md"
         readme_text = readme.read_text(encoding="utf-8", errors="replace") if readme.is_file() else ""
-        already = bool(
-            __import__("re").search(
-                r"q0|option-b|drive-github-hardening|quarantine/pre-q0",
-                readme_text,
-                __import__("re").I,
-            )
-        ) and ("Multiscale Retrodiction Complexity" not in readme_text)
+        # Require the Option-B *notice* itself — not Dylan's honest program-map
+        # (which still contains complexity-physics-framework in withdrawal prose
+        # and previously false-skipped git am via a loose drive-github-hardening match).
+        already = (
+            "q0 Research Program" in readme_text
+            and ("SIDE24" in readme_text or "default branch notice" in readme_text)
+            and "complexity-physics-framework" not in readme_text
+            and "Multiscale Retrodiction Complexity" not in readme_text
+        )
 
         if already:
             report["git_am_skipped_already_post_option_b"] = True

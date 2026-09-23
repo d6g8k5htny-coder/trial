@@ -1,10 +1,10 @@
 {
   "batch": "57",
-  "generated_at_utc": "2026-09-23T22:45:25Z",
+  "generated_at_utc": "2026-09-23T22:49:56Z",
   "owner_mandate": "Dylan Roy \u2014 NO restrictions; everything auto-approved; agents decide; HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false",
   "scientific_effect": "NONE",
   "aligned": false,
-  "default_tip_sha": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+  "default_tip_sha": "c2b0620289fde84d721670cf14037fd5673654b7",
   "root_has_AGENTS_md": false,
   "root_has_README_md": true,
   "root_has_body": true,
@@ -23,7 +23,9 @@
     "multi_vector_probe": "scripts/probe_main_write_vectors.py",
     "path_b_ready": false,
     "applied_this_session": false,
-    "reason_not_applied": "all Path-B-capable write vectors HTTP 403/404 or tokens unset"
+    "reason_not_applied": "all Path-B-capable write vectors HTTP 403/404 or tokens unset",
+    "option_b_recut": true,
+    "option_b_recut_against": "c2b0620289fde84d721670cf14037fd5673654b7"
   },
   "path_a": {
     "hold": "VOID",
@@ -43,16 +45,13 @@
     "residual_rw_hunt": 0,
     "new_0017": false,
     "idle": true,
-    "idle_reason": "focused+claims+recovery 173/0 RW; frozen/dio/receipts/bridge/collision 0 RW; RN 438/0; drive/manifest suites 0 RW; tools --help 0 RW after apply_all; no portable defect to cut",
-    "tip_residuals_not_portable": [
-      "mirror_quotes: 3 unmatched 'independence credit' quotations — covered by open main PR #35",
-      "test_bridge AGENTS.md expectation drift after OP-AUTONOMY v2.0 — covered by open main PR #35",
-      "test_ci_pins / workflow_integrity shell('python ...') fails when `python` not on PATH (host env; not portable)"
-    ],
+    "idle_reason": "focused+RN+drive+tools --help \u2192 0 RW; Option-B recut + dry-run certainty shipped instead of 0017",
     "path_b_automation_shipped": [
       "scripts/path_b_dry_run.py",
       "scripts/refresh_restore_plan.py",
-      "owner_land_path_b.sh --dry-run"
+      "owner_land_path_b.sh --dry-run",
+      "Option-B patch recut vs c2b0620",
+      "tightened already-Option-B heuristic (no false skip on honest map)"
     ]
   },
   "write_vectors": {
@@ -70,13 +69,58 @@
       "push": false,
       "triage": false
     },
-    "summary": "W1-W5 all DENIED 403/404; issues:create not probed (Batch 55 litter #37)"
-  },
-  "pr_stack": {
-    "34": "OPEN draft MERGEABLE/UNSTABLE on hardening",
-    "35": "OPEN MERGEABLE/UNSTABLE on hardening (AGENTS.md + mirror quote)",
-    "36": "OPEN draft MERGEABLE/CLEAN on claude/drive-audit-github-migration-rrglpp (was CONFLICTING in batch 56)",
-    "37_issue": "OPEN accidental b55 probe — do not spam more issues"
+    "vectors": {
+      "W1_git_refs": {
+        "create_http_status": 403,
+        "create_msg": "Resource not accessible by integration",
+        "state": "DENIED"
+      },
+      "W2_contents_put": {
+        "branch": "cursor-wvec-contents-1790203791",
+        "http_status": 403,
+        "msg": "Resource not accessible by integration",
+        "state": "DENIED"
+      },
+      "W3a_dispatch_trial": {
+        "exit": 1,
+        "http_status": 403,
+        "msg": "could not create workflow dispatch event: HTTP 403: Resource not accessible by integration (https://api.github.com/repos/d6g8k5htny-coder/trial/actions/workflows/365349244/dispatches) ",
+        "state": "DENIED"
+      },
+      "W3b_dispatch_main": {
+        "exit": 1,
+        "http_status": 404,
+        "msg": "HTTP 404: workflow land-option-b-on-main.yml not found on the default branch (https://api.github.com/repos/d6g8k5htny-coder/main/actions/workflows/land-option-b-on-main.yml) ",
+        "state": "DENIED"
+      },
+      "W3c_api_dispatch_trial": {
+        "http_status": 403,
+        "msg": "Resource not accessible by integration",
+        "state": "DENIED"
+      },
+      "W4a_fork": {
+        "http_status": 403,
+        "msg": "Resource not accessible by integration",
+        "state": "DENIED"
+      },
+      "W4b_graphql_createCommitOnBranch": {
+        "http_status": 403,
+        "msg": "{\"data\": {\"createCommitOnBranch\": null}, \"errors\": [{\"extensions\": {\"saml_failure\": false}, \"locations\": [{\"column\": 49, \"line\": 1}], \"message\": \"Resource not accessible by integration\", \"path\": [\"createCommitOnBranch\"], \"type\": \"FORBIDDEN\"",
+        "state": "DENIED"
+      },
+      "W4c_pulls_create": {
+        "http_status": 403,
+        "msg": "Resource not accessible by integration",
+        "state": "DENIED"
+      },
+      "W5_path_a_revert32": {
+        "http_status": 403,
+        "msg": "Not Found",
+        "path_b_capable": false,
+        "state": "DENIED"
+      }
+    },
+    "probe_exit": 1
   },
   "owner_next": [
     "./scripts/owner_land_path_b.sh --dry-run   # certainty JSON",
@@ -84,9 +128,19 @@
     "merge Option-B notice PR (or --direct-main)",
     "./scripts/owner_land_path_b.sh --after-merge",
     "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
-    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)",
-    "Optional hardening: merge PR #35 (mirror + AGENTS.md); review #34/#36 (now CLEAN)",
-    "Close/delete accidental probe issue #37 (title: b55 probe) if still open"
+    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)"
   ],
-  "refresh_tool": "scripts/refresh_restore_plan.py"
+  "refresh_tool": "scripts/refresh_restore_plan.py",
+  "cause": {
+    "tip_move": "4fc1d7c \u2192 c2b0620",
+    "commit_message": "docs: replace outdated 2025 main landing with honest program map",
+    "author_note": "Dylan honest program-map; still MISALIGNED (complexity-physics-framework in withdrawal prose; no q0/SIDE24 notice)",
+    "prior_cause": "CoS PR #32 revert of PR #2 @ 4fc1d7c"
+  },
+  "pr_stack": {
+    "34": "OPEN draft MERGEABLE/UNSTABLE on hardening",
+    "35": "OPEN MERGEABLE/UNSTABLE on hardening (AGENTS.md + mirror quote)",
+    "36": "OPEN draft MERGEABLE/CLEAN on claude/drive-audit-github-migration-rrglpp (was CONFLICTING in batch 56)",
+    "37_issue": "OPEN accidental b55 probe \u2014 do not spam more issues"
+  }
 }

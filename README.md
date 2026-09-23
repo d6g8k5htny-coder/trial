@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 57: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN` (Batch 57 Path C **IDLE** — no new 0017). Path B dry-run certainty: `./scripts/owner_land_path_b.sh --dry-run` / `scripts/path_b_dry_run.py`.
+Default tip is **MISALIGNED** @ `c2b0620` (Batch 57; Dylan honest program-map after #32). **HOLD on PR #2 is VOID**. Path A OR Path B OK; prefer **Path B** — Option-B patch **recut** vs `c2b0620` (`./scripts/owner_land_path_b.sh --dry-run`). Path C portable patches remain on hardening BASE_TIP `9a56c30` (Batch 57 **IDLE** — no new 0017).
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
