@@ -76,10 +76,14 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "status promotion" in text
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text()
     assert "portable-patches-on-main" in ci
+    assert "apply_all.sh" in ci
+    assert "apply_all.sh --check" in ci or "apply_all.sh --check" in ci.replace("\n", " ")
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
     assert "MAIN_PUSH_TOKEN" in land_wf
     assert "option-b" in land_wf
-    assert "0004-git-fixture-timeout-60s.patch" in ci
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
+    assert "--check" in apply_all
+    assert "CHECK_ONLY" in apply_all
 
 
 def test_portable_patches_exist() -> None:

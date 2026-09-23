@@ -130,5 +130,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - New open draft **PR #21** (attestations / H3 salvage, based on #3): patches 0001–0004 `--check` OK; focused 81 passed (no inventable tests on that base); lemma_closed=false.
 - **PR #16** went ready then **merged** (docs-only; hardening tip still `1ea0ae8`).
 - Fixed `portable/patches/apply_all.sh` so `--check` is a real dry-run (previously ignored the flag and applied).
+- CI `portable-patches-on-main` now invokes `apply_all.sh --check` then apply.
 - Refreshed COMPATIBILITY.md / LAND.md / OWNER_ACTIONS for #16/#21.
 - Trial pytest: 14 passed. land-option-b workflow_dispatch still 403.
+- Opened trial [PR #4](https://github.com/d6g8k5htny-coder/trial/pull/4).
