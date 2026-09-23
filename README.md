@@ -44,6 +44,7 @@ Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48
 ```bash
 python3 -m pytest -q
 python3 scripts/audit_main_alignment.py
+./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
 ```
 
 ## Non-claims

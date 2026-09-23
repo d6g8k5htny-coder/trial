@@ -155,3 +155,13 @@ def test_verify_after_merge_script() -> None:
     text = path.read_text(encoding="utf-8")
     assert "watch_main_alignment.py" in text
     assert "ALIGNED" in text
+
+
+def test_pack_portable_script() -> None:
+    import subprocess, tempfile, os
+    script = ROOT / "scripts" / "pack_portable.sh"
+    assert script.is_file()
+    with tempfile.TemporaryDirectory() as td:
+        out = os.path.join(td, "pack.tgz")
+        subprocess.run([str(script), out], check=True, timeout=60)
+        assert os.path.getsize(out) > 1000

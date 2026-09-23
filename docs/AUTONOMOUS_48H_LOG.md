@@ -94,3 +94,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Write access still 403; watcher MISALIGNED; trial CI portable job green.
 - PR #2 merge preview `2a960674…` already shows q0 README + AGENTS.md (Path A confirmed viable via GitHub merge).
 - Added `VERIFY_AFTER_MERGE.sh`. New open drafts #18–#20 touch PACKET.json — noted patch 0002 regen watch.
+
+### Batch 10 — 2026-09-23 17:18 UTC
+
+- Write access still 403; MISALIGNED; CI green.
+- Patches 0001–0004 `--check` clean on PR #17/#18/#20 heads.
+- Added `scripts/pack_portable.sh`; artifact tarball at `/opt/cursor/artifacts/trial-portable-main-fixes.tgz` for owner download.

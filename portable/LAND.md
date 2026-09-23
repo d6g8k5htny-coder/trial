@@ -88,6 +88,7 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 ## Patch regeneration watch
 
 Open drafts **#18 / #19 / #20** touch `docs/math_status/PACKET.json` (and related
-status tooling). After they merge into hardening, re-cut portable patch **0002**
-(and re-run `apply_all.sh` checks) so PACKET digests stay honest. Patches
-0001/0003/0004 were still `--check` clean on `1ea0ae8` as of batch 9.
+status tooling). As of batch 10, patches **0001–0004 are still `--check` clean**
+on PR #17/#18/#20 heads as well as hardening `1ea0ae8`. After those PRs merge,
+re-run `apply_all.sh` + focused tests; regenerate **0002** only if PACKET digests
+drift under `math_status_check`.
