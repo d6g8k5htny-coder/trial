@@ -29,7 +29,7 @@ when default tip is MISALIGNED. Batch 59: default tip **ALIGNED** after owner PR
 - Tip vs BASE_TIP: hardening **`9a56c30` → `036a6bc`** ([PR #35](https://github.com/d6g8k5htny-coder/main/pull/35) MERGED); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; math_status problems=0 / lemma_closed=false.
 - Residual RW hunt @ CPython **3.11** after apply_all: focused+receipts/bridge/collision/frozen **922**/0; registers/mirror_quotes **0 RW**; tools `--help` **0** → **IDLE** / **no 0017**.
 - Trial improvements: BASE_TIP currency; `restore_main_face` `--batch` + ALIGNED short-circuit + write preflight; `path_b_dry_run` ALREADY_ALIGNED; `refresh_restore_plan` richer Path B/C fields; `RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
-- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `54ff8e8..26d1324`.
 - No research status promotion. `lemma_closed` untouched. `goal_complete=true` (ALIGNED verified).
 
 ### Batch 58 — 2026-09-23 ~22:55 UTC (MISALIGNED @ `c2b0620`; Path B DENIED; stronger Option-B + one-command restore)
