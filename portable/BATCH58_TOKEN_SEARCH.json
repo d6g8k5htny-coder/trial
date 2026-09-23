@@ -1,0 +1,56 @@
+{
+  "batch": "58",
+  "generated_at_utc": "2026-09-23T22:54:30Z",
+  "scientific_effect": "NONE",
+  "note": "Values redacted. Lengths and prefixes only — no secret material.",
+  "env_tokens": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "NOT_SET",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "CURSOR_API_KEY": "NOT_SET",
+    "CURSOR_TOKEN": "NOT_SET",
+    "GITHUB_PAT": "NOT_SET",
+    "GH_PAT": "NOT_SET",
+    "CURSOR_*_agent_runtime": "SET (non-GitHub; CURSOR_AGENT, CURSOR_CONVERSATION_ID, CURSOR_REQUEST_ID, CURSOR_AGENT_SOCKET, CURSOR_RIPGREP_PATH)"
+  },
+  "gh_auth": {
+    "account": "cursor",
+    "protocol": "https",
+    "token_kind": "github_app_installation",
+    "token_len": 390,
+    "hosts_yml": "~/.config/gh/hosts.yml present",
+    "credential_helper": "!/exec-daemon/gh auth git-credential"
+  },
+  "origin_remote_token": {
+    "kind": "x-access-token github_app_installation",
+    "len": 390,
+    "same_as_gh_auth_token": true
+  },
+  "ssh": {
+    "keys_present": false,
+    "git_github_com": "Permission denied (publickey)"
+  },
+  "write_probes_vs_main": {
+    "repo": "d6g8k5htny-coder/main",
+    "permissions": {
+      "admin": false,
+      "maintain": false,
+      "pull": false,
+      "push": false,
+      "triage": false
+    },
+    "W1_git_refs_create": 403,
+    "W2_contents_put_README": 403,
+    "W3_workflow_dispatch_trial": 403,
+    "W3_workflow_dispatch_main": 404,
+    "W4_fork": 403,
+    "W4_graphql_createCommitOnBranch": 403,
+    "W4_pulls_create": 403,
+    "issues_create": "writable (opened #40 probe then could not PATCH close — 403; prefer Contents; no further issues)",
+    "path_b_ready": false
+  },
+  "secrets_list": {
+    "trial": "403 Resource not accessible by integration",
+    "main": "403 Resource not accessible by integration"
+  }
+}

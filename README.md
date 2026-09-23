@@ -28,11 +28,14 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** @ `c2b0620` (Batch 57; Dylan honest program-map after #32). **HOLD on PR #2 is VOID**. Path A OR Path B OK; prefer **Path B** — Option-B patch **recut** vs `c2b0620` (`./scripts/owner_land_path_b.sh --dry-run`). Path C portable patches remain on hardening BASE_TIP `9a56c30` (Batch 57 **IDLE** — no new 0017).
+Default tip is **MISALIGNED** @ `c2b0620` (Batch 58; Dylan honest program-map after #32). **HOLD on PR #2 is VOID**. Path A OR Path B OK; prefer **Path B** — stronger Option-B (README+`AGENTS.md`) tip-current vs `c2b0620` (`./scripts/restore_main_face.sh --dry-run`). Path C portable patches remain on hardening BASE_TIP `9a56c30` (**IDLE** — no new 0017). Trial write to `main` still **403**.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
-- [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
+- [`scripts/restore_main_face.sh`](scripts/restore_main_face.sh) — **one-command** Path B restore (dry-run → branch+PR)
+- [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `AGENTS.md` + `APPLY.md`
+- [`portable/BATCH58_TOKEN_SEARCH.json`](portable/BATCH58_TOKEN_SEARCH.json) — redacted token/write probe log
+- [`portable/RESTORE_PLAN_58.json`](portable/RESTORE_PLAN_58.json) — live restore plan currency
 - [`portable/pr2-landing/`](portable/pr2-landing/) — checklist + `VERIFY_AFTER_MERGE.sh` for MERGEABLE PR #2
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
 - [`portable/OWNER_ONE_LINERS.md`](portable/OWNER_ONE_LINERS.md) — copy-paste Path A (`gh pr ready/merge 2`), Path B (Actions + token), Path C (`apply_all`)

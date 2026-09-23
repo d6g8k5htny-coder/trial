@@ -27,7 +27,8 @@ Until then:
 |---------|------|
 | Working branch | https://github.com/d6g8k5htny-coder/main/tree/chatgpt/drive-github-hardening-20260919 |
 | Drive→git port (history) | https://github.com/d6g8k5htny-coder/main/pull/2 |
-| Agent rules (on working branch) | `AGENTS.md`, `CLAUDE.md` |
+| Agent rules (this tip) | `AGENTS.md` (notice-only) |
+| Agent rules (working branch) | `AGENTS.md`, `CLAUDE.md` |
 | Open obligations | `docs/OPEN_PROBLEMS.md` on the working branch |
 
 ## Non-claims
@@ -36,5 +37,5 @@ This notice does not land the research tree, enable scheduled workflows, or
 move `lemma_closed`, prize status, or premise discharge.
 
 Prepared as a portable Option-B fix from the `trial` sandbox audit
-(Batch 57, 2026-09-23). Recut against tip after Dylan’s honest program-map
-replace (`c2b0620`). See `APPLY.md` in this directory.
+(Batch 58, 2026-09-23). Tip-current vs Dylan’s honest program-map
+(`c2b0620`); stronger pack adds root `AGENTS.md`. See `APPLY.md`.

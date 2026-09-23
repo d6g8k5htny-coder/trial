@@ -13,6 +13,8 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/RESTORE_PLAN_55.json \
   portable/RESTORE_PLAN_56.json \
   portable/RESTORE_PLAN_57.json \
+  portable/RESTORE_PLAN_58.json \
+  portable/BATCH58_TOKEN_SEARCH.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -25,6 +27,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/path_b_dry_run.py \
   scripts/refresh_restore_plan.py \
   scripts/print_owner_unblock.sh \
+  scripts/restore_main_face.sh \
   scripts/owner_land_path_a.sh \
   scripts/owner_land_path_b.sh \
   scripts/owner_land_path_c.sh \

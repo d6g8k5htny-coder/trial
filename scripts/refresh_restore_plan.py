@@ -195,13 +195,16 @@ def main() -> int:
             "probe_exit": vec_ec,
         },
         "owner_next": [
+            "./scripts/restore_main_face.sh --dry-run   # one-command certainty",
+            "./scripts/restore_main_face.sh             # dry-run then branch+PR",
             "./scripts/owner_land_path_b.sh --dry-run   # certainty JSON",
             "./scripts/owner_land_path_b.sh",
-            "merge Option-B notice PR (or --direct-main)",
+            "merge Option-B notice PR (or --direct-main / restore_main_face.sh --direct-main)",
             "./scripts/owner_land_path_b.sh --after-merge",
             "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
             "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)",
         ],
+        "one_command_restore": "scripts/restore_main_face.sh",
         "refresh_tool": "scripts/refresh_restore_plan.py",
     }
 

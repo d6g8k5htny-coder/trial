@@ -49,12 +49,19 @@ def test_portable_default_branch_pack() -> None:
     apply = (ROOT / "portable" / "main-default-branch" / "APPLY.md").read_text(
         encoding="utf-8"
     )
+    agents = (ROOT / "portable" / "main-default-branch" / "AGENTS.md").read_text(
+        encoding="utf-8"
+    )
     assert "chatgpt/drive-github-hardening-20260919" in readme
     assert "PR #2" in readme
     assert "abandoned" in readme.lower()
     assert "Apply" in apply
     assert "does not" in readme.lower()
     assert "premise discharge" in readme.lower()
+    assert "AGENTS.md" in apply
+    assert "restore_main_face.sh" in apply
+    assert "lemma_closed" in agents
+    assert "SIDE24" in agents or "q0" in agents.lower()
     # Must satisfy audit_main_alignment Q0_MARKERS and clear COMPLEXITY_MARKERS.
     for marker in (
         "q0 Research Program",
@@ -69,6 +76,7 @@ def test_portable_default_branch_pack() -> None:
         "δC = 0",
     ):
         assert bad not in readme
+        assert bad not in agents
 
 
 def test_audit_script_reports_misalignment_or_ok() -> None:
@@ -285,7 +293,7 @@ def test_pack_portable_script() -> None:
 
 
 def test_audit_local_tree_option_b_would_align() -> None:
-    """Option-B portable README alone must flip the local auditor to ALIGNED."""
+    """Option-B portable README (+ AGENTS) must flip the local auditor to ALIGNED."""
     import json
     import shutil
     import subprocess
@@ -298,6 +306,10 @@ def test_audit_local_tree_option_b_would_align() -> None:
         shutil.copy(
             ROOT / "portable" / "main-default-branch" / "README.md",
             root / "README.md",
+        )
+        shutil.copy(
+            ROOT / "portable" / "main-default-branch" / "AGENTS.md",
+            root / "AGENTS.md",
         )
         # Simulate post-am quarantine (body moved off root).
         (root / "quarantine").mkdir()
@@ -313,6 +325,7 @@ def test_audit_local_tree_option_b_would_align() -> None:
         assert data["state"] == "ALIGNED"
         assert data["scientific_effect"] == "NONE"
         assert data["complexity_markers_present"] == []
+        assert data["root_has_AGENTS_md"] is True
         assert "q0 Research Program" in data["q0_or_notice_markers_present"]
 
 
@@ -326,11 +339,25 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "Scientific effect: NONE" in one
     assert "owner_land_path_a.sh" in one
     assert "owner_land_path_b.sh" in one
+    assert "restore_main_face.sh" in one
     assert "wait_until_aligned.sh" in one
     assert "--direct-main" in one
     assert "--after-merge" in one
     assert "probe_main_write_vectors.py" in one or (ROOT / "scripts" / "probe_main_write_vectors.py").is_file()
     assert "HOLD" in one and "VOID" in one
+    assert (ROOT / "portable" / "RESTORE_PLAN_58.json").is_file()
+    assert (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").is_file()
+    token_log = __import__("json").loads(
+        (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+    )
+    assert token_log["batch"] == "58"
+    assert token_log["scientific_effect"] == "NONE"
+    # Ensure no raw secret material leaked into the token search log
+    blob = (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+    assert "oauth_token" not in blob
+    assert "ghs_" not in blob
+    assert "gho_" not in blob
+    assert "github_pat_" not in blob
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
     assert "0006" in patches_readme
     assert "0007" in patches_readme
@@ -380,16 +407,42 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
     assert "RESTORE_PLAN_55.json" in pack
+    assert "RESTORE_PLAN_58.json" in pack
+    assert "restore_main_face.sh" in pack
+    assert "BATCH58_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
+    assert "restore_main_face.sh" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 58" in log
     assert "Batch 55" in log
     assert "HOLD" in log and "VOID" in log
     assert "Path A or B OK" in log or "Path A OR Path B OK" in log
+    assert "restore_main_face" in log or "one-command" in log.lower()
+    restore_one = ROOT / "scripts" / "restore_main_face.sh"
+    assert restore_one.is_file()
+    assert restore_one.stat().st_mode & 0o111
+    rtext = restore_one.read_text(encoding="utf-8")
+    assert "owner_land_path_b.sh" in rtext
+    assert "scientific_effect=NONE" in rtext
+    assert "--dry-run" in rtext
+    # dry-run path must would-align without pushing
+    dry = subprocess.run(
+        ["bash", str(restore_one), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    assert "would-align" in (dry.stdout + dry.stderr).lower() or "WOULD_ALIGN" in (
+        dry.stdout + dry.stderr
+    )
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
@@ -451,3 +504,13 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "owner_land_path_a.sh" in pack
     assert "owner_land_path_b.sh" in pack
+    assert "restore_main_face.sh" in pack
+    assert (ROOT / "scripts" / "restore_main_face.sh").is_file()
+    assert (ROOT / "scripts" / "restore_main_face.sh").stat().st_mode & 0o111
+    assert "restore_main_face.sh" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "restore_main_face.sh" in (ROOT / "README.md").read_text(encoding="utf-8")
+    # Option-B patch must add AGENTS.md (Batch 58 stronger pack)
+    ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
+    assert "AGENTS.md" in ob
+    assert "create mode 100644 AGENTS.md" in ob or "AGENTS.md" in ob
+    assert (ROOT / "portable" / "main-default-branch" / "AGENTS.md").is_file()
