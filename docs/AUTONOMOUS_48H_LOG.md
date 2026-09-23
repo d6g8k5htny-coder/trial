@@ -311,3 +311,24 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack: #19 **MERGED** @ `ae7daf7`; #22 new draft UNSTABLE; #21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
 - Trial intent tests: **17 passed**. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 27 — 2026-09-23 19:07 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.35h** / remaining **~45.65h** (window 172800s). Not expired.
+- Synced continue branch with `origin/main` (fast-forward onto PR **#9** merge `0a61186`).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Tokens: `MAIN_PUSH_TOKEN` **absent** (name-only env check); write still blocked.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B/C not landable from this token.
+  - `./scripts/owner_land_path_a.sh` → **403** GraphQL `markPullRequestReadyForReview`
+  - Path B create-ref → **403**
+  - `./scripts/owner_land_path_c.sh` → fail-closed on write probe (**exit 1**) before clone/apply
+- Tip vs BASE_TIP: still **`ae7daf7`** (ls-remote match; no pack tip refresh).
+- Portable `apply_all` 0001–0008 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; focused slice **0 ResourceWarning**. **No 0009** (no new tip-level defect).
+- **Path C landing after Path A (this batch):**
+  - `portable/pr2-landing/VERIFY_AFTER_MERGE.sh` — after ALIGNED, when `apply_all` findable via `TRIAL_ROOT`/trial checkout, applies 0001–0008, runs math_status + focused pytest, asserts `lemma_closed=false` (`SKIP_PATH_C=1` to skip)
+  - `CHECKLIST.md` / `LAND.md` Path C — after PR #2 merges: rebase hardening onto new main, then `apply_all` 0001–0008
+  - **Added** `scripts/owner_land_path_c.sh` — write probe → checkout hardening tip (or post-#2 main) → apply_all → assert lemma_closed=false → push branch + open PR; fail-closed without write
+  - Wired into `portable/OWNER_ONE_LINERS.md`, `scripts/print_owner_unblock.sh`, `scripts/pack_portable.sh`, `portable/LAND.md`
+- Stack: #2 draft **MERGEABLE/CLEAN**; #19 **MERGED** @ `ae7daf7`; #21–#23 UNSTABLE drafts; #3 CONFLICTING.
+- Trial pytest: **17 passed**; portable tarball refreshed. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).

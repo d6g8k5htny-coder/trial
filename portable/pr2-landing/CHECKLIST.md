@@ -27,22 +27,26 @@ Observed 2026-09-23 (this agent, read-only):
 
 1. **Review PR #2** as the public face of the repository (registers, tools, docs).
 2. Mark ready → merge into `main` when satisfied (or temporarily switch GitHub default branch to the migration tip — same visitor outcome).
-3. Then land PR #3 / hardening onto the new `main` (or retarget after #2 merges).
-4. Then consider inventable #15 (fail-closed REFUSED probes; does **not** discharge OBL-H5-JETMOD).
-5. Apply portable engineering patches from `../patches/` on the integration tip if not already present:
-   - `0001-carriers-verify-ignore-bytecode-caches.patch`
-   - `0002-math-console-path-honesty.patch` (includes PACKET.json digest refresh)
-   - or run `portable/patches/apply_all.sh` on a writable checkout
+3. **Path C after Path A:** rebase hardening (`chatgpt/drive-github-hardening-20260919`) onto the new `main`, then apply portable `apply_all` **0001–0008** (engineering hygiene only). Prefer `../../scripts/owner_land_path_c.sh` with write creds, or `../patches/apply_all.sh` on a writable checkout.
+4. Then land remaining stack PRs onto the rebased hardening / new `main` as appropriate.
+5. Inventable #15 is already on hardening (fail-closed REFUSED probes; does **not** discharge OBL-H5-JETMOD).
 
 ## Verification after #2 lands
 
 ```bash
+# From trial: remote ALIGNED + optional Path C apply/assert
+./portable/pr2-landing/VERIFY_AFTER_MERGE.sh
+# alignment only: SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh
+
+# On the research tip checkout:
 python3 tools/math_status_check.py   # expect lemma_closed=false, OPEN_HOLD
 python3 -m pytest -q
 python3 docs/math_status/math_console.py --json
 ```
 
 Expect obligations still OPEN. A green run is not premise discharge.
+`VERIFY_AFTER_MERGE.sh` asserts `lemma_closed=false` after applying 0001–0008 when
+`apply_all.sh` is findable via `TRIAL_ROOT` / trial checkout.
 
 ## If you are not ready to merge #2
 
