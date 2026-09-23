@@ -52,8 +52,9 @@ def test_portable_default_branch_pack() -> None:
     assert "chatgpt/drive-github-hardening-20260919" in readme
     assert "PR #2" in readme
     assert "abandoned" in readme.lower()
-    assert "APPLY" in apply or "Apply" in apply
-    assert "lemma_closed" not in readme
+    assert "Apply" in apply
+    assert "does not" in readme.lower()
+    assert "premise discharge" in readme.lower()
 
 
 def test_audit_script_reports_misalignment_or_ok() -> None:
