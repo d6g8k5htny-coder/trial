@@ -483,6 +483,17 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack change: new [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) (probe isolation) OPEN UNSTABLE; `apply_all --check` fails on that head at 0005 — noted regen watch for 0005/0006 **after merge**. LAND / OWNER_ACTIONS / COMPATIBILITY refreshed.
 - Trial pytest: **17 passed**. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 42 — 2026-09-23 20:20 UTC (one-shot probe; IDLE)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**. One-shot — no timer re-arm.
+- Rules: main PR #2 **HOLD** (draft/untouched; never Path A); Path B only if WRITABLE; no research status promotion.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped** (did not run `owner_land_path_b.sh`).
+- `watch_main_alignment.py` → **MISALIGNED** (default tip still pre-q0 face); scientific_effect NONE.
+- `gh pr view 27 --repo d6g8k5htny-coder/main` → `state=OPEN`, `mergedAt=null`. **Else IDLE:** did **not** drop tip-cut `0005`/`0006` (drop only after #27 merges).
+- Tip vs BASE_TIP: live hardening **`b02efe2`** == BASE_TIP (ls-remote match; no pack tip refresh).
+- Main [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2): left **draft / untouched** (HOLD stands).
+- Trial pytest: **17 passed**. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE). **IDLE.**
+
 ### Batch 41 — 2026-09-23 ~20:15 UTC (PR #27 0005 analysis; Path B probe)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
