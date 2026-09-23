@@ -517,3 +517,15 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Broader 0009 hunt @ tip `b02efe2` / CPython **3.11.16**: workflow_integrity **110**, run_checks **45**, registers **53**, ci_pins **25** all green; **claims** → **19** `ResourceWarning: unclosed file` from bare `json.load(open(...))` / `open(...).read()` on register JSON + mirror bytes.
 - **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
+### Batch 44 — 2026-09-23 ~20:34 UTC (PR #27 sync; tip #24; Path B probe)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (`9564051`, includes batch 43 via trial PR #20).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `gh pr view 27`: OPEN / not draft / MERGEABLE / UNSTABLE; headRefOid **`63b519f`** (was `8d023a9`; merge of hardening post-#24 into probe-isolation).
+- Main PR #27 still **OPEN** (`mergedAt=null`) → did **not** drop tip-cut 0005/0006.
+- Tip drift: BASE_TIP `b02efe2` → live **`46af1ca`** ([PR #24](https://github.com/d6g8k5htny-coder/main/pull/24) inventable STATUS honesty cross-links merged). Pack refreshed; tip `apply_all` 0001–0009 @ 3.11 → problems=0 / lemma_closed=false / focused+claims **137** / **0 ResourceWarning**.
+- PR #27 head shallow-clone @ `63b519f`: tip-cut fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → problems=0 / lemma_closed=false / focused **90** / probes clean / residual **6** ResourceWarning. COMPATIBILITY + BASE_TIP updated.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).

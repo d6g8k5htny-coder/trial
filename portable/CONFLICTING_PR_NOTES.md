@@ -62,6 +62,8 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #22 | **Merged** @ `a89f9a7` | docs STATUS honesty cross-links; BASE_TIP → `a89f9a7` (batch 31); no status flip |
 | #23 | **Merged** @ `3f85e93` | PACKET base_commit/as_of tip-align; BASE_TIP → `3f85e93` (batch 35); no status flip |
 | #25 | **Merged** @ `b02efe2` | standing owner authorization; BASE_TIP → `b02efe2` (batch 38); no status flip |
+| #24 | **Merged** @ `46af1ca` | inventable STATUS honesty cross-links; BASE_TIP → `46af1ca` (batch 44); no status flip |
+| #27 | OPEN UNSTABLE (`63b519f`) | probe-test isolation; tip-cut 0005/0006 obsolete after merge |
 
 ## Merged since these notes started
 
@@ -76,6 +78,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #22 | docs STATUS honesty cross-links → hardening @ `a89f9a7` | Docs-only; BASE_TIP refresh; **not** a discharge |
 | #23 | PACKET base_commit/as_of tip-align → hardening @ `3f85e93` | Docs-only; BASE_TIP refresh; **not** a discharge |
 | #25 | standing owner authorization → hardening @ `b02efe2` | Autonomy auth only; BASE_TIP refresh; **not** a discharge |
+| #24 | inventable STATUS honesty cross-links → hardening @ `46af1ca` | Docs-only; BASE_TIP refresh; **not** a discharge |
 
 ## Non-claims
 
