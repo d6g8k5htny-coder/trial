@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 59:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). `aligned_end=true`. Scientific effect: **NONE**.
+> **Batch 60:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Window open — keep iterating. Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C IDLE @ BASE_TIP `036a6bc`.
-> Trial write still 403. See `RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP `b3da668` (post-#34); `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). No 0017.
+> Trial write still 403. See `RESTORE_PLAN_60.json` + `BATCH60_TOKEN_SEARCH.json`.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
@@ -36,9 +36,9 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 
 ```bash
 # Path C — engineering on hardening tip: apply_all 0001–0004 + 0008–0016
+./scripts/owner_land_path_c.sh --dry-run   # certainty (works without write)
 ./scripts/owner_land_path_c.sh
-# Optional: rebase hardening onto post-#2 main, then apply:
-# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
+# Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (CONFLICTS) / PATH_C_BASE=main (no PACKET)
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 
 # Path B — PREFERRED one-command ALIGNED restore
@@ -118,16 +118,17 @@ PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh
 
 ## Path C — engineering patches on working tip
 
-Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0016** on hardening. Prefer the owner script (fail-closed without write):
+Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0016** on hardening. Prefer the owner script (fail-closed without write). Post-#41 default tip is ALIGNED but not Path-C shaped:
 
 ```bash
+./scripts/owner_land_path_c.sh --dry-run
 ./scripts/owner_land_path_c.sh
-# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # rebase hardening onto post-#2 main first
+# Avoid: PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # CONFLICTS after PR #41
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `9a56c30`). Default `main` after #32 is the
-pre-q0 face — do not apply Path C there (no PACKET.json):
+`portable/patches/BASE_TIP.txt` (currently `b3da668`). Default `main` after #41 is
+ALIGNED research landing (no PACKET.json) — do not apply Path C there:
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -139,7 +140,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ 9a56c30
+# expect: problems=0, lemma_closed=false; 90 passed @ b3da668
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
@@ -147,4 +148,5 @@ Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
 
 `apply_all.sh` includes **0001–0004 + 0008–0016** (tip-cut 0005/0006/0007 dropped after
 PR #27 merged @ `bf1fde3` in batch 48; 0008–0015 as in batches 25–52; **0016** receipts/
-bridge close-handles in batch 53). Batch 54: no new 0017 (residual RW hunt 0).
+bridge close-handles in batch 53). Batch 60: tip `b3da668`; no new 0017 (residual RW hunt 0);
+Path C dry-run certainty shipped.

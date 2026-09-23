@@ -1,11 +1,12 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~23:10 UTC (batch 59: ALIGNED @ 1c6e74b via PR #41; Path B N/A; Path C IDLE; BASE_TIP 036a6bc).
+Checked 2026-09-23 ~23:25 UTC (batch 60: ALIGNED @ 1c6e74b via PR #41; Path C dry-run + BASE_TIP b3da668; no 0017).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#35) | `036a6bc` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 59** |
+| hardening (post-#34) | `b3da668` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 60** |
+| hardening (post-#35) | `036a6bc` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 59) |
 | hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 54–58) |
 | hardening (post-#31) | `580864c` | **0001–0004 + 0008–0016** | `--check` OK | (BASE_TIP batch 53b) |
 | hardening (post-#30) | `fbb4360` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
@@ -66,6 +67,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **60** (ALIGNED @ 1c6e74b; Path C post-ALIGNED landing): hardening **`036a6bc` → `b3da668`** ([PR #34](https://github.com/d6g8k5htny-coder/main/pull/34) inventable probe index tip provenance); BASE_TIP refreshed; `apply_all --check`/apply OK; residual RW hunt **922**/0 → **no 0017**. Shipped `scripts/path_c_dry_run.py` + `owner_land_path_c.sh --dry-run`: default tip ALIGNED but not Path-C shaped; rebase onto main **CONFLICTING**; keep Path C on hardening. Restore plan: `portable/RESTORE_PLAN_60.json`.
 - Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): default tip **`c2b0620` → `1c6e74b`** **ALIGNED**; Option-B classic patch AM_FAILED on renewed tip; `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; hardening **`9a56c30` → `036a6bc`** ([PR #35](https://github.com/d6g8k5htny-coder/main/pull/35)); BASE_TIP refreshed; residual RW hunt **0** → **no 0017** / **IDLE**. Shipped restore ALIGNED short-circuit + write preflight + `--batch`. Restore plan: `portable/RESTORE_PLAN_59.json`.
 - Batch **58** (MISALIGNED; stronger Option-B + restore_main_face): default tip still **`c2b0620`** **MISALIGNED**; Option-B stronger `git am` OK / would-align; **all Path-B-capable write vectors DENIED**; hardening tip then `9a56c30` (live later moved to `036a6bc`); residual RW **0** → **no 0017**. Restore plan: `portable/RESTORE_PLAN_58.json`.
 - Batch **57** (MISALIGNED; tip move + Option-B RECUT; Path B DENIED; Path C IDLE): default tip **`4fc1d7c` → `c2b0620`** (Dylan honest program-map) still **MISALIGNED**; Option-B **recut** `git am` OK / would-align (`path_b_dry_run` + `owner_land_path_b --dry-run`); **all Path-B-capable write vectors DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017** / **IDLE**. Shipped Path B dry-run certainty + `refresh_restore_plan.py` + tightened already-Option-B heuristic. Open stack #34/#35/#36 (#36 MERGEABLE/CLEAN). Restore plan: `portable/RESTORE_PLAN_57.json`.

@@ -119,6 +119,13 @@ def main() -> int:
     if not args.skip_dry_run:
         dry_ec, dry, _ = _run_json([sys.executable, str(scripts / "path_b_dry_run.py")])
 
+    path_c_dry: dict = {}
+    path_c_dry_ec = None
+    if not args.skip_dry_run:
+        path_c_dry_ec, path_c_dry, _ = _run_json(
+            [sys.executable, str(scripts / "path_c_dry_run.py")]
+        )
+
     base_tip_file = trial / "portable/patches/BASE_TIP.txt"
     base_tip_line = base_tip_file.read_text(encoding="utf-8").strip() if base_tip_file.is_file() else ""
     base_parts = base_tip_line.split()
@@ -206,6 +213,24 @@ def main() -> int:
                 else "BASE_TIP refreshed to live hardening; residual RW hunt may still be IDLE"
             ),
             "new_0017": False,
+            "dry_run_certainty": "scripts/path_c_dry_run.py",
+            "owner_script": "scripts/owner_land_path_c.sh",
+            "dry_run_state": path_c_dry.get("state"),
+            "apply_ready": path_c_dry.get("apply_ready"),
+            "dry_run_exit": path_c_dry_ec,
+            "default_path_c_shape": path_c_dry.get("default_path_c_shape"),
+            "hardening_path_c_shape": path_c_dry.get("hardening_path_c_shape"),
+            "rebase_onto_main_state": path_c_dry.get("rebase_onto_main_state"),
+            "rebase_onto_main_advised": path_c_dry.get("rebase_onto_main_advised"),
+            "recommended_base": path_c_dry.get("recommended_base") or HARDENING,
+            "do_not_set_path_c_base_main": path_c_dry.get("do_not_set_path_c_base_main"),
+            "post_aligned_keep_hardening": bool(
+                path_c_dry.get("state") == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
+                or (
+                    audit_ec == 0
+                    and path_c_dry.get("default_path_c_shape", {}).get("accepts") is False
+                )
+            ),
         },
         "write_vectors": {
             "state": vectors.get("state"),
@@ -216,18 +241,18 @@ def main() -> int:
             "probe_exit": vec_ec,
         },
         "owner_next": [
-            "./scripts/restore_main_face.sh --dry-run   # one-command certainty",
-            "./scripts/restore_main_face.sh             # dry-run → write preflight → branch+PR",
+            "./scripts/owner_land_path_c.sh --dry-run   # Path C certainty (post-ALIGNED keep hardening)",
+            "./scripts/owner_land_path_c.sh             # land patches on hardening (needs write)",
+            "./scripts/path_c_dry_run.py",
+            "./scripts/restore_main_face.sh --dry-run   # Path B certainty / ALIGNED short-circuit",
+            "./scripts/restore_main_face.sh",
             f"./scripts/restore_main_face.sh --plan --batch {args.batch}",
-            "./scripts/owner_land_path_b.sh --dry-run   # certainty JSON",
-            "./scripts/owner_land_path_b.sh",
-            "merge Option-B notice PR (or --direct-main / restore_main_face.sh --direct-main)",
-            "./scripts/owner_land_path_b.sh --after-merge",
-            "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
-            "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)",
+            "./scripts/owner_land_path_b.sh --dry-run",
+            "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh if tip regresses",
         ],
         "one_command_restore": "scripts/restore_main_face.sh",
         "refresh_tool": "scripts/refresh_restore_plan.py",
+        "path_c_dry_run": "scripts/path_c_dry_run.py",
     }
 
     out.parent.mkdir(parents=True, exist_ok=True)

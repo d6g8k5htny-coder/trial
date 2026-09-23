@@ -4,15 +4,16 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 59) — ALIGNED @ `1c6e74b` (owner PR #41); Path B N/A; Path C IDLE
+> ## STATUS (Batch 60) — ALIGNED @ `1c6e74b` (owner PR #41); Path C dry-run ready @ `b3da668`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
-> Root: README + `AGENTS.md` + `.github`; `body` under history/. `aligned_end=true`.
+> Root: README + `AGENTS.md` + `.github`; `body` under history/. Window still open → keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `036a6bc` (post-#35); RW **0** → **IDLE**.
-> See `portable/RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `b3da668` (post-#34); RW **0** → **no 0017**;
+> `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_60.json` + `BATCH60_TOKEN_SEARCH.json`.
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
 
@@ -59,24 +60,29 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
 **Engineering on hardening (independent of default-tip alignment):** apply portable
-`apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
-Path C remains the engineering stack on the hardening tip.
+`apply_all` **0001–0004 + 0008–0016**. Default tip is **ALIGNED** @ `1c6e74b` (PR #41)
+but **not** Path-C shaped (no `PACKET.json`; `tools/` are landing stubs). Keep Path C
+on hardening. Certainty without write:
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `036a6bc` after #35 bridge/mirror fix — `apply_all --check` OK).
-**Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. Keep Path C on hardening unless that tip already has the tooling.
+```bash
+./scripts/owner_land_path_c.sh --dry-run   # path_c_dry_run.py JSON
+# expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
+```
+
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `b3da668` after #34 tip provenance — `apply_all --check` OK).
+**Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
+`PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` usually **CONFLICTS** after #41.
 
 
 ```bash
 # Preferred (owner write creds):
+./scripts/owner_land_path_c.sh --dry-run
 ./scripts/owner_land_path_c.sh
-# Optional post-#2: rebase hardening onto new main, then apply:
-# PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
-# PATH_C_BASE=main only if that tip already has hardening tooling + PACKET.json
+# Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (conflicts) / PATH_C_BASE=main (no PACKET)
 
 # Manual:
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git fetch origin chatgpt/drive-github-hardening-20260919
-# Optional: git rebase origin/main   (on hardening) — then continue
 git checkout -b cursor/portable-engineering-patches origin/chatgpt/drive-github-hardening-20260919
 /path/to/trial/portable/patches/apply_all.sh   # 0001–0004 + 0008–0016
 python3 tools/math_status_check.py             # assert lemma_closed=false

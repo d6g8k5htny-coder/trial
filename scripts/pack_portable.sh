@@ -15,8 +15,10 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/RESTORE_PLAN_57.json \
   portable/RESTORE_PLAN_58.json \
   portable/RESTORE_PLAN_59.json \
+  portable/RESTORE_PLAN_60.json \
   portable/BATCH58_TOKEN_SEARCH.json \
   portable/BATCH59_TOKEN_SEARCH.json \
+  portable/BATCH60_TOKEN_SEARCH.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -27,6 +29,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/probe_main_write.py \
   scripts/probe_main_write_vectors.py \
   scripts/path_b_dry_run.py \
+  scripts/path_c_dry_run.py \
   scripts/refresh_restore_plan.py \
   scripts/print_owner_unblock.sh \
   scripts/restore_main_face.sh \

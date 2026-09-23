@@ -2,6 +2,18 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `b3da668` (batch 60)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK on tip `b3da668` (PR #34; BASE_TIP refreshed from `036a6bc`) |
+| `math_status_check` | problems=0 / lemma_closed=false |
+| focused+receipts/bridge/collision/frozen | **922 passed** / **0 ResourceWarning** |
+| new portable **0017** | **none** |
+| Path C dry-run | `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; default tip not Path-C shaped; rebase **CONFLICTING** |
+
+Default `main` @ `1c6e74b` **ALIGNED** (PR #41); Path C stays on hardening.
+
 ## After portable patches 0001–0004 + 0008–0016 on `9a56c30` (batch 57)
 
 | Check | Result |

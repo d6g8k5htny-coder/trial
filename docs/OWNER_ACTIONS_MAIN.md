@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 59 — ALIGNED (`aligned_end=true`); tip `1c6e74b` (owner PR #41); Path B N/A; HOLD VOID; Path C IDLE:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C IDLE @ `036a6bc`. Write **403** (token search: `MAIN_PUSH_TOKEN`/`GH_TOKEN`/`GITHUB_TOKEN` unset; integration 403; no SSH). See `portable/RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
+> **Batch 60 — ALIGNED (`1c6e74b` via owner PR #41); Path C dry-run @ `b3da668`; HOLD VOID; window open:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C: `./scripts/owner_land_path_c.sh --dry-run` → keep hardening BASE_TIP `b3da668` (rebase CONFLICTING; no 0017). Write **403**. See `portable/RESTORE_PLAN_60.json` + `BATCH60_TOKEN_SEARCH.json`.
 
 ### 1. Keep default tip ALIGNED
 

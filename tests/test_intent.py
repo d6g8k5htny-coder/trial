@@ -144,7 +144,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "036a6bc" in base_tip
+    assert "b3da668" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -347,15 +347,17 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "HOLD" in one and "VOID" in one
     assert (ROOT / "portable" / "RESTORE_PLAN_58.json").is_file()
     assert (ROOT / "portable" / "RESTORE_PLAN_59.json").is_file()
+    assert (ROOT / "portable" / "RESTORE_PLAN_60.json").is_file()
     assert (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").is_file()
     assert (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").is_file()
+    assert (ROOT / "portable" / "BATCH60_TOKEN_SEARCH.json").is_file()
     token_log = __import__("json").loads(
-        (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+        (ROOT / "portable" / "BATCH60_TOKEN_SEARCH.json").read_text(encoding="utf-8")
     )
-    assert token_log["batch"] == "59"
+    assert token_log["batch"] == "60"
     assert token_log["scientific_effect"] == "NONE"
     # Ensure no raw secret material leaked into the token search log
-    blob = (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+    blob = (ROOT / "portable" / "BATCH60_TOKEN_SEARCH.json").read_text(encoding="utf-8")
     assert "oauth_token" not in blob
     assert "ghs_" not in blob
     assert "gho_" not in blob
@@ -370,7 +372,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "036a6bc" in patches_readme or "PR #35" in patches_readme
+    assert "b3da668" in patches_readme or "PR #34" in patches_readme
     assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
@@ -412,23 +414,33 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert restore59["path_b"].get("already_aligned_skip") is True or restore59["path_b"].get(
         "dry_run_state"
     ) == "ALREADY_ALIGNED"
+    restore60 = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_60.json").read_text())
+    assert restore60["scientific_effect"] == "NONE"
+    assert restore60["aligned"] is True
+    assert restore60["path_c"].get("dry_run_certainty") == "scripts/path_c_dry_run.py"
+    assert restore60["path_c"].get("post_aligned_keep_hardening") is True
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
+    assert "path_c_dry_run.py" in pack
     assert "RESTORE_PLAN_55.json" in pack
     assert "RESTORE_PLAN_58.json" in pack
     assert "RESTORE_PLAN_59.json" in pack
+    assert "RESTORE_PLAN_60.json" in pack
     assert "restore_main_face.sh" in pack
     assert "BATCH58_TOKEN_SEARCH.json" in pack
     assert "BATCH59_TOKEN_SEARCH.json" in pack
+    assert "BATCH60_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
     assert "restore_main_face.sh" in unblock
+    assert "path_c_dry_run.py" in unblock or "owner_land_path_c.sh --dry-run" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
-    assert "Batch 59" in unblock or "1c6e74b" in unblock
+    assert "Batch 60" in unblock or "b3da668" in unblock or "1c6e74b" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 60" in log
     assert "Batch 59" in log
     assert "Batch 58" in log
     assert "Batch 55" in log
@@ -436,6 +448,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "Path A or B OK" in log or "Path A OR Path B OK" in log
     assert "restore_main_face" in log or "one-command" in log.lower()
     assert "ALIGNED" in log and "1c6e74b" in log
+    assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
     assert restore_one.stat().st_mode & 0o111
@@ -473,6 +486,50 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     )
     assert land.returncode == 0, land.stderr + land.stdout
     assert "already ALIGNED" in (land.stdout + land.stderr)
+
+
+def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
+    """Path C certainty: apply_ready on hardening; default tip ALIGNED but not Path-C shaped."""
+    path_c = ROOT / "scripts" / "path_c_dry_run.py"
+    owner_c = ROOT / "scripts" / "owner_land_path_c.sh"
+    assert path_c.is_file()
+    assert owner_c.is_file()
+    assert owner_c.stat().st_mode & 0o111
+    assert "--dry-run" in owner_c.read_text(encoding="utf-8")
+    assert "path_c_dry_run" in owner_c.read_text(encoding="utf-8")
+    assert "PR #41" in owner_c.read_text(encoding="utf-8") or "post-ALIGNED" in owner_c.read_text(
+        encoding="utf-8"
+    )
+    result = subprocess.run(
+        [sys.executable, str(path_c), "--skip-rebase-probe"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = __import__("json").loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert data["apply_ready"] is True
+    assert data["tip_matches_base"] is True
+    assert data["default_aligned"] is True
+    assert data["default_path_c_shape"]["accepts"] is False
+    assert data["hardening_path_c_shape"]["accepts"] is True
+    assert data["do_not_set_path_c_base_main"] is True
+    assert data["state"] == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
+    # owner wrapper --dry-run
+    wrap = subprocess.run(
+        ["bash", str(owner_c), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert wrap.returncode == 0, wrap.stderr + wrap.stdout
+    combined = wrap.stdout + wrap.stderr
+    assert "APPLY_READY" in combined or "dry-run OK" in combined
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
