@@ -2,7 +2,7 @@
 # Print Path B (preferred for ALIGNED) + Path A/C + live probe/audit.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# Batch 55: unrestricted / auto-approve. HOLD VOID. Path A OR Path B OK.
+# Batch 56: unrestricted / auto-approve. HOLD VOID. Path A OR Path B OK. Path C IDLE.
 # Prefer Path B (notice-only). Default tip MISALIGNED @ 4fc1d7c after CoS #32.
 # Path C = engineering on hardening (BASE_TIP). No approval waits in docs.
 set -euo pipefail
@@ -10,7 +10,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== Batch 55 — MISALIGNED; unrestricted/auto-approve; HOLD VOID; prefer Path B ==="
+echo "=== Batch 56 — MISALIGNED; unrestricted/auto-approve; HOLD VOID; prefer Path B; Path C IDLE ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c."
 echo "Path A OR Path B OK. Prefer Path B (Option-B notice)."

@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 55) — MISALIGNED; unrestricted / auto-approve; HOLD VOID
+> ## STATUS (Batch 56) — MISALIGNED; unrestricted / auto-approve; HOLD VOID; Path C IDLE
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.**
 > Default tip **`4fc1d7c`**: pre-q0 complexity face; `README.md` + `body` only;
@@ -13,7 +13,8 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Scientific effect: **NONE**.
 > **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B**
 > (minimal notice-only) over re-merging the full PR #2 stack unless Path B is impossible.
-> See `portable/RESTORE_PLAN_55.json`.
+> Path C: tip still `9a56c30`; residual RW hunt **0** → **IDLE** (no 0017).
+> See `portable/RESTORE_PLAN_56.json`.
 
 ## Path B — honest redirect (PREFERRED — ALIGNED restore)
 
@@ -30,7 +31,7 @@ git push -u origin HEAD
 gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE."
 ```
 
-Batch **55** dry-run on live tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED**
+Batch **56** dry-run on live tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED**
 (would-align). All Path-B-capable write vectors from trial token **DENIED**
 (git push / contents / workflow_dispatch / fork / create-ref / GraphQL commit /
 PR create → 403; main workflow 404). Multi-vector dashboard:
@@ -119,6 +120,10 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #30 | STATUS_RN_UNIF inventable ABSENT/EMPTY honesty | **Merged** @ `fbb4360` (batch 53); BASE_TIP refreshed; stack **0001–0004 + 0008–0016** |
 | #32 | Revert PR #2 onto default `main` | **Merged** @ `4fc1d7c` (CoS); default tip **MISALIGNED** |
 | #31 | Register source preflight (nonactivating) | **Merged** @ `580864c` (batch 53b); BASE_TIP refreshed |
+| #33 | Standing auth + PR2 post-merge handoff onto default `main` | **CLOSED** (not merged; tip still MISALIGNED) |
+| #34 | Inventable probe index tip provenance fail-closed | **OPEN** draft on hardening (MERGEABLE/UNSTABLE) |
+| #35 | Restore mirror-quoted independence credit in CLAUDE.md | **OPEN** on hardening (MERGEABLE/UNSTABLE); clears tip `mirror_quotes` 3 problems |
+| #36 | Hardening lane bytes / binding visibility | **OPEN** draft on hardening (**CONFLICTING**/DIRTY) |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -147,6 +152,8 @@ Owner (or a write-enabled `main` agent) must run Path C for portable engineering
 ## Patch regeneration watch
 
 Working tip is **`9a56c30`** (governance on #31; batch 54 — was `580864c` post-#31). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Batch **56** (MISALIGNED; Path C IDLE): tip still `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack +#34/#35/#36; restore plan `portable/RESTORE_PLAN_56.json`.
+Batch **55** (unrestricted / auto-approve recorded): tip `4fc1d7c`; audit **MISALIGNED**; HOLD VOID; Path A OR Path B OK (prefer B); all Path-B-capable write vectors **DENIED**; Path C harden `probe_main_write_vectors.py`; restore plan `portable/RESTORE_PLAN_55.json`.
 Batch **54** (OWNER OVERRIDE): tip `4fc1d7c`; audit **MISALIGNED**; HOLD VOID; Path A OR Path B OK (prefer B); Option-B `git am` OK / would-align; all write vectors **DENIED**; BASE_TIP → `9a56c30`; no new 0017; restore plan `portable/RESTORE_PLAN_54.json`.
 Batch **53b** (CRITICAL misalign investigate): tip `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; BASE_TIP → `580864c`; restore plan `portable/RESTORE_PLAN_53b.json`.
 Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`**; probe DENIED; `apply_all` 0001–0004+0008–0016 `--check` OK; receipts/bridge ResourceWarnings → shipped **0016**; BASE_TIP refreshed; default tip flipped MISALIGNED by #32.

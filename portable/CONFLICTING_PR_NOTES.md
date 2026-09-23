@@ -88,3 +88,12 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 
 Closing or rebasing these drafts does not discharge OBL-H5-JETMOD or
 D3-LEMMA-RN-UNIF.
+
+## Batch 56 open-stack note (2026-09-23)
+
+| PR | State | Note |
+|----|-------|------|
+| #34 | OPEN draft / MERGEABLE UNSTABLE | Inventable probe index tip provenance — docs; not Path B |
+| #35 | OPEN / MERGEABLE UNSTABLE | Restores independence-credit quote in CLAUDE.md; clears tip `mirror_quotes` 3 problems |
+| #36 | OPEN draft / **CONFLICTING** DIRTY | Hardening lane bytes — do not force-merge; rebase or close |
+| #33 | CLOSED (not merged) | Post-merge handoff onto default `main` — tip still MISALIGNED |

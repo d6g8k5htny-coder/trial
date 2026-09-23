@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~22:20 UTC (batch 55: unrestricted/auto-approve; MISALIGNED; Path B preferred; BASE_TIP still 9a56c30).
+Checked 2026-09-23 ~22:31 UTC (batch 56: MISALIGNED; Path B preferred; Path C IDLE; BASE_TIP still 9a56c30).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
@@ -65,6 +65,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **56** (MISALIGNED; Path C IDLE): default tip still **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; **all Path-B-capable write vectors DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt (focused+registers/mirrors/ops+RN+drive + tools `--help`) **0** → **no 0017** / **IDLE**. Tip residuals (not portable): `mirror_quotes` 3 problems → open [PR #35](https://github.com/d6g8k5htny-coder/main/pull/35); bridge AGENTS.md expectation drift after OP-AUTONOMY v2.0. Open stack +#34/#36. Restore plan: `portable/RESTORE_PLAN_56.json`.
 - Batch **55** (unrestricted / auto-approve recorded; HOLD VOID; Path A or B OK): default tip still **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; **all Path-B-capable write vectors DENIED** (git push / contents / workflow_dispatch / fork / create-ref / GraphQL commit / PR create); `issues:create` once succeeded (probe issue **#37**, not Path-B-capable). Hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**. Path C harden: `scripts/probe_main_write_vectors.py`. Restore plan: `portable/RESTORE_PLAN_55.json`.
 - Batch **54** (OWNER OVERRIDE): HOLD on PR #2 **VOID**; agents may Path A OR Path B (prefer B); default tip **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; all write vectors **DENIED** (git push / contents / workflow_dispatch / fork / create-ref); hardening **`580864c` → `9a56c30`**; BASE_TIP refreshed; `apply_all --check` OK; no new 0017 (residual RW hunt 0). Restore plan: `portable/RESTORE_PLAN_54.json`.
 - Batch **53b** (CRITICAL misalign after #32): default tip **`4fc1d7c`** **MISALIGNED** (`aligned_end=false`); Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; hardening **`fbb4360` → `580864c`** ([PR #31](https://github.com/d6g8k5htny-coder/main/pull/31)); BASE_TIP refreshed; `apply_all --check` OK. Restore plan: `portable/RESTORE_PLAN_53b.json`.

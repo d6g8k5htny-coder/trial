@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 55:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide.** Default tip **MISALIGNED** @ `4fc1d7c` after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). `aligned_end=false`. Scientific effect: **NONE**.
+> **Batch 56:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide.** Default tip **MISALIGNED** @ `4fc1d7c` after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). `aligned_end=false`. Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B patch still valid — `git am` OK / would-align). Path A = `PATH_A_MODE=revert32` (or fresh OPEN port). Path C = portable engineering on hardening (BASE_TIP `9a56c30`; no 0017).
-> Trial cloud tokens still cannot write to `main` (403) → Path B not applied from trial. All Path-B-capable vectors DENIED (`python3 scripts/probe_main_write_vectors.py`; see `RESTORE_PLAN_55.json`). Owner scripts = technical fallback for App 403 only.
+> **HOLD on PR #2 is VOID.** Path A **OR** Path B OK. Prefer **Path B** (Option-B patch still valid — `git am` OK / would-align). Path A = `PATH_A_MODE=revert32` (or fresh OPEN port). Path C = portable engineering on hardening (BASE_TIP `9a56c30`; residual RW **0** → **IDLE** / no 0017).
+> Trial cloud tokens still cannot write to `main` (403) → Path B not applied from trial. All Path-B-capable vectors DENIED (`python3 scripts/probe_main_write_vectors.py`; see `RESTORE_PLAN_56.json`). Owner scripts = technical fallback for App 403 only.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a

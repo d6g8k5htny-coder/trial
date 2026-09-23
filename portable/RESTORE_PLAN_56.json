@@ -1,0 +1,85 @@
+{
+  "batch": "56",
+  "generated_at_utc": "2026-09-23T22:31:00Z",
+  "owner_mandate": "Dylan Roy — NO restrictions; everything auto-approved; agents decide; HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false",
+  "scientific_effect": "NONE",
+  "aligned": false,
+  "default_tip_sha": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+  "root_has_AGENTS_md": false,
+  "root_has_README_md": true,
+  "root_has_body": true,
+  "root_has_dot_github": false,
+  "cause": {
+    "pr": 32,
+    "title": "Revert \"Port the Drive research program to git and make it active (#2)\"",
+    "author": "d6g8k5htny-coder",
+    "state": "MERGED",
+    "mergedAt": "2026-09-23T21:53:42Z",
+    "mergeCommit": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+    "summary": "CoS revert of PR #2; restores pre-q0 complexity-physics face on default main"
+  },
+  "preferred_restore": "Path_B",
+  "path_b": {
+    "valid_against_tip": true,
+    "patch": "portable/main-default-branch/0001-option-b-default-branch-notice.patch",
+    "git_am_exit": 0,
+    "local_auditor": "ALIGNED",
+    "would_align": true,
+    "owner_script": "scripts/owner_land_path_b.sh",
+    "write_probe": "DENIED",
+    "multi_vector_probe": "scripts/probe_main_write_vectors.py",
+    "applied_this_session": false,
+    "reason_not_applied": "all Path-B-capable write vectors HTTP 403/404"
+  },
+  "path_a": {
+    "hold": "VOID",
+    "status": "REVERTED_by_PR_32_agents_may_retry",
+    "preferred_over_full_stack": false,
+    "note": "HOLD VOID. Prefer Path B. Path A tactics: PATH_A_MODE=revert32 (default) or fresh Drive port. PR #2 is closed — ready/merge 2 will not work.",
+    "owner_script": "scripts/owner_land_path_a.sh"
+  },
+  "path_c": {
+    "role": "engineering_only",
+    "base_tip": "9a56c3049120d2912865d9d3629b6c0e2a6914a9",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "apply_all": "0001-0004 + 0008-0016",
+    "apply_all_check_ok": true,
+    "tip_refresh": "unchanged (== BASE_TIP 9a56c30)",
+    "residual_rw_hunt": 0,
+    "new_0017": false,
+    "idle": true,
+    "idle_reason": "focused+registers/mirrors/ops+RN+drive suites + tools --help → 0 ResourceWarning after apply_all; no portable defect to cut",
+    "tip_residuals_not_portable": [
+      "mirror_quotes: 3 unmatched 'independence credit' quotations — covered by open main PR #35",
+      "test_bridge AGENTS.md expectation drift after OP-AUTONOMY v2.0 rewrite — not a ResourceWarning; leave to hardening PR authors"
+    ]
+  },
+  "pr_stack_delta_vs_batch55": {
+    "added_open": [34, 35, 36],
+    "closed_not_merged": [33],
+    "default_tip_unchanged": true,
+    "hardening_tip_unchanged": true
+  },
+  "write_vectors_batch56": {
+    "W1_git_refs": "DENIED 403",
+    "W2_contents_put": "DENIED 403",
+    "W3a_dispatch_trial": "DENIED 403",
+    "W3b_dispatch_main": "404 workflow absent on default tip",
+    "W3c_api_dispatch_trial": "DENIED 403",
+    "W4a_fork": "DENIED 403",
+    "W4b_graphql_createCommitOnBranch": "DENIED 403 FORBIDDEN",
+    "W4c_pulls_create": "DENIED 403",
+    "W5_path_a_revert32": "DENIED 403/404",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "permissions": {"admin": false, "maintain": false, "pull": false, "push": false, "triage": false}
+  },
+  "owner_next": [
+    "./scripts/owner_land_path_b.sh",
+    "merge Option-B notice PR (or --direct-main)",
+    "./scripts/owner_land_path_b.sh --after-merge",
+    "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
+    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)",
+    "Optional hardening: merge PR #35 (mirror independence credit); review #34/#36",
+    "Close/delete accidental probe issue #37 (title: b55 probe) if still open"
+  ]
+}

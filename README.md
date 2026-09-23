@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 55: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN`.
+Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 56: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN` (Batch 56 Path C **IDLE** — no new 0017).
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
