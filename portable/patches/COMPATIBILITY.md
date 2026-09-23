@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~18:55 UTC (batch 25).
+Checked 2026-09-23 ~19:00 UTC (batch 26).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply 0001–0008 (tip-cut) | `math_status_check` | Focused tests* |
@@ -25,6 +25,7 @@ Checked 2026-09-23 ~18:55 UTC (batch 25).
 
 Notes:
 
+- Batch **26**: tip still **`ae7daf7`**. Re-verified `apply_all` 0001–0008 @ 3.11.16: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path A/B/workflow_dispatch still 403. Trial PR #8 merged. Default tip still MISALIGNED.
 - Batch **25**: tip **`1547ec4` → `ae7daf7`** (PR #19 merged). BASE_TIP refreshed. Shipped **0008** (carriers/math_status/carriers_verify close-file-handles). CPython 3.11.16 after `apply_all` 0001–0008: problems=0 / lemma_closed=false / focused **90 passed** / focused slice **0 ResourceWarning**. Path A merge preview still would-align. Stack: #19 MERGED; #21 `52bdd443` UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN. Trial PR #7 merged.
 - Batch **24**: tip still **`1547ec4`**. Shipped **0007** (inventable close-file-handles).
 - Batch **22**: tip still **`1547ec4`**. Path B dry-run **would-align=true**.

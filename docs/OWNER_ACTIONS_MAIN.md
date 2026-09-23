@@ -68,11 +68,10 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 (`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
 
-## Stack note (2026-09-23 batch 24)
+## Stack note (2026-09-23 batch 26)
 
-- Working tip **`ae7daf7`** ([PR #19](https://github.com/d6g8k5htny-coder/main/pull/19) after #20); BASE_TIP refreshed; **0006** + **0007** + **0008** in `apply_all.sh`.
-- Open drafts: #19 (`dcc0157`, **UNSTABLE**/verify pending), #21 (`d1e7d0e`, **CLEAN**), #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
-- Write still **403** (`probe_main_write.py` DENIED). Path A `owner_land_path_a.sh` → 403 markReady; Path B local would-align then push **403**.
-- Trial [PR #6](https://github.com/d6g8k5htny-coder/trial/pull/6) **merged** (owner land scripts on default trial main).
-- Portable **0007**: inventable tests close file handles (ResourceWarning hygiene).
+- Working tip still **`ae7daf7`** ([PR #19](https://github.com/d6g8k5htny-coder/main/pull/19)); BASE_TIP unchanged; **0001–0008** in `apply_all.sh` re-verified @ 3.11.16 (90 passed / 0 ResourceWarning). **No 0009.**
+- Open drafts: #22 UNSTABLE, #21 UNSTABLE, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
+- Write still **403** (`probe_main_write.py` DENIED). `MAIN_PUSH_TOKEN` absent in agent env. Path A ready→403; Path B would-align then push **403**; trial `land-option-b-on-main` workflow_dispatch **403**.
+- Trial [PR #8](https://github.com/d6g8k5htny-coder/trial/pull/8) **merged** (batch 25 portable 0008 on trial main).
 - Do **not** enable `research.yml` schedules for R2-06.
