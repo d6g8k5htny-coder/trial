@@ -68,8 +68,9 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 (`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
 
-## Stack note (2026-09-23 batch 15)
+## Stack note (2026-09-23 batch 16)
 
-- [PR #16](https://github.com/d6g8k5htny-coder/main/pull/16) (cold-start nav) **merged**.
-- New draft [PR #21](https://github.com/d6g8k5htny-coder/main/pull/21) (attestations / H3 salvage) is additive and pins status fields UNCHANGED — still not a Path A substitute.
-- Critical path remains: mark ready + merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), or Path B notice on default `main`.
+- Working tip `chatgpt/drive-github-hardening-20260919` moved to `340d98a` ([PR #18](https://github.com/d6g8k5htny-coder/main/pull/18) merged; #16 docs earlier).
+- No new open PRs since #21. PR #2 still draft **MERGEABLE/CLEAN** on default `main`.
+- Write to `d6g8k5htny-coder/main` still **403** (git push + Git Data API). Path A/B blocked until owner grants write or merges #2.
+- Critical path unchanged: mark ready + merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), or Path B notice on default `main`.

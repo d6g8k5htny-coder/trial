@@ -1,8 +1,9 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `1ea0ae8183fb0459c6678243946295518fded1ba`
-(includes merged inventable PR #15).
+`chatgpt/drive-github-hardening-20260919` @ `340d98a2371bf181214c431f18f5c53945ee9d79`
+(includes merged inventable PR #15, cold-start nav #16, and math_status PARTIAL/REFUSED #18).
+Patches were originally cut against `1ea0ae8` and still apply cleanly on this descendant.
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -26,7 +27,7 @@ Verify:
 ```bash
 python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py
-# expect: problems=0, lemma_closed=false; 39 + 45 passed on those slices
+# expect: problems=0, lemma_closed=false; 86 passed on that slice @ 340d98a
 ```
 
 ## 0001 — `carriers_verify` ignores bytecode caches

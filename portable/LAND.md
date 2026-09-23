@@ -89,11 +89,12 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 ## Patch regeneration watch
 
-Open drafts **#18 / #19 / #20** touch `docs/math_status/PACKET.json` (and related
-status tooling). As of batch 15, patches **0001–0004 are still `--check` clean**
-on PR #17/#18/#20/#21 heads as well as hardening `1ea0ae8`. After those PRs merge,
-re-run `apply_all.sh --check` + focused tests; regenerate **0002** only if PACKET
-digests drift under `math_status_check`. PR #21 does not edit PACKET/`math_console`.
+Working tip is now `340d98a` (PR #18 merged; #16 docs). Open drafts **#19 / #20 /
+#21** still stack on that tip. As of batch 16, patches **0001–0004 are still
+`--check` clean** on hardening `340d98a` and on #17/#20/#21 heads; **no 0005**.
+After further PACKET/`math_console` merges, re-run `apply_all.sh --check` +
+focused tests; regenerate **0002** only if digests drift under
+`math_status_check`. PR #21 does not edit PACKET/`math_console`.
 
 
 ## Path B via trial Actions (token secret)

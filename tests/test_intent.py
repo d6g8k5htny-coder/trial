@@ -98,7 +98,10 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").is_file()
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
-    assert "1ea0ae8" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    assert "340d98a" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    assert "chatgpt/drive-github-hardening-20260919" in (
+        ROOT / "portable" / "patches" / "BASE_TIP.txt"
+    ).read_text()
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
     assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()

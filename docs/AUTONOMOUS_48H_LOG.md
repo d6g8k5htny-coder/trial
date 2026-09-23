@@ -134,3 +134,12 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Refreshed COMPATIBILITY.md / LAND.md / OWNER_ACTIONS for #16/#21.
 - Trial pytest: 14 passed. land-option-b workflow_dispatch still 403.
 - Opened trial [PR #4](https://github.com/d6g8k5htny-coder/trial/pull/4).
+
+### Batch 16 — 2026-09-23 17:45 UTC
+
+- Window ~0.84h elapsed / ~47.16h remaining (start `2026-09-23T16:43:47Z`, window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; write probe (unique `cursor-probe-*` push + `gh api POST git/refs`) both **403**.
+- Working tip moved: `1ea0ae8` → **`340d98a`** (PR #18 merge + #16). No new open PRs after #21. PR #2 still draft MERGEABLE/CLEAN; verify SUCCESS.
+- Portable 0001–0004 `--check` + apply OK on `340d98a`; math_status problems=0 / lemma_closed=false; focused **86 passed**.
+- Broad pytest: 2930 passed / 142 failed — failures are agent-host env (`python` missing; CPython 3.12 vs CI 3.11), not new tip defects. Known 0003 warning still reproduces pre-patch. **No 0005.**
+- Updated BASE_TIP / README / COMPATIBILITY / LAND / OWNER_ACTIONS for tip move. Path A/B not landable (no write). Did not touch `research.yml` schedules.
