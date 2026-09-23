@@ -74,7 +74,9 @@ def test_audit_script_reports_misalignment_or_ok() -> None:
 def test_autonomous_log_and_ci_exist() -> None:
     text = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "status promotion" in text
-    assert (ROOT / ".github" / "workflows" / "ci.yml").is_file()
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text()
+    assert "portable-patches-on-main" in ci
+    assert "0004-git-fixture-timeout-60s.patch" in ci
 
 
 def test_portable_patches_exist() -> None:

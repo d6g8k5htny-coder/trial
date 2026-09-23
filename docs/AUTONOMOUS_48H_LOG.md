@@ -76,3 +76,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 - PR #2 mark-ready + merge via API: **FORBIDDEN/403**. Still draft MERGEABLE/CLEAN.
 - Added `watch_main_alignment.py`, `EXPECTED_POST_ALIGNMENT.json`, patch **0004** (git fixture timeout 60s), CI alignment watch step.
+
+### Batch 7 — 2026-09-23 17:13 UTC
+
+- Requested owner external actions: grant `main` write access; land PR #2 or Option-B.
+- Added CI job `portable-patches-on-main`: shallow-clones working tip, applies 0001–0004, runs focused tests; also checks Option-B patch against default `main`.
+- Local smoke: math_status green; focused tests passed; Option-B `--check` OK. Default tip still MISALIGNED.
