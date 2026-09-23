@@ -50,7 +50,7 @@ if the digest is omitted). Status flags in PACKET stay false/OPEN_HOLD.
 
 ## 0004 — git fixture timeout 60s
 
-`tests/test_run_checks.py` (and the workflow-integrity git helper) used a 10s
-timeout around `git commit` in fixtures. On loaded VMs this intermittently
+`tests/test_run_checks.py` and `tests/test_workflow_integrity_hardening.py` git
+helpers used a 10s timeout around `git commit` (both kwarg orderings). On loaded VMs this intermittently
 raises `TimeoutExpired` during setup (observed twice). Raise to 60s. No
 scientific change.
