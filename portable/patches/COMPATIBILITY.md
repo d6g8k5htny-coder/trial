@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~18:05 UTC (batch 18).
+Checked 2026-09-23 ~18:08 UTC (batch 19 align-watch).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply 0001–0005 (tip-cut) | `math_status_check` | Focused tests* |
@@ -22,7 +22,7 @@ Checked 2026-09-23 ~18:05 UTC (batch 18).
 
 Notes:
 
-- Batch **18** reconfirms BASE_TIP `3e8f388` (unchanged). No tip-level **0007** — broader workflow-integrity failures are host `python` missing on PATH, not tip defects.
+- Batch **19** reconfirms BASE_TIP `3e8f388` (unchanged; ls-remote). No tip-level **0007** — broader workflow-integrity failures are host `python` missing on PATH, not tip defects. PR #21 now CLEAN; heads #19/#20/#21 unchanged.
 - Optional **0006** remains PR #20-only until instrumentation STATUS tests exist on the hardening tip.
 - Broad local pytest host failures remain agent-env (`python` missing in bare bash for some `test_ci_pins` / workflow integrity cases), not tip defects.
 - PR #20 still ships `math_console.py` pointing at missing `code_prototypes/` until **0002** is applied.

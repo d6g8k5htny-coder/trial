@@ -55,9 +55,10 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 |----|-------|--------|
 | #2 | MERGEABLE/CLEAN onto default `main` | **Land this** (Path A) |
 | #7, #8 | MERGEABLE/CLEAN onto hardening | Independent reviews |
-| #17 | MERGEABLE draft | More inventable shortcut refusals; portable **0005** does not apply until rebased |
-| #19 | DRAFT docs banners | MERGEABLE; patches 0001–0005 apply |
-| #20 | OPEN instrumentation STATUS follow-on | Built on merged #18; still needs portable **0002** |
+| #17 | **Merged** @ `3e8f388` | Tip-cut portable **0005** applies on tip |
+| #19 | DRAFT docs banners (`d47e44d`) | MERGEABLE; UNSTABLE while `verify` pending; patches 0001–0005 apply |
+| #20 | OPEN instrumentation STATUS (`4103ee1`) | MERGEABLE; UNSTABLE while `verify` pending; needs portable **0002** + optional **0006** |
+| #21 | Attestations + H3 salvage (`d1e7d0e`) | MERGEABLE/**CLEAN** onto hardening (base OID `1ea0ae8`); not a status discharge |
 
 ## Merged since these notes started
 

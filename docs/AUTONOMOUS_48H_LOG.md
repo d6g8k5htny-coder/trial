@@ -180,3 +180,14 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
   - Documented when to promote **0006** into `apply_all.sh` (patches README + root README).
 - Tip @ 3.11.16 after `apply_all`: math_status problems=0 / lemma_closed=false; focused **86 passed**. No solid tip-level **0007** (workflow-integrity mass fails = host `python` missing). PR #20 +0005+0006: **90 passed**, probes clean.
 - Trial pytest: **15 passed**. Scientific effect: NONE.
+
+### Batch 19 — align-watch — 2026-09-23 18:08 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.41h** / remaining **~46.59h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref); Path A/B still not landable from this token.
+- Working tip vs BASE_TIP: still **`3e8f388`** (ls-remote + fetch; no pack tip refresh).
+- Portable `apply_all` 0001–0005 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; `docs/math_status_probes/` clean after inventable test.
+- Stack: PR #2 still draft **MERGEABLE/CLEAN**. Heads unchanged: #19 `d47e44d`, #20 `4103ee1`, #21 `d1e7d0e`. Notable: **#21** mergeStateStatus **CLEAN** (was UNSTABLE in earlier notes); base remains hardening branch @ ancestor `1ea0ae8`. #19/#20 UNSTABLE with `verify` still pending (not new tip defects).
+- Local engineering audit: no solid tip-level **0007** (host bare `python` missing remains env-only). Optional **0006** stays out of `apply_all.sh` until #20 lands.
+- Trial pytest: **15 passed**. Scientific effect: NONE. Did not UpdateGoal (not ALIGNED).
