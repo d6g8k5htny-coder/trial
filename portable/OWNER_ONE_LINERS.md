@@ -13,11 +13,28 @@ Quick dump of this file + live probe/audit:
 ./scripts/print_owner_unblock.sh
 ```
 
-## Path A — land the real tree (preferred)
+## Executable owner land scripts (preferred on owner machine / Codespace)
+
+These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
+
+```bash
+# Path A — mark PR #2 ready, merge, then audit/watch until ALIGNED
+./scripts/owner_land_path_a.sh
+
+# Path B — default safer: git am Option-B → push branch → open PR
+./scripts/owner_land_path_b.sh
+# after you merge that PR:
+./scripts/owner_land_path_b.sh --after-merge
+# opt-in only: push Option-B straight onto default main (no PR)
+./scripts/owner_land_path_b.sh --direct-main
+```
+
+## Path A — land the real tree (manual one-liners)
 
 PR #2 is historically **MERGEABLE / CLEAN** (Drive→git port onto default `main`).
 
 ```bash
+# Prefer: ./scripts/owner_land_path_a.sh
 gh pr ready 2 --repo d6g8k5htny-coder/main
 gh pr merge 2 --repo d6g8k5htny-coder/main --merge
 # optional verify:
@@ -27,6 +44,14 @@ python3 /path/to/trial/scripts/watch_main_alignment.py    # expect ALIGNED
 ```
 
 ## Path B — honest redirect until Path A
+
+### B0 — owner script (preferred)
+
+```bash
+./scripts/owner_land_path_b.sh              # branch + PR (default)
+./scripts/owner_land_path_b.sh --after-merge
+# ./scripts/owner_land_path_b.sh --direct-main   # opt-in push to main
+```
 
 ### B1 — Actions UI (trial workflow)
 
@@ -40,6 +65,7 @@ python3 /path/to/trial/scripts/watch_main_alignment.py    # expect ALIGNED
 ### B2 — local token
 
 ```bash
+# Prefer: ./scripts/owner_land_path_b.sh
 export MAIN_PUSH_TOKEN=ghp_…   # write on d6g8k5htny-coder/main
 git clone https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git
 cd main && git checkout main

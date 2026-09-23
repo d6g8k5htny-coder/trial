@@ -107,6 +107,16 @@ Write probe: `scripts/probe_main_write.py`. After further PACKET/`math_console`
 merges, re-run `apply_all.sh --check` + focused tests; regenerate **0002** only if
 digests drift. PR #21 does not edit PACKET/`math_console`.
 
+## Owner land scripts (local / Codespace with write)
+
+Executable wrappers that use the **owner's** `gh` auth (not the trial cloud token):
+
+| Script | Role |
+|--------|------|
+| `scripts/owner_land_path_a.sh` | `gh pr ready 2` + `gh pr merge 2 --merge`, then audit/watch → ALIGNED |
+| `scripts/owner_land_path_b.sh` | Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
+
+Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
 ## Path B via trial Actions (token secret)
 
