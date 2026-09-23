@@ -422,6 +422,16 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     restore61 = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_61.json").read_text())
     assert restore61["scientific_effect"] == "NONE"
     assert restore61["aligned"] is True
+    restore62 = ROOT / "portable" / "RESTORE_PLAN_62.json"
+    assert restore62.is_file()
+    restore62_data = __import__("json").loads(restore62.read_text())
+    assert restore62_data["scientific_effect"] == "NONE"
+    assert restore62_data["aligned"] is True
+    assert restore62_data.get("goal_complete") is False
+    assert restore62_data.get("lemma_closed") is False
+    assert restore62_data.get("autonomous_window", {}).get("window_mode") == (
+        "PERMANENT_UNTIL_OWNER_INTERVENES"
+    )
     assert (ROOT / "scripts" / "check_autonomous_window.py").is_file()
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
@@ -432,22 +442,25 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "RESTORE_PLAN_59.json" in pack
     assert "RESTORE_PLAN_60.json" in pack
     assert "RESTORE_PLAN_61.json" in pack
+    assert "RESTORE_PLAN_62.json" in pack
     assert "restore_main_face.sh" in pack
     assert "BATCH58_TOKEN_SEARCH.json" in pack
     assert "BATCH59_TOKEN_SEARCH.json" in pack
     assert "BATCH60_TOKEN_SEARCH.json" in pack
     assert "BATCH61_TOKEN_SEARCH.json" in pack
+    assert "BATCH62_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
     assert "restore_main_face.sh" in unblock
     assert "path_c_dry_run.py" in unblock or "owner_land_path_c.sh --dry-run" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
-    assert "Batch 61" in unblock or "PERMANENT" in unblock or "1c6e74b" in unblock
+    assert "Batch 62" in unblock or "Batch 61" in unblock or "PERMANENT" in unblock or "1c6e74b" in unblock
     assert "check_autonomous_window.py" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 62" in log
     assert "Batch 61" in log
     assert "PERMANENT_UNTIL_OWNER_INTERVENES" in log
     assert "Batch 60" in log
@@ -460,6 +473,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
+    assert "watch_main_alignment" in log and (
+        "autonomous_window" in log or "route" in log or "Batch 62" in log
+    )
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
     assert restore_one.stat().st_mode & 0o111
@@ -581,6 +597,78 @@ def test_check_autonomous_window_permanent_mode(tmp_path, monkeypatch) -> None:
     assert data["within_window"] is True
     assert data["finale"] is False
     assert data["stop_condition"] == "owner_intervene_only"
+
+
+def test_watch_embeds_autonomous_window_and_route() -> None:
+    """Batch 62: watch_main_alignment embeds permanent window + Path C route hint."""
+    import json
+
+    watch = ROOT / "scripts" / "watch_main_alignment.py"
+    assert watch.is_file()
+    result = subprocess.run(
+        [sys.executable, str(watch)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode in (0, 1, 2), result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert "autonomous_window" in data
+    assert data["autonomous_window"] is not None
+    assert data["autonomous_window"].get("scientific_effect") == "NONE"
+    assert "route" in data
+    assert data["route"].get("goal_complete") is False
+    assert "lemma_closed" in data["route"]["note"]
+    # --no-window still returns route but null window
+    skipped = subprocess.run(
+        [sys.executable, str(watch), "--no-window"],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert skipped.returncode in (0, 1, 2), skipped.stderr + skipped.stdout
+    skipped_data = json.loads(skipped.stdout)
+    assert skipped_data["autonomous_window"] is None
+    assert skipped_data["route"]["goal_complete"] is False
+
+
+def test_alignment_status_post_41_critical_path() -> None:
+    """Dashboard must not claim PR #2 MERGEABLE; embed window + Path C tip currency."""
+    import json
+
+    script = ROOT / "scripts" / "alignment_status.py"
+    src = script.read_text(encoding="utf-8")
+    assert "PR #2 MERGEABLE/CLEAN lands q0" not in src
+    assert "check_autonomous_window" in src
+    assert "pr41_url" in src or "PR #41" in src
+    assert "goal_complete" in src
+    assert "lemma_closed" in src
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode in (0, 2), result.stderr + result.stdout
+    if result.returncode != 0:
+        return
+    data = json.loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert data.get("goal_complete") is False
+    assert data.get("lemma_closed") is False
+    assert "autonomous_window" in data
+    assert "path_c_tip" in data
+    assert data["path_c_tip"].get("apply_stack") == "0001-0004 + 0008-0016"
+    crit = data["main"]["critical_path"]
+    assert "pr41_url" in crit
+    assert crit.get("prefer_when_aligned_writable") == "Path_C_on_hardening"
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:

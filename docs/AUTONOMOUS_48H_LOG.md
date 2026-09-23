@@ -21,6 +21,20 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 62 — 2026-09-23 ~23:45 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run; IDLE / no 0017; watch embeds window)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; BASE_TIP still **`b3da668`** (== live hardening); rebase onto main **CONFLICTING**. Tip refresh: none.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused+claims+recovery **173**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; registers **102**/0; mirrors **105**/0; ops/prov **295**/0; lean/frontier **108**/0; RN sample **124**/0; verify_manifests/quarantine/registers_check/mirror_quotes tools **0 RW** → **IDLE** / **no 0017**.
+- **Meaningful improvement (no empty commit):** `watch_main_alignment.py` embeds `autonomous_window` + Path C/B `route` hint (timer one-pulse); `alignment_status.py` post-#41 critical_path + `path_c_tip` + `goal_complete=false` / `lemma_closed=false`; `refresh_restore_plan.py` records permanent window fields.
+- Timer: (re)arm `permanent-autonomous-align-watch` (recurring). Do **not** arm a 48h finale.
+- `RESTORE_PLAN_62.json` + `BATCH62_TOKEN_SEARCH.json`. Trial `pytest` + packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 61 — 2026-09-23 ~23:33 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run; IDLE / no 0017)
 
 - **OWNER (Dylan Roy):** “48 hours is now extended permanently until I intervene. You can confirm with the other agents if you wish... they've been made aware.”

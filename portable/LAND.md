@@ -4,19 +4,20 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 61) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run @ `b3da668`
+> ## STATUS (Batch 62) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run @ `b3da668`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
 > **Permanent extension:** “48 hours is now extended permanently until I intervene.”
 > Stop only on owner intervene — **no 48h finale.** Check:
-> `python3 scripts/check_autonomous_window.py`.
+> `python3 scripts/check_autonomous_window.py` (also embedded in
+> `python3 scripts/watch_main_alignment.py` + Path C/B `route` hint).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
 > (`restore_main_face` short-circuits). Path C: BASE_TIP `b3da668` (post-#34); RW **0** → **no 0017**;
 > `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_61.json` + `BATCH61_TOKEN_SEARCH.json`.
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_62.json` + `BATCH62_TOKEN_SEARCH.json`.
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
 

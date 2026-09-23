@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 61:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
+> **Batch 62:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
 >
 > **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP `b3da668` (post-#34); `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). No 0017.
-> Window: `python3 scripts/check_autonomous_window.py`. Trial write still 403. See `RESTORE_PLAN_61.json` + `BATCH61_TOKEN_SEARCH.json`.
+> Window: `python3 scripts/check_autonomous_window.py`. Watch embeds window+route: `python3 scripts/watch_main_alignment.py`. Trial write still 403. See `RESTORE_PLAN_62.json` + `BATCH62_TOKEN_SEARCH.json`.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a

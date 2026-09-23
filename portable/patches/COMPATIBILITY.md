@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~23:33 UTC (batch 61: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C dry-run + BASE_TIP b3da668; no 0017).
+Checked 2026-09-23 ~23:45 UTC (batch 62: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C dry-run + BASE_TIP b3da668; no 0017; watch embeds window).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |

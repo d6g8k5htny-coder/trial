@@ -126,6 +126,10 @@ def main() -> int:
             [sys.executable, str(scripts / "path_c_dry_run.py")]
         )
 
+    win_ec, window, _ = _run_json(
+        [sys.executable, str(scripts / "check_autonomous_window.py")]
+    )
+
     base_tip_file = trial / "portable/patches/BASE_TIP.txt"
     base_tip_line = base_tip_file.read_text(encoding="utf-8").strip() if base_tip_file.is_file() else ""
     base_parts = base_tip_line.split()
@@ -148,9 +152,24 @@ def main() -> int:
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "owner_mandate": (
             "Dylan Roy — NO restrictions; everything auto-approved; agents decide; "
-            "HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false"
+            "HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false; "
+            "permanent window until owner intervenes; never flip research status"
         ),
         "scientific_effect": "NONE",
+        "goal_complete": False,
+        "lemma_closed": False,
+        "autonomous_window": {
+            "state": window.get("state"),
+            "window_mode": window.get("window_mode"),
+            "hard_stop": window.get("hard_stop"),
+            "within_window": window.get("within_window"),
+            "stop_condition": window.get("stop_condition"),
+            "finale": window.get("finale"),
+            "window_seconds": window.get("window_seconds"),
+            "window_exit": win_ec,
+            "check_script": "scripts/check_autonomous_window.py",
+            "watch_embeds_window": "scripts/watch_main_alignment.py (Batch 62+)",
+        },
         "aligned": audit_ec == 0,
         "default_tip_sha": audit.get("default_tip_sha"),
         "root_has_AGENTS_md": audit.get("root_has_AGENTS_md"),
