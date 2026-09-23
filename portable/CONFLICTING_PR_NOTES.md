@@ -56,9 +56,10 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #2 | MERGEABLE/CLEAN onto default `main` | **Land this** (Path A) |
 | #7, #8 | MERGEABLE/CLEAN onto hardening | Independent reviews |
 | #17 | **Merged** @ `3e8f388` | Tip-cut portable **0005** applies on tip |
-| #19 | **Merged** @ `ae7daf7` | AUTHOR_SIDE honesty banners; BASE_TIP → `ae7daf7` (batch 25); no status flip |
+| #19 | **Merged** @ `ae7daf7` | AUTHOR_SIDE honesty banners; ancestor of tip `a89f9a7`; no status flip |
 | #20 | **Merged** @ `1547ec4` | Instrumentation STATUS on tip; portable **0006**–**0008** now in `apply_all.sh` |
-| #21 | Attestations + H3 salvage (`52bdd443`) | MERGEABLE/**UNSTABLE** onto hardening; not a status discharge |
+| #21 | Attestations + H3 salvage (`5c453b1`) | MERGEABLE/**CLEAN** onto hardening; not a status discharge |
+| #22 | **Merged** @ `a89f9a7` | docs STATUS honesty cross-links; BASE_TIP → `a89f9a7` (batch 31); no status flip |
 
 ## Merged since these notes started
 
@@ -70,6 +71,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #17 | Fail-closed inventable JETMOD shortcut refusals → hardening @ `3e8f388` | Expanded inventable EXPECTED/SHORTCUTS; tip-cut 0005 re-cut; **not** a discharge |
 | #20 | PARTIAL/REFUSED_NOT_24JET instrumentation STATUS → hardening @ `1547ec4` | Promoted portable **0006**; **not** a discharge |
 | #19 | AUTHOR_SIDE honesty banners → hardening @ `ae7daf7` | Digest-only PACKET refresh; flags stay false; **not** a discharge |
+| #22 | docs STATUS honesty cross-links → hardening @ `a89f9a7` | Docs-only; BASE_TIP refresh; **not** a discharge |
 
 ## Non-claims
 
