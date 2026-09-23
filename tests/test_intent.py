@@ -65,7 +65,11 @@ def test_audit_script_reports_misalignment_or_ok() -> None:
         timeout=60,
         check=False,
     )
-    assert result.returncode in (0, 1), result.stderr
+    # 0=aligned, 1=misaligned, 2=transport (e.g. API rate limit on CI)
+    assert result.returncode in (0, 1, 2), result.stderr
+    if result.returncode == 2:
+        assert "transport" in result.stderr.lower()
+        return
     assert '"scientific_effect": "NONE"' in result.stdout
     if result.returncode == 1:
         assert "MISALIGNED" in result.stderr

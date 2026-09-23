@@ -191,3 +191,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack: PR #2 still draft **MERGEABLE/CLEAN**. Heads unchanged: #19 `d47e44d`, #20 `4103ee1`, #21 `d1e7d0e`. Notable: **#21** mergeStateStatus **CLEAN** (was UNSTABLE in earlier notes); base remains hardening branch @ ancestor `1ea0ae8`. #19/#20 UNSTABLE with `verify` still pending (not new tip defects).
 - Local engineering audit: no solid tip-level **0007** (host bare `python` missing remains env-only). Optional **0006** stays out of `apply_all.sh` until #20 lands.
 - Trial pytest: **15 passed**. Scientific effect: NONE. Did not UpdateGoal (not ALIGNED).
+
+### Batch 19b — CI fix — 2026-09-23 18:12 UTC
+
+- Tip CI failed on `c382867`: `test_audit_script_reports_misalignment_or_ok` got audit exit **2** (`HTTP Error 403: rate limit exceeded`) while asserting only `(0, 1)`.
+- Fix: accept transport exit 2 in that intent test; `audit_main_alignment.py` now sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (GHA default) to avoid unauthenticated API rate limits.
+- Scientific effect: NONE. No research status promotion.
