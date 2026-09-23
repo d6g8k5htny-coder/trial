@@ -25,7 +25,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - 0014 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0013, focused+claims+recovery green / 0 ResourceWarning; **`tools/collision_proposal_check.py`** → **2** `ResourceWarning: unclosed file`; **`tests/test_collision_proposal.py`** → **51**.
 - **Shipped portable 0014** (`collision-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0014**. Verify @ `8510874`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery **173 passed** / **0 ResourceWarning**; collision checker **0 ResourceWarning**; collision tests **189 passed** / **0 ResourceWarning**.
 - Packed portable tarball → `docs/trial-portable-main-fixes.tgz` + `/opt/cursor/artifacts/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → expect **403**; land on trial `main` via direct push when needed.
+- Draft/ready PR create via `gh` → **403** (integration cannot open PRs). **Landed on trial `main`** via direct push `0462e92..a1525d4`.
 - No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
 
 ### Batch 49 — 2026-09-23 ~21:22 UTC (Path B probe; ship portable 0013)
