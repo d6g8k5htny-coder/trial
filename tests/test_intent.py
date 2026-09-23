@@ -136,7 +136,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "890bb81" in base_tip
+    assert "fbb4360" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -339,7 +339,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "890bb81" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
+    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(

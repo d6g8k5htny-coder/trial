@@ -1,12 +1,12 @@
-# Owner one-liners (Path A MERGED / Path C primary / Path B optional)
+# Owner one-liners (Path B preferred for ALIGNED / Path C engineering / Path A reverted)
 
 Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Path A MERGED (2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) @ `b040bf0c`. Default tip **ALIGNED**. Scientific effect: **NONE**.
+> **Batch 53:** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) MERGED @ `b040bf0c`, then CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** → default tip **MISALIGNED** @ `4fc1d7c`. Scientific effect: **NONE**.
 >
-> Remaining owner work is **Path C** (portable engineering on hardening tip). Path B is optional.
+> Preferred ALIGNED unblock: **Path B** (Option-B notice). Path C = portable engineering on hardening (BASE_TIP `fbb4360`). Do not re-merge #2 unless Dylan/CoS authorizes.
 > Trial cloud tokens still cannot write to `main` (403).
 
 After merging a trial PR that adds `.cursor/environment.json`
@@ -35,13 +35,13 @@ Poll until default tip is **ALIGNED** (scientific effect **NONE**):
 These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
 
 ```bash
-# Path C — PRIMARY remaining (default tip already ALIGNED): apply_all 0001–0004 + 0008–0016
+# Path C — engineering on hardening tip: apply_all 0001–0004 + 0008–0016
 ./scripts/owner_land_path_c.sh
 # Optional: rebase hardening onto post-#2 main, then apply:
 # PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 
-# Path B — optional (default tip already ALIGNED via Path A)
+# Path B — PRIMARY for default-tip ALIGNED (Option-B notice)
 ./scripts/owner_land_path_b.sh
 ./scripts/owner_land_path_b.sh --after-merge
 # ./scripts/owner_land_path_b.sh --direct-main
@@ -49,7 +49,7 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 # Path A — DONE (PR #2 merged @ b040bf0c). No further action.
 ```
 
-## Path B — honest redirect (optional; default tip already ALIGNED)
+## Path B — honest redirect (PRIMARY for default-tip ALIGNED)
 
 ### B0 — owner script (preferred)
 
@@ -90,11 +90,11 @@ gh pr create --repo d6g8k5htny-coder/main --base main \
 MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 ```
 
-## Path A — DONE (MERGED)
+## Path A — REVERTED (PR #32)
 
-[PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c`. Default tip ALIGNED.
+[PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) was MERGED @ `b040bf0c`, then [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted default tip to pre-q0 @ `4fc1d7c` (**MISALIGNED**). Do not re-run Path A unless Dylan/CoS authorizes a fresh port.
 
-Historical (already executed; do not re-run):
+Historical (superseded by #32):
 
 ```bash
 # gh pr ready 2 --repo d6g8k5htny-coder/main
@@ -104,7 +104,7 @@ Historical (already executed; do not re-run):
 
 ## Path C — engineering patches on working tip
 
-**After default tip is ALIGNED** (PR #2 merged @ `b040bf0c`; Path B optional): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0004 + 0008–0016**. Prefer the owner script (fail-closed without write):
+Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0016** on hardening. Prefer the owner script (fail-closed without write):
 
 ```bash
 ./scripts/owner_land_path_c.sh
@@ -112,7 +112,7 @@ Historical (already executed; do not re-run):
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `890bb81`). Post-#2 default `main` is a
+`portable/patches/BASE_TIP.txt` (currently `fbb4360`). Post-#2 default `main` is a
 different tree — do not apply Path C there unless it already has PACKET.json:
 
 ```bash
@@ -125,7 +125,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ 890bb81
+# expect: problems=0, lemma_closed=false; 90 passed @ fbb4360
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when

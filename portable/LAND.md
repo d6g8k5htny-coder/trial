@@ -4,14 +4,13 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## Path A — MERGED (observed 2026-09-23 ~21:27 UTC)
+> ## Path A — REVERTED (batch 53 postscript)
 >
-> [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) **MERGED** @ `b040bf0c`. Default tip
-> now presents the q0 program (`audit_main_alignment` → **ALIGNED**). Agents did **not**
-> lift HOLD or merge #2 in this batch — owner/external land. Path B is no longer required
-> for default-tip alignment. Scientific effect remains **NONE** (no lemma/prize discharge).
+> [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) was **MERGED** @ `b040bf0c`, then CoS
+> [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** default tip → **MISALIGNED**
+> @ `4fc1d7c` (pre-q0 face). Prefer **Path B** for ALIGNED. Scientific effect remains **NONE**.
 
-## Path B — honest redirect (optional; default tip already ALIGNED)
+## Path B — honest redirect (PRIMARY for default-tip ALIGNED after #32 revert)
 
 ```bash
 # Preferred owner script:
@@ -45,12 +44,11 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
 **After Path A (PR #2) merged:** rebase hardening onto the new `main` if needed, then
-apply portable `apply_all` **0001–0004 + 0008–0016**. Default tip is ALIGNED; Path C
-is still the engineering stack on the hardening tip (diverged ahead of #2 merge).
+apply portable `apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
+Path C remains the engineering stack on the hardening tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `890bb81` — patches apply cleanly).
-**Do not** apply onto post-#2 default `main` alone — that tip is ALIGNED but a different tree
-(no `docs/math_status/PACKET.json`). Rebase hardening onto `main` first if integrating.
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `fbb4360` — patches apply cleanly).
+**Do not** apply onto default `main` alone — post-#32 tip is the pre-q0 face (no PACKET.json). Keep Path C on hardening.
 
 ```bash
 # Preferred (owner write creds):
@@ -86,7 +84,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 
 | PR | Role | Note |
 |----|------|------|
-| #2 | Port onto default `main` | **MERGED** @ `b040bf0c` (2026-09-23); default tip ALIGNED |
+| #2 | Port onto default `main` | **MERGED** @ `b040bf0c` then **REVERTED** by #32 @ `4fc1d7c` (MISALIGNED) |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
@@ -101,9 +99,10 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #26 | math_status README inventable probes honesty pointer | **Merged** @ `a8a5dd7`; BASE_TIP refreshed (batch 46); no status flip |
 | #27 | Isolate probe tests from tracked receipts | **Merged** @ `bf1fde3` (batch 48); tip-cut **0005/0006/0007 dropped** from `apply_all`; stack now **0001–0004 + 0008–0016** |
 | #29 | R1 exact-byte custody | **Merged** @ `8510874` (batch 50); BASE_TIP was `8510874` until #28 |
-| #28 | STATUS_JETMOD inventable merge+promote REFUSED honesty | **Merged** @ `890bb81` (batch 53); BASE_TIP refreshed; docs-only; stack **0001–0004 + 0008–0016** |
+| #28 | STATUS_JETMOD inventable merge+promote REFUSED honesty | **Merged** @ `890bb81` (batch 53); docs-only |
+| #30 | STATUS_RN_UNIF inventable ABSENT/EMPTY honesty | **Merged** @ `fbb4360` (batch 53); BASE_TIP refreshed; stack **0001–0004 + 0008–0016** |
+| #32 | Revert PR #2 onto default `main` | **Merged** @ `4fc1d7c` (CoS); default tip **MISALIGNED** |
 | #31 | Register source preflight (nonactivating) | OPEN MERGEABLE onto hardening |
-| #30 | STATUS_RN_UNIF inventable ABSENT/EMPTY honesty | OPEN draft |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -125,14 +124,13 @@ Attempts from the `trial` cloud token (2026-09-23):
 | trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
 Owner (or a write-enabled `main` agent) must run Path C for portable engineering patches.
-Path A is **MERGED** (default tip ALIGNED). Path B optional.
+Path A **REVERTED** by #32 (default tip MISALIGNED). Path B preferred for ALIGNED.
 
 
 ## Patch regeneration watch
 
-Working tip is **`890bb81`** (PR #28; batch 53 — was `8510874` post-#29). Default `main` **ALIGNED** via PR #2 @ `b040bf0c`.
-Hardening is ~53 commits behind post-#2 `main` / 1 ahead — rebase before merging Path C into default if desired (`PATH_C_REBASE_ONTO_MAIN=1`).
-Batch **53** (ALIGNED re-confirm + tip #28 + portable **0016**): tip **`8510874` → `890bb81`**; probe DENIED; `apply_all` 0001–0004+0008–0016 `--check` OK; receipts/bridge ResourceWarnings → shipped **0016**; BASE_TIP refreshed.
+Working tip is **`fbb4360`** (PR #30; batch 53 — was `890bb81` post-#28 / `8510874` post-#29). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`**; probe DENIED; `apply_all` 0001–0004+0008–0016 `--check` OK; receipts/bridge ResourceWarnings → shipped **0016**; BASE_TIP refreshed; default tip flipped MISALIGNED by #32.
 Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`**; probe DENIED; `apply_all` 0001–0004+0008–0015 `--check` OK; frozen/drive-index ResourceWarnings → shipped **0015**; owner_land_path_c auto stays on hardening (not post-#2 default main).
 Batch **50** (Path B probe + tip #29 + portable **0014**): tip **`bf1fde3` → `8510874`**; probe DENIED → Path B skipped; watch **ALIGNED** (PR #2 merged externally); collision ResourceWarnings → shipped **0014**; tip `apply_all` 0001–0004+0008–0014 @ 3.11 → **173** / **0 ResourceWarning**; collision **189** / **0 RW**.
 Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**; probe DENIED / then-MISALIGNED → Path B skipped; dropped tip-cut 0005/0006/0007; inventable-negative ResourceWarnings → shipped **0012**; tip `apply_all` 0001–0004+0008–0012 @ 3.11 → **173** / **0 ResourceWarning**.
@@ -156,8 +154,8 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 
 | Script | Role |
 |--------|------|
-| `scripts/owner_land_path_b.sh` | Optional (default tip already ALIGNED). Clone + `git am` Option-B → push branch + open PR. `--direct-main` opt-in. `--after-merge` remote verify. |
-| `scripts/owner_land_path_a.sh` | **DONE** — PR #2 merged @ `b040bf0c`. Script historical; not needed for alignment. |
+| `scripts/owner_land_path_b.sh` | **PRIMARY** for default-tip ALIGNED after #32. Clone + `git am` Option-B → push branch + open PR. `--direct-main` opt-in. `--after-merge` remote verify. |
+| `scripts/owner_land_path_a.sh` | **REVERTED** — PR #2 undone by #32. Do not re-run without Dylan/CoS auth. |
 | `scripts/owner_land_path_c.sh` | Write probe → clone **hardening** (auto; not post-#2 default main) → optional `PATH_C_REBASE_ONTO_MAIN=1` → `apply_all` 0001–0004 + 0008–0016 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.

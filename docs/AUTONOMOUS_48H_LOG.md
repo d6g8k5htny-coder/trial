@@ -12,20 +12,20 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
-### Batch 53 — 2026-09-23 ~21:55 UTC (ALIGNED re-confirm; tip #28; ship portable 0016)
+### Batch 53 — 2026-09-23 ~21:55 UTC (tip #28→#30; ship portable 0016; mid-batch #32 revert)
 
 - Window: start `2026-09-23T16:43:47Z`; elapsed ~5.2h / 48h; ~42.8h left. Scientific effect: **NONE**.
-- Rules: never promote research status; `lemma_closed` stays false; Path A done; Path C engineering only. Did not touch main `AGENTS.md` bootstrap; did not comment on PRs.
-- `audit_main_alignment.py` / `watch_main_alignment.py` → **ALIGNED**; tip_sha `b040bf0c…`; scientific_effect NONE; `root_has_AGENTS_md=true`.
-- `probe_main_write.py` → **DENIED** HTTP 403; tip_sha `b040bf0c…`. **Not WRITABLE** → Path C not applied to remote `main`.
-- Tip vs BASE_TIP: live hardening **`8510874` → `890bb81`** ([PR #28](https://github.com/d6g8k5htny-coder/main/pull/28) STATUS_JETMOD inventable merge+promote REFUSED honesty merged; docs-only) → BASE_TIP refreshed. Hardening still ~53 behind / 1 ahead of post-#2 `main`.
-- Open main PRs (read-only): #31 register-source preflight OPEN; #30/#21/#12/#8/#7/#3 drafts; #2/#27/#28/#29 MERGED.
-- `apply_all --check` @ `890bb81`: OK (0001–0004 + 0008–0015 then +0016). Topology unchanged (still hardening-shaped with PACKET.json).
-- 0016 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0015, focused+claims+recovery+frozen/dio green / 0 RW; **`tests/test_receipts.py` + `tests/test_bridge.py`** → **24** ResourceWarning (bare `open()` / `json.load(open(...))` / `_text` / `_open_modes`).
-- **Shipped portable 0016** (`receipts-bridge-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0016**. Verify @ `890bb81`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery+frozen/dio **192 passed** / **0 ResourceWarning**; receipts+bridge **541 passed** / **0 ResourceWarning**.
+- Rules: never promote research status; `lemma_closed` stays false; Path C engineering only. Did not touch main `AGENTS.md` bootstrap; did not comment on PRs.
+- **Start-of-batch:** `audit_main_alignment.py` / `watch_main_alignment.py` → **ALIGNED**; tip_sha `b040bf0c…`; scientific_effect NONE; `root_has_AGENTS_md=true`.
+- `probe_main_write.py` → **DENIED** HTTP 403 throughout. **Not WRITABLE** → Path C not applied to remote `main`.
+- Tip vs BASE_TIP: live hardening **`8510874` → `890bb81`** ([PR #28](https://github.com/d6g8k5htny-coder/main/pull/28)) → then **`fbb4360`** ([PR #30](https://github.com/d6g8k5htny-coder/main/pull/30) STATUS_RN_UNIF inventable ABSENT/EMPTY honesty) → BASE_TIP refreshed twice. Docs-only tip moves; topology unchanged (PACKET.json present).
+- `apply_all --check` @ `890bb81` and @ `fbb4360`: OK.
+- 0016 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0015 → **`tests/test_receipts.py` + `tests/test_bridge.py`** → **24** ResourceWarning.
+- **Shipped portable 0016** (`receipts-bridge-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0016**. Verify: problems=0 / lemma_closed=false; focused+claims+recovery+frozen/dio **192** / **0 RW**; receipts+bridge **541** / **0 RW**.
 - Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → **403** (integration cannot open PRs). **Landed on trial `main`** via direct push `fbefe0f..e8d4494`.
-- No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `fbefe0f..e8d4494` (+ land note `ac15edc`).
+- **Mid/post-batch CoS action (external):** [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **MERGED** @ `4fc1d7c` — reverts PR #2 onto default `main`. End-of-batch audit → **MISALIGNED** (pre-q0 complexity face; no root `AGENTS.md`). This agent did **not** merge #32 and did **not** comment. Path B again preferred for ALIGNED; Path C unchanged (hardening).
+- No research status promotion. `lemma_closed=false`. Scientific effect: **NONE**.
 
 ### Batch 52 — 2026-09-23 ~21:48 UTC (ALIGNED re-confirm; Path C landing; ship portable 0015)
 

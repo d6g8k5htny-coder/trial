@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# Print Path C (primary remaining) + Path A MERGED notice + live probe/audit status.
+# Print Path B (preferred for ALIGNED) + Path C engineering + live probe/audit.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# Path A MERGED 2026-09-23 @ b040bf0c — default tip ALIGNED.
-# Remaining owner land: Path C on hardening tip (BASE_TIP). Path B optional.
+# Path A (#2) was MERGED then REVERTED by CoS PR #32 — default tip MISALIGNED @ 4fc1d7c.
+# Preferred ALIGNED unblock: Path B. Path C = engineering on hardening (BASE_TIP).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== Path A MERGED — default tip ALIGNED ==="
-echo "PR #2 merged @ b040bf0c. Remaining: Path C on chatgpt/drive-github-hardening-20260919."
-echo "Post-#2 default main is a different tree — do not apply Path C there without PACKET.json."
+echo "=== Path A REVERTED (PR #32) — default tip MISALIGNED ==="
+echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c. Prefer Path B for ALIGNED."
+echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP; has PACKET.json)."
 echo "Scientific effect: NONE"
 echo
 
@@ -47,14 +47,12 @@ echo "$ROOT/scripts/wait_until_aligned.sh"
 echo "$ROOT/scripts/wait_until_aligned.sh --verify"
 echo
 echo "=== owner land scripts (run with *owner* gh auth / write on main) ==="
-echo "# Path C — PRIMARY remaining: apply_all 0001–0004 + 0008–0016 on hardening tip:"
-echo "$ROOT/scripts/owner_land_path_c.sh"
-echo "# Optional rebase hardening onto post-#2 main first:"
-echo "# PATH_C_REBASE_ONTO_MAIN=1 $ROOT/scripts/owner_land_path_c.sh"
-echo "# Path B — optional (default tip already ALIGNED):"
+echo "# Path B — PRIMARY for default-tip ALIGNED (Option-B notice):"
 echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
-echo "# Path A — DONE (PR #2 merged @ b040bf0c); historical script:"
+echo "# Path C — engineering: apply_all 0001–0004 + 0008–0016 on hardening tip:"
+echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# Path A — REVERTED by PR #32; do not re-run without Dylan/CoS auth:"
 echo "$ROOT/scripts/owner_land_path_a.sh"
 echo
 echo "=== copy-paste Path C (needs write on main) ==="

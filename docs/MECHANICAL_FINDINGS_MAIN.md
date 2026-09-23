@@ -2,7 +2,7 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
-## After portable patches 0001–0004 + 0008–0016 on `890bb81` (batch 53)
+## After portable patches 0001–0004 + 0008–0016 on `fbb4360` (batch 53)
 
 | Check | Result |
 |-------|--------|
@@ -14,7 +14,7 @@ Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene not
 
 Residual hunt: no further bare-open ResourceWarnings in receipts/bridge after 0016.
 
-Post-#2 default `main` @ `b040bf0c` is ALIGNED but a different tree (no `docs/math_status/PACKET.json`) — Path C apply target remains hardening BASE_TIP (`890bb81` after PR #28).
+Default `main` @ `4fc1d7c` is **MISALIGNED** after CoS PR #32 reverted PR #2. Path C apply target remains hardening BASE_TIP (`fbb4360` after PR #30).
 
 ## After portable patches 0001–0004 + 0008–0015 on `8510874` (batch 52)
 

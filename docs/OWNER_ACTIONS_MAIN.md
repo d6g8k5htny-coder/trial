@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Path A MERGED (2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) @ `b040bf0c`. Default tip **ALIGNED**. Scientific effect: **NONE**.
-> Remaining: **Path C** on hardening tip (`scripts/owner_land_path_c.sh`; stack 0001–0004 + 0008–0016). Path B optional. Trial tokens still 403 on write.
+> **Batch 53 postscript:** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) was MERGED @ `b040bf0c`, then CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** default tip → **MISALIGNED** @ `4fc1d7c`. Scientific effect: **NONE**.
+> Preferred unblock: **Path B** (Option-B notice) or owner-authorized Path A re-port. Path C remains engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `fbb4360`). Trial tokens still 403 on write.
 
 ### 1. Stop advertising the abandoned complexity-physics README
 
