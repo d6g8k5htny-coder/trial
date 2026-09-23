@@ -82,6 +82,8 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "portable-patches-on-main" in ci
     assert "apply_all.sh" in ci
     assert "apply_all.sh --check" in ci or "apply_all.sh --check" in ci.replace("\n", " ")
+    # Audit/watch steps must export the runner token (avoids unauthenticated API 403s).
+    assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" in ci
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
     assert "MAIN_PUSH_TOKEN" in land_wf
     assert "option-b" in land_wf

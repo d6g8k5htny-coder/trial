@@ -197,3 +197,15 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Tip CI failed on `c382867`: `test_audit_script_reports_misalignment_or_ok` got audit exit **2** (`HTTP Error 403: rate limit exceeded`) while asserting only `(0, 1)`.
 - Fix: accept transport exit 2 in that intent test; `audit_main_alignment.py` now sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (GHA default) to avoid unauthenticated API rate limits.
 - Scientific effect: NONE. No research status promotion.
+
+### Batch 20 — 2026-09-23 18:16 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.51h** / remaining **~46.49h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable; no Option-B draft PR from this token. Did **not** touch `research.yml` schedules (R2-06).
+- Working tip vs BASE_TIP: still **`3e8f388`** (ls-remote + fetch; no pack tip refresh).
+- Portable `apply_all` 0001–0005 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; `docs/math_status_probes/` clean.
+- Stack (read-only on `main`): PR #2 still draft **MERGEABLE/CLEAN**. Heads unchanged: #19 `d47e44d` (now **CLEAN**), #20 `4103ee1` (still UNSTABLE), #21 `d1e7d0e` (**CLEAN**). Updated LAND / OWNER / COMPATIBILITY for #19 CLEAN.
+- Tip CI on trial `5a01146`: sanity + portable-patches-on-main both **green**.
+- Hardening (no tip-level 0007): trial CI now exports `GITHUB_TOKEN` on audit/watch steps; `alignment_status.py` sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (same class as batch 19b). Intent test asserts the CI env export.
+- Trial pytest: **15 passed**. Scientific effect: NONE. No status promotion.

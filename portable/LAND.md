@@ -64,7 +64,7 @@ git push -u origin HEAD
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
 | #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` (ancestor of `3e8f388`) |
-| #19–#20 | Docs banners / instrumentation follow-on | #19 `d47e44d` / #20 `4103ee1`; tip-cut 0005 OK; #20 needs optional **0006** + **0002**; both UNSTABLE while `verify` pending |
+| #19–#20 | Docs banners / instrumentation follow-on | #19 `d47e44d` **CLEAN**; #20 `4103ee1` still UNSTABLE (`verify` twin); tip-cut 0005 OK; #20 needs optional **0006** + **0002** |
 | #21 | Attestations + H3 salvage | MERGEABLE/**CLEAN** onto hardening (base OID `1ea0ae8`, ancestor of tip); patches 0001–0004 apply; inventable tests absent on that base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
@@ -92,13 +92,13 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 ## Patch regeneration watch
 
 Working tip is still `3e8f388`. Open drafts **#19 / #20 / #21** (plus older stack).
-Batch **19** (align-watch): tip unchanged; #21 now **CLEAN**; write still 403.
-#20 head `4103ee1` takes tip-cut **0005** + optional **0006** (promote 0006 into
-`apply_all.sh` only after #20 merges — see patches README). Copy-paste owner
-commands: [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md). Write probe:
-`scripts/probe_main_write.py`. After further PACKET/`math_console` merges, re-run
-`apply_all.sh --check` + focused tests; regenerate **0002** only if digests drift.
-PR #21 does not edit PACKET/`math_console`.
+Batch **20**: tip unchanged; #19 now **CLEAN** (was UNSTABLE); #21 still **CLEAN**;
+#20 still UNSTABLE; write still 403. #20 head `4103ee1` takes tip-cut **0005** +
+optional **0006** (promote 0006 into `apply_all.sh` only after #20 merges — see
+patches README). Copy-paste owner commands: [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md).
+Write probe: `scripts/probe_main_write.py`. After further PACKET/`math_console`
+merges, re-run `apply_all.sh --check` + focused tests; regenerate **0002** only if
+digests drift. PR #21 does not edit PACKET/`math_console`.
 
 
 ## Path B via trial Actions (token secret)
