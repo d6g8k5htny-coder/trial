@@ -18,7 +18,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0010
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0011
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -30,6 +30,7 @@ git apply /path/to/trial/portable/patches/0007-inventable-tests-close-file-handl
 git apply /path/to/trial/portable/patches/0008-carriers-math-status-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0009-claims-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0010-recovery-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0011-math-status-check-close-file-handles.patch
 ```
 
 Verify:
@@ -43,13 +44,14 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ a8a5dd7
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused+claims+recovery emit no ResourceWarning (unclosed file) after 0007–0010
+# math_status_check itself emits 0 ResourceWarning after 0011
 ```
 
 ## Historical / optional
 
 - `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current tip.
 - **0006** was optional until PR #20 merged (batch 21). It is now in `apply_all.sh`.
-- **PR #27** (`20e31a1`, probe-test isolation; prior `63b519f` / `8d023a9`): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`; optional **0009/0010** also apply). No `0005-pr27-*` alternate (defect gone).
+- **PR #27** (`20e31a1`, probe-test isolation; prior `63b519f` / `8d023a9`): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`; optional **0009/0010/0011** also apply). No `0005-pr27-*` alternate (defect gone).
 
 ### When 0006 was promoted
 
@@ -138,3 +140,13 @@ After 0001–0009 on tip `46af1ca` @ CPython 3.11, `test_recovery` still emitted
 `open(...).read()` / `json.load(open(...))` / `json.dump(..., open(...))` in
 fixture writers, ledger readers, and `quarantined_digests` / `check` / `main`.
 Use `with open(...)`. No scientific change; `lemma_closed` stays false.
+
+## 0011 — math_status_check close file handles
+
+Same class as 0008/0010 for `tools/math_status_check.py` packet readers.
+After 0001–0010 on tip `a8a5dd7` @ CPython 3.11, running
+`python3 -W default::ResourceWarning tools/math_status_check.py` still emitted
+**30** `ResourceWarning: unclosed file` lines from bare `open(...).read()` on
+transcription digests, STATUS prose, `math_console.py`, snapshot, and
+`PACKET.json`. Use `with open(...)`. No scientific change; `lemma_closed`
+stays false.

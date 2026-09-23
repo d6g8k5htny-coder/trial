@@ -518,6 +518,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 47 — 2026-09-23 ~20:58 UTC (Path B probe; ship portable 0011)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (FF `e4bdd74` → `7c6f2b3`, trial PR #23 / batch 46).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `watch_main_alignment.py` → **MISALIGNED**; scientific_effect NONE.
+- Main PR #27 still **OPEN** (`mergedAt=null`, head `20e31a1`) → did **not** drop tip-cut 0005/0006.
+- Tip vs BASE_TIP: live hardening **`a8a5dd7`** == BASE_TIP (no pack tip refresh).
+- 0011 hunt @ tip `a8a5dd7` / CPython **3.11.16**: after 0001–0010, focused+claims+recovery green / 0 ResourceWarning; **`tools/math_status_check.py`** → **30** `ResourceWarning: unclosed file` from bare `open(...).read()` on packet readers.
+- **Shipped portable 0011** (`math-status-check-close-file-handles`); `apply_all.sh` now 0001–0011. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false / **0 ResourceWarning**; focused+claims+recovery **173 passed** / **0 ResourceWarning**.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 46 — 2026-09-23 ~20:51 UTC (PR #27 sync; tip #26; Path B probe)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
