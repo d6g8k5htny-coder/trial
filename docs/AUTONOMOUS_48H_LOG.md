@@ -442,3 +442,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Standing: never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan lifts HOLD. Never promote research status.
 - Probe + Path B: `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip `f25b04bb…`. **Did not** run Path B (not WRITABLE). **Did not** call `gh pr ready` / `gh pr merge` on PR #2. Path A script refuse gate verified (`exit 1` without `OWNER_FORCE_PATH_A`).
 - Trial pytest: **17 passed**. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED; HOLD on #2).
+
+### Batch 37 — 2026-09-23 19:54 UTC (Path B probe; PR #14 merge)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Rules honored: PR #2 **HOLD** (left draft/untouched); Path B only for ALIGNED; no research status promotion; no Path A attempts.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip_sha `f25b04bb…`.
+- `watch_main_alignment.py` → **MISALIGNED**; `audit_main_alignment` exit 1; scientific_effect NONE.
+- Path B land **skipped** (not WRITABLE). Did **not** run `owner_land_path_b.sh`.
+- Else branch:
+  - `gh workflow run land-option-b-on-main.yml` (trial) → **403** cannot create workflow_dispatch
+  - (main) workflow **404** not on default branch
+  - `MAIN_PUSH_TOKEN` **NOT_SET**; `GH_TOKEN`/`GITHUB_TOKEN` **NOT_SET**; env repos = `trial` only (no `main`)
+- Trial [PR #14](https://github.com/d6g8k5htny-coder/trial/pull/14): CI green (sanity + portable-patches SUCCESS) → marked ready + **merged** @ `075358f` (HOLD pivot docs + tip 3f85e93). Continue branch **survived** @ `07067bef`.
+- Tip vs BASE_TIP: live hardening still **`3f85e93`** (ls-remote match; **no pack tip refresh**).
+- PR #2 still OPEN/DRAFT/MERGEABLE/CLEAN — untouched. Trial pytest: **17 passed**.
+- Not GOAL_COMPLETE_READY (not ALIGNED). Owner unblock remains Path B with write creds / `MAIN_PUSH_TOKEN` + dispatch, or relaunch with `main` in env repos.
