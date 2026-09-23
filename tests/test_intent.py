@@ -81,6 +81,9 @@ def test_autonomous_log_and_ci_exist() -> None:
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
     assert "MAIN_PUSH_TOKEN" in land_wf
     assert "option-b" in land_wf
+    assert "dry_run" in land_wf
+    assert "0001-option-b-default-branch-notice.patch" in land_wf
+    assert "Locate Option-B patch" in land_wf or "PATCH_PATH" in land_wf
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
     assert "--check" in apply_all
     assert "CHECK_ONLY" in apply_all
@@ -195,3 +198,32 @@ def test_pack_portable_script() -> None:
         out = os.path.join(td, "pack.tgz")
         subprocess.run([str(script), out], check=True, timeout=60)
         assert os.path.getsize(out) > 1000
+
+
+def test_owner_one_liners_and_probe_main_write() -> None:
+    one = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Path A" in one and "Path B" in one and "Path C" in one
+    assert "gh pr ready 2" in one
+    assert "gh pr merge 2" in one
+    assert "MAIN_PUSH_TOKEN" in one
+    assert "apply_all.sh" in one
+    assert "Scientific effect: NONE" in one
+    patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
+    assert "When to promote" in patches_readme
+    assert "0006" in patches_readme
+    assert "apply_all.sh" in patches_readme
+    probe = ROOT / "scripts" / "probe_main_write.py"
+    assert probe.is_file()
+    result = subprocess.run(
+        [sys.executable, str(probe)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+    )
+    assert result.returncode in (0, 1, 2), result.stderr
+    data = __import__("json").loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert data["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
+    if result.returncode == 1:
+        assert data["state"] == "DENIED"

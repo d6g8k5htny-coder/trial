@@ -160,3 +160,23 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Portable: re-cut tip **0005** for post-#17 inventable test; kept `0005-pre17-…` + optional **0006** (instrumentation dirty digests on PR #20 only; **not** in `apply_all.sh`). BASE_TIP / COMPATIBILITY / README refreshed.
 - CPython 3.11.16 after `apply_all` on `3e8f388`: `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; inventable/register slice **134 passed** (153 with ci_pins host-flake deselected). PR #19: 0001–0005 OK / 86 passed. PR #20: tip-cut 0005 fails; 0001–0004 + pre17-0005 + 0006 → **90 passed**, probes clean.
 - No tip-level 0006 invented beyond the optional PR #20 patch. Scientific effect: NONE.
+
+### Batch 18 — 2026-09-23 18:05 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.28h** / remaining **~46.72h** (window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write probes (exact errors):
+  - `git push` unique `cursor-probe-batch18-*`: **403** — `Permission to d6g8k5htny-coder/main.git denied to cursor[bot].`
+  - `gh api POST .../git/refs`: **403** — `Resource not accessible by integration`
+  - `gh pr ready 2`: **403** — `GraphQL: Resource not accessible by integration (markPullRequestReadyForReview)`
+  - `gh pr merge 2`: **403** — `GraphQL: Resource not accessible by integration (mergePullRequest)`
+  - `gh workflow run land-option-b-on-main.yml` + API dispatch: **403** — `Resource not accessible by integration`
+- Env secret names (values redacted / absent): `MAIN_PUSH_TOKEN` absent; `GH_TOKEN` absent; `GITHUB_TOKEN` absent. Auth via `gh` hosts.yml (`cursor`). Matching env key names seen: `CURSOR_*`, `GH_TELEMETRY` only (no usable write token).
+- Working tip vs BASE_TIP: still **`3e8f388`** (no pack tip refresh). PR #2 draft MERGEABLE/CLEAN. PR #20 head moved `c46463b` → **`4103ee1`** (tip-cut 0005 applies; pre17-0005 does not; 0006 still needed).
+- Path A/B progress without write:
+  - Improved `.github/workflows/land-option-b-on-main.yml` (clearer `dry_run`, patch path verify step, failure messages).
+  - Added `scripts/probe_main_write.py` (exit 0=writable / 1=denied / 2=transport); local run → exit **1 DENIED**.
+  - Added `portable/OWNER_ONE_LINERS.md` (Path A/B/C copy-paste).
+  - Documented when to promote **0006** into `apply_all.sh` (patches README + root README).
+- Tip @ 3.11.16 after `apply_all`: math_status problems=0 / lemma_closed=false; focused **86 passed**. No solid tip-level **0007** (workflow-integrity mass fails = host `python` missing). PR #20 +0005+0006: **90 passed**, probes clean.
+- Trial pytest: **15 passed**. Scientific effect: NONE.

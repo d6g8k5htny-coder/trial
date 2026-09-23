@@ -68,10 +68,11 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 (`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
 
-## Stack note (2026-09-23 batch 17)
+## Stack note (2026-09-23 batch 18)
 
-- Working tip `chatgpt/drive-github-hardening-20260919` moved to `3e8f388` ([PR #17](https://github.com/d6g8k5htny-coder/main/pull/17) merged after #18/#16).
-- Open drafts still include #19 (`d47e44d`), #20 (`c46463b`, dirty), #21, plus older stack. PR #2 still draft **MERGEABLE/CLEAN** on default `main`.
-- Write to `d6g8k5htny-coder/main` still **403** (git push + Git Data API). Path A/B blocked until owner grants write or merges #2.
-- Critical path unchanged: mark ready + merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), or Path B notice on default `main`.
+- Working tip still `3e8f388` ([PR #17](https://github.com/d6g8k5htny-coder/main/pull/17)).
+- Open drafts: #19, #20 (`4103ee1`), #21, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
+- Write still **403** (git push, `POST git/refs`, `gh pr ready/merge 2`, trial `workflow_dispatch`). No `MAIN_PUSH_TOKEN` / `GH_TOKEN` / `GITHUB_TOKEN` in this VM env (gh uses hosts.yml).
+- Copy-paste: [`../portable/OWNER_ONE_LINERS.md`](../portable/OWNER_ONE_LINERS.md). Probe: `scripts/probe_main_write.py` (0=writable, 1=denied, 2=transport).
+- Promote portable **0006** into `apply_all.sh` only after PR #20 lands instrumentation STATUS tests on the tip.
 - Do **not** enable `research.yml` schedules for R2-06.

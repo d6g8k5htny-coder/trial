@@ -64,7 +64,7 @@ git push -u origin HEAD
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
 | #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` (ancestor of `3e8f388`) |
-| #19–#20 | Docs banners / instrumentation follow-on | #19 accepts tip-cut 0005; #20 needs `0005-pre17` + optional **0006** + **0002** |
+| #19–#20 | Docs banners / instrumentation follow-on | #19 accepts tip-cut 0005; #20 @ `4103ee1` accepts tip-cut 0005 + optional **0006** + **0002** |
 | #21 | Attestations + H3 salvage (on #3) | MERGEABLE/UNSTABLE; patches apply; no inventable tests on base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
@@ -80,22 +80,23 @@ Attempts from the `trial` cloud token (2026-09-23):
 
 | Action | Result |
 |--------|--------|
-| `git push` to `main` | 403 |
-| `POST /git/refs` on `main` | 403 |
-| `PUT .../pulls/2/merge` | 403 |
-| GraphQL `markPullRequestReadyForReview` on PR #2 | FORBIDDEN |
+| `git push` to `main` | 403 — denied to cursor[bot] |
+| `POST /git/refs` on `main` | 403 — Resource not accessible by integration |
+| `gh pr ready 2` / GraphQL markReady | 403 — Resource not accessible by integration |
+| `gh pr merge 2` / GraphQL mergePullRequest | 403 — Resource not accessible by integration |
+| trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
 Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 
 ## Patch regeneration watch
 
-Working tip is now `3e8f388` (PR #17 merged after #18/#16). Open drafts **#19 /
-#20 / #21** (plus older stack). Batch **17** re-cuts tip **0005** and adds optional
-**0006** (PR #20 instrumentation restore; not in `apply_all.sh`). `apply_all.sh`
-(0001–0005) is `--check` clean on `3e8f388` / #19; #20 uses `0005-pre17` + 0006.
-After further PACKET/`math_console` merges, re-run `apply_all.sh --check` + focused
-tests; regenerate **0002** only if digests drift under `math_status_check`.
+Working tip is still `3e8f388`. Open drafts **#19 / #20 / #21** (plus older stack).
+Batch **18**: #20 head `4103ee1` takes tip-cut **0005** + optional **0006** (promote
+0006 into `apply_all.sh` only after #20 merges — see patches README). Copy-paste
+owner commands: [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md). Write probe:
+`scripts/probe_main_write.py`. After further PACKET/`math_console` merges, re-run
+`apply_all.sh --check` + focused tests; regenerate **0002** only if digests drift.
 PR #21 does not edit PACKET/`math_console`.
 
 

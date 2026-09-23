@@ -34,8 +34,16 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test
 
 ## Optional (not in `apply_all.sh`)
 
-- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (e.g. open PR #20).
-- `0006-instrumentation-status-restore-receipts-after-test.patch` — same dirty-digest fix for PR #20 instrumentation STATUS tests. Apply after 0001–0004 + `0005-pre17` on that head.
+- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current PR #20 (`4103ee1`+) when it applies.
+- `0006-instrumentation-status-restore-receipts-after-test.patch` — same dirty-digest fix for PR #20 instrumentation STATUS tests (`tests/test_inventable_jetmod_instrumentation_status.py`).
+
+### When to promote **0006** into `apply_all.sh`
+
+Promote **0006** into `apply_all.sh` **only after** PR #20 (or equivalent) merges so that `tests/test_inventable_jetmod_instrumentation_status.py` exists on the hardening tip. Until then:
+
+1. Keep 0006 optional (not listed in `apply_all.sh`).
+2. On PR #20 heads: apply tip `0001–0005` (or `0001–0004` + `0005-pre17` on older heads) then **0006**.
+3. After merge: add the 0006 path to `PATCHES=(…)` in `apply_all.sh`, refresh `BASE_TIP.txt`, and re-run focused tests including the instrumentation file.
 
 ## 0001 — `carriers_verify` ignores bytecode caches
 

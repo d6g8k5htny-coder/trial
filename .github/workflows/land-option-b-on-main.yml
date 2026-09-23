@@ -7,6 +7,14 @@
 #
 # Scientific effect: NONE. Documentation-only redirect on default main.
 # Prefer merging PR #2 when ready (Path A). This is Path B automation.
+#
+# dry_run semantics:
+#   true  (default) — clone default main anonymously, git am the Option-B
+#                     format-patch, print README head, exit 0 without push.
+#                     Use this to verify the patch still applies.
+#   false           — requires MAIN_PUSH_TOKEN; clone with the token, git am,
+#                     push branch cursor/option-b-notice-from-trial.
+#                     Failure messages name the missing secret / HTTP denial.
 
 name: land-option-b-on-main
 
@@ -14,7 +22,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "If true, apply+commit locally in the runner but do not push"
+        description: "true = apply locally only (no push). false = push branch (needs MAIN_PUSH_TOKEN)."
         type: boolean
         default: true
 
@@ -23,33 +31,78 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Locate Option-B patch
+        id: patch
+        run: |
+          set -euo pipefail
+          PATCH="portable/main-default-branch/0001-option-b-default-branch-notice.patch"
+          if [ ! -f "$PATCH" ]; then
+            echo "::error::Missing Option-B patch at ${PATCH} (checked out ref=${GITHUB_REF}). Re-run from trial main/default branch that contains portable/main-default-branch/."
+            exit 1
+          fi
+          echo "path=${PATCH}" >> "$GITHUB_OUTPUT"
+          echo "Found patch: ${PATCH} ($(wc -c <"$PATCH") bytes)"
+
       - name: Require token unless dry-run
         if: ${{ inputs.dry_run == false }}
         env:
           MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
         run: |
-          if [ -z "$MAIN_PUSH_TOKEN" ]; then
-            echo "Set repository secret MAIN_PUSH_TOKEN (write on d6g8k5htny-coder/main), or run with dry_run=true." >&2
+          set -euo pipefail
+          if [ -z "${MAIN_PUSH_TOKEN}" ]; then
+            echo "::error::dry_run=false but repository secret MAIN_PUSH_TOKEN is empty."
+            echo "Add a PAT with Contents:Write on d6g8k5htny-coder/main, or re-run with dry_run=true."
             exit 1
           fi
+          echo "MAIN_PUSH_TOKEN is set (value redacted)."
+
       - name: Clone default main and apply Option-B
         env:
           MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          PATCH_PATH: ${{ steps.patch.outputs.path }}
         run: |
           set -euo pipefail
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            git clone --depth 1 https://github.com/d6g8k5htny-coder/main.git main-land
-          else
-            git clone --depth 1 "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land
+          PATCH="${GITHUB_WORKSPACE}/${PATCH_PATH}"
+          if [ ! -f "$PATCH" ]; then
+            echo "::error::Patch vanished after checkout: ${PATCH}"
+            exit 1
           fi
+
+          rm -rf main-land
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "dry_run=true — cloning default main anonymously (no push)."
+            if ! git clone --depth 1 https://github.com/d6g8k5htny-coder/main.git main-land; then
+              echo "::error::git clone of d6g8k5htny-coder/main failed (transport)."
+              exit 1
+            fi
+          else
+            echo "dry_run=false — cloning with MAIN_PUSH_TOKEN."
+            if ! git clone --depth 1 "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land; then
+              echo "::error::Authenticated clone failed. Token may lack Contents:Read/Write on d6g8k5htny-coder/main, or network failed."
+              exit 1
+            fi
+          fi
+
           cd main-land
           git checkout -b cursor/option-b-notice-from-trial
-          git am ../portable/main-default-branch/0001-option-b-default-branch-notice.patch
+          if ! git am "$PATCH"; then
+            echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."
+            git am --abort 2>/dev/null || true
+            exit 1
+          fi
           echo "Applied Option-B. README head:"
           head -8 README.md
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            echo "dry_run=true — not pushing."
+
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "dry_run=true — apply succeeded; not pushing. Re-run with dry_run=false + MAIN_PUSH_TOKEN to land."
             exit 0
           fi
-          git push -u origin HEAD
-          echo "Pushed branch cursor/option-b-notice-from-trial. Open a PR into main and merge when satisfied."
+
+          if ! git push -u origin HEAD; then
+            echo "::error::git push denied or failed. Confirm MAIN_PUSH_TOKEN has Contents:Write on d6g8k5htny-coder/main (expected HTTP 403 if scope missing)."
+            exit 1
+          fi
+          echo "Pushed branch cursor/option-b-notice-from-trial."
+          echo "Open a PR into default main and merge when satisfied (or use Path A: gh pr ready 2 && gh pr merge 2)."

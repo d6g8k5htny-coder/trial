@@ -33,11 +33,13 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
 - [`portable/pr2-landing/`](portable/pr2-landing/) — checklist + `VERIFY_AFTER_MERGE.sh` for MERGEABLE PR #2
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
+- [`portable/OWNER_ONE_LINERS.md`](portable/OWNER_ONE_LINERS.md) — copy-paste Path A (`gh pr ready/merge 2`), Path B (Actions + token), Path C (`apply_all`)
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
-- [`portable/patches/`](portable/patches/) — engineering patches + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix
+- [`portable/patches/`](portable/patches/) — engineering patches + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix; promote optional **0006** into `apply_all.sh` only after PR #20 lands instrumentation STATUS tests on the tip (see patches README)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 1 while default tip is still the pre-q0 face)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher
+- [`scripts/probe_main_write.py`](scripts/probe_main_write.py) — write probe (exit 0=writable, 1=denied, 2=transport)
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).
 
