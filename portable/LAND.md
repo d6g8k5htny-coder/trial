@@ -61,8 +61,11 @@ git push -u origin HEAD
 |----|------|------|
 | #2 | Port onto default `main` | Critical for alignment |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
-| #16 | Cold-start nav docs | Independent |
-| #17 | More inventable shortcut refusals | MERGEABLE; our patches still apply |
+| #16 | Cold-start nav docs | **Merged** (docs-only) |
+| #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
+| #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` (ancestor of `3e8f388`) |
+| #19–#20 | Docs banners / instrumentation follow-on | #19 `d47e44d` **CLEAN**; #20 `4103ee1` still UNSTABLE (`verify` twin); tip-cut 0005 OK; #20 needs optional **0006** + **0002** |
+| #21 | Attestations + H3 salvage | MERGEABLE/**CLEAN** onto hardening (base OID `1ea0ae8`, ancestor of tip); patches 0001–0004 apply; inventable tests absent on that base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -77,21 +80,25 @@ Attempts from the `trial` cloud token (2026-09-23):
 
 | Action | Result |
 |--------|--------|
-| `git push` to `main` | 403 |
-| `POST /git/refs` on `main` | 403 |
-| `PUT .../pulls/2/merge` | 403 |
-| GraphQL `markPullRequestReadyForReview` on PR #2 | FORBIDDEN |
+| `git push` to `main` | 403 — denied to cursor[bot] |
+| `POST /git/refs` on `main` | 403 — Resource not accessible by integration |
+| `gh pr ready 2` / GraphQL markReady | 403 — Resource not accessible by integration |
+| `gh pr merge 2` / GraphQL mergePullRequest | 403 — Resource not accessible by integration |
+| trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
 Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 
 ## Patch regeneration watch
 
-Open drafts **#18 / #19 / #20** touch `docs/math_status/PACKET.json` (and related
-status tooling). As of batch 10, patches **0001–0004 are still `--check` clean**
-on PR #17/#18/#20 heads as well as hardening `1ea0ae8`. After those PRs merge,
-re-run `apply_all.sh` + focused tests; regenerate **0002** only if PACKET digests
-drift under `math_status_check`.
+Working tip is still `3e8f388`. Open drafts **#19 / #20 / #21** (plus older stack).
+Batch **20**: tip unchanged; #19 now **CLEAN** (was UNSTABLE); #21 still **CLEAN**;
+#20 still UNSTABLE; write still 403. #20 head `4103ee1` takes tip-cut **0005** +
+optional **0006** (promote 0006 into `apply_all.sh` only after #20 merges — see
+patches README). Copy-paste owner commands: [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md).
+Write probe: `scripts/probe_main_write.py`. After further PACKET/`math_console`
+merges, re-run `apply_all.sh --check` + focused tests; regenerate **0002** only if
+digests drift. PR #21 does not edit PACKET/`math_console`.
 
 
 ## Path B via trial Actions (token secret)

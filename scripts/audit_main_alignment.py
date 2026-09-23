@@ -12,6 +12,7 @@ No claim status is read or written.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import urllib.error
 import urllib.request
@@ -31,14 +32,24 @@ Q0_MARKERS = (
 )
 
 
+def _token() -> str | None:
+    """Prefer GH_TOKEN / GITHUB_TOKEN so CI avoids unauthenticated rate limits."""
+    for key in ("GH_TOKEN", "GITHUB_TOKEN"):
+        val = os.environ.get(key)
+        if val:
+            return val
+    return None
+
+
 def get_json(url: str) -> dict | list:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "trial-alignment-audit",
-        },
-    )
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "trial-alignment-audit",
+    }
+    token = _token()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=60) as resp:
         return json.load(resp)
 

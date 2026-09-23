@@ -55,7 +55,19 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 |----|-------|--------|
 | #2 | MERGEABLE/CLEAN onto default `main` | **Land this** (Path A) |
 | #7, #8 | MERGEABLE/CLEAN onto hardening | Independent reviews |
-| #16, #17 | MERGEABLE (CI may still be settling) | Docs / inventable refusals |
+| #17 | **Merged** @ `3e8f388` | Tip-cut portable **0005** applies on tip |
+| #19 | DRAFT docs banners (`d47e44d`) | MERGEABLE; UNSTABLE while `verify` pending; patches 0001–0005 apply |
+| #20 | OPEN instrumentation STATUS (`4103ee1`) | MERGEABLE; UNSTABLE while `verify` pending; needs portable **0002** + optional **0006** |
+| #21 | Attestations + H3 salvage (`d1e7d0e`) | MERGEABLE/**CLEAN** onto hardening (base OID `1ea0ae8`); not a status discharge |
+
+## Merged since these notes started
+
+| PR | Merge | Note |
+|----|-------|------|
+| #15 | inventable probes → hardening | Tip ancestors include receipts |
+| #16 | cold-start nav docs | Docs-only |
+| #18 | PARTIAL/REFUSED JETMOD STATUS vocab → hardening @ `340d98a` | Supersedes overlapping #12 math_status intent; **not** a discharge |
+| #17 | Fail-closed inventable JETMOD shortcut refusals → hardening @ `3e8f388` | Expanded inventable EXPECTED/SHORTCUTS; tip-cut 0005 re-cut; **not** a discharge |
 
 ## Non-claims
 

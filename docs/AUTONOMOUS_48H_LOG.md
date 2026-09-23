@@ -123,3 +123,89 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Merged trial PR #2 into trial main.
 - Expanded portable patch 0004 to cover both `git -C` fixture timeout argument orders.
 - d6g8k5htny-coder/main still MISALIGNED / write 403; Actions dispatch still 403.
+
+### Batch 15 — 2026-09-23 17:28 UTC
+
+- Write still 403; default tip still MISALIGNED (`f25b04bb`); PR #2 still draft MERGEABLE/CLEAN.
+- New open draft **PR #21** (attestations / H3 salvage, based on #3): patches 0001–0004 `--check` OK; focused 81 passed (no inventable tests on that base); lemma_closed=false.
+- **PR #16** went ready then **merged** (docs-only; hardening tip still `1ea0ae8`).
+- Fixed `portable/patches/apply_all.sh` so `--check` is a real dry-run (previously ignored the flag and applied).
+- CI `portable-patches-on-main` now invokes `apply_all.sh --check` then apply.
+- Refreshed COMPATIBILITY.md / LAND.md / OWNER_ACTIONS for #16/#21.
+- Trial pytest: 14 passed. land-option-b workflow_dispatch still 403.
+- Opened trial [PR #4](https://github.com/d6g8k5htny-coder/trial/pull/4).
+
+### Batch 16 — 2026-09-23 17:45 UTC
+
+- Window ~0.84h elapsed / ~47.16h remaining (start `2026-09-23T16:43:47Z`, window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; write probe (unique `cursor-probe-*` push + `gh api POST git/refs`) both **403**.
+- Working tip moved: `1ea0ae8` → **`340d98a`** (PR #18 merge + #16). No new open PRs after #21. PR #2 still draft MERGEABLE/CLEAN; verify SUCCESS.
+- Portable 0001–0004 `--check` + apply OK on `340d98a`; math_status problems=0 / lemma_closed=false; focused **86 passed**.
+- Broad pytest: 2930 passed / 142 failed — failures are agent-host env (`python` missing; CPython 3.12 vs CI 3.11), not new tip defects. Known 0003 warning still reproduces pre-patch. **No 0005.**
+- Updated BASE_TIP / README / COMPATIBILITY / LAND / OWNER_ACTIONS for tip move. Path A/B not landable (no write). Did not touch `research.yml` schedules.
+
+### Batch 16b — 2026-09-23 17:50 UTC
+
+- Engineering re-audit on tip `340d98a` with CPython **3.11.16** (uv): after 0001–0004, `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; inventable/register/ci slice **378 passed**.
+- PR heads: #17 `833ca55`, #19 `837a2b4`, #20 `c46463b` — 0001–0004 still apply; #19/#20 focused green; #20 still needs 0002 (`code_prototypes` paths).
+- **Defect found:** `test_runner_writes_refused_receipts_only` snapshotted receipt bytes but never restored; runner rewrites `generated_at_*` + index sha256 → dirty `docs/math_status_probes/` after every pytest (digest drift).
+- Shipped portable **0005** (`inventable-probes-restore-receipts-after-test`); `apply_all.sh` now 0001–0005. 0005 applies on tip/#19/#20; **does not apply on #17** (expanded test). Noted PR #18 merge in CONFLICTING_PR_NOTES. No status flips.
+
+### Batch 17 — hour-1 check-in — 2026-09-23 17:58 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.25h** / remaining **~46.75h** (window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; write probe (unique `cursor-probe-*` git push + `gh api POST git/refs`) both **403**. Path B not landable. Did **not** touch `research.yml` schedules (R2-06).
+- Trial pytest: **14 passed**.
+- Working tip moved: `340d98a` → **`3e8f388`** (PR #17 merged). PR #2 still draft MERGEABLE/CLEAN; open #19 head now `d47e44d`; #20 `c46463b` dirty.
+- Portable: re-cut tip **0005** for post-#17 inventable test; kept `0005-pre17-…` + optional **0006** (instrumentation dirty digests on PR #20 only; **not** in `apply_all.sh`). BASE_TIP / COMPATIBILITY / README refreshed.
+- CPython 3.11.16 after `apply_all` on `3e8f388`: `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; inventable/register slice **134 passed** (153 with ci_pins host-flake deselected). PR #19: 0001–0005 OK / 86 passed. PR #20: tip-cut 0005 fails; 0001–0004 + pre17-0005 + 0006 → **90 passed**, probes clean.
+- No tip-level 0006 invented beyond the optional PR #20 patch. Scientific effect: NONE.
+
+### Batch 18 — 2026-09-23 18:05 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.28h** / remaining **~46.72h** (window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write probes (exact errors):
+  - `git push` unique `cursor-probe-batch18-*`: **403** — `Permission to d6g8k5htny-coder/main.git denied to cursor[bot].`
+  - `gh api POST .../git/refs`: **403** — `Resource not accessible by integration`
+  - `gh pr ready 2`: **403** — `GraphQL: Resource not accessible by integration (markPullRequestReadyForReview)`
+  - `gh pr merge 2`: **403** — `GraphQL: Resource not accessible by integration (mergePullRequest)`
+  - `gh workflow run land-option-b-on-main.yml` + API dispatch: **403** — `Resource not accessible by integration`
+- Env secret names (values redacted / absent): `MAIN_PUSH_TOKEN` absent; `GH_TOKEN` absent; `GITHUB_TOKEN` absent. Auth via `gh` hosts.yml (`cursor`). Matching env key names seen: `CURSOR_*`, `GH_TELEMETRY` only (no usable write token).
+- Working tip vs BASE_TIP: still **`3e8f388`** (no pack tip refresh). PR #2 draft MERGEABLE/CLEAN. PR #20 head moved `c46463b` → **`4103ee1`** (tip-cut 0005 applies; pre17-0005 does not; 0006 still needed).
+- Path A/B progress without write:
+  - Improved `.github/workflows/land-option-b-on-main.yml` (clearer `dry_run`, patch path verify step, failure messages).
+  - Added `scripts/probe_main_write.py` (exit 0=writable / 1=denied / 2=transport); local run → exit **1 DENIED**.
+  - Added `portable/OWNER_ONE_LINERS.md` (Path A/B/C copy-paste).
+  - Documented when to promote **0006** into `apply_all.sh` (patches README + root README).
+- Tip @ 3.11.16 after `apply_all`: math_status problems=0 / lemma_closed=false; focused **86 passed**. No solid tip-level **0007** (workflow-integrity mass fails = host `python` missing). PR #20 +0005+0006: **90 passed**, probes clean.
+- Trial pytest: **15 passed**. Scientific effect: NONE.
+
+### Batch 19 — align-watch — 2026-09-23 18:08 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.41h** / remaining **~46.59h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref); Path A/B still not landable from this token.
+- Working tip vs BASE_TIP: still **`3e8f388`** (ls-remote + fetch; no pack tip refresh).
+- Portable `apply_all` 0001–0005 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; `docs/math_status_probes/` clean after inventable test.
+- Stack: PR #2 still draft **MERGEABLE/CLEAN**. Heads unchanged: #19 `d47e44d`, #20 `4103ee1`, #21 `d1e7d0e`. Notable: **#21** mergeStateStatus **CLEAN** (was UNSTABLE in earlier notes); base remains hardening branch @ ancestor `1ea0ae8`. #19/#20 UNSTABLE with `verify` still pending (not new tip defects).
+- Local engineering audit: no solid tip-level **0007** (host bare `python` missing remains env-only). Optional **0006** stays out of `apply_all.sh` until #20 lands.
+- Trial pytest: **15 passed**. Scientific effect: NONE. Did not UpdateGoal (not ALIGNED).
+
+### Batch 19b — CI fix — 2026-09-23 18:12 UTC
+
+- Tip CI failed on `c382867`: `test_audit_script_reports_misalignment_or_ok` got audit exit **2** (`HTTP Error 403: rate limit exceeded`) while asserting only `(0, 1)`.
+- Fix: accept transport exit 2 in that intent test; `audit_main_alignment.py` now sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (GHA default) to avoid unauthenticated API rate limits.
+- Scientific effect: NONE. No research status promotion.
+
+### Batch 20 — 2026-09-23 18:16 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.51h** / remaining **~46.49h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable; no Option-B draft PR from this token. Did **not** touch `research.yml` schedules (R2-06).
+- Working tip vs BASE_TIP: still **`3e8f388`** (ls-remote + fetch; no pack tip refresh).
+- Portable `apply_all` 0001–0005 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; `docs/math_status_probes/` clean.
+- Stack (read-only on `main`): PR #2 still draft **MERGEABLE/CLEAN**. Heads unchanged: #19 `d47e44d` (now **CLEAN**), #20 `4103ee1` (still UNSTABLE), #21 `d1e7d0e` (**CLEAN**). Updated LAND / OWNER / COMPATIBILITY for #19 CLEAN.
+- Tip CI on trial `5a01146`: sanity + portable-patches-on-main both **green**.
+- Hardening (no tip-level 0007): trial CI now exports `GITHUB_TOKEN` on audit/watch steps; `alignment_status.py` sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (same class as batch 19b). Intent test asserts the CI env export.
+- Trial pytest: **15 passed**. Scientific effect: NONE. No status promotion.

@@ -14,14 +14,26 @@ import urllib.request
 from datetime import datetime, timezone
 
 
+def _token() -> str | None:
+    """Prefer GH_TOKEN / GITHUB_TOKEN so CI avoids unauthenticated rate limits."""
+    import os
+
+    for key in ("GH_TOKEN", "GITHUB_TOKEN"):
+        val = os.environ.get(key)
+        if val:
+            return val
+    return None
+
+
 def gh_json(url: str) -> dict | list:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "trial-alignment-status",
-        },
-    )
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "trial-alignment-status",
+    }
+    token = _token()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=60) as resp:
         return json.load(resp)
 

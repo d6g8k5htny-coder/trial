@@ -18,6 +18,10 @@ jobs:
       - name: Intent suite
         run: python -m pytest -q
       - name: Alignment audit (read-only, expected MISALIGNED until main lands)
+        env:
+          # Batch 19b taught the audit script to send Authorization when present;
+          # export the runner token so CI does not hit unauthenticated rate limits.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e
           python scripts/audit_main_alignment.py
@@ -29,6 +33,8 @@ jobs:
           if [ "$code" -eq 2 ]; then exit 2; fi
           exit 0
       - name: Alignment watch (informational)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/watch_main_alignment.py | tee alignment-watch.json
           # Do not fail the job on MISALIGNED; that is the known upstream state.
@@ -54,14 +60,8 @@ jobs:
       - name: Apply portable patches
         run: |
           cd main-work
-          git apply --check ../trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
-          git apply --check ../trial/portable/patches/0002-math-console-path-honesty.patch
-          git apply --check ../trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
-          git apply --check ../trial/portable/patches/0004-git-fixture-timeout-60s.patch
-          git apply ../trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
-          git apply ../trial/portable/patches/0002-math-console-path-honesty.patch
-          git apply ../trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
-          git apply ../trial/portable/patches/0004-git-fixture-timeout-60s.patch
+          ../trial/portable/patches/apply_all.sh --check
+          ../trial/portable/patches/apply_all.sh
       - name: Focused verification on patched tree
         run: |
           cd main-work
