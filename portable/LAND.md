@@ -46,7 +46,7 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
 **After Path A (PR #2) merges:** rebase hardening onto the new `main`, then
-apply portable `apply_all` **0001–0008**. Do not land Path C onto the abandoned
+apply portable `apply_all` **0001–0009**. Do not land Path C onto the abandoned
 pre-q0 default tip.
 
 Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `b02efe2` — patches apply cleanly), or post-#2 `main` once the port is present:
@@ -61,7 +61,7 @@ git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git fetch origin chatgpt/drive-github-hardening-20260919
 # After #2 merges first: git rebase origin/main   (on hardening) — then continue
 git checkout -b cursor/portable-engineering-patches origin/chatgpt/drive-github-hardening-20260919
-/path/to/trial/portable/patches/apply_all.sh   # 0001–0008
+/path/to/trial/portable/patches/apply_all.sh   # 0001–0009
 python3 tools/math_status_check.py             # assert lemma_closed=false
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
@@ -121,8 +121,9 @@ Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOL
 ## Patch regeneration watch
 
 Working tip is still **`b02efe2`** (PR #25; ls-remote match batch 41). Open drafts **#27**/**#26**/**#24**/**#21** (plus older stack).
-Batch **41** (PR #27 0005 analysis): tip unchanged; tip `apply_all` 0001–0008 `--check` OK. **No 0009.**
-PR **#27** head `8d023a9`: tip-cut `apply_all` fails at **0005** because the PR **already** isolates probe runners under `tmp_path` (dirty-receipt defect fixed upstream). **Do not** cut `0005-pr27-*`; after #27 merges, **drop obsolete tip-cut 0005/0006** (and regen/drop 0007). Exact head stack: **0001–0004 + 0008** → focused **90 passed** @ 3.11 / probes clean (see `patches/COMPATIBILITY.md`).
+Batch **43** (portable **0009**): tip still **`b02efe2`**; broader hunt @ 3.11 found claims unclosed-file ResourceWarnings → shipped **0009** into `apply_all`. workflow_integrity/run_checks/registers/ci_pins green. Write/Path B still 403; PR #2 HOLD; PR #27 still OPEN (0005/0006 not dropped).
+Batch **41** (PR #27 0005 analysis): tip unchanged; tip `apply_all` 0001–0008 `--check` OK.
+PR **#27** head `8d023a9`: tip-cut `apply_all` fails at **0005** because the PR **already** isolates probe runners under `tmp_path` (dirty-receipt defect fixed upstream). **Do not** cut `0005-pr27-*`; after #27 merges, **drop obsolete tip-cut 0005/0006** (and regen/drop 0007). Exact head stack: **0001–0004 + 0008** (+ **0009** once tip-cut) → focused **90 passed** @ 3.11 / probes clean (see `patches/COMPATIBILITY.md`).
 Stack: #25 **MERGED**; #27 UNSTABLE; #26/#24/#21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
 Write still 403 from this token.
 Copy-paste owner commands:
@@ -139,7 +140,7 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 |--------|------|
 | `scripts/owner_land_path_b.sh` | **PRIMARY under HOLD.** Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
 | `scripts/owner_land_path_a.sh` | **ON HOLD** — hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only). Would ready+merge PR #2. |
-| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0008 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
+| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0009 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 

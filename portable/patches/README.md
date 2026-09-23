@@ -16,7 +16,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0008
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0009
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -26,6 +26,7 @@ git apply /path/to/trial/portable/patches/0005-inventable-probes-restore-receipt
 git apply /path/to/trial/portable/patches/0006-instrumentation-status-restore-receipts-after-test.patch
 git apply /path/to/trial/portable/patches/0007-inventable-tests-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0008-carriers-math-status-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0009-claims-close-file-handles.patch
 ```
 
 Verify:
@@ -34,10 +35,10 @@ Verify:
 python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
-  tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed on that slice @ b02efe2
+  tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py
+# expect: problems=0, lemma_closed=false; 90 focused + 47 claims passed @ b02efe2
 # and docs/math_status_probes/ stays clean in git status after inventable tests
-# focused slice emits no ResourceWarning (unclosed file) after 0007+0008
+# focused+claims emit no ResourceWarning (unclosed file) after 0007–0009
 ```
 
 ## Historical / optional
@@ -115,3 +116,12 @@ still emitted **63** `ResourceWarning: unclosed file` lines (22 carriers test +
 41 math_status; plus ~22 from `carriers_verify` under `-W default`). Use
 `with open(...)` for blob hashing and status mutation helpers. No scientific
 change; `lemma_closed` stays false.
+
+## 0009 — claims tests close file handles
+
+Same class as 0007/0008 for `tests/test_claims.py` register-binding helpers.
+After 0001–0008 on tip `b02efe2` @ CPython 3.11, `test_claims` still emitted
+**19** `ResourceWarning: unclosed file` lines from bare
+`json.load(open(...))` / `open(...).read()` on register JSON + mirror bytes
+(workflow_integrity / run_checks / registers / ci_pins slices were otherwise
+clean). Use `with open(...)`. No scientific change; `lemma_closed` stays false.

@@ -169,6 +169,14 @@ def test_portable_patches_exist() -> None:
     assert "0008-carriers-math-status-close-file-handles.patch" in (
         ROOT / "portable" / "patches" / "apply_all.sh"
     ).read_text(encoding="utf-8")
+    p9 = (ROOT / "portable" / "patches" / "0009-claims-close-file-handles.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_claims.py" in p9
+    assert "review_queue.json" in p9 or "operator_decisions.json" in p9
+    assert "0009-claims-close-file-handles.patch" in (
+        ROOT / "portable" / "patches" / "apply_all.sh"
+    ).read_text(encoding="utf-8")
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
@@ -306,6 +314,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0006" in patches_readme
     assert "0007" in patches_readme
     assert "0008" in patches_readme
+    assert "0009" in patches_readme
     assert "apply_all.sh" in patches_readme
     assert "ae7daf7" in patches_readme or "When 0006 was promoted" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
