@@ -108,7 +108,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "3e8f388" in base_tip
+    assert "1547ec4" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -127,9 +127,14 @@ def test_portable_patches_exist() -> None:
     )
     assert "test_inventable_jetmod_instrumentation_status.py" in p6
     assert "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json" in p6
-    assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in (
+    # PR #20 merged @ 1547ec4 — 0006 is now in apply_all.sh
+    assert "0006-instrumentation-status-restore-receipts-after-test.patch" in (
         ROOT / "portable" / "patches" / "apply_all.sh"
     ).read_text(encoding="utf-8")
+    assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
+    land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
+    assert "gh pr create" in land_wf
+    assert "option-b-notice-from-trial" in land_wf
     assert (ROOT / "portable" / "patches" / "0005-pre17-inventable-probes-restore-receipts-after-test.patch").is_file()
     assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()
     ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
@@ -215,9 +220,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "apply_all.sh" in one
     assert "Scientific effect: NONE" in one
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
-    assert "When to promote" in patches_readme
     assert "0006" in patches_readme
     assert "apply_all.sh" in patches_readme
+    assert "1547ec4" in patches_readme or "When 0006 was promoted" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(

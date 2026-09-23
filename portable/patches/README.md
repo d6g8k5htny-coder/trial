@@ -1,9 +1,9 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `3e8f38845cb350f43a64b8784400338c8e9a78f6`
-(includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18, and
-fail-closed JETMOD shortcut refusals #17).
+`chatgpt/drive-github-hardening-20260919` @ `1547ec4abea9552b17d0d7eecb901266081e4721`
+(includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
+fail-closed JETMOD shortcut refusals #17, and instrumentation STATUS vocab #20).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -14,36 +14,35 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0005
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0006
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
 git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
 git apply /path/to/trial/portable/patches/0004-git-fixture-timeout-60s.patch
 git apply /path/to/trial/portable/patches/0005-inventable-probes-restore-receipts-after-test.patch
+git apply /path/to/trial/portable/patches/0006-instrumentation-status-restore-receipts-after-test.patch
 ```
 
 Verify:
 
 ```bash
 python3 tools/math_status_check.py
-python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py
-# expect: problems=0, lemma_closed=false; 86 passed on that slice @ 3e8f388
-# and docs/math_status_probes/ stays clean in git status after the inventable test
+python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
+  tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
+  tests/test_inventable_jetmod_instrumentation_status.py
+# expect: problems=0, lemma_closed=false; 90 passed on that slice @ 1547ec4
+# and docs/math_status_probes/ stays clean in git status after inventable tests
 ```
 
-## Optional (not in `apply_all.sh`)
+## Historical / optional
 
-- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current PR #20 (`4103ee1`+) when it applies.
-- `0006-instrumentation-status-restore-receipts-after-test.patch` — same dirty-digest fix for PR #20 instrumentation STATUS tests (`tests/test_inventable_jetmod_instrumentation_status.py`).
+- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current tip.
+- **0006** was optional until PR #20 merged (batch 21). It is now in `apply_all.sh`.
 
-### When to promote **0006** into `apply_all.sh`
+### When 0006 was promoted
 
-Promote **0006** into `apply_all.sh` **only after** PR #20 (or equivalent) merges so that `tests/test_inventable_jetmod_instrumentation_status.py` exists on the hardening tip. Until then:
-
-1. Keep 0006 optional (not listed in `apply_all.sh`).
-2. On PR #20 heads: apply tip `0001–0005` (or `0001–0004` + `0005-pre17` on older heads) then **0006**.
-3. After merge: add the 0006 path to `PATCHES=(…)` in `apply_all.sh`, refresh `BASE_TIP.txt`, and re-run focused tests including the instrumentation file.
+PR #20 merged into hardening @ `1547ec4` (batch 21). `tests/test_inventable_jetmod_instrumentation_status.py` exists on the tip, so **0006** is listed in `apply_all.sh` alongside 0001–0005.
 
 ## 0001 — `carriers_verify` ignores bytecode caches
 
@@ -83,7 +82,7 @@ sha256/timestamp drift under `docs/math_status_probes/`. Restore in `finally`
 (including the index). Batch 17 re-cut against post-#17 EXPECTED/SHORTCUTS.
 No scientific change; `lemma_closed` stays false.
 
-## 0006 — instrumentation STATUS test restores receipts (optional)
+## 0006 — instrumentation STATUS test restores receipts
 
 Same class as 0005 for `tests/test_inventable_jetmod_instrumentation_status.py`
-on PR #20. Not in `apply_all.sh` until that file exists on the hardening tip.
+(landed with PR #20 @ `1547ec4`). Now included in `apply_all.sh`.

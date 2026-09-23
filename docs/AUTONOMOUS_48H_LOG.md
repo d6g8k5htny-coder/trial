@@ -209,3 +209,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Tip CI on trial `5a01146`: sanity + portable-patches-on-main both **green**.
 - Hardening (no tip-level 0007): trial CI now exports `GITHUB_TOKEN` on audit/watch steps; `alignment_status.py` sends `Authorization` when `GH_TOKEN`/`GITHUB_TOKEN` is set (same class as batch 19b). Intent test asserts the CI env export.
 - Trial pytest: **15 passed**. Scientific effect: NONE. No status promotion.
+
+### Batch 21 — 2026-09-23 18:22 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.65h** / remaining **~46.35h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Exact Path A/B errors this batch:
+  - `gh workflow run land-option-b-on-main --repo d6g8k5htny-coder/trial -f dry_run=true` → **403** `could not create workflow dispatch event: HTTP 403: Resource not accessible by integration` (workflow id 365349244)
+  - `gh workflow run … -f dry_run=false` → same **403**
+  - `gh pr ready 2 --repo d6g8k5htny-coder/main` → **403** GraphQL `markPullRequestReadyForReview`
+  - `gh pr merge 2 --repo d6g8k5htny-coder/main --merge` → **403** GraphQL `mergePullRequest`
+- Trial **PR #4**: marked ready + **merged** (`cc71d1d`); land-option-b + portable pack now on trial default `main`. Continue branch `cursor/autonomous-48h-continue-309a` **survived** (not deleted).
+- Working tip moved: `3e8f388` → **`1547ec4`** (PR #20 merged). BASE_TIP refreshed. Promoted portable **0006** into `apply_all.sh`.
+- Engineering audit @ CPython **3.11.16**: `apply_all` 0001–0006 `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed** (incl. instrumentation); probes clean. **No tip-level 0007.**
+- Path B hardening: `land-option-b-on-main.yml` now pushes notice branch **and opens/reuses a PR** into default main; added `scripts/print_owner_unblock.sh`.
+- Stack: PR #2 still draft **MERGEABLE/CLEAN**. Open #19 `d47e44d` CLEAN, #21 `d1e7d0e` CLEAN. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).

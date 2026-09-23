@@ -68,11 +68,12 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 (`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
 
-## Stack note (2026-09-23 batch 20)
+## Stack note (2026-09-23 batch 21)
 
-- Working tip still `3e8f388` ([PR #17](https://github.com/d6g8k5htny-coder/main/pull/17)); BASE_TIP unchanged.
-- Open drafts: #19 (`d47e44d`, now **CLEAN**), #20 (`4103ee1`, still UNSTABLE), #21 (`d1e7d0e`, **CLEAN**), plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
+- Working tip **`1547ec4`** ([PR #20](https://github.com/d6g8k5htny-coder/main/pull/20) merged); BASE_TIP refreshed; **0006** in `apply_all.sh`.
+- Open drafts: #19 (`d47e44d`, **CLEAN**), #21 (`d1e7d0e`, **CLEAN**), plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
 - Write still **403** (`probe_main_write.py` DENIED). No `MAIN_PUSH_TOKEN` in this VM env.
+- Trial PR #4 **merged** (land-option-b + portable pack on trial default `main`).
+- Path B workflow now pushes notice branch **and opens a PR**. One-liner dump: `./scripts/print_owner_unblock.sh`.
 - Copy-paste: [`../portable/OWNER_ONE_LINERS.md`](../portable/OWNER_ONE_LINERS.md).
-- Promote portable **0006** into `apply_all.sh` only after PR #20 lands instrumentation STATUS tests on the tip.
 - Do **not** enable `research.yml` schedules for R2-06.

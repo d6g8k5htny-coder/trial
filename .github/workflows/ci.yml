@@ -70,7 +70,8 @@ jobs:
             tests/test_carriers.py \
             tests/test_math_status.py \
             tests/test_inventable_jetmod_probes.py \
-            tests/test_gaussian_moments.py
+            tests/test_gaussian_moments.py \
+            tests/test_inventable_jetmod_instrumentation_status.py
       - name: Option-B apply check against default main
         run: |
           git clone --depth 1 --branch main \

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 17: 3e8f388).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 21: 1547ec4).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -34,6 +34,7 @@ PATCHES=(
   "$ROOT/0003-gaussian-moments-parametrize-list.patch"
   "$ROOT/0004-git-fixture-timeout-60s.patch"
   "$ROOT/0005-inventable-probes-restore-receipts-after-test.patch"
+  "$ROOT/0006-instrumentation-status-restore-receipts-after-test.patch"
 )
 
 for p in "${PATCHES[@]}"; do
@@ -51,4 +52,4 @@ done
 
 echo "Applied. Recommended verification:"
 echo "  python3 tools/math_status_check.py"
-echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py"
+echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py"

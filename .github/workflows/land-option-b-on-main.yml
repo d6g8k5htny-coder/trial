@@ -3,7 +3,7 @@
 # This does NOT run automatically. It requires:
 #   1. Repo secret MAIN_PUSH_TOKEN — a PAT/fine-grained token with Contents:Write
 #      (and PullRequests:Write) on d6g8k5htny-coder/main
-#   2. Manual workflow_dispatch from the Actions tab
+#   2. Manual workflow_dispatch from the Actions tab (or gh workflow run)
 #
 # Scientific effect: NONE. Documentation-only redirect on default main.
 # Prefer merging PR #2 when ready (Path A). This is Path B automation.
@@ -13,7 +13,8 @@
 #                     format-patch, print README head, exit 0 without push.
 #                     Use this to verify the patch still applies.
 #   false           — requires MAIN_PUSH_TOKEN; clone with the token, git am,
-#                     push branch cursor/option-b-notice-from-trial.
+#                     push branch cursor/option-b-notice-from-trial, then open
+#                     (or reuse) a draft PR into default main.
 #                     Failure messages name the missing secret / HTTP denial.
 
 name: land-option-b-on-main
@@ -22,15 +23,18 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "true = apply locally only (no push). false = push branch (needs MAIN_PUSH_TOKEN)."
+        description: "true = apply locally only (no push). false = push branch + open PR (needs MAIN_PUSH_TOKEN)."
         type: boolean
         default: true
 
 jobs:
   land:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout trial (portable Option-B patch)
+        uses: actions/checkout@v4
 
       - name: Locate Option-B patch
         id: patch
@@ -52,12 +56,13 @@ jobs:
           set -euo pipefail
           if [ -z "${MAIN_PUSH_TOKEN}" ]; then
             echo "::error::dry_run=false but repository secret MAIN_PUSH_TOKEN is empty."
-            echo "Add a PAT with Contents:Write on d6g8k5htny-coder/main, or re-run with dry_run=true."
+            echo "Add a PAT with Contents:Write (+ PullRequests:Write) on d6g8k5htny-coder/main, or re-run with dry_run=true."
             exit 1
           fi
           echo "MAIN_PUSH_TOKEN is set (value redacted)."
 
-      - name: Clone default main and apply Option-B
+      - name: Clone default main, git am Option-B, push or dry-run
+        id: land
         env:
           MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
@@ -69,6 +74,9 @@ jobs:
             echo "::error::Patch vanished after checkout: ${PATCH}"
             exit 1
           fi
+
+          BRANCH="cursor/option-b-notice-from-trial"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
           rm -rf main-land
           if [ "${DRY_RUN}" = "true" ]; then
@@ -86,23 +94,74 @@ jobs:
           fi
 
           cd main-land
-          git checkout -b cursor/option-b-notice-from-trial
-          if ! git am "$PATCH"; then
-            echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."
-            git am --abort 2>/dev/null || true
-            exit 1
+          git config user.name "trial-land-option-b"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "${BRANCH}"
+          # Idempotent: if default tip already carries Option-B markers, skip am.
+          if grep -qE 'q0|option-b|drive-github-hardening|quarantine/pre-q0' README.md 2>/dev/null \
+             && ! grep -q 'Multiscale Retrodiction Complexity' README.md 2>/dev/null; then
+            echo "README already looks post-Option-B / q0; skipping git am (still push/PR if requested)."
+          else
+            if ! git am "$PATCH"; then
+              echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."
+              git am --abort 2>/dev/null || true
+              exit 1
+            fi
           fi
-          echo "Applied Option-B. README head:"
+          echo "Applied Option-B (or reused existing). README head:"
           head -8 README.md
 
           if [ "${DRY_RUN}" = "true" ]; then
             echo "dry_run=true — apply succeeded; not pushing. Re-run with dry_run=false + MAIN_PUSH_TOKEN to land."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          if ! git push -u origin HEAD; then
-            echo "::error::git push denied or failed. Confirm MAIN_PUSH_TOKEN has Contents:Write on d6g8k5htny-coder/main (expected HTTP 403 if scope missing)."
-            exit 1
+          # Notice branch is disposable; force is OK if a previous attempt diverged.
+          if ! git push -u origin "HEAD:refs/heads/${BRANCH}"; then
+            if ! git push -u --force origin "HEAD:refs/heads/${BRANCH}"; then
+              echo "::error::git push denied or failed. Confirm MAIN_PUSH_TOKEN has Contents:Write on d6g8k5htny-coder/main (expected HTTP 403 if scope missing)."
+              exit 1
+            fi
+            echo "Pushed ${BRANCH} with --force (non-ff)."
           fi
-          echo "Pushed branch cursor/option-b-notice-from-trial."
-          echo "Open a PR into default main and merge when satisfied (or use Path A: gh pr ready 2 && gh pr merge 2)."
+          echo "Pushed branch ${BRANCH}."
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open (or reuse) notice PR into default main
+        if: ${{ inputs.dry_run == false && steps.land.outputs.pushed == 'true' }}
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+          BRANCH: cursor/option-b-notice-from-trial
+        run: |
+          set -euo pipefail
+          export GH_TOKEN="${MAIN_PUSH_TOKEN}"
+          TITLE="docs: q0 redirect on default main (Option-B from trial)"
+          BODY="$(cat <<'EOF'
+          Option-B default-branch notice from trial automation.
+
+          Scientific effect: **NONE**. Documentation-only redirect until Path A
+          (merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2)) lands the real q0 tree.
+
+          Prefer Path A when ready:
+          ```bash
+          gh pr ready 2 --repo d6g8k5htny-coder/main
+          gh pr merge 2 --repo d6g8k5htny-coder/main --merge
+          ```
+          EOF
+          )"
+          # Reuse existing open PR from this head if present
+          EXISTING="$(gh pr list --repo d6g8k5htny-coder/main --head "${BRANCH}" --base main --state open --json number,url --jq '.[0].url // empty')"
+          if [ -n "${EXISTING}" ]; then
+            echo "Reusing open PR: ${EXISTING}"
+            echo "Notice PR URL: ${EXISTING}"
+            exit 0
+          fi
+          if ! URL="$(gh pr create --repo d6g8k5htny-coder/main --base main --head "${BRANCH}" \
+              --title "${TITLE}" --body "${BODY}")"; then
+            echo "::warning::gh pr create failed (token may lack PullRequests:Write). Branch is pushed: ${BRANCH}"
+            echo "Open manually: https://github.com/d6g8k5htny-coder/main/compare/main...${BRANCH}"
+            exit 0
+          fi
+          echo "Opened notice PR: ${URL}"
+          echo "Next owner click: merge that PR (or Path A: merge main#2)."
