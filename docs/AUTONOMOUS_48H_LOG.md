@@ -530,6 +530,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Post-merge residual: inventable/instrumentation negative tests → **6** `ResourceWarning: unclosed file` → **Shipped portable 0012** (`inventable-negative-tests-close-file-handles`). `apply_all.sh` now **0001–0004 + 0008–0012**.
 - Verify @ CPython **3.11**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false / **0 ResourceWarning**; focused+claims+recovery **173 passed** / **0 ResourceWarning**.
 - Hunt note (not shipped): `tools/verify_manifests.py` / `quarantine_check.py` still emit **828** unclosed-file ResourceWarnings when run under `-W default::ResourceWarning`.
+- Packed portable tarball → `docs/trial-portable-main-fixes.tgz` + `/opt/cursor/artifacts/trial-portable-main-fixes.tgz`.
+- Trial CI on `eda3805` / `cursor/batch48-pr27-drop-0012-5434`: **sanity** + **portable-patches-on-main** both **success**.
+- Draft PR create via `gh` → **403** (`Resource not accessible by integration`); no open trial PR. Merge-to-main deferred unless write lands.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
 ### Batch 47 — 2026-09-23 ~20:58 UTC (Path B probe; ship portable 0011)
