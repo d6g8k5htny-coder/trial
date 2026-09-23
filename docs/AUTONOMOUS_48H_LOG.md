@@ -123,3 +123,12 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Merged trial PR #2 into trial main.
 - Expanded portable patch 0004 to cover both `git -C` fixture timeout argument orders.
 - d6g8k5htny-coder/main still MISALIGNED / write 403; Actions dispatch still 403.
+
+### Batch 15 — 2026-09-23 17:28 UTC
+
+- Write still 403; default tip still MISALIGNED (`f25b04bb`); PR #2 still draft MERGEABLE/CLEAN.
+- New open draft **PR #21** (attestations / H3 salvage, based on #3): patches 0001–0004 `--check` OK; focused 81 passed (no inventable tests on that base); lemma_closed=false.
+- **PR #16** went ready then **merged** (docs-only; hardening tip still `1ea0ae8`).
+- Fixed `portable/patches/apply_all.sh` so `--check` is a real dry-run (previously ignored the flag and applied).
+- Refreshed COMPATIBILITY.md / LAND.md / OWNER_ACTIONS for #16/#21.
+- Trial pytest: 14 passed. land-option-b workflow_dispatch still 403.

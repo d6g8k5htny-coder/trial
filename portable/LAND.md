@@ -61,8 +61,10 @@ git push -u origin HEAD
 |----|------|------|
 | #2 | Port onto default `main` | Critical for alignment |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
-| #16 | Cold-start nav docs | Independent |
+| #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | More inventable shortcut refusals | MERGEABLE; our patches still apply |
+| #18–#20 | Status/PACKET-adjacent drafts | Watch 0002 digests if they merge |
+| #21 | Attestations + H3 salvage (on #3) | MERGEABLE/UNSTABLE; patches apply; no inventable tests on base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -88,10 +90,10 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 ## Patch regeneration watch
 
 Open drafts **#18 / #19 / #20** touch `docs/math_status/PACKET.json` (and related
-status tooling). As of batch 10, patches **0001–0004 are still `--check` clean**
-on PR #17/#18/#20 heads as well as hardening `1ea0ae8`. After those PRs merge,
-re-run `apply_all.sh` + focused tests; regenerate **0002** only if PACKET digests
-drift under `math_status_check`.
+status tooling). As of batch 15, patches **0001–0004 are still `--check` clean**
+on PR #17/#18/#20/#21 heads as well as hardening `1ea0ae8`. After those PRs merge,
+re-run `apply_all.sh --check` + focused tests; regenerate **0002** only if PACKET
+digests drift under `math_status_check`. PR #21 does not edit PACKET/`math_console`.
 
 
 ## Path B via trial Actions (token secret)

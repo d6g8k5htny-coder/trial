@@ -67,3 +67,9 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 (`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
+
+## Stack note (2026-09-23 batch 15)
+
+- [PR #16](https://github.com/d6g8k5htny-coder/main/pull/16) (cold-start nav) **merged**.
+- New draft [PR #21](https://github.com/d6g8k5htny-coder/main/pull/21) (attestations / H3 salvage) is additive and pins status fields UNCHANGED — still not a Path A substitute.
+- Critical path remains: mark ready + merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), or Path B notice on default `main`.

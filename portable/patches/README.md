@@ -11,8 +11,10 @@ Base tip (see `BASE_TIP.txt`):
 From a clean checkout of that tip (or a descendant):
 
 ```bash
-./portable/patches/apply_all.sh          # if this tree is vendored beside main
-# or:
+# From a clean checkout of d6g8k5htny-coder/main at the base tip:
+/path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004
+# or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
 git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
