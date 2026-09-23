@@ -1,10 +1,10 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `ae7daf74999600ba86b247137a7b7a00796c71f1`
+`chatgpt/drive-github-hardening-20260919` @ `a89f9a703739aed9d290c94d68f80bf4e8bd9d62`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
-and AUTHOR_SIDE honesty banners #19).
+AUTHOR_SIDE honesty banners #19, and docs STATUS honesty cross-links #22).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -34,7 +34,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed on that slice @ ae7daf7
+# expect: problems=0, lemma_closed=false; 90 passed on that slice @ a89f9a7
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused slice emits no ResourceWarning (unclosed file) after 0007+0008
 ```

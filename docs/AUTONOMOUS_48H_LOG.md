@@ -344,3 +344,21 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Docs: brief relaunch-then-retry Path A/B note in `docs/OWNER_ACTIONS_MAIN.md` + `portable/OWNER_ONE_LINERS.md`. README has no Environment/Cloud Agent section — skipped.
 - Trial pytest green. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 31 — 2026-09-23 19:20 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.62h** / remaining **~45.38h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Env token names (TOKEN/GITHUB/`_PAT_`): **none** set. `gh auth`: cursor integration; `gh api user` → 403; permissions `{admin,maintain,pull,push,triage: all false}`.
+- Write paths tried (all failed):
+  - `probe_main_write.py` → **DENIED** HTTP 403 create-ref
+  - `git push` throwaway `cursor-probe-*` → **403** denied to cursor[bot]
+  - `gh api POST .../git/refs` → **403** Resource not accessible by integration
+  - `gh pr ready 2` → **403** GraphQL markPullRequestReadyForReview
+  - `gh pr merge 2` → **403** GraphQL mergePullRequest
+  - `gh workflow run land-option-b-on-main.yml -f dry_run=false` (trial) → **403** dispatch; (main) workflow **404** not on default branch
+- Tip drift: BASE_TIP `ae7daf7` → live **`a89f9a7`** (PR #22 docs merged). Pack refreshed; **no 0009** (docs-only tip move; apply_all still clean).
+- Portable `apply_all` 0001–0008 @ CPython **3.12.3**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; focused slice **0 ResourceWarning**.
+- Stack: #22 **MERGED** @ `a89f9a7`; #21 CLEAN; #23 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+- Idle — no empty PR. Path A/B not landable. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
