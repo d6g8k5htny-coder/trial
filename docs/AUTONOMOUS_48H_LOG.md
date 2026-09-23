@@ -23,6 +23,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
   - W2 `gh api PUT .../contents` → **403** Resource not accessible by integration
   - W3 `workflow_dispatch` land-option-b-on-main (trial) → **403**; (main) → **404** workflow absent; API dispatch → **403**
   - W4 fork → **403**; `gh pr create` → **403**; create-ref → **403**; `gh pr ready 2` → closed (MERGED then reverted)
+  - Path A `PATH_A_MODE=revert32` → **403** `RevertPullRequest` permission denied
 - Tokens: `MAIN_PUSH_TOKEN`/`GH_TOKEN`/`GITHUB_TOKEN` **NOT_SET**; env repos = `trial` only; permissions all false.
 - Hardening tip **`580864c` → `9a56c30`** (docs-only governance); BASE_TIP refreshed; `apply_all --check` OK; math_status problems=0 / lemma_closed=false; residual RW hunt on extra modules → **0** (no 0017).
 - Docs: HOLD VOID; Path A OR Path B OK; prefer Path B. `owner_land_path_a.sh` HOLD gate removed (default `PATH_A_MODE=revert32`). Restore plan: `portable/RESTORE_PLAN_54.json`.

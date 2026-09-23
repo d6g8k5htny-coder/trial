@@ -54,6 +54,7 @@
     "gh_pr_create": "DENIED 403 createPullRequest",
     "git_refs_create": "DENIED 403",
     "gh_pr_ready_2": "FAIL closed (MERGED then reverted)",
+    "path_a_revert32": "DENIED 403 RevertPullRequest",
     "MAIN_PUSH_TOKEN": "NOT_SET",
     "permissions": {"admin": false, "maintain": false, "pull": false, "push": false, "triage": false},
     "env_repos": ["github.com/d6g8k5htny-coder/trial"]
