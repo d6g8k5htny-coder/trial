@@ -11,7 +11,7 @@ cd "$ROOT"
 
 echo "=== Path A REVERTED (PR #32) — default tip MISALIGNED ==="
 echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c. Prefer Path B for ALIGNED."
-echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP; has PACKET.json)."
+echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP 580864c after #31; has PACKET.json)."
 echo "Scientific effect: NONE"
 echo
 

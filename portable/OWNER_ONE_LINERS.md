@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 53:** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) MERGED @ `b040bf0c`, then CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** → default tip **MISALIGNED** @ `4fc1d7c`. Scientific effect: **NONE**.
+> **Batch 53b:** Default tip **MISALIGNED** @ `4fc1d7c` after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). `aligned_end=false`. Scientific effect: **NONE**.
 >
-> Preferred ALIGNED unblock: **Path B** (Option-B notice). Path C = portable engineering on hardening (BASE_TIP `fbb4360`). Do not re-merge #2 unless Dylan/CoS authorizes.
-> Trial cloud tokens still cannot write to `main` (403).
+> Preferred ALIGNED restore: **Path B** (Option-B patch still valid — `git am` OK / would-align). Path C = portable engineering on hardening (BASE_TIP `580864c` after #31). Do not re-merge #2 unless Dylan/CoS authorizes.
+> Trial cloud tokens still cannot write to `main` (403) → Path B not applied from trial.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
@@ -46,8 +46,9 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ./scripts/owner_land_path_b.sh --after-merge
 # ./scripts/owner_land_path_b.sh --direct-main
 
-# Path A — DONE (PR #2 merged @ b040bf0c). No further action.
+# Path A — REVERTED by PR #32. Do not re-run without Dylan/CoS.
 ```
+
 
 ## Path B — honest redirect (PRIMARY for default-tip ALIGNED)
 
@@ -80,7 +81,7 @@ git am /path/to/trial/portable/main-default-branch/0001-option-b-default-branch-
 git push -u origin HEAD
 gh pr create --repo d6g8k5htny-coder/main --base main \
   --title "docs: q0 redirect on default main" \
-  --body "Option-B notice. Scientific effect NONE. Path A (PR #2) on HOLD per Dylan/CoS."
+  --body "Option-B notice. Scientific effect NONE. Path A REVERTED by PR #32; Path B preferred."
 ```
 
 ### Probe before spending time
@@ -112,8 +113,8 @@ Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `fbb4360`). Post-#2 default `main` is a
-different tree — do not apply Path C there unless it already has PACKET.json:
+`portable/patches/BASE_TIP.txt` (currently `580864c`). Default `main` after #32 is the
+pre-q0 face — do not apply Path C there (no PACKET.json):
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -125,7 +126,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ fbb4360
+# expect: problems=0, lemma_closed=false; 90 passed @ 580864c
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when

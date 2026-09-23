@@ -12,6 +12,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
+### Batch 53b — 2026-09-23 ~22:01 UTC (CRITICAL: aligned_end=false after #32; Path B preferred)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~5.3h / 48h. Scientific effect: **NONE**.
+- Rules: never promote research status; do not ready/merge Path A without owner; Path B OK if writable.
+- **Full `audit_main_alignment.py`:** exit 1 / **MISALIGNED**; tip_sha `4fc1d7c1648086ac1589104232f5be6b4fc00286`; complexity markers present; q0/notice empty; `root_has_AGENTS_md=false`; `root_has_body=true`; `root_has_dot_github=false`; scientific_effect NONE.
+- Tip presence: remote root = `README.md` + `body` only; **AGENTS.md ABSENT**; **.github ABSENT**.
+- **PR #32** (`gh pr view 32`): MERGED; author `d6g8k5htny-coder` (Dylan Roy); title Revert PR #2; mergeCommit `4fc1d7c…`; mergedAt `2026-09-23T21:53:42Z`. CoS cleanup revert of Drive→git port.
+- **Path B still preferred.** Option-B patch vs tip `4fc1d7c`: `git am` exit 0; local auditor **ALIGNED** (would-align); README blob index `108b169` matches. Patch **still valid**.
+- `probe_main_write.py` → **DENIED** HTTP 403. **Not WRITABLE** → Path B **not** applied.
+- Hardening tip **`fbb4360` → `580864c`** ([PR #31](https://github.com/d6g8k5htny-coder/main/pull/31) MERGED); BASE_TIP refreshed; `apply_all --check` OK (0001–0004 + 0008–0016).
+- Docs: LAND / OWNER_ACTIONS / OWNER_ONE_LINERS / COMPATIBILITY updated for MISALIGNED + Path B primary. Restore plan: `portable/RESTORE_PLAN_53b.json`.
+- No research status promotion. `lemma_closed` untouched. Owner next: `./scripts/owner_land_path_b.sh`.
+
 ### Batch 53 — 2026-09-23 ~21:55 UTC (tip #28→#30; ship portable 0016; mid-batch #32 revert)
 
 - Window: start `2026-09-23T16:43:47Z`; elapsed ~5.2h / 48h; ~42.8h left. Scientific effect: **NONE**.

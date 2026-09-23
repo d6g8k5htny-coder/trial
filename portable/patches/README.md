@@ -1,15 +1,16 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `fbb43601369b19ecb12447d4cc02ed44340dce60`
+`chatgpt/drive-github-hardening-20260919` @ `580864c7713f2a1ea831fadb3680166e36e4d449`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
 PACKET base_commit/as_of tip-align #23, standing owner authorization #25,
 inventable STATUS honesty cross-links #24, math_status README inventable
 probes honesty pointer #26, probe-test isolation #27, register R1
-exact-byte custody #29, and STATUS_JETMOD inventable merge+promote REFUSED
-honesty #28, and STATUS_RN_UNIF inventable ABSENT/EMPTY honesty #30).
+exact-byte custody #29, STATUS_JETMOD inventable merge+promote REFUSED
+honesty #28, STATUS_RN_UNIF inventable ABSENT/EMPTY honesty #30, and
+register source preflight #31).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -46,7 +47,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py \
   tests/test_recovery.py
-# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ fbb4360
+# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ 580864c
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0016
 # math_status_check itself emits 0 ResourceWarning after 0011

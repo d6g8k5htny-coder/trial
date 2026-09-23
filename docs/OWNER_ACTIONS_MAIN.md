@@ -8,17 +8,17 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 53 postscript:** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) was MERGED @ `b040bf0c`, then CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** default tip → **MISALIGNED** @ `4fc1d7c`. Scientific effect: **NONE**.
-> Preferred unblock: **Path B** (Option-B notice) or owner-authorized Path A re-port. Path C remains engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `fbb4360`). Trial tokens still 403 on write.
+> **Batch 53b — MISALIGNED (`aligned_end=false`):** Default tip **`4fc1d7c`** after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Root has `README.md` + `body` only; **no** `AGENTS.md` / `.github`. Scientific effect: **NONE**.
+> Preferred restore: **Path B** (Option-B notice still valid vs tip — `git am` OK / would-align). Do **not** ready/merge Path A without Dylan/CoS. Path C = engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `580864c` after #31). Trial write still **403** → Path B not applied from this agent. See `portable/RESTORE_PLAN_53b.json`.
 
 ### 1. Stop advertising the abandoned complexity-physics README
 
-Default `main` @ `f25b04bb` still shows the Dec 2025 complexity framework with “✅ Confirmed” rows. That is false for the active program.
+Default `main` @ `4fc1d7c` again shows the Dec 2025 complexity framework with “✅ Confirmed” rows. That is false for the active program.
 
 **Options (pick one):**
 
-- **B (preferred while Path A is on HOLD):** On default `main` only, replace `README.md` with a short redirect to the working branch / PR #2 (“research lives on branch X; default branch pending merge”) and remove or quarantine the `body` manuscript generator so visitors are not misled. Do not invent new scientific claims in that stub. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
-- **A (ON HOLD — Dylan/CoS):** Mark [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) ready and merge when (and only when) Dylan lifts HOLD. That would replace the misleading root with the q0 README and ~4.2k files. Until then: stay draft; `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only).
+- **B (PREFERRED after #32):** On default `main` only, replace `README.md` with the Option-B q0 redirect and quarantine `body` under `quarantine/pre-q0-scaffolding/`. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
+- **A (owner/CoS only):** A fresh Drive→git port onto default `main` (do **not** re-merge reverted #2 without Dylan/CoS). `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1`.
 
 ### 2. Decide the public integration branch
 
@@ -70,8 +70,17 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 ## Fastest unblock from trial CI
 
-**Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
-**Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
+**Path B (PRIMARY after #32):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
+**Path A:** REVERTED by #32 — do **not** re-ready/re-merge without Dylan/CoS.
+
+## Stack note (2026-09-23 batch 53b — MISALIGNED after #32; Path B preferred)
+
+- CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **MERGED** @ `4fc1d7c` (`mergedAt=2026-09-23T21:53:42Z`, author `d6g8k5htny-coder`) — reverts PR #2; default tip **MISALIGNED** (`aligned_end=false`). Scientific effect **NONE**.
+- Full `audit_main_alignment.py`: tip `4fc1d7c…`; complexity markers present; q0/notice markers empty; `root_has_AGENTS_md=false`; `root_has_body=true`; `root_has_dot_github=false`.
+- Option-B patch **still valid** against tip (`git am` exit 0; local auditor would-align / ALIGNED). Write probe **DENIED** HTTP 403 → Path B **not** applied this session.
+- Hardening tip **`fbb4360` → `580864c`** ([PR #31](https://github.com/d6g8k5htny-coder/main/pull/31) register source preflight **MERGED**). BASE_TIP refreshed; `apply_all --check` OK (0001–0004 + 0008–0016).
+- Restore plan JSON: `portable/RESTORE_PLAN_53b.json`. Owner next: `./scripts/owner_land_path_b.sh` then `--after-merge`.
+- Do **not** enable `research.yml` schedules for R2-06. No research status promotion.
 
 ## Stack note (2026-09-23 batch 50 tip #29 + portable 0014 + PR #2 ALIGNED)
 

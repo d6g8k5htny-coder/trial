@@ -2,6 +2,15 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `580864c` (batch 53b)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK on tip `580864c` (PR #31; BASE_TIP refreshed) |
+| Default `main` @ `4fc1d7c` | **MISALIGNED** after CoS PR #32; Path B preferred / still valid; write 403 |
+
+Default `main` @ `4fc1d7c` is **MISALIGNED** after CoS PR #32 reverted PR #2. Path C apply target remains hardening BASE_TIP (`580864c` after PR #31).
+
 ## After portable patches 0001–0004 + 0008–0016 on `fbb4360` (batch 53)
 
 | Check | Result |
@@ -14,7 +23,7 @@ Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene not
 
 Residual hunt: no further bare-open ResourceWarnings in receipts/bridge after 0016.
 
-Default `main` @ `4fc1d7c` is **MISALIGNED** after CoS PR #32 reverted PR #2. Path C apply target remains hardening BASE_TIP (`fbb4360` after PR #30).
+Default `main` @ `4fc1d7c` is **MISALIGNED** after CoS PR #32 reverted PR #2. Path C apply target was hardening BASE_TIP (`fbb4360` after PR #30; refreshed to `580864c` in batch 53b).
 
 ## After portable patches 0001–0004 + 0008–0015 on `8510874` (batch 52)
 

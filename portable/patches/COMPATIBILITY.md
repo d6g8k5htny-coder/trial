@@ -1,10 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~21:57 UTC (batch 53: tip #28→#30; ship 0016; mid-batch #32 revert → MISALIGNED).
+Checked 2026-09-23 ~22:01 UTC (batch 53b: MISALIGNED after #32; Path B valid; BASE_TIP → 580864c after #31).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
+| hardening (post-#31) | `580864c` | **0001–0004 + 0008–0016** | `--check` OK | (BASE_TIP batch 53b) |
 | hardening (post-#30) | `fbb4360` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
 | hardening (post-#28) | `890bb81` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
 | hardening (post-#29 / batch 52) | `8510874` | **0001–0004 + 0008–0015** | problems=0 | **90+47+36 + frozen/dio 19** |
@@ -63,6 +64,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **53b** (CRITICAL misalign after #32): default tip **`4fc1d7c`** **MISALIGNED** (`aligned_end=false`); Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; hardening **`fbb4360` → `580864c`** ([PR #31](https://github.com/d6g8k5htny-coder/main/pull/31)); BASE_TIP refreshed; `apply_all --check` OK. Restore plan: `portable/RESTORE_PLAN_53b.json`.
 - Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`** ([PR #28](https://github.com/d6g8k5htny-coder/main/pull/28) then [PR #30](https://github.com/d6g8k5htny-coder/main/pull/30); docs-only). BASE_TIP refreshed. Start-of-batch default tip **ALIGNED** @ `b040bf0c`; CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** → end-of-batch **MISALIGNED** @ `4fc1d7c`. Probe **DENIED** → Path C not applied to remote. Shipped **0016**. Tip `apply_all` 0001–0004+0008–0016 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery+frozen/dio **192** / **0 ResourceWarning**; receipts+bridge **541 passed** / **0 ResourceWarning** (was 24). Path B again preferred for ALIGNED.
 - Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`** (== BASE_TIP; no pack tip refresh). Default tip **ALIGNED** @ `b040bf0c`. Probe **DENIED** → Path C not applied to remote. Hardening ~53 behind / 1 ahead of post-#2 `main`. `owner_land_path_c` auto now stays on hardening (not post-#2 default main); adds `PATH_C_REBASE_ONTO_MAIN=1`. Shipped **0015**. Tip `apply_all` 0001–0004+0008–0015 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173** / **0 ResourceWarning**; frozen+drive-index overlay **19 passed** / **0 ResourceWarning** (was 9+1). Residual hunt: `test_receipts` / `test_bridge` still emit bare-open ResourceWarnings (shipped in batch 53 as **0016**).
 - Batch **50** (Path B probe + tip #29 + portable **0014**): tip **`bf1fde3` → `8510874`** ([PR #29](https://github.com/d6g8k5htny-coder/main/pull/29) R1 exact-byte custody merged). BASE_TIP refreshed. Probe **DENIED** / audit **MISALIGNED** → Path B skipped. Main PRs: #2 HOLD draft CLEAN; #28/#30 docs drafts; #29 already merged (no portable drop). Shipped **0014** (collision_proposal_check + test_collision_proposal close-file-handles). Tip `apply_all` 0001–0004+0008–0014 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**; collision checker **0 ResourceWarning** (was 2); collision tests **189 passed** / **0 ResourceWarning** (was 51). Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.

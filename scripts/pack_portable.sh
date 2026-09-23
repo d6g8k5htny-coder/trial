@@ -8,6 +8,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/OWNER_ONE_LINERS.md \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \
+  portable/RESTORE_PLAN_53b.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \

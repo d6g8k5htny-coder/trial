@@ -3,6 +3,11 @@
 Audit of Dylan Roy’s public GitHub projects visible to this agent.
 **Scientific effect: NONE.** This note does not move any claim, premise, or obligation.
 
+> **Batch 53b live status:** `d6g8k5htny-coder/main` default tip **`4fc1d7c`** is **MISALIGNED**
+> (`aligned_end=false`) after CoS PR #32 reverted PR #2. Preferred restore: **Path B**.
+> See `portable/LAND.md` / `portable/RESTORE_PLAN_53b.json`. Historical table below is the
+> original audit snapshot (pre-#2/#32 churn).
+
 ## Repositories
 
 | Repo | Description field | Default branch tip (SHA) | What visitors actually see |

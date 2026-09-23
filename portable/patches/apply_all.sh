@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 53: fbb4360 after #30).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 53b: 580864c after #31).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -12,7 +12,7 @@
 # tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
 # restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0016.
 # Apply against chatgpt/drive-github-hardening-20260919 (BASE_TIP), NOT the
-# post-#2 default main tip (different tree; lacks docs/math_status/PACKET.json).
+# default main tip after #32 (pre-q0 face; lacks docs/math_status/PACKET.json).
 # --check uses a disposable worktree.
 set -euo pipefail
 

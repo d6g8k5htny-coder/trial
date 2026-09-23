@@ -4,13 +4,15 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## Path A — REVERTED (batch 53 postscript)
+> ## STATUS (Batch 53b) — MISALIGNED
 >
-> [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) was **MERGED** @ `b040bf0c`, then CoS
-> [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** default tip → **MISALIGNED**
-> @ `4fc1d7c` (pre-q0 face). Prefer **Path B** for ALIGNED. Scientific effect remains **NONE**.
+> Default tip **`4fc1d7c`**: pre-q0 complexity face; `README.md` + `body` only;
+> **no** root `AGENTS.md` / `.github`. `aligned_end=false`.
+> Cause: CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted
+> [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Scientific effect: **NONE**.
+> Prefer **Path B**. Do **not** ready/merge Path A without Dylan/CoS.
 
-## Path B — honest redirect (PRIMARY for default-tip ALIGNED after #32 revert)
+## Path B — honest redirect (PRIMARY — preferred ALIGNED restore after #32)
 
 ```bash
 # Preferred owner script:
@@ -25,16 +27,18 @@ git push -u origin HEAD
 gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE."
 ```
 
-Batch **22** local dry-run on then-default tip `f25b04bb`: `git am` OK; local auditor
-**ALIGNED**. Default tip is now ALIGNED via Path A merge; Path B content remains useful
-as a redirect notice if the default face ever drifts.
+Batch **53b** dry-run on live tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED**
+(would-align). Option-B patch index matches README blob `108b169` — **still valid**.
+Batch **22** dry-run on then-tip `f25b04bb` also OK. Trial write probe still **DENIED**
+→ Path B not applied from this token; owner must run `owner_land_path_b.sh`.
 
-## Path A — land the real tree (DONE — MERGED)
+## Path A — land the real tree (REVERTED by #32)
 
-PR #2 Drive→git port onto default `main` **merged** @ `b040bf0c` (2026-09-23).
+PR #2 Drive→git port **merged** @ `b040bf0c`, then **reverted** by CoS PR #32 @ `4fc1d7c`.
+Do **not** re-ready/re-merge without Dylan/CoS authorization.
 
 ```bash
-# Historical (already done):
+# Historical only (superseded by #32):
 # gh pr ready 2 --repo d6g8k5htny-coder/main
 # gh pr merge 2 --repo d6g8k5htny-coder/main --merge
 # ./scripts/owner_land_path_a.sh
@@ -43,11 +47,11 @@ PR #2 Drive→git port onto default `main` **merged** @ `b040bf0c` (2026-09-23).
 Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
-**After Path A (PR #2) merged:** rebase hardening onto the new `main` if needed, then
-apply portable `apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
+**Engineering on hardening (independent of default-tip alignment):** apply portable
+`apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
 Path C remains the engineering stack on the hardening tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `fbb4360` — patches apply cleanly).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `580864c` after #31 — `apply_all --check` OK).
 **Do not** apply onto default `main` alone — post-#32 tip is the pre-q0 face (no PACKET.json). Keep Path C on hardening.
 
 ```bash
@@ -102,13 +106,14 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #28 | STATUS_JETMOD inventable merge+promote REFUSED honesty | **Merged** @ `890bb81` (batch 53); docs-only |
 | #30 | STATUS_RN_UNIF inventable ABSENT/EMPTY honesty | **Merged** @ `fbb4360` (batch 53); BASE_TIP refreshed; stack **0001–0004 + 0008–0016** |
 | #32 | Revert PR #2 onto default `main` | **Merged** @ `4fc1d7c` (CoS); default tip **MISALIGNED** |
-| #31 | Register source preflight (nonactivating) | OPEN MERGEABLE onto hardening |
+| #31 | Register source preflight (nonactivating) | **Merged** @ `580864c` (batch 53b); BASE_TIP refreshed |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
 
 Point new cloud agents at `d6g8k5htny-coder/main` with write access and base
-`chatgpt/drive-github-hardening-20260919` (or default `main` — now ALIGNED via PR #2).
+`chatgpt/drive-github-hardening-20260919` (default `main` is **MISALIGNED** after #32 —
+use Path B for the public face, hardening for engineering).
 
 
 ## Automation blocked for this agent
@@ -129,7 +134,8 @@ Path A **REVERTED** by #32 (default tip MISALIGNED). Path B preferred for ALIGNE
 
 ## Patch regeneration watch
 
-Working tip is **`fbb4360`** (PR #30; batch 53 — was `890bb81` post-#28 / `8510874` post-#29). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Working tip is **`580864c`** (PR #31; batch 53b — was `fbb4360` post-#30). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Batch **53b** (CRITICAL misalign investigate): tip `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; BASE_TIP → `580864c`; restore plan `portable/RESTORE_PLAN_53b.json`.
 Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`**; probe DENIED; `apply_all` 0001–0004+0008–0016 `--check` OK; receipts/bridge ResourceWarnings → shipped **0016**; BASE_TIP refreshed; default tip flipped MISALIGNED by #32.
 Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`**; probe DENIED; `apply_all` 0001–0004+0008–0015 `--check` OK; frozen/drive-index ResourceWarnings → shipped **0015**; owner_land_path_c auto stays on hardening (not post-#2 default main).
 Batch **50** (Path B probe + tip #29 + portable **0014**): tip **`bf1fde3` → `8510874`**; probe DENIED → Path B skipped; watch **ALIGNED** (PR #2 merged externally); collision ResourceWarnings → shipped **0014**; tip `apply_all` 0001–0004+0008–0014 @ 3.11 → **173** / **0 ResourceWarning**; collision **189** / **0 RW**.
@@ -140,7 +146,7 @@ Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`**; BASE_TIP refreshed;
 Batch **43** (portable **0009**): tip was **`b02efe2`**; broader hunt @ 3.11 found claims unclosed-file ResourceWarnings → shipped **0009** into `apply_all`. workflow_integrity/run_checks/registers/ci_pins green.
 Batch **41** (PR #27 0005 analysis): tip then **`b02efe2`**; tip `apply_all` 0001–0008 `--check` OK.
 PR **#27** **MERGED** @ `bf1fde3` (batch 48). Tip-cut **0005/0006/0007 dropped** from `apply_all.sh`; residual inventable-negative ResourceWarnings cleared by **0012**. Live stack: **0001–0004 + 0008–0016** → focused+claims+recovery **173 passed** @ 3.11 / **0 ResourceWarning**; frozen+drive-index overlay **19** / **0 RW**; receipts+bridge **541** / **0 RW** (see `patches/COMPATIBILITY.md`).
-Stack: #2/#24/#25/#26/#27/#28/#29 **MERGED**; #31/#30/#21 drafts; #3 CONFLICTING.
+Stack: #2/#24/#25/#26/#27/#28/#29/#30/#31 **MERGED** (#2 then **REVERTED** by #32); #21 drafts; #3 CONFLICTING.
 Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.
@@ -168,6 +174,6 @@ Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/la
 2. Run workflow `land-option-b-on-main` with `dry_run=false`.
 3. Workflow `git am`s Option-B, runs `scripts/audit_local_tree.py` (must exit 0 /
    would-align), pushes `cursor/option-b-notice-from-trial` **and opens a PR**
-   into default `main` — merge that PR. (Path A already MERGED; Path B optional.)
+   into default `main` — merge that PR. (Path A REVERTED; Path B is PRIMARY.)
 
 Default `dry_run=true` verifies `git am` + local auditor (no push).
