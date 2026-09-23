@@ -102,4 +102,4 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 # expect: problems=0, lemma_closed=false; 90 passed @ 1547ec4
 ```
 
-`apply_all.sh` now includes **0001–0006** (0006 promoted after PR #20 merge).
+`apply_all.sh` now includes **0001–0007** (0006 promoted after PR #20 merge; 0007 inventable close-file-handles in batch 24).

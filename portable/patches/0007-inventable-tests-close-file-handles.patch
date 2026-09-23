@@ -1,0 +1,131 @@
+--- a/tests/test_inventable_jetmod_probes.py	2026-09-23 18:43:24.945641843 +0000
++++ b/tests/test_inventable_jetmod_probes.py	2026-09-23 18:43:24.965641791 +0000
+@@ -2,6 +2,7 @@
+ from __future__ import annotations
+ 
+ import json
++from pathlib import Path
+ import os
+ import subprocess
+ import sys
+@@ -33,7 +34,11 @@
+     # restore so pytest does not leave sha256/timestamp drift in the checkout.
+     tracked = [os.path.join(PROBES, name) for name in EXPECTED]
+     tracked.append(os.path.join(PROBES, "INVENTABLE_PROBES_INDEX.json"))
+-    before = {path: open(path, "rb").read() for path in tracked if os.path.isfile(path)}
++    before = {
++        path: Path(path).read_bytes()
++        for path in tracked
++        if os.path.isfile(path)
++    }
+     try:
+         result = subprocess.run(
+             [sys.executable, RUNNER], cwd=ROOT, capture_output=True, text=True, check=False
+@@ -42,7 +47,8 @@
+         assert "discharges=false" in result.stdout
+         for name, status in EXPECTED.items():
+             path = os.path.join(PROBES, name)
+-            obj = json.load(open(path, encoding="utf-8"))
++            with open(path, encoding="utf-8") as handle:
++                obj = json.load(handle)
+             assert obj["status"] == status
+             assert obj["inventable_attempt_accepted"] is False
+             assert obj["discharges_OBL_H5_JETMOD"] is False
+@@ -60,7 +66,8 @@
+                 assert "jet_roster" not in obj
+                 assert "roster" not in obj
+         # re-run is allowed; flags must stay false
+-        index = json.load(open(os.path.join(PROBES, "INVENTABLE_PROBES_INDEX.json"), encoding="utf-8"))
++        with open(os.path.join(PROBES, "INVENTABLE_PROBES_INDEX.json"), encoding="utf-8") as handle:
++            index = json.load(handle)
+         assert index["discharges_OBL_H5_JETMOD"] is False
+         assert index["discharges_lemma"] is False
+         assert index["lemma_closed"] is False
+@@ -101,9 +108,11 @@
+     shutil.copytree(os.path.join(ROOT, "docs"), dest / "docs")
+     shutil.copytree(os.path.join(ROOT, "tools"), dest / "tools")
+     path = dest / "docs" / "math_status_probes" / "inventable_phi_bridge_ABSENT_receipt.json"
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+--- a/tests/test_inventable_jetmod_instrumentation_status.py	2026-09-23 18:43:24.945641843 +0000
++++ b/tests/test_inventable_jetmod_instrumentation_status.py	2026-09-23 18:43:24.965641791 +0000
+@@ -2,6 +2,7 @@
+ from __future__ import annotations
+ 
+ import json
++from pathlib import Path
+ import os
+ import shutil
+ import subprocess
+@@ -26,7 +27,11 @@
+     # restore so pytest does not leave sha256/timestamp drift in the checkout.
+     tracked = [os.path.join(PROBES, name) for name in EXPECTED]
+     tracked.append(os.path.join(PROBES, "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json"))
+-    before = {path: open(path, "rb").read() for path in tracked if os.path.isfile(path)}
++    before = {
++        path: Path(path).read_bytes()
++        for path in tracked
++        if os.path.isfile(path)
++    }
+     try:
+         result = subprocess.run(
+             [sys.executable, RUNNER], cwd=ROOT, capture_output=True, text=True, check=False
+@@ -35,16 +40,18 @@
+         assert "discharges=false" in result.stdout
+         for name, status in EXPECTED.items():
+             path = os.path.join(PROBES, name)
+-            obj = json.load(open(path, encoding="utf-8"))
++            with open(path, encoding="utf-8") as handle:
++                obj = json.load(handle)
+             assert obj["status"] == status
+             assert obj["inventable_attempt_accepted"] is False
+             assert obj["discharges_OBL_H5_JETMOD"] is False
+             assert obj["lemma_closed"] is False
+             assert obj["certified_C_H"] is False
+             assert obj["prizes_solved"] == 0
+-        index = json.load(
+-            open(os.path.join(PROBES, "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json"), encoding="utf-8")
+-        )
++        with open(
++            os.path.join(PROBES, "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json"), encoding="utf-8"
++        ) as handle:
++            index = json.load(handle)
+         assert index["discharges_OBL_H5_JETMOD"] is False
+         assert index["lemma_closed"] is False
+         assert index["certified_C_H"] is False
+@@ -74,9 +81,11 @@
+         / "math_status_probes"
+         / "inventable_g12_ext_named_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+@@ -98,9 +107,11 @@
+         / "math_status_probes"
+         / "inventable_multi_jet_band_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["status"] = "CERTIFIED_24JET"  # inventable promotion
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,

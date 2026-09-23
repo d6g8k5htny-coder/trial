@@ -262,3 +262,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Synced continue branch with `origin/main` (rebase onto PR #5 merge `a14041f`); prior log note retained.
 - Trial pytest green. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 24 — 2026-09-23 18:45 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.94h** / remaining **~46.06h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable from this token.
+  - `./scripts/owner_land_path_a.sh` → **403** GraphQL `markPullRequestReadyForReview`
+  - `./scripts/owner_land_path_b.sh` → local `git am` + auditor **would-align=true**, then `git push` **403**
+- **Trial PR #6** CI green → `gh pr ready 6` + `gh pr merge 6 --merge` → **MERGED** @ `027d30e` (owner land scripts on default trial main). Continue branch rebased onto that merge.
+- Tip vs BASE_TIP: still **`1547ec4`** (ls-remote match; no pack tip refresh).
+- Portable `apply_all` 0001–0007 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean.
+- **0007 shipped:** inventable probe + instrumentation STATUS tests close file handles (`Path.read_bytes` / `with open`) — clears **34** inventable-slice `ResourceWarning: unclosed file` lines observed on the registers/inventable/ci/workflow audit. No status flips.
+- `apply_all.sh --check` now uses a disposable `git worktree` so sequential deps (0007 after 0005/0006) validate without dirtying the caller tree.
+- Stack unchanged: PR #2 draft **MERGEABLE/CLEAN**; #19 `dcc0157` UNSTABLE; #21 `d1e7d0e` CLEAN; #3 CONFLICTING. Notes refreshed.
+- Trial pytest green; portable tarball refreshed. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
