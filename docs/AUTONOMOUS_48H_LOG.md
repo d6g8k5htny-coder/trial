@@ -482,3 +482,13 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Engineering audit: `apply_all` 0001–0008 @ 3.12.3 — `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed** / **0 ResourceWarning**. **No 0009.**
 - Stack change: new [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) (probe isolation) OPEN UNSTABLE; `apply_all --check` fails on that head at 0005 — noted regen watch for 0005/0006 **after merge**. LAND / OWNER_ACTIONS / COMPATIBILITY refreshed.
 - Trial pytest: **17 passed**. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
+### Batch 40 — 2026-09-23 20:09 UTC (HOLD reaffirm; PR #17 merge)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Rules: main PR #2 **HOLD** — never ready/merge; Path B only if WRITABLE; no research status promotion.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip_sha `f25b04bb…`. Path B land **skipped**.
+- Trial [PR #17](https://github.com/d6g8k5htny-coder/trial/pull/17): CI green → marked ready + **merged** @ `a1b4d34` (Batch 39 align-watch). Continue branch survives for this note.
+- Main [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2): left **draft / untouched**. Claude comment [#issuecomment-5802102176](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5802102176) already reaffirms HOLD and asks CoS for **STATUS packet** + **chain-order vs hardening**. Agent reply comment → **403** (integration cannot comment on `main`); did **not** invent STATUS packet answers.
+- **HOLD stands.** Path B remains the preferred ALIGNED path for the default face (when writable / `MAIN_PUSH_TOKEN`). Path A inactive until Dylan lifts HOLD.
+- Not GOAL_COMPLETE_READY (not ALIGNED; not WRITABLE).

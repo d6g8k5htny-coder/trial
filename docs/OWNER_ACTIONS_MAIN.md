@@ -73,6 +73,13 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 **Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
 **Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
+## Stack note (2026-09-23 batch 40 HOLD reaffirm)
+
+- **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; do not ready/merge/retarget. See [#issuecomment-5801736084](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084) and Claude [#issuecomment-5802102176](https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5802102176) (asks CoS for STATUS packet + chain-order vs hardening). Agents must **not** invent STATUS packet answers.
+- **Path B** remains the preferred ALIGNED path for the default face. Write still **403** (`probe_main_write.py` DENIED); Path B not landable from this token; Path A on HOLD.
+- Working tip still **`b02efe2`**; open drafts #27/#26/#24/#21 UNSTABLE, #3 CONFLICTING. Do **not** enable `research.yml` schedules for R2-06.
+
+
 ## Stack note (2026-09-23 batch 39 align-watch)
 
 - Working tip still **`b02efe2`** (ls-remote match); **0001–0008** re-verified @ 3.12.3 (90 passed / 0 ResourceWarning). **No 0009.**
