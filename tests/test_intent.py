@@ -75,3 +75,18 @@ def test_autonomous_log_and_ci_exist() -> None:
     text = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "status promotion" in text
     assert (ROOT / ".github" / "workflows" / "ci.yml").is_file()
+
+
+def test_portable_patches_exist() -> None:
+    root = ROOT / "portable" / "patches"
+    assert (root / "README.md").is_file()
+    p1 = (root / "0001-carriers-verify-ignore-bytecode-caches.patch").read_text(encoding="utf-8")
+    p2 = (root / "0002-math-console-path-honesty.patch").read_text(encoding="utf-8")
+    assert "carriers_verify.py" in p1
+    assert "__pycache__" in p1
+    assert "math_console.py" in p2
+    assert "docs/math_status/math_console.py" in p2
+    assert (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").is_file()
+    checklist = (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").read_text(encoding="utf-8")
+    assert "MERGEABLE" in checklist
+    assert "Scientific effect: NONE" in checklist

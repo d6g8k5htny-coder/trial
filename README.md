@@ -29,6 +29,8 @@ This repository now:
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
 - [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
+- [`portable/pr2-landing/`](portable/pr2-landing/) — checklist to land MERGEABLE PR #2 on default `main`
+- [`portable/patches/`](portable/patches/) — engineering patches (`carriers_verify` bytecode, `math_console` paths)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 1 while default tip is still the pre-q0 face)
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).

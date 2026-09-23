@@ -43,3 +43,11 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 | autonomous-48h-batch | every 3h |
 | autonomous-48h-finale | once @ ~+47.8h |
 | GitHub CI + PR #1 watches | through window end |
+
+### Batch 2 — 2026-09-23 16:54 UTC
+
+- Reconfirmed `main` push **403**; default tip still MISALIGNED (`f25b04bb`).
+- PR #2 observed **MERGEABLE / CLEAN**; inventable #15 verify SUCCEEDED (one twin still finishing).
+- Broad local pytest: 1012 passed before carrier `__pycache__` failures.
+- Shipped portable patches `0001` (carriers bytecode ignore) and `0002` (math_console path honesty), plus `portable/pr2-landing/CHECKLIST.md`.
+- Trial CI previously green on `de84c6c`.
