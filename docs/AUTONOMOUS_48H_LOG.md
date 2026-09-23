@@ -458,3 +458,16 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Tip vs BASE_TIP: live hardening still **`3f85e93`** (ls-remote match; **no pack tip refresh**).
 - PR #2 still OPEN/DRAFT/MERGEABLE/CLEAN — untouched. Trial pytest: **17 passed**.
 - Not GOAL_COMPLETE_READY (not ALIGNED). Owner unblock remains Path B with write creds / `MAIN_PUSH_TOKEN` + dispatch, or relaunch with `main` in env repos.
+
+### Batch 38 — 2026-09-23 ~19:59 UTC (Path B probe; tip refresh after PR #25)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Rules honored: PR #2 **HOLD** (left draft/untouched); Path B only for ALIGNED; no research status promotion; no Path A attempts.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip_sha `f25b04bb…`.
+- `watch_main_alignment.py` → **MISALIGNED**; `audit_main_alignment` exit 1; scientific_effect NONE.
+- Path B land **skipped** (not WRITABLE). Did **not** run `owner_land_path_b.sh --direct-main`.
+- Trial [PR #15](https://github.com/d6g8k5htny-coder/trial/pull/15): CI green → marked ready + **merged** @ `e377f81` (Batch 37 Path B probe log).
+- Tip drift: BASE_TIP `3f85e93` → live **`b02efe2`** ([PR #25](https://github.com/d6g8k5htny-coder/main/pull/25) standing owner authorization merged). Pack refreshed; **no 0009** (docs/auth-only tip move; apply_all still clean).
+- Portable `apply_all` 0001–0008 @ CPython **3.12.3**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; focused slice **0 ResourceWarning**.
+- Stack: #25 **MERGED** @ `b02efe2`; #26/#24/#21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE — HOLD untouched.
+- Trial pytest: **17 passed**. Not GOAL_COMPLETE_READY (not ALIGNED).

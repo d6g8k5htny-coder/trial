@@ -115,7 +115,7 @@ PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `3f85e93`):
+`portable/patches/BASE_TIP.txt` (currently `b02efe2`):
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -127,7 +127,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ 3f85e93
+# expect: problems=0, lemma_closed=false; 90 passed @ b02efe2
 ```
 
 Post-merge from trial (`VERIFY_AFTER_MERGE.sh`) also applies Path C locally when
