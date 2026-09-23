@@ -117,3 +117,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Merged trial PR #1 into default `main` (`b4ff46c`) so `land-option-b-on-main` exists on the default branch.
 - `workflow_dispatch` via API still 403 for this integration — owner must click **Actions → land-option-b-on-main** (or merge main PR #2).
 - d6g8k5htny-coder/main default tip still MISALIGNED; write still 403.
+
+### Batch 14 — 2026-09-23 17:23 UTC
+
+- Merged trial PR #2 into trial main.
+- Expanded portable patch 0004 to cover both `git -C` fixture timeout argument orders.
+- d6g8k5htny-coder/main still MISALIGNED / write 403; Actions dispatch still 403.
