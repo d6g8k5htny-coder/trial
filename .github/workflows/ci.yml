@@ -76,5 +76,5 @@ jobs:
           git clone --depth 1 --branch main \
             https://github.com/d6g8k5htny-coder/main.git main-default
           git -C main-default apply --check \
-            trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch
+            "$GITHUB_WORKSPACE/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch"
           echo "Option-B format-patch still applies on default main"
