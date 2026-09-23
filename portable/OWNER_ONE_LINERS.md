@@ -1,13 +1,17 @@
-# Owner one-liners (Path A / B / C)
+# Owner one-liners (Path B primary / Path A HOLD / Path C)
 
 Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **HOLD (Dylan / CoS, 2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) stays **draft / untouched**. Do **not** mark ready; do **not** merge; do **not** retarget. Fail-closed.  
+> Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084  
+> **Path A is inactive.** Preferred unblock is **Path B** (Option-B notice), or grant App write for Path B only. Agents must never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan explicitly lifts HOLD.
+
 After merging the trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
 Cloud Agent on `trial` so the token picks up `main` write scope, then retry
-Path A/B. Scientific effect: **NONE**. Current runs stay scoped to `trial` only.
+**Path B** (not Path A while HOLD). Scientific effect: **NONE**. Current runs stay scoped to `trial` only.
 
 **Scientific effect: NONE** for packaging lands below. Do not flip
 `lemma_closed` / prize / premise status.
@@ -30,39 +34,23 @@ Poll until default tip is **ALIGNED** (scientific effect **NONE**):
 These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
 
 ```bash
-# Path A — mark PR #2 ready, merge, then audit/watch until ALIGNED
-./scripts/owner_land_path_a.sh
-
-# Path B — default safer: git am Option-B → push branch → open PR
+# Path B — PRIMARY under HOLD: git am Option-B → push branch → open PR
 ./scripts/owner_land_path_b.sh
 # after you merge that PR:
 ./scripts/owner_land_path_b.sh --after-merge
 # opt-in only: push Option-B straight onto default main (no PR)
 ./scripts/owner_land_path_b.sh --direct-main
 
-# Path C — after Path A: rebase hardening onto new main, then apply_all 0001–0008
+# Path A — ON HOLD (Dylan/CoS). Script hard-refuses unless OWNER_FORCE_PATH_A=1 (Dylan only).
+# Do NOT: gh pr ready 2 / gh pr merge 2
+# ./scripts/owner_land_path_a.sh   # exits 1 under HOLD
+
+# Path C — after default tip is ALIGNED (Path B notice or post-HOLD Path A): apply_all 0001–0008
 ./scripts/owner_land_path_c.sh
 # PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # if default tip already has the research tree
 ```
 
-## Path A — land the real tree (manual one-liners)
-
-PR #2 is historically **MERGEABLE / CLEAN** (Drive→git port onto default `main`).
-
-```bash
-# Prefer: ./scripts/owner_land_path_a.sh
-gh pr ready 2 --repo d6g8k5htny-coder/main
-gh pr merge 2 --repo d6g8k5htny-coder/main --merge
-# optional verify:
-curl -sL https://raw.githubusercontent.com/d6g8k5htny-coder/main/main/README.md | head
-python3 /path/to/trial/scripts/audit_main_alignment.py   # expect exit 0
-python3 /path/to/trial/scripts/watch_main_alignment.py    # expect ALIGNED
-# or poll until ALIGNED (default interval 30s, max 2h), then optional VERIFY_AFTER_MERGE:
-./scripts/wait_until_aligned.sh
-./scripts/wait_until_aligned.sh --verify
-```
-
-## Path B — honest redirect until Path A
+## Path B — honest redirect (PRIMARY while Path A on HOLD)
 
 ### B0 — owner script (preferred)
 
@@ -93,7 +81,7 @@ git am /path/to/trial/portable/main-default-branch/0001-option-b-default-branch-
 git push -u origin HEAD
 gh pr create --repo d6g8k5htny-coder/main --base main \
   --title "docs: q0 redirect on default main" \
-  --body "Option-B notice. Scientific effect NONE. Prefer merging PR #2 when ready."
+  --body "Option-B notice. Scientific effect NONE. Path A (PR #2) on HOLD per Dylan/CoS."
 ```
 
 ### Probe before spending time
@@ -103,14 +91,27 @@ gh pr create --repo d6g8k5htny-coder/main --base main \
 MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 ```
 
+## Path A — ON HOLD (struck as active)
+
+~~PR #2 ready → merge~~ — **inactive** until Dylan lifts HOLD.
+
+```bash
+# HARD REFUSE under HOLD (script exits 1 unless OWNER_FORCE_PATH_A=1 for Dylan only):
+./scripts/owner_land_path_a.sh
+# Do NOT run while HOLD is active:
+# gh pr ready 2 --repo d6g8k5htny-coder/main
+# gh pr merge 2 --repo d6g8k5htny-coder/main --merge
+```
+
+PR #2 remains historically MERGEABLE/CLEAN but must stay **draft / untouched**.
+
 ## Path C — engineering patches on working tip
 
-**After Path A (PR #2) merges:** rebase hardening onto new `main`, then apply
-`apply_all` **0001–0008**. Prefer the owner script (fail-closed without write):
+**After default tip is ALIGNED** (Path B notice preferred under HOLD; or Path A after HOLD lift): rebase hardening onto new `main` if needed, then apply `apply_all` **0001–0008**. Prefer the owner script (fail-closed without write):
 
 ```bash
 ./scripts/owner_land_path_c.sh
-# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # post-#2 default tip with research tree
+# PATH_C_BASE=main ./scripts/owner_land_path_c.sh   # post-alignment default tip with research tree
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in

@@ -4,43 +4,45 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-## Path A — land the real tree (preferred)
+> ## Path A — ON HOLD (Dylan / CoS, 2026-09-23)
+>
+> **HOLD — stay draft / untouched.** Do **not** mark ready; do **not** merge; do **not** retarget. Fail-closed.  
+> Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084  
+> Preferred unblock is now **Path B** (Option-B notice), or grant App write for Path B only.  
+> `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only).  
+> Agents must never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan explicitly lifts HOLD.
 
-PR #2 is the Drive→git port onto default `main` (historically MERGEABLE/CLEAN).
-
-```bash
-# As repo owner / write-enabled agent:
-gh pr ready 2 --repo d6g8k5htny-coder/main
-gh pr merge 2 --repo d6g8k5htny-coder/main --merge  # or --squash per your policy
-# Predicted merge commit (2026-09-23): 2a960674… — README becomes q0 program; AGENTS.md present.
-# Then retarget / rebase hardening (chatgpt/drive-github-hardening-20260919) onto new main
-python3 /path/to/trial/portable/pr2-landing/VERIFY_AFTER_MERGE.sh
-```
-
-Verify visitors no longer see complexity-physics:
+## Path B — honest redirect (PRIMARY while Path A on HOLD)
 
 ```bash
-curl -sL https://raw.githubusercontent.com/d6g8k5htny-coder/main/main/README.md | head
-python3 /path/to/trial/scripts/audit_main_alignment.py   # expect exit 0
-```
-
-Do **not** enable `research.yml` schedules solely for R2-06 prose.
-
-## Path B — honest redirect until Path A
-
-```bash
+# Preferred owner script:
+./scripts/owner_land_path_b.sh
+# or:
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
 git checkout main
 git checkout -b cursor/default-branch-notice
 git am /path/to/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch
 python3 /path/to/trial/scripts/audit_local_tree.py .   # expect ALIGNED (would-align)
 git push -u origin HEAD
-gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE. Prefer merging PR #2 when ready."
+gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE. Path A (PR #2) on HOLD per Dylan/CoS."
 ```
 
 Batch **22** local dry-run on default tip `f25b04bb`: `git am` OK; local auditor
 **ALIGNED** (all four q0/notice markers; complexity markers cleared; `body`
 quarantined). Path B content is sufficient — landing blocked only by write/token.
+
+## Path A — land the real tree (INACTIVE — HOLD)
+
+~~Preferred~~ **On HOLD.** PR #2 is the Drive→git port onto default `main` (historically MERGEABLE/CLEAN) but must stay **draft / untouched** until Dylan lifts HOLD.
+
+```bash
+# Do NOT run while HOLD is active:
+# gh pr ready 2 --repo d6g8k5htny-coder/main
+# gh pr merge 2 --repo d6g8k5htny-coder/main --merge
+# ./scripts/owner_land_path_a.sh   # exits 1 unless OWNER_FORCE_PATH_A=1 (Dylan only)
+```
+
+Do **not** enable `research.yml` schedules solely for R2-06 prose.
 ## Path C — engineering patches on working tip
 
 **After Path A (PR #2) merges:** rebase hardening onto the new `main`, then
@@ -81,7 +83,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 
 | PR | Role | Note |
 |----|------|------|
-| #2 | Port onto default `main` | Critical for alignment |
+| #2 | Port onto default `main` | **HOLD** — draft/untouched (Dylan/CoS); Path B preferred |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
@@ -96,7 +98,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 ## Re-launch agents
 
 Point new cloud agents at `d6g8k5htny-coder/main` with write access and base
-`chatgpt/drive-github-hardening-20260919` (or default `main` after Path A).
+`chatgpt/drive-github-hardening-20260919` (or default `main` after Path B / post-HOLD Path A).
 
 
 ## Automation blocked for this agent
@@ -111,7 +113,7 @@ Attempts from the `trial` cloud token (2026-09-23):
 | `gh pr merge 2` / GraphQL mergePullRequest | 403 — Resource not accessible by integration |
 | trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
-Owner (or a write-enabled `main` agent) must run Path A/B/C.
+Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOLD) or Path C after alignment. Path A is on HOLD.
 
 
 ## Patch regeneration watch
@@ -133,9 +135,9 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 
 | Script | Role |
 |--------|------|
-| `scripts/owner_land_path_a.sh` | `gh pr ready 2` + `gh pr merge 2 --merge`, then audit/watch → ALIGNED |
-| `scripts/owner_land_path_b.sh` | Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
-| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-#2 main) → `apply_all` 0001–0008 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
+| `scripts/owner_land_path_b.sh` | **PRIMARY under HOLD.** Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
+| `scripts/owner_land_path_a.sh` | **ON HOLD** — hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only). Would ready+merge PR #2. |
+| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0008 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
@@ -147,6 +149,6 @@ Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/la
 2. Run workflow `land-option-b-on-main` with `dry_run=false`.
 3. Workflow `git am`s Option-B, runs `scripts/audit_local_tree.py` (must exit 0 /
    would-align), pushes `cursor/option-b-notice-from-trial` **and opens a PR**
-   into default `main` — merge that PR (or Path A).
+   into default `main` — merge that PR. (Path A remains on HOLD.)
 
 Default `dry_run=true` verifies `git am` + local auditor (no push).
