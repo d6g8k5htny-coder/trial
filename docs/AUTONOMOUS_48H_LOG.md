@@ -26,7 +26,7 @@ Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer
 - **Option-B:** tip unchanged `c2b0620`; pack still applies. **Stronger** Option-B (README + root `AGENTS.md`) recut tip-current; `path_b_dry_run` / `restore_main_face.sh --dry-run` → **would-align=true** / `root_has_AGENTS_md=true`. Path B **not** applied (write 403).
 - **Trial improvements:** `scripts/restore_main_face.sh` one-command restore; `RESTORE_PLAN_58.json`; token search JSON; docs/README/LAND/OWNER banners → Batch 58.
 - Tip refresh: hardening still **`9a56c30`** (== BASE_TIP). Path C **IDLE** / no 0017.
-- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push.
 - No research status promotion. `lemma_closed` untouched. `goal_complete=false` (not ALIGNED).
 
 ### Batch 57 — 2026-09-23 ~22:50 UTC (MISALIGNED; tip `4fc1d7c`→`c2b0620`; Option-B RECUT; Path B DENIED; no 0017)
@@ -778,3 +778,4 @@ Remaining after ALIGNED (not blocking alignment itself; from EXPECTED + Path C):
 - Tip drift: BASE_TIP `b02efe2` → live **`46af1ca`** ([PR #24](https://github.com/d6g8k5htny-coder/main/pull/24) inventable STATUS honesty cross-links merged). Pack refreshed; tip `apply_all` 0001–0009 @ 3.11 → problems=0 / lemma_closed=false / focused+claims **137** / **0 ResourceWarning**.
 - PR #27 head shallow-clone @ `63b519f`: tip-cut fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → problems=0 / lemma_closed=false / focused **90** / probes clean / residual **6** ResourceWarning. COMPATIBILITY + BASE_TIP updated.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
