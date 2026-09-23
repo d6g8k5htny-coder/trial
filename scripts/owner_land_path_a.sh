@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Owner Path A land: mark main PR #2 ready and merge it, then verify ALIGNED.
 #
+# *** HOLD (Dylan / CoS, 2026-09-23) ***
+# PR #2 stays draft / untouched. Do not mark ready; do not merge; do not retarget.
+# Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084
+# This script hard-refuses unless OWNER_FORCE_PATH_A=1 (Dylan only).
+# Preferred unblock under HOLD: Path B (./scripts/owner_land_path_b.sh).
+#
 # Intended to run on the owner's machine / Codespace with *owner* gh auth that
 # has write on d6g8k5htny-coder/main. This trial cloud token cannot (403).
 #
@@ -9,6 +15,7 @@
 #
 # Usage:
 #   ./scripts/owner_land_path_a.sh
+#   OWNER_FORCE_PATH_A=1 ./scripts/owner_land_path_a.sh   # Dylan only, when HOLD lifted
 #   TRIAL_ROOT=/path/to/trial ./scripts/owner_land_path_a.sh
 set -euo pipefail
 
@@ -21,6 +28,20 @@ die() {
   echo "owner_land_path_a: ERROR: $*" >&2
   exit 1
 }
+
+# --- HOLD gate (Dylan/CoS) — fail closed before any gh pr ready/merge ---
+if [[ "${OWNER_FORCE_PATH_A:-}" != "1" ]]; then
+  cat >&2 <<EOF
+owner_land_path_a: REFUSED — Path A (PR #${PR_NUMBER}) is on HOLD per Dylan/CoS order (2026-09-23).
+  Stay draft / untouched. Do not mark ready; do not merge; do not retarget.
+  Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084
+  Preferred unblock: Path B → ./scripts/owner_land_path_b.sh
+  (Option-B notice, or grant App write for Path B only.)
+  Override (Dylan only, when HOLD explicitly lifted): OWNER_FORCE_PATH_A=1
+  Scientific effect: NONE
+EOF
+  exit 1
+fi
 
 need_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"
@@ -35,6 +56,7 @@ WATCH="$TRIAL_ROOT/scripts/watch_main_alignment.py"
 [[ -f "$WATCH" ]] || die "missing $WATCH"
 
 echo "=== owner_land_path_a ==="
+echo "WARNING: OWNER_FORCE_PATH_A=1 set — proceeding despite HOLD gate (Dylan only)."
 echo "repo=$REPO pr=#$PR_NUMBER trial_root=$TRIAL_ROOT"
 echo "scientific_effect=NONE"
 echo

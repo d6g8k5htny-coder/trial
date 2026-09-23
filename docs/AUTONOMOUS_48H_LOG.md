@@ -415,3 +415,30 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - PR #2 still **OPEN / DRAFT / MERGEABLE / CLEAN** (verify SUCCESS). No Path A/B land from this token. Did **not** invent ALIGNED / status flips. Did **not** touch `research.yml` schedules (R2-06).
 - Recorded setup-blocker actions: require `MAIN_PUSH_TOKEN` + owner Path A (merge PR #2) or grant cursor[bot] write + relaunch with `main` in env repos.
 - Trial pytest: **17 passed**. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED).
+
+### Batch 35 — 2026-09-23 19:47 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~3.06h** / remaining **~44.94h** (window 172800s). Not expired.
+- Alignment: still **MISALIGNED**; default tip still `f25b04bb931df2eaee302b666db014913486166b`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** HTTP 403 create-ref. Path A/B not landable from this token. No Path A shout.
+- Tip drift: BASE_TIP `a89f9a7` → live **`3f85e93`** (PR #23 PACKET tip-align merged). Pack refreshed; **no 0009** (docs-only tip move; apply_all still clean).
+- Portable `apply_all` 0001–0008 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; focused slice **0 ResourceWarning**.
+- Stack: #23 **MERGED** @ `3f85e93`; #25/#24 UNSTABLE; #21 CLEAN; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+- Idle after tip refresh — no status promotion. Did not touch `research.yml` schedules (R2-06).
+
+### Batch 36 — 2026-09-23 ~19:49 UTC (Dylan/CoS Path A HOLD)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- **HOLD order (Dylan / CoS)** on `d6g8k5htny-coder/main` [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2): stay **draft / untouched**. Do not mark ready; do not merge; do not retarget. Fail-closed.
+  - Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084
+- Pivot: **Path A inactive**; preferred unblock is now **Path B** (Option-B notice) or grant App write for Path B only.
+- Docs/scripts updated on `cursor/autonomous-48h-continue-309a` (tip sync `5be07d6`):
+  - `docs/OWNER_ACTIONS_MAIN.md` — Path A HOLD; Path B preferred
+  - `portable/OWNER_ONE_LINERS.md` — Path B primary; Path A struck/HOLD
+  - `portable/LAND.md` — Path A HOLD banner
+  - `scripts/owner_land_path_a.sh` — hard refuse at top (`exit 1`) unless `OWNER_FORCE_PATH_A=1` (Dylan only)
+  - `scripts/print_owner_unblock.sh` — Path B first
+  - `/opt/cursor/artifacts/OWNER_UNBLOCK_ALIGNED.md` refreshed
+- Standing: never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan lifts HOLD. Never promote research status.
+- Probe + Path B: `probe_main_write.py` → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`); tip `f25b04bb…`. **Did not** run Path B (not WRITABLE). **Did not** call `gh pr ready` / `gh pr merge` on PR #2. Path A script refuse gate verified (`exit 1` without `OWNER_FORCE_PATH_A`).
+- Trial pytest: **17 passed**. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED; HOLD on #2).

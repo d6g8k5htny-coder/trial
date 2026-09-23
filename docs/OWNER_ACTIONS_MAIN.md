@@ -8,14 +8,17 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
+> **HOLD (Dylan / CoS, 2026-09-23):** [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) stays **draft / untouched**. Do **not** mark ready; do **not** merge; do **not** retarget. Fail-closed. Comment: https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084  
+> **Path A is on HOLD.** Preferred unblock is now **Path B** (Option-B notice), or grant App write for Path B only. Agents must never call `gh pr ready` / `gh pr merge` on PR #2 unless Dylan explicitly lifts HOLD. Scientific effect: **NONE**.
+
 ### 1. Stop advertising the abandoned complexity-physics README
 
 Default `main` @ `f25b04bb` still shows the Dec 2025 complexity framework with “✅ Confirmed” rows. That is false for the active program.
 
 **Options (pick one):**
 
-- **A (preferred):** Mark [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) ready, review, and merge when you accept the Drive→git port as the repository’s public face. That replaces the misleading root with the q0 README and ~4.2k files.
-- **B (minimal):** On default `main` only, replace `README.md` with a short redirect to the working branch / PR #2 (“research lives on branch X; default branch pending merge”) and remove or quarantine the `body` manuscript generator so visitors are not misled. Do not invent new scientific claims in that stub.
+- **B (preferred while Path A is on HOLD):** On default `main` only, replace `README.md` with a short redirect to the working branch / PR #2 (“research lives on branch X; default branch pending merge”) and remove or quarantine the `body` manuscript generator so visitors are not misled. Do not invent new scientific claims in that stub. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
+- **A (ON HOLD — Dylan/CoS):** Mark [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) ready and merge when (and only when) Dylan lifts HOLD. That would replace the misleading root with the q0 README and ~4.2k files. Until then: stay draft; `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only).
 
 ### 2. Decide the public integration branch
 
@@ -67,17 +70,19 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 ## Fastest unblock from trial CI
 
-Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
-(`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.
+**Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
+**Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
-## Stack note (2026-09-23 batch 31)
+## Stack note (2026-09-23 batch 35)
 
-- Working tip **`a89f9a7`** ([PR #22](https://github.com/d6g8k5htny-coder/main/pull/22) docs cross-links; prior #19 @ `ae7daf7`); BASE_TIP refreshed; **0001–0008** in `apply_all.sh` re-verified @ 3.12.3 (90 passed / 0 ResourceWarning). **No 0009.**
-- Open drafts: #23 UNSTABLE, #21 CLEAN, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
-- Write still **403** (`probe_main_write.py` DENIED). No env names containing TOKEN/GITHUB/PAT (as whole token keys). Path A ready→403; Path B would-align then push **403**; trial `land-option-b-on-main` workflow_dispatch **403**.
+- Working tip **`3f85e93`** ([PR #23](https://github.com/d6g8k5htny-coder/main/pull/23) PACKET base_commit/as_of tip-align; prior #22 @ `a89f9a7`); BASE_TIP refreshed; **0001–0008** in `apply_all.sh` re-verified @ 3.11.16 (90 passed / 0 ResourceWarning). **No 0009.**
+- Open drafts: #25/#24 UNSTABLE, #21 CLEAN, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
+- Write still **403** (`probe_main_write.py` DENIED). Path A ready→403; Path B would-align then push **403**.
 - Do **not** enable `research.yml` schedules for R2-06.
 
 
 ## Fresh-agent re-probe (2026-09-23 19:39 UTC, bc-752a8e1b)
 
-Restriction-lift claim re-checked on a new trial Cloud Agent. Still **403** on every write path to `d6g8k5htny-coder/main` (`cursor[bot]`; permissions all false; `MAIN_PUSH_TOKEN` absent). Live env repos list is still **only** trial despite `.cursor/environment.json` `repositoryDependencies`. Default tip still MISALIGNED @ `f25b04bb`. Path B local dry-run still **would-align=true**. Owner must merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), grant write + relaunch with `main` in scope, or set `MAIN_PUSH_TOKEN` and run `land-option-b-on-main`.
+Restriction-lift claim re-checked on a new trial Cloud Agent. Still **403** on every write path to `d6g8k5htny-coder/main` (`cursor[bot]`; permissions all false; `MAIN_PUSH_TOKEN` absent). Live env repos list is still **only** trial despite `.cursor/environment.json` `repositoryDependencies`. Default tip still MISALIGNED @ `f25b04bb`. Path B local dry-run still **would-align=true**.
+
+**Dylan/CoS HOLD (2026-09-23):** PR #2 stays draft — https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084. Preferred unblock: **Path B** (Option-B notice) or grant App write for Path B only. Do not ready/merge #2.

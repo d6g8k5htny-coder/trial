@@ -1,11 +1,11 @@
 # Mechanical findings from local clone of `d6g8k5htny-coder/main`
 
-Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `a89f9a703739aed9d290c94d68f80bf4e8bd9d62`
-(PR #22 docs STATUS honesty cross-links; prior #15/#16/#17/#18/#19/#20).
-Host: CPython 3.12.3 + pytest.
+Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `3f85e934c6ff1154d35208817cd22277fb889905`
+(PR #23 PACKET tip-align; prior #15/#16/#17/#18/#19/#20/#22).
+Host: CPython 3.11.16 + pytest.
 **Scientific effect: NONE.**
 
-## After portable patches 0001–0008 on `a89f9a7` (batch 31)
+## After portable patches 0001–0008 on `3f85e93` (batch 35)
 
 | Check | Result |
 |-------|--------|
