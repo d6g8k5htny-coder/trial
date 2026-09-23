@@ -113,3 +113,11 @@ def test_alignment_status_script() -> None:
         assert data["scientific_effect"] == "NONE"
         assert "main" in data and "trial" in data
         assert data["main"]["alignment"]["audit_exit"] in (0, 1)
+
+
+def test_land_sheet() -> None:
+    text = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "Path A" in text and "Path B" in text and "Path C" in text
+    assert "PR #2" in text
+    assert "Scientific effect: NONE" in text
+    assert "403" in text

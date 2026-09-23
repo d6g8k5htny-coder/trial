@@ -65,3 +65,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Shipped Option-B **format-patch** `portable/main-default-branch/0001-option-b-default-branch-notice.patch` (verified `git apply` on fresh main).
 - Patch **0003** gaussian-moments parametrize list (45 tests pass with -W error).
 - `scripts/alignment_status.py` dashboard. Noted PR #3/#12 CONFLICTING after #15; PR #2 still CLEAN; PR #16 docs-only on hardening.
+
+### Batch 5 — 2026-09-23 17:10 UTC
+
+- Confirmed Git Data API ref-create on `main` is also **403**; trial ref-create works (probe deleted).
+- Portable patches apply cleanly on PR #17 tip; after apply: math_status green, **84** tests passed (carriers+math_status+inventable+gaussian).
+- Added `portable/LAND.md` Path A (PR #2) / B (Option-B am) / C (engineering patches).

@@ -1,3 +1,5 @@
+See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
+
 # Owner actions for `d6g8k5htny-coder/main`
 
 This agent **cannot push** to `main` (cursor[bot] 403). Only you (or an environment with write access to that repo) can apply these.
@@ -55,3 +57,7 @@ Expect `lemma_closed=false`, `prizes_solved=false`, and honest OPEN/HOLD disposi
 Inventable JETMOD probes ([PR #15](https://github.com/d6g8k5htny-coder/main/pull/15)) **merged** into
 `chatgpt/drive-github-hardening-20260919` @ `1ea0ae8183fb0459c6678243946295518fded1ba`.
 That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 face until PR #2 lands.
+
+## Write-access probe (2026-09-23)
+
+`cursor[bot]` cannot push to `d6g8k5htny-coder/main` via git **or** the Git Data API (`POST .../git/refs` → 403 Resource not accessible by integration). The same token can create refs on `trial`. Re-launch against `main` with a credential that has push, or apply Path A/B/C from `portable/LAND.md` yourself.
