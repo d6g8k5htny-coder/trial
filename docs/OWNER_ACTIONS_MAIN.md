@@ -73,6 +73,14 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 **Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
 **Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
+## Stack note (2026-09-23 batch 38)
+
+- Working tip **`b02efe2`** ([PR #25](https://github.com/d6g8k5htny-coder/main/pull/25) standing owner authorization; prior #23 @ `3f85e93`); BASE_TIP refreshed; **0001–0008** in `apply_all.sh` re-verified @ 3.12.3 (90 passed / 0 ResourceWarning). **No 0009.**
+- Open drafts: #26/#24/#21 UNSTABLE, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE** — **HOLD** (untouched).
+- Write still **403** (`probe_main_write.py` DENIED). Path B not landable from this token; Path A on HOLD.
+- Do **not** enable `research.yml` schedules for R2-06.
+
+
 ## Stack note (2026-09-23 batch 35)
 
 - Working tip **`3f85e93`** ([PR #23](https://github.com/d6g8k5htny-coder/main/pull/23) PACKET base_commit/as_of tip-align; prior #22 @ `a89f9a7`); BASE_TIP refreshed; **0001–0008** in `apply_all.sh` re-verified @ 3.11.16 (90 passed / 0 ResourceWarning). **No 0009.**

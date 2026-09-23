@@ -61,6 +61,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #21 | Attestations + H3 salvage (`5c453b1`) | MERGEABLE/**CLEAN** onto hardening; not a status discharge |
 | #22 | **Merged** @ `a89f9a7` | docs STATUS honesty cross-links; BASE_TIP → `a89f9a7` (batch 31); no status flip |
 | #23 | **Merged** @ `3f85e93` | PACKET base_commit/as_of tip-align; BASE_TIP → `3f85e93` (batch 35); no status flip |
+| #25 | **Merged** @ `b02efe2` | standing owner authorization; BASE_TIP → `b02efe2` (batch 38); no status flip |
 
 ## Merged since these notes started
 
@@ -74,6 +75,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #19 | AUTHOR_SIDE honesty banners → hardening @ `ae7daf7` | Digest-only PACKET refresh; flags stay false; **not** a discharge |
 | #22 | docs STATUS honesty cross-links → hardening @ `a89f9a7` | Docs-only; BASE_TIP refresh; **not** a discharge |
 | #23 | PACKET base_commit/as_of tip-align → hardening @ `3f85e93` | Docs-only; BASE_TIP refresh; **not** a discharge |
+| #25 | standing owner authorization → hardening @ `b02efe2` | Autonomy auth only; BASE_TIP refresh; **not** a discharge |
 
 ## Non-claims
 

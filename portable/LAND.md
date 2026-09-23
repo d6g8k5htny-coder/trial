@@ -49,7 +49,7 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 apply portable `apply_all` **0001–0008**. Do not land Path C onto the abandoned
 pre-q0 default tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `3f85e93` — patches apply cleanly), or post-#2 `main` once the port is present:
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `b02efe2` — patches apply cleanly), or post-#2 `main` once the port is present:
 
 ```bash
 # Preferred (owner write creds):
@@ -93,6 +93,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #21 | Attestations + H3 salvage | MERGEABLE/**CLEAN** onto hardening (head `5c453b1`); patches 0001–0004 apply; inventable tests absent on that base |
 | #22 | docs STATUS honesty cross-links | **Merged** @ `a89f9a7`; BASE_TIP refreshed (batch 31) |
 | #23 | tip-align PACKET base_commit/as_of | **Merged** @ `3f85e93`; BASE_TIP refreshed (batch 35) |
+| #25 | standing owner authorization | **Merged** @ `b02efe2`; BASE_TIP refreshed (batch 38); no status flip |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -118,10 +119,10 @@ Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOL
 
 ## Patch regeneration watch
 
-Working tip is **`3f85e93`** (PR #23 merged after #22/#19/#20). Open drafts **#21**/**#24**/**#25** (plus older stack).
-Batch **35**: tip `a89f9a7` → `3f85e93`; `apply_all` 0001–0008 @ 3.11.16 → focused **90 passed** / **0 ResourceWarning**;
+Working tip is **`b02efe2`** (PR #25 merged after #23/#22/#19/#20). Open drafts **#21**/**#24**/**#26** (plus older stack).
+Batch **38**: tip `3f85e93` → `b02efe2`; `apply_all` 0001–0008 @ 3.12.3 → focused **90 passed** / **0 ResourceWarning**;
 inventable slice **0 ResourceWarning** after **0007**; carriers/math_status **0** after **0008**.
-Stack: #23 **MERGED**; #22 ancestor; #21 CLEAN; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+Stack: #25 **MERGED**; #23 ancestor; #26/#24 UNSTABLE; #21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
 Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.

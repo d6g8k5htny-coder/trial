@@ -35,7 +35,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
 - [`portable/OWNER_ONE_LINERS.md`](portable/OWNER_ONE_LINERS.md) — copy-paste Path A (`gh pr ready/merge 2`), Path B (Actions + token), Path C (`apply_all`)
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
-- [`portable/patches/`](portable/patches/) — engineering patches 0001–0008 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `3f85e93` after PR #23)
+- [`portable/patches/`](portable/patches/) — engineering patches 0001–0008 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `b02efe2` after PR #25)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 1 while default tip is still the pre-q0 face)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher

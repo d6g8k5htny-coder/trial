@@ -1,9 +1,19 @@
 # Mechanical findings from local clone of `d6g8k5htny-coder/main`
 
-Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `3f85e934c6ff1154d35208817cd22277fb889905`
-(PR #23 PACKET tip-align; prior #15/#16/#17/#18/#19/#20/#22).
-Host: CPython 3.11.16 + pytest.
+Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `b02efe21d8d7475ac9b4aa25b3dcc26a5b6f4bf4`
+(PR #25 standing owner authorization; prior #15/#16/#17/#18/#19/#20/#22/#23).
+Host: CPython 3.12.3 + pytest.
 **Scientific effect: NONE.**
+
+## After portable patches 0001–0008 on `b02efe2` (batch 38)
+
+| Check | Result |
+|-------|--------|
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| carriers + math_status + inventable + gaussian + instrumentation | **90 passed** |
+| `apply_all.sh --check` | OK |
+| focused slice ResourceWarning | **0** (after 0007+0008) |
+| `docs/math_status_probes/` after tests | clean |
 
 ## After portable patches 0001–0008 on `3f85e93` (batch 35)
 
