@@ -87,7 +87,7 @@ MAIN_PUSH_TOKEN=… python3 /path/to/trial/scripts/probe_main_write.py
 ## Path C — engineering patches on working tip
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in
-`portable/patches/BASE_TIP.txt` (currently `1547ec4`):
+`portable/patches/BASE_TIP.txt` (currently `ae7daf7`):
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -99,7 +99,7 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed @ 1547ec4
+# expect: problems=0, lemma_closed=false; 90 passed @ ae7daf7
 ```
 
 `apply_all.sh` now includes **0001–0007** (0006 promoted after PR #20 merge; 0007 inventable close-file-handles in batch 24).

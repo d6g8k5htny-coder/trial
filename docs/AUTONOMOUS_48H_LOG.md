@@ -278,3 +278,20 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack unchanged: PR #2 draft **MERGEABLE/CLEAN**; #19 `dcc0157` UNSTABLE; #21 `d1e7d0e` CLEAN; #3 CONFLICTING. Notes refreshed.
 - Trial pytest green; portable tarball refreshed. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 25 — 2026-09-23 18:57 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.23h** / remaining **~45.77h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable from this token.
+  - `./scripts/owner_land_path_a.sh` → **403** GraphQL `markPullRequestReadyForReview`
+  - `./scripts/owner_land_path_b.sh` → local `git am` + auditor **would-align=true**, then `git push` **403**
+- Synced continue branch with `origin/main` (fast-forward onto PR #7 merge `6d448db`).
+- Tip moved: `1547ec4` → **`ae7daf7`** (PR #19 merged). BASE_TIP refreshed. No status promotion (PACKET digest-only honesty banners; flags stay false).
+- Path A merge preview: PR #2 still draft **MERGEABLE/CLEAN**; potentialMergeCommit `2a96067` README head is q0 program; `audit_local_tree` → **ALIGNED** (would-align).
+- Portable `apply_all` 0001–0008 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean; focused slice **0 ResourceWarning**.
+- **0008 shipped:** carriers test + math_status helpers + `carriers_verify` close file handles — clears **63** focused-slice `ResourceWarning: unclosed file` lines observed after 0001–0007 on `ae7daf7`. No status flips.
+- Stack: #19 **MERGED** @ `ae7daf7`; #21 head `52bdd443` UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+- `scripts/owner_land_path_{a,b}.sh` **present on trial `origin/main`** (via PR #7). Not present on `d6g8k5htny-coder/main` default tip (pre-q0 face; no `scripts/`).
+- Branch not ahead of trial main before this batch commit (was at merge tip). Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
