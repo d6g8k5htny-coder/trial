@@ -47,7 +47,7 @@ quarantined). Path B content is sufficient — landing blocked only by write/tok
 apply portable `apply_all` **0001–0008**. Do not land Path C onto the abandoned
 pre-q0 default tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `a89f9a7` — patches apply cleanly), or post-#2 `main` once the port is present:
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `3f85e93` — patches apply cleanly), or post-#2 `main` once the port is present:
 
 ```bash
 # Preferred (owner write creds):
@@ -86,11 +86,11 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
 | #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` (ancestor of `1547ec4`) |
-| #19 | AUTHOR_SIDE honesty banners on RN tip | **Merged** @ `ae7daf7` (ancestor of `a89f9a7`) |
+| #19 | AUTHOR_SIDE honesty banners on RN tip | **Merged** @ `ae7daf7` (ancestor of `3f85e93`) |
 | #20 | Instrumentation PARTIAL/REFUSED_NOT_24JET STATUS | **Merged** @ `1547ec4`; promoted portable **0006** into `apply_all.sh`; batch 24 added **0007**; batch 25 added **0008** |
 | #21 | Attestations + H3 salvage | MERGEABLE/**CLEAN** onto hardening (head `5c453b1`); patches 0001–0004 apply; inventable tests absent on that base |
 | #22 | docs STATUS honesty cross-links | **Merged** @ `a89f9a7`; BASE_TIP refreshed (batch 31) |
-| #23 | tip-align PACKET base_commit/as_of | draft UNSTABLE onto hardening |
+| #23 | tip-align PACKET base_commit/as_of | **Merged** @ `3f85e93`; BASE_TIP refreshed (batch 35) |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -116,10 +116,10 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 ## Patch regeneration watch
 
-Working tip is **`a89f9a7`** (PR #22 merged after #19/#20). Open drafts **#21**/**#23** (plus older stack).
-Batch **31**: tip `ae7daf7` → `a89f9a7`; `apply_all` 0001–0008 @ 3.12 → focused **90 passed** / **0 ResourceWarning**;
+Working tip is **`3f85e93`** (PR #23 merged after #22/#19/#20). Open drafts **#21**/**#24**/**#25** (plus older stack).
+Batch **35**: tip `a89f9a7` → `3f85e93`; `apply_all` 0001–0008 @ 3.11.16 → focused **90 passed** / **0 ResourceWarning**;
 inventable slice **0 ResourceWarning** after **0007**; carriers/math_status **0** after **0008**.
-Stack: #22 **MERGED**; #21 CLEAN; #23 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+Stack: #23 **MERGED**; #22 ancestor; #21 CLEAN; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
 Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.
