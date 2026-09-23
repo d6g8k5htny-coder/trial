@@ -94,6 +94,7 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #22 | docs STATUS honesty cross-links | **Merged** @ `a89f9a7`; BASE_TIP refreshed (batch 31) |
 | #23 | tip-align PACKET base_commit/as_of | **Merged** @ `3f85e93`; BASE_TIP refreshed (batch 35) |
 | #25 | standing owner authorization | **Merged** @ `b02efe2`; BASE_TIP refreshed (batch 38); no status flip |
+| #27 | Isolate probe tests from tracked receipts | OPEN MERGEABLE/**UNSTABLE** (head `8d023a9`); overlaps inventable/instrumentation test files — **0005/0006 do not apply** on this head; regen after merge; **no 0009** on tip |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -119,10 +120,10 @@ Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOL
 
 ## Patch regeneration watch
 
-Working tip is **`b02efe2`** (PR #25 merged after #23/#22/#19/#20). Open drafts **#21**/**#24**/**#26** (plus older stack).
-Batch **38**: tip `3f85e93` → `b02efe2`; `apply_all` 0001–0008 @ 3.12.3 → focused **90 passed** / **0 ResourceWarning**;
-inventable slice **0 ResourceWarning** after **0007**; carriers/math_status **0** after **0008**.
-Stack: #25 **MERGED**; #23 ancestor; #26/#24 UNSTABLE; #21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
+Working tip is still **`b02efe2`** (PR #25; ls-remote match batch 39). Open drafts **#27**/**#26**/**#24**/**#21** (plus older stack).
+Batch **39** (align-watch): tip unchanged; `apply_all` 0001–0008 @ 3.12.3 → focused **90 passed** / **0 ResourceWarning**; **no 0009**.
+PR **#27** head `8d023a9`: `apply_all --check` **fails** on 0005 (`test_inventable_jetmod_probes.py`) — isolation rewrite overlaps portable receipt restores; **regen 0005/0006 after #27 merges**, do not invent tip-level 0009 while BASE_TIP holds.
+Stack: #25 **MERGED**; #27 UNSTABLE (new); #26/#24/#21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
 Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.
