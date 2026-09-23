@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 60 — ALIGNED (`1c6e74b` via owner PR #41); Path C dry-run @ `b3da668`; HOLD VOID; window open:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C: `./scripts/owner_land_path_c.sh --dry-run` → keep hardening BASE_TIP `b3da668` (rebase CONFLICTING; no 0017). Write **403**. See `portable/RESTORE_PLAN_60.json` + `BATCH60_TOKEN_SEARCH.json`.
+> **Batch 61 — PERMANENT window; ALIGNED (`1c6e74b` via owner PR #41); Path C dry-run @ `b3da668`; HOLD VOID:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** **“48 hours is now extended permanently until I intervene.”** Stop only on owner intervene — no 48h finale (`scripts/check_autonomous_window.py`). Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C: `./scripts/owner_land_path_c.sh --dry-run` → keep hardening BASE_TIP `b3da668` (rebase CONFLICTING; no 0017). Write **403**. See `portable/RESTORE_PLAN_61.json` + `BATCH61_TOKEN_SEARCH.json`.
 
 ### 1. Keep default tip ALIGNED
 

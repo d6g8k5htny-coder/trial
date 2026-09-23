@@ -419,27 +419,37 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert restore60["aligned"] is True
     assert restore60["path_c"].get("dry_run_certainty") == "scripts/path_c_dry_run.py"
     assert restore60["path_c"].get("post_aligned_keep_hardening") is True
+    restore61 = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_61.json").read_text())
+    assert restore61["scientific_effect"] == "NONE"
+    assert restore61["aligned"] is True
+    assert (ROOT / "scripts" / "check_autonomous_window.py").is_file()
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
     assert "path_c_dry_run.py" in pack
+    assert "check_autonomous_window.py" in pack
     assert "RESTORE_PLAN_55.json" in pack
     assert "RESTORE_PLAN_58.json" in pack
     assert "RESTORE_PLAN_59.json" in pack
     assert "RESTORE_PLAN_60.json" in pack
+    assert "RESTORE_PLAN_61.json" in pack
     assert "restore_main_face.sh" in pack
     assert "BATCH58_TOKEN_SEARCH.json" in pack
     assert "BATCH59_TOKEN_SEARCH.json" in pack
     assert "BATCH60_TOKEN_SEARCH.json" in pack
+    assert "BATCH61_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
     assert "restore_main_face.sh" in unblock
     assert "path_c_dry_run.py" in unblock or "owner_land_path_c.sh --dry-run" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
-    assert "Batch 60" in unblock or "b3da668" in unblock or "1c6e74b" in unblock
+    assert "Batch 61" in unblock or "PERMANENT" in unblock or "1c6e74b" in unblock
+    assert "check_autonomous_window.py" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 61" in log
+    assert "PERMANENT_UNTIL_OWNER_INTERVENES" in log
     assert "Batch 60" in log
     assert "Batch 59" in log
     assert "Batch 58" in log
@@ -449,6 +459,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "restore_main_face" in log or "one-command" in log.lower()
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
+    assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
     assert restore_one.stat().st_mode & 0o111
@@ -532,6 +543,46 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert "APPLY_READY" in combined or "dry-run OK" in combined
 
 
+def test_check_autonomous_window_permanent_mode(tmp_path, monkeypatch) -> None:
+    """Permanent mode must never hard-stop on elapsed wall-clock."""
+    import json
+    import os
+
+    store = tmp_path / "stores"
+    store.mkdir()
+    (store / "autonomous_window_mode.txt").write_text(
+        "PERMANENT_UNTIL_OWNER_INTERVENES\n", encoding="utf-8"
+    )
+    (store / "autonomous_48h_window_seconds.txt").write_text("999999999\n", encoding="utf-8")
+    (store / "autonomous_48h_started_at.txt").write_text(
+        "2020-01-01T00:00:00Z\n", encoding="utf-8"
+    )
+    (store / "autonomous_permanent_extension.txt").write_text(
+        "extended permanently\n", encoding="utf-8"
+    )
+    monkeypatch.setenv("AUTONOMOUS_STORE_DIR", str(store))
+    script = ROOT / "scripts" / "check_autonomous_window.py"
+    assert script.is_file()
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+        cwd=str(ROOT),
+        env={**os.environ, "AUTONOMOUS_STORE_DIR": str(store)},
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert data["window_mode"] == "PERMANENT_UNTIL_OWNER_INTERVENES"
+    assert data["state"] == "PERMANENT_OPEN"
+    assert data["hard_stop"] is False
+    assert data["within_window"] is True
+    assert data["finale"] is False
+    assert data["stop_condition"] == "owner_intervene_only"
+
+
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
     """Owner Path A/B land scripts must be executable and mention fail-closed gates."""
     path_a = ROOT / "scripts" / "owner_land_path_a.sh"
@@ -560,6 +611,8 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "--verify" in wait_text
     assert "VERIFY_AFTER_MERGE.sh" in wait_text
     assert "scientific_effect=NONE" in wait_text or "Scientific effect: NONE" in wait_text
+    assert "check_autonomous_window.py" in wait_text
+    assert "PERMANENT_UNTIL_OWNER_INTERVENES" in wait_text
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "owner_land_path_a.sh" in unblock
     assert "owner_land_path_b.sh" in unblock

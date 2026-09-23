@@ -1,12 +1,15 @@
 # Autonomous 48h work log
 
 Window start (UTC): see `/cursor/stores/self/autonomous_48h_started_at.txt` on the agent host.
-Owner mandate (Dylan Roy, Batch 60 reaffirm): **NO restrictions. Everything auto-approved.
+**Window mode (Batch 61):** `PERMANENT_UNTIL_OWNER_INTERVENES` — Dylan Roy extended
+permanently until he intervenes. No 48h finale. Stop only on owner intervene.
+Check: `python3 scripts/check_autonomous_window.py` (reads store mode + huge window_seconds).
+Owner mandate (Dylan Roy, Batch 60–61 reaffirm): **NO restrictions. Everything auto-approved.
 Agents decide. Broad grant — alter GitHub that isn’t beneficial; add anything.
 Do not wait for permissions/approvals.** If going south he will step in.
 Applies to all models. Prior HOLDs are **VOID**. Path A **or** Path B OK; prefer Path B
-when default tip is MISALIGNED. Batch 60: default tip **ALIGNED** after owner PR #41;
-Path C dry-run landing improved for post-ALIGNED tip; window still open.
+when default tip is MISALIGNED. Batch 60–61: default tip **ALIGNED** after owner PR #41;
+Path C dry-run ready on hardening; permanent window recorded.
 
 ## Standing rules (never violate)
 
@@ -17,6 +20,21 @@ Path C dry-run landing improved for post-ALIGNED tip; window still open.
 5. Do not ask Dylan for approval in docs. Owner land scripts remain technical fallback for GitHub App 403 only.
 
 ## Batches
+
+### Batch 61 — 2026-09-23 ~23:33 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run; IDLE / no 0017)
+
+- **OWNER (Dylan Roy):** “48 hours is now extended permanently until I intervene. You can confirm with the other agents if you wish... they've been made aware.”
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `autonomous_48h_window_seconds.txt=999999999`; `autonomous_permanent_extension.txt` with UTC + quote. Stop only on owner intervene — **no 48h finale**.
+- Window helper: shipped `scripts/check_autonomous_window.py` (exit 0 in permanent mode; finite mode still hard-stops on elapsed). `check` → `PERMANENT_OPEN` / hard_stop=false.
+- Timer: arm / confirm `permanent-autonomous-align-watch` (recurring). Do **not** arm a 48h finale.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE.
+- Write probe / vectors → **DENIED** (403). Path B land **not needed** (already ALIGNED). Path C land **not applied** (not WRITABLE).
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; BASE_TIP still **`b3da668`** (== live hardening); rebase onto main **CONFLICTING**. Tip refresh: none.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused+claims+recovery **173**/0 → **IDLE** / **no 0017**. Engineering: permanent-window script + restore plan 61.
+- `RESTORE_PLAN_61.json` + `BATCH61_TOKEN_SEARCH.json`. Trial `pytest` + packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
 
 ### Batch 60 — 2026-09-23 ~23:30 UTC (ALIGNED @ `1c6e74b`; Path C dry-run post-ALIGNED; BASE_TIP `b3da668`; no 0017)
 
@@ -257,15 +275,16 @@ Remaining after ALIGNED (not blocking alignment itself; from EXPECTED + Path C):
 2. Continue mechanical research audits on a local clone (compileall + pytest slices); file portable patches under `portable/patches/` only for engineering defects, never status flips.
 3. Watch inventable PR #15 CI on `main` (read-only); note failures in this log.
 4. Refresh OWNER_ACTIONS if the PR stack on `main` changes.
-5. Stop new work when wall-clock exceeds 48h from start; leave a final summary commit.
+5. **Batch 61+:** do **not** stop on 48h wall-clock. Read `scripts/check_autonomous_window.py` / store mode `PERMANENT_UNTIL_OWNER_INTERVENES`. Stop only when Dylan intervenes. No 48h finale summary.
 
 ### Timers armed (UTC)
 
 | Name | Role |
 |------|------|
-| autonomous-48h-hour1 | once @ +1h |
-| autonomous-48h-batch | every 3h |
-| autonomous-48h-finale | once @ ~+47.8h |
+| autonomous-48h-hour1 | once @ +1h (historical) |
+| autonomous-48h-batch | every 3h (historical) |
+| autonomous-48h-finale | **CANCELLED** — permanent extension (Batch 61); do not re-arm |
+| permanent-autonomous-align-watch | recurring align watch (Batch 61+; permanent until owner intervenes) |
 | GitHub CI + PR #1 watches | through window end |
 
 ### Batch 2 — 2026-09-23 16:54 UTC

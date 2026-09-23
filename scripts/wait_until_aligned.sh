@@ -8,6 +8,12 @@
 #
 # Scientific effect: NONE. Read-only polling of d6g8k5htny-coder/main.
 #
+# Autonomous batches: this script's --max-wait is a *poll budget*, not the
+# 48h work window. For the autonomous work window, run
+#   python3 scripts/check_autonomous_window.py
+# first. When store mode is PERMANENT_UNTIL_OWNER_INTERVENES, do not treat
+# elapsed wall-clock since autonomous_48h_started_at as a hard-stop / finale.
+#
 # Usage:
 #   ./scripts/wait_until_aligned.sh
 #   ./scripts/wait_until_aligned.sh --interval 60 --max-wait 7200
@@ -17,6 +23,26 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
+
+# Optional: honor permanent autonomous window (Batch 61+). When
+# CHECK_AUTONOMOUS_WINDOW=1 (default for autonomous timers), refuse to start
+# a "finale / expired" disposition — permanent mode always continues.
+if [[ "${CHECK_AUTONOMOUS_WINDOW:-0}" == "1" ]]; then
+  if [[ -f "$ROOT/scripts/check_autonomous_window.py" ]]; then
+    set +e
+    python3 "$ROOT/scripts/check_autonomous_window.py"
+    win_ec=$?
+    set -e
+    if [[ "$win_ec" -eq 1 ]]; then
+      echo "wait_until_aligned: autonomous window EXPIRED (finite mode) — hard-stop" >&2
+      exit 1
+    fi
+    if [[ "$win_ec" -eq 2 ]]; then
+      echo "wait_until_aligned: autonomous window store error (exit 2)" >&2
+      exit 2
+    fi
+  fi
+fi
 
 INTERVAL="${INTERVAL:-30}"
 MAX_WAIT="${MAX_WAIT:-7200}"
