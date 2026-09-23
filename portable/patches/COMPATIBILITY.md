@@ -1,11 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~20:34 UTC (batch 44 PR #27 sync + tip #24).
+Checked 2026-09-23 ~20:45 UTC (batch 45 Path B probe + portable 0010).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
-| Tip | SHA | apply 0001–0009 (tip-cut) | `math_status_check` | Focused tests* |
+| Tip | SHA | apply 0001–0010 (tip-cut) | `math_status_check` | Focused tests* |
 |-----|-----|---------------------------|---------------------|----------------|
-| hardening (post-#24) | `46af1ca` | OK (+0009) | problems=0 | **90+47 claims** |
+| hardening (post-#24) | `46af1ca` | OK (+0010) | problems=0 | **90+47+36 recovery** |
 | hardening (post-#25) | `b02efe2` | OK (+0009) | problems=0 | **90+47 claims** |
 | hardening (post-#23) | `3f85e93` | OK | problems=0 | **90 passed** |
 | hardening (post-#22) | `a89f9a7` | OK | problems=0 | **90 passed** |
@@ -19,10 +19,10 @@ Checked 2026-09-23 ~20:34 UTC (batch 44 PR #27 sync + tip #24).
 | PR #22 (merged) | docs cross-links → `a89f9a7` | OK | problems=0 | **90 passed** |
 | PR #23 (merged) | PACKET tip-align → `3f85e93` | OK | problems=0 | **90 passed** |
 | PR #25 (merged) | standing owner authorization → `b02efe2` | OK | problems=0 | **90 passed** |
-| PR #24 (merged) | inventable STATUS honesty cross-links → `46af1ca` | OK (+0009) | problems=0 | **90+47 claims** |
+| PR #24 (merged) | inventable STATUS honesty cross-links → `46af1ca` | OK (+0010) | problems=0 | **90+47+36 recovery** |
 | PR #27 head | `63b519f` | **0001–0004 + 0008 only**‖ | problems=0 | **90 passed** @ 3.11 |
 
-\* Default slice @ `46af1ca`: carriers + math_status + inventable probes + gaussian + instrumentation STATUS.
+\* Default slice @ `46af1ca`: carriers + math_status + inventable probes + gaussian + instrumentation STATUS + claims; batch 45 also verifies recovery.
 
 † Pre-#19 tips: **0008** still applies on `1547ec4` (same carriers/math_status open patterns).
 
@@ -46,7 +46,7 @@ git apply …/0003-gaussian-moments-parametrize-list.patch
 git apply …/0004-git-fixture-timeout-60s.patch
 # SKIP tip-cut 0005 / 0006 / 0007 — see below
 git apply …/0008-carriers-math-status-close-file-handles.patch
-# optional: 0009 also applies (claims close-file-handles; independent of 0005–0007)
+# optional: 0009/0010 also apply (claims/recovery close-file-handles; independent of 0005–0007)
 ```
 
 Why `apply_all` fails at **0005**: tip-cut 0005 expects the pre-isolation
@@ -65,6 +65,7 @@ alternate `0005-pr27-*.patch` shipped — defect gone; stack is **0001–0004 + 
 
 Notes:
 
+- Batch **45** (Path B probe + portable **0010**): tip still **`46af1ca`** (ls-remote match; no BASE_TIP refresh). Probe **DENIED** / watch **MISALIGNED** → Path B skipped. PR #27 still OPEN → **did not** drop 0005/0006. Broader hunt: recovery had **234** unclosed-file ResourceWarnings → shipped **0010**. Tip `apply_all` 0001–0010 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`** (PR #24 merged — inventable REFUSED/EMPTY/ABSENT STATUS honesty cross-links; no scientific status change). BASE_TIP refreshed. Tip `apply_all` 0001–0009 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims **137 passed** / **0 ResourceWarning**. PR **#27** head **`8d023a9` → `63b519f`** (merge hardening into probe-isolation branch): tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) @ 3.11 → problems=0 / lemma_closed=false / focused **90 passed** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **43** (portable **0009**): tip still **`b02efe2`**. Broader hunt @ CPython **3.11**: workflow_integrity **110**, run_checks **45**, registers **53**, ci_pins **25** all green; **claims** had **19** unclosed-file ResourceWarnings → shipped **0009**. `apply_all` 0001–0009: problems=0 / lemma_closed=false / focused+claims **137 passed** / **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD; PR #27 still OPEN (0005/0006 not dropped). Default tip still MISALIGNED.
 - Batch **41** (PR #27 0005 analysis): tip still **`b02efe2`** (ls-remote match; no BASE_TIP refresh). Tip `apply_all` 0001–0008 `--check` OK. PR **#27** @ `8d023a9` + **0001–0004 + 0008** @ CPython **3.11**: problems=0 / lemma_closed=false / focused **90 passed** / probes clean; **no** alternate 0005 (isolation supersedes). Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
