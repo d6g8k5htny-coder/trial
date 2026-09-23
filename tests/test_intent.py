@@ -139,3 +139,11 @@ def test_watch_main_alignment_and_expected_fixture() -> None:
     data = json.loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
     assert data["state"] in {"ALIGNED", "MISALIGNED", "TRANSPORT_ERROR"}
+
+
+def test_conflicting_pr_notes() -> None:
+    text = (ROOT / "portable" / "CONFLICTING_PR_NOTES.md").read_text(encoding="utf-8")
+    assert "PR #12" in text and "PR #3" in text
+    assert "math_console.py" in text
+    assert "OPEN_PROBLEMS.md" in text
+    assert "Scientific effect: NONE" in text

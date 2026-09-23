@@ -82,3 +82,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Requested owner external actions: grant `main` write access; land PR #2 or Option-B.
 - Added CI job `portable-patches-on-main`: shallow-clones working tip, applies 0001–0004, runs focused tests; also checks Option-B patch against default `main`.
 - Local smoke: math_status green; focused tests passed; Option-B `--check` OK. Default tip still MISALIGNED.
+
+### Batch 8 — 2026-09-23 17:14 UTC
+
+- Write access still 403. Watcher: MISALIGNED.
+- CI: earlier Option-B path failure fixed via GITHUB_WORKSPACE; `portable-patches-on-main` subsequently green.
+- Documented conflict paths for PR #12 (8 math_status files; recommend close/supersede) and PR #3 (4 files) in `portable/CONFLICTING_PR_NOTES.md`.

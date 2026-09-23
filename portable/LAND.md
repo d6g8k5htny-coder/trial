@@ -61,7 +61,7 @@ git push -u origin HEAD
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
 | #16 | Cold-start nav docs | Independent |
 | #17 | More inventable shortcut refusals | MERGEABLE; our patches still apply |
-| #3, #12 | Older drafts | CONFLICTING after #15 — rebase or close |
+| #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
 
