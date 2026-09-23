@@ -28,3 +28,7 @@ jobs:
           # 2 = transport failure (fail the job)
           if [ "$code" -eq 2 ]; then exit 2; fi
           exit 0
+      - name: Alignment watch (informational)
+        run: |
+          python scripts/watch_main_alignment.py | tee alignment-watch.json
+          # Do not fail the job on MISALIGNED; that is the known upstream state.

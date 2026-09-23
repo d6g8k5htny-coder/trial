@@ -71,3 +71,8 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Confirmed Git Data API ref-create on `main` is also **403**; trial ref-create works (probe deleted).
 - Portable patches apply cleanly on PR #17 tip; after apply: math_status green, **84** tests passed (carriers+math_status+inventable+gaussian).
 - Added `portable/LAND.md` Path A (PR #2) / B (Option-B am) / C (engineering patches).
+
+### Batch 6 — 2026-09-23 17:11 UTC
+
+- PR #2 mark-ready + merge via API: **FORBIDDEN/403**. Still draft MERGEABLE/CLEAN.
+- Added `watch_main_alignment.py`, `EXPECTED_POST_ALIGNMENT.json`, patch **0004** (git fixture timeout 60s), CI alignment watch step.

@@ -16,6 +16,7 @@ From a clean checkout of that tip (or a descendant):
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
 git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
+git apply /path/to/trial/portable/patches/0004-git-fixture-timeout-60s.patch
 ```
 
 Verify:
@@ -45,3 +46,11 @@ if the digest is omitted). Status flags in PACKET stay false/OPEN_HOLD.
 `tests/test_gaussian_moments.py` passed a lazy `product(...)` iterator to
 `pytest.mark.parametrize`, which pytest 9 warns will break. Convert to
 `list(product(...))`. No scientific change.
+
+
+## 0004 — git fixture timeout 60s
+
+`tests/test_run_checks.py` (and the workflow-integrity git helper) used a 10s
+timeout around `git commit` in fixtures. On loaded VMs this intermittently
+raises `TimeoutExpired` during setup (observed twice). Raise to 60s. No
+scientific change.

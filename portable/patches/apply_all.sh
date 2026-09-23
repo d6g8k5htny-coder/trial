@@ -21,9 +21,11 @@ fi
 git apply --check "$ROOT/0001-carriers-verify-ignore-bytecode-caches.patch"
 git apply --check "$ROOT/0002-math-console-path-honesty.patch"
 git apply --check "$ROOT/0003-gaussian-moments-parametrize-list.patch"
+git apply --check "$ROOT/0004-git-fixture-timeout-60s.patch"
 git apply "$ROOT/0001-carriers-verify-ignore-bytecode-caches.patch"
 git apply "$ROOT/0002-math-console-path-honesty.patch"
 git apply "$ROOT/0003-gaussian-moments-parametrize-list.patch"
+git apply "$ROOT/0004-git-fixture-timeout-60s.patch"
 
 echo "Applied. Recommended verification:"
 echo "  python3 tools/math_status_check.py"

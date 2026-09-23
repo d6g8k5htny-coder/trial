@@ -67,3 +67,17 @@ git push -u origin HEAD
 
 Point new cloud agents at `d6g8k5htny-coder/main` with write access and base
 `chatgpt/drive-github-hardening-20260919` (or default `main` after Path A).
+
+
+## Automation blocked for this agent
+
+Attempts from the `trial` cloud token (2026-09-23):
+
+| Action | Result |
+|--------|--------|
+| `git push` to `main` | 403 |
+| `POST /git/refs` on `main` | 403 |
+| `PUT .../pulls/2/merge` | 403 |
+| GraphQL `markPullRequestReadyForReview` on PR #2 | FORBIDDEN |
+
+Owner (or a write-enabled `main` agent) must run Path A/B/C.
