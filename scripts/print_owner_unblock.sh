@@ -33,7 +33,16 @@ echo
 echo "# watch one-liner:"
 python3 "$ROOT/scripts/watch_main_alignment.py" || true
 echo
-echo "=== copy-paste Path A (needs write on main) ==="
+echo "=== owner land scripts (run with *owner* gh auth / write on main) ==="
+echo "# Path A — ready + merge PR #2, then expect ALIGNED:"
+echo "$ROOT/scripts/owner_land_path_a.sh"
+echo "# Path B — Option-B branch + PR (safer default); then --after-merge:"
+echo "$ROOT/scripts/owner_land_path_b.sh"
+echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
+echo "# Path B opt-in direct push to default main:"
+echo "$ROOT/scripts/owner_land_path_b.sh --direct-main"
+echo
+echo "=== copy-paste Path A (manual; needs write on main) ==="
 echo "gh pr ready 2 --repo d6g8k5htny-coder/main"
 echo "gh pr merge 2 --repo d6g8k5htny-coder/main --merge"
 echo

@@ -17,5 +17,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/watch_main_alignment.py \
   scripts/probe_main_write.py \
   scripts/print_owner_unblock.sh \
+  scripts/owner_land_path_a.sh \
+  scripts/owner_land_path_b.sh \
   scripts/pack_portable.sh
 echo "wrote $OUT ($(wc -c <"$OUT") bytes)"

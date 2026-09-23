@@ -267,6 +267,10 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "MAIN_PUSH_TOKEN" in one
     assert "apply_all.sh" in one
     assert "Scientific effect: NONE" in one
+    assert "owner_land_path_a.sh" in one
+    assert "owner_land_path_b.sh" in one
+    assert "--direct-main" in one
+    assert "--after-merge" in one
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
     assert "0006" in patches_readme
     assert "apply_all.sh" in patches_readme
@@ -286,3 +290,41 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert data["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
     if result.returncode == 1:
         assert data["state"] == "DENIED"
+
+
+def test_owner_land_scripts_exist_and_fail_closed() -> None:
+    """Owner Path A/B land scripts must be executable and mention fail-closed gates."""
+    path_a = ROOT / "scripts" / "owner_land_path_a.sh"
+    path_b = ROOT / "scripts" / "owner_land_path_b.sh"
+    assert path_a.is_file() and path_b.is_file()
+    assert path_a.stat().st_mode & 0o111
+    assert path_b.stat().st_mode & 0o111
+    a_text = path_a.read_text(encoding="utf-8")
+    b_text = path_b.read_text(encoding="utf-8")
+    assert "gh pr ready" in a_text and "gh pr merge" in a_text
+    assert "watch_main_alignment.py" in a_text
+    assert "ALIGNED" in a_text
+    assert "Scientific effect" in a_text
+    assert "0001-option-b-default-branch-notice.patch" in b_text
+    assert "audit_local_tree.py" in b_text
+    assert "--direct-main" in b_text
+    assert "--after-merge" in b_text
+    assert "gh pr create" in b_text
+    assert "Scientific effect" in b_text
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "owner_land_path_a.sh" in unblock
+    assert "owner_land_path_b.sh" in unblock
+    # --after-merge must fail closed while default tip is MISALIGNED
+    result = subprocess.run(
+        ["bash", str(path_b), "--after-merge"],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode != 0
+    assert "ERROR" in (result.stderr + result.stdout)
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "owner_land_path_a.sh" in pack
+    assert "owner_land_path_b.sh" in pack

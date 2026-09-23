@@ -244,3 +244,21 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Trial pytest: **16 passed** (+ local Option-B would-align intent test). Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
 - PR #5 merged: tip `43bc84586149caf080756b75d506b84a6dd5cb29` → merge commit `a14041f7f7a394326b3b40f97e9de77ddf55c0f8` on `main` (https://github.com/d6g8k5htny-coder/trial/pull/5).
+
+### Batch 23 — 2026-09-23 18:35 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.86h** / remaining **~46.14h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable from this token.
+  - `gh pr ready 2` / `gh pr merge 2` → **403** GraphQL `Resource not accessible by integration`
+  - `gh workflow run land-option-b-on-main` (trial) → **403** dispatch
+- Tip vs BASE_TIP: still **`1547ec4`** (ls-remote match; no pack tip refresh).
+- Portable `apply_all` 0001–0006 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean. **No tip-level 0007.**
+- **High value:** added owner land scripts (use *owner* gh auth locally / Codespace):
+  - `scripts/owner_land_path_a.sh` — `gh pr ready 2` + `gh pr merge 2 --merge`, then audit/watch expect ALIGNED; fail-closed
+  - `scripts/owner_land_path_b.sh` — clone + `git am` Option-B → push branch + open PR (default); `--direct-main` opt-in; `--after-merge` remote verify; local `audit_local_tree` gate
+  - Wired into `portable/OWNER_ONE_LINERS.md`, `scripts/print_owner_unblock.sh`, `scripts/pack_portable.sh`, `portable/LAND.md`
+- Stack unchanged: PR #2 draft **MERGEABLE/CLEAN**; #19 `dcc0157` UNSTABLE; #21 `d1e7d0e` CLEAN.
+- Synced continue branch with `origin/main` (rebase onto PR #5 merge `a14041f`); prior log note retained.
+- Trial pytest green. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
