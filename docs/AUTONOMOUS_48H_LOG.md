@@ -243,3 +243,4 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack since #20 merge: tip still `1547ec4`. Open #19 head moved `d47e44d` → **`dcc0157`** (UNSTABLE, verify pending); #21 `d1e7d0e` CLEAN; #2 still draft MERGEABLE/CLEAN. No new PRs after #21.
 - Trial pytest: **16 passed** (+ local Option-B would-align intent test). Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+- PR #5 merged: tip `43bc84586149caf080756b75d506b84a6dd5cb29` → merge commit `a14041f7f7a394326b3b40f97e9de77ddf55c0f8` on `main` (https://github.com/d6g8k5htny-coder/trial/pull/5).
