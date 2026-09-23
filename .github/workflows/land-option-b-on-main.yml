@@ -111,8 +111,22 @@ jobs:
           echo "Applied Option-B (or reused existing). README head:"
           head -8 README.md
 
+          # Same marker predicate as scripts/audit_main_alignment.py (local, no network).
+          # Path B must flip this to ALIGNED; fail the job if the patch drifts.
+          AUDIT_LOCAL="${GITHUB_WORKSPACE}/scripts/audit_local_tree.py"
+          if [ ! -f "$AUDIT_LOCAL" ]; then
+            echo "::error::Missing ${AUDIT_LOCAL}. Option-B dry-run cannot verify auditor markers."
+            exit 1
+          fi
+          echo "Running local auditor against post-Option-B tree:"
+          if ! python3 "$AUDIT_LOCAL" .; then
+            echo "::error::Post-Option-B tree would NOT satisfy audit_main_alignment (need q0/notice markers, no complexity face). Fix portable/main-default-branch/ before landing Path B."
+            exit 1
+          fi
+          echo "Local auditor: would-align=true (ALIGNED for remote audit_main_alignment)."
+
           if [ "${DRY_RUN}" = "true" ]; then
-            echo "dry_run=true — apply succeeded; not pushing. Re-run with dry_run=false + MAIN_PUSH_TOKEN to land."
+            echo "dry_run=true — apply + local auditor OK; not pushing. Re-run with dry_run=false + MAIN_PUSH_TOKEN to land."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi

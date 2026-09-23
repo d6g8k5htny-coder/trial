@@ -55,6 +55,20 @@ def test_portable_default_branch_pack() -> None:
     assert "Apply" in apply
     assert "does not" in readme.lower()
     assert "premise discharge" in readme.lower()
+    # Must satisfy audit_main_alignment Q0_MARKERS and clear COMPLEXITY_MARKERS.
+    for marker in (
+        "q0 Research Program",
+        "SIDE24",
+        "chatgpt/drive-github-hardening-20260919",
+        "PR #2",
+    ):
+        assert marker in readme
+    for bad in (
+        "Multiscale Retrodiction Complexity",
+        "complexity-physics-framework",
+        "δC = 0",
+    ):
+        assert bad not in readme
 
 
 def test_audit_script_reports_misalignment_or_ok() -> None:
@@ -90,6 +104,8 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "dry_run" in land_wf
     assert "0001-option-b-default-branch-notice.patch" in land_wf
     assert "Locate Option-B patch" in land_wf or "PATCH_PATH" in land_wf
+    assert "audit_local_tree.py" in land_wf
+    assert "would-align" in land_wf
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
     assert "--check" in apply_all
     assert "CHECK_ONLY" in apply_all
@@ -209,6 +225,38 @@ def test_pack_portable_script() -> None:
         out = os.path.join(td, "pack.tgz")
         subprocess.run([str(script), out], check=True, timeout=60)
         assert os.path.getsize(out) > 1000
+
+
+def test_audit_local_tree_option_b_would_align() -> None:
+    """Option-B portable README alone must flip the local auditor to ALIGNED."""
+    import json
+    import shutil
+    import subprocess
+    import tempfile
+
+    script = ROOT / "scripts" / "audit_local_tree.py"
+    assert script.is_file()
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        shutil.copy(
+            ROOT / "portable" / "main-default-branch" / "README.md",
+            root / "README.md",
+        )
+        # Simulate post-am quarantine (body moved off root).
+        (root / "quarantine").mkdir()
+        result = subprocess.run(
+            [sys.executable, str(script), str(root)],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert result.returncode == 0, result.stderr
+        data = json.loads(result.stdout)
+        assert data["state"] == "ALIGNED"
+        assert data["scientific_effect"] == "NONE"
+        assert data["complexity_markers_present"] == []
+        assert "q0 Research Program" in data["q0_or_notice_markers_present"]
 
 
 def test_owner_one_liners_and_probe_main_write() -> None:
