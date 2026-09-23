@@ -28,7 +28,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Docs: HOLD VOID; Path A OR Path B OK; prefer Path B. `owner_land_path_a.sh` HOLD gate removed (default `PATH_A_MODE=revert32`). Restore plan: `portable/RESTORE_PLAN_54.json`.
 - Requested via environment setup actions: `MAIN_PUSH_TOKEN` + Path B land + env include `main` repo.
 - Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `416c557..93b20b7`.
 - No research status promotion. `lemma_closed` untouched.
 
 ### Batch 53b — 2026-09-23 ~22:01 UTC (CRITICAL: aligned_end=false after #32; Path B preferred)
