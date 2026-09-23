@@ -73,6 +73,13 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 **Path B (preferred under HOLD):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
 **Path A:** ON HOLD — do **not** merge PR #2 until Dylan lifts HOLD.
 
+## Stack note (2026-09-23 batch 48 PR #27 merged + drop 0005/0006/0007 + portable 0012)
+
+- **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; Path A inactive. Path B preferred when writable.
+- Write still **403** (`probe_main_write.py` DENIED); Path B land skipped. Watch **MISALIGNED**.
+- Tip **`a8a5dd7` → `bf1fde3`** ([PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) probe-test isolation **MERGED**). BASE_TIP refreshed. Dropped tip-cut **0005/0006/0007** from `apply_all.sh`. Shipped portable **0012** (inventable-negative close-file-handles). Tip `apply_all` **0001–0004 + 0008–0012** @ 3.11: problems=0 / lemma_closed=false / focused+claims+recovery **173** / **0 ResourceWarning**.
+- Do **not** enable `research.yml` schedules for R2-06.
+
 ## Stack note (2026-09-23 batch 47 Path B probe + portable 0011)
 
 - **HOLD stands** on [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2) — draft / untouched; Path A inactive. Path B preferred when writable.

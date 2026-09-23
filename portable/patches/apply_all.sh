@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 47: a8a5dd7).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 48: bf1fde3).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
 #   /path/to/trial/portable/patches/apply_all.sh          # apply
 #   /path/to/trial/portable/patches/apply_all.sh --check  # dry-run only
 #
-# Patches are checked/applied in order. Later patches (e.g. 0007/0008 after
-# 0005/0006; 0009–0011 independent) may depend on earlier ones, so --check uses a
-# disposable worktree.
+# Patches are checked/applied in order. After main PR #27 merged (batch 48),
+# tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
+# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0012.
+# --check uses a disposable worktree.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -37,13 +38,12 @@ PATCHES=(
   "$ROOT/0002-math-console-path-honesty.patch"
   "$ROOT/0003-gaussian-moments-parametrize-list.patch"
   "$ROOT/0004-git-fixture-timeout-60s.patch"
-  "$ROOT/0005-inventable-probes-restore-receipts-after-test.patch"
-  "$ROOT/0006-instrumentation-status-restore-receipts-after-test.patch"
-  "$ROOT/0007-inventable-tests-close-file-handles.patch"
+  # 0005/0006/0007 dropped after main PR #27 merge (bf1fde3); kept on disk for history
   "$ROOT/0008-carriers-math-status-close-file-handles.patch"
   "$ROOT/0009-claims-close-file-handles.patch"
   "$ROOT/0010-recovery-close-file-handles.patch"
   "$ROOT/0011-math-status-check-close-file-handles.patch"
+  "$ROOT/0012-inventable-negative-tests-close-file-handles.patch"
 )
 
 apply_series() {
@@ -55,8 +55,7 @@ apply_series() {
 }
 
 if [[ "$CHECK_ONLY" -eq 1 ]]; then
-  # Disposable worktree so sequential deps (0007 after 0005/0006) validate
-  # without dirtying the caller's tree.
+  # Disposable worktree so sequential deps validate without dirtying the caller's tree.
   WT="$(mktemp -d "${TMPDIR:-/tmp}/trial-apply-all-check.XXXXXX")"
   cleanup() {
     git worktree remove --force "$WT" 2>/dev/null || rm -rf "$WT"
@@ -78,4 +77,4 @@ echo "Applied. Recommended verification:"
 echo "  python3 tools/math_status_check.py"
 echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py tests/test_recovery.py"
 echo "  # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery passed; free of ResourceWarning"
-echo "  # math_status_check itself should emit 0 ResourceWarning after 0011"
+echo "  # math_status_check itself should emit 0 ResourceWarning after 0011; inventable negatives 0 after 0012"

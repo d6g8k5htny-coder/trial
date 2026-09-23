@@ -1,9 +1,18 @@
 # Mechanical findings from local clone of `d6g8k5htny-coder/main`
 
-Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `a8a5dd775aa685d1616cbda874429952aa5fbf9c`
-(PR #26 math_status README inventable probes honesty; prior #15/#16/#17/#18/#19/#20/#22/#23/#24/#25).
-Host: CPython 3.11 + pytest (tip batch 47); PR #27 head also verified @ 3.11.
+Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `bf1fde30c7fc04c9919bf9172ee8a13e234c7664`
+(PR #27 probe-test isolation; prior #15/#16/#17/#18/#19/#20/#22/#23/#24/#25/#26).
+Host: CPython 3.11 + pytest (tip batch 48).
 **Scientific effect: NONE.**
+
+## After portable patches 0001–0004 + 0008–0012 on `bf1fde3` (batch 48)
+
+| Check | Result |
+|-------|--------|
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false`; **0 ResourceWarning** |
+| focused + claims + recovery | **173 passed**; **0 ResourceWarning** |
+| `apply_all.sh --check` | OK (0001–0004 + 0008–0012; 0005/0006/0007 dropped) |
+| inventable-negative unclosed-file ResourceWarning | cleared by **0012** (was 6) |
 
 ## After portable patches 0001–0011 on `a8a5dd7` (batch 47)
 
@@ -13,6 +22,16 @@ Host: CPython 3.11 + pytest (tip batch 47); PR #27 head also verified @ 3.11.
 | focused + claims + recovery | **173 passed**; **0 ResourceWarning** |
 | `apply_all.sh --check` | OK (0001–0011) |
 | math_status_check unclosed-file ResourceWarning | cleared by **0011** (was 30) |
+
+## PR #27 merged `bf1fde3` (batch 48; prior head `20e31a1`)
+
+| Check | Result |
+|-------|--------|
+| tip-cut 0005/0006/0007 | **dropped** from `apply_all.sh` (obsolete) |
+| stack `0001–0004 + 0008–0012` | applies clean |
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| focused + claims + recovery @ 3.11 | **173 passed**; **0 ResourceWarning** |
+
 
 ## After portable patches 0001–0010 on `a8a5dd7` (batch 46)
 
@@ -117,6 +136,7 @@ Host: CPython 3.11 + pytest (tip batch 47); PR #27 head also verified @ 3.11.
 | claims register-binding unclosed-file ResourceWarning | `0009-…` (**in** `apply_all.sh` since batch 43) |
 | recovery + recovery_check unclosed-file ResourceWarning | `0010-…` (**in** `apply_all.sh` since batch 45) |
 | `math_status_check` packet-reader unclosed-file ResourceWarning | `0011-…` (**in** `apply_all.sh` since batch 47) |
+| inventable-negative unclosed-file ResourceWarning (post-#27) | `0012-…` (**in** `apply_all.sh` since batch 48; replaces obsolete 0007) |
 
 ## Alignment
 

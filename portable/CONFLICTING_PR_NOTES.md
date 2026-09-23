@@ -64,7 +64,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #25 | **Merged** @ `b02efe2` | standing owner authorization; BASE_TIP → `b02efe2` (batch 38); no status flip |
 | #24 | **Merged** @ `46af1ca` | inventable STATUS honesty cross-links; BASE_TIP → `46af1ca` (batch 44); no status flip |
 | #26 | **Merged** @ `a8a5dd7` | math_status README inventable probes honesty; BASE_TIP → `a8a5dd7` (batch 46); no status flip |
-| #27 | OPEN UNSTABLE (`20e31a1`) | probe-test isolation; tip-cut 0005/0006 obsolete after merge |
+| #27 | **Merged** @ `bf1fde3` | probe-test isolation; tip-cut 0005/0006/0007 dropped (batch 48); stack 0001–0004 + 0008–0012 |
 
 ## Merged since these notes started
 

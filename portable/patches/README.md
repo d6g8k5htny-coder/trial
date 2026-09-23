@@ -1,13 +1,13 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `a8a5dd775aa685d1616cbda874429952aa5fbf9c`
+`chatgpt/drive-github-hardening-20260919` @ `bf1fde30c7fc04c9919bf9172ee8a13e234c7664`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
 PACKET base_commit/as_of tip-align #23, standing owner authorization #25,
-inventable STATUS honesty cross-links #24, and math_status README inventable
-probes honesty pointer #26).
+inventable STATUS honesty cross-links #24, math_status README inventable
+probes honesty pointer #26, and probe-test isolation #27).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -18,19 +18,18 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0011
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0012
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
 git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
 git apply /path/to/trial/portable/patches/0004-git-fixture-timeout-60s.patch
-git apply /path/to/trial/portable/patches/0005-inventable-probes-restore-receipts-after-test.patch
-git apply /path/to/trial/portable/patches/0006-instrumentation-status-restore-receipts-after-test.patch
-git apply /path/to/trial/portable/patches/0007-inventable-tests-close-file-handles.patch
+# SKIP tip-cut 0005/0006/0007 after PR #27 (obsolete; kept on disk for history)
 git apply /path/to/trial/portable/patches/0008-carriers-math-status-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0009-claims-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0010-recovery-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0011-math-status-check-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0012-inventable-negative-tests-close-file-handles.patch
 ```
 
 Verify:
@@ -41,21 +40,20 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py \
   tests/test_recovery.py
-# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ a8a5dd7
+# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ bf1fde3
 # and docs/math_status_probes/ stays clean in git status after inventable tests
-# focused+claims+recovery emit no ResourceWarning (unclosed file) after 0007–0010
+# focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0012
 # math_status_check itself emits 0 ResourceWarning after 0011
 ```
 
 ## Historical / optional
 
-- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current tip.
-- **0006** was optional until PR #20 merged (batch 21). It is now in `apply_all.sh`.
-- **PR #27** (`20e31a1`, probe-test isolation; prior `63b519f` / `8d023a9`): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`; optional **0009/0010/0011** also apply). No `0005-pr27-*` alternate (defect gone).
+- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005).
+- Tip-cut **0005** / **0006** / **0007** — pre-#27 dirty-receipt restore + close-handles. **Dropped from `apply_all.sh` after PR #27 merged** @ `bf1fde3` (batch 48). Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()`; post-#27 residual bare `open()` in negative inventable/instrumentation tests is covered by **0012**. Files kept on disk for history only.
 
 ### When 0006 was promoted
 
-PR #20 merged into hardening @ `1547ec4` (batch 21). `tests/test_inventable_jetmod_instrumentation_status.py` exists on the tip, so **0006** is listed in `apply_all.sh` alongside 0001–0005.
+PR #20 merged into hardening @ `1547ec4` (batch 21). `tests/test_inventable_jetmod_instrumentation_status.py` exists on the tip, so **0006** was listed in `apply_all.sh` alongside 0001–0005 until batch 48 dropped it after #27.
 
 ## 0001 — `carriers_verify` ignores bytecode caches
 
@@ -150,3 +148,13 @@ After 0001–0010 on tip `a8a5dd7` @ CPython 3.11, running
 transcription digests, STATUS prose, `math_console.py`, snapshot, and
 `PACKET.json`. Use `with open(...)`. No scientific change; `lemma_closed`
 stays false.
+
+## 0012 — inventable negative tests close file handles (post-#27)
+
+After main [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) merged @
+`bf1fde3`, tip-cut 0005/0006/0007 no longer apply. Isolation already covers the
+dirty-receipt contract, but negative inventable/instrumentation tests still used
+bare `json.load(open(...))` / `json.dump(..., open(...))` on tmp_path copies —
+**6** `ResourceWarning: unclosed file` on the focused slice. **0012** closes those
+handles. Use `with open(...)`. No scientific change; `lemma_closed` stays false.
+

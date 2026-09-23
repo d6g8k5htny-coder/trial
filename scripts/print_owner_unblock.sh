@@ -55,7 +55,7 @@ echo "# Path B opt-in direct push to default main:"
 echo "$ROOT/scripts/owner_land_path_b.sh --direct-main"
 echo "# Path A — ON HOLD (hard-refuses unless OWNER_FORCE_PATH_A=1 for Dylan only):"
 echo "# $ROOT/scripts/owner_land_path_a.sh   # exits 1 under HOLD"
-echo "# Path C — after default tip ALIGNED (Path B preferred): apply_all 0001–0011:"
+echo "# Path C — after default tip ALIGNED (Path B preferred): apply_all 0001–0004 + 0008–0012:"
 echo "$ROOT/scripts/owner_land_path_c.sh"
 echo "# PATH_C_BASE=main $ROOT/scripts/owner_land_path_c.sh   # post-alignment research tree on default tip"
 echo

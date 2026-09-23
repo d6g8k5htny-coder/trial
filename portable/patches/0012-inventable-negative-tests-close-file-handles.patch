@@ -1,0 +1,50 @@
+diff --git a/tests/test_inventable_jetmod_instrumentation_status.py b/tests/test_inventable_jetmod_instrumentation_status.py
+index 3902be7..a6df694 100644
+--- a/tests/test_inventable_jetmod_instrumentation_status.py
++++ b/tests/test_inventable_jetmod_instrumentation_status.py
+@@ -83,9 +83,11 @@ def test_negative_accepting_instrumentation_attempt_is_refused(tmp_path):
+         / "math_status_probes"
+         / "inventable_g12_ext_named_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+@@ -107,9 +109,11 @@ def test_negative_24jet_status_promotion_is_refused(tmp_path):
+         / "math_status_probes"
+         / "inventable_multi_jet_band_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["status"] = "CERTIFIED_24JET"  # inventable promotion
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+diff --git a/tests/test_inventable_jetmod_probes.py b/tests/test_inventable_jetmod_probes.py
+index 61ff14c..a026dbb 100644
+--- a/tests/test_inventable_jetmod_probes.py
++++ b/tests/test_inventable_jetmod_probes.py
+@@ -105,9 +105,11 @@ def test_negative_accepting_inventable_attempt_is_refused(tmp_path):
+     shutil.copytree(os.path.join(ROOT, "docs"), dest / "docs")
+     shutil.copytree(os.path.join(ROOT, "tools"), dest / "tools")
+     path = dest / "docs" / "math_status_probes" / "inventable_phi_bridge_ABSENT_receipt.json"
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,

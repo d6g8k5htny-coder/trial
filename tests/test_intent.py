@@ -109,10 +109,15 @@ def test_autonomous_log_and_ci_exist() -> None:
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
     assert "--check" in apply_all
     assert "CHECK_ONLY" in apply_all
-    # Sequential deps (0007/0008 after 0005/0006) need ordered apply; --check uses a worktree
+    # Ordered apply; --check uses a disposable worktree
     assert "worktree" in apply_all
-    assert "apply_series" in apply_all or "0007-inventable-tests-close-file-handles.patch" in apply_all
+    assert "apply_series" in apply_all
     assert "0008-carriers-math-status-close-file-handles.patch" in apply_all
+    assert "0012-inventable-negative-tests-close-file-handles.patch" in apply_all
+    # Post-#27: tip-cut 0005/0006/0007 dropped from apply_all (kept on disk for history)
+    assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all
+    assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all
+    assert "0007-inventable-tests-close-file-handles.patch" not in apply_all
 
 
 def test_portable_patches_exist() -> None:
@@ -128,10 +133,12 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "a8a5dd7" in base_tip
+    assert "bf1fde3" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
+    apply_all_txt = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    # Historical tip-cut 0005/0006/0007 kept on disk; dropped from apply_all after PR #27
     p5 = (ROOT / "portable" / "patches" / "0005-inventable-probes-restore-receipts-after-test.patch").read_text(
         encoding="utf-8"
     )
@@ -139,44 +146,39 @@ def test_portable_patches_exist() -> None:
     assert "INVENTABLE_PROBES_INDEX.json" in p5
     assert "finally:" in p5
     assert "SHORTCUTS" in p5 or "freeze" in p5
-    assert "0005-inventable-probes-restore-receipts-after-test.patch" in (
-        ROOT / "portable" / "patches" / "apply_all.sh"
-    ).read_text(encoding="utf-8")
+    assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all_txt
     p6 = (ROOT / "portable" / "patches" / "0006-instrumentation-status-restore-receipts-after-test.patch").read_text(
         encoding="utf-8"
     )
     assert "test_inventable_jetmod_instrumentation_status.py" in p6
     assert "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json" in p6
-    # PR #20 merged @ 1547ec4 — 0006 is now in apply_all.sh
-    assert "0006-instrumentation-status-restore-receipts-after-test.patch" in (
-        ROOT / "portable" / "patches" / "apply_all.sh"
-    ).read_text(encoding="utf-8")
+    assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all_txt
     p7 = (ROOT / "portable" / "patches" / "0007-inventable-tests-close-file-handles.patch").read_text(
         encoding="utf-8"
     )
     assert "test_inventable_jetmod_probes.py" in p7
     assert "test_inventable_jetmod_instrumentation_status.py" in p7
     assert "Path(path).read_bytes()" in p7 or "read_bytes()" in p7
-    assert "0007-inventable-tests-close-file-handles.patch" in (
-        ROOT / "portable" / "patches" / "apply_all.sh"
-    ).read_text(encoding="utf-8")
+    assert "0007-inventable-tests-close-file-handles.patch" not in apply_all_txt
     p8 = (ROOT / "portable" / "patches" / "0008-carriers-math-status-close-file-handles.patch").read_text(
         encoding="utf-8"
     )
     assert "test_carriers.py" in p8
     assert "test_math_status.py" in p8
     assert "carriers_verify.py" in p8
-    assert "0008-carriers-math-status-close-file-handles.patch" in (
-        ROOT / "portable" / "patches" / "apply_all.sh"
-    ).read_text(encoding="utf-8")
+    assert "0008-carriers-math-status-close-file-handles.patch" in apply_all_txt
     p9 = (ROOT / "portable" / "patches" / "0009-claims-close-file-handles.patch").read_text(
         encoding="utf-8"
     )
     assert "test_claims.py" in p9
     assert "review_queue.json" in p9 or "operator_decisions.json" in p9
-    assert "0009-claims-close-file-handles.patch" in (
-        ROOT / "portable" / "patches" / "apply_all.sh"
-    ).read_text(encoding="utf-8")
+    assert "0009-claims-close-file-handles.patch" in apply_all_txt
+    p12 = (ROOT / "portable" / "patches" / "0012-inventable-negative-tests-close-file-handles.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_inventable_jetmod_probes.py" in p12
+    assert "test_inventable_jetmod_instrumentation_status.py" in p12
+    assert "0012-inventable-negative-tests-close-file-handles.patch" in apply_all_txt
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
@@ -315,8 +317,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0007" in patches_readme
     assert "0008" in patches_readme
     assert "0009" in patches_readme
+    assert "0012" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "ae7daf7" in patches_readme or "When 0006 was promoted" in patches_readme
+    assert "bf1fde3" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(

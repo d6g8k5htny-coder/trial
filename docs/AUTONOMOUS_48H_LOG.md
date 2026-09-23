@@ -518,6 +518,20 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 48 — 2026-09-23 ~21:10 UTC (PR #27 merged; drop 0005/0006/0007; ship portable 0012)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (already at `0b31637` / trial PR #24).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `watch_main_alignment.py` → **MISALIGNED**; scientific_effect NONE.
+- Main [PR #27](https://github.com/d6g8k5htny-coder/main/pull/27) **MERGED** @ `bf1fde3` (`mergedAt=2026-09-23T21:08:35Z`) → **dropped** tip-cut **0005/0006/0007** from `apply_all.sh` (kept on disk for history).
+- Tip drift: BASE_TIP `a8a5dd7` → live **`bf1fde3`**. Pack refreshed.
+- Post-merge residual: inventable/instrumentation negative tests → **6** `ResourceWarning: unclosed file` → **Shipped portable 0012** (`inventable-negative-tests-close-file-handles`). `apply_all.sh` now **0001–0004 + 0008–0012**.
+- Verify @ CPython **3.11**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false / **0 ResourceWarning**; focused+claims+recovery **173 passed** / **0 ResourceWarning**.
+- Hunt note (not shipped): `tools/verify_manifests.py` / `quarantine_check.py` still emit **828** unclosed-file ResourceWarnings when run under `-W default::ResourceWarning`.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 47 — 2026-09-23 ~20:58 UTC (Path B probe; ship portable 0011)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
