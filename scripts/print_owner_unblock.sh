@@ -2,17 +2,18 @@
 # Print Path B (preferred for ALIGNED) + Path A/C + live probe/audit.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# Batch 54 OWNER OVERRIDE: HOLD on PR #2 is VOID. Agents may Path A OR Path B.
+# Batch 55: unrestricted / auto-approve. HOLD VOID. Path A OR Path B OK.
 # Prefer Path B (notice-only). Default tip MISALIGNED @ 4fc1d7c after CoS #32.
-# Path C = engineering on hardening (BASE_TIP).
+# Path C = engineering on hardening (BASE_TIP). No approval waits in docs.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== Batch 54 — MISALIGNED; HOLD VOID; prefer Path B ==="
-echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c. HOLD on #2 is VOID."
-echo "Agents may Path A OR Path B. Prefer Path B (Option-B notice)."
+echo "=== Batch 55 — MISALIGNED; unrestricted/auto-approve; HOLD VOID; prefer Path B ==="
+echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
+echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c."
+echo "Path A OR Path B OK. Prefer Path B (Option-B notice)."
 echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP 9a56c30; has PACKET.json)."
 echo "Scientific effect: NONE"
 echo
@@ -31,8 +32,11 @@ if [[ -f "$ROOT/portable/OWNER_ONE_LINERS.md" ]]; then
 fi
 
 echo "=== live probe / audit (this credential) ==="
-echo "# write probe (0=writable, 1=denied, 2=transport):"
+echo "# write probe single-ref (0=writable, 1=denied, 2=transport):"
 python3 "$ROOT/scripts/probe_main_write.py" || true
+echo
+echo "# multi-vector Path B probe (0=any Path-B-capable writable):"
+python3 "$ROOT/scripts/probe_main_write_vectors.py" || true
 echo
 echo "# alignment audit (0=ALIGNED, 1=MISALIGNED, 2=transport):"
 set +e

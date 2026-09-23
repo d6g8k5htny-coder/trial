@@ -10,6 +10,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/EXPECTED_POST_ALIGNMENT.json \
   portable/RESTORE_PLAN_53b.json \
   portable/RESTORE_PLAN_54.json \
+  portable/RESTORE_PLAN_55.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -18,6 +19,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
   scripts/probe_main_write.py \
+  scripts/probe_main_write_vectors.py \
   scripts/print_owner_unblock.sh \
   scripts/owner_land_path_a.sh \
   scripts/owner_land_path_b.sh \

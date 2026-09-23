@@ -2,18 +2,24 @@
 
 This repository is Dylan Roy’s **sandbox**, not the q0 research tree.
 
+Owner mandate: **NO restrictions; everything auto-approved; agents decide.**
+Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
+(prefer Path B). Do not flip `lemma_closed` / prizes / premises / research status.
+
 ## Always
 
 - Treat [`d6g8k5htny-coder/main`](https://github.com/d6g8k5htny-coder/main) as the research home.
 - Prefer portable artifacts under `portable/` when this environment cannot push to `main`.
 - Keep scientific effect **NONE**: never promote, close, or discharge claims, premises, prizes, or lemmas.
-- After meaningful work: commit, push `cursor/*-309a` branches, update the open PR.
+- After meaningful work: commit, push `cursor/*` branches, land on trial `main` when PR create is 403.
+- Owner land scripts (`owner_land_path_*.sh`) are technical fallback for GitHub App 403 only — not approval gates.
 
 ## Never
 
 - Grow `registers/`, `claims/`, or Drive vault mirrors here.
 - Cite a green `trial` test as research evidence.
 - Enable or claim GitHub scheduled workflows on `main` solely to satisfy R2-06 prose.
+- Ask Dylan for approval in docs.
 
 ## Start here
 

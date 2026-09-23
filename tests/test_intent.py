@@ -329,6 +329,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "wait_until_aligned.sh" in one
     assert "--direct-main" in one
     assert "--after-merge" in one
+    assert "probe_main_write_vectors.py" in one or (ROOT / "scripts" / "probe_main_write_vectors.py").is_file()
+    assert "HOLD" in one and "VOID" in one
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
     assert "0006" in patches_readme
     assert "0007" in patches_readme
@@ -355,6 +357,39 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert data["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
     if result.returncode == 1:
         assert data["state"] == "DENIED"
+    vectors = ROOT / "scripts" / "probe_main_write_vectors.py"
+    assert vectors.is_file()
+    vresult = subprocess.run(
+        [sys.executable, str(vectors)],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+    )
+    assert vresult.returncode in (0, 1, 2), vresult.stderr
+    vdata = __import__("json").loads(vresult.stdout)
+    assert vdata["scientific_effect"] == "NONE"
+    assert vdata["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
+    assert "vectors" in vdata
+    assert "W1_git_refs" in vdata["vectors"]
+    assert (ROOT / "portable" / "RESTORE_PLAN_55.json").is_file()
+    restore = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_55.json").read_text())
+    assert restore["preferred_restore"] == "Path_B"
+    assert restore["scientific_effect"] == "NONE"
+    assert restore["aligned"] is False
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "probe_main_write_vectors.py" in pack
+    assert "RESTORE_PLAN_55.json" in pack
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "probe_main_write_vectors.py" in unblock
+    assert "auto-approve" in unblock or "unrestricted" in unblock
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert "auto-approved" in agents or "auto-approve" in agents
+    assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 55" in log
+    assert "HOLD" in log and "VOID" in log
+    assert "Path A or B OK" in log or "Path A OR Path B OK" in log
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:

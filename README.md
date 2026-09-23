@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 54 OWNER OVERRIDE). Agents may Path A OR Path B; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN`.
+Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 55: owner unrestricted / auto-approve). Path A OR Path B OK; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN`.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
@@ -42,6 +42,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher
 - [`scripts/probe_main_write.py`](scripts/probe_main_write.py) — write probe (exit 0=writable, 1=denied, 2=transport)
+- [`scripts/probe_main_write_vectors.py`](scripts/probe_main_write_vectors.py) — multi-vector Path B probe dashboard
 - [`scripts/print_owner_unblock.sh`](scripts/print_owner_unblock.sh) — dump OWNER_ONE_LINERS paths + live probe/audit one-liners
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).
