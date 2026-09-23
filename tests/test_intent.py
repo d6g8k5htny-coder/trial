@@ -98,10 +98,9 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").is_file()
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
-    assert "340d98a" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "chatgpt/drive-github-hardening-20260919" in (
-        ROOT / "portable" / "patches" / "BASE_TIP.txt"
-    ).read_text()
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    assert "3e8f388" in base_tip
+    assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
     p5 = (ROOT / "portable" / "patches" / "0005-inventable-probes-restore-receipts-after-test.patch").read_text(
@@ -110,9 +109,19 @@ def test_portable_patches_exist() -> None:
     assert "test_inventable_jetmod_probes.py" in p5
     assert "INVENTABLE_PROBES_INDEX.json" in p5
     assert "finally:" in p5
+    assert "SHORTCUTS" in p5 or "freeze" in p5
     assert "0005-inventable-probes-restore-receipts-after-test.patch" in (
         ROOT / "portable" / "patches" / "apply_all.sh"
     ).read_text(encoding="utf-8")
+    p6 = (ROOT / "portable" / "patches" / "0006-instrumentation-status-restore-receipts-after-test.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_inventable_jetmod_instrumentation_status.py" in p6
+    assert "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json" in p6
+    assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in (
+        ROOT / "portable" / "patches" / "apply_all.sh"
+    ).read_text(encoding="utf-8")
+    assert (ROOT / "portable" / "patches" / "0005-pre17-inventable-probes-restore-receipts-after-test.patch").is_file()
     assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()
     ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
     assert "chatgpt/drive-github-hardening-20260919" in ob

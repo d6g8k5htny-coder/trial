@@ -66,6 +66,7 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 | #15 | inventable probes → hardening | Tip ancestors include receipts |
 | #16 | cold-start nav docs | Docs-only |
 | #18 | PARTIAL/REFUSED JETMOD STATUS vocab → hardening @ `340d98a` | Supersedes overlapping #12 math_status intent; **not** a discharge |
+| #17 | Fail-closed inventable JETMOD shortcut refusals → hardening @ `3e8f388` | Expanded inventable EXPECTED/SHORTCUTS; tip-cut 0005 re-cut; **not** a discharge |
 
 ## Non-claims
 

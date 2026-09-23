@@ -150,3 +150,13 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - PR heads: #17 `833ca55`, #19 `837a2b4`, #20 `c46463b` — 0001–0004 still apply; #19/#20 focused green; #20 still needs 0002 (`code_prototypes` paths).
 - **Defect found:** `test_runner_writes_refused_receipts_only` snapshotted receipt bytes but never restored; runner rewrites `generated_at_*` + index sha256 → dirty `docs/math_status_probes/` after every pytest (digest drift).
 - Shipped portable **0005** (`inventable-probes-restore-receipts-after-test`); `apply_all.sh` now 0001–0005. 0005 applies on tip/#19/#20; **does not apply on #17** (expanded test). Noted PR #18 merge in CONFLICTING_PR_NOTES. No status flips.
+
+### Batch 17 — hour-1 check-in — 2026-09-23 17:58 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.25h** / remaining **~46.75h** (window 172800s).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; write probe (unique `cursor-probe-*` git push + `gh api POST git/refs`) both **403**. Path B not landable. Did **not** touch `research.yml` schedules (R2-06).
+- Trial pytest: **14 passed**.
+- Working tip moved: `340d98a` → **`3e8f388`** (PR #17 merged). PR #2 still draft MERGEABLE/CLEAN; open #19 head now `d47e44d`; #20 `c46463b` dirty.
+- Portable: re-cut tip **0005** for post-#17 inventable test; kept `0005-pre17-…` + optional **0006** (instrumentation dirty digests on PR #20 only; **not** in `apply_all.sh`). BASE_TIP / COMPATIBILITY / README refreshed.
+- CPython 3.11.16 after `apply_all` on `3e8f388`: `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; inventable/register slice **134 passed** (153 with ci_pins host-flake deselected). PR #19: 0001–0005 OK / 86 passed. PR #20: tip-cut 0005 fails; 0001–0004 + pre17-0005 + 0006 → **90 passed**, probes clean.
+- No tip-level 0006 invented beyond the optional PR #20 patch. Scientific effect: NONE.

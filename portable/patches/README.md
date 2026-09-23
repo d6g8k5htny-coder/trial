@@ -1,10 +1,9 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `340d98a2371bf181214c431f18f5c53945ee9d79`
-(includes merged inventable PR #15, cold-start nav #16, and math_status PARTIAL/REFUSED #18).
-Patches were originally cut against `1ea0ae8` and still apply cleanly on this descendant
-(0005 is tip-shaped; see COMPATIBILITY for PR #17).
+`chatgpt/drive-github-hardening-20260919` @ `3e8f38845cb350f43a64b8784400338c8e9a78f6`
+(includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18, and
+fail-closed JETMOD shortcut refusals #17).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -29,9 +28,14 @@ Verify:
 ```bash
 python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py
-# expect: problems=0, lemma_closed=false; 86 passed on that slice @ 340d98a
+# expect: problems=0, lemma_closed=false; 86 passed on that slice @ 3e8f388
 # and docs/math_status_probes/ stays clean in git status after the inventable test
 ```
+
+## Optional (not in `apply_all.sh`)
+
+- `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (e.g. open PR #20).
+- `0006-instrumentation-status-restore-receipts-after-test.patch` — same dirty-digest fix for PR #20 instrumentation STATUS tests. Apply after 0001–0004 + `0005-pre17` on that head.
 
 ## 0001 — `carriers_verify` ignores bytecode caches
 
@@ -68,4 +72,10 @@ runs `inventable_jetmod_probes.py`, which rewrites `generated_at_*` and refreshe
 `INVENTABLE_PROBES_INDEX.json` digests in-tree. The test already snapshotted
 `before` bytes but never restored them, so every pytest leave dirty
 sha256/timestamp drift under `docs/math_status_probes/`. Restore in `finally`
-(including the index). No scientific change; `lemma_closed` stays false.
+(including the index). Batch 17 re-cut against post-#17 EXPECTED/SHORTCUTS.
+No scientific change; `lemma_closed` stays false.
+
+## 0006 — instrumentation STATUS test restores receipts (optional)
+
+Same class as 0005 for `tests/test_inventable_jetmod_instrumentation_status.py`
+on PR #20. Not in `apply_all.sh` until that file exists on the hardening tip.
