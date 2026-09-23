@@ -76,3 +76,8 @@ Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
 - Open drafts: #23 UNSTABLE, #21 CLEAN, #3 CONFLICTING, plus older stack. PR #2 still draft **MERGEABLE/CLEAN**.
 - Write still **403** (`probe_main_write.py` DENIED). No env names containing TOKEN/GITHUB/PAT (as whole token keys). Path A ready→403; Path B would-align then push **403**; trial `land-option-b-on-main` workflow_dispatch **403**.
 - Do **not** enable `research.yml` schedules for R2-06.
+
+
+## Fresh-agent re-probe (2026-09-23 19:39 UTC, bc-752a8e1b)
+
+Restriction-lift claim re-checked on a new trial Cloud Agent. Still **403** on every write path to `d6g8k5htny-coder/main` (`cursor[bot]`; permissions all false; `MAIN_PUSH_TOKEN` absent). Live env repos list is still **only** trial despite `.cursor/environment.json` `repositoryDependencies`. Default tip still MISALIGNED @ `f25b04bb`. Path B local dry-run still **would-align=true**. Owner must merge [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2), grant write + relaunch with `main` in scope, or set `MAIN_PUSH_TOKEN` and run `land-option-b-on-main`.

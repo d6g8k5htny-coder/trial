@@ -390,3 +390,28 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Blockers (exact): (1) integration token lacks Contents:Write / PR write on `d6g8k5htny-coder/main`; (2) this run's environment `repos` list excludes `main`; (3) no `MAIN_PUSH_TOKEN`; (4) land-option-b workflow not on `main` default tip; (5) cannot workflow_dispatch on trial (403).
 - Owner unblock still: merge PR #2 from a write-capable session, **or** relaunch Cloud Agent after env includes `main`, **or** set `MAIN_PUSH_TOKEN` + dispatch/land Path B.
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 34 — 2026-09-23 19:39 UTC (fresh agent bc-752a8e1b)
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.92h** / remaining **~45.08h** (window 172800s). Not expired.
+- Trigger: fresh Cloud Agent on `d6g8k5htny-coder/trial` tasked to ALIGN default branch of `d6g8k5htny-coder/main` after owner note that Dylan Roy lifted permission restrictions.
+- Alignment: still **MISALIGNED**; default tip still `f25b04bb931df2eaee302b666db014913486166b`; `watch_main_alignment` → MISALIGNED; `audit_main_alignment` exit 1; scientific effect NONE.
+- README head on default `main` still pre-q0 complexity-physics face ("A Reconstruction of Physics from Multiscale Retrodiction Complexity…"); q0 markers absent. Working tip still **`a89f9a7`** (BASE_TIP match).
+- Environment (cursor-cloud `environment-info`):
+  - `environmentJson.repositoryDependencies` includes `github.com/d6g8k5htny-coder/main` (from `.cursor/environment.json`).
+  - Live `repos` / token scope list: **only** `github.com/d6g8k5htny-coder/trial` — `main` **not** in this run's credential scope.
+- Tokens: `MAIN_PUSH_TOKEN` **NOT_SET**; `GH_TOKEN` **NOT_SET**; `GITHUB_TOKEN` **NOT_SET**. Auth: `gh` hosts.yml user `cursor` (integration `ghs_`). `gh api user` → **403** Resource not accessible by integration.
+- Live `repos/d6g8k5htny-coder/main` permissions for this token: `{admin:false, maintain:false, push:false, triage:false, pull:false}`. Response header `X-Accepted-Github-Permissions: metadata=read` on repo GET.
+- Contrast: same credential **can** create refs on `trial` (probe ref created then deleted).
+- Write / Path A/B probes (exact errors):
+  - `python3 scripts/probe_main_write.py` → **DENIED** HTTP **403** create-ref (`Resource not accessible by integration`); tip_sha `f25b04bb…`
+  - `git push` throwaway `cursor-probe-*` → **403** `Permission to d6g8k5htny-coder/main.git denied to cursor[bot]`
+  - `gh api POST .../git/refs` → **403**
+  - `gh api PUT .../contents/.cursor-write-probe.txt` → **403**
+  - `bash scripts/owner_land_path_a.sh` → exit **1**; `gh pr ready 2` → **403** GraphQL `markPullRequestReadyForReview`
+  - `gh pr merge 2` → **403** GraphQL `mergePullRequest`
+  - `bash scripts/owner_land_path_b.sh --direct-main` → local `git am` + `audit_local_tree` **ALIGNED** / would-align=true, then `git push origin HEAD:main` → **403** denied to cursor[bot]
+  - `gh workflow run land-option-b-on-main.yml` (trial) → **403** could not create workflow dispatch event
+- PR #2 still **OPEN / DRAFT / MERGEABLE / CLEAN** (verify SUCCESS). No Path A/B land from this token. Did **not** invent ALIGNED / status flips. Did **not** touch `research.yml` schedules (R2-06).
+- Recorded setup-blocker actions: require `MAIN_PUSH_TOKEN` + owner Path A (merge PR #2) or grant cursor[bot] write + relaunch with `main` in env repos.
+- Trial pytest: **17 passed**. Scientific effect: NONE. Not GOAL_COMPLETE_READY (not ALIGNED).
