@@ -370,3 +370,23 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Write/fork path still **403** (probe create-ref DENIED; Path A/B not landable from this token).
 - **Shipped:** `scripts/wait_until_aligned.sh` — polls `watch_main_alignment.py` (default interval 30s, max wait 2h); exit 0 on ALIGNED, exit 2 after transport retries; optional `--verify` runs `VERIFY_AFTER_MERGE.sh` when present. Wired briefly into `portable/OWNER_ONE_LINERS.md` + `scripts/print_owner_unblock.sh`.
 - Idle helper only — no status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 33 — 2026-09-23 19:36 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.87h** / remaining **~45.13h** (window 172800s). Not expired.
+- Trigger: owner note that **Dylan Roy lifted restrictions** — immediately re-probed write + Path A/B land.
+- Alignment: still **MISALIGNED**; default tip still `f25b04bb931df2eaee302b666db014913486166b`; `watch_main_alignment` → MISALIGNED; `audit_main_alignment` exit 1; scientific effect NONE.
+- README head at tip still **pre-q0 complexity-physics face** ("A Reconstruction of Physics from Multiscale Retrodiction Complexity…"); no q0/notice markers.
+- Tokens: `MAIN_PUSH_TOKEN` **NOT SET**; `GITHUB_TOKEN` not in env (cursor integration). `gh api user` → 403. Repo permissions `{admin,maintain,pull,push,triage: all false}`.
+- Live Cloud Agent environment repos: **only** `github.com/d6g8k5htny-coder/trial` (no `main` in token scope despite `.cursor/environment.json` `repositoryDependencies`). Needs **relaunch** on env that includes `main` for write to take effect.
+- Write probes (all still **403**):
+  - `python3 scripts/probe_main_write.py` ×2 → **DENIED** HTTP 403 create-ref (`Resource not accessible by integration`)
+  - `git push` throwaway probe branch → **403** `Permission to d6g8k5htny-coder/main.git denied to cursor[bot]`
+  - `gh api POST .../git/refs` → **403**
+- Path A: `gh pr ready 2` → **403** GraphQL `markPullRequestReadyForReview`; `gh pr merge 2` → **403** GraphQL `mergePullRequest`; `owner_land_path_a.sh` same. PR **#2** still **OPEN / DRAFT / MERGEABLE**.
+- Path B: `owner_land_path_b.sh --direct-main` and default (notice branch) — local `git am` + `audit_local_tree` **would-align=true / ALIGNED**, then `git push` **403**.
+- workflow_dispatch `land-option-b-on-main.yml`: on `main` → **404** (workflow not on default branch); on `trial` → **403** cannot create dispatch event. `MAIN_PUSH_TOKEN` absent so even a successful dispatch with `dry_run=false` would fail closed.
+- Trial PR **#13** on `main`: already **MERGED** (CI green historically) — nothing to merge via `wait_until_aligned`.
+- Blockers (exact): (1) integration token lacks Contents:Write / PR write on `d6g8k5htny-coder/main`; (2) this run's environment `repos` list excludes `main`; (3) no `MAIN_PUSH_TOKEN`; (4) land-option-b workflow not on `main` default tip; (5) cannot workflow_dispatch on trial (403).
+- Owner unblock still: merge PR #2 from a write-capable session, **or** relaunch Cloud Agent after env includes `main`, **or** set `MAIN_PUSH_TOKEN` + dispatch/land Path B.
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
