@@ -18,7 +18,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0012
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0004 + 0008–0013
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -30,6 +30,7 @@ git apply /path/to/trial/portable/patches/0009-claims-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0010-recovery-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0011-math-status-check-close-file-handles.patch
 git apply /path/to/trial/portable/patches/0012-inventable-negative-tests-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0013-verify-quarantine-close-file-handles.patch
 ```
 
 Verify:
@@ -44,6 +45,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused+claims+recovery emit no ResourceWarning (unclosed file) after 0008–0012
 # math_status_check itself emits 0 ResourceWarning after 0011
+# verify_manifests + quarantine_check emit 0 ResourceWarning after 0013
 ```
 
 ## Historical / optional
@@ -157,4 +159,13 @@ dirty-receipt contract, but negative inventable/instrumentation tests still used
 bare `json.load(open(...))` / `json.dump(..., open(...))` on tmp_path copies —
 **6** `ResourceWarning: unclosed file` on the focused slice. **0012** closes those
 handles. Use `with open(...)`. No scientific change; `lemma_closed` stays false.
+
+## 0013 — verify_manifests + quarantine_check close file handles
+
+Same class as 0008–0012 for `tools/verify_manifests.py` and
+`tools/quarantine_check.py`. On tip `bf1fde3` @ CPython 3.11, each tool still
+emitted **828** `ResourceWarning: unclosed file` lines from bare
+`for line in open(...)` over manifest `.jsonl` / `.sha256` files. Use
+`with open(...) as handle`. Output parity preserved (`problems=0`). No scientific
+change; `lemma_closed` stays false.
 

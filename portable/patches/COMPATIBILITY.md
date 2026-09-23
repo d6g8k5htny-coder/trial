@@ -1,11 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~21:10 UTC (batch 48: PR #27 merged → drop 0005/0006/0007; ship 0012).
+Checked 2026-09-23 ~21:22 UTC (batch 49: Path B probe; ship 0013 verify/quarantine close-handles).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#27) | `bf1fde3` | **0001–0004 + 0008–0012** | problems=0 | **90+47+36 recovery** |
+| hardening (post-#27) | `bf1fde3` | **0001–0004 + 0008–0013** | problems=0 | **90+47+36 recovery** |
 | hardening (post-#26) | `a8a5dd7` | OK 0001–0011 (pre-drop) | problems=0 | **90+47+36 recovery** |
 | hardening (post-#24) | `46af1ca` | OK (+0010) | problems=0 | **90+47+36 recovery** |
 | hardening (post-#25) | `b02efe2` | OK (+0009) | problems=0 | **90+47 claims** |
@@ -38,7 +38,7 @@ Checked 2026-09-23 ~21:10 UTC (batch 48: PR #27 merged → drop 0005/0006/0007; 
 ## Post-#27 stack (`bf1fde30c7fc04c9919bf9172ee8a13e234c7664`)
 
 ```bash
-# From a clean hardening tip checkout — use apply_all.sh (0001–0004 + 0008–0012)
+# From a clean hardening tip checkout — use apply_all.sh (0001–0004 + 0008–0013)
 /path/to/trial/portable/patches/apply_all.sh --check
 /path/to/trial/portable/patches/apply_all.sh
 # tip-cut 0005/0006/0007 are NOT applied (obsolete; kept on disk for history)
@@ -48,11 +48,13 @@ Why tip-cut **0005/0006/0007** were dropped: PR #27 rewrote inventable/instrumen
 runners to use `tmp_path` + `_probe_snapshot()` (dirty-receipt defect fixed upstream).
 Tip-cut 0005/0006 restore shape and 0007 (which patched that shape) cannot apply.
 Post-merge residual: **6** `ResourceWarning` from bare `open()` in negative inventable/
-instrumentation tests → cleared by **0012**.
+instrumentation tests → cleared by **0012**. Broader residual: **828** unclosed-file
+warnings from `verify_manifests` / `quarantine_check` → cleared by **0013**.
 
 Notes:
 
-- Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**. Probe **DENIED** / watch **MISALIGNED** → Path B skipped. Dropped tip-cut 0005/0006/0007 from `apply_all.sh`. Shipped **0012** (inventable-negative close-file-handles). Tip `apply_all` 0001–0004+0008–0012 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. Hunt note: `tools/verify_manifests.py` still has **828** unclosed-file ResourceWarnings (candidate for a later patch; not shipped this batch). Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
+- Batch **49** (Path B probe + portable **0013**): tip still **`bf1fde3`** (== BASE_TIP). Probe **DENIED** / audit **MISALIGNED** → Path B skipped. Main PRs open: #2 HOLD draft CLEAN; #28/#30 docs drafts; #29 register export OPEN; #27 already merged (no further drops). Shipped **0013** (verify_manifests + quarantine_check close-file-handles). Tip `apply_all` 0001–0004+0008–0013 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**; `verify_manifests` + `quarantine_check` **0 ResourceWarning** (was 828 each) with stdout parity. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
+- Batch **48** (PR #27 merged + drop 0005/0006/0007 + portable **0012**): tip **`a8a5dd7` → `bf1fde3`**. Probe **DENIED** / watch **MISALIGNED** → Path B skipped. Dropped tip-cut 0005/0006/0007 from `apply_all.sh`. Shipped **0012** (inventable-negative close-file-handles). Tip `apply_all` 0001–0004+0008–0012 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. Hunt note (shipped in batch 49 as **0013**): `tools/verify_manifests.py` / `quarantine_check.py` had **828** unclosed-file ResourceWarnings. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **47** (Path B probe + portable **0011**): tip then **`a8a5dd7`**. Probe **DENIED** / watch **MISALIGNED** → Path B skipped. PR #27 still OPEN @ `20e31a1` → **did not** drop tip-cut 0005/0006. Broader hunt: `tools/math_status_check.py` had **30** unclosed-file ResourceWarnings → shipped **0011**. Tip `apply_all` 0001–0011 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**; `math_status_check` itself **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **46** (PR #27 sync + tip #26): tip **`46af1ca` → `a8a5dd7`** ([PR #26](https://github.com/d6g8k5htny-coder/main/pull/26) math_status README inventable probes honesty pointer merged; docs-only; no scientific status change). BASE_TIP refreshed. Tip `apply_all` 0001–0010 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. PR **#27** head **`63b519f` → `20e31a1`** (merge hardening post-#26): tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009/0010**) @ 3.11 → problems=0 / lemma_closed=false / focused **90 passed** / probes clean / residual **6** ResourceWarning; claims+recovery **83** / **0 ResourceWarning**. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Broad local pytest host failures remain agent-env (`python` missing in bare bash for some `test_ci_pins` / workflow integrity cases), not tip defects.

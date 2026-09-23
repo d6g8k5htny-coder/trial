@@ -12,6 +12,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 ## Batches
 
+### Batch 49 — 2026-09-23 ~21:22 UTC (Path B probe; ship portable 0013)
+
+- Window: start `2026-09-23T16:43:47Z`; elapsed ~4.6h / 48h; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (already at `0f5c23d` / Batch 48 land note).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- `audit_main_alignment.py` → **MISALIGNED**; tip_sha `f25b04bb…`; scientific_effect NONE.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- Tip vs BASE_TIP: live hardening **`bf1fde3`** == BASE_TIP (no pack tip refresh).
+- Open main PRs (read-only): #2 HOLD draft CLEAN; #27 MERGED (already dropped 0005/0006/0007 in Batch 48); #28/#30 docs drafts; #29 register export OPEN — **no further portable drops**.
+- 0013 hunt @ tip `bf1fde3` / CPython **3.11**: after 0001–0004+0008–0012, focused+claims+recovery green / 0 ResourceWarning; **`tools/verify_manifests.py`** + **`tools/quarantine_check.py`** → **828** `ResourceWarning: unclosed file` each from bare `for line in open(...)`.
+- **Shipped portable 0013** (`verify-quarantine-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0013**. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false / **0 ResourceWarning**; focused+claims+recovery **173 passed** / **0 ResourceWarning**; verify_manifests + quarantine_check **0 ResourceWarning** with stdout parity (`problems=0`).
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 0 — 2026-09-23 (prior turn)
 
 - Intent audit + owner actions + sandbox README + 4 intent tests.
