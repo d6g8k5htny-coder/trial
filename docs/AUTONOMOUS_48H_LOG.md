@@ -106,3 +106,8 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Write still 403; MISALIGNED.
 - Full apply+test on PR #18 (`278822e`): 86 passed; PR #20 (`c8ec3d1`): 84 passed; both math_status green / lemma_closed=false.
 - Added `portable/patches/COMPATIBILITY.md`. PR #20 still needs portable 0002 for math_console paths.
+
+### Batch 12 — 2026-09-23 17:20 UTC
+
+- Write still 403; MISALIGNED.
+- Added owner-triggered workflow `land-option-b-on-main` (needs trial secret `MAIN_PUSH_TOKEN`) as Path B automation; requested that secret / PR #2 merge again.

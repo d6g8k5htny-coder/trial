@@ -61,3 +61,9 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 ## Write-access probe (2026-09-23)
 
 `cursor[bot]` cannot push to `d6g8k5htny-coder/main` via git **or** the Git Data API (`POST .../git/refs` → 403 Resource not accessible by integration). The same token can create refs on `trial`. Re-launch against `main` with a credential that has push, or apply Path A/B/C from `portable/LAND.md` yourself.
+
+
+## Fastest unblock from trial CI
+
+Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main`
+(`dry_run=false`), **or** merge PR #2 on `main`. Either aligns the default tip.

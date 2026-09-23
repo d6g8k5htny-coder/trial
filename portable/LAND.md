@@ -92,3 +92,14 @@ status tooling). As of batch 10, patches **0001–0004 are still `--check` clean
 on PR #17/#18/#20 heads as well as hardening `1ea0ae8`. After those PRs merge,
 re-run `apply_all.sh` + focused tests; regenerate **0002** only if PACKET digests
 drift under `math_status_check`.
+
+
+## Path B via trial Actions (token secret)
+
+Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/land-option-b-on-main.yml):
+
+1. Add Actions secret `MAIN_PUSH_TOKEN` on **trial** (write on `main`).
+2. Run workflow `land-option-b-on-main` with `dry_run=false`.
+3. Open/merge the pushed `cursor/option-b-notice-from-trial` branch into default `main`.
+
+Default `dry_run=true` only verifies `git am` in the runner.
