@@ -143,3 +143,10 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Portable 0001–0004 `--check` + apply OK on `340d98a`; math_status problems=0 / lemma_closed=false; focused **86 passed**.
 - Broad pytest: 2930 passed / 142 failed — failures are agent-host env (`python` missing; CPython 3.12 vs CI 3.11), not new tip defects. Known 0003 warning still reproduces pre-patch. **No 0005.**
 - Updated BASE_TIP / README / COMPATIBILITY / LAND / OWNER_ACTIONS for tip move. Path A/B not landable (no write). Did not touch `research.yml` schedules.
+
+### Batch 16b — 2026-09-23 17:50 UTC
+
+- Engineering re-audit on tip `340d98a` with CPython **3.11.16** (uv): after 0001–0004, `math_status_check` problems=0 / lemma_closed=false; focused **86 passed**; inventable/register/ci slice **378 passed**.
+- PR heads: #17 `833ca55`, #19 `837a2b4`, #20 `c46463b` — 0001–0004 still apply; #19/#20 focused green; #20 still needs 0002 (`code_prototypes` paths).
+- **Defect found:** `test_runner_writes_refused_receipts_only` snapshotted receipt bytes but never restored; runner rewrites `generated_at_*` + index sha256 → dirty `docs/math_status_probes/` after every pytest (digest drift).
+- Shipped portable **0005** (`inventable-probes-restore-receipts-after-test`); `apply_all.sh` now 0001–0005. 0005 applies on tip/#19/#20; **does not apply on #17** (expanded test). Noted PR #18 merge in CONFLICTING_PR_NOTES. No status flips.

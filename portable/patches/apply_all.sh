@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 16: 340d98a).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 16b: 340d98a).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -33,6 +33,7 @@ PATCHES=(
   "$ROOT/0002-math-console-path-honesty.patch"
   "$ROOT/0003-gaussian-moments-parametrize-list.patch"
   "$ROOT/0004-git-fixture-timeout-60s.patch"
+  "$ROOT/0005-inventable-probes-restore-receipts-after-test.patch"
 )
 
 for p in "${PATCHES[@]}"; do

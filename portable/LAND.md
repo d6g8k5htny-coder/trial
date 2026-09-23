@@ -62,8 +62,9 @@ git push -u origin HEAD
 | #2 | Port onto default `main` | Critical for alignment |
 | #15 | Inventable REFUSED probes | Merged into hardening @ `1ea0ae8` |
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
-| #17 | More inventable shortcut refusals | MERGEABLE; our patches still apply |
-| #18–#20 | Status/PACKET-adjacent drafts | Watch 0002 digests if they merge |
+| #17 | More inventable shortcut refusals | MERGEABLE; 0001–0004 apply; **0005 needs re-cut** |
+| #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` |
+| #19–#20 | Docs banners / instrumentation follow-on | Watch 0002 digests; #20 still needs 0002 |
 | #21 | Attestations + H3 salvage (on #3) | MERGEABLE/UNSTABLE; patches apply; no inventable tests on base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
@@ -89,12 +90,13 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 ## Patch regeneration watch
 
-Working tip is now `340d98a` (PR #18 merged; #16 docs). Open drafts **#19 / #20 /
-#21** still stack on that tip. As of batch 16, patches **0001–0004 are still
-`--check` clean** on hardening `340d98a` and on #17/#20/#21 heads; **no 0005**.
-After further PACKET/`math_console` merges, re-run `apply_all.sh --check` +
-focused tests; regenerate **0002** only if digests drift under
-`math_status_check`. PR #21 does not edit PACKET/`math_console`.
+Working tip is now `340d98a` (PR #18 merged; #16 docs). Open drafts **#17 / #19 /
+#20 / #21** still stack on that tip. Batch **16b** adds portable **0005**
+(inventable probe test restore). `apply_all.sh` (0001–0005) is `--check` clean
+on `340d98a` / #19 / #20; **#17 rejects 0005** (expanded inventable test). After
+further PACKET/`math_console` merges, re-run `apply_all.sh --check` + focused
+tests; regenerate **0002** only if digests drift under `math_status_check`.
+PR #21 does not edit PACKET/`math_console`.
 
 
 ## Path B via trial Actions (token secret)

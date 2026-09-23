@@ -104,6 +104,15 @@ def test_portable_patches_exist() -> None:
     ).read_text()
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
+    p5 = (ROOT / "portable" / "patches" / "0005-inventable-probes-restore-receipts-after-test.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_inventable_jetmod_probes.py" in p5
+    assert "INVENTABLE_PROBES_INDEX.json" in p5
+    assert "finally:" in p5
+    assert "0005-inventable-probes-restore-receipts-after-test.patch" in (
+        ROOT / "portable" / "patches" / "apply_all.sh"
+    ).read_text(encoding="utf-8")
     assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()
     ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
     assert "chatgpt/drive-github-hardening-20260919" in ob
@@ -158,6 +167,7 @@ def test_conflicting_pr_notes() -> None:
     assert "math_console.py" in text
     assert "OPEN_PROBLEMS.md" in text
     assert "Scientific effect: NONE" in text
+    assert "#18" in text and "340d98a" in text
 
 
 def test_verify_after_merge_script() -> None:
