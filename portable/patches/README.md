@@ -1,12 +1,13 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `46af1cafec5fe5c5a12c792b8bbdc1468bd78249`
+`chatgpt/drive-github-hardening-20260919` @ `a8a5dd775aa685d1616cbda874429952aa5fbf9c`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
 PACKET base_commit/as_of tip-align #23, standing owner authorization #25,
-and inventable STATUS honesty cross-links #24).
+inventable STATUS honesty cross-links #24, and math_status README inventable
+probes honesty pointer #26).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -39,7 +40,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py \
   tests/test_recovery.py
-# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ 46af1ca
+# expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery @ a8a5dd7
 # and docs/math_status_probes/ stays clean in git status after inventable tests
 # focused+claims+recovery emit no ResourceWarning (unclosed file) after 0007–0010
 ```
@@ -48,7 +49,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
 
 - `0005-pre17-inventable-probes-restore-receipts-after-test.patch` — pre-#17 inventable test shape (older SHAs before tip-cut 0005). Prefer tip-cut **0005** on current tip.
 - **0006** was optional until PR #20 merged (batch 21). It is now in `apply_all.sh`.
-- **PR #27** (`63b519f`, probe-test isolation; prior `8d023a9`): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`; optional **0009/0010** also apply). No `0005-pr27-*` alternate (defect gone).
+- **PR #27** (`20e31a1`, probe-test isolation; prior `63b519f` / `8d023a9`): tip-cut **0005/0006/0007 do not apply**. Isolation already restores the dirty-receipt contract via `tmp_path` + `_probe_snapshot()` — **0005/0006 become obsolete after #27 merges**. Head stack: **0001–0004 + 0008** only (see `COMPATIBILITY.md`; optional **0009/0010** also apply). No `0005-pr27-*` alternate (defect gone).
 
 ### When 0006 was promoted
 

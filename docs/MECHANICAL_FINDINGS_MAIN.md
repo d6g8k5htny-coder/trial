@@ -1,9 +1,28 @@
 # Mechanical findings from local clone of `d6g8k5htny-coder/main`
 
-Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `46af1cafec5fe5c5a12c792b8bbdc1468bd78249`
-(PR #24 inventable STATUS honesty cross-links; prior #15/#16/#17/#18/#19/#20/#22/#23/#25).
-Host: CPython 3.11 + pytest (tip batch 45); PR #27 head also verified @ 3.11.
+Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `a8a5dd775aa685d1616cbda874429952aa5fbf9c`
+(PR #26 math_status README inventable probes honesty; prior #15/#16/#17/#18/#19/#20/#22/#23/#24/#25).
+Host: CPython 3.11 + pytest (tip batch 46); PR #27 head also verified @ 3.11.
 **Scientific effect: NONE.**
+
+## After portable patches 0001–0010 on `a8a5dd7` (batch 46)
+
+| Check | Result |
+|-------|--------|
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| focused + claims + recovery | **173 passed**; **0 ResourceWarning** |
+| `apply_all.sh --check` | OK (0001–0010) |
+
+## PR #27 head `20e31a1` + stack 0001–0004 + 0008 (+0009/0010) (batch 46; prior `63b519f`)
+
+| Check | Result |
+|-------|--------|
+| tip-cut `apply_all.sh --check` | **fails at 0005** (isolation rewrite) |
+| recipe `0001–0004 + 0008` (+ optional 0009/0010) | applies clean |
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| focused slice @ 3.11 | **90 passed**; probes clean |
+| ResourceWarning | **6** on negative inventable/instrumentation bare `open()` only |
+| tip-cut 0005/0006 | **obsolete after #27 merges** (no `0005-pr27-*`); #27 still OPEN → not dropped |
 
 ## After portable patches 0001–0010 on `46af1ca` (batch 45)
 
