@@ -295,3 +295,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - `scripts/owner_land_path_{a,b}.sh` **present on trial `origin/main`** (via PR #7). Not present on `d6g8k5htny-coder/main` default tip (pre-q0 face; no `scripts/`).
 - Branch not ahead of trial main before this batch commit (was at merge tip). Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 26 — 2026-09-23 19:00 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.28h** / remaining **~45.72h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Tokens: `MAIN_PUSH_TOKEN` **absent**; `GITHUB_TOKEN` **absent** (gh uses cursor integration token).
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B still not landable from this token.
+  - `./scripts/owner_land_path_a.sh` → **403** GraphQL `markPullRequestReadyForReview`
+  - `./scripts/owner_land_path_b.sh` → local `git am` + auditor **would-align=true**, then `git push` **403**
+  - `gh workflow run land-option-b-on-main.yml -f dry_run=false` → **403** (cannot create workflow_dispatch)
+- Trial PR **#8** CI green → `gh pr ready` + `gh pr merge --merge` → **MERGED** @ `0c96037`. Continue branch fast-forwarded onto that merge tip.
+- Tip vs BASE_TIP: still **`ae7daf7`** (ls-remote match; no pack tip refresh).
+- Portable `apply_all` 0001–0008 @ CPython **3.11.16**: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean; focused slice **0 ResourceWarning**. **No 0009** (no new tip-level defect).
+- Stack: #19 **MERGED** @ `ae7daf7`; #22 new draft UNSTABLE; #21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+- Trial intent tests: **17 passed**. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
