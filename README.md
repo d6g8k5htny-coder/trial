@@ -26,6 +26,8 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
+After merging this pack to trial `main`, run **Actions → `land-option-b-on-main`** (set secret `MAIN_PUSH_TOKEN`, `dry_run=false`) or merge [main#2](https://github.com/d6g8k5htny-coder/main/pull/2).
+
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
 - [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
