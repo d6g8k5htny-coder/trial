@@ -28,7 +28,7 @@ Path C dry-run landing improved for post-ALIGNED tip; window still open.
 - Residual RW hunt @ CPython **3.11** after apply_all: focused+receipts/bridge/collision/frozen **922**/0 → **no 0017**.
 - **Path C post-ALIGNED landing:** shipped `scripts/path_c_dry_run.py` + `owner_land_path_c.sh --dry-run`. Certainty: `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; default tip ALIGNED but missing PACKET/carriers_verify; `PATH_C_BASE=main` blocked; `PATH_C_REBASE_ONTO_MAIN` **CONFLICTING** after #41. `refresh_restore_plan` wires Path C dry-run fields. `RESTORE_PLAN_60.json` + `BATCH60_TOKEN_SEARCH.json`.
 - Trial `pytest` + packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → **403**. **Land on trial `main`** via direct push.
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `d196f25..62b669d`.
 - No research status promotion. `lemma_closed` untouched. `goal_complete=false` (window open).
 
 ### Batch 59 — 2026-09-23 ~23:10 UTC (ALIGNED @ `1c6e74b` via owner PR #41; Path B N/A; BASE_TIP + restore short-circuit)
