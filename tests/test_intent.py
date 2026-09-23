@@ -128,7 +128,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "46af1ca" in base_tip
+    assert "a8a5dd7" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -215,7 +215,7 @@ def test_land_sheet() -> None:
     assert "0001–0004 + 0008" in text or "0001-0004 + 0008" in text
     compat = (ROOT / "portable" / "patches" / "COMPATIBILITY.md").read_text(encoding="utf-8")
     assert "PR #27" in compat
-    assert "63b519f" in compat
+    assert "20e31a1" in compat
     assert "obsolete" in compat.lower()
     assert "0001–0004 + 0008" in compat or "0001-0004 + 0008" in compat
     assert "tmp_path" in compat

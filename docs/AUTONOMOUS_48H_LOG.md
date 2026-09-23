@@ -518,6 +518,18 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 46 — 2026-09-23 ~20:51 UTC (PR #27 sync; tip #26; Path B probe)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` first (FF `e4913d3` → `93dfbb9`, trial PR #22 / batch 45).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `gh pr view 27`: OPEN / not draft / MERGEABLE / UNSTABLE; headRefOid **`20e31a1`** (was `63b519f`; merge of hardening post-#26 into probe-isolation).
+- Main PR #27 still **OPEN** (`mergedAt=null`) → did **not** drop tip-cut 0005/0006.
+- Tip drift: BASE_TIP `46af1ca` → live **`a8a5dd7`** ([PR #26](https://github.com/d6g8k5htny-coder/main/pull/26) math_status README inventable probes honesty pointer merged). Pack refreshed; tip `apply_all` 0001–0010 @ 3.11 → problems=0 / lemma_closed=false / focused+claims+recovery **173** / **0 ResourceWarning**.
+- PR #27 head shallow-clone @ `20e31a1`: tip-cut fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009/0010**) → problems=0 / lemma_closed=false / focused **90** / probes clean / residual **6** ResourceWarning; claims+recovery **83** / **0 ResourceWarning**. COMPATIBILITY + BASE_TIP updated.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 45 — 2026-09-23 ~20:45 UTC (Path B probe; ship portable 0010)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
