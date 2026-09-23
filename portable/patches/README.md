@@ -1,9 +1,10 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `1547ec4abea9552b17d0d7eecb901266081e4721`
+`chatgpt/drive-github-hardening-20260919` @ `ae7daf74999600ba86b247137a7b7a00796c71f1`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
-fail-closed JETMOD shortcut refusals #17, and instrumentation STATUS vocab #20).
+fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
+and AUTHOR_SIDE honesty banners #19).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
@@ -14,7 +15,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0007
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0008
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -23,6 +24,7 @@ git apply /path/to/trial/portable/patches/0004-git-fixture-timeout-60s.patch
 git apply /path/to/trial/portable/patches/0005-inventable-probes-restore-receipts-after-test.patch
 git apply /path/to/trial/portable/patches/0006-instrumentation-status-restore-receipts-after-test.patch
 git apply /path/to/trial/portable/patches/0007-inventable-tests-close-file-handles.patch
+git apply /path/to/trial/portable/patches/0008-carriers-math-status-close-file-handles.patch
 ```
 
 Verify:
@@ -32,9 +34,9 @@ python3 tools/math_status_check.py
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py \
   tests/test_inventable_jetmod_instrumentation_status.py
-# expect: problems=0, lemma_closed=false; 90 passed on that slice @ 1547ec4
+# expect: problems=0, lemma_closed=false; 90 passed on that slice @ ae7daf7
 # and docs/math_status_probes/ stays clean in git status after inventable tests
-# inventable slice emits no ResourceWarning (unclosed file) after 0007
+# focused slice emits no ResourceWarning (unclosed file) after 0007+0008
 ```
 
 ## Historical / optional
@@ -97,3 +99,12 @@ without closing handles. Under CPython 3.11 this emits many `ResourceWarning:
 unclosed file` lines on the inventable slice (observed: 34 warnings across the
 registers/inventable/ci/workflow audit). Use `Path.read_bytes()` for snapshots
 and `with open(...)` for JSON IO. No scientific change; `lemma_closed` stays false.
+
+## 0008 — carriers + math_status close file handles
+
+Same class as 0007 for `tests/test_carriers.py`, `tests/test_math_status.py`, and
+`tools/carriers_verify.py`. After 0001–0007 on tip `ae7daf7`, the focused slice
+still emitted **63** `ResourceWarning: unclosed file` lines (22 carriers test +
+41 math_status; plus ~22 from `carriers_verify` under `-W default`). Use
+`with open(...)` for blob hashing and status mutation helpers. No scientific
+change; `lemma_closed` stays false.

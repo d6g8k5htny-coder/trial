@@ -43,7 +43,7 @@ Batch **22** local dry-run on default tip `f25b04bb`: `git am` OK; local auditor
 quarantined). Path B content is sufficient — landing blocked only by write/token.
 ## Path C — engineering patches on working tip
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `1547ec4` — patches apply cleanly):
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `ae7daf7` — patches apply cleanly):
 
 ```bash
 git clone https://github.com/d6g8k5htny-coder/main.git && cd main
@@ -70,9 +70,9 @@ git push -u origin HEAD
 | #16 | Cold-start nav docs | **Merged** (docs-only) |
 | #17 | Fail-closed inventable shortcut refusals | **Merged** @ `3e8f388`; tip-cut 0005 re-cut in batch 17 |
 | #18 | PARTIAL/REFUSED STATUS vocab | **Merged** @ `340d98a` (ancestor of `1547ec4`) |
-| #19 | Docs AUTHOR_SIDE honesty banners | OPEN draft `dcc0157` **UNSTABLE** (verify pending) onto hardening |
-| #20 | Instrumentation PARTIAL/REFUSED_NOT_24JET STATUS | **Merged** @ `1547ec4`; promoted portable **0006** into `apply_all.sh`; batch 24 added **0007** (close handles) |
-| #21 | Attestations + H3 salvage | MERGEABLE/**CLEAN** onto hardening (base OID `1ea0ae8`, ancestor of tip); patches 0001–0004 apply; inventable tests absent on that base |
+| #19 | AUTHOR_SIDE honesty banners on RN tip | **Merged** @ `ae7daf7`; BASE_TIP refreshed (batch 25) |
+| #20 | Instrumentation PARTIAL/REFUSED_NOT_24JET STATUS | **Merged** @ `1547ec4`; promoted portable **0006** into `apply_all.sh`; batch 24 added **0007**; batch 25 added **0008** |
+| #21 | Attestations + H3 salvage | MERGEABLE/**UNSTABLE** onto hardening (head `52bdd443`); patches 0001–0004 apply; inventable tests absent on that base |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -98,10 +98,11 @@ Owner (or a write-enabled `main` agent) must run Path A/B/C.
 
 ## Patch regeneration watch
 
-Working tip is **`1547ec4`** (PR #20 merged). Open drafts **#19 / #21** (plus older stack).
-Batch **24**: tip still `1547ec4`; `apply_all` 0001–0007 @ 3.11 → focused **90 passed**;
-inventable slice **0 ResourceWarning** after **0007**. Stack unchanged (#19 UNSTABLE,
-#21 CLEAN, #3 CONFLICTING, #2 draft MERGEABLE/CLEAN). Write still 403 from this token.
+Working tip is **`ae7daf7`** (PR #19 merged after #20). Open draft **#21** (plus older stack).
+Batch **25**: tip `ae7daf7`; `apply_all` 0001–0008 @ 3.11 → focused **90 passed** / **0 ResourceWarning**;
+inventable slice **0 ResourceWarning** after **0007**; carriers/math_status **0** after **0008**.
+Stack: #19 MERGED; #21 `52bdd443` UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
+Write still 403 from this token.
 Copy-paste owner commands:
 [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) or `./scripts/print_owner_unblock.sh`.
 Write probe: `scripts/probe_main_write.py`. After further PACKET/`math_console`
