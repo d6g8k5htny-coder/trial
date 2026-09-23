@@ -24,7 +24,7 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - 0015 hunt @ tip / CPython **3.11**: after 0001–0004+0008–0014, focused+claims+recovery green / 0 RW; **`tests/test_frozen_check.py`** → **9** ResourceWarning; **`tests/test_drive_index_overlay.py`** → **1**.
 - **Shipped portable 0015** (`frozen-drive-index-close-file-handles`); `apply_all.sh` now **0001–0004 + 0008–0015**. Verify @ `8510874`: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery **173 passed** / **0 ResourceWarning**; frozen+drive-index overlay **19 passed** / **0 ResourceWarning**. Residual: `test_receipts` / `test_bridge` bare-open RW (not shipped).
 - Packed portable tarball → `docs/trial-portable-main-fixes.tgz`.
-- Draft/ready PR create via `gh` → expect **403**; land on trial `main` via direct push if needed.
+- Draft/ready PR create via `gh` → **403** (integration cannot open PRs). **Landed on trial `main`** via direct push `66c3fa9..a3a8d21`.
 - No research status promotion. Default tip **ALIGNED**; Path C still owner-apply (write 403).
 
 ### Batch 51 — 2026-09-23 ~21:41 UTC (ALIGNED confirmation — rigorous re-verify)
