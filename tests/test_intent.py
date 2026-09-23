@@ -291,6 +291,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "Scientific effect: NONE" in one
     assert "owner_land_path_a.sh" in one
     assert "owner_land_path_b.sh" in one
+    assert "wait_until_aligned.sh" in one
     assert "--direct-main" in one
     assert "--after-merge" in one
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
@@ -320,11 +321,15 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     """Owner Path A/B land scripts must be executable and mention fail-closed gates."""
     path_a = ROOT / "scripts" / "owner_land_path_a.sh"
     path_b = ROOT / "scripts" / "owner_land_path_b.sh"
+    wait_aligned = ROOT / "scripts" / "wait_until_aligned.sh"
     assert path_a.is_file() and path_b.is_file()
+    assert wait_aligned.is_file()
     assert path_a.stat().st_mode & 0o111
     assert path_b.stat().st_mode & 0o111
+    assert wait_aligned.stat().st_mode & 0o111
     a_text = path_a.read_text(encoding="utf-8")
     b_text = path_b.read_text(encoding="utf-8")
+    wait_text = wait_aligned.read_text(encoding="utf-8")
     assert "gh pr ready" in a_text and "gh pr merge" in a_text
     assert "watch_main_alignment.py" in a_text
     assert "ALIGNED" in a_text
@@ -335,9 +340,15 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "--after-merge" in b_text
     assert "gh pr create" in b_text
     assert "Scientific effect" in b_text
+    assert "watch_main_alignment.py" in wait_text
+    assert "ALIGNED" in wait_text
+    assert "--verify" in wait_text
+    assert "VERIFY_AFTER_MERGE.sh" in wait_text
+    assert "scientific_effect=NONE" in wait_text or "Scientific effect: NONE" in wait_text
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "owner_land_path_a.sh" in unblock
     assert "owner_land_path_b.sh" in unblock
+    assert "wait_until_aligned.sh" in unblock
     # --after-merge must fail closed while default tip is MISALIGNED
     result = subprocess.run(
         ["bash", str(path_b), "--after-merge"],
