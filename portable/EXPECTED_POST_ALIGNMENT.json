@@ -1,6 +1,6 @@
 {
   "scientific_effect": "NONE",
-  "description": "Expected audit_main_alignment.py shape after Path A (PR #2) or Path B (Option-B notice).",
+  "description": "Expected audit_main_alignment.py shape after Path A (PR #2), Path B (Option-B notice), or owner renewal (PR #41).",
   "aligned_when": {
     "audit_exit": 0,
     "complexity_markers_present": [],
@@ -12,7 +12,8 @@
     ],
     "notes": [
       "Path A also implies root_has_AGENTS_md true and a large tree.",
-      "Path B implies notice markers and usually root_has_body false after quarantine move."
+      "Path B implies notice markers and usually root_has_body false after quarantine move.",
+      "Owner renewal (PR #41 @ 1c6e74b) is ALIGNED with root AGENTS.md + .github; body relocated under history/; not Option-B patch shape."
     ]
   },
   "still_required_after_alignment_for_full_program": [

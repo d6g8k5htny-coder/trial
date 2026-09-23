@@ -133,6 +133,8 @@ def main() -> int:
 
     path_b_writable = bool(vectors.get("path_b_ready"))
     would_align = bool(dry.get("would_align")) if dry else None
+    tip_moved = tip_refresh.startswith("moved")
+    path_c_idle = not tip_moved  # tip move itself is currency; 0017 hunt is separate
 
     plan = {
         "batch": str(args.batch),
@@ -163,10 +165,22 @@ def main() -> int:
             "path_b_ready": path_b_writable,
             "applied_this_session": False,
             "reason_not_applied": (
-                None
-                if path_b_writable
-                else "all Path-B-capable write vectors HTTP 403/404 or tokens unset"
+                "already ALIGNED on default tip — Path B land not needed"
+                if audit_ec == 0
+                else (
+                    None
+                    if path_b_writable
+                    else "all Path-B-capable write vectors HTTP 403/404 or tokens unset"
+                )
             ),
+            "option_b_stronger": True,
+            "option_b_includes_AGENTS_md": True,
+            "option_b_tip_current_against": audit.get("default_tip_sha"),
+            "dry_run_state": dry.get("state"),
+            "already_aligned_skip": bool(dry.get("git_am_skipped_already_aligned")),
+            "one_command_restore": "scripts/restore_main_face.sh",
+            "write_preflight_in_restore_main_face": True,
+            "aligned_short_circuit_in_restore_main_face": True,
         },
         "path_a": {
             "hold": "VOID",
@@ -185,6 +199,13 @@ def main() -> int:
             "live_hardening_sha": live_hardening,
             "tip_refresh": tip_refresh,
             "apply_all": "0001-0004 + 0008-0016",
+            "idle": path_c_idle,
+            "idle_reason": (
+                "hardening tip unchanged vs BASE_TIP; no new 0017 unless residual RW hunt finds one"
+                if path_c_idle
+                else "BASE_TIP refreshed to live hardening; residual RW hunt may still be IDLE"
+            ),
+            "new_0017": False,
         },
         "write_vectors": {
             "state": vectors.get("state"),
@@ -196,7 +217,8 @@ def main() -> int:
         },
         "owner_next": [
             "./scripts/restore_main_face.sh --dry-run   # one-command certainty",
-            "./scripts/restore_main_face.sh             # dry-run then branch+PR",
+            "./scripts/restore_main_face.sh             # dry-run → write preflight → branch+PR",
+            f"./scripts/restore_main_face.sh --plan --batch {args.batch}",
             "./scripts/owner_land_path_b.sh --dry-run   # certainty JSON",
             "./scripts/owner_land_path_b.sh",
             "merge Option-B notice PR (or --direct-main / restore_main_face.sh --direct-main)",

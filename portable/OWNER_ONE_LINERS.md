@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 58:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** Default tip **MISALIGNED** @ `c2b0620`. `aligned_end=false`. Scientific effect: **NONE**.
+> **Batch 59:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). `aligned_end=true`. Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Prefer **Path B** — stronger Option-B (README+`AGENTS.md`) tip-current (`./scripts/restore_main_face.sh --dry-run` → would-align). Path A = `PATH_A_MODE=revert32`. Path C IDLE @ `9a56c30`.
-> Trial write still 403 → Path B not applied. See `RESTORE_PLAN_58.json` + `BATCH58_TOKEN_SEARCH.json`.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C IDLE @ BASE_TIP `036a6bc`.
+> Trial write still 403. See `RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
@@ -48,7 +48,7 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ./scripts/owner_land_path_b.sh --dry-run    # underlying certainty JSON
 ./scripts/owner_land_path_b.sh
 ./scripts/owner_land_path_b.sh --after-merge
-# python3 scripts/refresh_restore_plan.py --batch 58
+# python3 scripts/refresh_restore_plan.py --batch 59
 
 
 # Path A — HOLD VOID. Default: revert #32. Prefer Path B when notice-only is enough.

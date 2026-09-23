@@ -4,19 +4,17 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 58) — MISALIGNED @ `c2b0620`; Path B DENIED; stronger Option-B tip-current
+> ## STATUS (Batch 59) — ALIGNED @ `1c6e74b` (owner PR #41); Path B N/A; Path C IDLE
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
-> Default tip **`c2b0620`**: Dylan’s honest program-map (still trips
-> `complexity-physics-framework` in withdrawal prose; no q0/SIDE24 notice).
-> Root still `README.md` + `body` only; **no** root `AGENTS.md` / `.github`.
-> `aligned_end=false`. Scientific effect: **NONE**. **HOLD on PR #2 is VOID.**
-> Prefer **Path B**. Stronger Option-B pack (README + `AGENTS.md`) tip-current;
-> dry-run would-align=true. Path C: tip still `9a56c30`; RW **0** → **IDLE**.
-> See `portable/RESTORE_PLAN_58.json` + `BATCH58_TOKEN_SEARCH.json`.
+> Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
+> Root: README + `AGENTS.md` + `.github`; `body` under history/. `aligned_end=true`.
+> Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `036a6bc` (post-#35); RW **0** → **IDLE**.
+> See `portable/RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
 
-## Path B — honest redirect (PREFERRED — ALIGNED restore)
+## Path B — honest redirect (PREFERRED when MISALIGNED)
 
 ```bash
 # One-command (preferred):
@@ -35,13 +33,10 @@ git push -u origin HEAD
 gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE."
 ```
 
-Batch **58**: tip still `c2b0620`. Stronger Option-B (README+AGENTS) → `git am`
-OK; local auditor **ALIGNED** (would-align). Exhaustive token search
-(`GH_TOKEN`/`GITHUB_TOKEN`/`MAIN_PUSH_TOKEN` unset; `gh` + origin `ghs_` same
-403; no SSH keys). All Path-B-capable write vectors **DENIED**. Issues create
-works but Contents preferred — no spam. Multi-vector:
-`python3 scripts/probe_main_write_vectors.py`. Restore plan:
-`python3 scripts/refresh_restore_plan.py --batch 58`.
+Batch **59**: tip **`1c6e74b` ALIGNED** (owner PR #41). Classic Option-B patch does not
+apply on renewed tip; `path_b_dry_run` → **ALREADY_ALIGNED**. Write vectors still
+**DENIED**. Multi-vector: `python3 scripts/probe_main_write_vectors.py`. Restore plan:
+`python3 scripts/refresh_restore_plan.py --batch 59`.
 
 ## Path A — restore q0 tree (HOLD VOID; prefer Path B)
 
@@ -67,8 +62,8 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 `apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
 Path C remains the engineering stack on the hardening tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `9a56c30` after governance on #31 — `apply_all --check` OK).
-**Do not** apply onto default `main` alone — post-#32 tip is the pre-q0 face (no PACKET.json). Keep Path C on hardening.
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `036a6bc` after #35 bridge/mirror fix — `apply_all --check` OK).
+**Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. Keep Path C on hardening unless that tip already has the tooling.
 
 
 ```bash
@@ -155,7 +150,8 @@ Owner (or a write-enabled `main` agent) must run Path C for portable engineering
 
 ## Patch regeneration watch
 
-Working tip is **`9a56c30`** (governance on #31; batch 54 — was `580864c` post-#31). Default `main` **MISALIGNED** after tip `c2b0620` (Batch 57; was `4fc1d7c` post-#32).
+Working tip is **`036a6bc`** (#35 bridge/mirror on hardening; batch 59 — was `9a56c30`). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): tip **`c2b0620` → `1c6e74b`**; audit **ALIGNED**; Option-B classic AM_FAILED / `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; BASE_TIP **`9a56c30` → `036a6bc`**; residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_59.json`.
 Batch **57** (MISALIGNED; tip move + Option-B RECUT; Path B DENIED; Path C IDLE): tip **`4fc1d7c` → `c2b0620`**; audit **MISALIGNED**; Option-B recut `git am` OK / would-align (`path_b_dry_run`); all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack #34/#35/#36 (#36 MERGEABLE/CLEAN); restore plan `portable/RESTORE_PLAN_57.json`.
 Batch **56** (MISALIGNED; Path C IDLE): tip still `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack +#34/#35/#36; restore plan `portable/RESTORE_PLAN_56.json`.
 Batch **55** (unrestricted / auto-approve recorded): tip `4fc1d7c`; audit **MISALIGNED**; HOLD VOID; Path A OR Path B OK (prefer B); all Path-B-capable write vectors **DENIED**; Path C harden `probe_main_write_vectors.py`; restore plan `portable/RESTORE_PLAN_55.json`.

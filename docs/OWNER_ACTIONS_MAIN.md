@@ -8,16 +8,14 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 58 — MISALIGNED (`aligned_end=false`); tip `c2b0620`; stronger Option-B tip-current; HOLD VOID; Path C IDLE:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** Default tip still **`c2b0620`** (honest program-map). Still **MISALIGNED** (complexity-physics-framework in withdrawal prose; no q0/SIDE24 notice). Root has `README.md` + `body` only. Scientific effect: **NONE**.
-> **HOLD on PR #2 is VOID.** Prefer **Path B** — stronger Option-B (README+`AGENTS.md`) tip-current (`./scripts/restore_main_face.sh --dry-run` → would-align). Path A: `PATH_A_MODE=revert32`. Path C IDLE @ `9a56c30`. Write **403** (token search: `MAIN_PUSH_TOKEN`/`GH_TOKEN`/`GITHUB_TOKEN` unset; `ghs_` integration 403; no SSH). Accidental issues probe **#40** (could not close — Contents preferred; no further spam). See `portable/RESTORE_PLAN_58.json` + `BATCH58_TOKEN_SEARCH.json`.
+> **Batch 59 — ALIGNED (`aligned_end=true`); tip `1c6e74b` (owner PR #41); Path B N/A; HOLD VOID; Path C IDLE:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C IDLE @ `036a6bc`. Write **403** (token search: `MAIN_PUSH_TOKEN`/`GH_TOKEN`/`GITHUB_TOKEN` unset; integration 403; no SSH). See `portable/RESTORE_PLAN_59.json` + `BATCH59_TOKEN_SEARCH.json`.
 
-### 1. Stop advertising a non-ALIGNED default tip
+### 1. Keep default tip ALIGNED
 
-Default `main` @ `c2b0620` is an honest program map but still fails the q0/notice
-auditor (and still has root `body`). Prior tip `4fc1d7c` was the Dec 2025
-complexity face after CoS #32.
+Default `main` @ `1c6e74b` is the renewed research landing (owner PR #41). Prior tip `c2b0620` was an honest program map that still failed the q0/notice auditor; `4fc1d7c` was the Dec 2025 complexity face after CoS #32.
 
-**Options (pick one):**
+**If tip regresses to MISALIGNED (pick one):**
 
 - **B (PREFERRED):** Apply stronger Option-B notice (README+`AGENTS.md`) + quarantine `body`. One-command: `./scripts/restore_main_face.sh --dry-run` then `./scripts/restore_main_face.sh` (or `MAIN_PUSH_TOKEN` / Actions).
 - **A (HOLD VOID):** Restore q0 tree — `PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh` (or fresh Drive→git port). Prefer Path B when notice-only is enough. PR #2 is closed; `gh pr ready/merge 2` will not revive it.

@@ -14,7 +14,9 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/RESTORE_PLAN_56.json \
   portable/RESTORE_PLAN_57.json \
   portable/RESTORE_PLAN_58.json \
+  portable/RESTORE_PLAN_59.json \
   portable/BATCH58_TOKEN_SEARCH.json \
+  portable/BATCH59_TOKEN_SEARCH.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \

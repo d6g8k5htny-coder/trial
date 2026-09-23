@@ -144,7 +144,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "9a56c30" in base_tip
+    assert "036a6bc" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -346,14 +346,16 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "probe_main_write_vectors.py" in one or (ROOT / "scripts" / "probe_main_write_vectors.py").is_file()
     assert "HOLD" in one and "VOID" in one
     assert (ROOT / "portable" / "RESTORE_PLAN_58.json").is_file()
+    assert (ROOT / "portable" / "RESTORE_PLAN_59.json").is_file()
     assert (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").is_file()
+    assert (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").is_file()
     token_log = __import__("json").loads(
-        (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+        (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").read_text(encoding="utf-8")
     )
-    assert token_log["batch"] == "58"
+    assert token_log["batch"] == "59"
     assert token_log["scientific_effect"] == "NONE"
     # Ensure no raw secret material leaked into the token search log
-    blob = (ROOT / "portable" / "BATCH58_TOKEN_SEARCH.json").read_text(encoding="utf-8")
+    blob = (ROOT / "portable" / "BATCH59_TOKEN_SEARCH.json").read_text(encoding="utf-8")
     assert "oauth_token" not in blob
     assert "ghs_" not in blob
     assert "gho_" not in blob
@@ -368,6 +370,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
+    assert "036a6bc" in patches_readme or "PR #35" in patches_readme
     assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
@@ -403,26 +406,36 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     restore = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_55.json").read_text())
     assert restore["preferred_restore"] == "Path_B"
     assert restore["scientific_effect"] == "NONE"
-    assert restore["aligned"] is False
+    restore59 = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_59.json").read_text())
+    assert restore59["scientific_effect"] == "NONE"
+    assert restore59["aligned"] is True
+    assert restore59["path_b"].get("already_aligned_skip") is True or restore59["path_b"].get(
+        "dry_run_state"
+    ) == "ALREADY_ALIGNED"
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
     assert "RESTORE_PLAN_55.json" in pack
     assert "RESTORE_PLAN_58.json" in pack
+    assert "RESTORE_PLAN_59.json" in pack
     assert "restore_main_face.sh" in pack
     assert "BATCH58_TOKEN_SEARCH.json" in pack
+    assert "BATCH59_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
     assert "restore_main_face.sh" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
+    assert "Batch 59" in unblock or "1c6e74b" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 59" in log
     assert "Batch 58" in log
     assert "Batch 55" in log
     assert "HOLD" in log and "VOID" in log
     assert "Path A or B OK" in log or "Path A OR Path B OK" in log
     assert "restore_main_face" in log or "one-command" in log.lower()
+    assert "ALIGNED" in log and "1c6e74b" in log
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
     assert restore_one.stat().st_mode & 0o111
@@ -430,7 +443,10 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "owner_land_path_b.sh" in rtext
     assert "scientific_effect=NONE" in rtext
     assert "--dry-run" in rtext
-    # dry-run path must would-align without pushing
+    assert "--batch" in rtext
+    assert "probe_main_write_vectors" in rtext
+    assert "already ALIGNED" in rtext or "short-circuit" in rtext.lower()
+    # dry-run path must would-align / ALREADY_ALIGNED without pushing
     dry = subprocess.run(
         ["bash", str(restore_one), "--dry-run"],
         capture_output=True,
@@ -440,9 +456,23 @@ def test_owner_one_liners_and_probe_main_write() -> None:
         cwd=str(ROOT),
     )
     assert dry.returncode == 0, dry.stderr + dry.stdout
-    assert "would-align" in (dry.stdout + dry.stderr).lower() or "WOULD_ALIGN" in (
-        dry.stdout + dry.stderr
+    combined = dry.stdout + dry.stderr
+    assert (
+        "would-align" in combined.lower()
+        or "WOULD_ALIGN" in combined
+        or "ALREADY_ALIGNED" in combined
     )
+    # land short-circuits when tip is already ALIGNED
+    land = subprocess.run(
+        ["bash", str(restore_one), "--batch", "59"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert land.returncode == 0, land.stderr + land.stdout
+    assert "already ALIGNED" in (land.stdout + land.stderr)
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:

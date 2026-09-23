@@ -1,11 +1,12 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~22:31 UTC (batch 56: MISALIGNED; Path B preferred; Path C IDLE; BASE_TIP still 9a56c30).
+Checked 2026-09-23 ~23:10 UTC (batch 59: ALIGNED @ 1c6e74b via PR #41; Path B N/A; Path C IDLE; BASE_TIP 036a6bc).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 54–55** |
+| hardening (post-#35) | `036a6bc` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 59** |
+| hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 54–58) |
 | hardening (post-#31) | `580864c` | **0001–0004 + 0008–0016** | `--check` OK | (BASE_TIP batch 53b) |
 | hardening (post-#30) | `fbb4360` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
 | hardening (post-#28) | `890bb81` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
@@ -65,6 +66,8 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): default tip **`c2b0620` → `1c6e74b`** **ALIGNED**; Option-B classic patch AM_FAILED on renewed tip; `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; hardening **`9a56c30` → `036a6bc`** ([PR #35](https://github.com/d6g8k5htny-coder/main/pull/35)); BASE_TIP refreshed; residual RW hunt **0** → **no 0017** / **IDLE**. Shipped restore ALIGNED short-circuit + write preflight + `--batch`. Restore plan: `portable/RESTORE_PLAN_59.json`.
+- Batch **58** (MISALIGNED; stronger Option-B + restore_main_face): default tip still **`c2b0620`** **MISALIGNED**; Option-B stronger `git am` OK / would-align; **all Path-B-capable write vectors DENIED**; hardening tip then `9a56c30` (live later moved to `036a6bc`); residual RW **0** → **no 0017**. Restore plan: `portable/RESTORE_PLAN_58.json`.
 - Batch **57** (MISALIGNED; tip move + Option-B RECUT; Path B DENIED; Path C IDLE): default tip **`4fc1d7c` → `c2b0620`** (Dylan honest program-map) still **MISALIGNED**; Option-B **recut** `git am` OK / would-align (`path_b_dry_run` + `owner_land_path_b --dry-run`); **all Path-B-capable write vectors DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017** / **IDLE**. Shipped Path B dry-run certainty + `refresh_restore_plan.py` + tightened already-Option-B heuristic. Open stack #34/#35/#36 (#36 MERGEABLE/CLEAN). Restore plan: `portable/RESTORE_PLAN_57.json`.
 - Batch **56** (MISALIGNED; Path C IDLE): default tip still **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; **all Path-B-capable write vectors DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt (focused+registers/mirrors/ops+RN+drive + tools `--help`) **0** → **no 0017** / **IDLE**. Tip residuals (not portable): `mirror_quotes` 3 problems → open [PR #35](https://github.com/d6g8k5htny-coder/main/pull/35); bridge AGENTS.md expectation drift after OP-AUTONOMY v2.0. Open stack +#34/#36. Restore plan: `portable/RESTORE_PLAN_56.json`.
 - Batch **55** (unrestricted / auto-approve recorded; HOLD VOID; Path A or B OK): default tip still **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; **all Path-B-capable write vectors DENIED** (git push / contents / workflow_dispatch / fork / create-ref / GraphQL commit / PR create); `issues:create` once succeeded (probe issue **#37**, not Path-B-capable). Hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**. Path C harden: `scripts/probe_main_write_vectors.py`. Restore plan: `portable/RESTORE_PLAN_55.json`.

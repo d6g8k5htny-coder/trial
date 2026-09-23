@@ -1,7 +1,7 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `9a56c3049120d2912865d9d3629b6c0e2a6914a9`
+`chatgpt/drive-github-hardening-20260919` @ `036a6bc7579b1821758dbd3a8faa5c7eaa536726`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
@@ -10,7 +10,8 @@ inventable STATUS honesty cross-links #24, math_status README inventable
 probes honesty pointer #26, probe-test isolation #27, register R1
 exact-byte custody #29, STATUS_JETMOD inventable merge+promote REFUSED
 honesty #28, STATUS_RN_UNIF inventable ABSENT/EMPTY honesty #30,
-register source preflight #31, and agent-decided governance delegation).
+register source preflight #31, agent-decided governance delegation, and
+AGENTS.md bridge / CLAUDE.md mirror-quote fix #35).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 

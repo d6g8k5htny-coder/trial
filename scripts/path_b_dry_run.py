@@ -130,6 +130,44 @@ def main() -> int:
         _run(["git", "checkout", "-B", "cursor/option-b-dry-run"], cwd=clone_dir)
 
         readme = clone_dir / "README.md"
+
+        def _parse_auditor(stdout: str) -> dict:
+            if not stdout.strip():
+                return {}
+            text = stdout.strip()
+            try:
+                return json.loads(text)
+            except json.JSONDecodeError:
+                start = text.find("{")
+                if start >= 0:
+                    try:
+                        return json.loads(text[start:])
+                    except json.JSONDecodeError:
+                        return {"raw_stdout": text[-1000:]}
+                return {"raw_stdout": text[-1000:]}
+
+        # Owner renewals (e.g. PR #41) can already be ALIGNED without Option-B.
+        # Prefer tip-as-is auditor over a doomed git am when the face is good.
+        pre = _run([sys.executable, str(audit_local), str(clone_dir)])
+        pre_payload = _parse_auditor(pre.stdout)
+        if pre.returncode == 0 and pre_payload.get("state") == "ALIGNED":
+            readme_text = (
+                readme.read_text(encoding="utf-8", errors="replace") if readme.is_file() else ""
+            )
+            report["readme_head"] = readme_text.splitlines()[:8]
+            report["git_am_skipped_already_aligned"] = True
+            report["git_am_exit"] = 0
+            report["local_auditor"] = pre_payload
+            report["local_auditor_exit"] = pre.returncode
+            report["local_auditor_stderr"] = pre.stderr.strip()[-300:] if pre.stderr else ""
+            report["would_align"] = True
+            report["state"] = "ALREADY_ALIGNED"
+            text = json.dumps(report, indent=2, sort_keys=True)
+            print(text)
+            if args.json_out:
+                Path(args.json_out).write_text(text + "\n", encoding="utf-8")
+            return 0
+
         readme_text = readme.read_text(encoding="utf-8", errors="replace") if readme.is_file() else ""
         # Require the Option-B *notice* itself — not Dylan's honest program-map
         # (which still contains complexity-physics-framework in withdrawal prose
@@ -164,21 +202,7 @@ def main() -> int:
 
         audit = _run([sys.executable, str(audit_local), str(clone_dir)])
         report["local_auditor_exit"] = audit.returncode
-        auditor_payload: dict = {}
-        if audit.stdout.strip():
-            text = audit.stdout.strip()
-            try:
-                # audit_local_tree prints pretty multi-line JSON on stdout
-                auditor_payload = json.loads(text)
-            except json.JSONDecodeError:
-                start = text.find("{")
-                if start >= 0:
-                    try:
-                        auditor_payload = json.loads(text[start:])
-                    except json.JSONDecodeError:
-                        auditor_payload = {"raw_stdout": text[-1000:]}
-                else:
-                    auditor_payload = {"raw_stdout": text[-1000:]}
+        auditor_payload = _parse_auditor(audit.stdout)
         report["local_auditor"] = auditor_payload
         report["local_auditor_stderr"] = audit.stderr.strip()[-300:] if audit.stderr else ""
 

@@ -3,10 +3,10 @@
 Audit of Dylan Roy’s public GitHub projects visible to this agent.
 **Scientific effect: NONE.** This note does not move any claim, premise, or obligation.
 
-> **Batch 53b live status:** `d6g8k5htny-coder/main` default tip **`4fc1d7c`** is **MISALIGNED**
-> (`aligned_end=false`) after CoS PR #32 reverted PR #2. Preferred restore: **Path B**.
-> See `portable/LAND.md` / `portable/RESTORE_PLAN_53b.json`. Historical table below is the
-> original audit snapshot (pre-#2/#32 churn).
+> **Batch 59 live status:** `d6g8k5htny-coder/main` default tip **`1c6e74b`** is **ALIGNED**
+> (`aligned_end=true`) after owner PR #41 renewed the landing (superseding #32/`c2b0620`).
+> Path B land not needed. See `portable/LAND.md` / `portable/RESTORE_PLAN_59.json`.
+> Historical table below is the original audit snapshot (pre-#2/#32/#41 churn).
 
 ## Repositories
 
