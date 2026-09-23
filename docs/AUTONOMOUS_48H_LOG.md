@@ -332,3 +332,15 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack: #2 draft **MERGEABLE/CLEAN**; #19 **MERGED** @ `ae7daf7`; #21–#23 UNSTABLE drafts; #3 CONFLICTING.
 - Trial pytest: **17 passed**; portable tarball refreshed. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 30 — 2026-09-23 19:15 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.52h** / remaining **~45.48h** (window 172800s). Not expired.
+- Synced continue branch with `origin/main` (already at merge tip `c96838d` / PR #10).
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Expected on **this** run — new `repositoryDependencies` scope needs owner merge + Cloud Agent **relaunch**.
+- Environment: this run's repos list still only `github.com/d6g8k5htny-coder/trial` (no `main` in live token scope).
+- **Shipped:** `.cursor/environment.json` with `repositoryDependencies: ["github.com/d6g8k5htny-coder/main"]` so future Cloud Agent GitHub tokens can include `main` (may unlock Path A/B write after relaunch).
+- Docs: brief relaunch-then-retry Path A/B note in `docs/OWNER_ACTIONS_MAIN.md` + `portable/OWNER_ONE_LINERS.md`. README has no Environment/Cloud Agent section — skipped.
+- Trial pytest green. Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).

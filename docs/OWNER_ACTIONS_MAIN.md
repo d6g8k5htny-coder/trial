@@ -36,6 +36,8 @@ Do **not** merge or enable `research.yml` schedules on default `main` solely to 
 
 Cloud environment for this run listed only `github.com/d6g8k5htny-coder/trial`. For JETMOD / RN-UNIF / register work, start the agent against `d6g8k5htny-coder/main` with write credentials and base branch `chatgpt/drive-github-hardening-20260919` (or whatever you designate after step 2).
 
+**After this trial PR merges** (adds `.cursor/environment.json` with `repositoryDependencies: ["github.com/d6g8k5htny-coder/main"]`): **relaunch** a Cloud Agent on `trial` so the GitHub token picks up `main` in scope, then retry Path A/B. Scientific effect: **NONE**. Existing runs keep the old token scope until relaunch.
+
 ### 5. Leave fail-closed walls fail-closed
 
 Do not merge “obligation discharged” language for `OBL-H5-JETMOD` or `D3-LEMMA-RN-UNIF` without the exact licensing predicates. Green `math_status_check` with `lemma_closed=false` is the correct outcome.
