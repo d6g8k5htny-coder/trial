@@ -1,0 +1,7 @@
+{
+  "name": "trial-plus-main-scope",
+  "install": "python3 -m pip install -q pytest",
+  "repositoryDependencies": [
+    "github.com/d6g8k5htny-coder/main"
+  ]
+}

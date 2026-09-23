@@ -4,6 +4,11 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+After merging the trial PR that adds `.cursor/environment.json`
+(`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
+Cloud Agent on `trial` so the token picks up `main` write scope, then retry
+Path A/B. Scientific effect: **NONE**. Current runs stay scoped to `trial` only.
+
 **Scientific effect: NONE** for packaging lands below. Do not flip
 `lemma_closed` / prize / premise status.
 
