@@ -18,6 +18,13 @@ Quick dump of this file + live probe/audit:
 ./scripts/print_owner_unblock.sh
 ```
 
+Poll until default tip is **ALIGNED** (scientific effect **NONE**):
+
+```bash
+./scripts/wait_until_aligned.sh              # interval 30s, max 2h
+./scripts/wait_until_aligned.sh --verify     # then VERIFY_AFTER_MERGE.sh if present
+```
+
 ## Executable owner land scripts (preferred on owner machine / Codespace)
 
 These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed with clear errors.
@@ -50,6 +57,9 @@ gh pr merge 2 --repo d6g8k5htny-coder/main --merge
 curl -sL https://raw.githubusercontent.com/d6g8k5htny-coder/main/main/README.md | head
 python3 /path/to/trial/scripts/audit_main_alignment.py   # expect exit 0
 python3 /path/to/trial/scripts/watch_main_alignment.py    # expect ALIGNED
+# or poll until ALIGNED (default interval 30s, max 2h), then optional VERIFY_AFTER_MERGE:
+./scripts/wait_until_aligned.sh
+./scripts/wait_until_aligned.sh --verify
 ```
 
 ## Path B — honest redirect until Path A

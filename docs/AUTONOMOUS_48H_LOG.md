@@ -362,3 +362,11 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Stack: #22 **MERGED** @ `a89f9a7`; #21 CLEAN; #23 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN.
 - Idle — no empty PR. Path A/B not landable. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 32 — 2026-09-23 19:33 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~2.82h** / remaining **~45.18h** (window 172800s). Not expired.
+- Alignment: still **MISALIGNED** (default tip `f25b04bb`); `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write/fork path still **403** (probe create-ref DENIED; Path A/B not landable from this token).
+- **Shipped:** `scripts/wait_until_aligned.sh` — polls `watch_main_alignment.py` (default interval 30s, max wait 2h); exit 0 on ALIGNED, exit 2 after transport retries; optional `--verify` runs `VERIFY_AFTER_MERGE.sh` when present. Wired briefly into `portable/OWNER_ONE_LINERS.md` + `scripts/print_owner_unblock.sh`.
+- Idle helper only — no status promotion. Did not UpdateGoal (not ALIGNED).

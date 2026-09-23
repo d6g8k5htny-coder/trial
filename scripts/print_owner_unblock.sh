@@ -33,6 +33,10 @@ echo
 echo "# watch one-liner:"
 python3 "$ROOT/scripts/watch_main_alignment.py" || true
 echo
+echo "# wait until ALIGNED (poll watch; default 30s / max 2h; --verify runs VERIFY_AFTER_MERGE):"
+echo "$ROOT/scripts/wait_until_aligned.sh"
+echo "$ROOT/scripts/wait_until_aligned.sh --verify"
+echo
 echo "=== owner land scripts (run with *owner* gh auth / write on main) ==="
 echo "# Path A — ready + merge PR #2, then expect ALIGNED:"
 echo "$ROOT/scripts/owner_land_path_a.sh"
