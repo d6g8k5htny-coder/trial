@@ -1,11 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~20:51 UTC (batch 46 PR #27 sync + tip #26).
+Checked 2026-09-23 ~20:58 UTC (batch 47 Path B probe + portable 0011).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
-| Tip | SHA | apply 0001–0010 (tip-cut) | `math_status_check` | Focused tests* |
+| Tip | SHA | apply 0001–0011 (tip-cut) | `math_status_check` | Focused tests* |
 |-----|-----|---------------------------|---------------------|----------------|
-| hardening (post-#26) | `a8a5dd7` | OK (+0010) | problems=0 | **90+47+36 recovery** |
+| hardening (post-#26) | `a8a5dd7` | OK (+0011) | problems=0 | **90+47+36 recovery** |
 | hardening (post-#24) | `46af1ca` | OK (+0010) | problems=0 | **90+47+36 recovery** |
 | hardening (post-#25) | `b02efe2` | OK (+0009) | problems=0 | **90+47 claims** |
 | hardening (post-#23) | `3f85e93` | OK | problems=0 | **90 passed** |
@@ -48,7 +48,7 @@ git apply …/0003-gaussian-moments-parametrize-list.patch
 git apply …/0004-git-fixture-timeout-60s.patch
 # SKIP tip-cut 0005 / 0006 / 0007 — see below
 git apply …/0008-carriers-math-status-close-file-handles.patch
-# optional: 0009/0010 also apply (claims/recovery close-file-handles; independent of 0005–0007)
+# optional: 0009/0010/0011 also apply (claims/recovery/math_status_check close-file-handles; independent of 0005–0007)
 ```
 
 Why `apply_all` fails at **0005**: tip-cut 0005 expects the pre-isolation
@@ -67,6 +67,7 @@ alternate `0005-pr27-*.patch` shipped — defect gone; stack is **0001–0004 + 
 
 Notes:
 
+- Batch **47** (Path B probe + portable **0011**): tip still **`a8a5dd7`** (ls-remote match; no BASE_TIP refresh). Probe **DENIED** / watch **MISALIGNED** → Path B skipped. PR #27 still OPEN @ `20e31a1` → **did not** drop tip-cut 0005/0006. Broader hunt: `tools/math_status_check.py` had **30** unclosed-file ResourceWarnings → shipped **0011**. Tip `apply_all` 0001–0011 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**; `math_status_check` itself **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **46** (PR #27 sync + tip #26): tip **`46af1ca` → `a8a5dd7`** ([PR #26](https://github.com/d6g8k5htny-coder/main/pull/26) math_status README inventable probes honesty pointer merged; docs-only; no scientific status change). BASE_TIP refreshed. Tip `apply_all` 0001–0010 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. PR **#27** head **`63b519f` → `20e31a1`** (merge hardening post-#26): tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009/0010**) @ 3.11 → problems=0 / lemma_closed=false / focused **90 passed** / probes clean / residual **6** ResourceWarning; claims+recovery **83** / **0 ResourceWarning**. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **45** (Path B probe + portable **0010**): tip then **`46af1ca`** (ls-remote match; no BASE_TIP refresh). Probe **DENIED** / watch **MISALIGNED** → Path B skipped. PR #27 still OPEN → **did not** drop 0005/0006. Broader hunt: recovery had **234** unclosed-file ResourceWarnings → shipped **0010**. Tip `apply_all` 0001–0010 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173 passed** / **0 ResourceWarning**. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`** (PR #24 merged — inventable REFUSED/EMPTY/ABSENT STATUS honesty cross-links; no scientific status change). BASE_TIP refreshed. Tip `apply_all` 0001–0009 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims **137 passed** / **0 ResourceWarning**. PR **#27** head **`8d023a9` → `63b519f`** (merge hardening into probe-isolation branch): tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) @ 3.11 → problems=0 / lemma_closed=false / focused **90 passed** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.

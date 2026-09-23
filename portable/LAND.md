@@ -123,13 +123,14 @@ Owner (or a write-enabled `main` agent) must run **Path B** (preferred under HOL
 
 ## Patch regeneration watch
 
-Working tip is **`a8a5dd7`** (PR #26; batch 46). Open drafts **#28**/**#27**/**#21** (plus older stack).
+Working tip is **`a8a5dd7`** (PR #26; batch 47). Open drafts **#28**/**#27**/**#21** (plus older stack).
+Batch **47** (Path B probe + portable **0011**): tip still **`a8a5dd7`**; probe DENIED / MISALIGNED → Path B skipped; PR #27 still OPEN → did **not** drop 0005/0006; `math_status_check` ResourceWarnings → shipped **0011**; tip `apply_all` 0001–0011 @ 3.11 → **173** / **0 ResourceWarning** (+ checker **0** ResourceWarning).
 Batch **46** (PR #27 sync + tip #26): tip **`46af1ca` → `a8a5dd7`**; BASE_TIP refreshed; tip `apply_all` 0001–0010 @ 3.11 → **173** / **0 ResourceWarning**. PR #27 head **`63b519f` → `20e31a1`**: tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009/0010**) → focused **90** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD.
 Batch **45** (Path B probe + portable **0010**): tip then **`46af1ca`**; probe DENIED / MISALIGNED → Path B skipped; PR #27 still OPEN → did **not** drop 0005/0006; recovery ResourceWarnings → shipped **0010**; tip `apply_all` 0001–0010 @ 3.11 → **173** / **0 ResourceWarning**.
 Batch **44** (PR #27 sync): tip **`b02efe2` → `46af1ca`**; BASE_TIP refreshed; tip `apply_all` 0001–0009 @ 3.11 → **137** / **0 ResourceWarning**. PR #27 head **`8d023a9` → `63b519f`**: tip-cut still fails at **0005**; stack **0001–0004 + 0008** (+ optional **0009**) → focused **90** / probes clean / residual **6** ResourceWarning. #27 still OPEN → **did not** drop 0005/0006. Write/Path B still 403; PR #2 HOLD.
 Batch **43** (portable **0009**): tip was **`b02efe2`**; broader hunt @ 3.11 found claims unclosed-file ResourceWarnings → shipped **0009** into `apply_all`. workflow_integrity/run_checks/registers/ci_pins green.
 Batch **41** (PR #27 0005 analysis): tip then **`b02efe2`**; tip `apply_all` 0001–0008 `--check` OK.
-PR **#27** head `20e31a1` (was `63b519f` / `8d023a9`): tip-cut `apply_all` fails at **0005** because the PR **already** isolates probe runners under `tmp_path` (dirty-receipt defect fixed upstream). **Do not** cut `0005-pr27-*`; after #27 merges, **drop obsolete tip-cut 0005/0006** (and regen/drop 0007). Exact head stack: **0001–0004 + 0008** (+ optional **0009/0010**) → focused **90 passed** @ 3.11 / probes clean (see `patches/COMPATIBILITY.md`).
+PR **#27** head `20e31a1` (was `63b519f` / `8d023a9`): tip-cut `apply_all` fails at **0005** because the PR **already** isolates probe runners under `tmp_path` (dirty-receipt defect fixed upstream). **Do not** cut `0005-pr27-*`; after #27 merges, **drop obsolete tip-cut 0005/0006** (and regen/drop 0007). Exact head stack: **0001–0004 + 0008** (+ optional **0009/0010/0011**) → focused **90 passed** @ 3.11 / probes clean (see `patches/COMPATIBILITY.md`).
 Stack: #24/#25/#26 **MERGED**; #28/#27/#21 UNSTABLE; #3 CONFLICTING; #2 draft MERGEABLE/CLEAN (HOLD).
 Write still 403 from this token.
 Copy-paste owner commands:
@@ -146,7 +147,7 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 |--------|------|
 | `scripts/owner_land_path_b.sh` | **PRIMARY under HOLD.** Clone + `git am` Option-B → push branch + open PR (default). `--direct-main` opt-in. `--after-merge` remote verify. |
 | `scripts/owner_land_path_a.sh` | **ON HOLD** — hard-refuses unless `OWNER_FORCE_PATH_A=1` (Dylan only). Would ready+merge PR #2. |
-| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0010 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
+| `scripts/owner_land_path_c.sh` | Write probe → clone hardening (or post-alignment main) → `apply_all` 0001–0011 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
