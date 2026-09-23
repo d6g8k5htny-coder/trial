@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 44: 46af1ca).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 45: 46af1ca).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -9,7 +9,7 @@
 #   /path/to/trial/portable/patches/apply_all.sh --check  # dry-run only
 #
 # Patches are checked/applied in order. Later patches (e.g. 0007/0008 after
-# 0005/0006; 0009 independent) may depend on earlier ones, so --check uses a
+# 0005/0006; 0009/0010 independent) may depend on earlier ones, so --check uses a
 # disposable worktree.
 set -euo pipefail
 
@@ -42,6 +42,7 @@ PATCHES=(
   "$ROOT/0007-inventable-tests-close-file-handles.patch"
   "$ROOT/0008-carriers-math-status-close-file-handles.patch"
   "$ROOT/0009-claims-close-file-handles.patch"
+  "$ROOT/0010-recovery-close-file-handles.patch"
 )
 
 apply_series() {
@@ -74,5 +75,5 @@ fi
 apply_series
 echo "Applied. Recommended verification:"
 echo "  python3 tools/math_status_check.py"
-echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py"
-echo "  # expect: problems=0, lemma_closed=false; 90 focused + 47 claims passed; free of ResourceWarning"
+echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py tests/test_recovery.py"
+echo "  # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery passed; free of ResourceWarning"

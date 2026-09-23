@@ -2,8 +2,17 @@
 
 Working tip audited: `chatgpt/drive-github-hardening-20260919` @ `46af1cafec5fe5c5a12c792b8bbdc1468bd78249`
 (PR #24 inventable STATUS honesty cross-links; prior #15/#16/#17/#18/#19/#20/#22/#23/#25).
-Host: CPython 3.11 + pytest (tip batch 44); PR #27 head also verified @ 3.11.
+Host: CPython 3.11 + pytest (tip batch 45); PR #27 head also verified @ 3.11.
 **Scientific effect: NONE.**
+
+## After portable patches 0001–0010 on `46af1ca` (batch 45)
+
+| Check | Result |
+|-------|--------|
+| `math_status_check.py` | `problems=0`, `OPEN_HOLD`, `lemma_closed=false` |
+| focused + claims + recovery | **173 passed**; **0 ResourceWarning** |
+| `apply_all.sh --check` | OK (0001–0010) |
+| recovery unclosed-file ResourceWarning | cleared by **0010** (was 234) |
 
 ## After portable patches 0001–0009 on `46af1ca` (batch 44)
 
@@ -78,6 +87,7 @@ Host: CPython 3.11 + pytest (tip batch 44); PR #27 head also verified @ 3.11.
 | inventable tests unclosed-file ResourceWarning | `0007-…` (**in** `apply_all.sh` since batch 24) |
 | carriers + math_status + `carriers_verify` unclosed-file ResourceWarning | `0008-…` (**in** `apply_all.sh` since batch 25) |
 | claims register-binding unclosed-file ResourceWarning | `0009-…` (**in** `apply_all.sh` since batch 43) |
+| recovery + recovery_check unclosed-file ResourceWarning | `0010-…` (**in** `apply_all.sh` since batch 45) |
 
 ## Alignment
 

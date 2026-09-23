@@ -518,6 +518,19 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - **Shipped portable 0009** (`claims-close-file-handles`); `apply_all.sh` now 0001–0009. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims **137 passed** / **0 ResourceWarning**.
 - Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
 
+### Batch 45 — 2026-09-23 ~20:45 UTC (Path B probe; ship portable 0010)
+
+- Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
+- Synced continue branch to `origin/main` (FF incl. trial PR #21 / batch 44).
+- Rules: main PR #2 **HOLD** (draft/untouched); Path B only if WRITABLE; no research status promotion; no empty log-only PR.
+- `probe_main_write.py` → **DENIED** HTTP 403 create-ref; tip_sha `f25b04bb…`. **Not WRITABLE** → Path B land **skipped**.
+- `watch_main_alignment.py` → **MISALIGNED**; scientific_effect NONE.
+- Main PR #27 still **OPEN** (`mergedAt=null`, head `63b519f`) → did **not** drop tip-cut 0005/0006.
+- Tip vs BASE_TIP: live hardening **`46af1ca`** == BASE_TIP (no pack tip refresh).
+- 0010 hunt @ tip `46af1ca` / CPython **3.11.16**: after 0001–0009, focused+claims green / 0 ResourceWarning; **recovery** → **234** `ResourceWarning: unclosed file` from bare opens in `tests/test_recovery.py` + `tools/recovery_check.py`.
+- **Shipped portable 0010** (`recovery-close-file-handles`); `apply_all.sh` now 0001–0010. Verify: `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused+claims+recovery **173 passed** / **0 ResourceWarning**.
+- Main PR #2 left draft/untouched. Not GOAL_COMPLETE_READY (MISALIGNED; not WRITABLE).
+
 ### Batch 44 — 2026-09-23 ~20:34 UTC (PR #27 sync; tip #24; Path B probe)
 
 - Window: start `2026-09-23T16:43:47Z`; not expired. Scientific effect: **NONE**.
