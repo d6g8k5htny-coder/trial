@@ -111,3 +111,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 
 - Write still 403; MISALIGNED.
 - Added owner-triggered workflow `land-option-b-on-main` (needs trial secret `MAIN_PUSH_TOKEN`) as Path B automation; requested that secret / PR #2 merge again.
+
+### Batch 13 — 2026-09-23 17:21 UTC
+
+- Merged trial PR #1 into default `main` (`b4ff46c`) so `land-option-b-on-main` exists on the default branch.
+- `workflow_dispatch` via API still 403 for this integration — owner must click **Actions → land-option-b-on-main** (or merge main PR #2).
+- d6g8k5htny-coder/main default tip still MISALIGNED; write still 403.
