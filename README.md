@@ -24,10 +24,20 @@ This repository now:
 3. Gives the owner an exact fix plan in [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
 4. Ships a tiny sanity suite so “testing” is executable, not a blank stub.
 
+## Portable fixes for `main` (owner apply)
+
+This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
+
+- [`portable/main-default-branch/`](portable/main-default-branch/) — Option-B redirect README + `APPLY.md`
+- [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 1 while default tip is still the pre-q0 face)
+
+Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).
+
 ## Quick check
 
 ```bash
 python3 -m pytest -q
+python3 scripts/audit_main_alignment.py
 ```
 
 ## Non-claims

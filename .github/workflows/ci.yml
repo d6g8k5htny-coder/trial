@@ -1,0 +1,30 @@
+name: trial-ci
+
+on:
+  push:
+    branches: ["main", "cursor/**"]
+  pull_request:
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Intent suite
+        run: python -m pytest -q
+      - name: Alignment audit (read-only, expected MISALIGNED until main lands)
+        run: |
+          set +e
+          python scripts/audit_main_alignment.py
+          code=$?
+          set -e
+          # 1 = misalignment still present on upstream main (current truth)
+          # 0 = already fixed upstream
+          # 2 = transport failure (fail the job)
+          if [ "$code" -eq 2 ]; then exit 2; fi
+          exit 0

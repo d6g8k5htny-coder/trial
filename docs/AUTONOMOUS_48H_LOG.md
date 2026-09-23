@@ -1,0 +1,36 @@
+# Autonomous 48h work log
+
+Window start (UTC): see `/cursor/stores/self/autonomous_48h_started_at.txt` on the agent host.
+Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hours.
+
+## Standing rules (never violate)
+
+1. No claim / premise / prize / lemma status promotion on the research program.
+2. Do not invent scientific results to “fill” `trial`.
+3. Prefer portable artifacts in `trial` when `main` is not writable.
+4. Commit, push, and update the trial PR after each meaningful batch.
+
+## Batches
+
+### Batch 0 — 2026-09-23 (prior turn)
+
+- Intent audit + owner actions + sandbox README + 4 intent tests.
+- PR: https://github.com/d6g8k5htny-coder/trial/pull/1
+
+### Batch 1 — 2026-09-23 (this turn)
+
+- Confirmed `main` still not writable (403).
+- Installed CPython 3.11.16 via uv; research inventable tip: math_status green, 18 inventable/status tests pass; 152 focused register/claims/ci tests pass.
+- Added portable Option-B default-branch README + APPLY guide.
+- Added read-only `scripts/audit_main_alignment.py`.
+- Added trial GitHub Actions CI.
+- Scheduled recurring autonomous timers for the 48h window.
+- Recorded local research mechanical findings in docs/MECHANICAL_FINDINGS_MAIN.md (891 passed / 1 env flake).
+
+## Next batches (when timer fires)
+
+1. Re-run alignment audit; if still MISALIGNED, keep portable pack current with live SHAs.
+2. Continue mechanical research audits on a local clone (compileall + pytest slices); file portable patches under `portable/patches/` only for engineering defects, never status flips.
+3. Watch inventable PR #15 CI on `main` (read-only); note failures in this log.
+4. Refresh OWNER_ACTIONS if the PR stack on `main` changes.
+5. Stop new work when wall-clock exceeds 48h from start; leave a final summary commit.
