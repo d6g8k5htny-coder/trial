@@ -14,7 +14,7 @@ From a clean checkout of that tip (or a descendant):
 ```bash
 # From a clean checkout of d6g8k5htny-coder/main at the base tip:
 /path/to/trial/portable/patches/apply_all.sh --check   # dry-run only
-/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0006
+/path/to/trial/portable/patches/apply_all.sh           # apply 0001–0007
 # or apply individually:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
@@ -22,6 +22,7 @@ git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list
 git apply /path/to/trial/portable/patches/0004-git-fixture-timeout-60s.patch
 git apply /path/to/trial/portable/patches/0005-inventable-probes-restore-receipts-after-test.patch
 git apply /path/to/trial/portable/patches/0006-instrumentation-status-restore-receipts-after-test.patch
+git apply /path/to/trial/portable/patches/0007-inventable-tests-close-file-handles.patch
 ```
 
 Verify:
@@ -33,6 +34,7 @@ python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py \
   tests/test_inventable_jetmod_instrumentation_status.py
 # expect: problems=0, lemma_closed=false; 90 passed on that slice @ 1547ec4
 # and docs/math_status_probes/ stays clean in git status after inventable tests
+# inventable slice emits no ResourceWarning (unclosed file) after 0007
 ```
 
 ## Historical / optional
@@ -86,3 +88,12 @@ No scientific change; `lemma_closed` stays false.
 
 Same class as 0005 for `tests/test_inventable_jetmod_instrumentation_status.py`
 (landed with PR #20 @ `1547ec4`). Now included in `apply_all.sh`.
+
+## 0007 — inventable tests close file handles
+
+After 0005/0006 restore logic, inventable probe + instrumentation STATUS tests
+still used bare `open(...).read()` / `json.load(open(...))` / `json.dump(..., open(...))`
+without closing handles. Under CPython 3.11 this emits many `ResourceWarning:
+unclosed file` lines on the inventable slice (observed: 34 warnings across the
+registers/inventable/ci/workflow audit). Use `Path.read_bytes()` for snapshots
+and `with open(...)` for JSON IO. No scientific change; `lemma_closed` stays false.

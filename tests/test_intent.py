@@ -109,6 +109,9 @@ def test_autonomous_log_and_ci_exist() -> None:
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
     assert "--check" in apply_all
     assert "CHECK_ONLY" in apply_all
+    # Sequential deps (0007 after 0005/0006) need ordered apply; --check uses a worktree
+    assert "worktree" in apply_all
+    assert "apply_series" in apply_all or "0007-inventable-tests-close-file-handles.patch" in apply_all
 
 
 def test_portable_patches_exist() -> None:
@@ -145,6 +148,15 @@ def test_portable_patches_exist() -> None:
     assert "INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json" in p6
     # PR #20 merged @ 1547ec4 — 0006 is now in apply_all.sh
     assert "0006-instrumentation-status-restore-receipts-after-test.patch" in (
+        ROOT / "portable" / "patches" / "apply_all.sh"
+    ).read_text(encoding="utf-8")
+    p7 = (ROOT / "portable" / "patches" / "0007-inventable-tests-close-file-handles.patch").read_text(
+        encoding="utf-8"
+    )
+    assert "test_inventable_jetmod_probes.py" in p7
+    assert "test_inventable_jetmod_instrumentation_status.py" in p7
+    assert "Path(path).read_bytes()" in p7 or "read_bytes()" in p7
+    assert "0007-inventable-tests-close-file-handles.patch" in (
         ROOT / "portable" / "patches" / "apply_all.sh"
     ).read_text(encoding="utf-8")
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
@@ -273,6 +285,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "--after-merge" in one
     patches_readme = (ROOT / "portable" / "patches" / "README.md").read_text(encoding="utf-8")
     assert "0006" in patches_readme
+    assert "0007" in patches_readme
     assert "apply_all.sh" in patches_readme
     assert "1547ec4" in patches_readme or "When 0006 was promoted" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
