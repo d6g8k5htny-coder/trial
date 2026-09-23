@@ -12,8 +12,10 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/pr2-landing \
   portable/patches \
   scripts/audit_main_alignment.py \
+  scripts/audit_local_tree.py \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
   scripts/probe_main_write.py \
+  scripts/print_owner_unblock.sh \
   scripts/pack_portable.sh
 echo "wrote $OUT ($(wc -c <"$OUT") bytes)"

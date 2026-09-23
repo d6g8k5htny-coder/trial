@@ -54,6 +54,21 @@ git push -u origin HEAD
 - Root `README.md` mentions the working branch and PR #2.
 - No “✅ Confirmed” complexity-physics validation table remains on default `main`.
 - No scientific registers or status labels changed.
+- Local auditor (same markers as remote `audit_main_alignment.py`) exits **0**:
+
+```bash
+python3 /path/to/trial/scripts/audit_local_tree.py .
+# expect: state=ALIGNED; q0_or_notice_markers_present includes
+#   "q0 Research Program", "SIDE24", "chatgpt/drive-github-hardening-20260919", "PR #2"
+# expect: complexity_markers_present == []
+```
+
+After the notice is on *remote* default `main`, `scripts/audit_main_alignment.py`
+and `scripts/watch_main_alignment.py` should also exit **0** (ALIGNED).
+
+Batch 22 dry-run (2026-09-23): `git am` of `0001-option-b-…patch` on
+shallow default `main` @ `f25b04bb` → local auditor **ALIGNED** (`would-align=true`).
+No patch content change required.
 
 ## Non-claims
 

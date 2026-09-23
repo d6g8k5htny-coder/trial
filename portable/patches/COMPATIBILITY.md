@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~18:22 UTC (batch 21).
+Checked 2026-09-23 ~18:30 UTC (batch 22).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply 0001–0006 (tip-cut) | `math_status_check` | Focused tests* |
@@ -8,7 +8,7 @@ Checked 2026-09-23 ~18:22 UTC (batch 21).
 | hardening (post-#20) | `1547ec4` | OK | problems=0 | **90 passed** |
 | hardening (post-#17) | `3e8f388` | OK for 0001–0005; **0006 N/A**† | problems=0 | **86 passed** |
 | hardening (post-#18) | `340d98a` | **0005 tip-cut fails**‡ | — | use `0005-pre17-…` |
-| PR #19 head | `d47e44d` | OK 0001–0005; 0006 N/A until rebased | problems=0 | **86 passed** |
+| PR #19 head | `dcc0157` | OK 0001–0005; 0006 N/A until rebased | — | (UNSTABLE/verify pending) |
 | PR #20 (merged) | `4103ee1` → tip | OK | problems=0 | **90 passed** |
 | PR #21 head | `d1e7d0e` | OK for 0001–0004; 0005 tip-cut N/A shape | problems=0 | **81 passed**¶ |
 
@@ -22,7 +22,8 @@ Checked 2026-09-23 ~18:22 UTC (batch 21).
 
 Notes:
 
-- Batch **21**: BASE_TIP → **`1547ec4`** (PR #20 merge). Promoted **0006** into `apply_all.sh`. CPython 3.11.16: problems=0 / lemma_closed=false / focused **90 passed** / probes clean. No tip-level **0007**. Open drafts: #19 CLEAN, #21 CLEAN; #2 still draft MERGEABLE/CLEAN.
+- Batch **22**: tip still **`1547ec4`**. CPython 3.11.16 after `apply_all` 0001–0006: problems=0 / lemma_closed=false / focused **90 passed** / probes clean. **No tip-level 0007.** Path B dry-run **would-align=true** (`audit_local_tree.py` ALIGNED after Option-B `git am`). Open drafts: #19 UNSTABLE (verify pending, head `dcc0157`), #21 CLEAN; #2 still draft MERGEABLE/CLEAN.
+- Batch **21**: BASE_TIP → **`1547ec4`** (PR #20 merge). Promoted **0006** into `apply_all.sh`.
 - Broad local pytest host failures remain agent-env (`python` missing in bare bash for some `test_ci_pins` / workflow integrity cases), not tip defects.
 - Default `main` alignment is independent (Path A/B); these patches are Path C.
-- Trial CI: portable-patches job now includes the instrumentation STATUS test.
+- Trial CI: portable-patches job includes the instrumentation STATUS test.

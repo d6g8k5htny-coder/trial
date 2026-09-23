@@ -225,3 +225,21 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Path B hardening: `land-option-b-on-main.yml` now pushes notice branch **and opens/reuses a PR** into default main; added `scripts/print_owner_unblock.sh`.
 - Stack: PR #2 still draft **MERGEABLE/CLEAN**. Open #19 `d47e44d` CLEAN, #21 `d1e7d0e` CLEAN. Did **not** touch `research.yml` schedules (R2-06).
 - Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
+
+### Batch 22 — 2026-09-23 18:30 UTC
+
+- Window: start `2026-09-23T16:43:47Z`, elapsed **~1.77h** / remaining **~46.23h** (window 172800s). Not expired.
+- Alignment: **MISALIGNED**; default tip still `f25b04bb`; `watch_main_alignment` → MISALIGNED; scientific effect NONE.
+- Write: `scripts/probe_main_write.py` → **DENIED** (HTTP 403 create-ref). Path A/B not landable from this token.
+  - `gh pr ready 2` / `gh pr merge 2` → **403** GraphQL `Resource not accessible by integration`
+  - `gh workflow run land-option-b-on-main.yml` (trial) → **403** dispatch; (main) workflow not on default branch (**404**)
+- **Path B local dry-run** (simulate `land-option-b-on-main.yml` dry_run=true, no push):
+  - clone default `main` shallow @ `f25b04bb`
+  - `git am` Option-B format-patch → OK
+  - README head is q0 redirect notice; `body` quarantined
+  - Local auditor (`scripts/audit_local_tree.py`, same Q0/COMPLEXITY markers as `audit_main_alignment.py`) → **ALIGNED** / **would-align=true**
+  - Option-B patch content **not** changed (already satisfies auditor). Wired local auditor into land workflow dry-run gate.
+- Tip hardening @ BASE_TIP **`1547ec4`**: `apply_all` 0001–0006 @ CPython **3.11.16** → `--check` OK; apply OK; `math_status_check` problems=0 / lemma_closed=false; focused **90 passed**; probes clean. **No tip-level 0007.**
+- Stack since #20 merge: tip still `1547ec4`. Open #19 head moved `d47e44d` → **`dcc0157`** (UNSTABLE, verify pending); #21 `d1e7d0e` CLEAN; #2 still draft MERGEABLE/CLEAN. No new PRs after #21.
+- Trial pytest: **16 passed** (+ local Option-B would-align intent test). Did **not** touch `research.yml` schedules (R2-06).
+- Scientific effect: NONE. No status promotion. Did not UpdateGoal (not ALIGNED).
