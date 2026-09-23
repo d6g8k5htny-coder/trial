@@ -75,3 +75,11 @@ Fail-closed OPEN/HOLD walls (JETMOD REFUSED receipts, RN-UNIF absences, `lemma_c
 | migration tip | `b1335def2615888463e2d134294ef451895b8d0d` |
 | research working base | `7dd6a141d90d5b3d8c670dcf847fd4fc1de1a83e` |
 | inventable JETMOD probes | `ae94270d5f48d4c171f134efcea5058997966d71` |
+
+
+## Live tip refresh (2026-09-23 batch 3)
+
+| Ref | SHA |
+|-----|-----|
+| research working base (post-#15) | `1ea0ae8183fb0459c6678243946295518fded1ba` |
+| default `main` | still `f25b04bb931df2eaee302b666db014913486166b` (MISALIGNED) |

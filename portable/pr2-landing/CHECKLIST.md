@@ -11,7 +11,7 @@ abandoned complexity-physics README. The live program is the unmerged stack:
 ```
 main
   ↑ PR #2 (MERGEABLE, CLEAN, draft)  claude/drive-audit-github-migration-rrglpp @ b1335def
-      ↑ PR #3 (draft)  chatgpt/drive-github-hardening-20260919 @ 7dd6a141
+      ↑ PR #3 (draft)  chatgpt/drive-github-hardening-20260919 @ 1ea0ae8 (includes merged #15)
           ↑ feature PRs (inventable #15, etc.)
 ```
 
@@ -21,7 +21,7 @@ Observed 2026-09-23 (this agent, read-only):
 |----|-----------|------------------|-------|
 | [#2](https://github.com/d6g8k5htny-coder/main/pull/2) | **MERGEABLE** | **CLEAN** | 3879 files; CI verify SUCCESS |
 | [#3](https://github.com/d6g8k5htny-coder/main/pull/3) | (draft onto migration) | | RN wedge / hardening |
-| [#15](https://github.com/d6g8k5htny-coder/main/pull/15) | MERGEABLE | UNSTABLE while verify finishes | inventable REFUSED receipts only |
+| [#15](https://github.com/d6g8k5htny-coder/main/pull/15) | **MERGED** into hardening @ `1ea0ae8` | — | inventable REFUSED receipts only; obligations stay OPEN |
 
 ## Recommended owner sequence
 
@@ -31,7 +31,8 @@ Observed 2026-09-23 (this agent, read-only):
 4. Then consider inventable #15 (fail-closed REFUSED probes; does **not** discharge OBL-H5-JETMOD).
 5. Apply portable engineering patches from `../patches/` on the integration tip if not already present:
    - `0001-carriers-verify-ignore-bytecode-caches.patch`
-   - `0002-math-console-path-honesty.patch`
+   - `0002-math-console-path-honesty.patch` (includes PACKET.json digest refresh)
+   - or run `portable/patches/apply_all.sh` on a writable checkout
 
 ## Verification after #2 lands
 

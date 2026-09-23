@@ -1,42 +1,40 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
-Base tip these were cut against:
-`cursor/inventable-jetmod-probes-4488` @ `ae94270d5f48d4c171f134efcea5058997966d71`
-(also applies cleanly on `chatgpt/drive-github-hardening-20260919` for #0001).
+Base tip (see `BASE_TIP.txt`):
+`chatgpt/drive-github-hardening-20260919` @ `1ea0ae8183fb0459c6678243946295518fded1ba`
+(includes merged inventable PR #15).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 
+## Apply
+
+From a clean checkout of that tip (or a descendant):
+
+```bash
+./portable/patches/apply_all.sh          # if this tree is vendored beside main
+# or:
+git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
+git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
+```
+
+Verify:
+
+```bash
+python3 tools/math_status_check.py
+python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py
+# expect: problems=0, lemma_closed=false, 39 passed
+```
+
 ## 0001 — `carriers_verify` ignores bytecode caches
 
-**Bug:** Importing any stored blob under `engine/carriers/blobs/` creates
-`__pycache__/`. `tools/carriers_verify.py` then reports
-`blobs/__pycache__: stored but no manifest record references it` and exits 1,
-even though `.gitignore` already ignores `__pycache__/`.
+Importing a stored blob creates `blobs/__pycache__/`. Without this patch,
+`carriers_verify` reports an unreferenced “blob” and exits 1 even though
+`.gitignore` already ignores `__pycache__/`.
 
-**Fix:** Skip non-files, `__pycache__`, and `*.pyc` when scanning `blobs/`.
-Adds `tests/test_carriers.py::test_pycache_in_blobs_is_ignored`.
+## 0002 — `math_console` path honesty + PACKET digest
 
-**Verify on a writable checkout:**
-
-```bash
-git apply portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
-python3 -c "import py_compile; py_compile.compile('engine/carriers/blobs/bd3074fd900fc80b__rnu_ds3.py', doraise=True)"
-python3 tools/carriers_verify.py    # problems=0
-python3 -m pytest -q tests/test_carriers.py
-```
-
-## 0002 — `math_console` path honesty
-
-**Bug:** On the hardening/inventable tips, `docs/math_status/math_console.py`
-documents and recommends `python3 code_prototypes/...`, but this repository
-does not carry `code_prototypes/`. `ROOT` was also `parents[1]` (`docs/`)
-instead of the repository root. Draft PR #12 corrected some of this but is
-**10 commits behind** the current hardening tip and was never merged.
-
-**Fix:** Point usage/commands at `docs/math_status/math_console.py` and set
-`ROOT` to the repository root. Console remains fail-closed / non-discharging.
-
-```bash
-git apply portable/patches/0002-math-console-path-honesty.patch
-python3 docs/math_status/math_console.py --json
-```
+Usage/commands pointed at missing `code_prototypes/`; `ROOT` was `docs/` not
+the repo root. Editing `math_console.py` **requires** refreshing
+`docs/math_status/PACKET.json` transcription digests; otherwise
+`math_status_check` fails closed on sha256/bytes drift (observed: 3 tests fail
+if the digest is omitted). Status flags in PACKET stay false/OPEN_HOLD.

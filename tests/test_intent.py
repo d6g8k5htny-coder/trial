@@ -87,6 +87,10 @@ def test_portable_patches_exist() -> None:
     assert "math_console.py" in p2
     assert "docs/math_status/math_console.py" in p2
     assert (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").is_file()
+    assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
+    assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
+    assert "1ea0ae8" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     checklist = (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").read_text(encoding="utf-8")
     assert "MERGEABLE" in checklist
     assert "Scientific effect: NONE" in checklist

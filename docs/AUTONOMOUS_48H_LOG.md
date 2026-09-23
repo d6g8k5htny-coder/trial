@@ -51,3 +51,10 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Broad local pytest: 1012 passed before carrier `__pycache__` failures.
 - Shipped portable patches `0001` (carriers bytecode ignore) and `0002` (math_console path honesty), plus `portable/pr2-landing/CHECKLIST.md`.
 - Trial CI previously green on `de84c6c`.
+
+### Batch 3 — 2026-09-23
+
+- PR #15 **merged** into working branch @ `1ea0ae8`; default `main` still MISALIGNED; push to `main` still 403.
+- Full local suite on inventable tip: 3065 passed; exposed that math_console edits must refresh PACKET digests.
+- Regenerated patches against `1ea0ae8`; `apply_all.sh` added; carriers+math_status+inventable = 39 passed after apply.
+- Trial CI green on prior tip; this commit refreshes portable pack.
