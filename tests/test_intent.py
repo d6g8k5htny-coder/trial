@@ -131,6 +131,7 @@ def test_watch_main_alignment_and_expected_fixture() -> None:
     expected = json.loads((ROOT / "portable" / "EXPECTED_POST_ALIGNMENT.json").read_text())
     assert expected["scientific_effect"] == "NONE"
     assert (ROOT / "portable" / "patches" / "0004-git-fixture-timeout-60s.patch").is_file()
+    assert (ROOT / "portable" / "patches" / "COMPATIBILITY.md").is_file()
     result = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "watch_main_alignment.py")],
         capture_output=True, text=True, timeout=90, check=False,

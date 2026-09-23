@@ -100,3 +100,9 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Write access still 403; MISALIGNED; CI green.
 - Patches 0001–0004 `--check` clean on PR #17/#18/#20 heads.
 - Added `scripts/pack_portable.sh`; artifact tarball at `/opt/cursor/artifacts/trial-portable-main-fixes.tgz` for owner download.
+
+### Batch 11 — 2026-09-23 17:19 UTC
+
+- Write still 403; MISALIGNED.
+- Full apply+test on PR #18 (`278822e`): 86 passed; PR #20 (`c8ec3d1`): 84 passed; both math_status green / lemma_closed=false.
+- Added `portable/patches/COMPATIBILITY.md`. PR #20 still needs portable 0002 for math_console paths.
