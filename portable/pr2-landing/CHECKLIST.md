@@ -54,3 +54,11 @@ misled, without claiming scheduled workflows are deployed.
 Cloud agents on the `trial` environment currently receive **403** when pushing to
 `d6g8k5htny-coder/main`. Re-launch against `main` with write credentials to apply
 patches or open PRs there directly.
+
+
+## Stack hygiene after PR #15
+
+As of batch 4, open drafts **PR #3** and **PR #12** report `CONFLICTING` /
+`DIRTY` against their bases because inventable #15 landed on hardening.
+Rebase or close them before further merges. PR #2 remains MERGEABLE/CLEAN onto
+default `main`. New docs PR #16 (cold-start nav) is independent on hardening.

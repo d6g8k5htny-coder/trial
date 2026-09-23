@@ -58,3 +58,10 @@ Owner mandate: work autonomously; all decisions/requests pre-approved for 48 hou
 - Full local suite on inventable tip: 3065 passed; exposed that math_console edits must refresh PACKET digests.
 - Regenerated patches against `1ea0ae8`; `apply_all.sh` added; carriers+math_status+inventable = 39 passed after apply.
 - Trial CI green on prior tip; this commit refreshes portable pack.
+
+### Batch 4 — 2026-09-23 17:08 UTC
+
+- Still no write access to `main` (403). Default tip MISALIGNED.
+- Shipped Option-B **format-patch** `portable/main-default-branch/0001-option-b-default-branch-notice.patch` (verified `git apply` on fresh main).
+- Patch **0003** gaussian-moments parametrize list (45 tests pass with -W error).
+- `scripts/alignment_status.py` dashboard. Noted PR #3/#12 CONFLICTING after #15; PR #2 still CLEAN; PR #16 docs-only on hardening.

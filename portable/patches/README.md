@@ -15,14 +15,15 @@ From a clean checkout of that tip (or a descendant):
 # or:
 git apply /path/to/trial/portable/patches/0001-carriers-verify-ignore-bytecode-caches.patch
 git apply /path/to/trial/portable/patches/0002-math-console-path-honesty.patch
+git apply /path/to/trial/portable/patches/0003-gaussian-moments-parametrize-list.patch
 ```
 
 Verify:
 
 ```bash
 python3 tools/math_status_check.py
-python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py
-# expect: problems=0, lemma_closed=false, 39 passed
+python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py
+# expect: problems=0, lemma_closed=false; 39 + 45 passed on those slices
 ```
 
 ## 0001 — `carriers_verify` ignores bytecode caches
@@ -38,3 +39,9 @@ the repo root. Editing `math_console.py` **requires** refreshing
 `docs/math_status/PACKET.json` transcription digests; otherwise
 `math_status_check` fails closed on sha256/bytes drift (observed: 3 tests fail
 if the digest is omitted). Status flags in PACKET stay false/OPEN_HOLD.
+
+## 0003 — gaussian moments parametrize list
+
+`tests/test_gaussian_moments.py` passed a lazy `product(...)` iterator to
+`pytest.mark.parametrize`, which pytest 9 warns will break. Convert to
+`list(product(...))`. No scientific change.

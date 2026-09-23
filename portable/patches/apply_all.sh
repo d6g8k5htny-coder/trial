@@ -20,9 +20,11 @@ fi
 
 git apply --check "$ROOT/0001-carriers-verify-ignore-bytecode-caches.patch"
 git apply --check "$ROOT/0002-math-console-path-honesty.patch"
+git apply --check "$ROOT/0003-gaussian-moments-parametrize-list.patch"
 git apply "$ROOT/0001-carriers-verify-ignore-bytecode-caches.patch"
 git apply "$ROOT/0002-math-console-path-honesty.patch"
+git apply "$ROOT/0003-gaussian-moments-parametrize-list.patch"
 
 echo "Applied. Recommended verification:"
 echo "  python3 tools/math_status_check.py"
-echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py"
+echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py"

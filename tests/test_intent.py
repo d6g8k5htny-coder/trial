@@ -91,6 +91,25 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     assert "1ea0ae8" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
+    assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
+    assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()
+    ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
+    assert "chatgpt/drive-github-hardening-20260919" in ob
+    assert "quarantine/pre-q0-scaffolding" in ob
     checklist = (ROOT / "portable" / "pr2-landing" / "CHECKLIST.md").read_text(encoding="utf-8")
     assert "MERGEABLE" in checklist
     assert "Scientific effect: NONE" in checklist
+
+
+def test_alignment_status_script() -> None:
+    import subprocess, sys, json
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "alignment_status.py")],
+        capture_output=True, text=True, timeout=90, check=False,
+    )
+    assert result.returncode in (0, 2), result.stderr
+    if result.returncode == 0:
+        data = json.loads(result.stdout)
+        assert data["scientific_effect"] == "NONE"
+        assert "main" in data and "trial" in data
+        assert data["main"]["alignment"]["audit_exit"] in (0, 1)
