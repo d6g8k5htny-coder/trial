@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **MISALIGNED** again after PR #32. Prefer **Path B** (Option-B notice) or re-port Path A under owner/CoS authorization; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN`.
+Default tip is **MISALIGNED** again after PR #32. **HOLD on PR #2 is VOID** (Batch 54 OWNER OVERRIDE). Agents may Path A OR Path B; prefer **Path B** (Option-B notice) over re-merging the full PR #2 stack; Path C portable patches remain on the hardening tip with write access / `MAIN_PUSH_TOKEN`.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
@@ -37,7 +37,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
 - [`portable/OWNER_ONE_LINERS.md`](portable/OWNER_ONE_LINERS.md) — copy-paste Path A (`gh pr ready/merge 2`), Path B (Actions + token), Path C (`apply_all`)
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
-- [`portable/patches/`](portable/patches/) — engineering patches 0001–0004 + 0008–0016 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `fbb4360` after PR #30; tip-cut 0005/0006/0007 dropped)
+- [`portable/patches/`](portable/patches/) — engineering patches 0001–0004 + 0008–0016 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `9a56c30`; tip-cut 0005/0006/0007 dropped)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 1 while default tip is still the pre-q0 face)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher

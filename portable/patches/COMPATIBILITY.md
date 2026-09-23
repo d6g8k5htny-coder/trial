@@ -1,10 +1,11 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~22:01 UTC (batch 53b: MISALIGNED after #32; Path B valid; BASE_TIP → 580864c after #31).
+Checked 2026-09-23 ~22:10 UTC (batch 54 OWNER OVERRIDE: HOLD VOID; MISALIGNED; Path B preferred; BASE_TIP → 9a56c30).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
+| hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 54** |
 | hardening (post-#31) | `580864c` | **0001–0004 + 0008–0016** | `--check` OK | (BASE_TIP batch 53b) |
 | hardening (post-#30) | `fbb4360` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
 | hardening (post-#28) | `890bb81` | **0001–0004 + 0008–0016** | problems=0 | **90+47+36 + frozen/dio 19 + receipts/bridge 541** |
@@ -64,6 +65,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **54** (OWNER OVERRIDE): HOLD on PR #2 **VOID**; agents may Path A OR Path B (prefer B); default tip **`4fc1d7c`** **MISALIGNED**; Option-B `git am` OK / would-align; all write vectors **DENIED** (git push / contents / workflow_dispatch / fork / create-ref); hardening **`580864c` → `9a56c30`**; BASE_TIP refreshed; `apply_all --check` OK; no new 0017 (residual RW hunt 0). Restore plan: `portable/RESTORE_PLAN_54.json`.
 - Batch **53b** (CRITICAL misalign after #32): default tip **`4fc1d7c`** **MISALIGNED** (`aligned_end=false`); Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; hardening **`fbb4360` → `580864c`** ([PR #31](https://github.com/d6g8k5htny-coder/main/pull/31)); BASE_TIP refreshed; `apply_all --check` OK. Restore plan: `portable/RESTORE_PLAN_53b.json`.
 - Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`** ([PR #28](https://github.com/d6g8k5htny-coder/main/pull/28) then [PR #30](https://github.com/d6g8k5htny-coder/main/pull/30); docs-only). BASE_TIP refreshed. Start-of-batch default tip **ALIGNED** @ `b040bf0c`; CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) **reverted** → end-of-batch **MISALIGNED** @ `4fc1d7c`. Probe **DENIED** → Path C not applied to remote. Shipped **0016**. Tip `apply_all` 0001–0004+0008–0016 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery+frozen/dio **192** / **0 ResourceWarning**; receipts+bridge **541 passed** / **0 ResourceWarning** (was 24). Path B again preferred for ALIGNED.
 - Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`** (== BASE_TIP; no pack tip refresh). Default tip **ALIGNED** @ `b040bf0c`. Probe **DENIED** → Path C not applied to remote. Hardening ~53 behind / 1 ahead of post-#2 `main`. `owner_land_path_c` auto now stays on hardening (not post-#2 default main); adds `PATH_C_REBASE_ONTO_MAIN=1`. Shipped **0015**. Tip `apply_all` 0001–0004+0008–0015 @ CPython **3.11**: problems=0 / lemma_closed=false / focused+claims+recovery **173** / **0 ResourceWarning**; frozen+drive-index overlay **19 passed** / **0 ResourceWarning** (was 9+1). Residual hunt: `test_receipts` / `test_bridge` still emit bare-open ResourceWarnings (shipped in batch 53 as **0016**).

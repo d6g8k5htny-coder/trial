@@ -1,0 +1,68 @@
+{
+  "batch": "54",
+  "generated_at_utc": "2026-09-23T22:10:00Z",
+  "owner_override": "Dylan Roy — HOLD on PR #2 VOID; agents may Path A OR Path B; prefer Path B; lemma_closed stays false",
+  "scientific_effect": "NONE",
+  "aligned": false,
+  "default_tip_sha": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+  "root_has_AGENTS_md": false,
+  "root_has_README_md": true,
+  "root_has_body": true,
+  "root_has_dot_github": false,
+  "cause": {
+    "pr": 32,
+    "title": "Revert \"Port the Drive research program to git and make it active (#2)\"",
+    "author": "d6g8k5htny-coder",
+    "state": "MERGED",
+    "mergedAt": "2026-09-23T21:53:42Z",
+    "mergeCommit": "4fc1d7c1648086ac1589104232f5be6b4fc00286",
+    "summary": "CoS revert of PR #2; restores pre-q0 complexity-physics face on default main"
+  },
+  "preferred_restore": "Path_B",
+  "path_b": {
+    "valid_against_tip": true,
+    "patch": "portable/main-default-branch/0001-option-b-default-branch-notice.patch",
+    "git_am_exit": 0,
+    "local_auditor": "ALIGNED",
+    "would_align": true,
+    "owner_script": "scripts/owner_land_path_b.sh",
+    "write_probe": "DENIED",
+    "applied_this_session": false,
+    "reason_not_applied": "all write vectors HTTP 403 / fork 403 / workflow_dispatch 403"
+  },
+  "path_a": {
+    "hold": "VOID",
+    "status": "REVERTED_by_PR_32_agents_may_retry",
+    "preferred_over_full_stack": false,
+    "note": "HOLD VOID. Prefer Path B. Path A tactics: PATH_A_MODE=revert32 (default) or fresh Drive port. PR #2 is closed — ready/merge 2 will not work.",
+    "owner_script": "scripts/owner_land_path_a.sh"
+  },
+  "path_c": {
+    "role": "engineering_only",
+    "base_tip": "9a56c3049120d2912865d9d3629b6c0e2a6914a9",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "apply_all": "0001-0004 + 0008-0016",
+    "apply_all_check_ok": true,
+    "note": "Tip moved 580864c→9a56c30 (docs-only governance). No new 0017 (residual RW hunt 0)."
+  },
+  "write_vectors_batch54": {
+    "git_push_option_b_branch": "DENIED 403 cursor[bot]",
+    "gh_api_contents_put": "DENIED 403 Resource not accessible by integration",
+    "workflow_dispatch_land_option_b_trial": "DENIED 403 cannot create dispatch",
+    "workflow_dispatch_land_option_b_main": "404 workflow not on default branch",
+    "fork": "DENIED 403",
+    "gh_pr_create": "DENIED 403 createPullRequest",
+    "git_refs_create": "DENIED 403",
+    "gh_pr_ready_2": "FAIL closed (MERGED then reverted)",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "permissions": {"admin": false, "maintain": false, "pull": false, "push": false, "triage": false},
+    "env_repos": ["github.com/d6g8k5htny-coder/trial"]
+  },
+  "owner_next": [
+    "./scripts/owner_land_path_b.sh",
+    "merge Option-B notice PR (or --direct-main)",
+    "./scripts/owner_land_path_b.sh --after-merge",
+    "OR set trial secret MAIN_PUSH_TOKEN + Actions land-option-b-on-main dry_run=false",
+    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh (full stack restore)"
+  ]
+}

@@ -4,15 +4,17 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 53b) — MISALIGNED
+> ## STATUS (Batch 54 OWNER OVERRIDE) — MISALIGNED; HOLD VOID
 >
 > Default tip **`4fc1d7c`**: pre-q0 complexity face; `README.md` + `body` only;
 > **no** root `AGENTS.md` / `.github`. `aligned_end=false`.
 > Cause: CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted
 > [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Scientific effect: **NONE**.
-> Prefer **Path B**. Do **not** ready/merge Path A without Dylan/CoS.
+> **HOLD on PR #2 is VOID.** Agents may **Path A OR Path B**. Prefer **Path B**
+> (minimal notice-only) over re-merging the full PR #2 stack unless Path B is impossible.
+> See `portable/RESTORE_PLAN_54.json`.
 
-## Path B — honest redirect (PRIMARY — preferred ALIGNED restore after #32)
+## Path B — honest redirect (PREFERRED — ALIGNED restore)
 
 ```bash
 # Preferred owner script:
@@ -27,21 +29,26 @@ git push -u origin HEAD
 gh pr create --base main --title "docs: q0 redirect on default main" --body "Option-B notice. Scientific effect NONE."
 ```
 
-Batch **53b** dry-run on live tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED**
-(would-align). Option-B patch index matches README blob `108b169` — **still valid**.
-Batch **22** dry-run on then-tip `f25b04bb` also OK. Trial write probe still **DENIED**
-→ Path B not applied from this token; owner must run `owner_land_path_b.sh`.
+Batch **54** dry-run on live tip `4fc1d7c`: `git am` OK; local auditor **ALIGNED**
+(would-align). All write vectors from trial token **DENIED** (git push / contents /
+workflow_dispatch / fork / create-ref → 403). Owner must run `owner_land_path_b.sh`
+or set `MAIN_PUSH_TOKEN` + dispatch `land-option-b-on-main`.
 
-## Path A — land the real tree (REVERTED by #32)
+## Path A — restore q0 tree (HOLD VOID; prefer Path B)
 
 PR #2 Drive→git port **merged** @ `b040bf0c`, then **reverted** by CoS PR #32 @ `4fc1d7c`.
-Do **not** re-ready/re-merge without Dylan/CoS authorization.
+**HOLD is VOID** (Batch 54 OWNER OVERRIDE). Agents may Path A, but prefer Path B
+unless notice-only is impossible. PR #2 is closed — `gh pr ready 2` / `gh pr merge 2`
+will not revive it.
 
 ```bash
-# Historical only (superseded by #32):
+# Preferred Path A tactic after #32 (write creds):
+PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh
+# Or fresh OPEN port PR:
+# PATH_A_MODE=ready_merge PATH_A_PR=<n> ./scripts/owner_land_path_a.sh
+# Historical (only if an OPEN draft port PR exists):
 # gh pr ready 2 --repo d6g8k5htny-coder/main
 # gh pr merge 2 --repo d6g8k5htny-coder/main --merge
-# ./scripts/owner_land_path_a.sh
 ```
 
 Do **not** enable `research.yml` schedules solely for R2-06 prose.
@@ -51,8 +58,9 @@ Do **not** enable `research.yml` schedules solely for R2-06 prose.
 `apply_all` **0001–0004 + 0008–0016**. Default tip is **MISALIGNED** after #32;
 Path C remains the engineering stack on the hardening tip.
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `580864c` after #31 — `apply_all --check` OK).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `9a56c30` after governance on #31 — `apply_all --check` OK).
 **Do not** apply onto default `main` alone — post-#32 tip is the pre-q0 face (no PACKET.json). Keep Path C on hardening.
+
 
 ```bash
 # Preferred (owner write creds):
@@ -129,12 +137,13 @@ Attempts from the `trial` cloud token (2026-09-23):
 | trial `workflow_dispatch` land-option-b-on-main | 403 — Resource not accessible by integration |
 
 Owner (or a write-enabled `main` agent) must run Path C for portable engineering patches.
-Path A **REVERTED** by #32 (default tip MISALIGNED). Path B preferred for ALIGNED.
+**HOLD on PR #2 is VOID** (Batch 54). Agents may Path A OR Path B. Prefer Path B for ALIGNED.
 
 
 ## Patch regeneration watch
 
-Working tip is **`580864c`** (PR #31; batch 53b — was `fbb4360` post-#30). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Working tip is **`9a56c30`** (governance on #31; batch 54 — was `580864c` post-#31). Default `main` **MISALIGNED** after CoS PR #32 @ `4fc1d7c`.
+Batch **54** (OWNER OVERRIDE): tip `4fc1d7c`; audit **MISALIGNED**; HOLD VOID; Path A OR Path B OK (prefer B); Option-B `git am` OK / would-align; all write vectors **DENIED**; BASE_TIP → `9a56c30`; no new 0017; restore plan `portable/RESTORE_PLAN_54.json`.
 Batch **53b** (CRITICAL misalign investigate): tip `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; probe **DENIED** → Path B not applied; BASE_TIP → `580864c`; restore plan `portable/RESTORE_PLAN_53b.json`.
 Batch **53** (tip #28→#30 + portable **0016** + mid-batch #32 revert): tip **`8510874` → `890bb81` → `fbb4360`**; probe DENIED; `apply_all` 0001–0004+0008–0016 `--check` OK; receipts/bridge ResourceWarnings → shipped **0016**; BASE_TIP refreshed; default tip flipped MISALIGNED by #32.
 Batch **52** (ALIGNED confirm + Path C landing + portable **0015**): tip still **`8510874`**; probe DENIED; `apply_all` 0001–0004+0008–0015 `--check` OK; frozen/drive-index ResourceWarnings → shipped **0015**; owner_land_path_c auto stays on hardening (not post-#2 default main).
@@ -160,8 +169,8 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 
 | Script | Role |
 |--------|------|
-| `scripts/owner_land_path_b.sh` | **PRIMARY** for default-tip ALIGNED after #32. Clone + `git am` Option-B → push branch + open PR. `--direct-main` opt-in. `--after-merge` remote verify. |
-| `scripts/owner_land_path_a.sh` | **REVERTED** — PR #2 undone by #32. Do not re-run without Dylan/CoS auth. |
+| `scripts/owner_land_path_b.sh` | **PREFERRED** for default-tip ALIGNED after #32. Clone + `git am` Option-B → push branch + open PR. `--direct-main` opt-in. `--after-merge` remote verify. |
+| `scripts/owner_land_path_a.sh` | **HOLD VOID** — default `PATH_A_MODE=revert32` (or `ready_merge` for a fresh OPEN port). Prefer Path B. |
 | `scripts/owner_land_path_c.sh` | Write probe → clone **hardening** (auto; not post-#2 default main) → optional `PATH_C_REBASE_ONTO_MAIN=1` → `apply_all` 0001–0004 + 0008–0016 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
@@ -174,6 +183,6 @@ Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/la
 2. Run workflow `land-option-b-on-main` with `dry_run=false`.
 3. Workflow `git am`s Option-B, runs `scripts/audit_local_tree.py` (must exit 0 /
    would-align), pushes `cursor/option-b-notice-from-trial` **and opens a PR**
-   into default `main` — merge that PR. (Path A REVERTED; Path B is PRIMARY.)
+   into default `main` — merge that PR. (HOLD VOID; Path B PREFERRED.)
 
 Default `dry_run=true` verifies `git am` + local auditor (no push).

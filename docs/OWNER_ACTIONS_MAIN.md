@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 53b — MISALIGNED (`aligned_end=false`):** Default tip **`4fc1d7c`** after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Root has `README.md` + `body` only; **no** `AGENTS.md` / `.github`. Scientific effect: **NONE**.
-> Preferred restore: **Path B** (Option-B notice still valid vs tip — `git am` OK / would-align). Do **not** ready/merge Path A without Dylan/CoS. Path C = engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `580864c` after #31). Trial write still **403** → Path B not applied from this agent. See `portable/RESTORE_PLAN_53b.json`.
+> **Batch 54 OWNER OVERRIDE — MISALIGNED (`aligned_end=false`); HOLD VOID:** Default tip **`4fc1d7c`** after CoS [PR #32](https://github.com/d6g8k5htny-coder/main/pull/32) reverted [PR #2](https://github.com/d6g8k5htny-coder/main/pull/2). Root has `README.md` + `body` only; **no** `AGENTS.md` / `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Agents may **Path A OR Path B**. Prefer **Path B** (Option-B notice still valid vs tip — `git am` OK / would-align) over re-merging the full PR #2 stack unless Path B is impossible. Path A default: `PATH_A_MODE=revert32`. Path C = engineering on hardening (`apply_all` 0001–0004 + 0008–0016; BASE_TIP `9a56c30`). Trial write still **403** → all write vectors DENIED this batch. See `portable/RESTORE_PLAN_54.json`.
 
 ### 1. Stop advertising the abandoned complexity-physics README
 
@@ -17,8 +17,8 @@ Default `main` @ `4fc1d7c` again shows the Dec 2025 complexity framework with �
 
 **Options (pick one):**
 
-- **B (PREFERRED after #32):** On default `main` only, replace `README.md` with the Option-B q0 redirect and quarantine `body` under `quarantine/pre-q0-scaffolding/`. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
-- **A (owner/CoS only):** A fresh Drive→git port onto default `main` (do **not** re-merge reverted #2 without Dylan/CoS). `scripts/owner_land_path_a.sh` hard-refuses unless `OWNER_FORCE_PATH_A=1`.
+- **B (PREFERRED):** On default `main` only, replace `README.md` with the Option-B q0 redirect and quarantine `body` under `quarantine/pre-q0-scaffolding/`. Owner script: `./scripts/owner_land_path_b.sh` (or grant App write / `MAIN_PUSH_TOKEN` for Path B only).
+- **A (HOLD VOID):** Restore q0 tree — `PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh` (or fresh Drive→git port). Prefer Path B when notice-only is enough. PR #2 is closed; `gh pr ready/merge 2` will not revive it.
 
 ### 2. Decide the public integration branch
 
@@ -70,8 +70,18 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 ## Fastest unblock from trial CI
 
-**Path B (PRIMARY after #32):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
-**Path A:** REVERTED by #32 — do **not** re-ready/re-merge without Dylan/CoS.
+**Path B (PREFERRED):** Add secret `MAIN_PUSH_TOKEN` on `trial` and run workflow `land-option-b-on-main` (`dry_run=false`), **or** run `./scripts/owner_land_path_b.sh` with write creds (branch+PR or `--direct-main`).  
+**Path A (HOLD VOID):** `PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh` (full stack restore). Prefer Path B when notice-only is enough.
+
+## Stack note (2026-09-23 batch 54 OWNER OVERRIDE — HOLD VOID; Path B preferred)
+
+- Owner override (Dylan Roy): **HOLD on PR #2 is VOID**. Agents may Path A OR Path B; prefer Path B. Never promote research status; `lemma_closed` stays false.
+- Full `audit_main_alignment.py`: tip `4fc1d7c…`; **MISALIGNED**; complexity markers present; q0/notice empty; `root_has_AGENTS_md=false`.
+- `probe_main_write.py` → **DENIED** HTTP 403. Write vectors (each once): git push **403**; contents PUT **403**; workflow_dispatch trial **403** / main **404**; fork **403**; create-ref **403**; `gh pr ready 2` → closed.
+- Option-B patch **still valid** (`git am` OK; local auditor would-align / ALIGNED). Path B **not** applied this session.
+- Hardening tip **`580864c` → `9a56c30`** (docs-only governance); BASE_TIP refreshed; `apply_all --check` OK; no new 0017 (residual RW hunt 0).
+- Restore plan: `portable/RESTORE_PLAN_54.json`. Owner next: `./scripts/owner_land_path_b.sh` then `--after-merge`.
+- Requested: `MAIN_PUSH_TOKEN` + Path B land + env include `main` repo (via environment setup actions).
 
 ## Stack note (2026-09-23 batch 53b — MISALIGNED after #32; Path B preferred)
 
@@ -169,4 +179,4 @@ That does **not** discharge OBL-H5-JETMOD. Default `main` remains the pre-q0 fac
 
 Restriction-lift claim re-checked on a new trial Cloud Agent. Still **403** on every write path to `d6g8k5htny-coder/main` (`cursor[bot]`; permissions all false; `MAIN_PUSH_TOKEN` absent). Live env repos list is still **only** trial despite `.cursor/environment.json` `repositoryDependencies`. Default tip still MISALIGNED @ `f25b04bb`. Path B local dry-run still **would-align=true**.
 
-**Dylan/CoS HOLD (2026-09-23):** PR #2 stays draft — https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084. Preferred unblock: **Path B** (Option-B notice) or grant App write for Path B only. Do not ready/merge #2.
+**Dylan/CoS HOLD (2026-09-23) — VOID as of Batch 54 OWNER OVERRIDE:** Prior HOLD comment https://github.com/d6g8k5htny-coder/main/pull/2#issuecomment-5801736084 is superseded. Agents may Path A OR Path B; prefer Path B. PR #2 itself is closed (merged then reverted by #32) — use `PATH_A_MODE=revert32` or Path B notice, not `gh pr ready 2`.

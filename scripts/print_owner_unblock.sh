@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
-# Print Path B (preferred for ALIGNED) + Path C engineering + live probe/audit.
+# Print Path B (preferred for ALIGNED) + Path A/C + live probe/audit.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# Path A (#2) was MERGED then REVERTED by CoS PR #32 — default tip MISALIGNED @ 4fc1d7c.
-# Preferred ALIGNED unblock: Path B. Path C = engineering on hardening (BASE_TIP).
+# Batch 54 OWNER OVERRIDE: HOLD on PR #2 is VOID. Agents may Path A OR Path B.
+# Prefer Path B (notice-only). Default tip MISALIGNED @ 4fc1d7c after CoS #32.
+# Path C = engineering on hardening (BASE_TIP).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== Path A REVERTED (PR #32) — default tip MISALIGNED ==="
-echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c. Prefer Path B for ALIGNED."
-echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP 580864c after #31; has PACKET.json)."
+echo "=== Batch 54 — MISALIGNED; HOLD VOID; prefer Path B ==="
+echo "PR #2 @ b040bf0c was reverted by PR #32 @ 4fc1d7c. HOLD on #2 is VOID."
+echo "Agents may Path A OR Path B. Prefer Path B (Option-B notice)."
+echo "Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP 9a56c30; has PACKET.json)."
 echo "Scientific effect: NONE"
 echo
 
@@ -47,12 +49,12 @@ echo "$ROOT/scripts/wait_until_aligned.sh"
 echo "$ROOT/scripts/wait_until_aligned.sh --verify"
 echo
 echo "=== owner land scripts (run with *owner* gh auth / write on main) ==="
-echo "# Path B — PRIMARY for default-tip ALIGNED (Option-B notice):"
+echo "# Path B — PREFERRED for default-tip ALIGNED (Option-B notice):"
 echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
 echo "# Path C — engineering: apply_all 0001–0004 + 0008–0016 on hardening tip:"
 echo "$ROOT/scripts/owner_land_path_c.sh"
-echo "# Path A — REVERTED by PR #32; do not re-run without Dylan/CoS auth:"
+echo "# Path A — HOLD VOID; default PATH_A_MODE=revert32 (or ready_merge for a fresh OPEN port PR):"
 echo "$ROOT/scripts/owner_land_path_a.sh"
 echo
 echo "=== copy-paste Path C (needs write on main) ==="
