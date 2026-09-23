@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~19:59 UTC (batch 38).
+Checked 2026-09-23 ~20:05 UTC (batch 39 align-watch).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 | Tip | SHA | apply 0001–0008 (tip-cut) | `math_status_check` | Focused tests* |
@@ -31,6 +31,7 @@ Checked 2026-09-23 ~19:59 UTC (batch 38).
 
 Notes:
 
+- Batch **39** (align-watch): tip still **`b02efe2`** (ls-remote match). Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** PR **#27** head fails 0005 apply (test isolation rewrite) — watch for 0005/0006 regen **after merge**, not a tip-level 0009. Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **38**: tip **`3f85e93` → `b02efe2`** (PR #25 merged — standing owner authorization for all research agents; no scientific status change). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path B still 403; PR #2 HOLD. Default tip still MISALIGNED.
 - Batch **35**: tip **`a89f9a7` → `3f85e93`** (PR #23 merged — docs tip-align PACKET base_commit/as_of). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.11.16: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path A/B still 403. Default tip still MISALIGNED.
 - Batch **31**: tip **`ae7daf7` → `a89f9a7`** (PR #22 merged — docs only). BASE_TIP refreshed. Re-verified `apply_all` 0001–0008 @ 3.12.3: problems=0 / lemma_closed=false / focused **90 passed** / **0 ResourceWarning**. **No 0009.** Write/Path A/B/workflow_dispatch still 403. Default tip still MISALIGNED.
