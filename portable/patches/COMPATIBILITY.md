@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~06:10 UTC (batch 126: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP `c82c9357` unchanged; residual RW hunt **3209 collected / 0 RW** → **no 0017**; auth renewed `91D3-D72C`).
+Checked 2026-09-24 ~06:46 UTC (batch 134: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP `c82c9357` unchanged; broader non-focused RW hunt **0 unclosed-file** → **no 0017**; auth renewed `5816-A241`).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)

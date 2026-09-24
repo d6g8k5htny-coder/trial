@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 134 — 2026-09-24 ~06:46 UTC (PERMANENT window; auth renew; broader RW hunt clean; pack currency; scientific effect NONE; flipped nothing)
+
+- `watch_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Path B not needed; Path C idle.
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
+- Device auth `7D13-0E6D` → **expired** → **renewed** `5816-A241`; poller restarted (`gh-device-login`); no Path C land yet (no user token).
+- **RW hunt @ c82c9357** after `apply_all` 0001–0004+0008–0016: `math_status_check` problems=0 / lemma_closed=false; broader non-focused slices (registers/lean/drive/vault/workflow/ops/mirrors/scripts/tools) **0 unclosed-file ResourceWarning**; tools `--help` **0 RW** → **clean / no 0017**. Artifacts: `portable/BATCH134_HUNT.json`.
+- `pack_portable.sh` currency: auto-includes `BATCH*_BRIEF.json`, `BATCH*_HUNT.json`, `GH_DEVICE_LOGIN.md`.
+- Daemon `when-writable-land` **up**; timers re-armed: `permanent-autonomous-align-watch` 10800s; **single** `gh-dylan-device-auth-check` 300s.
+- Tiny JSON: `portable/BATCH134_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `5816-A241`. On auth success → Path C with user token (ignore `install_has_main`).
+
 ### Batch 132 — 2026-09-24 ~06:25 UTC (PERMANENT window; auth renew; research audit OPEN; dylan-token lander; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Path B not needed; Path C idle.

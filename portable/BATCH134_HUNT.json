@@ -1,0 +1,28 @@
+{
+  "batch": "134",
+  "generated_at_utc": "2026-09-24T06:46:30Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "tip": "c82c9357",
+  "apply_stack": "0001-0004+0008-0016",
+  "hunt_result": "clean",
+  "patch_0017": false,
+  "math_status": "problems=0 lemma_closed=false",
+  "pytest_collection": 3209,
+  "slice_passed_sum": 3880,
+  "resource_warning_unclosed_file": 0,
+  "tools_help_rw": 0,
+  "slices": [
+    "registers",
+    "lean_frontier",
+    "drive",
+    "vault_quarantine",
+    "workflow_ci",
+    "ops",
+    "mirrors",
+    "scripts_like",
+    "tools_py_tests"
+  ],
+  "note": "disposable worktree @ c82c9357 after apply_all; broader non-focused slices + tools --help under -W default::ResourceWarning → 0 unclosed-file RW; no clear engineering defect → no 0017"
+}

@@ -19,6 +19,9 @@ mapfile -t STACK_AUDITS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BAT
 mapfile -t STATUS_GUARD < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'STATUS_GUARD_SNAPSHOT.json' | sort)
 # Batch 83+: requirement-by-requirement autonomous objective evidence.
 mapfile -t OBJECTIVE_EVIDENCE < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'OBJECTIVE_EVIDENCE_*.json' | sort)
+# Batch 134+: tiny batch briefs + residual RW hunt reports (portable readiness).
+mapfile -t BATCH_BRIEFS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_BRIEF.json' | sort)
+mapfile -t BATCH_HUNTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_HUNT.json' | sort)
 
 # Batch 89+: patches MANIFEST (apply_all ids + headers; also under portable/patches/).
 PATCHES_MANIFEST="$ROOT/portable/patches/MANIFEST.json"
@@ -65,6 +68,14 @@ rel_status_guard=()
 for p in "${STATUS_GUARD[@]}"; do
   rel_status_guard+=("${p#"$ROOT"/}")
 done
+rel_batch_briefs=()
+for p in "${BATCH_BRIEFS[@]}"; do
+  rel_batch_briefs+=("${p#"$ROOT"/}")
+done
+rel_batch_hunts=()
+for p in "${BATCH_HUNTS[@]}"; do
+  rel_batch_hunts+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -72,6 +83,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \
   portable/ALIGNED_DRIFT_SNAPSHOT.json \
+  portable/GH_DEVICE_LOGIN.md \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
@@ -79,6 +91,8 @@ tar -czf "$OUT" -C "$ROOT" \
   ${rel_stack_audits[@]+"${rel_stack_audits[@]}"} \
   ${rel_status_guard[@]+"${rel_status_guard[@]}"} \
   ${rel_objective_evidence[@]+"${rel_objective_evidence[@]}"} \
+  ${rel_batch_briefs[@]+"${rel_batch_briefs[@]}"} \
+  ${rel_batch_hunts[@]+"${rel_batch_hunts[@]}"} \
   portable/main-default-branch \
   portable/path-c-applied-bundle \
   portable/pr2-landing \
@@ -107,4 +121,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence; ${#rel_batch_briefs[@]} briefs; ${#rel_batch_hunts[@]} hunts)"
