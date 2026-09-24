@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 147 — 2026-09-24 ~08:03 UTC (PERMANENT window; auth renew A450-C91F; tip-drift gate; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `apply_all --check` OK; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**.
+- Device auth `A9D3-16CD` near-expiry (~62s <90s) still pending → **renewed** `A450-C91F`; poller `gh-device-login` restarted; daemon `when-writable-land` up. Updated `portable/GH_DEVICE_LOGIN.md`.
+- **Obsolescence @ 10c077e (clean tip, no patches):** `git apply --check --reverse` on 0001–0004+0008–0016 → **0 obsolete / 13 still needed**. MANIFEST unchanged; **no patches dropped**.
+- **Concrete readiness (no obsolescence):** CI tip-drift gate — `portable-patches-on-main` + `path-c-applied-bundle-dry-apply` fail loudly if live hardening SHA ≠ `BASE_TIP.txt` / `VERIFY.json` `base_tip_sha`. Intent tests accept BASE_TIP `10c077e`.
+- Tiny JSON: `portable/BATCH147_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `A450-C91F` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
+
+
 ### Batch 144 — 2026-09-24 ~07:53 UTC (PERMANENT window; auth renew A9D3-16CD; tip stable @ 10c077e; RW hunt clean; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).

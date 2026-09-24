@@ -135,6 +135,23 @@ jobs:
           git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
             https://github.com/d6g8k5htny-coder/main.git main-work
           echo "TIP=$(git -C main-work rev-parse HEAD)"
+      - name: Tip-drift gate (BASE_TIP == live hardening SHA)
+        run: |
+          set -euo pipefail
+          # Batch 147: fail loudly when portable patches BASE_TIP lags the live tip.
+          TIP="$(git -C main-work rev-parse HEAD)"
+          BASE_LINE="$(tr -d '\r' < trial/portable/patches/BASE_TIP.txt | head -n1)"
+          BASE_SHA="${BASE_LINE##* }"
+          echo "TIP=$TIP BASE_TIP=$BASE_SHA"
+          if [[ -z "$BASE_SHA" ]]; then
+            echo "::error::tip-drift: empty BASE_TIP.txt"
+            exit 1
+          fi
+          if [[ "$TIP" != "$BASE_SHA" ]]; then
+            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA — refresh BASE_TIP / re-cut patches"
+            exit 1
+          fi
+          echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
       - name: Apply portable patches
         run: |
           cd main-work
@@ -196,6 +213,33 @@ jobs:
           fi
           TIP="$(git -C main-bundle rev-parse HEAD)"
           echo "TIP=$TIP"
+          # Batch 147: tip-drift gate — fail loudly if BASE_TIP / VERIFY != live hardening SHA.
+          # Bundle cut against a stale BASE_TIP must not silently dry-apply on a moved tip.
+          BASE_FILE="${GITHUB_WORKSPACE}/trial/portable/patches/BASE_TIP.txt"
+          VERIFY_FILE="${GITHUB_WORKSPACE}/trial/portable/path-c-applied-bundle/VERIFY.json"
+          test -f "$BASE_FILE"
+          test -f "$VERIFY_FILE"
+          BASE_LINE="$(tr -d '\r' <"$BASE_FILE" | head -n1)"
+          BASE_SHA="${BASE_LINE##* }"
+          VERIFY_SHA="$(python3 -c "import json; print(json.load(open('$VERIFY_FILE'))['base_tip_sha'])")"
+          echo "BASE_TIP=$BASE_SHA VERIFY.base_tip_sha=$VERIFY_SHA"
+          if [[ -z "$BASE_SHA" || -z "$VERIFY_SHA" ]]; then
+            echo "::error::tip-drift: empty BASE_TIP or VERIFY.base_tip_sha"
+            exit 1
+          fi
+          if [[ "$TIP" != "$BASE_SHA" ]]; then
+            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+            exit 1
+          fi
+          if [[ "$TIP" != "$VERIFY_SHA" ]]; then
+            echo "::error::tip-drift: live hardening SHA $TIP != VERIFY.json base_tip_sha $VERIFY_SHA — rebuild path-c-applied-bundle"
+            exit 1
+          fi
+          if [[ "$BASE_SHA" != "$VERIFY_SHA" ]]; then
+            echo "::error::tip-drift: BASE_TIP $BASE_SHA != VERIFY.json base_tip_sha $VERIFY_SHA"
+            exit 1
+          fi
+          echo "tip-drift gate OK: live==BASE_TIP==VERIFY @ ${TIP:0:7}"
           # Configure identity for git am (no push; local commits only).
           git -C main-bundle config user.email "trial-ci@users.noreply.github.com"
           git -C main-bundle config user.name "trial-ci"

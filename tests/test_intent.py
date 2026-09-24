@@ -175,7 +175,12 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "c82c9357" in base_tip or "ac33581" in base_tip
+    # Batch 142+: tip advanced to 10c077e (PR #54); keep older SHAs accepted for history.
+    assert (
+        "10c077e" in base_tip
+        or "c82c9357" in base_tip
+        or "ac33581" in base_tip
+    )
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -2026,7 +2031,11 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     manifest_path = ROOT / "portable" / "patches" / "MANIFEST.json"
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert data["verified_on_tip"].startswith("c82c9357") or data["verified_on_tip"].startswith("ac33581")
+    assert (
+        data["verified_on_tip"].startswith("10c077e")
+        or data["verified_on_tip"].startswith("c82c9357")
+        or data["verified_on_tip"].startswith("ac33581")
+    )
     assert data["scientific_effect"] == "NONE"
     assert data["lemma_closed"] is False
     assert data["goal_complete"] is False
@@ -2350,3 +2359,41 @@ def test_batch141_w3f_false_positive_neutralized() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 141" in log
     assert "false_positive" in log
+
+
+def test_batch147_tip_drift_gate_and_auth_renew() -> None:
+    """Batch 147: CI tip-drift gate; auth renew doc; no obsolete drops; lemma_closed=false."""
+    import json
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "tip-drift" in ci
+    assert "Tip-drift gate" in ci
+    assert "BASE_TIP.txt" in ci
+    assert "VERIFY.json" in ci
+    assert "base_tip_sha" in ci
+    assert "refresh BASE_TIP" in ci or "rebuild path-c-applied-bundle" in ci
+    # Both dry-apply surfaces gated
+    assert "portable-patches-on-main" in ci
+    assert "path-c-applied-bundle-dry-apply" in ci
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "A450-C91F" in gh
+    assert "A9D3-16CD" in gh  # prior
+
+    brief = ROOT / "portable" / "BATCH147_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "147"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip_drift_gate"] is True
+    assert data["patches_dropped"] == []
+    assert data["tip"] == "10c077e"
+    assert data["device_code"] == "A450-C91F"
+    assert data["auth_renewed"] is True
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 147" in log
+    assert "tip-drift" in log
