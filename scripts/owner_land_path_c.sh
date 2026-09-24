@@ -5,7 +5,7 @@
 # === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
 # Prerequisites (local machine / Codespace — NOT the trial Cloud Agent token):
 #   1. git, python3, gh  (gh auth login with Contents:Write + PullRequests:Write on main)
-#   2. Download latest Path C release on trial (batch241-path-c-bundle (or newer; prior batch239 / batch236 / batch223 / batch218 / batch207 / batch202 / batch199)):
+#   2. Download latest Path C release on trial (batch241-path-c-bundle (or newer; prior batch239-path-c-bundle / batch236-path-c-bundle / batch223-path-c-bundle / batch218-path-c-bundle / batch207-path-c-bundle / batch202-path-c-bundle / batch199-path-c-bundle)):
 #        gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
 #          -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
 #   3. Extract and land in ONE command:
@@ -113,7 +113,7 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
   --from-bundle Prefer portable/path-c-applied-bundle/path-c-on-hardening.bundle
                 (git fetch + ff-merge) when present; else .patch via git am.
                 Preferred one-shot after extracting the release tarball
-                (batch241-path-c-bundle or newer; prior batch239 / batch218 / batch199 / batch180 / batch179 / batch169; batch142+ had patch-only).
+                (batch241-path-c-bundle or newer; prior batch239-path-c-bundle / batch218-path-c-bundle / batch199-path-c-bundle / batch180-path-c-bundle / batch179-path-c-bundle / batch169-path-c-bundle / batch142-path-c-bundle; batch142+ had patch-only).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 ONE-SHOT from release tarball (owner machine with write on main):

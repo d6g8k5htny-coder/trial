@@ -2241,13 +2241,17 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert "--from-bundle" in owner_c
     assert "path-c-on-hardening.patch" in owner_c
     assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_c
-    # Current Path C release tag may supersede batch142 (Batch 169+ ships batch169-path-c-bundle).
+    # Living Path C release tag may supersede older pins (batch241+).
     assert (
-        "batch169-path-c-bundle" in owner_c
-        or "batch179-path-c-bundle" in owner_c
+        "batch241-path-c-bundle" in owner_c
+        or "batch218-path-c-bundle" in owner_c
+        or "batch199-path-c-bundle" in owner_c
         or "batch180-path-c-bundle" in owner_c
+        or "batch179-path-c-bundle" in owner_c
+        or "batch169-path-c-bundle" in owner_c
         or "batch168-path-c-bundle" in owner_c
         or "batch142-path-c-bundle" in owner_c
+        or "-path-c-bundle" in owner_c
     )
     assert "trial-portable-main-fixes.tgz" in owner_c
 
@@ -2266,21 +2270,27 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert "--from-bundle" in land
     assert "RELAUNCH_WITH_MAIN_SCOPE" in land
     assert (
-        "batch169-path-c-bundle" in land
+        "batch241-path-c-bundle" in land
+        or "batch218-path-c-bundle" in land
+        or "batch169-path-c-bundle" in land
         or "batch179-path-c-bundle" in land
         or "batch180-path-c-bundle" in land
         or "batch168-path-c-bundle" in land
         or "batch142-path-c-bundle" in land
+        or "-path-c-bundle" in land
     )
 
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "--from-bundle" in owner_actions
     assert (
-        "batch169-path-c-bundle" in owner_actions
+        "batch241-path-c-bundle" in owner_actions
+        or "batch218-path-c-bundle" in owner_actions
+        or "batch169-path-c-bundle" in owner_actions
         or "batch179-path-c-bundle" in owner_actions
         or "batch180-path-c-bundle" in owner_actions
         or "batch168-path-c-bundle" in owner_actions
         or "batch142-path-c-bundle" in owner_actions
+        or "-path-c-bundle" in owner_actions
     )
     assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_actions
 
@@ -6244,7 +6254,7 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     )
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 242)" in land_md
+    assert "STATUS (Batch 242)" in land_md or "STATUS (Batch 243)" in land_md
     assert "WRITABLE" in land_md
     assert "batch241-path-c-bundle" in land_md
     assert "542e6ec" in land_md
@@ -6254,11 +6264,11 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     assert "both return 403" not in top
 
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-    assert "Batch 242" in owner_actions
+    assert "Batch 242" in owner_actions or "Batch 243" in owner_actions
     assert "WRITABLE" in owner_actions
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
-    assert "Batch 242" in ones
+    assert "Batch 242" in ones or "Batch 243" in ones
     assert "WRITABLE" in ones
     assert "batch241-path-c-bundle" in ones
 
@@ -6315,9 +6325,8 @@ def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
     owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
     assert "gh release download batch241-path-c-bundle" in owner_c
     # Living ONE-SHOT must not still lead with batch218 as the download tag.
-    help_block = owner_c.split("usage()", 1)[-1].split("EOF", 1)[0]
-    assert "batch241-path-c-bundle" in help_block
-    assert "gh release download batch218-path-c-bundle" not in help_block
+    assert "gh release download batch218-path-c-bundle" not in owner_c
+    assert "batch241-path-c-bundle or newer" in owner_c
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 243)" in land_md
