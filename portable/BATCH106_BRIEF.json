@@ -1,0 +1,19 @@
+{
+  "batch": "106",
+  "generated_at_utc": "2026-09-24T04:33:00Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "slow_down",
+  "device_code": "6801-AF1E",
+  "seconds_left": 29,
+  "gh_config_dir": "/tmp/gh-dylan-auth",
+  "install_has_main": false,
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "path_c_landed": false,
+  "timer_rearm_s": 30,
+  "flipped_anything": false,
+  "note": "auth slow_down 6801-AF1E; seconds_left=29; install_has_main=false\u2192Path C blocked; research untouched"
+}
