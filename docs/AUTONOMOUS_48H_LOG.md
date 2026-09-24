@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 157 — 2026-09-24 ~09:03 UTC (PERMANENT window; PATH_C_BLOCKED reason codes; auth renew 2513-3A16; tip stable @ 10c077e; hunt clean; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `lemma_closed=false`.
+- Device auth `E136-5AE7` **<90s** still pending → **renewed** `2513-3A16`; poller `gh-device-login` restarted; daemon `when-writable-land` up.
+- `assert_path_c_ready.sh` → **OK** (tip match + apply_all check/apply + lemma_closed=false).
+- **RW hunt @ 10c077e** after `apply_all` 0001–0004+0008–0016: focused **90**/0 RW; claims+recovery **83**/0; tools `--help` **0 RW**; tools/tests bare-open **0** → **clean / no 0017**. Artifact: `portable/BATCH157_HUNT.json`.
+- **Engineering (write blocked + tip stable + hunt clean):** `when_writable_land.py` logs clear `PATH_C_BLOCKED=NO_TOKEN|TIP_DRIFT|APPLY_FAIL` on continue_denied / Path C land fail (never flips research). Intent: `test_batch157_path_c_blocked_reason_codes`.
+- Tiny JSON: `portable/BATCH157_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `2513-3A16` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight.
+
 ### Batch 155 — 2026-09-24 ~08:48 UTC (PERMANENT window; CI BASE_SHA fix; assert_path_c_ready; auth renew E136-5AE7; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).

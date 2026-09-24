@@ -44,6 +44,19 @@ Batch 140 — repository_dispatch when token file appears:
   Batch 141: W3f dry-run repository_dispatch on *trial* is a false_positive for
   main write (path_b_ready must stay false until apply + MAIN_PUSH_TOKEN).
 
+Batch 157 — PATH_C_BLOCKED reason codes (logged; research untouched):
+  When Path C cannot land (write DENIED / tip drift / apply fail), log a clear
+  machine-readable line:
+    PATH_C_BLOCKED=NO_TOKEN
+    PATH_C_BLOCKED=TIP_DRIFT
+    PATH_C_BLOCKED=APPLY_FAIL
+  or a comma-joined combination (e.g. PATH_C_BLOCKED=NO_TOKEN,TIP_DRIFT).
+  Codes:
+    NO_TOKEN   — no MAIN_PUSH_TOKEN / device-flow token for main write
+    TIP_DRIFT  — portable BASE_TIP.txt ≠ live hardening tip
+    APPLY_FAIL — apply_all --check failed on the current tip
+  Never flips lemma_closed / prizes / premises / research status.
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -70,12 +83,30 @@ OWNER_OPEN_PR = ROOT / "scripts" / "owner_open_path_c_pr.sh"
 DISPATCH_C = ROOT / "scripts" / "dispatch_land_path_c.sh"
 
 MAIN_FULL = "d6g8k5htny-coder/main"
+HARDENING_REF = "chatgpt/drive-github-hardening-20260919"
 INSTALL_REPOS_PATH = "/installation/repositories"
 # Documented drop paths for MAIN_PUSH_TOKEN (Batch 140 repository_dispatch).
 WELL_KNOWN_TOKEN_PATHS: tuple[str, ...] = (
     "/cursor/stores/self/MAIN_PUSH_TOKEN",
     "/workspace/.secrets/MAIN_PUSH_TOKEN",
     "/tmp/gh-dylan-auth/access_token",
+)
+# Batch 157: stable Path C blocked reason codes (never promote research).
+PATH_C_BLOCKED_NO_TOKEN = "NO_TOKEN"
+PATH_C_BLOCKED_TIP_DRIFT = "TIP_DRIFT"
+PATH_C_BLOCKED_APPLY_FAIL = "APPLY_FAIL"
+PATH_C_BLOCKED_CODES: tuple[str, ...] = (
+    PATH_C_BLOCKED_NO_TOKEN,
+    PATH_C_BLOCKED_TIP_DRIFT,
+    PATH_C_BLOCKED_APPLY_FAIL,
+)
+BASE_TIP_FILE = ROOT / "portable" / "patches" / "BASE_TIP.txt"
+APPLY_ALL_SH = ROOT / "portable" / "patches" / "apply_all.sh"
+HARDENING_CACHE = Path(
+    os.environ.get(
+        "WHEN_WRITABLE_HARDENING_CACHE",
+        "/tmp/cursor/path-c-hardening-cache",
+    )
 )
 
 DEFAULT_INTERVAL = int(os.environ.get("WHEN_WRITABLE_INTERVAL", "300"))
@@ -270,6 +301,213 @@ def token_file_present(
         except OSError:
             continue
     return False, None
+
+
+def parse_base_tip_sha(tip_file: Path | None = None) -> str | None:
+    """Extract hex SHA from portable/patches/BASE_TIP.txt (7–40 chars)."""
+    path = tip_file if tip_file is not None else BASE_TIP_FILE
+    try:
+        line = path.read_text(encoding="utf-8").strip().splitlines()[0]
+    except (OSError, IndexError):
+        return None
+    import re
+
+    m = re.search(r"(?i)\b([0-9a-f]{40})\b", line)
+    if m:
+        return m.group(1).lower()
+    m = re.search(r"(?i)(?:^|[=:\s])([0-9a-f]{7,39})(?:\b|$)", line)
+    if m:
+        return m.group(1).lower()
+    parts = line.split()
+    return parts[-1].lower() if parts else None
+
+
+def fetch_live_hardening_sha(*, timeout: int = 20) -> str | None:
+    """Return live hardening tip SHA via GitHub API (no token printed)."""
+    import urllib.error
+    import urllib.request
+
+    url = (
+        f"https://api.github.com/repos/{MAIN_FULL}/git/ref/heads/"
+        f"{HARDENING_REF}"
+    )
+    headers = {"Accept": "application/json", "User-Agent": "when_writable_land"}
+    token, _ = resolve_main_push_token()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode())
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError):
+        return None
+    sha = (data.get("object") or {}).get("sha")
+    return sha.lower() if isinstance(sha, str) and sha else None
+
+
+def tip_matches_base(base_sha: str | None, live_sha: str | None) -> bool | None:
+    """True/False when both known; None if either missing."""
+    if not base_sha or not live_sha:
+        return None
+    b = base_sha.lower()
+    live = live_sha.lower()
+    if len(b) == 40:
+        return live == b
+    if 7 <= len(b) < 40:
+        return live.startswith(b)
+    return None
+
+
+def classify_path_c_blocked(
+    *,
+    has_token: bool,
+    tip_matches: bool | None = None,
+    apply_ok: bool | None = None,
+) -> list[str]:
+    """Return PATH_C_BLOCKED reason codes (NO_TOKEN / TIP_DRIFT / APPLY_FAIL).
+
+    Scientific effect NONE — classification only; never flips research.
+    """
+    reasons: list[str] = []
+    if not has_token:
+        reasons.append(PATH_C_BLOCKED_NO_TOKEN)
+    if tip_matches is False:
+        reasons.append(PATH_C_BLOCKED_TIP_DRIFT)
+    if apply_ok is False:
+        reasons.append(PATH_C_BLOCKED_APPLY_FAIL)
+    return reasons
+
+
+def format_path_c_blocked(reasons: list[str]) -> str:
+    """Machine-readable PATH_C_BLOCKED=CODE[,CODE] log token."""
+    if not reasons:
+        return "PATH_C_BLOCKED=NONE"
+    # Preserve stable order from PATH_C_BLOCKED_CODES.
+    ordered = [c for c in PATH_C_BLOCKED_CODES if c in reasons]
+    for r in reasons:
+        if r not in ordered:
+            ordered.append(r)
+    return "PATH_C_BLOCKED=" + ",".join(ordered)
+
+
+def assess_path_c_readiness(
+    *,
+    skip: bool = False,
+    check_apply: bool | None = None,
+) -> tuple[bool | None, bool | None, dict]:
+    """Return (tip_matches, apply_ok, detail). Soft-fails to (None, None, …).
+
+    tip: BASE_TIP vs live hardening. apply: apply_all --check on a cached clone
+    when tip matches (disabled when skip=True or check_apply=False).
+    """
+    detail: dict = {"skipped": bool(skip), "scientific_effect": "NONE"}
+    if skip:
+        return None, None, detail
+
+    base_sha = parse_base_tip_sha()
+    live_sha = fetch_live_hardening_sha()
+    matches = tip_matches_base(base_sha, live_sha)
+    detail.update(
+        {
+            "base_tip_sha": base_sha,
+            "live_hardening_sha": live_sha,
+            "tip_matches_base": matches,
+        }
+    )
+
+    do_apply = check_apply
+    if do_apply is None:
+        do_apply = os.environ.get("WHEN_WRITABLE_CHECK_APPLY", "1") != "0"
+
+    apply_ok: bool | None = None
+    if matches is True and do_apply and APPLY_ALL_SH.is_file():
+        apply_ok, apply_detail = _apply_all_check_cached(live_sha or base_sha or "")
+        detail["apply_check"] = apply_detail
+    elif matches is False:
+        apply_ok = None  # tip drift dominates; skip apply
+        detail["apply_check"] = {"skipped": True, "reason": "tip_drift"}
+    else:
+        detail["apply_check"] = {"skipped": True, "reason": "tip_unknown_or_disabled"}
+
+    return matches, apply_ok, detail
+
+
+def _apply_all_check_cached(tip_sha: str) -> tuple[bool | None, dict]:
+    """Run apply_all --check on a shallow cached hardening checkout."""
+    detail: dict = {"attempted": False, "exit": None, "cache": str(HARDENING_CACHE)}
+    if not tip_sha:
+        detail["skipped_reason"] = "no_tip_sha"
+        return None, detail
+    try:
+        HARDENING_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        if not (HARDENING_CACHE / ".git").is_dir():
+            clone = subprocess.run(
+                [
+                    "git",
+                    "clone",
+                    "--depth",
+                    "1",
+                    "--branch",
+                    HARDENING_REF,
+                    f"https://github.com/{MAIN_FULL}.git",
+                    str(HARDENING_CACHE),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=120,
+            )
+            if clone.returncode != 0:
+                detail["skipped_reason"] = "clone_failed"
+                detail["stderr_tail"] = (clone.stderr or "")[-500:]
+                return None, detail
+        else:
+            # Refresh tip in cache (best-effort).
+            subprocess.run(
+                ["git", "-C", str(HARDENING_CACHE), "fetch", "--depth", "1", "origin", HARDENING_REF],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=90,
+            )
+            subprocess.run(
+                ["git", "-C", str(HARDENING_CACHE), "checkout", "-f", "FETCH_HEAD"],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=60,
+            )
+        head = subprocess.run(
+            ["git", "-C", str(HARDENING_CACHE), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=30,
+        )
+        head_sha = (head.stdout or "").strip().lower()
+        detail["cache_head"] = head_sha
+        if tip_sha and head_sha and not (
+            head_sha == tip_sha.lower() or head_sha.startswith(tip_sha[:7].lower())
+        ):
+            detail["skipped_reason"] = "cache_tip_mismatch"
+            return None, detail
+
+        detail["attempted"] = True
+        check = subprocess.run(
+            ["bash", str(APPLY_ALL_SH), "--check"],
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=180,
+            cwd=str(HARDENING_CACHE),
+        )
+        detail["exit"] = check.returncode
+        detail["stdout_tail"] = (check.stdout or "")[-400:]
+        detail["stderr_tail"] = (check.stderr or "")[-400:]
+        return check.returncode == 0, detail
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        detail["skipped_reason"] = f"exception:{type(exc).__name__}"
+        return None, detail
 
 
 def try_repository_dispatch_path_c(
@@ -474,6 +712,35 @@ def _run_land(cmd: list[str], dry_run: bool, label: str, timeout: int = 900) -> 
     return detail
 
 
+def _annotate_path_c_blocked(
+    report: dict,
+    *,
+    log_path: Path,
+    skip_ready_assess: bool,
+    extra_log: str,
+) -> None:
+    """Attach PATH_C_BLOCKED reason codes and log them (Batch 157)."""
+    token, _src = resolve_main_push_token()
+    has_token = bool(token) or bool(report.get("token_file_present"))
+    tip_matches, apply_ok, ready_detail = assess_path_c_readiness(
+        skip=skip_ready_assess
+    )
+    reasons = classify_path_c_blocked(
+        has_token=has_token,
+        tip_matches=tip_matches,
+        apply_ok=apply_ok,
+    )
+    # Write denied with no other readiness failure still surfaces NO_TOKEN.
+    if not reasons and not has_token:
+        reasons = [PATH_C_BLOCKED_NO_TOKEN]
+    report["path_c_blocked_reasons"] = reasons
+    report["path_c_blocked"] = format_path_c_blocked(reasons)
+    report["path_c_ready_detail"] = ready_detail
+    report["has_token"] = has_token
+    blocked_tok = format_path_c_blocked(reasons)
+    _log(log_path, f"{blocked_tok} {extra_log}")
+
+
 def _one_iteration(
     *,
     dry_run: bool,
@@ -503,7 +770,12 @@ def _one_iteration(
         "token_file_path": None,
         "token_appeared": False,
         "dispatch_token_source": None,
+        "path_c_blocked_reasons": None,
+        "path_c_blocked": None,
     }
+
+    # Skip live tip/apply assess under mock-probe (intent tests stay offline/fast).
+    skip_ready = mock_probe is not None
 
     prev_install = _read_prev_install_has_main(status_path)
     prev_token_present = _read_prev_token_present(status_path)
@@ -557,10 +829,14 @@ def _one_iteration(
             if last_dispatch_src == dispatch_src:
                 report["action"] = "continue_denied"
                 report["reason"] = "write_denied_dispatch_already_fired"
-                _log(
-                    log_path,
-                    "action=continue_denied (write DENIED; repository_dispatch "
-                    "already fired for this token file)",
+                _annotate_path_c_blocked(
+                    report,
+                    log_path=log_path,
+                    skip_ready_assess=skip_ready,
+                    extra_log=(
+                        "action=continue_denied (write DENIED; repository_dispatch "
+                        "already fired for this token file)"
+                    ),
                 )
                 return report
             report["action"] = "path_c_repository_dispatch"
@@ -587,7 +863,12 @@ def _one_iteration(
             return report
         report["action"] = "continue_denied"
         report["reason"] = "write_denied"
-        _log(log_path, "action=continue_denied (write DENIED)")
+        _annotate_path_c_blocked(
+            report,
+            log_path=log_path,
+            skip_ready_assess=skip_ready,
+            extra_log="action=continue_denied (write DENIED)",
+        )
         return report
 
     if probe_state == "DENIED" and flipped:
@@ -622,10 +903,14 @@ def _one_iteration(
                     return report
             report["action"] = "continue_denied_after_install_flip"
             report["reason"] = "install_has_main_true_but_write_still_denied"
-            _log(
-                log_path,
-                "action=continue_denied_after_install_flip "
-                "(install has main; write still DENIED)",
+            _annotate_path_c_blocked(
+                report,
+                log_path=log_path,
+                skip_ready_assess=skip_ready,
+                extra_log=(
+                    "action=continue_denied_after_install_flip "
+                    "(install has main; write still DENIED)"
+                ),
             )
             return report
 
@@ -714,12 +999,40 @@ def _one_iteration(
         if flipped:
             land["triggered_by"] = "install_has_main_flipped_true"
         report["land"] = land
-        _log(
-            log_path,
-            f"action=path_c_land attempted={land.get('attempted')} "
-            f"exit={land.get('exit')} dry_run={dry_run} gate=lemma_closed=false "
-            f"script={path_c_label} flipped_install={flipped}",
-        )
+        # Batch 157: if Path C land failed, surface PATH_C_BLOCKED codes.
+        land_exit = land.get("exit")
+        if land_exit not in (None, 0) and not dry_run:
+            stderr = (land.get("stderr_tail") or "") + (land.get("stdout_tail") or "")
+            low = stderr.lower()
+            tip_fail = "tip-drift" in low or "tip_drift" in low or "tip match" in low
+            apply_fail = (
+                "apply_all" in low
+                or "apply fail" in low
+                or "git am" in low
+                or "patch failed" in low
+            )
+            reasons = classify_path_c_blocked(
+                has_token=True,
+                tip_matches=False if tip_fail else None,
+                apply_ok=False if apply_fail else None,
+            )
+            if not reasons:
+                reasons = [PATH_C_BLOCKED_APPLY_FAIL]
+            report["path_c_blocked_reasons"] = reasons
+            report["path_c_blocked"] = format_path_c_blocked(reasons)
+            _log(
+                log_path,
+                f"{format_path_c_blocked(reasons)} action=path_c_land "
+                f"attempted={land.get('attempted')} exit={land_exit} "
+                f"dry_run={dry_run} gate=lemma_closed=false script={path_c_label}",
+            )
+        else:
+            _log(
+                log_path,
+                f"action=path_c_land attempted={land.get('attempted')} "
+                f"exit={land.get('exit')} dry_run={dry_run} gate=lemma_closed=false "
+                f"script={path_c_label} flipped_install={flipped}",
+            )
         return report
 
     report["action"] = "continue_unknown_align"

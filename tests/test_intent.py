@@ -1481,6 +1481,7 @@ def test_when_writable_land_once_dry_run() -> None:
             timeout=30,
             check=False,
             cwd=str(ROOT),
+            env={**os.environ, "MAIN_PUSH_TOKEN": ""},
         )
         assert denied.returncode == 0, denied.stderr + denied.stdout
         status = json.loads(status_path.read_text(encoding="utf-8"))
@@ -1494,7 +1495,12 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["last"]["action"] == "continue_denied"
         assert status["last"]["land"] is None
         assert log_path.is_file()
-        assert "continue_denied" in log_path.read_text(encoding="utf-8")
+        log_txt = log_path.read_text(encoding="utf-8")
+        assert "continue_denied" in log_txt
+        # Batch 157: denied+no-token → PATH_C_BLOCKED=NO_TOKEN
+        assert "PATH_C_BLOCKED=NO_TOKEN" in log_txt
+        assert status["last"].get("path_c_blocked_reasons") == ["NO_TOKEN"]
+        assert status["last"].get("path_c_blocked") == "PATH_C_BLOCKED=NO_TOKEN"
 
         # Flip false→true + DENIED then WRITABLE mock: Path C attempt on flip
         # (second run with install true after status already false)
@@ -2722,3 +2728,104 @@ def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
     assert "Batch 155" in log
     assert "assert_path_c_ready" in log
     assert "E136-5AE7" in log or "1FC8-3D96" in log
+
+
+def test_batch157_path_c_blocked_reason_codes() -> None:
+    """Batch 157: when_writable_land logs PATH_C_BLOCKED=NO_TOKEN|TIP_DRIFT|APPLY_FAIL."""
+    import importlib.util
+    import json
+    import tempfile
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    assert script.is_file()
+    src = script.read_text(encoding="utf-8")
+    assert "PATH_C_BLOCKED" in src
+    assert "NO_TOKEN" in src and "TIP_DRIFT" in src and "APPLY_FAIL" in src
+    assert "classify_path_c_blocked" in src
+    assert "format_path_c_blocked" in src
+    assert "lemma_closed" in src
+
+    spec = importlib.util.spec_from_file_location("when_writable_land_b157", script)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    assert mod.classify_path_c_blocked(has_token=False) == ["NO_TOKEN"]
+    assert mod.classify_path_c_blocked(
+        has_token=False, tip_matches=False
+    ) == ["NO_TOKEN", "TIP_DRIFT"]
+    assert mod.classify_path_c_blocked(
+        has_token=True, tip_matches=False, apply_ok=False
+    ) == ["TIP_DRIFT", "APPLY_FAIL"]
+    assert mod.classify_path_c_blocked(
+        has_token=True, tip_matches=True, apply_ok=False
+    ) == ["APPLY_FAIL"]
+    assert mod.classify_path_c_blocked(
+        has_token=True, tip_matches=True, apply_ok=True
+    ) == []
+    assert mod.format_path_c_blocked(["NO_TOKEN"]) == "PATH_C_BLOCKED=NO_TOKEN"
+    assert (
+        mod.format_path_c_blocked(["APPLY_FAIL", "NO_TOKEN"])
+        == "PATH_C_BLOCKED=NO_TOKEN,APPLY_FAIL"
+    )
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        log_path = td_path / "ww.log"
+        status_path = td_path / "ww.status.json"
+        stop_path = td_path / "ww.stop"
+        denied = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "DENIED",
+                "--mock-install-has-main",
+                "false",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+                "--batch",
+                "157",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+            env={**os.environ, "MAIN_PUSH_TOKEN": ""},
+        )
+        assert denied.returncode == 0, denied.stderr + denied.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["lemma_closed"] is False
+        assert status["flipped_anything"] is False
+        assert status["goal_complete"] is False
+        assert status["last"]["action"] == "continue_denied"
+        assert status["last"]["path_c_blocked_reasons"] == ["NO_TOKEN"]
+        assert "PATH_C_BLOCKED=NO_TOKEN" in log_path.read_text(encoding="utf-8")
+
+    brief = ROOT / "portable" / "BATCH157_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "157"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data.get("path_c_blocked_codes") == ["NO_TOKEN", "TIP_DRIFT", "APPLY_FAIL"]
+
+    hunt = ROOT / "portable" / "BATCH157_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["hunt_result"] == "clean"
+    assert h["patch_0017"] is False
+    assert h["lemma_closed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 157" in log
+    assert "PATH_C_BLOCKED" in log
