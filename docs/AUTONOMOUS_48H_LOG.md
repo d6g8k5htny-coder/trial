@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 103 — 2026-09-24 ~04:21 UTC (PERMANENT window; IDLE waiting device auth; scientific effect NONE; flipped nothing)
+
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **pending** (code `6801-AF1E`); no Path C land.
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- `aligned_drift_watch` → **ALIGNED** @ `1c6e74b`; hardening `ac33581` (== BASE_TIP; **no tip refresh** / **no bundle refresh**).
+- Tiny JSON: `portable/BATCH103_BRIEF.json`. `goal_complete=false`. `route_now=IDLE`.
+
+**Land note:** Path C blocked (auth pending + `install_has_main=false`). Waiting on Dylan device code `6801-AF1E`. Timer `permanent-autonomous-align-watch` @ **3600s**.
+
+
 ### Batch 102 — 2026-09-24 ~04:01 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
 
 - Token check: `MAIN_PUSH_TOKEN` absent (env / `/cursor/stores/self` / `/workspace/.secrets`) → no Path C via token.
