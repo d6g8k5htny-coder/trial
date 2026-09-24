@@ -1,6 +1,6 @@
 {
   "batch": "219",
-  "generated_at_utc": "2026-09-24T15:22:53Z",
+  "generated_at_utc": "2026-09-24T15:23:32Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -91,5 +91,7 @@
     "tip_full": "1d0dceb3ba6a02ab98965f0d71021f37c371ddf5",
     "tip_match": true,
     "write_state": "DENIED"
-  }
+  },
+  "trial_main_sha": "17f2a22eaa645cb36af13f046f6b76eae8e477af",
+  "trial_main_landed": true
 }
