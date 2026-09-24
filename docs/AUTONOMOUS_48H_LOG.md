@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+
+### Batch 218 — 2026-09-24 ~15:06 UTC (aggressive write retry; tip refresh 1d0dceb; auth renew 4B66; write DENIED; scientific effect NONE; flipped nothing)
+
+- Dylan claimed WRITE UNLOCKED; probe still DENIED (refs/contents/git-push/workflow_dispatch 403; `install_has_main=false`).
+- `repository_dispatch --apply` 204 → Actions fail **MAIN_PUSH_TOKEN empty** (run 36017345628).
+- Device `BFEF-C1D9` expired → renewed **`4B66-CE85`**; tip **`b89448d`→`1d0dceb`** refresh + release **`batch218-path-c-bundle`**.
+- Owner ONE action: **set MAIN_PUSH_TOKEN**. `lemma_closed=false`. Research untouched.
+
 ### Batch 217 — 2026-09-24 ~14:44–14:51 UTC (PERMANENT window; Dylan claimed WRITE UNLOCKED; aggressive probe still DENIED; auth 5AEC→BFEF; Path C NOT landed; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - WRITE+ALIGN: Dylan said write unlocked → probed hard: `probe_main_write` **DENIED** 403; vectors W1/W2/W3a/W3d **DENIED**; `git push` **403 cursor[bot]**; `install_has_main=false` (trial-only). Default tip **ALIGNED** @ `1c6e74b` → **Path B skipped**. Path C blocked `NO_TOKEN`.

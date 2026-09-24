@@ -5,13 +5,13 @@ Copy-paste from a machine or Actions runner that **can write** to
 + `gh pr ready/merge` all return **403**).
 
 > **Batch 212 — tip stable `b89448d`; auth renew `5AEC-4784` (from `B064-C458` &lt;90s); write DENIED**:
-> Authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md` (or `./scripts/owner_path_c_oneshot.sh --from-bundle` after `gh release download batch207-path-c-bundle`).
+> Authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md` (or `./scripts/owner_path_c_oneshot.sh --from-bundle` after `gh release download batch218-path-c-bundle`).
 
 > **Batch 210 — tip stable `b89448d`; auth renew `B064-C458` (from `E577-EEF9` &lt;90s); has_0017 verified; hunt clean no 0018; write DENIED**:
-> `gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'` then `./scripts/owner_path_c_oneshot.sh --from-bundle` (or authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md`).
+> `gh release download batch218-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'` then `./scripts/owner_path_c_oneshot.sh --from-bundle` (or authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md`).
 
-> **Batch 207 — tip stable `b89448d`; auth renew `E577-EEF9` (from `1DAB-B7F7` &lt;90s); ship **0017** pinned_sources RW; pack+release `batch207-path-c-bundle`; write DENIED**:
-> `gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'` then `./scripts/owner_path_c_oneshot.sh --from-bundle` (or authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md`).
+> **Batch 207 — tip stable `b89448d`; auth renew `E577-EEF9` (from `1DAB-B7F7` &lt;90s); ship **0017** pinned_sources RW; pack+release `batch218-path-c-bundle`; write DENIED**:
+> `gh release download batch218-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'` then `./scripts/owner_path_c_oneshot.sh --from-bundle` (or authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md`).
 
 > **Batch 202 — tip refresh `8bd1f03`→`b89448d`; auth renew `5160-F839` (from `6A29-F464` &lt;90s); CI sanity + pack+release `batch202-path-c-bundle`; write DENIED**:
 >

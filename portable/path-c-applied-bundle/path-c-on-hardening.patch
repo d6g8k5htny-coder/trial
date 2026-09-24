@@ -1,8 +1,8 @@
-From 71d50b156035c70554c6b3cb1338563ac3a34a7a Mon Sep 17 00:00:00 2001
+From 873c9019fcf972b5235a934d60693a363c2f6fa1 Mon Sep 17 00:00:00 2001
 From: path-c-refresh <path-c-refresh@local>
-Date: Thu, 24 Sep 2026 14:00:02 +0000
+Date: Thu, 24 Sep 2026 15:07:20 +0000
 Subject: [PATCH] portable engineering patches (apply_all 0001-0004+0008-0016)
- on b89448d
+ on 1d0dceb
 
 ---
  docs/math_status/PACKET.json                  |   4 +-
@@ -31,7 +31,7 @@ Subject: [PATCH] portable engineering patches (apply_all 0001-0004+0008-0016)
  23 files changed, 343 insertions(+), 217 deletions(-)
 
 diff --git a/docs/math_status/PACKET.json b/docs/math_status/PACKET.json
-index 07ba5eb..64c9f2f 100644
+index 17bf865..74775f8 100644
 --- a/docs/math_status/PACKET.json
 +++ b/docs/math_status/PACKET.json
 @@ -50,8 +50,8 @@

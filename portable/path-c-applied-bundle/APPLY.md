@@ -1,5 +1,7 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
+**Batch 218:** tip **`1d0dceb`** (refreshed from `b89448d`). Release **`batch218-path-c-bundle`** includes tip-refreshed `.bundle`+`.patch` (0001–0004+0008–0017; applied `873c901`).
+
 **Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** includes **0017** (pinned_sources RW) + force-refreshed `.bundle` (applied `71d50b1`; supersedes `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch169-path-c-bundle`).
 
 **Effect:** engineering hygiene only on `chatgpt/drive-github-hardening-20260919`. Scientific effect: **NONE**. Does not flip `lemma_closed`.
@@ -26,14 +28,14 @@ Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:
 
 ## Manual — git bundle fetch + merge (preferred; Batch 169+)
 
-On a clone that already has BASE_TIP `b89448d` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
+On a clone that already has BASE_TIP `1d0dceb` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
 
 ```bash
 # Shallow clone hardening @ BASE_TIP (or deepen an existing clone):
 git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
   https://github.com/d6g8k5htny-coder/main.git main && cd main
 # If already cloned: git fetch origin chatgpt/drive-github-hardening-20260919
-git checkout -B cursor/portable-engineering-patches b89448da439d963a404212ae024534169aa22297
+git checkout -B cursor/portable-engineering-patches 1d0dceb3ba6a02ab98965f0d71021f37c371ddf5
 # Prefer .bundle when present:
 git fetch /path/to/path-c-on-hardening.bundle cursor/portable-engineering-patches
 git merge --ff-only FETCH_HEAD
@@ -49,7 +51,7 @@ Then open a PR into `chatgpt/drive-github-hardening-20260919`. Do **not** apply 
 ## Manual — legacy `git am` of `.patch`
 
 ```bash
-git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches b89448da439d963a404212ae024534169aa22297 && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
+git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches 1d0dceb3ba6a02ab98965f0d71021f37c371ddf5 && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
 ```
 
 ## Verify after fetch/merge or am
