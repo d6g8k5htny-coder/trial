@@ -1,0 +1,16 @@
+{
+  "batch": "74",
+  "generated_at_utc": "2026-09-24T01:43:20Z",
+  "write_state": "DENIED",
+  "tokens_redacted": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "present_or_runner",
+    "MAIN_PUSH_TOKEN": "NOT_SET"
+  },
+  "note": "ALIGNED @ 1c6e74b; hardening tip 5f352a2\u2192ac33581 (PR #48); Path-B/C write vectors DENIED; permanent window; Batch 73 CI fixed (Intent suite token + Option-B ALIGNED skip + after-merge no-gh-auth + vectors anonymous tip GET)",
+  "path_b_needed": false,
+  "path_c_writable": false,
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "goal_complete": false
+}

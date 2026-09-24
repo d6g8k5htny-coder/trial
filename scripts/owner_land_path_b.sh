@@ -119,13 +119,6 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   exit 0
 fi
 
-need_cmd gh
-if ! gh auth status >/dev/null 2>&1; then
-  die "gh is not authenticated. Run: gh auth login  (owner account with write on $REPO)"
-fi
-LOGIN="$(gh api user --jq .login 2>/dev/null || true)"
-echo "gh login: ${LOGIN:-unknown}"
-
 run_remote_audit() {
   echo "--- remote audit_main_alignment (expect ALIGNED / exit 0) ---"
   set +e
@@ -149,10 +142,19 @@ run_remote_audit() {
   echo "Scientific effect: NONE"
 }
 
+# --after-merge is read-only python audit/watch; no gh write auth required
+# (Batch 74: Intent suite / anonymous CI must pass when tip is already ALIGNED).
 if [[ "$AFTER_MERGE" -eq 1 ]]; then
   run_remote_audit
   exit 0
 fi
+
+need_cmd gh
+if ! gh auth status >/dev/null 2>&1; then
+  die "gh is not authenticated. Run: gh auth login  (owner account with write on $REPO)"
+fi
+LOGIN="$(gh api user --jq .login 2>/dev/null || true)"
+echo "gh login: ${LOGIN:-unknown}"
 
 # --- land (branch+PR or direct-main) ---
 if [[ -z "$WORKDIR" ]]; then

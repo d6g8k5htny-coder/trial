@@ -110,8 +110,12 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "actionlint" in ci
     assert "owner_land_path_b.sh --dry-run" in ci
     assert "owner_land_path_c.sh --dry-run" in ci
-    # Audit/watch steps must export the runner token (avoids unauthenticated API 403s).
+    # Batch 74: Intent suite + audit/watch export runner token; Option-B skips when ALIGNED
+    assert "Intent suite" in ci
+    assert "Option-B apply check SKIPPED" in ci or "already ALIGNED" in ci
     assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" in ci
+    # Audit/watch steps must export the runner token (avoids unauthenticated API 403s).
+    assert ci.count("GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}") >= 2
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
     assert "MAIN_PUSH_TOKEN" in land_wf
     assert "option-b" in land_wf
@@ -161,7 +165,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "5f352a2" in base_tip
+    assert "ac33581" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -398,9 +402,37 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "5f352a2" in patches_readme or "PR #44" in patches_readme or "#44" in patches_readme or "74c082e" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
+    assert (
+        "ac33581" in patches_readme
+        or "PR #48" in patches_readme
+        or "#48" in patches_readme
+        or "5f352a2" in patches_readme
+        or "PR #44" in patches_readme
+        or "#44" in patches_readme
+        or "74c082e" in patches_readme
+        or "PR #45" in patches_readme
+        or "#45" in patches_readme
+    )
     assert "post-#41" in patches_readme.lower() or "PR #41" in patches_readme
-    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme or "PR #44" in patches_readme or "#44" in patches_readme
+    assert (
+        "fbb4360" in patches_readme
+        or "PR #30" in patches_readme
+        or "PR #28" in patches_readme
+        or "PR #29" in patches_readme
+        or "PR #27" in patches_readme
+        or "PR #34" in patches_readme
+        or "PR #43" in patches_readme
+        or "#43" in patches_readme
+        or "PR #42" in patches_readme
+        or "#42" in patches_readme
+        or "PR #45" in patches_readme
+        or "#45" in patches_readme
+        or "PR #44" in patches_readme
+        or "#44" in patches_readme
+        or "PR #48" in patches_readme
+        or "#48" in patches_readme
+        or "ac33581" in patches_readme
+    )
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(
@@ -430,7 +462,11 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert vdata["scientific_effect"] == "NONE"
     assert vdata["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
     assert "vectors" in vdata
-    assert "W1_git_refs" in vdata["vectors"]
+    # TRANSPORT_ERROR may leave vectors empty (no tip); otherwise W1 is required.
+    if vdata["state"] != "TRANSPORT_ERROR":
+        assert "W1_git_refs" in vdata["vectors"]
+    else:
+        assert vresult.returncode == 2
     assert (ROOT / "portable" / "RESTORE_PLAN_55.json").is_file()
     restore = __import__("json").loads((ROOT / "portable" / "RESTORE_PLAN_55.json").read_text())
     assert restore["preferred_restore"] == "Path_B"
@@ -561,7 +597,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
-    assert "74c082e" in log or "PR #45" in log or "5f352a2" in log
+    assert "74c082e" in log or "PR #45" in log or "5f352a2" in log or "ac33581" in log or "PR #48" in log or "Batch 74" in log
+    assert "Batch 74" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
     assert "land-path-c-on-main" in log
@@ -1028,6 +1065,8 @@ def test_audit_research_stack_open_read_only() -> None:
         "Batch 72" in unblock
         or "Batch 71" in unblock
         or "Batch 70" in unblock
+        or "Batch 74" in unblock
+        or "Batch 73" in unblock
         or "aligned_drift_watch" in unblock
     )
     assert "audit_research_stack_open.py" in unblock
@@ -1065,6 +1104,31 @@ def test_audit_research_stack_open_read_only() -> None:
     assert restore72["goal_complete"] is False
     assert restore72["lemma_closed"] is False
     assert "5f352a2" in str(restore72.get("path_c", {}).get("base_tip", ""))
+    assert (ROOT / "portable" / "BATCH74_BRIEF.json").is_file()
+    brief74 = json.loads(
+        (ROOT / "portable" / "BATCH74_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief74["scientific_effect"] == "NONE"
+    assert brief74["goal_complete"] is False
+    assert brief74["lemma_closed"] is False
+    assert brief74["aligned"] is True
+    assert brief74["hardening_tip"].startswith("ac33581")
+    assert brief74["tip_refresh"] is True
+    assert brief74["preferred_restore_if_drift"] == "Path_B"
+    assert (ROOT / "portable" / "RESTORE_PLAN_74.json").is_file()
+    restore74 = json.loads(
+        (ROOT / "portable" / "RESTORE_PLAN_74.json").read_text(encoding="utf-8")
+    )
+    assert restore74["goal_complete"] is False
+    assert restore74["lemma_closed"] is False
+    assert "ac33581" in str(restore74.get("path_c", {}).get("base_tip", ""))
+    assert (ROOT / "portable" / "BATCH74_OPEN_PR_THREATS.json").is_file()
+    threats74 = json.loads(
+        (ROOT / "portable" / "BATCH74_OPEN_PR_THREATS.json").read_text(encoding="utf-8")
+    )
+    assert threats74["scientific_effect"] == "NONE"
+    assert threats74["goal_complete"] is False
+    assert isinstance(threats74["open_prs_targeting_default_main"], list)
 
 
 def test_aligned_drift_watch_script_and_ci_record_only() -> None:

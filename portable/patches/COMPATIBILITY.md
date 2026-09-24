@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~01:35 UTC (batch 73: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP still `5f352a2`; no tip past 5f352a2 / no 0017; CI `land-workflows-dry-run` validates land-option-b + land-path-c without MAIN_PUSH_TOKEN).
+Checked 2026-09-24 ~01:40 UTC (batch 74: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP → `ac33581` via PR #48; no 0017; CI Intent suite + Option-B ALIGNED skip + `--after-merge` no-gh-auth).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -16,7 +16,8 @@ If a forced rebase hits first-stop conflicts: `./scripts/path_c_rebase_helper.sh
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#44) | `5f352a2` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 70–71** (batch 71 re-verify: focused 90/0 RW; claims+recovery 83/0; receipts/bridge 541/0; frozen/dio 19/0; collision 189/0; mirrors 85/0; registers 53/0; cover/RN/lean/drive/ops residual 0 RW; tools bare-open 0) |
+| hardening (post-#48) | `ac33581` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 74** (focused 90/0; math_status problems=0 / lemma_closed=false) |
+| hardening (post-#44) | `5f352a2` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 70–73) |
 | hardening (post-#45) | `74c082e` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 66–69) |
 | hardening (post-#42) | `3d47d1b` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 65) |
 | hardening (post-#43) | `6f0f061` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 63–64) |
@@ -82,6 +83,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **74** (PERMANENT; ALIGNED @ 1c6e74b; tip move; Batch 73 CI fix): hardening **`5f352a2` → `ac33581`** ([PR #48](https://github.com/d6g8k5htny-coder/main/pull/48) checked accounting in inner-wedge RN verifier); BASE_TIP refreshed; `apply_all --check`/apply OK; math_status problems=0 / lemma_closed=false; focused **90**/0. CI fixes: Intent suite exports `GITHUB_TOKEN`; Option-B apply check skips when default tip already ALIGNED; `owner_land_path_b --after-merge` no longer requires `gh auth`; write-vector tip GET falls back to anonymous urllib. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_74.json`.
 - Batch **73** (PERMANENT; ALIGNED @ 1c6e74b; no tip move; CI land-workflows-dry-run): hardening still **`5f352a2`** (== BASE_TIP; no commits past tip → **no 0017**). Shipped `scripts/validate_land_workflows.py` + CI job `land-workflows-dry-run` (actionlint + owner `--help`/`--dry-run`) so `land-option-b-on-main` + `land-path-c-on-main` are validated **without** `MAIN_PUSH_TOKEN`. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_73.json`.
 - Batch **70** (PERMANENT; ALIGNED @ 1c6e74b; tip move; research-stack OPEN audit): hardening **`74c082e` → `5f352a2`** ([PR #44](https://github.com/d6g8k5htny-coder/main/pull/44) fail-closed vault path map); BASE_TIP refreshed; `apply_all --check` OK; `math_status_check` problems=0 / lemma_closed=false; OPEN inventory (13 premises / 1 lemma / 3 prizes / 16 OQs) via `scripts/audit_research_stack_open.py` — **flipped nothing**. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_70.json`. Artifact: `portable/BATCH70_RESEARCH_STACK_AUDIT.json`.
 - Batch **68** (PERMANENT; ALIGNED @ 1c6e74b; no tip move; Path C rebase helper): hardening still **`74c082e`** (== BASE_TIP); **no 0017** / **IDLE**. Shipped `scripts/path_c_rebase_helper.sh` (`--dry-run` / `--stage` ours/theirs for first-stop `ci.yml` / `research.yml` / bridge README; never invent research status) + `portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json`. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_68.json`.

@@ -125,11 +125,17 @@ def _request(method: str, url: str, body: dict | None = None) -> tuple[int, dict
         return _request_urllib(method, url, body)
     path = url.split("https://api.github.com/", 1)[-1]
     try:
-        return _request_gh(method, path, body)
+        status, body_out = _request_gh(method, path, body)
     except FileNotFoundError:
         return _request_urllib(method, url, body)
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"transport: {exc}") from exc
+    # Batch 74: when gh has no interactive auth, tip GETs return 403 "run gh auth
+    # login" with empty vectors. Fall back to anonymous urllib for reads so CI
+    # Intent suite still exercises W1–W5 (write attempts correctly DENIED).
+    if method == "GET" and status in (401, 403):
+        return _request_urllib(method, url, body)
+    return status, body_out
 
 
 def _classify(status: int, body: dict | str) -> str:

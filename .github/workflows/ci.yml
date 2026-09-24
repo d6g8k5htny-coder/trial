@@ -16,6 +16,11 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
       - name: Intent suite
+        env:
+          # Batch 74: Intent suite runs live probes (write vectors / watch / Path C).
+          # Export runner token so tip reads do not degrade to TRANSPORT_ERROR when
+          # `gh` has no interactive auth on the Actions runner.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python -m pytest -q
       - name: Alignment audit (read-only, expected MISALIGNED until main lands)
         env:
@@ -92,8 +97,17 @@ jobs:
             tests/test_inventable_jetmod_instrumentation_status.py
       - name: Option-B apply check against default main
         run: |
+          set -euo pipefail
           git clone --depth 1 --branch main \
             https://github.com/d6g8k5htny-coder/main.git main-default
+          # Batch 74: default tip is ALIGNED post-#41 (AGENTS.md + SIDE24 notice).
+          # Classic Option-B format-patch is idempotent / already applied — skip
+          # --check when the tip already carries the ALIGNED face; still prove
+          # would-apply when MISALIGNED (pre-notice tip).
+          if [[ -f main-default/AGENTS.md ]] && grep -q SIDE24 main-default/README.md; then
+            echo "Option-B apply check SKIPPED — default main already ALIGNED (idempotent)"
+            exit 0
+          fi
           git -C main-default apply --check \
             "$GITHUB_WORKSPACE/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch"
           echo "Option-B format-patch still applies on default main"

@@ -1,0 +1,88 @@
+{
+  "batch": "74",
+  "generated_at_utc": "2026-09-24T01:43:50Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scope": "Open PRs that could threaten default-tip ALIGNED (revert / face rewrite on base=main).",
+  "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+  "aligned_via": "owner PR #41 @ 1c6e74b",
+  "hardening_tip_sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+  "historical_revert": {
+    "number": 32,
+    "state": "MERGED",
+    "title": "Revert \"Port the Drive research program to git and make it active (#2)\"",
+    "url": "https://github.com/d6g8k5htny-coder/main/pull/32",
+    "note": "Proved ALIGNED can be wiped. Instant Path B restore must stay ready."
+  },
+  "open_prs_targeting_default_main": [],
+  "open_prs_all_bases_summary": [
+    {
+      "number": 47,
+      "base": "claude/cover-uniform-cost-contract",
+      "draft": true,
+      "title": "Two of the nine recorded survivors are killable; a third cannot be killed at all",
+      "threat_to_default_aligned": "none_direct",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/47"
+    },
+    {
+      "number": 46,
+      "base": "claude/cover-outside-residual-guard",
+      "draft": true,
+      "title": "Pin the uniform-cost contract, and the 61,642 three documents quote",
+      "threat_to_default_aligned": "none_direct",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/46"
+    },
+    {
+      "number": 38,
+      "base": "claude/drive-audit-github-migration-rrglpp",
+      "draft": true,
+      "title": "A cell proved disjoint cannot carry a contribution the total then discards",
+      "threat_to_default_aligned": "none_direct",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/38"
+    },
+    {
+      "number": 36,
+      "base": "claude/drive-audit-github-migration-rrglpp",
+      "draft": true,
+      "title": "Keep ladder.py at the bytes the hardening lane's certificates pin",
+      "threat_to_default_aligned": "none_direct",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/36"
+    },
+    {
+      "number": 21,
+      "base": "chatgpt/drive-github-hardening-20260919",
+      "draft": true,
+      "title": "Architectural admission attestations, and the salvaged H3 review artifacts",
+      "threat_to_default_aligned": "low",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/21"
+    },
+    {
+      "number": 12,
+      "base": "chatgpt/drive-github-hardening-20260919",
+      "draft": true,
+      "title": "[DRAFT] Fail-closed JETMOD/RN-UNIF status + math_console (OPEN/HOLD)",
+      "threat_to_default_aligned": "low",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/12"
+    },
+    {
+      "number": 8,
+      "base": "chatgpt/drive-github-hardening-20260919",
+      "draft": true,
+      "title": "Preserve the existing 16-cell RN sector candidate for review",
+      "threat_to_default_aligned": "low",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/8"
+    },
+    {
+      "number": 7,
+      "base": "chatgpt/drive-github-hardening-20260919",
+      "draft": true,
+      "title": "Review P15 finite-rank composition and its mathematical foundations",
+      "threat_to_default_aligned": "low",
+      "url": "https://github.com/d6g8k5htny-coder/main/pull/7"
+    }
+  ],
+  "verdict": "No open PR currently targets base=main. Primary threat is a future #32-style revert of #41. Watch + Path B restore stay armed. Tip moved to ac33581 via #48 (hardening only).",
+  "watch": "scripts/aligned_drift_watch.py",
+  "restore": "scripts/restore_main_face.sh"
+}
