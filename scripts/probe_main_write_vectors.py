@@ -12,6 +12,8 @@ Vectors (non-destructive where possible):
   W3c Actions API dispatch on trial
   W3d workflow_dispatch land-path-c-on-main on trial (dry_run; Path C)
   W3e Actions API dispatch land-path-c-on-main on trial
+  W3f repository_dispatch land-path-c-on-main on trial (dry_run; Batch 141:
+      success → DISPATCH_OK_DRY_RUN false_positive; excluded from path_b_ready)
   W4a fork create
   W4b GraphQL createCommitOnBranch (forbidden → no write)
   W4c pulls create capability (expects 403 without a pushed head)
@@ -288,7 +290,11 @@ def main() -> int:
             "state": "WRITABLE" if d2_status in (200, 201, 204) else _classify(d2_status, d2_body),
         }
 
-        # W3f — Path C repository_dispatch (Batch 139: ghs Contents write; workflow_dispatch 403)
+        # W3f — Path C repository_dispatch on *trial* (Batch 139/141).
+        # Batch 141: dry_run=true success is a FALSE POSITIVE for main write.
+        # It only proves Contents:write on trial can POST /dispatches; the workflow
+        # stays dry-run and does not push to d6g8k5htny-coder/main. Do NOT count
+        # W3f toward path_b_ready / overall WRITABLE (that skipped real lands).
         rd_status, rd_body = _request(
             "POST",
             f"{TRIAL_API}/dispatches",
@@ -297,11 +303,24 @@ def main() -> int:
                 "client_payload": {"dry_run": True},
             },
         )
+        if rd_status in (200, 201, 204):
+            w3f_state = "DISPATCH_OK_DRY_RUN"
+        else:
+            w3f_state = _classify(rd_status, rd_body)
         vectors["W3f_repository_dispatch_path_c"] = {
             "http_status": rd_status,
             "msg": _short(rd_body),
-            "state": "WRITABLE" if rd_status in (200, 201, 204) else _classify(rd_status, rd_body),
-            "note": "repository_dispatch land-path-c-on-main; dry_run default true; apply needs MAIN_PUSH_TOKEN secret",
+            "state": w3f_state,
+            "path_b_capable": False,
+            "main_write": False,
+            "false_positive_for_main_write": rd_status in (200, 201, 204),
+            "target_repo": TRIAL,
+            "client_payload_dry_run": True,
+            "note": (
+                "Batch 141: dry_run repository_dispatch on trial is NOT a write path "
+                "to d6g8k5htny-coder/main. Apply needs dispatch_land_path_c.sh --apply "
+                "+ trial secret MAIN_PUSH_TOKEN (or device-flow / App install main)."
+            ),
         }
 
         # W4a — fork
@@ -373,6 +392,8 @@ def main() -> int:
 
         report["vectors"] = vectors
 
+        # Path-B-capable = can actually mutate main (refs/contents/real dispatch/fork).
+        # W3f dry-run on trial is excluded (Batch 141 false_positive neutralization).
         path_b_keys = (
             "W1_git_refs",
             "W2_contents_put",
@@ -381,7 +402,6 @@ def main() -> int:
             "W3c_api_dispatch_trial",
             "W3d_dispatch_path_c_trial",
             "W3e_api_dispatch_path_c_trial",
-            "W3f_repository_dispatch_path_c",
             "W4a_fork",
             "W4b_graphql_createCommitOnBranch",
             "W4c_pulls_create",
@@ -389,6 +409,10 @@ def main() -> int:
         writable = [
             k for k in path_b_keys if vectors.get(k, {}).get("state") == "WRITABLE"
         ]
+        w3f = vectors.get("W3f_repository_dispatch_path_c") or {}
+        report["w3f_state"] = w3f.get("state")
+        report["w3f_real_main_write"] = False
+        report["w3f_false_positive"] = bool(w3f.get("false_positive_for_main_write"))
         # REACHED_422 on contents/refs often means write scope present but bad payload —
         # treat as interesting but not WRITABLE for landing.
         report["path_b_writable_vectors"] = writable
@@ -405,10 +429,17 @@ def main() -> int:
         report["state"] = "DENIED"
         report["path_b_ready"] = False
         print(json.dumps(report, indent=2, sort_keys=True))
-        print(
-            "probe_main_write_vectors: DENIED — no Path-B-capable write vector",
-            file=sys.stderr,
-        )
+        if report.get("w3f_false_positive"):
+            print(
+                "probe_main_write_vectors: DENIED — no Path-B-capable write vector "
+                "(W3f dry-run dispatch on trial is false_positive for main write)",
+                file=sys.stderr,
+            )
+        else:
+            print(
+                "probe_main_write_vectors: DENIED — no Path-B-capable write vector",
+                file=sys.stderr,
+            )
         return 1
     except RuntimeError as exc:
         report["state"] = "TRANSPORT_ERROR"

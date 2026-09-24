@@ -4,21 +4,27 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T07:17:25Z |
-| Checked (UTC) | 2026-09-24T07:24:00Z |
+| Started (UTC) | 2026-09-24T07:31:14Z |
+| Checked (UTC) | 2026-09-24T07:31:14Z |
 | Verification URL | https://github.com/login/device |
-| User code | `F11F-5064` |
-| Prior code | `2983-6CCD` (expired) |
-| Status | pending (authorization_pending / slow_down) |
-| Expires | see `seconds_left` in BATCH140_BRIEF |
+| User code | `16F5-39F5` |
+| Prior code | `F11F-5064` (expired / renewed) |
+| Status | pending (authorization_pending) |
+| Expires | see `seconds_left` in BATCH141_BRIEF |
 
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **F11F-5064**
+2. Enter code **16F5-39F5**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically.
+
+## W3f false positive (Batch 141)
+
+`probe_main_write_vectors` vector **W3f** (`repository_dispatch` on **trial** with `dry_run=true`) can return HTTP 201 while direct main write stays **DENIED**. That is **not** a write path to `d6g8k5htny-coder/main`. Batch 141 classifies it as `DISPATCH_OK_DRY_RUN`, sets `path_b_capable=false`, and keeps overall `path_b_ready=false` so agents do not skip real lands.
+
+Real Path C still needs one of: device-flow authorize → user token, or `MAIN_PUSH_TOKEN` file drop + trial Actions secret, or Cursor App install of `main`, or local `--from-bundle`.
 
 ## MAIN_PUSH_TOKEN file drop (Batch 140)
 
