@@ -31,7 +31,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tiny JSON: `portable/BATCH81_BRIEF.json`. Snapshot refresh only.
 - Timer: (re)arm `permanent-autonomous-align-watch` **3600s**. `goal_complete=false`.
 
-**Land note:** Path C on `d6g8k5htny-coder/main` still 403. Owner assets remain at release `batch80-path-c-bundle`. Direct push to trial `main` for this idle brief.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `12143c6..c26f8e3` (`cursor/batch81-path-c-idle-f8a6`). Path C on `d6g8k5htny-coder/main` still 403. Owner assets remain at release `batch80-path-c-bundle`. Timer `permanent-autonomous-align-watch` @ **3600s** armed.
 
 ### Batch 80 — 2026-09-24 ~02:23 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; GitHub Release `batch80-path-c-bundle`)
 
