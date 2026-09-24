@@ -306,6 +306,12 @@ def _land_fields_from_verify(verify: dict) -> dict:
     vector = verify.get("write_vector")
     if isinstance(vector, str) and vector:
         out["write_vector"] = vector
+    # Batch 238: preserve follow-on 0018 land marker across status refreshes.
+    if verify.get("path_c_0018_landed") is True:
+        out["path_c_0018_landed"] = True
+        via = verify.get("path_c_0018_via")
+        if isinstance(via, str) and via:
+            out["path_c_0018_via"] = via
     return out
 
 
@@ -429,6 +435,16 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
             status["main_push_token_set"] = True
             if prior.get("main_push_token_set_repos"):
                 status["main_push_token_set_repos"] = prior["main_push_token_set_repos"]
+    # Batch 238: preserve path_c_0018_landed from VERIFY or prior across assert.
+    if status.get("path_c_0018_landed") is not True:
+        if prior.get("path_c_0018_landed") is True:
+            status["path_c_0018_landed"] = True
+            if prior.get("path_c_0018_via"):
+                status["path_c_0018_via"] = prior["path_c_0018_via"]
+        elif verify.get("path_c_0018_landed") is True:
+            status["path_c_0018_landed"] = True
+            if verify.get("path_c_0018_via"):
+                status["path_c_0018_via"] = verify["path_c_0018_via"]
     # Ensure schema keys exist even if None.
     for key in SCHEMA_KEYS:
         status.setdefault(key, None)

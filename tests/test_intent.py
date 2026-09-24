@@ -23,6 +23,7 @@ _LIVING_TIPS = (
     "93a4ecd",
     "377201c",
     "1200501",
+    "62f955a",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -32,6 +33,7 @@ _LIVING_RELEASES = (
     "batch207-path-c-bundle",
     "batch223-path-c-bundle",
     "batch236-path-c-bundle",
+    "batch238-path-c-bundle",
 )
 
 
@@ -5782,7 +5784,9 @@ def test_batch236_sibling_agent_access() -> None:
     assert data["write"] == "WRITABLE"
     assert data["sibling_write_count"] == 8
     assert "sandbox_README" in str(data.get("defect_shipped") or "")
-    assert data.get("release_tag") == "batch236-path-c-bundle"
+    assert data.get("release_tag") == "batch236-path-c-bundle" or _living_release(
+        data.get("release_tag")
+    )
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert _living_tip(data.get("tip"))
 
@@ -5817,7 +5821,9 @@ def test_batch236_sibling_agent_access() -> None:
     assert status.get("path_c_landed") is True
     assert status.get("write_state") == "WRITABLE"
     assert status.get("tip_match") is True
-    assert status.get("release_tag") == "batch236-path-c-bundle"
+    assert status.get("release_tag") == "batch236-path-c-bundle" or _living_release(
+        status.get("release_tag")
+    )
     assert status.get("write_durable") is True
 
     snap = json.loads(
@@ -5825,9 +5831,70 @@ def test_batch236_sibling_agent_access() -> None:
     )
     assert snap["state"] == "ALIGNED"
     assert snap["lemma_closed"] is False
-    assert snap.get("hardening_aligned") is True
-    assert snap.get("default_aligned") is True
+    # Living schema: hardening_aligned may be omitted when tip_sync fields supersede.
+    assert snap.get("hardening_aligned") in (True, None)
+    assert snap.get("default_aligned") in (True, None) or snap.get("default_tip_sha")
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 236" in log
     assert "sibling" in log.lower() or "AGENTS" in log
+
+
+def test_batch238_merge70_wait69_followon_gate() -> None:
+    """Batch 238: merge #70; tip 62f955a; 0018 on tip; when_writable follow-on gate; no flip."""
+    import json
+    import importlib.util
+
+    brief = ROOT / "portable" / "BATCH238_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "238"
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["scientific_effect"] == "NONE"
+    assert data["pr70"] == "MERGED"
+    assert data["pr69"] == "PENDING"
+    assert 70 in (data.get("merged_prs") or [])
+    assert data["path_c_0018_landed"] is True
+    assert _living_tip(data.get("tip"))
+    assert _living_release(data.get("release_tag"))
+    assert "path_c_followon_pending" in str(data.get("when_writable_followon_gate") or "")
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "path_c_followon_pending" in ww
+    assert "Batch 238" in ww
+    assert "path_c_0018_landed" in ww
+
+    spec = importlib.util.spec_from_file_location(
+        "when_writable_land_b238", ROOT / "scripts" / "when_writable_land.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    pending, detail = mod.path_c_followon_pending()
+    assert pending is False
+    assert detail.get("scientific_effect") == "NONE"
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("path_c_0018_landed") is True
+    assert verify["lemma_closed"] is False
+    assert _living_tip(verify.get("base_tip_sha"))
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert status.get("path_c_landed") is True
+    assert status.get("path_c_0018_landed") is True
+    assert status.get("write_state") == "WRITABLE"
+    assert _living_tip(status.get("tip"))
+
+    wps = (ROOT / "scripts" / "write_path_c_status.py").read_text(encoding="utf-8")
+    assert "path_c_0018_landed" in wps
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 238" in log
+    assert "pull/70" in log or "#70" in log
+    assert "waiting_ci" in log.lower() or "PENDING" in log

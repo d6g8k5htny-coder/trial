@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 238 — 2026-09-24 ~19:31– UTC (PERMANENT window; merge #70; tip-refresh 62f955a; wait #69; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.
+- **Merged** [main #70](https://github.com/d6g8k5htny-coder/main/pull/70) (all checks SUCCESS) → hardening tip **`62f955a`**. Portable **0018** already on tip (REPOSITORY_TOP_LEVEL += attestations).
+- Tip-refresh: `refresh_path_c_bundle.sh` → BASE_TIP=`62f955a`; apply_all 0001–0018 already-applied; focused 90 + claims/recovery 83; `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**.
+- [main #69](https://github.com/d6g8k5htny-coder/main/pull/69) still **CI PENDING** (workspace-landing verify in progress) → **waiting_ci**; no fake merge.
+- Parallel eng: `when_writable_land` **follow-on 0018 gate** (`path_c_followon_pending` — do not idle-suppress while `path_c_0018_landed=false`); `write_path_c_status` preserves 0018 marker; `assert_path_c_ready` OK; `pack_portable` → `batch238-path-c-bundle`.
+- Research untouched; **flipped nothing**.
+
 ### Batch 237 — 2026-09-24 ~19:08– UTC (PERMANENT window; tip stable 1200501; finish eng PR #70; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ **`1200501`** (== BASE_TIP). Default **`1c6e74b` ALIGNED**. WRITE **WRITABLE** (device create-ref 201 + `MAIN_PUSH_TOKEN`; **never printed**). Path B skipped. Path C eng stack still ancestor (PR #64).
