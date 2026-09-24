@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 241 — 2026-09-24 ~20:23– UTC (PERMANENT window; merge #71 0019; tip-refresh 542e6ec; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.
+- [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) Path C **0019** — `mergeable=MERGEABLE` / `mergeStateStatus=CLEAN`; required workspace-landing **verify SUCCESS** (duplicate push verify also SUCCESS) → **`gh pr merge --merge`** → hardening tip **`542e6ec`**.
+- Tip-refresh: `refresh_path_c_bundle.sh` → BASE_TIP=`542e6ec`; apply_all 0001–0019 already-applied; focused 90 + claims/recovery 83; `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**.
+- Status: `path_c_0019_landed=true` via `main_pr_71_merge_542e6ec`; waiting_ci cleared. Research untouched; **flipped nothing**.
+
 ### Batch 240 — 2026-09-24 ~20:08– UTC (PERMANENT window; #71 CI PENDING; land-path-c 0019 apply harden; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **`a1ed37b`** (== BASE_TIP).
