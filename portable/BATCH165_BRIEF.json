@@ -1,6 +1,6 @@
 {
   "batch": "165",
-  "generated_at_utc": "2026-09-24T09:50:29Z",
+  "generated_at_utc": "2026-09-24T09:50:42Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "prior_device_code": "C8FC-A08F",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left<90 still pending",
-  "seconds_left": 747,
+  "seconds_left": 734,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -79,5 +79,5 @@
   "release": "batch162-path-c-bundle",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "c363a24"
+  "trial_main_sha": "7ab5627"
 }
