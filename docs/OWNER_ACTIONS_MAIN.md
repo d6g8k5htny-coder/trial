@@ -1,6 +1,24 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 242 — write WRITABLE; Path B ALIGNED no-op; multi-agent face
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + `trial` (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`542e6ec`** (== BASE_TIP). Default tip **ALIGNED** @ `ea41a30`. Release
+**`batch241-path-c-bundle`**. Path B landers exit 0 without push/PR when tip is
+already ALIGNED. Multi-agent: [`MULTI_AGENT_ACCESS.md`](MULTI_AGENT_ACCESS.md) —
+grant all **8** repos including **sandbox**. `lemma_closed` stays **false**.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh          # dry-run; App URLs
+./scripts/restore_main_face.sh                    # Path B; ALIGNED → no-op
+./scripts/owner_land_path_b.sh --dry-run          # certainty; no push
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 224 — add `sandbox` (8 repos; ALL AI agents)
 
 **Scientific effect: NONE.** Dylan screenshot shows NEW **`sandbox`**. Keep **all 8**

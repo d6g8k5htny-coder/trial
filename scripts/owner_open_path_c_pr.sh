@@ -73,7 +73,7 @@ Env:
   PATH_C_HARDENING_REF  Hardening branch (default: chatgpt/drive-github-hardening-20260919)
   PATH_C_PR_BRANCH      Feature branch (default: cursor/path-c-portable-fixes)
   PATH_C_PR_WORKDIR     Existing clone dir to reuse (optional)
-  PATH_C_RELEASE_TAG    Prefer this trial release for .bundle link (default: batch218-path-c-bundle)
+  PATH_C_RELEASE_TAG    Prefer this trial release for .bundle link (default: batch241-path-c-bundle)
   TRIAL_REPO            Trial repo slug for release lookup (default: d6g8k5htny-coder/trial)
   MAIN_PUSH_TOKEN / GH_TOKEN — optional; never printed
 

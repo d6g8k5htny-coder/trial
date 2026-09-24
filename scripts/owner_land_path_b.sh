@@ -9,10 +9,12 @@
 # (no PR). Use only when the owner explicitly wants that.
 #
 # Intended to run on the owner's machine / Codespace with *owner* gh/git auth
-# that has write on d6g8k5htny-coder/main. This trial cloud token cannot (403).
+# that has write on d6g8k5htny-coder/main. Cursor App install is often trial-only
+# (403); device-auth / MAIN_PUSH_TOKEN can be WRITABLE (never print tokens).
 #
 # Scientific effect: NONE. Documentation-only redirect until Path A.
 # Fail-closed: clear errors on missing patch, am failure, push denial, auditor fail.
+# Batch 242: when tip is already ALIGNED, exit 0 without push/PR (no-op land).
 #
 # Usage:
 #   ./scripts/owner_land_path_b.sh
@@ -224,9 +226,19 @@ fi
 # AGENTS without the Option-B "q0 Research Program" notice strings; a narrow
 # notice grep false-fails am and breaks Path B restore readiness. Prefer the
 # same predicate as audit_main_alignment / path_b_dry_run ALREADY_ALIGNED.
+#
+# Batch 242: also skip push/PR when already ALIGNED — opening a no-op notice
+# branch/PR on an ALIGNED tip (e.g. Universal-law @ ea41a30) is lander noise
+# and confuses multi-agent Path B readiness (restore_main_face already exits).
 if python3 "$AUDIT_LOCAL" . >/tmp/owner-path-b-pre-am.json 2>/tmp/owner-path-b-pre-am.err; then
   echo "Tree already ALIGNED (audit_local_tree); skipping git am."
   cat /tmp/owner-path-b-pre-am.err 2>/dev/null || true
+  echo "README head:"
+  head -8 README.md || true
+  echo
+  echo "owner_land_path_b: already ALIGNED — Path B land not needed (no push/PR)."
+  echo "Scientific effect: NONE"
+  exit 0
 else
   echo "--- git am Option-B format-patch (pre-am tip not ALIGNED) ---"
   if ! git am "$PATCH"; then
@@ -249,7 +261,7 @@ if [[ "$DIRECT_MAIN" -eq 1 ]]; then
   echo
   echo "--- push default main (opt-in --direct-main) ---"
   if ! git push origin HEAD:main; then
-    die "git push to main denied. Confirm this account has Contents:Write on $REPO (trial cloud tokens get 403)."
+    die "git push to main denied. Confirm this account has Contents:Write on $REPO (App install may be 403; device-auth/MAIN_PUSH_TOKEN can be WRITABLE)."
   fi
   echo "Pushed Option-B onto default main."
   echo

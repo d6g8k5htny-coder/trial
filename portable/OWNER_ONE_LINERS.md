@@ -1,8 +1,23 @@
 # Owner one-liners (Path B preferred / Path A HOLD VOID / Path C engineering)
 
 Copy-paste from a machine or Actions runner that **can write** to
-`d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
-+ `gh pr ready/merge` all return **403**).
+`d6g8k5htny-coder/main`. Cursor App install is often trial-only (**403** on `main`);
+device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
+`portable/PATH_C_STATUS.json` `write_state`.
+
+> **Batch 242 — tip stable `542e6ec`; default ALIGNED `ea41a30`; write WRITABLE; Path B ALIGNED no-op; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/restore_main_face.sh                    # ALIGNED → exit 0 (no push/PR)
+> ./scripts/owner_land_path_b.sh --dry-run          # certainty JSON
+> ./scripts/owner_grant_ai_agent_access.sh --check  # multi-agent; all 8 incl. sandbox
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+> ./scripts/owner_path_c_oneshot.sh --from-bundle --dry-run
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md` | `docs/MULTI_AGENT_ACCESS.md`.
+> `lemma_closed=false`. Scientific effect: **NONE**.
 
 > **Batch 224 — add `sandbox` (8 repos); multi-agent access; write DENIED; auth renew `84FB-0605` (from `BE27-A62D`); sandbox 404 to App token**:
 >
