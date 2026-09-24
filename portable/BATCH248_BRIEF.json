@@ -61,8 +61,10 @@
   ],
   "shipped": true,
   "where": ["main", "trial"],
-  "trial_pr": null,
-  "trial_pr_merged": false,
+  "trial_pr": 67,
+  "trial_pr_merged": true,
   "trial_direct_land": true,
-  "trial_land_branch": "cursor/batch248-wl-ci-split-89fe"
+  "trial_land_sha": "14db35e",
+  "trial_land_branch": "cursor/batch248-wl-ci-split-89fe",
+  "main_merge_sha": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363"
 }
