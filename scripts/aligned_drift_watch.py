@@ -13,9 +13,13 @@ Always prints one JSON object including preferred restore route (B vs A) for the
 current tip. Always writes portable/ALIGNED_DRIFT_SNAPSHOT.json (tip SHA +
 audit markers) unless --no-snapshot.
 
-Optional --restore-if-writable: when MISALIGNED and a Path-B-capable write vector
-is WRITABLE, run scripts/restore_main_face.sh (batch land). Never flips
-lemma_closed / prizes / premises / research status.
+Batch 240 — MAIN_PUSH_TOKEN + auto Path B restore:
+  Discover MAIN_PUSH_TOKEN (env → well-known file drops; value never printed)
+  and inject into probe/restore children. When default tip is MISALIGNED and a
+  Path-B-capable write vector is WRITABLE, auto-run scripts/restore_main_face.sh
+  unless --no-restore. --restore-if-writable remains an explicit opt-in alias
+  (default auto when token present or write WRITABLE after probe).
+  Never flips lemma_closed / prizes / premises / research status.
 
 Scientific effect: NONE.
 """
@@ -23,6 +27,7 @@ Scientific effect: NONE.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import subprocess
@@ -38,6 +43,7 @@ VECTORS = ROOT / "scripts" / "probe_main_write_vectors.py"
 RESTORE = ROOT / "scripts" / "restore_main_face.sh"
 WINDOW = ROOT / "scripts" / "check_autonomous_window.py"
 PATH_C_STATUS = ROOT / "scripts" / "write_path_c_status.py"
+WHEN_WRITABLE = ROOT / "scripts" / "when_writable_land.py"
 SNAPSHOT = ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json"
 PATH_C_STATUS_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
 
@@ -46,6 +52,35 @@ PATH_C_STATUS_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
 ROUTE_WHEN_MISALIGNED = "Path_B"
 ROUTE_ALTERNATE = "Path_A"
 ROUTE_WHEN_ALIGNED = "Path_C_on_hardening"
+
+
+def _load_token_helpers():
+    """Reuse when_writable_land MAIN_PUSH_TOKEN discovery (never print values)."""
+    spec = importlib.util.spec_from_file_location("when_writable_land_tok", WHEN_WRITABLE)
+    if spec is None or spec.loader is None:
+        return None, None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return getattr(mod, "resolve_main_push_token", None), getattr(
+        mod, "apply_token_to_env", None
+    )
+
+
+def _resolve_token_env() -> tuple[dict[str, str], str | None]:
+    """Return (child_env, token_source_label). Token value never logged."""
+    resolve, apply = _load_token_helpers()
+    base = dict(os.environ)
+    if not callable(resolve) or not callable(apply):
+        return base, None
+    token, source = resolve()
+    if not token:
+        return base, None
+    return apply(base, token), source
+
+
+# Process-wide child env + source label (set once in main).
+_CHILD_ENV: dict[str, str] = dict(os.environ)
+_TOKEN_SOURCE: str | None = None
 
 
 def _parse_json_stdout(text: str) -> dict:
@@ -70,7 +105,7 @@ def _run_json(cmd: list[str], timeout: int = 120) -> tuple[int, dict, str]:
         check=False,
         timeout=timeout,
         cwd=str(ROOT),
-        env=os.environ.copy(),
+        env=_CHILD_ENV,
     )
     return proc.returncode, _parse_json_stdout(proc.stdout), (proc.stderr or "").strip()
 
@@ -213,14 +248,20 @@ def _write_snapshot(report: dict, path: Path) -> None:
     report["snapshot"] = snap
 
 
-def _maybe_restore(report: dict, batch: str) -> dict:
-    """Run restore_main_face when MISALIGNED + Path-B-capable write."""
+def _maybe_restore(report: dict, batch: str, *, dry_run: bool = False) -> dict:
+    """Run restore_main_face when MISALIGNED + Path-B-capable write.
+
+    Batch 240: child env carries MAIN_PUSH_TOKEN (discovered; never printed).
+    """
     detail: dict = {
         "attempted": False,
         "skipped_reason": None,
         "exit": None,
         "stdout_tail": None,
         "stderr_tail": None,
+        "dry_run": dry_run,
+        "route": ROUTE_WHEN_MISALIGNED,
+        "token_source": _TOKEN_SOURCE,
     }
     if report.get("state") != "MISALIGNED":
         detail["skipped_reason"] = "not_misaligned"
@@ -232,15 +273,22 @@ def _maybe_restore(report: dict, batch: str) -> dict:
     if not RESTORE.is_file():
         detail["skipped_reason"] = "restore_script_missing"
         return detail
+    cmd = ["bash", str(RESTORE), "--batch", str(batch)]
+    if dry_run:
+        cmd = ["bash", str(RESTORE), "--dry-run", "--batch", str(batch)]
+        detail["skipped_reason"] = "dry_run"
+        detail["would_run"] = cmd
+        detail["attempted"] = False
+        return detail
     detail["attempted"] = True
     proc = subprocess.run(
-        ["bash", str(RESTORE), "--batch", str(batch)],
+        cmd,
         capture_output=True,
         text=True,
         check=False,
         timeout=300,
         cwd=str(ROOT),
-        env=os.environ.copy(),
+        env=_CHILD_ENV,
     )
     detail["exit"] = proc.returncode
     detail["stdout_tail"] = (proc.stdout or "")[-2000:]
@@ -248,7 +296,35 @@ def _maybe_restore(report: dict, batch: str) -> dict:
     return detail
 
 
+def _should_auto_restore(
+    *,
+    restore_flag: bool,
+    no_restore: bool,
+    dry_run: bool,
+    write_state: str | None,
+    path_b_ready: bool | None,
+    token_source: str | None,
+) -> bool:
+    """Batch 240: auto Path B when MISALIGNED+WRITABLE unless --no-restore.
+
+    Explicit --restore-if-writable always enables (unless --no-restore).
+    Auto also enables when a MAIN_PUSH_TOKEN source is known or write is
+    already WRITABLE / path_b_ready after probe. --dry-run still decides.
+    """
+    if no_restore:
+        return False
+    if restore_flag or dry_run:
+        return True
+    if token_source:
+        return True
+    if write_state == "WRITABLE" or path_b_ready:
+        return True
+    return False
+
+
 def main() -> int:
+    global _CHILD_ENV, _TOKEN_SOURCE
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--no-snapshot",
@@ -268,7 +344,20 @@ def main() -> int:
     parser.add_argument(
         "--restore-if-writable",
         action="store_true",
-        help="If MISALIGNED and Path-B write works, run restore_main_face.sh",
+        help=(
+            "If MISALIGNED and Path-B write works, run restore_main_face.sh "
+            "(Batch 240: also auto when MAIN_PUSH_TOKEN present / WRITABLE)"
+        ),
+    )
+    parser.add_argument(
+        "--no-restore",
+        action="store_true",
+        help="Disable auto Path B restore even when MISALIGNED+WRITABLE (Batch 240)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Decide Path B restore only; never invoke real restore_main_face land",
     )
     parser.add_argument(
         "--batch",
@@ -287,6 +376,16 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    # Batch 240: discover MAIN_PUSH_TOKEN once; inject for all children.
+    _CHILD_ENV, _TOKEN_SOURCE = _resolve_token_env()
+    if _TOKEN_SOURCE and _CHILD_ENV.get("MAIN_PUSH_TOKEN"):
+        # Mirror into process env so nested helpers that read os.environ see it.
+        os.environ["MAIN_PUSH_TOKEN"] = _CHILD_ENV["MAIN_PUSH_TOKEN"]
+        if not (os.environ.get("GH_TOKEN") or "").strip():
+            os.environ["GH_TOKEN"] = _CHILD_ENV["MAIN_PUSH_TOKEN"]
+        if not (os.environ.get("GITHUB_TOKEN") or "").strip():
+            os.environ["GITHUB_TOKEN"] = _CHILD_ENV["MAIN_PUSH_TOKEN"]
+
     watched_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     report: dict = {
         "watched_at_utc": watched_at,
@@ -294,6 +393,8 @@ def main() -> int:
         "goal_complete": False,
         "lemma_closed": False,
         "flipped_anything": False,
+        "token_source": _TOKEN_SOURCE,
+        "auto_path_b_restore": True,
     }
 
     audit_ec, audit, audit_err = _run_json([sys.executable, str(AUDIT)])
@@ -346,14 +447,29 @@ def main() -> int:
         "preferred_when_misaligned": ROUTE_WHEN_MISALIGNED,
         "alternate_when_misaligned": ROUTE_ALTERNATE,
         "write_currently": write_info.get("state"),
+        "token_source": _TOKEN_SOURCE,
+        "auto_restore": not args.no_restore,
         "note": (
-            "When write flips WRITABLE and tip is MISALIGNED, run "
-            "aligned_drift_watch.py --restore-if-writable or restore_main_face.sh."
+            "Batch 240: when write is WRITABLE (MAIN_PUSH_TOKEN env/file) and tip "
+            "is MISALIGNED, aligned_drift_watch auto Path B restores unless "
+            "--no-restore. Prefer restore_main_face.sh; never flip lemma_closed."
         ),
     }
 
-    if args.restore_if_writable:
-        report["restore"] = _maybe_restore(report, args.batch)
+    do_restore = _should_auto_restore(
+        restore_flag=args.restore_if_writable,
+        no_restore=args.no_restore,
+        dry_run=args.dry_run,
+        write_state=write_info.get("state"),
+        path_b_ready=write_info.get("path_b_ready"),
+        token_source=_TOKEN_SOURCE,
+    )
+    # With --no-probe and no token/flag, skip restore decision entirely (CI record-only).
+    if args.no_probe and not args.restore_if_writable and not args.dry_run and not _TOKEN_SOURCE:
+        do_restore = False
+
+    if do_restore:
+        report["restore"] = _maybe_restore(report, args.batch, dry_run=args.dry_run)
         # Re-audit after restore attempt so exit code reflects post-restore tip.
         if report["restore"].get("attempted"):
             audit_ec2, audit2, audit_err2 = _run_json([sys.executable, str(AUDIT)])

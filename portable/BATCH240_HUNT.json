@@ -1,0 +1,21 @@
+{
+  "batch": "240",
+  "generated_at_utc": "2026-09-24T20:35:00Z",
+  "hunt": "deep_post_0019_resourcewarning_for_0020",
+  "hunt_result": "NEGATIVE",
+  "defect_found": false,
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "aligned": true,
+  "tip_moved": false,
+  "write": "WRITABLE",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "resourcewarning_total_failures": 0,
+  "bare_open_eng_candidates": 0,
+  "artifact": "portable/HUNT_240_NEGATIVE.json",
+  "note": "Deep hunt NEGATIVE after #71/0019 on tip. Seed BATCH240_HUNT_SEED_0020.json superseded."
+}
