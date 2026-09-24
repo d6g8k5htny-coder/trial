@@ -15,5 +15,6 @@
   "hardening_tip": "ac33581",
   "route_now": "IDLE",
   "timer": "permanent-autonomous-align-watch@3600s",
+  "land_trial": "direct push cursor/batch95-repo-create-fail-9bc1 → trial main @497bd66",
   "note": "cursor[bot] cannot createRepository under d6g8k5htny-coder; install still trial-only; flipped nothing"
 }
