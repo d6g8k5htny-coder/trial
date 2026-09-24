@@ -25,13 +25,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked.
 - Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
-- Device auth `2983-6CCD` still **pending** (`slow_down`); seconds_left≈174; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- Device auth `2983-6CCD` → **expired** mid-batch → **renewed** `F11F-5064`; seconds_left≈899; poller `gh-device-login` restarted; daemon `when-writable-land` up.
 - **VERIFY batch 138 CI:** job `path-c-applied-bundle-dry-apply` — local `git am` OK (`lemma_closed=false` / problems=0 @ `c82c9357`); GitHub main run [35968047551](https://github.com/d6g8k5htny-coder/trial/actions/runs/35968047551) **success** (same job green on follow-up 35968103983).
 - Open main PRs: **12** (read-only). None carry portable Path C stack.
 - **Concrete readiness (CI green + tip stable + write blocked):** `land-path-c-on-main` gains `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; `workflow_dispatch` 403). Helper `scripts/dispatch_land_path_c.sh` (`--apply` when `MAIN_PUSH_TOKEN` secret appears). Vectors W3f. Release tgz refresh with batch138/139 artifacts.
 - Tiny JSON: `portable/BATCH139_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
-**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** `dispatch_land_path_c.sh --apply` once `MAIN_PUSH_TOKEN` secret exists **or** local `--from-bundle` one-shot.
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `F11F-5064` (renewed after `2983-6CCD` expired) **or** `dispatch_land_path_c.sh --apply` once `MAIN_PUSH_TOKEN` secret exists **or** local `--from-bundle` one-shot.
 
 ### Batch 138 — 2026-09-24 ~07:07 UTC (PERMANENT window; path-c-applied-bundle CI dry-apply; dry-run exit codes; scientific effect NONE; flipped nothing)
 
@@ -42,7 +42,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Concrete readiness (tip stable + write blocked):** CI job `path-c-applied-bundle-dry-apply` — shallow-clone hardening tip, `git am` bundle, assert `lemma_closed=false`. Also tighten `owner_land_path_c.sh --dry-run` exit codes to pass through path_c_dry_run **0/1/2** (no collapse of transport→1).
 - Tiny JSON: `portable/BATCH138_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
-**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** local `--from-bundle` one-shot **or** relaunch with main scope.
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `F11F-5064` (renewed after `2983-6CCD` expired) **or** local `--from-bundle` one-shot **or** relaunch with main scope.
 
 ### Batch 137 — 2026-09-24 ~07:02 UTC (PERMANENT window; owner Path C ONE-SHOT; RELAUNCH_WITH_MAIN_SCOPE; scientific effect NONE; flipped nothing)
 
@@ -53,7 +53,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **New:** `portable/RELAUNCH_WITH_MAIN_SCOPE.md` — (a) Cursor App add `main` R/W; (b) OR device code; (c) OR `MAIN_PUSH_TOKEN`; (d) then RELAUNCH Cloud Agent from trial (mid-flight cannot gain main). Packed via `pack_portable.sh`.
 - Daemon `when-writable-land` **up**; `gh-device-login` poller **up**. Landed on **trial `main`** (`86d896b`). Tiny JSON: `portable/BATCH137_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
-**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** local `--from-bundle` one-shot **or** relaunch with main scope.
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `F11F-5064` (renewed after `2983-6CCD` expired) **or** local `--from-bundle` one-shot **or** relaunch with main scope.
 
 ### Batch 134 — 2026-09-24 ~06:46 UTC (PERMANENT window; auth renew; broader RW hunt clean; pack currency; scientific effect NONE; flipped nothing)
 

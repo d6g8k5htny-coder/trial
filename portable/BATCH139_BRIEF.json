@@ -1,6 +1,6 @@
 {
   "batch": "139",
-  "generated_at_utc": "2026-09-24T07:16:11Z",
+  "generated_at_utc": "2026-09-24T07:17:52Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -14,10 +14,10 @@
   "tip_refresh": false,
   "path_c_landed": false,
   "device_auth": "pending",
-  "device_auth_error": "slow_down",
-  "device_code": "2983-6CCD",
-  "auth_renewed": false,
-  "seconds_left": 174,
+  "device_auth_error": "authorization_pending",
+  "device_code": "F11F-5064",
+  "auth_renewed": true,
+  "seconds_left": 899,
   "daemon": "up",
   "flipped_anything": false,
   "trial_main_landed": true,
@@ -38,9 +38,10 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "portable/GH_DEVICE_LOGIN.md"
   ],
-  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device 2983-6CCD pending; CI path-c-applied-bundle-dry-apply green local+main; repository_dispatch land-path-c-on-main for MAIN_PUSH_TOKEN; research untouched",
+  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device F11F-5064 renewed after 2983-6CCD expired; seconds_left\u2248899; CI path-c-applied-bundle-dry-apply green; repository_dispatch land-path-c-on-main; release batch139-path-c-bundle; research untouched",
   "has_token": false,
-  "trial_main_sha": "a3770b2",
+  "trial_main_sha": "af7b6db",
   "release": "batch139-path-c-bundle",
-  "repository_dispatch_dry_run": "accepted_204"
+  "repository_dispatch_dry_run": "accepted_204",
+  "prior_device_code": "2983-6CCD"
 }

@@ -4,18 +4,18 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T07:01:46Z |
-| Checked (UTC) | 2026-09-24T07:15:00Z |
+| Started (UTC) | 2026-09-24T07:16:30Z |
+| Checked (UTC) | 2026-09-24T07:16:30Z |
 | Verification URL | https://github.com/login/device |
-| User code | `2983-6CCD` |
-| Prior code | `5816-A241` (expired) |
-| Status | pending / slow_down (batch 139 poll) |
-| Expires | ~seconds_left≈174 from check |
+| User code | `F11F-5064` |
+| Prior code | `2983-6CCD` (expired) |
+| Status | pending (batch 139 renew after expiry) |
+| Expires | ~seconds_left≈899 from check |
 
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **2983-6CCD**
+2. Enter code **F11F-5064**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically.
