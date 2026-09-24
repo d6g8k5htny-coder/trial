@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 178 — 2026-09-24 ~11:05–11:15 UTC (PERMANENT window; tip stable 8ea3b5f; auth 5E05 pending; owner_open_path_c_pr release-bundle link; CI tip-drift string restore; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `5E05-EA04` still **pending** (`authorization_pending` / `slow_down`); seconds_left≥90 → **no renew**. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- Obsolescence on tip WITHOUT patches: 0001–0004/0008–0016 **all apply** (none already present) → **no drops**.
+- **CI:** trial `main` after Batch 176 was **red** (sanity intent): restored CI tip-drift exact strings `refresh BASE_TIP` + `rebuild path-c-applied-bundle`; restored `BATCH162_BRIEF` mention in `GH_DEVICE_LOGIN.md`.
+- **Engineering (tip stable + write blocked):** `scripts/owner_open_path_c_pr.sh` resolves latest release `path-c-on-hardening.bundle` and attaches/links download + release page in PR body; `--dry-run` prints `release_bundle_url`. Intent: `test_batch178_owner_pr_bundle_link_ci_fix`.
+- Tiny JSON: `portable/BATCH178_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `5E05-EA04` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #36 (canonical; App cannot comment #35/#33).
+
 ### Batch 176 — 2026-09-24 ~10:55–11:05 UTC (PERMANENT window; tip stable 8ea3b5f; auth renew 9671→5E05; refresh fetch/CI tip-drift wire; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

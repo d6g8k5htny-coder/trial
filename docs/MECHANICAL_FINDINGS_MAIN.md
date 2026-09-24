@@ -3,6 +3,26 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 178 — tip stable; auth pending 5E05; owner_open_path_c_pr release-bundle link; CI tip-drift string restore; no research flips @ tips `1c6e74b` / `8ea3b5f`
+
+Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Obsolescence on tip WITHOUT patches: **0** of 0001–0004/0008–0016 already present (no drops).
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8ea3b5fb9368a85e7f971d606b8f75c96c35c05a` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165 counts) |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth pending `5E05-EA04` (seconds_left≥90; no renew) |
+| pack / release | still **`batch169-path-c-bundle`**; `owner_open_path_c_pr.sh` PR body links `.bundle` download |
+| CI tip-drift | restore exact `refresh BASE_TIP` + `rebuild path-c-applied-bundle` strings (Batch 147) |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** |
+
+Artifacts: `portable/BATCH178_BRIEF.json`. Scientific effect: **NONE**.
+
 ## Batch 176 — tip stable; auth renew 5E05; refresh fetch+CI tip-drift dry-sim; no research flips @ tips `1c6e74b` / `8ea3b5f`
 
 Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.

@@ -4,6 +4,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 178 — owner_open_path_c_pr links release `.bundle`** (tip stable `8ea3b5f`; CI tip-drift string restore):
+>
+> ```bash
+> ./scripts/owner_open_path_c_pr.sh --dry-run   # prints release_bundle_url + release page
+> ./scripts/owner_open_path_c_pr.sh             # PR body links path-c-on-hardening.bundle from batch169-path-c-bundle
+> ./scripts/owner_path_c_oneshot.sh --from-bundle
+> ```
+>
+> Auth still pending `5E05-EA04` (no renew while seconds_left≥90). Scientific effect: **NONE**.
+
 > **Batch 176 — tip refresh + CI tip-drift dry-sim** (`scripts/refresh_path_c_bundle.sh`):
 >
 > ```bash

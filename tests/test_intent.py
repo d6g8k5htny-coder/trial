@@ -3706,3 +3706,85 @@ def test_batch176_refresh_ci_tip_drift() -> None:
     assert "Batch 176" in ones
     assert "refresh_path_c_bundle.sh" in ones
 
+
+def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
+    """Batch 178: tip stable; auth pending 5E05; owner_open_path_c_pr links release .bundle; CI tip-drift string fix; lemma_closed=false."""
+    import json
+    import os
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH178_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "178"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "5E05-EA04"
+    assert data["auth_renewed"] is False
+    assert data["write"] == "DENIED"
+    assert data.get("patches_dropped") == [] or data.get("patches_dropped") == 0
+    assert data.get("owner_pr_bundle_link") is True
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+
+    open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    assert open_pr.is_file()
+    text = open_pr.read_text(encoding="utf-8")
+    assert "resolve_path_c_bundle_release_url" in text
+    assert "path-c-on-hardening.bundle" in text
+    assert "releases/download" in text
+    assert "PATH_C_RELEASE_TAG" in text
+    assert "Batch 178" in text
+    assert "lemma_closed" in text
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry = subprocess.run(
+        ["bash", str(open_pr), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        env={**dry_env, "GIT_TERMINAL_PROMPT": "0"},
+        check=False,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    dry_out = dry.stdout + dry.stderr
+    assert "dry-run OK" in dry_out
+    assert "path-c-on-hardening.bundle" in dry_out
+    assert "releases/download" in dry_out or "release_bundle_url=" in dry_out
+    assert "batch169-path-c-bundle" in dry_out
+    assert "lemma_closed" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "refresh BASE_TIP" in ci
+    assert "rebuild path-c-applied-bundle" in ci
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "5E05-EA04" in gh
+    assert "BATCH162_BRIEF" in gh
+    assert "BATCH178_BRIEF" in gh
+    assert "owner_open_path_c_pr.sh" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 178" in log
+    assert "5E05-EA04" in log
+    assert "owner_open_path_c_pr" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 178" in ones
+    assert "owner_open_path_c_pr.sh" in ones
+    assert "path-c-on-hardening.bundle" in ones
+

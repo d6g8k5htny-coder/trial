@@ -73,9 +73,13 @@ Env:
   PATH_C_HARDENING_REF  Hardening branch (default: chatgpt/drive-github-hardening-20260919)
   PATH_C_PR_BRANCH      Feature branch (default: cursor/path-c-portable-fixes)
   PATH_C_PR_WORKDIR     Existing clone dir to reuse (optional)
+  PATH_C_RELEASE_TAG    Prefer this trial release for .bundle link (default: batch169-path-c-bundle)
+  TRIAL_REPO            Trial repo slug for release lookup (default: d6g8k5htny-coder/trial)
   MAIN_PUSH_TOKEN / GH_TOKEN — optional; never printed
 
 Scientific effect: NONE. lemma_closed stays false. No research promotion.
+Batch 178+: PR body attaches/links path-c-on-hardening.bundle from the latest
+matching trial release (download URL + release page). --dry-run prints the link.
 EOF
 }
 
@@ -91,9 +95,48 @@ need_cmd git
 need_cmd python3
 
 BUNDLE_PATCH="$TRIAL_ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
+BUNDLE_GIT="$TRIAL_ROOT/portable/path-c-applied-bundle/path-c-on-hardening.bundle"
 BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
 APPLY_MD="$TRIAL_ROOT/portable/path-c-applied-bundle/APPLY.md"
 VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
+# Batch 178: prefer linking the fetchable .bundle from the latest Path C release in the PR body.
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch169-path-c-bundle}"
+TRIAL_REPO_SLUG="${TRIAL_REPO:-d6g8k5htny-coder/trial}"
+
+resolve_path_c_bundle_release_url() {
+  # Prints: TAG<TAB>BROWSER_DOWNLOAD_URL. Never prints tokens.
+  local tag="$PATH_C_RELEASE_TAG"
+  local asset_name="path-c-on-hardening.bundle"
+  local url=""
+  local discovered=""
+  local cand=""
+  if command -v gh >/dev/null 2>&1; then
+    if [[ -n "$tag" ]]; then
+      url="$(gh api -H 'Accept: application/vnd.github+json' \
+        "/repos/${TRIAL_REPO_SLUG}/releases/tags/${tag}" \
+        --jq ".assets[] | select(.name==\"${asset_name}\") | .browser_download_url" 2>/dev/null | head -n1 || true)"
+    fi
+    if [[ -z "$url" ]]; then
+      discovered="$(gh release list --repo "$TRIAL_REPO_SLUG" --limit 20 --json tagName \
+        --jq '.[].tagName' 2>/dev/null || true)"
+      while IFS= read -r cand; do
+        [[ -z "$cand" ]] && continue
+        url="$(gh api -H 'Accept: application/vnd.github+json' \
+          "/repos/${TRIAL_REPO_SLUG}/releases/tags/${cand}" \
+          --jq ".assets[] | select(.name==\"${asset_name}\") | .browser_download_url" 2>/dev/null | head -n1 || true)"
+        if [[ -n "$url" ]]; then
+          tag="$cand"
+          break
+        fi
+      done <<<"$discovered"
+    fi
+  fi
+  if [[ -z "$url" ]]; then
+    # Public download URL fallback (works for public releases without auth).
+    url="https://github.com/${TRIAL_REPO_SLUG}/releases/download/${tag}/${asset_name}"
+  fi
+  printf '%s\t%s\n' "$tag" "$url"
+}
 
 [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH (need path-c-applied-bundle from batch142-path-c-bundle or newer)"
 [[ -f "$BASE_TIP_FILE" ]] || die "missing $BASE_TIP_FILE"
@@ -114,6 +157,11 @@ fi
 # Merge target: hardening ref (Path C apply tree). Default main is ALIGNED landing ≠ BASE_TIP.
 PR_BASE="$HARDENING_REF"
 
+RELEASE_RESOLVE="$(resolve_path_c_bundle_release_url)"
+RELEASE_TAG="${RELEASE_RESOLVE%%$'\t'*}"
+RELEASE_BUNDLE_URL="${RELEASE_RESOLVE#*$'\t'}"
+RELEASE_PAGE_URL="https://github.com/${TRIAL_REPO_SLUG}/releases/tag/${RELEASE_TAG}"
+
 echo "=== owner_open_path_c_pr ==="
 echo "repo=$REPO trial_root=$TRIAL_ROOT"
 echo "mode=$([ "$DRY_RUN" -eq 1 ] && echo dry-run || echo clone+am+push+PR)"
@@ -122,7 +170,11 @@ echo "base_tip_sha=$BASE_TIP_SHA"
 echo "hardening_ref=$HARDENING_REF"
 echo "branch=$BRANCH"
 echo "pr_base=$PR_BASE"
-echo "bundle=$BUNDLE_PATCH"
+echo "bundle_patch=$BUNDLE_PATCH"
+[[ -f "$BUNDLE_GIT" ]] && echo "bundle_git=$BUNDLE_GIT"
+echo "release_tag=$RELEASE_TAG"
+echo "release_bundle_url=$RELEASE_BUNDLE_URL"
+echo "release_page_url=$RELEASE_PAGE_URL"
 [[ -f "$APPLY_MD" ]] && echo "apply_md=$APPLY_MD"
 [[ -f "$VERIFY_JSON" ]] && echo "verify_json=$VERIFY_JSON"
 [[ -n "$VERIFY_SHA" ]] && echo "verify_base_tip_sha=$VERIFY_SHA"
@@ -158,10 +210,12 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   fi
   echo "--- dry-run summary ---"
   echo "would: clone $REPO; checkout $BRANCH from $HARDENING_REF @ $BASE_TIP_SHA"
-  echo "would: git am $BUNDLE_PATCH"
+  echo "would: git am $BUNDLE_PATCH (local patch; PR body also links release .bundle)"
   echo "would: assert math_status lemma_closed=false problems=0"
   echo "would: push origin $BRANCH (idempotent if exists)"
   echo "would: gh pr create --repo $REPO --base $PR_BASE --head $BRANCH (reuse if open)"
+  echo "PR body would attach/link: $RELEASE_BUNDLE_URL"
+  echo "PR body would link release page: $RELEASE_PAGE_URL"
   echo "PR body would state: engineering-only; lemma_closed stays false; no research promotion"
   if [[ "$AUTH_MODE" == "none" ]]; then
     echo "owner_open_path_c_pr: dry-run OK (auth not required for certainty)."
@@ -324,9 +378,14 @@ fi
 
 TITLE="fix: path-c portable fixes on hardening (Path C)"
 BODY="$(cat <<EOF
-Path C via \`scripts/owner_open_path_c_pr.sh\` (Batch 151).
+Path C via \`scripts/owner_open_path_c_pr.sh\` (Batch 151; Batch 178 release-bundle link).
 
 Applies trial \`portable/path-c-applied-bundle/path-c-on-hardening.patch\` (\`git am\`) onto \`${HARDENING_REF}\` @ BASE_TIP \`${BASE_TIP_SHA:0:7}\`.
+
+**Release artifact (fetchable git bundle):**
+- Tag: [\`${RELEASE_TAG}\`](${RELEASE_PAGE_URL})
+- Download: [\`path-c-on-hardening.bundle\`](${RELEASE_BUNDLE_URL})
+- Local land without PAT wait: \`./scripts/owner_path_c_oneshot.sh --from-bundle\` (prefers \`.bundle\` fetch+merge)
 
 **Engineering only.** Scientific effect: **NONE**.
 - \`lemma_closed\` stays **false**

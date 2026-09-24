@@ -152,7 +152,7 @@ jobs:
           fi
           if [[ "$TIP" != "$BASE_SHA" ]]; then
             echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (updates BASE_TIP + rebuilds path-c-applied-bundle; does NOT push to main hardening)"
+            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
             echo "::error::tip-drift: dry-sim only in CI — never auto-refresh onto main from Actions"
             exit 1
           fi
@@ -244,7 +244,7 @@ jobs:
           fi
           if [[ "$TIP" != "$BASE_SHA" ]]; then
             echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (updates BASE_TIP + rebuilds path-c-applied-bundle; does NOT push to main hardening)"
+            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
             echo "::error::tip-drift: CI dry-sim only — never auto-refresh onto main from Actions"
             exit 1
           fi
