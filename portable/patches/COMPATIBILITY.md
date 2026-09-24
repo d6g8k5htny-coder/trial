@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~23:55 UTC (batch 63: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP → `6f0f061` after #43; no 0017; apply_all post-#41 topology guard).
+Checked 2026-09-24 ~00:15 UTC (batch 65: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP → `3d47d1b` after #42; no 0017; apply_all post-#41 topology guard).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -15,7 +15,8 @@ Keep Path C on hardening. Certainty: `./scripts/owner_land_path_c.sh --dry-run` 
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#43) | `6f0f061` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 63** |
+| hardening (post-#42) | `3d47d1b` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 65** |
+| hardening (post-#43) | `6f0f061` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 63–64) |
 | hardening (post-#34) | `b3da668` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 60–62) |
 | hardening (post-#35) | `036a6bc` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 59) |
 | hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 54–58) |
@@ -78,6 +79,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **65** (PERMANENT; ALIGNED @ 1c6e74b; tip move): hardening **`6f0f061` → `3d47d1b`** ([PR #42](https://github.com/d6g8k5htny-coder/main/pull/42) SIDE24 nav/prep honesty deepen); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; residual RW hunt focused **173**/0 + receipts/bridge **541**/0 + tools `--help` **0** → **no 0017** / **IDLE**. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_65.json`.
 - Batch **63** (PERMANENT; ALIGNED @ 1c6e74b; tip move + post-#41 topology docs): hardening **`b3da668` → `6f0f061`** ([PR #43](https://github.com/d6g8k5htny-coder/main/pull/43) inventable REFUSED/EMPTY/ABSENT honesty walls); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; residual RW hunt focused+receipts/bridge/collision/frozen/registers/mirrors/ops/lean/RN/drive **~1600**/0 → **no 0017** / **IDLE**. Meaningful: `apply_all.sh` post-#41 topology fail-closed message + BASE_TIP currency note; `print_owner_unblock.sh` reads `BASE_TIP.txt` (no hardcoded SHA). Restore plan: `portable/RESTORE_PLAN_63.json`.
 - Batch **62** (PERMANENT; ALIGNED; Path C dry-run; watch embeds window): BASE_TIP still **`b3da668`**; residual RW **0** → **no 0017**; `watch_main_alignment.py` embeds window+route. Restore plan: `portable/RESTORE_PLAN_62.json`.
 - Batch **60** (ALIGNED @ 1c6e74b; Path C post-ALIGNED landing): hardening **`036a6bc` → `b3da668`** ([PR #34](https://github.com/d6g8k5htny-coder/main/pull/34) inventable probe index tip provenance); BASE_TIP refreshed; `apply_all --check`/apply OK; residual RW hunt **922**/0 → **no 0017**. Shipped `scripts/path_c_dry_run.py` + `owner_land_path_c.sh --dry-run`: default tip ALIGNED but not Path-C shaped; rebase onto main **CONFLICTING**; keep Path C on hardening. Restore plan: `portable/RESTORE_PLAN_60.json`.

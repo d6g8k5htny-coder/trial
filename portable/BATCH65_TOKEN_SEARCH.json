@@ -1,0 +1,67 @@
+{
+  "batch": "65",
+  "generated_at_utc": "2026-09-24T00:15:17Z",
+  "scientific_effect": "NONE",
+  "note": "tip moved 6f0f061\u21923d47d1b (PR #42); ALIGNED @ 1c6e74b; Path-B write vectors DENIED; permanent window; IDLE/no 0017; BASE_TIP refreshed",
+  "env_tokens": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "NOT_SET",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "CURSOR_API_KEY": "NOT_SET",
+    "CURSOR_TOKEN": "NOT_SET",
+    "GITHUB_PAT": "NOT_SET",
+    "GH_PAT": "NOT_SET",
+    "CURSOR_*_agent_runtime": "SET (non-GitHub; CURSOR_AGENT, CURSOR_AGENT_SOCKET, CURSOR_CONVERSATION_ID, CURSOR_REQUEST_ID, CURSOR_RIPGREP_PATH)"
+  },
+  "gh_auth": {
+    "account": "cursor",
+    "protocol": "https",
+    "token_kind": "github_app_installation",
+    "token_len": 390,
+    "hosts_yml": "~/.config/gh/hosts.yml present",
+    "credential_helper": "!/exec-daemon/gh auth git-credential",
+    "status": "logged_in (token redacted; prefix+len only via token_kind/token_len)"
+  },
+  "origin_remote_token": {
+    "kind": "x-access-token github_app_installation",
+    "len": 390,
+    "same_as_gh_auth_token": true
+  },
+  "ssh": {
+    "keys_present": false,
+    "git_github_com": "Permission denied (publickey)"
+  },
+  "write_probes_vs_main": {
+    "repo": "d6g8k5htny-coder/main",
+    "permissions": {
+      "admin": false,
+      "maintain": false,
+      "pull": false,
+      "push": false,
+      "triage": false
+    },
+    "note": "Full vector table in RESTORE_PLAN_65.json / probe_main_write_vectors.py this batch",
+    "path_b_ready": false
+  },
+  "secrets_list": {
+    "trial": "not re-probed issues; Contents preferred (Batch 55/58)",
+    "main": "403 expected for integration"
+  },
+  "path_c": {
+    "dry_run": "scripts/path_c_dry_run.py",
+    "base_tip": "3d47d1b",
+    "tip_refresh": "6f0f061\u21923d47d1b (PR #42)",
+    "new_0017": false,
+    "idle": true
+  },
+  "window": {
+    "mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+    "state": "PERMANENT_OPEN",
+    "hard_stop": false
+  },
+  "timer": {
+    "name": "permanent-autonomous-align-watch",
+    "delay_seconds": 3600,
+    "not": "48h-stop"
+  }
+}

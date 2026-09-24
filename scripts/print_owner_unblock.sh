@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 64 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#43); unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 65 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#42); unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -80,7 +80,7 @@ echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
 echo "$ROOT/scripts/path_b_dry_run.py"
 echo "$ROOT/scripts/path_c_dry_run.py"
-echo "$ROOT/scripts/refresh_restore_plan.py --batch 64"
+echo "$ROOT/scripts/refresh_restore_plan.py --batch 65"
 echo "$ROOT/scripts/check_autonomous_window.py"
 echo "$ROOT/scripts/watch_main_alignment.py  # embeds autonomous_window + route (Batch 62+)"
 echo "$ROOT/scripts/alignment_status.py"

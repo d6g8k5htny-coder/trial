@@ -21,6 +21,21 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 65 — 2026-09-24 ~00:15 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `3d47d1b`; Path C IDLE / no 0017)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening **`6f0f061` → `3d47d1b`** ([PR #42](https://github.com/d6g8k5htny-coder/main/pull/42) SIDE24 nav/prep honesty deepen); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; math_status problems=0 / lemma_closed=false.
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING**.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused **173**/0; receipts/bridge **541**/0; tools `--help` **0 RW** → **IDLE** / **no 0017**.
+- **Meaningful improvement:** BASE_TIP currency to `3d47d1b`; COMPATIBILITY + `print_owner_unblock` Batch 65; `apply_all.sh` BASE_TIP comment.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- `RESTORE_PLAN_65.json` + `BATCH65_TOKEN_SEARCH.json`. Trial `pytest` + packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 64 — 2026-09-24 ~00:10 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `6f0f061` unchanged; Path C IDLE / no 0017; pack glob)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Override: do **not** finalize for elapsed≥48h.

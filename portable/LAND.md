@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 64) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `6f0f061` (unchanged)
+> ## STATUS (Batch 65) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `3d47d1b` (post-#42)
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -16,9 +16,9 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `6f0f061` (no tip move); **no 0017**;
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `3d47d1b` (tip refresh `6f0f061`→`3d47d1b`); **no 0017**;
 > `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_64.json` + `BATCH64_TOKEN_SEARCH.json`.
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_65.json` + `BATCH65_TOKEN_SEARCH.json`.
 > `pack_portable.sh` auto-globs restore/token artifacts (Batch 64+).
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
@@ -75,7 +75,7 @@ on hardening. Certainty without write:
 # expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
 ```
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `6f0f061` after #43 inventable honesty walls — `apply_all --check` OK).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `3d47d1b` after #42 SIDE24 nav/prep honesty — `apply_all --check` OK).
 **Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
 `PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` usually **CONFLICTS** after #41.
 
