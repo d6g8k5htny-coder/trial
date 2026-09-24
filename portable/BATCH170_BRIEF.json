@@ -34,7 +34,7 @@
   "device_code": "EC83-CFC2",
   "prior_device_code": "831C-CB1C",
   "auth_renewed": false,
-  "seconds_left": 310,
+  "seconds_left": 299,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -84,6 +84,6 @@
   "ci_status": "pending",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "a8a5975601f0f8d64942a1617630cc94586b6ee8",
+  "trial_main_sha": "afa62ef3ac0c8e9c56df42d4120061e01b53fe6d",
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800"
 }
