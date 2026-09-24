@@ -18,7 +18,16 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 4. **Add** `d6g8k5htny-coder/main` with **Read and write**.
 5. Save. No Cloud Agent relaunch required for the App install token; `when_writable_land.py` polls `/installation/repositories` each cycle and sets `install_has_main` true/false — when it flips true, Path C is attempted immediately.
 
-Until that add lands, status stays `install_has_main=false`, write **DENIED**, Path C **IDLE**. Scientific effect: **NONE**.
+Until that add lands, status stays `install_has_main=false`, write **DENIED**, Path C **IDLE** for the App token. Scientific effect: **NONE**.
+
+## Exact fix — authorize device-flow user token (Batch 132; Path C without App install)
+
+If Cursor App still lacks `main`, a **user** device-flow token still lands Path C (ignore `install_has_main`). Live code: see [`../portable/GH_DEVICE_LOGIN.md`](../portable/GH_DEVICE_LOGIN.md).
+
+1. Open **https://github.com/login/device**
+2. Enter the **User code** from `portable/GH_DEVICE_LOGIN.md` (agent renews when expired).
+3. Approve GitHub CLI (`gh`) with **repo** + **workflow** scopes.
+4. Agent poller (`tmux` `gh-device-login`) writes `/tmp/gh-dylan-auth/access_token`; `when_writable_land.py` loads that path and runs Path C on hardening (lemma_closed stays false).
 
 ## Priority order
 

@@ -1664,8 +1664,11 @@ def test_when_writable_land_token_file_discovery() -> None:
     src = script.read_text(encoding="utf-8")
     assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in src
     assert "/workspace/.secrets/MAIN_PUSH_TOKEN" in src
+    assert "/tmp/gh-dylan-auth/access_token" in src
     assert "resolve_main_push_token" in src
     assert "token_source" in src
+    # Batch 132: dylan device token is last default candidate (after store/.secrets)
+    assert mod.DEFAULT_TOKEN_FILES[-1] == Path("/tmp/gh-dylan-auth/access_token")
 
     # Env hardening: repositoryDependencies for main (write intent)
     env_text = (ROOT / ".cursor" / "environment.json").read_text(encoding="utf-8")

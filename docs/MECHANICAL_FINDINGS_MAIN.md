@@ -3,6 +3,36 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 132 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `c82c9357`
+
+Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip). Flipped nothing.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `c82c9357db381e8fd60d939a7243dab4cc863118` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory below |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** / prizes_solved=false |
+| `guard_no_status_promotion` | **pass** — 0 violations vs `STATUS_GUARD_SNAPSHOT` |
+| open premises (frozen) | **13** |
+| open lemmas | **1** (`D3-LEMMA-RN-UNIF`) |
+| open packet obligations | **2** (`OBL-H5-JETMOD`, `D3-LEMMA-RN-UNIF`) |
+| open prizes (FW-NO-PRIZE-CLOSURE) | **3** (`PR-TAL-003..008`, `P14-A..E`, `P15-A..D`) |
+| claims inventory | **26** (not promoted) |
+| open questions | **16** mechanically OPEN/HOLD/REBASED |
+| write / Path C | **DENIED** (403; `install_has_main=false`); device auth pending |
+| new portable **0017** | **none** (tip==BASE_TIP; hunt_skipped_stable) |
+
+### OPEN premises (frozen layer) — `claims/graph.json` @ `c82c9357`
+
+`OBL-D1-PROMOTE`, `OBL-H5-JETMOD`, `OBL-H5-ZBAND`, `OBL-H5-REMOTE-THRESHOLD`, `D3-LEMMA-RN-UNIF` (NOT_CLOSED), `PERC-DECAY`, `PD-CONN`, `OBL-B1-BRANCH(loop|B1)`, `B4.loc-damline`, `H5-RIM`, `H5-AXIS`, `H-B3`, `LM013-JOINT-STACK`.
+
+Packet: disposition=`OPEN_HOLD`; `prizes_solved=false`; `original_prize_closed=false`; bridge=`PROPOSED_NOT_DEPLOYED`; freeze=false.
+
+Artifact: `portable/BATCH132_RESEARCH_STACK_AUDIT.json`. Scientific effect: **NONE**.
+
 ## Batch 86 — no-status-promotion guard @ tips `1c6e74b` / `ac33581`
 
 Mechanical compare only (`scripts/guard_no_status_promotion.py`). Flipped nothing.

@@ -1,42 +1,43 @@
-# Project intent audit (2026-09-24 batch 80 refresh)
+# Project intent audit (2026-09-24 batch 132 refresh)
 
 Audit of Dylan Roy’s public GitHub projects visible to this agent.
 **Scientific effect: NONE.** This note does not move any claim, premise, or obligation.
 
-> **Live status (batch 80):** Permanent autonomous window
+> **Live status (batch 132):** Permanent autonomous window
 > (`PERMANENT_UNTIL_OWNER_INTERVENES` / `goal_complete=false`).  
 > `d6g8k5htny-coder/main` default tip **`1c6e74b`** is **ALIGNED**
 > (`aligned_end=true`) after owner PR #41 (superseding #32/`c2b0620`).  
 > Path B land **not needed**. Path C engineering stack is **apply-ready** on
-> hardening `chatgpt/drive-github-hardening-20260919` @ **`ac33581`**;
-> owner `git am` via trial release **`batch80-path-c-bundle`** (or
+> hardening `chatgpt/drive-github-hardening-20260919` @ **`c82c9357`** (== BASE_TIP);
+> owner `git am` via trial release **`batch125-path-c-bundle`** (or
 > `portable/path-c-applied-bundle/`).  
-> Write to `main` remains **403 DENIED** (all Path B/C vectors).  
-> See `portable/LAND.md` / `portable/RESTORE_PLAN_80.json`.  
+> Write to `main` remains **403 DENIED** (all Path B/C vectors; `install_has_main=false`).  
+> Research stack OPEN @ hardening: premises **13** / lemmas **1** / prizes **3** /
+> packet obligations **2** / claims **26** / open questions **16**;
+> `math_status` disposition=`OPEN_HOLD` / **lemma_closed=false**.  
+> See `portable/BATCH132_RESEARCH_STACK_AUDIT.json` / `portable/LAND.md`.  
 > Historical sections below keep the original pre-#2/#32/#41 snapshot.
 
-## Live facts (batch 80 probe)
+## Live facts (batch 132 probe)
 
 | Fact | Value |
 |------|-------|
 | Autonomous window | `PERMANENT_OPEN` — stop only on owner intervene; no 48h finale |
 | Default `main` tip | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` (**ALIGNED**) |
-| Hardening tip / BASE_TIP | `ac335815b277ac0c076082ac6af2344261c2093a` (unchanged; no tip refresh) |
+| Hardening tip / BASE_TIP | `c82c9357db381e8fd60d939a7243dab4cc863118` (unchanged; no tip refresh) |
 | Path B | Not needed while ALIGNED; restore ready if tip drifts |
 | Path C | `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; land blocked by write 403 |
 | Path C owner bundle | `portable/path-c-applied-bundle/path-c-on-hardening.patch` (+ APPLY.md / VERIFY.json) |
-| Write probe | **DENIED** (403) — W1–W5 incl. Path C `workflow_dispatch` |
-| Research status | Unchanged — `lemma_closed=false`; no claim/premise/prize flips |
-| Portable 0017 | **Not shipped** — deep ResourceWarning hunt idle after apply_all |
+| Write probe | **DENIED** (403) — W1–W5 incl. Path C `workflow_dispatch`; fork 403 |
+| Research status | Unchanged — premises 13 / lemmas 1 / prizes 3 OPEN; `lemma_closed=false` |
+| Portable 0017 | **Not shipped** — tip stable; hunt_skipped_stable |
+| Device auth | pending user code (see `portable/GH_DEVICE_LOGIN.md`); lander loads `/tmp/gh-dylan-auth/access_token` when authorized |
 
-Deep hunt (CPython 3.11, after local `apply_all` 0001–0004+0008–0016 @ `ac33581`):
-focused+claims+recovery **173**/0 RW; receipts/bridge **541**/0; frozen/dio **19**/0;
-collision **189**/0; mirrors **105**/0; registers **53**/0; lean/frontier **21**/0;
-cover **100**/0; drive **110**/0; ops **214**/0; RN sample **216**/0;
-vault/quarantine **13**/0; collect-only **3188**/0; tools `--help` **0** RW.
-`engine/` bare `open()` hits are only under content-addressed
-`carriers/blobs/` + `rn_engine/frozen/` (not actionable for portable 0017).
-Open-PR engine touch: #21 `work_order.py` (top-level list only; no bare open).
+Local verification on hardening @ `c82c9357` (this agent, Python 3.11 host):
+
+```
+math_status_check: problems=0 disposition=OPEN_HOLD lemma_closed=false prizes_solved=false independence_credit=0
+```
 
 ---
 

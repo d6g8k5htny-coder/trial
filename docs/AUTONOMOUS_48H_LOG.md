@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 132 — 2026-09-24 ~06:25 UTC (PERMANENT window; auth renew; research audit OPEN; dylan-token lander; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Path B not needed; Path C idle.
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
+- Device auth `91D3-D72C` → **expired** → **renewed** `7D13-0E6D`; poller restarted (`gh-device-login`); no Path C land yet (no user token).
+- **Research audit (no flips):** hardening @ `c82c9357` `math_status` problems=0 / OPEN_HOLD / lemma_closed=false; open premises **13** / lemmas **1** / prizes **3** / packet obligations **2** / claims **26** / open questions **16**. Guard pass. Artifacts: `docs/MECHANICAL_FINDINGS_MAIN.md`, `docs/PROJECT_INTENT_AUDIT.md`, `portable/BATCH132_RESEARCH_STACK_AUDIT.json`.
+- **Unlock vectors:** W1–W5 + `workflow_dispatch` land-path-c + fork + secret list → all **403 DENIED**; `install_has_main=false`. See `portable/BATCH132_UNLOCK.json`.
+- **Concrete unlock improvement:** `when_writable_land.py` loads `/tmp/gh-dylan-auth/access_token` (device-flow user token) after env/store/.secrets; `print_owner_unblock.sh` + `OWNER_ACTIONS_MAIN.md` + `GH_DEVICE_LOGIN.md` refreshed with current code + App install steps.
+- Daemon `when-writable-land` **up**; timers re-armed: `permanent-autonomous-align-watch` 10800s; **single** `gh-dylan-device-auth-check` 300s (no `gh-device-login-check` dup).
+- Tiny JSON: `portable/BATCH132_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `7D13-0E6D`. On auth success → Path C with user token (ignore `install_has_main`).
+
 ### Batch 129 — 2026-09-24 ~06:17 UTC (PERMANENT window; align-watch; tip stable; hunt_skipped_stable; scientific effect NONE; flipped nothing)
 
 - `alignment_status` / `aligned_drift_watch` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Path B not needed; Path C idle (not writable / no user token).

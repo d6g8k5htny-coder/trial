@@ -1,0 +1,47 @@
+{
+  "batch": "132",
+  "generated_at_utc": "2026-09-24T06:25:39Z",
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "unlock_tried": [
+    {
+      "vector": "W1_git_refs",
+      "result": "DENIED"
+    },
+    {
+      "vector": "W2_contents_put",
+      "result": "DENIED/403"
+    },
+    {
+      "vector": "W3d_dispatch_path_c_trial",
+      "result": "DENIED/403"
+    },
+    {
+      "vector": "W3e_api_dispatch_path_c_trial",
+      "result": "DENIED/403"
+    },
+    {
+      "vector": "gh_workflow_run_land-path-c",
+      "result": "DENIED/403 integration"
+    },
+    {
+      "vector": "gh_secret_list_MAIN_PUSH_TOKEN",
+      "result": "DENIED/403 (cannot list secrets)"
+    },
+    {
+      "vector": "W4a_fork",
+      "result": "DENIED/403"
+    },
+    {
+      "vector": "install_has_main",
+      "result": "false (trial-only)"
+    },
+    {
+      "vector": "dylan_access_token_push",
+      "result": "skipped_no_token_yet"
+    }
+  ],
+  "path_b_ready": false,
+  "path_b_writable_vectors": [],
+  "state": "DENIED"
+}

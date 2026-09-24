@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 86 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; status-guard + token discovery; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 132 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; device-auth + dylan-token lander; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -27,14 +27,20 @@ echo "ALIGNED drift watch: $ROOT/scripts/aligned_drift_watch.py  # exit 0/1/2; s
 echo "Background lander: $ROOT/scripts/when_writable_land.py  # poll 300s; Path C when writable+ALIGNED; Path B if MISALIGNED"
 echo "  tmux: when-writable-land  |  status: /cursor/stores/self/when_writable_land.status.json"
 echo "  log: /tmp/cursor/when_writable_land.log  |  STOP: /cursor/stores/self/when_writable_land.stop"
-echo "  token: env MAIN_PUSH_TOKEN | /cursor/stores/self/MAIN_PUSH_TOKEN | /workspace/.secrets/MAIN_PUSH_TOKEN"
+echo "  token: env MAIN_PUSH_TOKEN | /cursor/stores/self/MAIN_PUSH_TOKEN | /workspace/.secrets/MAIN_PUSH_TOKEN | /tmp/gh-dylan-auth/access_token"
 echo "  once dry: python3 scripts/when_writable_land.py --once --dry-run"
+echo "Device login (Dylan): $ROOT/portable/GH_DEVICE_LOGIN.md  # https://github.com/login/device + current user code"
+if [[ -f "$ROOT/portable/GH_DEVICE_LOGIN.md" ]]; then
+  echo "  $(grep -E '^\\| User code|^\\| Status|^\\| Verification' "$ROOT/portable/GH_DEVICE_LOGIN.md" | tr '\n' ' ')"
+fi
+echo "App install (Cursor): GitHub → Settings → Applications → Cursor → add d6g8k5htny-coder/main Read+write"
+echo "  (until then install_has_main=false; device user token still can Path C — ignore install_has_main)"
 echo "Status guard (Batch 86; fail on OPEN→closed/promoted): $ROOT/scripts/guard_no_status_promotion.py <hardening-checkout>"
 echo "  baseline: portable/BATCH70_RESEARCH_STACK_AUDIT.json or portable/STATUS_GUARD_SNAPSHOT.json"
 echo "  CI job: research-stack-status-guard (continue-on-error; artifact STATUS_GUARD_SNAPSHOT)"
 echo "Env write intent: .cursor/environment.json repositoryDependencies → main; relaunch Cloud Agent AFTER merge"
-echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch80-path-c-bundle"
-echo "Timer: re-arm permanent-autonomous-align-watch @ 3600s (not a 48h-stop timer) + keep when-writable-land tmux."
+echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch125-path-c-bundle"
+echo "Timer: re-arm permanent-autonomous-align-watch @ 10800s + gh-dylan-device-auth-check @ 300s (single; no gh-device-login-check dup)."
 echo "PR #41 renewed default tip to 1c6e74b (ALIGNED). ALIGNED can revert (#32 history) — keep Path B ready."
 echo "Path A OR Path B OK when MISALIGNED. Prefer Path B (Option-B README+AGENTS)."
 echo "One-command: $ROOT/scripts/restore_main_face.sh  # short-circuits when already ALIGNED"
@@ -53,10 +59,10 @@ echo "Rebase conflict paths: portable/PATH_C_REBASE_CONFLICT_REPORT_67.json (ci.
 echo "Rebase helper: $ROOT/scripts/path_c_rebase_helper.sh --dry-run  # prefer abort; never invent research status"
 echo "Resolution notes: portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json"
 echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
-echo "Batch 74: BASE_TIP → ${BASE_TIP_SHORT} (PR #48); write DENIED; no 0017; CI Intent suite GITHUB_TOKEN + Option-B ALIGNED skip + --after-merge no-gh-auth."
+echo "Batch 132: research audit OPEN premises=13 lemmas=1 prizes=3 @ c82c9357; when_writable_land loads dylan device token; write DENIED; no 0017."
 echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_* + BATCH*_RESEARCH_STACK_AUDIT + STATUS_GUARD_SNAPSHOT + ALIGNED_DRIFT_SNAPSHOT + validate_land_workflows (Batch 64+/67+/68+/70+/72+/73+/74+/86)."
-echo "Research-stack OPEN audit (Batch 70; read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
-echo "  artifact: portable/BATCH70_RESEARCH_STACK_AUDIT.json  |  docs/MECHANICAL_FINDINGS_MAIN.md"
+echo "Research-stack OPEN audit (Batch 70/132; read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
+echo "  artifact: portable/BATCH132_RESEARCH_STACK_AUDIT.json  |  docs/MECHANICAL_FINDINGS_MAIN.md"
 echo "Scientific effect: NONE"
 echo
 

@@ -23,6 +23,7 @@ Token discovery (first existing wins; value never printed):
   1. env MAIN_PUSH_TOKEN
   2. /cursor/stores/self/MAIN_PUSH_TOKEN (file contents)
   3. /workspace/.secrets/MAIN_PUSH_TOKEN (file contents)
+  4. /tmp/gh-dylan-auth/access_token (device-flow user token after authorize)
 Injected into child git/gh/probe/land env as MAIN_PUSH_TOKEN (+ GH_TOKEN /
 GITHUB_TOKEN when those are unset).
 
@@ -67,9 +68,12 @@ DEFAULT_STOP = Path(
 )
 
 # Token file candidates (after env). Overridable in tests via resolve_main_push_token.
+# Batch 132: also load renewed device-flow user token so Path C lands without
+# a separate MAIN_PUSH_TOKEN drop once Dylan authorizes at github.com/login/device.
 DEFAULT_TOKEN_FILES: tuple[Path, ...] = (
     Path("/cursor/stores/self/MAIN_PUSH_TOKEN"),
     Path("/workspace/.secrets/MAIN_PUSH_TOKEN"),
+    Path("/tmp/gh-dylan-auth/access_token"),
 )
 
 
