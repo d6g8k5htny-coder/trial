@@ -1,6 +1,6 @@
 {
   "batch": "224",
-  "generated_at_utc": "2026-09-24T16:03:16Z",
+  "generated_at_utc": "2026-09-24T16:09:05Z",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
@@ -194,13 +194,13 @@
     }
   ],
   "device_auth": {
-    "device_code": "BE27-A62D",
-    "prior_device_code": "89AF-6638",
+    "device_code": "84FB-0605",
+    "prior_device_code": "BE27-A62D",
     "device_auth": "pending",
     "has_token": false,
-    "seconds_left": 401.1,
-    "checked_at_utc": "2026-09-24T16:03:16Z",
-    "auth_renewed": false
+    "seconds_left": 854.7,
+    "checked_at_utc": "2026-09-24T16:09:05Z",
+    "auth_renewed": true
   },
   "api_grants_attempted": {
     "topics_put_trial": "403 Resource not accessible by integration",
@@ -208,7 +208,7 @@
     "write_probe_non_trial": "DENIED on all except trial",
     "sandbox_clone_ls_remote": "not_found_or_denied (404)"
   },
-  "owner_next": "Run ./scripts/owner_grant_ai_agent_access.sh; on Cursor+Codex+Claude install UIs select ALL repositories including sandbox; Grok PAT on all 8; authorize device BE27-A62D OR MAIN_PUSH_TOKEN; RELAUNCH",
+  "owner_next": "Run ./scripts/owner_grant_ai_agent_access.sh; on Cursor+Codex+Claude install UIs select ALL repositories including sandbox; Grok PAT on all 8; authorize device 84FB-0605 OR MAIN_PUSH_TOKEN; RELAUNCH",
   "docs": "docs/MULTI_AGENT_ACCESS.md",
   "script": "scripts/owner_grant_ai_agent_access.sh",
   "tip": "cbaa056",

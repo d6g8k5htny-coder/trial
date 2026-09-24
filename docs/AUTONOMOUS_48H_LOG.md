@@ -28,7 +28,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - `.cursor/environment.json` `repositoryDependencies` now **all 8** (adds `github.com/d6g8k5htny-coder/sandbox`). Kept prior seven.
 - Docs/script/inventory/one-liners/README/RELAUNCH/OWNER_ACTIONS/AGENTS refreshed for sandbox. `owner_grant_ai_agent_access.sh --check` lists all 8 and prints App install URLs with **select ALL repositories including sandbox**.
 - Live: install trial-only (`install_has_main=false`; `install_has_sandbox=false`). Main write **DENIED**. sandbox API/ls-remote **404** (private / not in install). Path C **not** landed.
-- Auth: device `BE27-A62D` still pending (~400s left; no renew). Never print tokens.
+- Auth: device `BE27-A62D` low seconds → renew **`84FB-0605`**; poller `batch224-device-poll`. Never print tokens.
 - Tip stable **`cbaa056`**. `lemma_closed=false`. Research untouched.
 
 ### Batch 223 — 2026-09-24 ~15:45 UTC (multi-agent access: Cursor+Codex+Claude+Grok; owner oneshot; write DENIED; scientific effect NONE; flipped nothing)

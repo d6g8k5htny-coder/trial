@@ -2,8 +2,8 @@
   "base_tip": "cbaa056",
   "base_tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
   "device_auth": "pending",
-  "device_code": "BE27-A62D",
-  "generated_at": "2026-09-24T16:04:42Z",
+  "device_code": "84FB-0605",
+  "generated_at": "2026-09-24T16:09:07Z",
   "goal_complete": false,
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
   "has_token": false,
@@ -12,9 +12,9 @@
   "path_c_blocked_reason": "NO_TOKEN",
   "release_tag": "batch223-path-c-bundle",
   "scientific_effect": "NONE",
-  "seconds_left": 312.5,
+  "seconds_left": 853.0,
   "tip": "cbaa056",
   "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
   "tip_match": true,
-  "write_state": "SKIPPED"
+  "write_state": "DENIED"
 }

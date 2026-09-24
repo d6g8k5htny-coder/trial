@@ -4,7 +4,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 224 — add `sandbox` (8 repos); multi-agent access; write DENIED; auth pending `BE27-A62D`; sandbox 404 to App token**:
+> **Batch 224 — add `sandbox` (8 repos); multi-agent access; write DENIED; auth renew `84FB-0605` (from `BE27-A62D`); sandbox 404 to App token**:
 >
 > ```bash
 > ./scripts/owner_grant_ai_agent_access.sh          # dry-run: App install URLs; lists all 8 incl. sandbox
