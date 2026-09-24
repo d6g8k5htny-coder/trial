@@ -4,17 +4,17 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T14:47:00Z |
-| Checked (UTC) | 2026-09-24T14:50:24Z |
+| Started (UTC) | 2026-09-24T15:06:30Z |
+| Checked (UTC) | 2026-09-24T15:09:01Z |
 | Verification URL | https://github.com/login/device |
-| User code | `BFEF-C1D9` |
-| Prior code | `5AEC-4784` (Batch 212/216; expired → Batch 217 renew `BFEF-C1D9`) |
+| User code | `4B66-CE85` |
+| Prior code | `BFEF-C1D9` (Batch 217; expired → Batch 218 renew `4B66-CE85`) |
 | Prior prior | `B064-C458` (Batch 210/212); `E577-EEF9` (Batch 207); `5160-F839` (Batch 202); older: `50DB-FD4D` (Batch 199); `CC72-DB3D` (Batch 195); `1C7F-22B5` (Batch 192); `C949-0100` (expired Batch 190); `46EC-0B00` (Batch 188); `DF9C-5DF9` (Batch 185); `5216-7C1B` (Batch 183); `AD78-6206` (Batch 180); `5E05-EA04` (Batch 178); `9671-4918` (Batch 176); `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
 | Older priors | `C8FC-A08F` → `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 217 aggressive write probe still DENIED despite Dylan “WRITE UNLOCKED” claim; seconds_left in BATCH217_BRIEF / PATH_C_STATUS) |
+| Status | pending (authorization_pending; Batch 218 aggressive write retry still DENIED despite Dylan “WRITE UNLOCKED”; tip refreshed `1d0dceb`; seconds_left in BATCH218_BRIEF / PATH_C_STATUS) |
 | Expires | see `seconds_left` in BATCH217_BRIEF / PATH_C_STATUS (history: BATCH216_BRIEF / BATCH212_BRIEF / BATCH210_BRIEF / BATCH207_BRIEF / BATCH202_BRIEF / BATCH199_BRIEF / BATCH195_BRIEF) |
-| Hardening tip | `b89448d` (PR #51); prior `8bd1f03` (PR #52); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch207-path-c-bundle` (priors `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch179-path-c-bundle` / `batch169-path-c-bundle` / `batch168-path-c-bundle` / `batch162-path-c-bundle`) |
-| History briefs | `BATCH217_BRIEF` / `BATCH216_BRIEF` / `BATCH212_BRIEF` / `BATCH210_BRIEF` / `BATCH207_BRIEF` / `BATCH202_BRIEF` / `BATCH199_BRIEF` / `BATCH195_BRIEF` / `BATCH194_BRIEF` / `BATCH192_BRIEF` / `BATCH190_BRIEF` / `BATCH188_BRIEF` / `BATCH185_BRIEF` / `BATCH183_BRIEF` / `BATCH162_BRIEF` / `BATCH168_BRIEF` / `BATCH169_BRIEF` / `BATCH178_BRIEF` / `BATCH179_BRIEF` / `BATCH180_BRIEF` (issue hygiene create-only) |
+| Hardening tip | `1d0dceb` (Batch 218 tip refresh from `b89448d`); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch218-path-c-bundle` (priors `batch207-path-c-bundle` / `batch179-path-c-bundle` / `batch162-path-c-bundle` / `batch168-path-c-bundle` / `batch169-path-c-bundle` / `batch202-path-c-bundle` / `batch199-path-c-bundle`) |
+| History briefs | `BATCH218_BRIEF` / `BATCH217_BRIEF` / `BATCH216_BRIEF` / `BATCH212_BRIEF` / `BATCH210_BRIEF` / `BATCH207_BRIEF` / `BATCH202_BRIEF` / `BATCH199_BRIEF` / `BATCH195_BRIEF` / `BATCH194_BRIEF` / `BATCH192_BRIEF` / `BATCH190_BRIEF` / `BATCH188_BRIEF` / `BATCH185_BRIEF` / `BATCH183_BRIEF` / `BATCH162_BRIEF` / `BATCH168_BRIEF` / `BATCH169_BRIEF` / `BATCH178_BRIEF` / `BATCH179_BRIEF` / `BATCH180_BRIEF` (issue hygiene create-only) |
 | Repo face | Trial `README.md` top section **Path C — land engineering fixes on main** (Batch 194: **link-only** → this file for live user code; no perishable `XXXX-XXXX` on README; release bundle / oneshot / App add-main; `lemma_closed` stays false) |
 | Tip refresh helper | `scripts/refresh_path_c_bundle.sh` (Batch 173+; Batch 180: `git bundle verify` uses WORKDIR so trial ROOT does not false-fail prerequisites; Batch 202: tip `8bd1f03`→`b89448d`) |
 | Path C status JSON | `scripts/write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip/base_tip/tip_match/write_state/lemma_closed/path_c_blocked/device_code/release_tag/generated_at; no secrets); Batch 199+: included in pack tarball |
@@ -45,6 +45,9 @@ The agent keeps a device-flow poller alive in tmux session `gh-device-login`. Wh
  Batch 216+: tip still **`b89448d`** (no tip move); auth poll `5AEC-4784` still **pending** (authorization_pending; seconds_left≈300+); write DENIED; `install_has_main=false`; open-PR scan — **no** `pinned_sources` vehicle for **0017**; `lemma_closed=false`; research untouched.
 
  Batch 217+: tip still **`b89448d`**; Dylan claimed WRITE UNLOCKED → aggressive probe (refs/contents/git-push/workflow_dispatch/owner_open/owner_land/when_writable/`repository_dispatch --apply`) still **DENIED**; `install_has_main=false`; trial secret `MAIN_PUSH_TOKEN` **empty** (apply runs fail Require-token); auth **renewed** `BFEF-C1D9` after `5AEC-4784` expired; ALIGNED → Path B skipped; Path C assert OK / OPEN_HOLD / `lemma_closed=false`; research untouched.
+
+ Batch 218+: tip **`b89448d`→`1d0dceb`** → tip refresh + pack+release **`batch218-path-c-bundle`**; Dylan claimed WRITE UNLOCKED → aggressive re-probe (device poll BFEF-C1D9 pending→expired; refs/contents/git-push/workflow_dispatch/repository_dispatch --apply) still **DENIED**/secret-empty; `install_has_main=false`; auth **renewed** `4B66-CE85` from `BFEF-C1D9`; assert OK / OPEN_HOLD / `lemma_closed=false`; research untouched. **Owner ONE action:** set trial Actions secret `MAIN_PUSH_TOKEN` (dispatch already accepts; apply fails Require-token empty).
+
 
 ## W3f false positive (Batch 141)
 

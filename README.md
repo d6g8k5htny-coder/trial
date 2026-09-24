@@ -12,7 +12,7 @@ Owner sandbox for Dylan Roy. **Not** the research repository.
 Engineering only — `lemma_closed` stays **false**. This README does **not** embed a perishable device user code.
 
 1. Open **https://github.com/login/device** → enter the **current** user code from [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md) (single source of truth; see that file for the live code)
-2. Or: download release **`batch207-path-c-bundle`** (or latest `*-path-c-bundle`; prior `batch199-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
+2. Or: download release **`batch218-path-c-bundle` (prior `batch207-path-c-bundle` / `batch202-path-c-bundle`)`** (or latest `*-path-c-bundle`; prior `batch199-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
 3. Or: Cursor App → add `d6g8k5htny-coder/main` (Read and write) → relaunch
 
 ## #1 unblock — add `main` to Cursor App repo access
