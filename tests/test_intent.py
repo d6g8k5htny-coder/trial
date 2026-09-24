@@ -1007,7 +1007,11 @@ def test_alignment_status_post_41_critical_path() -> None:
     assert data.get("lemma_closed") is False
     assert "autonomous_window" in data
     assert "path_c_tip" in data
-    assert data["path_c_tip"].get("apply_stack") in ("0001-0004 + 0008-0016", "0001-0004 + 0008-0017")
+    assert data["path_c_tip"].get("apply_stack") in (
+        "0001-0004 + 0008-0016",
+        "0001-0004 + 0008-0017",
+        "0001-0004 + 0008-0019",
+    )
     crit = data["main"]["critical_path"]
     assert "pr41_url" in crit
     assert crit.get("prefer_when_aligned_writable") == "Path_C_on_hardening"
@@ -5972,3 +5976,49 @@ def test_batch239_0019_future_delta_gate() -> None:
     assert "Batch 239" in log
     assert "0019" in log
     assert "sibling" in log.lower() or "AGENTS" in log
+
+
+def test_batch240_land_path_c_apply_includes_0019() -> None:
+    """Batch 240: land-path-c + owner_land always apply through 0019; no early --check skip."""
+    import json
+
+    path_c = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "0008–0019" in path_c or "0008-0019" in path_c
+    assert "0019" in path_c
+    assert "already looks patched" not in path_c
+    assert "running apply_all --check only" not in path_c
+    assert "Running portable apply_all" in path_c
+
+    owner = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "0008–0019" in owner or "0008-0019" in owner
+    assert "already looks patched" not in owner
+    assert "running apply_all --check only" not in owner
+
+    apply = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "0019-attestations-close-file-handles.patch" in apply
+    assert "0019-*" in apply or '0019-*' in apply
+    assert "attestations/ absent" in apply
+
+    dry = (ROOT / "scripts" / "path_c_dry_run.py").read_text(encoding="utf-8")
+    assert 'APPLY_STACK = "0001-0004 + 0008-0019"' in dry
+
+    align = (ROOT / "scripts" / "alignment_status.py").read_text(encoding="utf-8")
+    assert "0001-0004 + 0008-0019" in align
+
+    brief = ROOT / "portable" / "BATCH240_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "240"
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["scientific_effect"] == "NONE"
+    assert "land_path_c_0019_apply" in (data.get("parallel_shipped") or []) or (
+        "land-path-c" in (data.get("parallel") or "")
+    )
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 240" in log
+    assert "0019" in log
+    assert "land-path-c" in log.lower() or "land_path_c" in log

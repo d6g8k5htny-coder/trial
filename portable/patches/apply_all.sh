@@ -95,10 +95,12 @@ PATCHES=(
 apply_one() {
   local p="$1"
   local check_only="${2:-0}"
-  # 0018 couples to top-level attestations/ (added by main PR #70). Skip on
-  # older tips so REPOSITORY_TOP_LEVEL does not name a missing directory.
-  if [[ "$(basename "$p")" == 0018-* && ! -d attestations ]]; then
-    echo "skip (attestations/ absent): $(basename "$p")"
+  # 0018/0019 couple to top-level attestations/ (added by main PR #70). Skip on
+  # older tips so REPOSITORY_TOP_LEVEL / attestations close-handles do not
+  # fail when that directory is missing.
+  bn="$(basename "$p")"
+  if [[ ( "$bn" == 0018-* || "$bn" == 0019-* ) && ! -d attestations ]]; then
+    echo "skip (attestations/ absent): ${bn}"
     return 0
   fi
   if git apply --check "$p" >/dev/null 2>&1; then

@@ -13,7 +13,7 @@
 # Default (no payload / dry_run omitted) stays dry-run-only (safe).
 #
 # Scientific effect: NONE. Engineering hygiene only (portable apply_all
-# 0001–0004 + 0008–0016). lemma_closed must stay false. Never flips research
+# 0001–0004 + 0008–0019). lemma_closed must stay false. Never flips research
 # status / prizes / premises.
 #
 # dry_run semantics:
@@ -177,20 +177,13 @@ jobs:
             exit 1
           fi
 
-          # Idempotent: skip apply if patches already present.
-          if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
-             && grep -q 'ResourceWarning\|read_bytes\|close-file' tests/test_inventable_jetmod_probes.py 2>/dev/null; then
-            echo "Tree already looks patched; running apply_all --check only."
-            if ! "${APPLY}" --check; then
-              echo "::error::apply_all --check failed on apparently-patched tree."
-              exit 1
-            fi
-          else
-            echo "Running portable apply_all (0001–0004 + 0008–0016)…"
-            if ! "${APPLY}"; then
-              echo "::error::apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches on trial."
-              exit 1
-            fi
+          # Always run apply_all (idempotent already-applied skips). Batch 240:
+          # do NOT short-circuit to --check-only on an early-patch heuristic —
+          # that skipped 0019 on trees that already had 0001–0018 close-handles.
+          echo "Running portable apply_all (0001–0004 + 0008–0019)…"
+          if ! "${APPLY}"; then
+            echo "::error::apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches on trial."
+            exit 1
           fi
 
           echo
@@ -245,7 +238,7 @@ jobs:
             echo "No uncommitted patch diffs (already applied upstream?)."
           else
             git add -A
-            git commit -m "fix: portable engineering patches 0001-0004+0008-0016 (Path C)" \
+            git commit -m "fix: portable engineering patches 0001-0004+0008-0019 (Path C)" \
               -m "Via trial land-path-c-on-main. Scientific effect: NONE. lemma_closed stays false."
           fi
 
@@ -276,11 +269,11 @@ jobs:
         run: |
           set -euo pipefail
           export GH_TOKEN="${MAIN_PUSH_TOKEN}"
-          TITLE="fix: portable engineering patches 0001-0004+0008-0016 (Path C)"
+          TITLE="fix: portable engineering patches 0001-0004+0008-0019 (Path C)"
           BODY="$(cat <<'EOF'
           Path C via trial workflow `land-path-c-on-main`.
 
-          Applies trial `portable/patches/apply_all.sh` (**0001–0004 + 0008–0016**) onto
+          Applies trial `portable/patches/apply_all.sh` (**0001–0004 + 0008–0019**) onto
           `chatgpt/drive-github-hardening-20260919`.
 
           Scientific effect: **NONE**. `lemma_closed` stays false. Green checks ≠ obligation discharge.

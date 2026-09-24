@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0017) onto the
+# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0019) onto the
 # working tip of d6g8k5htny-coder/main, then push a branch / open a PR.
 #
 # === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
@@ -109,7 +109,7 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
                 With --from-bundle: tip-drift + local git am of path-c-applied-bundle
                 (no push); exit 0/1/2.
                 Exit codes match path_c_dry_run: 0=ready, 1=not ready, 2=transport.
-  (default)     Clone tip, apply_all 0001–0004 + 0008–0017, push branch, open PR.
+  (default)     Clone tip, apply_all 0001–0004 + 0008–0019, push branch, open PR.
   --from-bundle Prefer portable/path-c-applied-bundle/path-c-on-hardening.bundle
                 (git fetch + ff-merge) when present; else .patch via git am.
                 Preferred one-shot after extracting the release tarball
@@ -487,14 +487,10 @@ if [[ ! -f docs/math_status/PACKET.json || ! -f tools/carriers_verify.py ]]; the
   die "checkout lacks docs/math_status/PACKET.json or tools/carriers_verify.py — wrong base for apply_all (post-ALIGNED default main / PR #41 is not BASE_TIP)."
 fi
 
-# Idempotent: skip apply if patches already present (heuristic: carriers pycache ignore).
-if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
-   && grep -q 'ResourceWarning\|read_bytes\|close-file' tests/test_inventable_jetmod_probes.py 2>/dev/null; then
-  echo "Tree already looks patched; running apply_all --check only."
-  if ! "$APPLY_ALL" --check; then
-    die "apply_all --check failed on apparently-patched tree. Resolve conflicts or reset to a clean tip."
-  fi
-elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
+# Always run apply_all (idempotent already-applied skips). Batch 240: do NOT
+# short-circuit to --check-only on an early-patch heuristic — that skipped
+# 0019 on trees that already had 0001–0018 close-handles.
+if [[ "$FROM_BUNDLE" -eq 1 ]]; then
   echo "--- --from-bundle: prefer .bundle fetch+merge when present ---"
   # Pin to BASE_TIP SHA when file lists it (release bundle is cut against that tip).
   if [[ -f "$BASE_TIP_FILE" ]]; then
@@ -511,7 +507,7 @@ elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
   fi
   apply_from_bundle_artifact
 else
-  echo "--- apply_all 0001–0004 + 0008–0017 ---"
+  echo "--- apply_all 0001–0004 + 0008–0019 ---"
   if ! "$APPLY_ALL"; then
     die "apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches. Do not PATH_C_BASE=main on post-#41 tip; PATH_C_REBASE_ONTO_MAIN usually CONFLICTS — see --dry-run."
   fi
@@ -545,10 +541,10 @@ if git diff --quiet && git diff --cached --quiet; then
   echo "No uncommitted patch diffs (already applied upstream?)."
 else
   git add -A
-  git commit -m "fix: portable engineering patches 0001-0004+0008-0017 (Path C)
+  git commit -m "fix: portable engineering patches 0001-0004+0008-0019 (Path C)
 
 carriers pycache ignore, math_console paths, gaussian parametrize,
-git fixture timeout, close-file-handles through receipts/bridge tests.
+git fixture timeout, close-file-handles through attestations (0019).
 
 Scientific effect: NONE. lemma_closed stays false."
 fi
@@ -582,11 +578,11 @@ else
   PR_BASE="main"
 fi
 
-TITLE="fix: portable engineering patches 0001-0004+0008-0017 (Path C)"
+TITLE="fix: portable engineering patches 0001-0004+0008-0019 (Path C)"
 BODY="$(cat <<EOF
 Path C via \`scripts/owner_land_path_c.sh\`.
 
-Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0017**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
+Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0019**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
 
 Scientific effect: **NONE**. \`lemma_closed\` stays false. Green checks ≠ obligation discharge.
 

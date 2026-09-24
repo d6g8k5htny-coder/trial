@@ -39,9 +39,9 @@
   "waiting_ci_prs": [
     71
   ],
-  "batch240_parallel": "post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
+  "batch240_parallel": "land_path_c_0019_apply+post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
   "path_c_followon_pending_ids": [
     "0019"
   ],
-  "batch240_parallel_at": "2026-09-24T20:05:29Z"
+  "batch240_parallel_at": "2026-09-24T20:10:00Z"
 }

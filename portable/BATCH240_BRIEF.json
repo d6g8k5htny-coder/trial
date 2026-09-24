@@ -1,6 +1,6 @@
 {
   "batch": "240",
-  "generated_at_utc": "2026-09-24T20:05:27Z",
+  "generated_at_utc": "2026-09-24T20:10:00Z",
   "status": "waiting_ci_pr71_0019",
   "waiting_ci": true,
   "goal_complete": false,
@@ -24,17 +24,21 @@
   "patch_0020_ready": false,
   "hunt_0020_seed": "NEGATIVE_tools_tests_post_0019",
   "parallel_shipped": [
+    "land_path_c_0019_apply",
     "post_0019_rw_hunt_seed_0020",
     "durable_write_probe_WRITABLE",
     "sibling_inventory_refresh_8of8"
   ],
-  "parallel": "post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
+  "parallel": "land_path_c_0019_apply+post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
   "next_focus": "on_ci_green_merge_71_0019_then_tip_refresh_mark_landed",
-  "note": "Batch 240: main #71 Path C 0019 CI still PENDING (verify in progress). Parallel non-noop: post-0019 RW hunt seed for 0020 (NEGATIVE on tools/tests; carrier-blob noise excluded), durable write probe WRITABLE via device_auth, sibling inventory 8/8 push. waiting_ci true. Never printed tokens; flipped nothing.",
+  "note": "Batch 240: harden land-path-c + owner_land to always apply_all through 0019 (drop early --check short-circuit that skipped follow-on patches). apply_all skips 0018/0019 when attestations/ absent. main #71 still PENDING. Never printed tokens; flipped nothing.",
   "artifacts": [
     "portable/BATCH240_HUNT_SEED_0020.json",
     "portable/BATCH240_WRITE_DURABLE.json",
     "portable/BATCH240_SIBLING_INVENTORY.json",
-    "portable/BATCH240_BRIEF.json"
-  ]
+    "portable/BATCH240_BRIEF.json",
+    ".github/workflows/land-path-c-on-main.yml",
+    "scripts/owner_land_path_c.sh"
+  ],
+  "trial_pr_branch": "cursor/land-path-c-0019-dee9"
 }

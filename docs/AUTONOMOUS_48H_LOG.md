@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 240 — 2026-09-24 ~20:08– UTC (PERMANENT window; #71 CI PENDING; land-path-c 0019 apply harden; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **`a1ed37b`** (== BASE_TIP).
+- [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) Path C **0019** — CI still **PENDING** (workspace-landing verify); subscribed; merge if green.
+- **Concrete harden (while waiting):** `land-path-c-on-main` + `owner_land_path_c.sh` always run `apply_all` through **0001–0004 + 0008–0019** (removed early-patch `--check`-only short-circuit that skipped 0019 on trees already carrying 0001–0018). `apply_all` skips **0018/0019** when `attestations/` absent. Stack labels refreshed in dry-run / alignment_status / refresh helpers.
+- Parallel earlier: post-0019 RW hunt seed for 0020 (NEGATIVE); durable write probe; sibling inventory 8/8. **flipped nothing**. `lemma_closed=false`.
+
 ### Batch 239 — 2026-09-24 ~19:48– UTC (PERMANENT window; #69 CI SUCCESS→merge a1ed37b; 0019+future-delta; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.

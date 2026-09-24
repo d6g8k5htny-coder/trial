@@ -104,7 +104,7 @@ def base_tip_vs_live(hardening_sha: str) -> dict:
         "base_tip_sha": base_sha,
         "live_hardening_sha": hardening_sha,
         "tip_matches_base": matches,
-        "apply_stack": "0001-0004 + 0008-0017",
+        "apply_stack": "0001-0004 + 0008-0019",
         "path_c_note": (
             "Keep Path C on hardening when default tip lacks PACKET.json "
             "(post-#41 ALIGNED but not Path-C shaped)."

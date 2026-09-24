@@ -249,7 +249,7 @@ fi
 echo "refresh_path_c_bundle: commit applied engineering stack (local only)"
 git -C "$WORKDIR" add -A
 git -C "$WORKDIR" -c user.email='path-c-refresh@local' -c user.name='path-c-refresh' \
-  commit -m "portable engineering patches (apply_all 0001-0004+0008-0016) on ${LIVE_SHORT}" \
+  commit -m "portable engineering patches (apply_all 0001-0004+0008-0019) on ${LIVE_SHORT}" \
   --allow-empty >/dev/null
 APPLIED_SHA="$(git -C "$WORKDIR" rev-parse HEAD)"
 APPLIED_SHORT="${APPLIED_SHA:0:7}"
