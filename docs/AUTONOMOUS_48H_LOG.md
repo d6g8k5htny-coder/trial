@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 95 — 2026-09-24 ~03:38 UTC (PERMANENT window; IDLE; repo-create FAIL; scientific effect NONE; flipped nothing)
+
+- **TRY:** `gh repo create d6g8k5htny-coder/main-portable-path-c --public` → **FAIL** `Resource not accessible by integration (createRepository)`.
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false`. Path C **not** on `d6g8k5htny-coder/main`.
+- Tips stable: default `1c6e74b`; hardening `ac33581`. No research status flips.
+- Tiny JSON: `portable/BATCH95_BRIEF.json`. `goal_complete=false`. `route_now=IDLE`.
+
+**Land note:** Create-new-repo path blocked for cursor[bot]. Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 94 — 2026-09-24 ~03:28 UTC (PERMANENT window; IDLE; `INSTALL_ADD_MAIN_ATTEMPT.json`; scientific effect NONE; flipped nothing)
 
 ### Batch 93 — 2026-09-24 ~03:22 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; IDLE)

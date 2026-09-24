@@ -1,0 +1,19 @@
+{
+  "batch": "95",
+  "generated_at_utc": "2026-09-24T03:38:17Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "repo_create": "FAIL",
+  "create_error": "GraphQL: Resource not accessible by integration (createRepository)",
+  "target": "d6g8k5htny-coder/main-portable-path-c",
+  "install_has_main": false,
+  "installation_names": ["d6g8k5htny-coder/trial"],
+  "path_c_landed": false,
+  "path_c_on_main": false,
+  "main_default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "route_now": "IDLE",
+  "timer": "permanent-autonomous-align-watch@3600s",
+  "note": "cursor[bot] cannot createRepository under d6g8k5htny-coder; install still trial-only; flipped nothing"
+}
