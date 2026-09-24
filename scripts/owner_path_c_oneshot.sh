@@ -111,17 +111,23 @@ read_file_token() {
   return 1
 }
 
+# Batch 232: PATH_C_IGNORE_FILE_TOKENS=1 skips well-known file drops (intent tests).
+IGNORE_FILE_TOKENS=0
+case "${PATH_C_IGNORE_FILE_TOKENS:-}" in
+  1|true|TRUE|yes|YES|on|ON) IGNORE_FILE_TOKENS=1 ;;
+esac
+
 if [[ -n "${MAIN_PUSH_TOKEN:-}" ]]; then
   TOKEN_VALUE="$MAIN_PUSH_TOKEN"
   TOKEN_SOURCE="env:MAIN_PUSH_TOKEN"
 elif [[ -n "${GH_TOKEN:-}" ]]; then
   TOKEN_VALUE="$GH_TOKEN"
   TOKEN_SOURCE="env:GH_TOKEN"
-elif read_file_token "/cursor/stores/self/MAIN_PUSH_TOKEN" "file:/cursor/stores/self/MAIN_PUSH_TOKEN"; then
+elif [[ "$IGNORE_FILE_TOKENS" -eq 0 ]] && read_file_token "/cursor/stores/self/MAIN_PUSH_TOKEN" "file:/cursor/stores/self/MAIN_PUSH_TOKEN"; then
   :
-elif read_file_token "/workspace/.secrets/MAIN_PUSH_TOKEN" "file:/workspace/.secrets/MAIN_PUSH_TOKEN"; then
+elif [[ "$IGNORE_FILE_TOKENS" -eq 0 ]] && read_file_token "/workspace/.secrets/MAIN_PUSH_TOKEN" "file:/workspace/.secrets/MAIN_PUSH_TOKEN"; then
   :
-elif read_file_token "/tmp/gh-dylan-auth/access_token" "file:/tmp/gh-dylan-auth/access_token"; then
+elif [[ "$IGNORE_FILE_TOKENS" -eq 0 ]] && read_file_token "/tmp/gh-dylan-auth/access_token" "file:/tmp/gh-dylan-auth/access_token"; then
   :
 fi
 

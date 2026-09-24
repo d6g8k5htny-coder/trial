@@ -22,6 +22,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 232 — 2026-09-24 ~17:20–17:30 UTC (PERMANENT window; tip 93a4ecd→377201c PR #62; tip-refresh; status+VERIFY land preserve; RW hunt clean no 0018; scientific effect NONE; flipped nothing)
+
+- Tip **moved** `93a4ecd`→**`377201c`** ([main PR #62](https://github.com/d6g8k5htny-coder/main/pull/62) inventable campaign; PACKET kept; flags unflipped). Path C eng stack still on tip (ancestor PR #64). **No Path C re-land**.
+- Tip-refresh: `refresh_path_c_bundle.sh` → BASE_TIP=`377201c`; apply_all already-applied OK; bundle rebuilt. `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**. Guard pass. Research audit OPEN; **flipped nothing**.
+- **Hunt:** focused+claims/recovery/pinned **192**/0 RW; PR #62 `test_replay_capsule` **8**/0 RW → **clean / no 0018**.
+- **Defects shipped (trial):** (1) `write_path_c_status --skip-write-probe` sticky `DENIED` after land → recover **WRITABLE** when `path_c_landed`+`tip_match`; (2) `refresh_path_c_bundle` wiped `VERIFY.path_c_landed` → **preserve land evidence**. `PATH_C_IGNORE_FILE_TOKENS` test isolation. Intent: `test_batch232_path_c_status_write_state_clobber`.
+- Inventory: **8** repos in env; App install trial-scoped. Timer **`post-path-c-align-watch` @ 1800s** armed (no auth renew).
+
 ### Batch 231 — 2026-09-24 ~16:50 UTC (PERMANENT window; Path C DONE hygiene; tip-sync+drift; scientific effect NONE; flipped nothing)
 
 - Path C **DONE** on hardening [main PR #64](https://github.com/d6g8k5htny-coder/main/pull/64) @ **`93a4ecd`**. `lemma_closed=false`. **flipped nothing**.

@@ -1,12 +1,12 @@
 {
-  "batch": "226",
-  "generated_at_utc": "2026-09-24T16:17:15Z",
+  "batch": "232",
+  "generated_at_utc": "2026-09-24T17:24:05Z",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
-  "goal_complete": false,
+  "goal_complete": true,
   "main_writable": false,
-  "path_c_landed": false,
+  "path_c_landed": true,
   "trial_push": true,
   "sandbox_added": true,
   "repos_count": 8,
@@ -25,7 +25,7 @@
     "read_http": "404",
     "write": "DENIED",
     "tip_sha": null,
-    "note": "Still private/out-of-install; App token 404 on API + ls-remote. Add sandbox on every App install UI then RELAUNCH."
+    "note": "Still private/out-of-install for App token; ls-remote not_found_or_denied. Dylan device token may see HTTP 200 but App install lacks sandbox. Add sandbox on every App install UI then RELAUNCH."
   },
   "repos_connected": [
     {
@@ -323,5 +323,6 @@
   "assert_path_c_ready": "OK",
   "apply_stack": "0001-0004+0008-0017",
   "release": "batch223-path-c-bundle",
-  "seconds_left": 275.7
+  "seconds_left": 275.7,
+  "note": "Batch 232 quick check: environment.json still lists all 8 owner repos incl. sandbox. Live App install still trial-only (install_has_main=false; install_has_sandbox=false). Path C landed on hardening via Dylan token (PR #64); App scope unchanged. Inventory contract fields preserved for Intent."
 }
