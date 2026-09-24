@@ -1,18 +1,20 @@
 {
   "batch": "115",
-  "generated_at_utc": "2026-09-24T04:53:04Z",
+  "generated_at_utc": "2026-09-24T04:54:34Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "device_auth": "slow_down",
   "device_code": "46E7-69A0",
-  "seconds_left": 705,
+  "seconds_left": 617,
   "gh_config_dir": "/tmp/gh-dylan-auth",
   "install_has_main": false,
-  "installation_names": ["d6g8k5htny-coder/trial"],
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
   "path_c_landed": false,
-  "land_trial": "direct push cursor/batch115-auth-pulse-e25c → trial main @68c9f08",
+  "land_trial": "direct push cursor/batch115-auth-pulse-e25c \u2192 trial main @6f24882",
   "timer_rearm_s": 300,
   "flipped_anything": false,
-  "note": "auth slow_down 46E7-69A0; seconds_left=705; Path C blocked; research untouched"
+  "note": "auth slow_down 46E7-69A0; seconds_left=617; Path C blocked; research untouched"
 }
