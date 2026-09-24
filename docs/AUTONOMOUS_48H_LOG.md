@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 246 (assert_path_c_ready post-0019 idle + catch 0020) — 2026-09-24 ~22:25– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73 inventable tip-observe / #47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Tip CI: hardening/default green. `when_writable_land` → **`idle_path_c_done`** (0018+0019 resolved; pending=[]).
+- **Defect shipped (not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag pack):** `assert_path_c_ready` skipped `apply_all --check` whenever `path_c_landed` without a pending-followon gate and without a clear idle line. Fixed: **`IDLE_PATH_C_DONE`** skip when landed+no pending; re-run `--check` when 0020+ pending; `PATH_C_STATUS` emits `idle_status`/`stack_end`/`apply_all_check`; CI Apply step matches.
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 245 (pack_portable living-tag automation) — 2026-09-24 ~22:15– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75` (moved past `ea41a30`; Path C tracks hardening). `lemma_closed=false`.

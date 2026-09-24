@@ -470,6 +470,41 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
                 via = src.get(via_key)
                 if isinstance(via, str) and via and not status.get(via_key):
                     status[via_key] = via
+    # Batch 246: post-0019 idle status for assert_path_c_ready / watches.
+    # When path_c_landed and no pending follow-ons → IDLE_PATH_C_DONE (skip
+    # redundant apply_all --check). Pending 0020+ → PENDING_FOLLOWON (re-check).
+    try:
+        scripts_dir = str(Path(__file__).resolve().parent)
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        from when_writable_land import path_c_followon_pending  # type: ignore
+
+        pending, followon_detail = path_c_followon_pending()
+        pending_ids = list(followon_detail.get("pending_ids") or [])
+        resolved_ids = list(followon_detail.get("resolved_ids") or [])
+        stack_end = resolved_ids[-1] if resolved_ids else None
+        status["path_c_followon_pending"] = bool(pending)
+        status["path_c_followon_pending_ids"] = pending_ids
+        status["path_c_followon_resolved_ids"] = resolved_ids
+        status["stack_end"] = stack_end
+        if status.get("path_c_landed") is True and tip_match is True and not pending:
+            status["idle_status"] = "IDLE_PATH_C_DONE"
+            status["apply_all_check"] = "skipped_redundant"
+        elif status.get("path_c_landed") is True and pending:
+            status["idle_status"] = "PENDING_FOLLOWON"
+            status["apply_all_check"] = "required_catch_0020"
+        elif status.get("path_c_landed") is True:
+            status["idle_status"] = (
+                "PATH_C_LANDED_TIP_DRIFT" if tip_match is False else "PATH_C_LANDED"
+            )
+            status["apply_all_check"] = "skipped_redundant"
+        else:
+            status["idle_status"] = "APPLY_REQUIRED"
+            status["apply_all_check"] = "required"
+    except Exception as exc:  # noqa: BLE001 — status must still emit
+        status["idle_status"] = "UNKNOWN"
+        status["apply_all_check"] = "unknown"
+        status["idle_status_error"] = type(exc).__name__
     # Ensure schema keys exist even if None.
     for key in SCHEMA_KEYS:
         status.setdefault(key, None)

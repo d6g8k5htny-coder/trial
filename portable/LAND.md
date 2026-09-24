@@ -6,18 +6,19 @@ Cursor App install is often **trial-only** (git push / Git Data API **403** on
 `main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
 See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
-> ## STATUS (Batch 245) — PERMANENT window; ALIGNED @ `f3a41a75`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle` via `LIVING_PATH_C_RELEASE_TAG`; write **WRITABLE**
+> ## STATUS (Batch 246) — PERMANENT window; ALIGNED @ `f3a41a75`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**; assert idle `IDLE_PATH_C_DONE`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
 > **Permanent extension:** “48 hours is now extended permanently until I intervene.”
 > Stop only on owner intervene — **no 48h finale.**
-> Default tip **`f3a41a75`** ALIGNED (Universal-law / SIDE24 + hardening face; moved past `ea41a30`).
+> Default tip **`f3a41a75`** ALIGNED (Universal-law / SIDE24 + hardening face).
 > Hardening / Path C tip **`542e6ec`** (== BASE_TIP; tip_moved=false; Path C 0001–0019 landed).
 > Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
 > often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**
-> (living pin `portable/LIVING_PATH_C_RELEASE_TAG`; `pack_portable.sh` syncs from VERIFY).
-> `when_writable_land` → `idle_path_c_done` with 0018+0019 resolved.
+> (living pin `portable/LIVING_PATH_C_RELEASE_TAG`).
+> `assert_path_c_ready` → **`IDLE_PATH_C_DONE`** (skip redundant `apply_all --check`;
+> re-check if 0020+ pending). `when_writable_land` → `idle_path_c_done` with 0018+0019 resolved.
 > Prefer `./scripts/restore_main_face.sh` for MISALIGNED restore (ALIGNED → no-op).
 > Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
 > grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.

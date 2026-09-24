@@ -1,6 +1,26 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 246 — write WRITABLE; assert_path_c_ready post-0019 idle + catch 0020
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`.
+`assert_path_c_ready` now prints **`IDLE_PATH_C_DONE`** and skips redundant
+`apply_all --check` when Path C is landed through tip and no 0018+ follow-ons are
+pending; if a **0020+** patch appears without a landed marker, `--check` re-runs.
+`PATH_C_STATUS.json` carries `idle_status` / `stack_end` / `apply_all_check`.
+Research HOLD drafts skipped (incl. #73 inventable tip-observe). `lemma_closed` stays **false**.
+
+```bash
+./scripts/assert_path_c_ready.sh --help | grep -E 'IDLE|0020|follow'
+./scripts/write_path_c_status.py --skip-write-probe --dry-run | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["idle_status"], d["stack_end"], d["apply_all_check"])'
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 245 — write WRITABLE; pack_portable living-tag automation
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is

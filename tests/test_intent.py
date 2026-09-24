@@ -6683,3 +6683,123 @@ def test_batch245_pack_living_tag_automation() -> None:
 
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 245" in owner_actions
+
+
+def test_batch246_assert_path_c_idle_catch_0020() -> None:
+    """Batch 246: assert_path_c_ready IDLE_PATH_C_DONE + catch 0020; tip stable; no flip."""
+    import json
+    import importlib.util
+
+    assert_sh = (ROOT / "scripts" / "assert_path_c_ready.sh").read_text(encoding="utf-8")
+    assert "IDLE_PATH_C_DONE" in assert_sh
+    assert "catch 0020" in assert_sh or "catch_0020" in assert_sh or "PENDING_FOLLOWON" in assert_sh
+    assert "path_c_followon_pending" in assert_sh
+    assert "skipped_redundant" in assert_sh
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "IDLE_PATH_C_DONE" in ci
+    assert "catch 0020" in ci or "PENDING" in ci
+    assert "path_c_followon_pending" in ci
+
+    status_py = (ROOT / "scripts" / "write_path_c_status.py").read_text(encoding="utf-8")
+    assert "idle_status" in status_py
+    assert "IDLE_PATH_C_DONE" in status_py
+    assert "required_catch_0020" in status_py
+    assert "stack_end" in status_py
+
+    # Live status contract: landed + no pending → idle skip.
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status.get("lemma_closed") is False
+    assert status.get("path_c_landed") is True
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("apply_all_check") == "skipped_redundant"
+    assert status.get("stack_end") == "0019"
+    assert status.get("path_c_followon_pending_ids") == []
+    assert "0019" in (status.get("path_c_followon_resolved_ids") or [])
+    assert _living_tip(status.get("tip"))
+
+    # Catch 0020: a new ≥0018 patch without landed marker arms pending.
+    patches = ROOT / "portable" / "patches"
+    probe = patches / "0020-batch246-idle-catch-probe.patch"
+    assert not probe.exists()
+    try:
+        probe.write_text(
+            "# Batch 246 probe only — not a real eng patch; removed by test.\n",
+            encoding="utf-8",
+        )
+        spec = importlib.util.spec_from_file_location(
+            "when_writable_land_246", ROOT / "scripts" / "when_writable_land.py"
+        )
+        assert spec and spec.loader
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        pending, detail = mod.path_c_followon_pending()
+        assert pending is True
+        assert "0020" in (detail.get("pending_ids") or [])
+    finally:
+        if probe.exists():
+            probe.unlink()
+
+    # After probe removal, idle again.
+    spec = importlib.util.spec_from_file_location(
+        "when_writable_land_246b", ROOT / "scripts" / "when_writable_land.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    pending, detail = mod.path_c_followon_pending()
+    assert pending is False
+    assert detail.get("pending_ids") == []
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH246_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "246"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "assert_path_c_ready_post_0019_idle"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert brief.get("patch_0020") is False
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH246_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "246"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH246_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 246" in log
+    assert "IDLE_PATH_C_DONE" in log
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 246)" in land_md
+    assert "IDLE_PATH_C_DONE" in land_md
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 246" in ones
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 246" in owner_actions
+    assert "IDLE_PATH_C_DONE" in owner_actions

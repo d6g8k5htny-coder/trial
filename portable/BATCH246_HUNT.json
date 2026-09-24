@@ -1,0 +1,38 @@
+{
+  "batch": "246",
+  "generated_at_utc": "2026-09-24T22:28:00Z",
+  "hunt": "tip_stable_assert_path_c_idle_or_inventable_tip_observe",
+  "hunt_result": "DEFECT_FOUND_ASSERT_PATH_C_IDLE_NO_CATCH_0020",
+  "defect_found": true,
+  "defect_id": "assert_path_c_ready_post_0019_idle",
+  "defect_shipped": true,
+  "patch_0020": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "base_tip": "542e6ec",
+  "tip_moved": false,
+  "default_tip": "f3a41a75",
+  "aligned": true,
+  "write": "WRITABLE",
+  "surfaces": {
+    "open_main_prs": "all draft research HOLD (#73 tip-observe inventable, #47,#46,#38,#36,#21,#12,#8,#7) — skipped; no eng-only green merge",
+    "hardening_vs_base": "542e6ec == BASE_TIP; tip_moved=false",
+    "default_tip": "ALIGNED @ f3a41a75 (Path C tracks hardening)",
+    "assert_path_c_ready": "landed path skipped apply_all --check without pending-followon gate; no clear IDLE_PATH_C_DONE status",
+    "inventable_tip_observe_pr73": "draft research docs (PACKET/STATUS/NAV) —HOLD; not eng merge",
+    "when_writable_idle": "idle_path_c_done; followons 0018+0019 resolved; pending_ids []"
+  },
+  "evidence": {
+    "before": "assert_path_c_ready path_c_landed=true always skipped apply_all; no pending_ids gate; no IDLE_PATH_C_DONE line",
+    "fix": [
+      "scripts/assert_path_c_ready.sh IDLE_PATH_C_DONE skip when landed+no pending; re-check when pending (catch 0020+)",
+      "scripts/write_path_c_status.py idle_status/apply_all_check/stack_end/pending_ids",
+      ".github/workflows/ci.yml Apply portable patches idle skip + catch-0020 re-check",
+      "tests/test_intent.py test_batch246_assert_path_c_idle_catch_0020"
+    ]
+  },
+  "note": "NEW signal beyond Path A/B ALIGNED no-ops / sibling AGENTS / living-tag pack: assert_path_c_ready post-0019 idle + catch 0020. Never printed tokens."
+}

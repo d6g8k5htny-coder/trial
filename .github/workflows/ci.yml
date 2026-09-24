@@ -172,11 +172,29 @@ jobs:
           if [[ -f "$VERIFY_FILE" ]]; then
             LANDED="$(python3 -c "import json; print('1' if json.load(open('$VERIFY_FILE')).get('path_c_landed') is True else '0')")"
           fi
-          cd main-work
+          # Batch 246: post-0019 idle — skip redundant apply_all --check when
+          # landed and no pending follow-ons; re-check if 0020+ pending.
+          PENDING=0
           if [[ "$LANDED" == "1" ]]; then
-            echo "path_c_landed=true — apply_all --check is idempotent (already-applied skips)"
+            PENDING="$(
+              cd "${GITHUB_WORKSPACE}/trial" && python3 -c '
+import sys
+sys.path.insert(0, "scripts")
+from when_writable_land import path_c_followon_pending
+pending, _ = path_c_followon_pending()
+print("1" if pending else "0")
+'
+            )"
           fi
-          ../trial/portable/patches/apply_all.sh --check
+          cd main-work
+          if [[ "$LANDED" == "1" && "$PENDING" == "0" ]]; then
+            echo "IDLE_PATH_C_DONE — path_c_landed through tip; apply_all --check SKIPPED (redundant; catch 0020 when pending)"
+          elif [[ "$LANDED" == "1" && "$PENDING" == "1" ]]; then
+            echo "path_c_landed=true but pending follow-ons — apply_all --check (catch 0020+)"
+            ../trial/portable/patches/apply_all.sh --check
+          else
+            ../trial/portable/patches/apply_all.sh --check
+          fi
           if [[ "$LANDED" == "1" ]]; then
             echo "path_c_landed=true — skip re-apply; verify math_status on tip"
             python tools/math_status_check.py | tee /tmp/math_status_landed.out
