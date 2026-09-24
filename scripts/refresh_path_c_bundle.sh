@@ -371,7 +371,7 @@ if prior.get("path_c_landed") is True:
         verify["merge_commit_sha"] = prior["merge_commit_sha"]
 # Default release label when tip-refresh wiped it (Intent living-release contract).
 if not verify.get("release"):
-    verify["release"] = prior.get("release") or "batch223-path-c-bundle"
+    verify["release"] = prior.get("release") or "batch236-path-c-bundle"
 Path("$VERIFY_OUT").write_text(json.dumps(verify, indent=2) + "\n", encoding="utf-8")
 print("refresh_path_c_bundle: wrote VERIFY.json")
 PY

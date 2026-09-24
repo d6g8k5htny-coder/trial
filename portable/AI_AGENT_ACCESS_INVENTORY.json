@@ -1,129 +1,143 @@
 {
-  "batch": "232",
-  "generated_at_utc": "2026-09-24T17:24:05Z",
+  "batch": "236",
+  "generated_at_utc": "2026-09-24T18:41:27Z",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
   "goal_complete": true,
-  "main_writable": false,
+  "main_writable": true,
   "path_c_landed": true,
   "trial_push": true,
   "sandbox_added": true,
   "repos_count": 8,
+  "sibling_write_count": 8,
   "install_has_main": false,
   "install_has_sandbox": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
   ],
   "repository_selection": "selected",
+  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret",
+  "token_printed": false,
   "sandbox": {
     "name": "d6g8k5htny-coder/sandbox",
     "in_environment_json": true,
     "in_install": false,
-    "readable": false,
-    "ls_remote": "not_found_or_denied",
-    "read_http": "404",
-    "write": "DENIED",
-    "tip_sha": null,
-    "note": "Still private/out-of-install for App token; ls-remote not_found_or_denied. Dylan device token may see HTTP 200 but App install lacks sandbox. Add sandbox on every App install UI then RELAUNCH."
+    "readable": true,
+    "ls_remote": "ok",
+    "read_http": "200",
+    "write": "WRITABLE",
+    "tip_sha": "9e0d00c512534147b81755be5ff3c3aed1f54606",
+    "has_agents": true,
+    "readme_fixed": true,
+    "note": "Batch 236: device token lists+pushes sandbox; App install may still lack sandbox until RELAUNCH with ALL repos. README stub restored + AGENTS.md added."
   },
   "repos_connected": [
     {
       "name": "d6g8k5htny-coder/google-drive",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/governance-",
-      "perm": "pull"
-    },
-    {
-      "name": "d6g8k5htny-coder/main",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/Math-",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/meta-framework",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/query-",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/sandbox",
-      "perm": "none"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/trial",
+      "perm": "push"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
       "perm": "push"
     }
   ],
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
-      "perm": "pull",
-      "write": "DENIED",
+      "perm": "push",
+      "write": "WRITABLE",
       "read_http": "200",
       "install": false,
-      "tip_sha": "a7c8d1e3deee448f4e01ed27eb24653b80a4554f",
-      "ls_remote": "ok"
+      "tip_sha": "ad44f9ce23f6be5e706bc9b796633fad39897c42",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/governance-",
-      "perm": "pull",
-      "write": "DENIED",
+      "perm": "push",
+      "write": "WRITABLE",
       "read_http": "200",
       "install": false,
-      "tip_sha": "8afbc663573dad0f219398285549f20bb94e795f",
-      "ls_remote": "ok"
-    },
-    {
-      "name": "d6g8k5htny-coder/main",
-      "perm": "pull",
-      "write": "DENIED",
-      "read_http": "200",
-      "install": false,
-      "tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
-      "ls_remote": "ok"
+      "tip_sha": "081280ee1881b4fd8bd9736fb4c27ddd16de8c7e",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/Math-",
-      "perm": "pull",
-      "write": "DENIED",
+      "perm": "push",
+      "write": "WRITABLE",
       "read_http": "200",
       "install": false,
-      "tip_sha": "636b98327e9000a4e1fc6bc881ac49fd896e0405",
-      "ls_remote": "ok"
+      "tip_sha": "5f1d0d6f539a73fda1ed4129c8eeeae2d82dfebc",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/meta-framework",
-      "perm": "pull",
-      "write": "DENIED",
+      "perm": "push",
+      "write": "WRITABLE",
       "read_http": "200",
       "install": false,
-      "tip_sha": "ed31d63dc668aaacfc619339df345fe704571955",
-      "ls_remote": "ok"
+      "tip_sha": "1494d7c04e93f3dc47374d7dddb90efb66c28233",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/query-",
-      "perm": "pull",
-      "write": "DENIED",
+      "perm": "push",
+      "write": "WRITABLE",
       "read_http": "200",
       "install": false,
-      "tip_sha": "e3595de5c2b99327b3b175aaeb4b59e0ce921528",
-      "ls_remote": "ok"
+      "tip_sha": "d17e2b9375bbd9e9e2f82cfc954e325b937cd504",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/sandbox",
-      "perm": "none",
-      "write": "DENIED",
-      "read_http": "404",
+      "perm": "push",
+      "write": "WRITABLE",
+      "read_http": "200",
       "install": false,
-      "tip_sha": null,
-      "ls_remote": "not_found_or_denied"
+      "tip_sha": "9e0d00c512534147b81755be5ff3c3aed1f54606",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     },
     {
       "name": "d6g8k5htny-coder/trial",
@@ -131,112 +145,132 @@
       "write": "WRITABLE",
       "read_http": "200",
       "install": true,
-      "tip_sha": "2da7a02f65d84ea7c606b479d58354b9caa7e339",
-      "ls_remote": "ok"
+      "tip_sha": "e7db23d029b89c56333875ad569287315ab317ff",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": true
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "push",
+      "write": "WRITABLE",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+      "ls_remote": "ok",
+      "has_agents": true,
+      "has_readme": true,
+      "has_environment_json": false
     }
   ],
   "gh_api_inventory": [
     {
       "name": "google-drive",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "governance-",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
-    },
-    {
-      "name": "main",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
+      "http_status": 200,
       "private": false,
-      "api_ok": true,
-      "http_status": 200
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "Math-",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "meta-framework",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "query-",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "sandbox",
-      "private": null,
-      "permissions": null,
-      "api_ok": false,
-      "http_status": 404,
-      "error": "Not Found"
+      "api_ok": true,
+      "http_status": 200,
+      "private": true,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     },
     {
       "name": "trial",
-      "permissions": {
-        "admin": false,
-        "maintain": false,
-        "pull": false,
-        "push": false,
-        "triage": false
-      },
-      "private": false,
       "api_ok": true,
-      "http_status": 200
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "main",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
     }
   ],
-  "gh_api_note": "Installation token returns permissions.* all false even when pull/push works; use details[] from grant --check for effective access. sandbox \u2192 404.",
+  "gh_api_note": "Device/user token sees all 8 R/W. Cursor App install still often trial-only until owner selects ALL including sandbox and RELAUNCH.",
   "apps_documented": [
     "cursor",
     "chatgpt-codex-connector",
@@ -295,34 +329,8 @@
       "owner_hint": "PAT on ALL 8 repos including sandbox"
     }
   ],
-  "device_auth": {
-    "device_code": "84FB-0605",
-    "prior_device_code": "BE27-A62D",
-    "device_auth": "pending",
-    "auth_error": "authorization_pending",
-    "has_token": false,
-    "seconds_left": 275.7,
-    "checked_at_utc": "2026-09-24T16:17:15Z",
-    "auth_renewed": false
-  },
-  "api_grants_attempted": {
-    "main_create_ref": "DENIED",
-    "install_has_main": false,
-    "sandbox_clone_ls_remote": "not_found_or_denied (404)",
-    "collaborators_without_usernames": "skipped (no invented bot logins)"
-  },
-  "environment_json_repos_ok": true,
-  "multi_agent_docs": "docs/MULTI_AGENT_ACCESS.md",
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "owner_next": "Authorize device 84FB-0605 at https://github.com/login/device OR MAIN_PUSH_TOKEN; on Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH",
-  "docs": "docs/MULTI_AGENT_ACCESS.md",
-  "script": "scripts/owner_grant_ai_agent_access.sh",
-  "tip": "cbaa056",
-  "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
-  "tip_refresh": false,
-  "assert_path_c_ready": "OK",
-  "apply_stack": "0001-0004+0008-0017",
-  "release": "batch223-path-c-bundle",
-  "seconds_left": 275.7,
-  "note": "Batch 232 quick check: environment.json still lists all 8 owner repos incl. sandbox. Live App install still trial-only (install_has_main=false; install_has_sandbox=false). Path C landed on hardening via Dylan token (PR #64); App scope unchanged. Inventory contract fields preserved for Intent."
+  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
+  "defect_shipped": "sandbox README restore + AGENTS.md on google-drive/governance-/Math-/meta-framework/query-/sandbox",
+  "script": "scripts/owner_grant_ai_agent_access.sh"
 }
