@@ -44,6 +44,10 @@
   "trial_prs_51_52": "merged",
   "trial_pr_51_url": "https://github.com/d6g8k5htny-coder/trial/pull/51",
   "trial_pr_52_url": "https://github.com/d6g8k5htny-coder/trial/pull/52",
-  "note": "Batch 234: tip stable 377201c ALIGNED; write WRITABLE (device token); Path C through 0017 on tip (PR #64 ancestor). Deep RW/AST/CI/open-PR hunt → NEGATIVE (no 0018). Prefer truthful negative over fake patch. Trial PRs #51/#52 already MERGED. lemma_closed=false; flipped nothing.",
+  "trial_pr": 53,
+  "trial_pr_url": "https://github.com/d6g8k5htny-coder/trial/pull/53",
+  "trial_sha": "0d60125753144ac83e3a9b5cda0060355aff5de9",
+  "trial_land": "pr_53_merged",
+  "note": "Batch 234: tip stable 377201c ALIGNED; write WRITABLE (device token); Path C through 0017 on tip (PR #64 ancestor). Deep RW/AST/CI/open-PR hunt → NEGATIVE (no 0018). Prefer truthful negative over fake patch. Trial PRs #51/#52 already MERGED; this batch docs landed via trial PR #53. lemma_closed=false; flipped nothing.",
   "trial_branch": "cursor/batch234-hunt-negative-44b1"
 }
