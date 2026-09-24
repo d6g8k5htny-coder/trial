@@ -76,6 +76,9 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 
 ```bash
 # Path C — engineering on hardening tip: apply_all 0001–0004 + 0008–0016
+./scripts/owner_path_c_oneshot.sh --dry-run   # Batch 165: token→open PR/land; else unblock menu
+./scripts/owner_path_c_oneshot.sh
+./scripts/owner_path_c_oneshot.sh --from-bundle
 ./scripts/owner_land_path_c.sh --dry-run   # certainty (works without write)
 ./scripts/owner_land_path_c.sh --from-bundle   # ONE-SHOT after extracting release tarball
 ./scripts/owner_land_path_c.sh                 # apply_all path (same gates)

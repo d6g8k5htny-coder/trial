@@ -3,6 +3,32 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 165 — research-stack OPEN audit refresh (no status flips) @ tips `1c6e74b` / `8ea3b5f`
+
+Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip `8ea3b5f`). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8ea3b5fb9368a85e7f971d606b8f75c96c35c05a` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory below |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** / prizes_solved=false |
+| open premises (frozen) | **13** |
+| open lemmas | **1** (`D3-LEMMA-RN-UNIF`) |
+| open packet obligations | **2** (`OBL-H5-JETMOD`, `D3-LEMMA-RN-UNIF`) |
+| open prizes (FW-NO-PRIZE-CLOSURE) | **3** |
+| claims inventory | **26** (not promoted) |
+| open questions | **16** mechanically OPEN/HOLD/REBASED |
+| write / Path C | **DENIED** (403; `install_has_main=false`); device auth renewed `905D-02F4` |
+| new portable **0017** | **none** (tip==BASE_TIP; hunt_skipped_stable) |
+| owner entry | `scripts/owner_path_c_oneshot.sh` (Batch 165) |
+
+Packet: disposition=`OPEN_HOLD`; `prizes_solved=false`; `original_prize_closed=false`; bridge=`PROPOSED_NOT_DEPLOYED`; freeze=false.
+
+Artifacts: `portable/BATCH165_RESEARCH_STACK_AUDIT.json`, `portable/BATCH165_RESEARCH_COUNTS.json`. Scientific effect: **NONE**.
+
 ## Batch 149 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `10c077e`
 
 Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.

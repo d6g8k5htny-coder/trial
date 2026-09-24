@@ -4,19 +4,20 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T09:33:53Z |
-| Checked (UTC) | 2026-09-24T09:40:07Z |
+| Started (UTC) | 2026-09-24T09:47:57Z |
+| Checked (UTC) | 2026-09-24T09:47:57Z |
 | Verification URL | https://github.com/login/device |
-| User code | `C8FC-A08F` |
-| Prior code | `E818-2EE5` (expired / renewed) |
-| Prior prior | `2513-3A16` (near-expiry / renewed) |
-| Older priors | `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 164 re-poll) |
-| Expires | see `seconds_left` in BATCH164_BRIEF |
+| User code | `905D-02F4` |
+| Prior code | `C8FC-A08F` (near-expiry / renewed Batch 165) |
+| Prior prior | `E818-2EE5` (expired / renewed) |
+| Older priors | `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
+| Status | pending (authorization_pending; Batch 165 renew) |
+| Expires | see `seconds_left` in BATCH165_BRIEF |
 | Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle current; release `batch162-path-c-bundle` (prior `batch155-path-c-bundle` @ `10c077e`) |
+| Owner ONE-SHOT | `scripts/owner_path_c_oneshot.sh` (Batch 165: token→open PR/land; else unblock menu) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
 | Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 162: stdin `gh secret set` — **not** `--body -`; optional `--dispatch`) |
-| Unblock issue | [#29 Batch 164 refresh](https://github.com/d6g8k5htny-coder/trial/issues/29) (prior [#27](https://github.com/d6g8k5htny-coder/trial/issues/27) / #26 — App cannot comment/edit existing issues) |
+| Unblock issue | [#30 Batch 165 refresh](https://github.com/d6g8k5htny-coder/trial/issues/30) (prior [#29](https://github.com/d6g8k5htny-coder/trial/issues/29) / #27 / #26 — App cannot comment/edit existing issues) |
 | Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
 | Path C blocked codes | `when_writable_land` logs `PATH_C_BLOCKED=NO_TOKEN\|TIP_DRIFT\|APPLY_FAIL` (Batch 157) |
 | Main PR comment | Batch 164 one-shot on open PR #52 → **comment_denied** (403); do not spam |
@@ -24,10 +25,10 @@
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **C8FC-A08F**
+2. Enter code **905D-02F4**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
-The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically.
+The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically. Batch 165+: `scripts/owner_path_c_oneshot.sh` is the preferred owner entry (token→`owner_open_path_c_pr` / `owner_land_path_c`; else unblock menu).
 
 ## W3f false positive (Batch 141)
 
@@ -57,6 +58,6 @@ MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
 # or: ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
 ```
 
-If this Cloud Agent still cannot write after auth, or you prefer not to wait: land Path C locally from the release tarball in **one command** — see `portable/LAND.md` / `scripts/owner_land_path_c.sh --from-bundle`. Scope unblock options: `portable/RELAUNCH_WITH_MAIN_SCOPE.md`. Batch 139+: once trial secret `MAIN_PUSH_TOKEN` exists, `scripts/dispatch_land_path_c.sh --apply` fires `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; no Actions:write needed).
+If this Cloud Agent still cannot write after auth, or you prefer not to wait: land Path C locally from the release tarball in **one command** — see `portable/LAND.md` / `scripts/owner_path_c_oneshot.sh` / `scripts/owner_land_path_c.sh --from-bundle`. Scope unblock options: `portable/RELAUNCH_WITH_MAIN_SCOPE.md`. Batch 139+: once trial secret `MAIN_PUSH_TOKEN` exists, `scripts/dispatch_land_path_c.sh --apply` fires `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; no Actions:write needed).
 
 Scientific status / research lemma is **not** flipped by this flow.

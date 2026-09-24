@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 165 — 2026-09-24 ~09:48 UTC (PERMANENT window; tip stable 8ea3b5f; ship owner_path_c_oneshot.sh; research audit refresh OPEN_HOLD; auth renew 905D-02F4; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `C8FC-A08F` **<90s** still pending → **renewed** `905D-02F4`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **Engineering:** shipped `scripts/owner_path_c_oneshot.sh` (token→`owner_open_path_c_pr` else `owner_land_path_c`; no token→unblock menu: device URL+code / set secret / App install / `--from-bundle`). `--dry-run` supported. Wired into `print_owner_unblock.sh` + `pack_portable.sh` + `OWNER_ONE_LINERS.md`. Intent: `test_batch165_owner_path_c_oneshot`.
+- **Research audit refresh** @ tip `8ea3b5f`: premises=13 lemmas=1 prizes=3 obligations=2 claims=26 OQ=16; disposition **OPEN_HOLD**; **lemma_closed=false**; no status promotion. Updated `docs/MECHANICAL_FINDINGS_MAIN.md` + `portable/BATCH165_RESEARCH_*.json`.
+- Tiny JSON: `portable/BATCH165_BRIEF.json`. `goal_complete=false`. Timers: auth **900s**, permanent **10800s**. Issue [#30](https://github.com/d6g8k5htny-coder/trial/issues/30) (App cannot edit #29).
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `905D-02F4` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle`. See issue #30.
+
 ### Batch 164 — 2026-09-24 ~09:38 UTC (PERMANENT window; tip stable 8ea3b5f; CI green post-batch162; auth pending C8FC-A08F; issue #29 refresh; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

@@ -2986,7 +2986,8 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert verify["lemma_closed"] is False
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
-    assert "C8FC-A08F" in gh
+    # Batch 165 may renew past C8FC; brief still records Batch 164 code.
+    assert "C8FC-A08F" in gh or "905D-02F4" in gh
     assert "issues/29" in gh or "#29" in gh
     assert "comment_denied" in gh
     assert "batch162-path-c-bundle" in gh
@@ -2997,6 +2998,121 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "8ea3b5f" in log
     assert "comment_denied" in log
     assert "#29" in log or "issues/29" in log
+    assert "lemma_closed" in log.lower()
+
+
+def test_batch165_owner_path_c_oneshot() -> None:
+    """Batch 165: owner_path_c_oneshot.sh; research audit refresh; tip stable; auth renew; lemma_closed=false."""
+    import json
+    import os
+    import subprocess
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    assert oneshot.is_file()
+    text = oneshot.read_text(encoding="utf-8")
+    assert "owner_open_path_c_pr.sh" in text
+    assert "owner_land_path_c.sh" in text
+    assert "--dry-run" in text
+    assert "MAIN_PUSH_TOKEN" in text
+    assert "/tmp/gh-dylan-auth/access_token" in text
+    assert "github.com/login/device" in text
+    assert "owner_set_main_push_token.sh" in text
+    assert "RELAUNCH_WITH_MAIN_SCOPE" in text
+    assert "--from-bundle" in text
+    assert "lemma_closed" in text
+    assert "never printed" in text.lower() or "value not printed" in text.lower()
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "owner_path_c_oneshot.sh" in unblock
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "owner_path_c_oneshot.sh" in pack
+
+    owner_one = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "owner_path_c_oneshot.sh" in owner_one
+
+    help_p = subprocess.run(
+        ["bash", str(oneshot), "--help"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert help_p.returncode == 0, help_p.stderr
+    assert "--dry-run" in help_p.stdout
+    assert "lemma_closed" in help_p.stdout
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_p = subprocess.run(
+        ["bash", str(oneshot), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
+    assert "github.com/login/device" in dry_out
+    assert "owner_set_main_push_token.sh" in dry_out
+    assert "--from-bundle" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+
+    brief = ROOT / "portable" / "BATCH165_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "165"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["oneshot"] is True
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["device_code"] == "905D-02F4"
+    assert data["auth_renewed"] is True
+    assert data["prior_device_code"] == "C8FC-A08F"
+    assert data["write"] == "DENIED"
+    assert data.get("issue_number") == 30
+    assert "issues/30" in (data.get("issue_url") or "")
+    counts = data.get("research_counts") or {}
+    assert counts.get("open_premises") == 13
+    assert counts.get("open_lemmas") == 1
+    assert counts.get("open_prizes") == 3
+    assert counts.get("disposition") == "OPEN_HOLD"
+
+    counts_file = ROOT / "portable" / "BATCH165_RESEARCH_COUNTS.json"
+    assert counts_file.is_file()
+    cdata = json.loads(counts_file.read_text(encoding="utf-8"))
+    assert cdata["clean"]["lemma_closed"] is False
+    assert cdata["clean"]["disposition"] == "OPEN_HOLD"
+    assert cdata["clean"]["open_premises"] == 13
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 165" in findings
+    assert "8ea3b5f" in findings
+    assert "OPEN_HOLD" in findings
+    assert "lemma_closed=false" in findings.lower() or "**lemma_closed=false**" in findings
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "905D-02F4" in gh
+    assert "C8FC-A08F" in gh
+    assert "owner_path_c_oneshot.sh" in gh
+    assert "issues/30" in gh or "#30" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 165" in log
+    assert "905D-02F4" in log
+    assert "owner_path_c_oneshot" in log
+    assert "8ea3b5f" in log
+    assert "#30" in log or "issues/30" in log
     assert "lemma_closed" in log.lower()
 
 
