@@ -28,12 +28,12 @@
   "path_c_status_in_pack": true,
   "owner_pr_script": "scripts/owner_open_path_c_pr.sh",
   "device_auth": "pending",
-  "device_auth_error": "authorization_pending",
+  "device_auth_error": "slow_down",
   "device_code": "E577-EEF9",
   "prior_device_code": "1DAB-B7F7",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 793.4,
+  "seconds_left": 430.8,
   "has_token": false,
   "has_main_push_token": false,
   "path_c_blocked_now": "NO_TOKEN",
@@ -108,6 +108,9 @@
     "release_tag": "batch207-path-c-bundle",
     "device_code": "E577-EEF9",
     "tip": "b89448d",
-    "seconds_left": 816.5
-  }
+    "seconds_left": 430.8
+  },
+  "trial_main_sha": "dd7469df1de5f4788e01cde4ca634c0df6264f6b",
+  "trial_landed": true,
+  "release_published": true
 }
