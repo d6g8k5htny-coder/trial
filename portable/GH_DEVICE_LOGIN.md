@@ -5,14 +5,14 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T09:03:07Z |
-| Checked (UTC) | 2026-09-24T09:03:07Z |
+| Checked (UTC) | 2026-09-24T09:09:30Z |
 | Verification URL | https://github.com/login/device |
 | User code | `2513-3A16` |
 | Prior code | `E136-5AE7` (near-expiry &lt;90s / renewed) |
 | Prior prior | `1FC8-3D96` (near-expiry / renewed) |
 | Older priors | `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending) |
-| Expires | see `seconds_left` in BATCH157_BRIEF |
+| Status | pending (slow_down) |
+| Expires | see `seconds_left` in BATCH159_BRIEF |
 | Hardening tip | `10c077e` (PR #54); path-c-applied-bundle current; release `batch155-path-c-bundle` (refresh of batch142 pack) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
 | Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
