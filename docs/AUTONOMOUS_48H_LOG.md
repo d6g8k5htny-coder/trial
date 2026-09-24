@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 127 — 2026-09-24 ~06:12 UTC (PERMANENT window; auth pending/slow_down; scientific effect NONE; flipped nothing)
+
+- Device auth `91D3-D72C` → **pending** (`slow_down`); `seconds_left≈740`; no renew; no Path C; daemon up; timers `gh-dylan-device-auth-check` + `gh-device-login-check` re-armed 300s. Tiny JSON: `portable/BATCH127_BRIEF.json`. `goal_complete=false`. Research untouched.
+
+
 ### Batch 126 — 2026-09-24 ~06:10 UTC (PERMANENT window; auth renew + RW hunt clean; scientific effect NONE; flipped nothing)
 
 - Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **pending** (code `91D3-D72C`); prior `FCD3-6B41` **expired** → **renewed**; poller restarted (`gh-device-login` tmux); no Path C land yet (no user token).

@@ -1,0 +1,19 @@
+{
+  "batch": "127",
+  "generated_at_utc": "2026-09-24T06:12:34Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "pending",
+  "device_auth_error": "slow_down",
+  "device_code": "91D3-D72C",
+  "auth_renewed": false,
+  "seconds_left": 740,
+  "install_has_main": false,
+  "path_c_landed": false,
+  "daemon": "up",
+  "flipped_anything": false,
+  "timer_gh_device": 300,
+  "timer_gh_device_alias": 300,
+  "note": "Auth poll slow_down/pending; 91D3-D72C still valid; Path C blocked; research untouched; timers re-armed; when-writable-land up"
+}
