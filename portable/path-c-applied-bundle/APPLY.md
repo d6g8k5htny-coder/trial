@@ -1,6 +1,6 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
-**Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** includes **0017** (pinned_sources RW) + force-refreshed `.bundle` (applied `71d50b1`; supersedes `batch202-path-c-bundle`).
+**Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** includes **0017** (pinned_sources RW) + force-refreshed `.bundle` (applied `71d50b1`; supersedes `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch169-path-c-bundle`).
 
 **Effect:** engineering hygiene only on `chatgpt/drive-github-hardening-20260919`. Scientific effect: **NONE**. Does not flip `lemma_closed`.
 
