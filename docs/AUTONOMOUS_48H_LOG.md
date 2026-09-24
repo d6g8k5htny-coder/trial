@@ -31,7 +31,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tiny JSON: `portable/BATCH82_BRIEF.json`.
 - Timer: keep `permanent-autonomous-align-watch` @ **3600s** + background lander. `goal_complete=false`.
 
-**Land note:** `gh pr create` → **403**. Direct push to trial `main` on branch `cursor/when-writable-land-c1aa`. Path C on `d6g8k5htny-coder/main` still 403 until write flips; lander will auto-apply then.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `c86e078..93438ab` (`cursor/when-writable-land-c1aa`). Path C on `d6g8k5htny-coder/main` still 403 until write flips; lander tmux `when-writable-land` polling (DENIED → continue).
 
 ### Batch 81 — 2026-09-24 ~02:30 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; Path C IDLE)
 
