@@ -82,6 +82,9 @@ PATCHES=(
   "$ROOT/0015-frozen-drive-index-close-file-handles.patch"
   "$ROOT/0016-receipts-bridge-close-file-handles.patch"
   "$ROOT/0017-pinned-sources-close-file-handles.patch"
+  # 0018: REPOSITORY_TOP_LEVEL += attestations (main PR #70). Requires attestations/;
+  # skipped when that top-level dir is absent so pre-#70 tips stay green.
+  "$ROOT/0018-repository-top-level-attestations.patch"
 )
 
 # Batch 231: idempotent apply — if a patch is already on the tree (Path C landed
@@ -90,6 +93,12 @@ PATCHES=(
 apply_one() {
   local p="$1"
   local check_only="${2:-0}"
+  # 0018 couples to top-level attestations/ (added by main PR #70). Skip on
+  # older tips so REPOSITORY_TOP_LEVEL does not name a missing directory.
+  if [[ "$(basename "$p")" == 0018-* && ! -d attestations ]]; then
+    echo "skip (attestations/ absent): $(basename "$p")"
+    return 0
+  fi
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"

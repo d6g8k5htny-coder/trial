@@ -1,0 +1,41 @@
+{
+  "batch": "237",
+  "generated_at_utc": "2026-09-24T19:14:55Z",
+  "status": "in_progress_awaiting_ci",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "hardening_tip": "1200501",
+  "hardening_tip_full": "120050136f5586b9de3c0f054119b978c92f8a49",
+  "default_tip": "1c6e74b",
+  "aligned": true,
+  "path_b_needed": false,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "main_push_token_set": true,
+  "token_printed": false,
+  "tip": "1200501",
+  "base_tip": "1200501",
+  "tip_moved": false,
+  "path_c_on_tip": true,
+  "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
+  "defect_shipped": "pr70_REPOSITORY_TOP_LEVEL_attestations_fix_76f78c5+portable_0018 (merge pending CI)",
+  "main_pr_pending": [
+    70,
+    69
+  ],
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "research_audit_path": "docs/RESEARCH_STACK_AUDIT_237.md",
+  "research_audit": {
+    "open_premises": 13,
+    "open_lemmas": 1,
+    "open_prizes": 3,
+    "open_questions": 16,
+    "lemma_closed": false,
+    "flipped_anything": false
+  },
+  "disposition": "OPEN_HOLD",
+  "next_focus": "merge_pr70_pr69_if_green+tip_refresh+pack",
+  "trial_branch": "cursor/batch237-eng-finish-c88a"
+}

@@ -1,13 +1,13 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-24T18:46:47Z",
+  "generated_at_utc": "2026-09-24T19:14:55Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
   ],
   "base_tip_ref": "chatgpt/drive-github-hardening-20260919 120050136f5586b9de3c0f054119b978c92f8a49",
   "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49",
-  "apply_all_count": 14,
+  "apply_all_count": 15,
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "goal_complete": false,
@@ -176,6 +176,19 @@
       "obsolete-if": null,
       "in_apply_all": true,
       "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
+    },
+    {
+      "id": "0018",
+      "file": "0018-repository-top-level-attestations.patch",
+      "title": "REPOSITORY_TOP_LEVEL includes attestations (PR #70)",
+      "files-touched": [
+        "engine/bridge/work_order.py"
+      ],
+      "obsolete-if": "tip already lists attestations in REPOSITORY_TOP_LEVEL",
+      "requires": "top-level attestations/ directory (main PR #70)",
+      "in_apply_all": true,
+      "verified_on_tip": null,
+      "note": "apply_all skips when attestations/ absent"
     }
   ],
   "obsolete_kept_on_disk": [

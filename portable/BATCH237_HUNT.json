@@ -1,0 +1,59 @@
+{
+  "batch": "237",
+  "generated_at_utc": "2026-09-24T19:14:05Z",
+  "tip": "120050136f5586b9de3c0f054119b978c92f8a49",
+  "tip_short": "1200501",
+  "tip_moved": false,
+  "base_tip": "1200501",
+  "write": "WRITABLE",
+  "aligned": true,
+  "path_b_needed": false,
+  "resourcewarning_slices": {
+    "focused_claims_recovery_carriers_math": {
+      "passed": 121,
+      "rw": 0
+    },
+    "bridge_receipts": {
+      "passed": 541,
+      "rw": 0
+    },
+    "frozen": {
+      "passed": 12,
+      "rw": 0
+    },
+    "collision": {
+      "passed": 189,
+      "rw": 0
+    },
+    "registers": {
+      "passed": 53,
+      "rw": 0
+    },
+    "cover": {
+      "passed": 103,
+      "rw": 0
+    }
+  },
+  "resourcewarning_total_passed": 1019,
+  "resourcewarning_failures": 0,
+  "bare_open_eng_candidates": 0,
+  "new_0018_from_tip_hunt": false,
+  "incomplete_eng_prs": [
+    {
+      "number": 70,
+      "head": "cursor/reattest-side24-density-c-b5c8",
+      "defect": "REPOSITORY_TOP_LEVEL missing attestations",
+      "fix_sha": "76f78c5",
+      "status": "ci_pending"
+    },
+    {
+      "number": 69,
+      "head": "cursor/inventable-nav-rescue-334e",
+      "status": "ci_pending",
+      "note": "inventable nav; eng/docs; no status flip"
+    }
+  ],
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false
+}

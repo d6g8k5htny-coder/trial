@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 237 — 2026-09-24 ~19:08– UTC (PERMANENT window; tip stable 1200501; finish eng PR #70; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ **`1200501`** (== BASE_TIP). Default **`1c6e74b` ALIGNED**. WRITE **WRITABLE** (device create-ref 201 + `MAIN_PUSH_TOKEN`; **never printed**). Path B skipped. Path C eng stack still ancestor (PR #64).
+- **Incomplete eng PR finish:** [main #70](https://github.com/d6g8k5htny-coder/main/pull/70) CI failed — `attestations/` missing from `REPOSITORY_TOP_LEVEL`. Fix `76f78c5` pushed; portable **0018** cut. [main #69](https://github.com/d6g8k5htny-coder/main/pull/69) inventable nav CI in flight (merge if green/safe).
+- Tip RW hunt clean (focused 121 + bridge 541 + frozen 12 + collision 189 + registers 53 + cover 103 = **0** ResourceWarning) → no tip-hunt 0018 beyond the PR #70 bridge list fix.
+- Research audit: `docs/RESEARCH_STACK_AUDIT_237.md` — **OPEN_HOLD** / **lemma_closed=false**; guard pass; **flipped nothing**.
+- Pack/release + trial merge: pending tip move after #70/#69 land.
+
 ### Batch 236 — 2026-09-24 ~18:37–18:48 UTC (PERMANENT window; sibling agent-access + tip-refresh 1200501; scientific effect NONE; flipped nothing)
 
 - Start: hardening **`377201c` ALIGNED**; default **`1c6e74b` ALIGNED** → **Path B skipped**. WRITE **WRITABLE** (device + durable `MAIN_PUSH_TOKEN`; **never printed**).
