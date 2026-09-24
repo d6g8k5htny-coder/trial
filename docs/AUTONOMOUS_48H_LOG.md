@@ -22,6 +22,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 226 — 2026-09-24 ~16:14–16:17 UTC (PERMANENT window; poll 84FB-0605 pending; tip stable cbaa056; write DENIED; inventory; scientific effect NONE; flipped nothing)
+
+- AUTH: poll `84FB-0605` → **pending** (`authorization_pending`; seconds_left≈300+). No renew (not expired). Poller `batch224-device-poll` still up. Never print tokens.
+- WRITE+ALIGN: `probe_main_write` **DENIED** 403; `install_has_main=false` (trial-only). Default tip **ALIGNED** @ `1c6e74b` → Path B skipped. Path C blocked `NO_TOKEN`.
+- Tip **`cbaa056` == BASE_TIP** → no tip refresh / no bundle rebuild. `assert_path_c_ready` **OK** (apply stack through **0017**); math_status problems=0 / OPEN_HOLD / **lemma_closed=false**.
+- Env: `.cursor/environment.json` still **all 8** repos incl. sandbox; `MULTI_AGENT_ACCESS` + `owner_grant_ai_agent_access.sh --check` consistent. Live install trial-only; sandbox still **404**.
+- Inventory: `gh api repos/d6g8k5htny-coder/NAME --jq '{name,private,permissions}'` for all 8 → `AI_AGENT_ACCESS_INVENTORY.json` (sandbox 404; ghs `permissions.*` all false — effective access from grant `--check`).
+- Docs: `BATCH226_BRIEF`, `PATH_C_STATUS`, `GH_DEVICE_LOGIN`, this log. Release still **`batch223-path-c-bundle`**. Research untouched; **flipped nothing**.
+- Timers: unlock poll ~300s; permanent 10800s.
+
 ### Batch 224 — 2026-09-24 ~16:00 UTC (add sandbox → 8 repos; strengthen grant --check; write DENIED; scientific effect NONE; flipped nothing)
 
 - Dylan (repeat): ALL AI agents R/W; screenshot shows **8** repos including NEW **`sandbox`** not yet in deps.

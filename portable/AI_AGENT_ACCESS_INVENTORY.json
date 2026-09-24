@@ -1,6 +1,6 @@
 {
-  "batch": "224",
-  "generated_at_utc": "2026-09-24T16:09:05Z",
+  "batch": "226",
+  "generated_at_utc": "2026-09-24T16:17:15Z",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
@@ -25,7 +25,7 @@
     "read_http": "404",
     "write": "DENIED",
     "tip_sha": null,
-    "note": "Owner screenshot shows NEW sandbox among 8 visible repos; current Cursor App token gets 404 on API + ls-remote (private / not in install). Add sandbox on every App install UI then RELAUNCH."
+    "note": "Still private/out-of-install; App token 404 on API + ls-remote. Add sandbox on every App install UI then RELAUNCH."
   },
   "repos_connected": [
     {
@@ -131,10 +131,112 @@
       "write": "WRITABLE",
       "read_http": "200",
       "install": true,
-      "tip_sha": "c7c77514a241de5839df7923f8fb1da9fc9f8b7b",
+      "tip_sha": "2da7a02f65d84ea7c606b479d58354b9caa7e339",
       "ls_remote": "ok"
     }
   ],
+  "gh_api_inventory": [
+    {
+      "name": "google-drive",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "governance-",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "main",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "Math-",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "meta-framework",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "query-",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    },
+    {
+      "name": "sandbox",
+      "private": null,
+      "permissions": null,
+      "api_ok": false,
+      "http_status": 404,
+      "error": "Not Found"
+    },
+    {
+      "name": "trial",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": false,
+        "push": false,
+        "triage": false
+      },
+      "private": false,
+      "api_ok": true,
+      "http_status": 200
+    }
+  ],
+  "gh_api_note": "Installation token returns permissions.* all false even when pull/push works; use details[] from grant --check for effective access. sandbox \u2192 404.",
   "apps_documented": [
     "cursor",
     "chatgpt-codex-connector",
@@ -197,21 +299,29 @@
     "device_code": "84FB-0605",
     "prior_device_code": "BE27-A62D",
     "device_auth": "pending",
+    "auth_error": "authorization_pending",
     "has_token": false,
-    "seconds_left": 854.7,
-    "checked_at_utc": "2026-09-24T16:09:05Z",
-    "auth_renewed": true
+    "seconds_left": 364.3,
+    "checked_at_utc": "2026-09-24T16:17:15Z",
+    "auth_renewed": false
   },
   "api_grants_attempted": {
-    "topics_put_trial": "403 Resource not accessible by integration",
-    "collaborators_without_usernames": "skipped (no invented bot logins)",
-    "write_probe_non_trial": "DENIED on all except trial",
-    "sandbox_clone_ls_remote": "not_found_or_denied (404)"
+    "main_create_ref": "DENIED",
+    "install_has_main": false,
+    "sandbox_clone_ls_remote": "not_found_or_denied (404)",
+    "collaborators_without_usernames": "skipped (no invented bot logins)"
   },
-  "owner_next": "Run ./scripts/owner_grant_ai_agent_access.sh; on Cursor+Codex+Claude install UIs select ALL repositories including sandbox; Grok PAT on all 8; authorize device 84FB-0605 OR MAIN_PUSH_TOKEN; RELAUNCH",
+  "environment_json_repos_ok": true,
+  "multi_agent_docs": "docs/MULTI_AGENT_ACCESS.md",
+  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "owner_next": "Authorize device 84FB-0605 at https://github.com/login/device OR MAIN_PUSH_TOKEN; on Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH",
   "docs": "docs/MULTI_AGENT_ACCESS.md",
   "script": "scripts/owner_grant_ai_agent_access.sh",
   "tip": "cbaa056",
   "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
-  "tip_refresh": false
+  "tip_refresh": false,
+  "assert_path_c_ready": "OK",
+  "apply_stack": "0001-0004+0008-0017",
+  "release": "batch223-path-c-bundle",
+  "seconds_left": 364.3
 }

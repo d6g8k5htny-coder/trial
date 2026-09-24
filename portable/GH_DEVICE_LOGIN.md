@@ -11,8 +11,8 @@ P26-09-24T15:57:10Z||
 | Prior code | `BE27-A62D` (Batch 223/224; low seconds → renew `84FB-0605`) / `89AF-6638` (Batch 223) / `0867-BD4B` (Batch 219)|
 | Prior prior | `B064-C458` (Batch 210/212); `E577-EEF9` (Batch 207); `5160-F839` (Batch 202); older: `50DB-FD4D` (Batch 199); `CC72-DB3D` (Batch 195); `1C7F-22B5` (Batch 192); `C949-0100` (expired Batch 190); `46EC-0B00` (Batch 188); `DF9C-5DF9` (Batch 185); `5216-7C1B` (Batch 183); `AD78-6206` (Batch 180); `5E05-EA04` (Batch 178); `9671-4918` (Batch 176); `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
 | Older priors | `C8FC-A08F` → `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 224 add sandbox→8 repos; auth renew `84FB-0605` from `BE27-A62D`; install trial-only; sandbox 404; write DENIED; tip `cbaa056`)|
-| Expires | see `seconds_left` in BATCH224_BRIEF / PATH_C_STATUS (history: BATCH223_BRIEF / BATCH219_BRIEF) |
+| Status | pending (authorization_pending; Batch 226 poll `84FB-0605`; install trial-only; sandbox 404; write DENIED; tip `cbaa056`; Path C not landed)|
+| Expires | see `seconds_left` in BATCH226_BRIEF / PATH_C_STATUS (history: BATCH224_BRIEF / BATCH223_BRIEF / BATCH219_BRIEF) |
 | Hardening tip | `cbaa056` (Batch 223 tip refresh from `1d0dceb`); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch223-path-c-bundle` (prior `batch218-path-c-bundle`)|
 
 | Release history | `batch162-path-c-bundle` / `batch168-path-c-bundle` / `batch169-path-c-bundle` / `batch179-path-c-bundle` / `batch180-path-c-bundle` / `batch199-path-c-bundle` / `batch202-path-c-bundle` / `batch207-path-c-bundle` / `batch218-path-c-bundle` / `batch223-path-c-bundle` |
@@ -54,6 +54,8 @@ The agent keeps a device-flow poller alive in tmux session `gh-device-login`. Wh
  Batch 223+: multi-agent access durable docs+script; tip **`cbaa056`**; auth renew `BE27-A62D` from `89AF-6638`; install trial-only; write DENIED; `lemma_closed=false`.
 
  Batch 224+: Dylan screenshot NEW **`sandbox`** → `repositoryDependencies` **all 8**; grant `--check` lists 8 + App URLs **select ALL repositories including sandbox**; sandbox API/ls-remote **404** to App token; auth **renewed** `84FB-0605` from `BE27-A62D` (&lt;90s); tip stable `cbaa056`; write DENIED; Path C not landed; `lemma_closed=false`; research untouched.
+
+ Batch 226+: poll `84FB-0605` still **pending** (`authorization_pending`; seconds_left≈300+); tip stable `cbaa056` (no refresh); write DENIED; `install_has_main=false`; env **8** repos incl. sandbox OK; inventory refreshed via `gh api` + grant `--check`; Path C **not** landed; `lemma_closed=false`; research untouched.
 
  Batch 218+: tip **`b89448d`→`1d0dceb`** → tip refresh + pack+release **`batch218-path-c-bundle`**; Dylan claimed WRITE UNLOCKED → aggressive re-probe (device poll BFEF-C1D9 pending→expired; refs/contents/git-push/workflow_dispatch/repository_dispatch --apply) still **DENIED**/secret-empty; `install_has_main=false`; auth **renewed** `4B66-CE85` from `BFEF-C1D9`; assert OK / OPEN_HOLD / `lemma_closed=false`; research untouched. **Owner ONE action:** set trial Actions secret `MAIN_PUSH_TOKEN` (dispatch already accepts; apply fails Require-token empty).
 
