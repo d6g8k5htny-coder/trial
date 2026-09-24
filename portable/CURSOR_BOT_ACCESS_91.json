@@ -1,0 +1,68 @@
+{
+  "batch": "91",
+  "generated_at_utc": "2026-09-24T03:11:51Z",
+  "actor": "cursor[bot]",
+  "token_kind": "ghs",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip_refresh": false,
+  "main_default_tip": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+  "hardening_tip": "ac335815b277ac0c076082ac6af2344261c2093a",
+  "aligned": true,
+  "write_state_main": "DENIED",
+  "path_c_landed": false,
+  "route_now": "IDLE",
+  "installation_access": {
+    "gh_api_user": {"status": 403, "message": "Resource not accessible by integration"},
+    "gh_api_user_installations": {"status": 403, "message": "Resource not accessible by integration"},
+    "gh_api_app_installations": {"status": 401, "message": "A JSON web token could not be decoded"},
+    "gh_api_installation_repositories": {
+      "status": 200,
+      "total_count": 1,
+      "repository_selection": "selected",
+      "names": ["d6g8k5htny-coder/trial"]
+    },
+    "repos_main_installation_endpoint": {"status": 401, "message": "A JSON web token could not be decoded"},
+    "repos_trial_installation_endpoint": {"status": 401, "message": "A JSON web token could not be decoded"}
+  },
+  "repo_permissions_api": {
+    "d6g8k5htny-coder/main": {
+      "permissions": {"admin": false, "maintain": false, "pull": false, "push": false, "triage": false},
+      "viewerPermission": null
+    },
+    "d6g8k5htny-coder/trial": {
+      "permissions": {"admin": false, "maintain": false, "pull": false, "push": false, "triage": false},
+      "viewerPermission": null,
+      "note": "permissions object understates real write; create-ref succeeded"
+    }
+  },
+  "effective_push": {
+    "d6g8k5htny-coder/trial": {
+      "can_push": true,
+      "evidence": "POST /repos/.../trial/git/refs cursor-access-probe-91-dry → 201; DELETE → 204; leave no probe ref"
+    },
+    "d6g8k5htny-coder/main": {
+      "can_push": false,
+      "evidence": "POST /repos/.../main/git/refs → 403 Resource not accessible by integration"
+    }
+  },
+  "effective_read": {
+    "d6g8k5htny-coder/main": {
+      "can_read_contents": true,
+      "evidence": "GET /repos/.../main/contents/README.md → 200; GET git/ref/heads/main → tip sha"
+    },
+    "d6g8k5htny-coder/trial": {
+      "can_read": true
+    }
+  },
+  "cursor_bot_can_push_to": ["d6g8k5htny-coder/trial"],
+  "cursor_bot_cannot_push_to": ["d6g8k5htny-coder/main"],
+  "daemon_once": {
+    "aligned_drift_watch": "ALIGNED",
+    "when_writable_land": "continue_denied",
+    "token_source": "none"
+  },
+  "note": "App installation selected repos = trial only. JWT /app endpoints fail on ghs. Never flip research status."
+}

@@ -1,0 +1,22 @@
+{
+  "batch": "91",
+  "generated_at_utc": "2026-09-24T03:11:51Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "write_denied_confirmed_for": "cursor[bot]",
+  "path_c_landed": false,
+  "guard_pass": true,
+  "drift_state": "ALIGNED",
+  "shipped": "portable/CURSOR_BOT_ACCESS_91.json",
+  "new_0017": false,
+  "route_now": "IDLE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "Install scope=trial only; trial push OK; main push 403; Path C IDLE"
+}

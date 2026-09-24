@@ -21,6 +21,22 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 91 — 2026-09-24 ~03:12 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581`; cursor[bot] App access)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Tip/align/daemon `--once` → **ALIGNED** @ `1c6e74b`; hardening `ac33581`; write **DENIED**; Path C **not** landed (`continue_denied`). Tip stable → no refresh.
+- **gh App access (ghs / cursor[bot]):**
+  - `user` / `user/installations` → **403** integration
+  - `/app/installations` + repo `/installation` → **401** JWT decode (ghs not JWT)
+  - `/installation/repositories` → **200**, `repository_selection=selected`, **only** `d6g8k5htny-coder/trial`
+  - `repos/.../main` permissions all false / `viewerPermission=null`; create-ref → **403**
+  - Trial create-ref dry `cursor-access-probe-91-dry` → **201** then deleted (**push OK**)
+  - Main contents read still **200** (read without write)
+- Tiny JSON: `portable/CURSOR_BOT_ACCESS_91.json`, `portable/BATCH91_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked on write. Trial branch `cursor/bot-access-91-e09f`.
+
 ### Batch 89 — 2026-09-24 ~03:02 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581`; patches MANIFEST)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
