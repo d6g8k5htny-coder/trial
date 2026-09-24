@@ -3124,7 +3124,9 @@ def test_batch168_oneshot_pack_ci() -> None:
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     assert oneshot.is_file()
     text = oneshot.read_text(encoding="utf-8")
-    assert "batch168-path-c-bundle" in text
+    # Batch 169 superseded the default release tag; Batch 168 history remains in comments/docs.
+    assert "batch168-path-c-bundle" in text or "Batch 168" in text
+    assert "batch169-path-c-bundle" in text
     assert "PATH_C_RELEASE_TAG" in text
     assert "owner_path_c_oneshot.sh --from-bundle" in text
     assert "lemma_closed" in text
@@ -3145,7 +3147,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
-    assert "batch168-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch168-path-c-bundle" in dry_out
     assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
@@ -3195,7 +3197,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "831C-CB1C" in gh
     assert "905D-02F4" in gh
-    assert "batch168-path-c-bundle" in gh
+    assert "batch168-path-c-bundle" in gh or "batch169-path-c-bundle" in gh
     assert "batch162-path-c-bundle" in gh
     assert "issues/27" in gh
     assert "BATCH162_BRIEF" in gh
@@ -3203,7 +3205,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert "issues/31" in gh or "#31" in gh
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "batch168-path-c-bundle" in unblock
+    assert "batch169-path-c-bundle" in unblock or "batch168-path-c-bundle" in unblock
     assert "1800" in unblock
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
