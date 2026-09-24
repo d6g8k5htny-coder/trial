@@ -29,7 +29,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **RW hunt @ 10c077e** after `apply_all` 0001–0004+0008–0016: `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused **90**/0; claims+recovery **83**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; registers **53**/0; lean/frontier **42**/0; vault **13**/0; quarantine **21**/0; mirrors **105**/0; ops/prov **214**/0; tools `--help` **0 RW**; context-aware bare open/Popen **0** → **clean / no 0017**. Artifact: `portable/BATCH144_HUNT.json`.
 - Tiny JSON: `portable/BATCH144_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s** (ignore `gh-auth-renew-soon` — already renewed).
 
-**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `A9D3-16CD` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main` (cherry-pick). Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `A9D3-16CD` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
 
 
 ### Batch 142 — 2026-09-24 ~07:40 UTC (PERMANENT window; tip refresh + path-c-applied-bundle rebuild @ 10c077e; scientific effect NONE; flipped nothing)
