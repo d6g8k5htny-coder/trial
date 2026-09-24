@@ -19,8 +19,20 @@
   "default_tip_moved": false,
   "write": "WRITABLE",
   "write_durable": true,
-  "merged_prs": [79],
-  "research_hold_prs_skipped": [73, 47, 46, 38, 36, 21, 12, 8, 7],
+  "merged_prs": [
+    79
+  ],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
   "defect_shipped": true,
   "defect_id": "inventable_tip_observe_stale_b89448da_vs_live_542e6ec",
   "patch_0020": false,
@@ -38,7 +50,7 @@
   "port_78_to_hardening": false,
   "workspace_landing_note": "hardening keeps full ci.yml name=ci; #78 default-only path split; no port",
   "next_focus": "tip_sync_drift_watch; keep Path C idle until next tip move or 0020; skip research HOLD drafts; inventable tip-observe only if eng-shaped and tip drifts again",
-  "note": "Batch 249: hardening tip moved 542e6ec→fa32d11 after eng inventable tip-observe #79; BASE_TIP refreshed; path-c bundle refresh (already-on-tip); IDLE_PATH_C_DONE; ALIGNED@72558a5 WRITABLE; lemma_closed=false; flipped nothing. Hardening had no ci.yml/workspace-landing collision (no #78 port). Research HOLD drafts skipped. Never printed tokens. Did NOT ship Path A/B ALIGNED no-op, sibling AGENTS, living-tag pack, assert idle, empty RW, OWNER faces, trial ci.yml YAML, or default-only #78 docs churn.",
+  "note": "Batch 249: hardening tip moved 542e6ec\u2192fa32d11 after eng inventable tip-observe #79; BASE_TIP refreshed; path-c bundle refresh (already-on-tip); IDLE_PATH_C_DONE; ALIGNED@72558a5 WRITABLE; lemma_closed=false; flipped nothing. Hardening had no ci.yml/workspace-landing collision (no #78 port). Research HOLD drafts skipped. Never printed tokens. Trial PR #68 merged @5746acd. Did NOT ship Path A/B ALIGNED no-op, sibling AGENTS, living-tag pack, assert idle, empty RW, OWNER faces, trial ci.yml YAML, or default-only #78 docs churn.",
   "artifacts": [
     "portable/BATCH249_BRIEF.json",
     "portable/BATCH249_HUNT.json",
@@ -52,10 +64,14 @@
     "tests/test_intent.py"
   ],
   "shipped": true,
-  "where": ["main", "trial"],
-  "trial_pr": null,
-  "trial_pr_merged": false,
-  "trial_direct_land": true,
+  "where": [
+    "main",
+    "trial"
+  ],
+  "trial_pr": 68,
+  "trial_pr_merged": true,
+  "trial_direct_land": false,
   "trial_land_branch": "cursor/batch249-tip-observe-land-1c18",
-  "main_merge_sha": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a"
+  "main_merge_sha": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "trial_land_sha": "5746acd"
 }
