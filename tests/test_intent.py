@@ -2638,7 +2638,15 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["dry_run_ok"] is True
-    assert data["device_code"] == "1DAC-111C"
+    assert data["device_code"] == "1FC8-3D96"
+    assert data.get("prior_device_code") == "1DAC-111C"
+    assert data.get("auth_renewed") is True
+    assert data.get("dry_run_ok") is True
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "1FC8-3D96" in gh
+    assert "1DAC-111C" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 153" in log
+    assert "1FC8-3D96" in log
