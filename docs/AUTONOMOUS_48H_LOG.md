@@ -27,9 +27,9 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`C949-0100`). `lemma_closed=false`.
 - Device auth `46EC-0B00` **<90s** still pending → **renewed** `C949-0100`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
 - Research untouched (`lemma_closed=false`). No hunt (tip stable). Intent supersession for living device_code + `test_batch188_align_watch_auth_renew_idle`.
-- Canonical issue [#40](https://github.com/d6g8k5htny-coder/trial/issues/40). Tiny JSON: `portable/BATCH188_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**.
+- Canonical issue [#41](https://github.com/d6g8k5htny-coder/trial/issues/41). Tiny JSON: `portable/BATCH188_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**.
 
-**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `C949-0100` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #40.
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `C949-0100` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #41.
 
 ### Batch 185 — 2026-09-24 ~11:54–12:00 UTC (PERMANENT window; tip stable 8bd1f03; auth renew DF9C→46EC; research AUDIT counts refresh; obsolescence none; bundle E2E OK; CI batch183 green; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 

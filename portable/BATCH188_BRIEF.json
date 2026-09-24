@@ -42,9 +42,9 @@
   "path_c_blocked_now": "NO_TOKEN",
   "flipped_anything": false,
   "trial_branch": "cursor/batch188-align-watch-idle-b30a",
-  "issue_url": "https://github.com/d6g8k5htny-coder/trial/issues/40",
-  "issue_number": 40,
-  "canonical_issue": 40,
+  "issue_url": "https://github.com/d6g8k5htny-coder/trial/issues/41",
+  "issue_number": 41,
+  "canonical_issue": 41,
   "assert_path_c_ready": true,
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "hunt": "skipped_tip_stable",
@@ -69,6 +69,7 @@
   "prior_release": "batch180-path-c-bundle",
   "code_changed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
-  "issue_title": "Path C unblock \u2014 Batch 188 (C949-0100)",
-  "auth_renew_threshold_note": "renew if expired or seconds_left<90; 46EC was <90 -> renewed to C949-0100"
+  "issue_title": "Path C unblock \u2014 Batch 188 canonical (C949-0100)",
+  "auth_renew_threshold_note": "renew if expired or seconds_left<90; 46EC was <90 -> renewed to C949-0100",
+  "prior_canonical_issue": 40
 }

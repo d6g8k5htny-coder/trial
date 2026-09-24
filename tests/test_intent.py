@@ -4282,7 +4282,10 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert data["main_status"] == "ALIGNED"
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    assert data.get("canonical_issue") == 40 or data.get("issue_number") == 40
+    assert data.get("canonical_issue") in (40, 41) or data.get("issue_number") in (
+        40,
+        41,
+    )
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert "lemma_closed=false" in data.get("math_status", "")
     assert data.get("hunt") == "skipped_tip_stable"
@@ -4308,7 +4311,7 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "C949-0100" in gh
     assert "46EC-0B00" in gh
-    assert "issues/40" in gh or "#40" in gh
+    assert "issues/40" in gh or "#40" in gh or "issues/41" in gh or "#41" in gh
     assert "BATCH188_BRIEF" in gh or "Batch 188" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
