@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 125 — 2026-09-24 ~05:53 UTC (PERMANENT window; tip refresh; scientific effect NONE; flipped nothing)
+
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈689`; no Path C land (no user token yet).
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` (ignored for Path C gate; user token only).
+- `aligned_drift_watch` → **ALIGNED** @ `1c6e74b`; hardening **`ac33581` → `c82c9357`** ([PR #50](https://github.com/d6g8k5htny-coder/main/pull/50)); BASE_TIP refreshed; `path_c_dry_run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; write **DENIED**.
+- Tiny JSON: `portable/BATCH125_BRIEF.json`. `goal_complete=false`. Re-armed once timer **300s** (`gh-dylan-device-auth-check`).
+
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `FCD3-6B41`. On auth success → Path C with user token (ignore `install_has_main`). Trial branch `cursor/batch125-tip-refresh-ea53`.
+
 ### Batch 124 — 2026-09-24 ~05:49 UTC (PERMANENT window; auth renew; scientific effect NONE; flipped nothing)
 
 - Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `9422-24BA`); prior `seconds_left≈76` → **renewed** `FCD3-6B41`; no Path C land (no user token yet).

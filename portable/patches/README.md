@@ -1,8 +1,9 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `ac335815b277ac0c076082ac6af2344261c2093a`
-(batch 74: tip refresh via PR #48 checked accounting in inner-wedge RN verifier; prior `5f352a2` / #44;
+`chatgpt/drive-github-hardening-20260919` @ `c82c9357db381e8fd60d939a7243dab4cc863118`
+(batch 125: tip refresh via PR #50 quarantine summary comparison count; prior `ac33581` / #48;
+batch 74: tip refresh via PR #48 checked accounting in inner-wedge RN verifier; prior `5f352a2` / #44;
 also: Intent suite GITHUB_TOKEN + Option-B ALIGNED skip + `--after-merge` without gh auth;
 batch 73: CI land-workflows-dry-run without MAIN_PUSH_TOKEN; no 0017;
 batch 71: BASE_TIP confirmed == live hardening; re-verify apply_all + residual RW IDLE / no 0017;

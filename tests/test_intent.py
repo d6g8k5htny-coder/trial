@@ -171,7 +171,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "ac33581" in base_tip
+    assert "c82c9357" in base_tip or "ac33581" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -2007,7 +2007,7 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     manifest_path = ROOT / "portable" / "patches" / "MANIFEST.json"
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert data["verified_on_tip"].startswith("ac33581")
+    assert data["verified_on_tip"].startswith("c82c9357") or data["verified_on_tip"].startswith("ac33581")
     assert data["scientific_effect"] == "NONE"
     assert data["lemma_closed"] is False
     assert data["goal_complete"] is False

@@ -1,0 +1,18 @@
+{
+  "batch": "125",
+  "generated_at_utc": "2026-09-24T05:53:30Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "slow_down",
+  "device_code": "FCD3-6B41",
+  "seconds_left": 689,
+  "install_has_main": false,
+  "path_c_landed": false,
+  "tip_refresh": true,
+  "tip_refresh_from": "ac33581",
+  "tip_refresh_to": "c82c9357",
+  "tip_refresh_via": "PR #50",
+  "flipped_anything": false,
+  "note": "ALIGNED@1c6e74b; hardening ac33581→c82c9357; apply_all OK; Path C blocked auth pending; research untouched"
+}
