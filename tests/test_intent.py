@@ -2312,3 +2312,41 @@ def test_batch140_when_writable_repository_dispatch_on_token_file() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 140" in log
+
+
+def test_batch141_w3f_false_positive_neutralized() -> None:
+    """Batch 141: W3f dry-run dispatch is false_positive; not path_b_ready."""
+    import json
+    import re
+
+    vectors = (ROOT / "scripts" / "probe_main_write_vectors.py").read_text(encoding="utf-8")
+    assert "DISPATCH_OK_DRY_RUN" in vectors
+    assert "false_positive_for_main_write" in vectors
+    assert "w3f_real_main_write" in vectors
+    assert "W3f_repository_dispatch_path_c" in vectors
+    # W3f must not be in path_b_keys aggregation
+    m = re.search(r"path_b_keys = \((.*?)\)", vectors, re.S)
+    assert m is not None
+    assert "W3f" not in m.group(1)
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "false_positive" in ww.lower() or "Batch 141" in ww
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "W3f false positive" in gh or "false_positive" in gh
+    assert "DISPATCH_OK_DRY_RUN" in gh or "not a write path" in gh.lower()
+
+    brief = ROOT / "portable" / "BATCH141_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "141"
+    assert data["w3f_real"] is False
+    assert data.get("w3f_false_positive") is True
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 141" in log
+    assert "false_positive" in log

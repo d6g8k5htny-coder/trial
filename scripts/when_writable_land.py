@@ -39,7 +39,9 @@ Batch 140 — repository_dispatch when token file appears:
     scripts/dispatch_land_path_c.sh --apply
   which POSTs repository_dispatch type=land-path-c-on-main on trial.
   Apply land still needs trial Actions secret MAIN_PUSH_TOKEN; the file drop
-  is the agent-side signal to attempt that channel (W3f is Contents:write).
+  is the agent-side signal to attempt that channel.
+  Batch 141: W3f dry-run repository_dispatch on *trial* is a false_positive for
+  main write (path_b_ready must stay false until apply + MAIN_PUSH_TOKEN).
 
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.

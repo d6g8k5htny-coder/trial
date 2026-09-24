@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 141 — 2026-09-24 ~07:31 UTC (PERMANENT window; W3f false_positive neutralized; auth renew; scientific effect NONE; flipped nothing)
+
+- Investigated Batch 140 mismatch: `vectors_w3f=WRITABLE` + `write=DENIED` + `path_c_landed=false`.
+- **Verdict:** W3f is a **false_positive** for main write. It POSTs `repository_dispatch` on **trial** with `client_payload.dry_run=true` (HTTP 201). Workflow does not push to `d6g8k5htny-coder/main`. Direct refs probe stays **DENIED**; `install_has_main=false`.
+- **Neutralize:** `probe_main_write_vectors.py` classifies W3f success as `DISPATCH_OK_DRY_RUN`, `path_b_capable=false`, excludes W3f from `path_b_writable_vectors` / overall `path_b_ready` (overall stays **DENIED** when only W3f works). Docs + `when_writable_land` note corrected.
+- Device auth `F11F-5064` ~70s left still pending → **renewed** `16F5-39F5`; poller `gh-device-login` restarted; daemon `when-writable-land` up.
+- Path C **not** landed (no token / no apply secret). Tiny JSON: `portable/BATCH141_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `16F5-39F5` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot. Do not treat W3f dry-run as unlocked.
+
 ### Batch 140 — 2026-09-24 ~07:25 UTC (PERMANENT window; token-file → repository_dispatch; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: **W3f repository_dispatch WRITABLE**; all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked.
