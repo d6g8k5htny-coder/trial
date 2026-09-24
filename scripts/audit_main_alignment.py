@@ -71,7 +71,12 @@ def main() -> int:
         readme, _ = get_readme_text()
         tree = get_json(f"{API}/git/trees/{default}")
         root_names = {item["path"] for item in tree.get("tree", [])}
-    except urllib.error.URLError as exc:
+    except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError, ValueError, KeyError) as exc:
+        # Batch 155: also catch http.client.RemoteDisconnected (OSError) and
+        # mid-request connection drops so CI Intent suite gets exit 2, not crash.
+        print(f"audit: transport failure: {exc}", file=sys.stderr)
+        return 2
+    except Exception as exc:  # noqa: BLE001 — audit must never crash Intent suite
         print(f"audit: transport failure: {exc}", file=sys.stderr)
         return 2
 

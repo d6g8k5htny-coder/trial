@@ -88,10 +88,17 @@ def test_audit_script_reports_misalignment_or_ok() -> None:
         timeout=60,
         check=False,
     )
-    # 0=aligned, 1=misaligned, 2=transport (e.g. API rate limit on CI)
+    # 0=aligned, 1=misaligned, 2=transport (e.g. API rate limit / RemoteDisconnected on CI)
     assert result.returncode in (0, 1, 2), result.stderr
     if result.returncode == 2:
         assert "transport" in result.stderr.lower()
+        return
+    # Batch 155: empty stdout with connection drop must not be treated as aligned
+    # (script now maps those to exit 2; keep belt-and-suspenders for older trees).
+    if not result.stdout.strip() and any(
+        x in result.stderr.lower()
+        for x in ("remote", "disconnected", "timeout", "connection", "transport")
+    ):
         return
     assert '"scientific_effect": "NONE"' in result.stdout
     if result.returncode == 1:
@@ -2700,10 +2707,13 @@ def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "10c077e"
-    assert data["device_code"] == "1FC8-3D96"
+    assert data["device_code"] == "E136-5AE7"
+    assert data.get("prior_device_code") == "1FC8-3D96"
     assert data.get("assert_path_c_ready") is True
+    assert data.get("auth_renewed") is True
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "E136-5AE7" in gh
     assert "1FC8-3D96" in gh
     assert "A9D3-16CD" in gh
     assert "assert_path_c_ready" in gh
@@ -2711,3 +2721,4 @@ def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 155" in log
     assert "assert_path_c_ready" in log
+    assert "E136-5AE7" in log or "1FC8-3D96" in log

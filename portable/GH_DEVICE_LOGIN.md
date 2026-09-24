@@ -4,14 +4,14 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T08:33:30Z |
-| Checked (UTC) | 2026-09-24T08:39:00Z |
+| Started (UTC) | 2026-09-24T08:48:15Z |
+| Checked (UTC) | 2026-09-24T08:48:30Z |
 | Verification URL | https://github.com/login/device |
-| User code | `1FC8-3D96` |
-| Prior code | `1DAC-111C` (expired / renewed) |
-| Prior prior | `A450-C91F` (near-expiry &lt;90s / renewed) |
-| Older priors | `A9D3-16CD` → `16F5-39F5` → `F11F-5064` (expired chain; history only) |
-| Status | pending (authorization_pending / slow_down) |
+| User code | `E136-5AE7` |
+| Prior code | `1FC8-3D96` (near-expiry &lt;90s / renewed) |
+| Prior prior | `1DAC-111C` (expired / renewed) |
+| Older priors | `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
+| Status | pending (authorization_pending) |
 | Expires | see `seconds_left` in BATCH155_BRIEF |
 | Hardening tip | `10c077e` (PR #54); path-c-applied-bundle current; release `batch155-path-c-bundle` (refresh of batch142 pack) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
@@ -20,7 +20,7 @@
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **1FC8-3D96**
+2. Enter code **E136-5AE7**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically.

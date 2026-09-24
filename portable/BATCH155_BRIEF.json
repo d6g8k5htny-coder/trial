@@ -1,6 +1,6 @@
 {
   "batch": "155",
-  "generated_at_utc": "2026-09-24T08:45:37Z",
+  "generated_at_utc": "2026-09-24T08:49:05Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -19,11 +19,11 @@
   "path_c_landed": false,
   "dry_run_ok": true,
   "device_auth": "pending",
-  "device_auth_error": "slow_down",
-  "device_code": "1FC8-3D96",
-  "prior_device_code": "1DAC-111C",
-  "auth_renewed": false,
-  "seconds_left": 173,
+  "device_auth_error": "authorization_pending",
+  "device_code": "E136-5AE7",
+  "prior_device_code": "1FC8-3D96",
+  "auth_renewed": true,
+  "seconds_left": 848,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -35,36 +35,40 @@
   "batch142_assets_refreshed": true,
   "assert_path_c_ready": true,
   "assert_path_c_ready_local_ok": true,
-  "ci_status": "pending",
+  "ci_status": "fixing",
   "ci_run_id": "35977027355",
   "ci_failures_fixed": [
     "ci.yml path-c tip-drift BASE_SHA: \\\\b over-escape emptied SHA (Batch 153 regression)",
     "portable-patches tip-drift: same hex extract (not ##* last field)",
-    "test_batch147 / GH_DEVICE_LOGIN: retain A9D3-16CD in prior chain"
+    "test_batch147 / GH_DEVICE_LOGIN: retain A9D3-16CD in prior chain",
+    "audit_main_alignment.py: map RemoteDisconnected / mid-request drops to exit 2 (Intent flake)"
   ],
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "fixes": [
-    "Fix CI BASE_SHA python regex word-boundary (\\\\b not \\\\\\\\b) in path-c-applied-bundle-dry-apply + portable-patches-on-main",
+    "Fix CI BASE_SHA python regex word-boundary in path-c-applied-bundle-dry-apply + portable-patches-on-main",
     "Add scripts/assert_path_c_ready.sh (BASE_TIP==live + apply_all --check + lemma_closed=false)",
     "Wire assert_path_c_ready into land-workflows-dry-run CI job",
     "pack_portable.sh includes owner_open_path_c_pr.sh + assert_path_c_ready.sh + dispatch_land_path_c.sh",
-    "GH_DEVICE_LOGIN.md prior chain retains A9D3-16CD; release tag batch155-path-c-bundle"
+    "GH_DEVICE_LOGIN.md prior chain retains A9D3-16CD; release tag batch155-path-c-bundle",
+    "audit_main_alignment.py transport catch for RemoteDisconnected so Intent suite gets exit 2"
   ],
-  "readiness_change": "CI tip-drift BASE_SHA fixed; assert_path_c_ready.sh; auth still pending 1FC8-3D96; release published",
+  "readiness_change": "CI tip-drift BASE_SHA fixed (path-c green); audit transport harden; assert_path_c_ready.sh; auth pending 1FC8-3D96",
   "artifacts_updated": [
     ".github/workflows/ci.yml",
     "scripts/assert_path_c_ready.sh",
+    "scripts/audit_main_alignment.py",
     "scripts/pack_portable.sh",
     "tests/test_intent.py",
     "portable/GH_DEVICE_LOGIN.md",
     "docs/AUTONOMOUS_48H_LOG.md",
     "portable/BATCH155_BRIEF.json"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; auth pending 1FC8-3D96; CI BASE_SHA fix + assert_path_c_ready landed trial main; release batch155-path-c-bundle; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; 1FC8-3D96 near-expiry\u2192renewed E136-5AE7; path-c tip-drift green; audit transport harden; release batch155-path-c-bundle; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
   "trial_main_landed": true,
-  "trial_main_sha": "4ff2597"
+  "trial_main_sha": "pending_audit_fix",
+  "auth_renew_reason": "1FC8-3D96 near-expiry <90s still pending"
 }
