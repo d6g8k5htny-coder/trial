@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 97 — 2026-09-24 ~03:42 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; **no tip refresh**).
+- Trial CI @ `3e6f3f4` (Batch 96 tip): sanity / research-stack-status-guard / land-workflows-dry-run / portable-patches-on-main → **success**. No fix → **IDLE**.
+- Tiny JSON: `portable/BATCH97_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial `main` (`cursor/batch97-idle-3bf8`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 96 — 2026-09-24 ~03:40 UTC (PERMANENT window; README #1 unblock; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
