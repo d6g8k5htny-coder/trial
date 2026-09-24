@@ -869,3 +869,10 @@ Remaining after ALIGNED (not blocking alignment itself; from EXPECTED + Path C):
 - Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `8efe2e0..6e82ed6`.
 - Feature branch `cursor/batch62-permanent-path-c-4ffe` @ `6e82ed6` fast-forwarded onto trial `main`.
 - Scientific effect: NONE. Timer `permanent-autonomous-align-watch` (re)armed (10800s). `goal_complete=false`.
+
+### Batch 63 follow-up — land note
+
+- Draft/ready PR create via `gh` → **403**. **Landed on trial `main`** via direct push `63abeb5..c803ac8`.
+- Feature branch `cursor/batch63-permanent-path-c-c22a` @ `c803ac8` fast-forwarded onto trial `main`.
+- Scientific effect: NONE. Timer `permanent-autonomous-align-watch` (re)armed (600s). `goal_complete=false`.
+
