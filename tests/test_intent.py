@@ -1905,3 +1905,49 @@ def test_objective_evidence_83() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 83" in log or "OBJECTIVE_EVIDENCE_83" in log
+
+
+def test_patches_manifest_and_pack_includes_it() -> None:
+    """Batch 89: MANIFEST.json lists apply_all patches; pack_portable requires it."""
+    import json
+    import subprocess
+    import tarfile
+    import tempfile
+
+    manifest_path = ROOT / "portable" / "patches" / "MANIFEST.json"
+    assert manifest_path.is_file()
+    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert data["verified_on_tip"].startswith("ac33581")
+    assert data["scientific_effect"] == "NONE"
+    assert data["lemma_closed"] is False
+    assert data["goal_complete"] is False
+    assert data["apply_all_count"] == 13
+    assert len(data["patches"]) == 13
+    ids = [p["id"] for p in data["patches"]]
+    assert ids == [
+        "0001", "0002", "0003", "0004",
+        "0008", "0009", "0010", "0011", "0012", "0013", "0014", "0015", "0016",
+    ]
+    for p in data["patches"]:
+        assert p["title"]
+        assert isinstance(p["files-touched"], list) and p["files-touched"]
+        assert p["obsolete-if"] is None
+        assert p["in_apply_all"] is True
+        assert p["verified_on_tip"] == data["verified_on_tip"]
+    for p in data["obsolete_kept_on_disk"]:
+        assert p["obsolete-if"]
+        assert p["in_apply_all"] is False
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "portable/patches/MANIFEST.json" in pack
+
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td) / "pack.tgz"
+        subprocess.run(
+            [str(ROOT / "scripts" / "pack_portable.sh"), str(out)],
+            check=True,
+            timeout=60,
+        )
+        with tarfile.open(out, "r:gz") as tf:
+            names = tf.getnames()
+        assert "portable/patches/MANIFEST.json" in names

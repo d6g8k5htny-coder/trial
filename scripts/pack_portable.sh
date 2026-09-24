@@ -20,12 +20,19 @@ mapfile -t STATUS_GUARD < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'STA
 # Batch 83+: requirement-by-requirement autonomous objective evidence.
 mapfile -t OBJECTIVE_EVIDENCE < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'OBJECTIVE_EVIDENCE_*.json' | sort)
 
+# Batch 89+: patches MANIFEST (apply_all ids + headers; also under portable/patches/).
+PATCHES_MANIFEST="$ROOT/portable/patches/MANIFEST.json"
+
 if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
   exit 2
 fi
 if [[ ${#TOKEN_SEARCHES[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/BATCH*_TOKEN_SEARCH.json found" >&2
+  exit 2
+fi
+if [[ ! -f "$PATCHES_MANIFEST" ]]; then
+  echo "pack_portable: ERROR: missing portable/patches/MANIFEST.json" >&2
   exit 2
 fi
 
@@ -75,6 +82,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/main-default-branch \
   portable/path-c-applied-bundle \
   portable/pr2-landing \
+  portable/patches/MANIFEST.json \
   portable/patches \
   scripts/audit_main_alignment.py \
   scripts/audit_local_tree.py \

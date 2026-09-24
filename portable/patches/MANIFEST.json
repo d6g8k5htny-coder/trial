@@ -1,0 +1,217 @@
+{
+  "schema": "portable.patches.manifest.v1",
+  "generated_at_utc": "2026-09-24T03:01:34Z",
+  "generated_from": [
+    "portable/patches/apply_all.sh",
+    "portable/patches/*.patch headers"
+  ],
+  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 ac335815b277ac0c076082ac6af2344261c2093a",
+  "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a",
+  "apply_all_count": 13,
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "goal_complete": false,
+  "patches": [
+    {
+      "id": "0001",
+      "file": "0001-carriers-verify-ignore-bytecode-caches.patch",
+      "title": "carriers_verify ignore __pycache__ / bytecode",
+      "files-touched": [
+        "tests/test_carriers.py",
+        "tools/carriers_verify.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0002",
+      "file": "0002-math-console-path-honesty.patch",
+      "title": "math_console path honesty + PACKET digests",
+      "files-touched": [
+        "docs/math_status/PACKET.json",
+        "docs/math_status/math_console.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0003",
+      "file": "0003-gaussian-moments-parametrize-list.patch",
+      "title": "gaussian moments parametrize list",
+      "files-touched": [
+        "tests/test_gaussian_moments.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0004",
+      "file": "0004-git-fixture-timeout-60s.patch",
+      "title": "git fixture timeout 60s",
+      "files-touched": [
+        "tests/test_run_checks.py",
+        "tests/test_workflow_integrity_hardening.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0008",
+      "file": "0008-carriers-math-status-close-file-handles.patch",
+      "title": "carriers + math_status close file handles",
+      "files-touched": [
+        "tests/test_carriers.py",
+        "tests/test_math_status.py",
+        "tools/carriers_verify.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0009",
+      "file": "0009-claims-close-file-handles.patch",
+      "title": "claims close file handles",
+      "files-touched": [
+        "tests/test_claims.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0010",
+      "file": "0010-recovery-close-file-handles.patch",
+      "title": "recovery close file handles",
+      "files-touched": [
+        "tests/test_recovery.py",
+        "tools/recovery_check.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0011",
+      "file": "0011-math-status-check-close-file-handles.patch",
+      "title": "math_status_check close file handles",
+      "files-touched": [
+        "tools/math_status_check.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0012",
+      "file": "0012-inventable-negative-tests-close-file-handles.patch",
+      "title": "inventable-negative tests close file handles",
+      "files-touched": [
+        "tests/test_inventable_jetmod_instrumentation_status.py",
+        "tests/test_inventable_jetmod_probes.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0013",
+      "file": "0013-verify-quarantine-close-file-handles.patch",
+      "title": "verify_manifests + quarantine_check close file handles",
+      "files-touched": [
+        "tools/quarantine_check.py",
+        "tools/verify_manifests.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0014",
+      "file": "0014-collision-close-file-handles.patch",
+      "title": "collision_proposal_check + tests close file handles",
+      "files-touched": [
+        "tests/test_collision_proposal.py",
+        "tools/collision_proposal_check.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0015",
+      "file": "0015-frozen-drive-index-close-file-handles.patch",
+      "title": "frozen_check + drive_index_overlay close file handles",
+      "files-touched": [
+        "tests/test_drive_index_overlay.py",
+        "tests/test_frozen_check.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0016",
+      "file": "0016-receipts-bridge-close-file-handles.patch",
+      "title": "receipts + bridge tests close file handles",
+      "files-touched": [
+        "tests/test_bridge.py",
+        "tests/test_receipts.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    }
+  ],
+  "obsolete_kept_on_disk": [
+    {
+      "id": "0005",
+      "file": "0005-inventable-probes-restore-receipts-after-test.patch",
+      "title": "inventable probes restore receipts after test",
+      "files-touched": [
+        "tests/test_inventable_jetmod_probes.py"
+      ],
+      "obsolete-if": "main PR #27 merged (bf1fde3); tip-cut dirty-receipt restore superseded by tmp_path + _probe_snapshot()",
+      "in_apply_all": false,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0005-pre17",
+      "file": "0005-pre17-inventable-probes-restore-receipts-after-test.patch",
+      "title": "pre-#17 inventable probes restore receipts after test",
+      "files-touched": [
+        "tests/test_inventable_jetmod_probes.py"
+      ],
+      "obsolete-if": "main PR #27 merged (bf1fde3); tip-cut dirty-receipt restore superseded by tmp_path + _probe_snapshot()",
+      "in_apply_all": false,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0006",
+      "file": "0006-instrumentation-status-restore-receipts-after-test.patch",
+      "title": "instrumentation status restore receipts after test",
+      "files-touched": [
+        "tests/test_inventable_jetmod_instrumentation_status.py"
+      ],
+      "obsolete-if": "main PR #27 merged (bf1fde3); instrumentation restore superseded by isolation; residual covered by 0012",
+      "in_apply_all": false,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    },
+    {
+      "id": "0007",
+      "file": "0007-inventable-tests-close-file-handles.patch",
+      "title": "inventable tests close file handles",
+      "files-touched": [
+        "tests/test_inventable_jetmod_probes.py",
+        "tests/test_inventable_jetmod_instrumentation_status.py"
+      ],
+      "obsolete-if": "main PR #27 merged (bf1fde3); inventable close-handles tip-cut shape obsolete; residual covered by 0012",
+      "in_apply_all": false,
+      "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
+    }
+  ]
+}

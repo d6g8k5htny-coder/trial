@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 89 — 2026-09-24 ~03:02 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581`; patches MANIFEST)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Guard `guard_no_status_promotion.py` @ hardening `ac33581` → **pass**. `aligned_drift_watch` → **ALIGNED**; write **DENIED** (`cursor[bot]` 403 confirmed). Tip stable (default `1c6e74b`; hardening == BASE_TIP `ac33581`).
+- **Shipped:** `portable/patches/MANIFEST.json` (apply_all 0001–0004+0008–0016: id/title/files-touched/obsolete-if/verified_on_tip) + obsolete 0005/0006/0007 kept-on-disk; `pack_portable.sh` fail-closed requires + packs MANIFEST.
+- Tiny JSON: `portable/BATCH89_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked on write. Trial branch `cursor/patches-manifest-f3b1`.
+
 ### Batch 88 — 2026-09-24 ~02:59 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; Path C perm probe)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
