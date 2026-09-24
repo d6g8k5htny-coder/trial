@@ -26,6 +26,7 @@ _LIVING_TIPS = (
     "62f955a",
     "a1ed37b",
     "542e6ec",
+    "fa32d11",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -6984,3 +6985,96 @@ def test_batch248_workspace_landing_ci_path_split() -> None:
     assert status.get("lemma_closed") is False
     assert status.get("tip_match") is True
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
+    """Batch 249: tip-observe eng #79; tip moved; Path C IDLE; no research flip."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH249_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "249"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "inventable_tip_observe_stale_b89448da_vs_live_542e6ec"
+    assert brief.get("tip_moved") is True
+    assert _living_tip(brief.get("tip"))
+    assert str(brief.get("tip")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("patch_0020") is False
+    assert brief.get("port_78_to_hardening") is False
+    assert brief.get("hardening_path_collision") is False
+    assert 79 in (brief.get("merged_prs") or [])
+    assert brief.get("main_pr_or_null") == 79
+    assert brief.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH249_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "249"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("tip_moved") is True
+    assert hunt.get("patch_0020") is False
+    assert hunt.get("defect_id") == "inventable_tip_observe_stale_b89448da_vs_live_542e6ec"
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH249_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+    assert audit.get("problems") == 0
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "fa32d1168ab5245090d6ff3324f4ee9e8124d95a" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("lemma_closed") is False
+    assert verify.get("base_tip_sha", "").startswith("fa32d11")
+    assert verify.get("path_c_landed") is True
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 249" in log
+    assert "tip-observe" in log.lower() or "tip_observe" in log.lower()
+    assert "#79" in log or "PR #79" in log or "main #79" in log
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 249)" in land_md
+    assert "fa32d11" in land_md
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 249" in ones
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 249" in owner_actions
+    assert "#79" in owner_actions or "tip-observe" in owner_actions.lower()
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert status.get("tip_match") is True
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert str(status.get("tip", "")).startswith("fa32d11")
+
+    snap = json.loads(
+        (ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("state") == "ALIGNED"
+    assert snap.get("lemma_closed") is False

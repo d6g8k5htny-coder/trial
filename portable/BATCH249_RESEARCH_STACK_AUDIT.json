@@ -1,0 +1,19 @@
+{
+  "batch": "249",
+  "generated_at_utc": "2026-09-24T23:26:00Z",
+  "repo": "d6g8k5htny-coder/main",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "tip_before": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "default_tip": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "disposition": "OPEN_HOLD",
+  "problems": 0,
+  "status_promotions": [],
+  "premises_closed": [],
+  "prizes_discharged": [],
+  "note": "Eng inventable tip-observe only (PR #79). Receipts not re-executed. aligned_to_base_tip stays HISTORICAL_NONCURRENT. No PACKET/STATUS research flips. lemma_closed stays false."
+}

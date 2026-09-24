@@ -6,6 +6,24 @@ Cursor App install is often **trial-only** (git push / Git Data API **403** on
 `main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
 See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
+> ## STATUS (Batch 249) — PERMANENT window; ALIGNED @ `72558a5`; Path C BASE_TIP `fa32d11`; release `batch241-path-c-bundle`; write **WRITABLE**; inventable tip-observe (#79)
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.**
+> Default tip **`72558a5`** ALIGNED. Hardening / Path C tip **`fa32d11`** (== BASE_TIP;
+> tip_moved=true from `542e6ec` after eng [main #79](https://github.com/d6g8k5htny-coder/main/pull/79)
+> inventable tip-observe; Path C 0001–0019 already on tip → **`IDLE_PATH_C_DONE`**).
+> Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
+> often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**.
+> Hardening has **no** ci.yml/workspace-landing path collision (#78 stays default-only).
+> Prefer `./scripts/restore_main_face.sh` for MISALIGNED restore (ALIGNED → no-op).
+> Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
+> grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+>
+
 > ## STATUS (Batch 248) — PERMANENT window; ALIGNED @ `72558a5`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**; workspace-landing/ci path split (#78)
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.

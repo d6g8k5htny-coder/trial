@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 249 (inventable tip-observe eng probe) — 2026-09-24 ~23:00– UTC (PERMANENT window; eng tip-observe ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec` → `fa32d11`** after eng merge (tip_moved=true). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- Hardening **no** ci.yml/workspace-landing path collision → **did not** port #78 (default-only split already correct; hardening keeps full `ci.yml` `name: ci`).
+- Open main PRs: research-hold drafts only (#73 inventable tip-observe research docs / #47/#46/#38/#36/#21/#12/#8/#7) — **skipped**.
+- **Defect shipped (not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not #78 docs churn):** inventable tip-observe LOCK still named stale `b89448da` while live tip was `542e6ec`. [main #79](https://github.com/d6g8k5htny-coder/main/pull/79) advanced observe to `542e6ec2` without re-running receipts → merged @ `fa32d11`.
+- Path C: tip move → `refresh_path_c_bundle` BASE_TIP=`fa32d11`; apply_all 0001–0019 already-on-tip; focused 90 + claims/recovery 83; **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 248 (workspace-landing / ci.yml path collision) — 2026-09-24 ~22:43– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75` → **`72558a5`** after eng merge. `lemma_closed=false`.

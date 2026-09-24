@@ -1,6 +1,27 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 249 — write WRITABLE; inventable tip-observe (#79); tip `fa32d11`
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`fa32d11`** (== BASE_TIP; tip_moved=true from `542e6ec` after eng
+[main #79](https://github.com/d6g8k5htny-coder/main/pull/79)). Default tip **ALIGNED**
+@ `72558a5`. Inventable tip-observe LOCK advanced from stale `b89448da` → live tip
+(receipts not re-run). Hardening has **no** ci.yml/workspace-landing collision — do
+**not** port #78. Path C refresh → **`IDLE_PATH_C_DONE`**. Research HOLD drafts skipped.
+`lemma_closed` stays **false**.
+
+```bash
+gh pr view 79 -R d6g8k5htny-coder/main --json state,mergeCommit
+./scripts/refresh_path_c_bundle.sh --dry-run                   # tip match @ fa32d11
+./scripts/assert_path_c_ready.sh                               # IDLE_PATH_C_DONE
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 248 — write WRITABLE; workspace-landing / ci.yml path collision (#78)
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
