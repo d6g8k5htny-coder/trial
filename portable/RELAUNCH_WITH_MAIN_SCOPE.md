@@ -37,6 +37,17 @@ Poller tmux `gh-device-login` writes `/tmp/gh-dylan-auth/access_token`.
 
 1. On **trial**: Settings → Secrets → Actions → `MAIN_PUSH_TOKEN`
    (PAT with Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`)
+   **Batch 160 one-shot** (owner laptop / Codespace; token never printed):
+
+   ```bash
+   ./scripts/owner_set_main_push_token.sh --dry-run
+   MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
+   # or reuse logged-in gh:
+   ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
+   ```
+
+   That runs `gh secret set MAIN_PUSH_TOKEN` on trial, then optionally
+   `repository_dispatch` `land-path-c-on-main` with `dry_run=false`.
 2. Either:
    - `gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false`
    - Or drop the same token into env / `/cursor/stores/self/MAIN_PUSH_TOKEN` /

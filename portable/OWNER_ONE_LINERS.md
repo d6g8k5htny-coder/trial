@@ -177,12 +177,27 @@ Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0
 ./scripts/owner_open_path_c_pr.sh
 # Uses owner gh auth or MAIN_PUSH_TOKEN. Idempotent if branch/PR exists.
 # PR body: engineering-only; lemma_closed stays false; no research promotion.
+
+# Batch 160 — set trial Actions secret MAIN_PUSH_TOKEN (+ optional Path C dispatch):
+./scripts/owner_set_main_push_token.sh --dry-run
+MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
+# or: ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
+# Token never printed. Scientific effect NONE; lemma_closed stays false.
 ```
 
-### C1 — Actions UI (trial workflow; Batch 69+)
+### C1 — Actions UI (trial workflow; Batch 69+) / secret one-shot (Batch 160)
 
 1. On **trial**: Settings → Secrets → Actions → add `MAIN_PUSH_TOKEN`
    (PAT with Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).
+   **Or one-shot** (token never printed):
+
+   ```bash
+   ./scripts/owner_set_main_push_token.sh --dry-run
+   MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
+   # or: ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
+   ```
+
+   (`gh secret set` on trial + optional `repository_dispatch` land-path-c `dry_run=false`)
 2. Actions → **land-path-c-on-main** → Run workflow.
 3. Default `dry_run=true` verifies `apply_all` + `lemma_closed=false` / `problems=0` (no push).
 4. Set `dry_run=false` to push `cursor/portable-engineering-patches` and open (or reuse)

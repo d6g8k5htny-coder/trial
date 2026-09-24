@@ -5,16 +5,17 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T09:03:07Z |
-| Checked (UTC) | 2026-09-24T09:03:07Z |
+| Checked (UTC) | 2026-09-24T09:12:00Z |
 | Verification URL | https://github.com/login/device |
 | User code | `2513-3A16` |
 | Prior code | `E136-5AE7` (near-expiry &lt;90s / renewed) |
 | Prior prior | `1FC8-3D96` (near-expiry / renewed) |
 | Older priors | `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending) |
-| Expires | see `seconds_left` in BATCH157_BRIEF |
+| Status | pending (slow_down) |
+| Expires | see `seconds_left` in BATCH160_BRIEF |
 | Hardening tip | `10c077e` (PR #54); path-c-applied-bundle current; release `batch155-path-c-bundle` (refresh of batch142 pack) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
+| Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 160: `gh secret set` + optional `--dispatch`) |
 | Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
 | Path C blocked codes | `when_writable_land` logs `PATH_C_BLOCKED=NO_TOKEN\|TIP_DRIFT\|APPLY_FAIL` (Batch 157) |
 
@@ -46,7 +47,13 @@ When a file appears there while direct main write is still DENIED, `when_writabl
 ./scripts/dispatch_land_path_c.sh --apply
 ```
 
-(`repository_dispatch` type `land-path-c-on-main` on trial). Actions apply land still needs the trial repo secret `MAIN_PUSH_TOKEN` set to a main-write PAT. Prefer also setting that secret so the dispatched workflow can push.
+(`repository_dispatch` type `land-path-c-on-main` on trial). Actions apply land still needs the trial repo secret `MAIN_PUSH_TOKEN` set to a main-write PAT. Prefer also setting that secret so the dispatched workflow can push:
+
+```bash
+./scripts/owner_set_main_push_token.sh --dry-run
+MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
+# or: ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
+```
 
 If this Cloud Agent still cannot write after auth, or you prefer not to wait: land Path C locally from the release tarball in **one command** — see `portable/LAND.md` / `scripts/owner_land_path_c.sh --from-bundle`. Scope unblock options: `portable/RELAUNCH_WITH_MAIN_SCOPE.md`. Batch 139+: once trial secret `MAIN_PUSH_TOKEN` exists, `scripts/dispatch_land_path_c.sh --apply` fires `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; no Actions:write needed).
 
