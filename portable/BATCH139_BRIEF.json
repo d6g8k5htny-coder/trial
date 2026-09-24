@@ -1,6 +1,6 @@
 {
   "batch": "139",
-  "generated_at_utc": "2026-09-24T07:15:00Z",
+  "generated_at_utc": "2026-09-24T07:16:11Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -20,7 +20,7 @@
   "seconds_left": 174,
   "daemon": "up",
   "flipped_anything": false,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "trial_branch": "cursor/batch139-path-c-dispatch-97ea",
   "open_main_prs_count": 12,
   "ci_dry_apply": "green",
@@ -39,5 +39,8 @@
     "portable/GH_DEVICE_LOGIN.md"
   ],
   "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device 2983-6CCD pending; CI path-c-applied-bundle-dry-apply green local+main; repository_dispatch land-path-c-on-main for MAIN_PUSH_TOKEN; research untouched",
-  "has_token": false
+  "has_token": false,
+  "trial_main_sha": "a3770b2",
+  "release": "batch139-path-c-bundle",
+  "repository_dispatch_dry_run": "accepted_204"
 }
