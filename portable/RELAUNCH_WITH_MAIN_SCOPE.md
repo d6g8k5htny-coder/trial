@@ -68,6 +68,21 @@ Poller tmux `gh-device-login` writes `/tmp/gh-dylan-auth/access_token`.
    - Or drop the same token into env / `/cursor/stores/self/MAIN_PUSH_TOKEN` /
      `/workspace/.secrets/MAIN_PUSH_TOKEN` for `when_writable_land.py` (never print it)
 
+### Batch 235 — write durability (Cursor/install)
+
+**`MAIN_PUSH_TOKEN` is now set** on `d6g8k5htny-coder/trial` (and mirrored on
+`d6g8k5htny-coder/main` Actions secrets). Value never logged / never committed.
+
+- **Cursor App install** may still be trial-only (`install_has_main=false`) mid-flight —
+  that does **not** undo write durability for Path C: `land-path-c-on-main` reads the
+  trial secret (not the Cloud Agent ghs token) when `dry_run=false`.
+- Device-file path `/tmp/gh-dylan-auth/access_token` remains a live local vector; the
+  Actions secret outlives ephemeral device sessions.
+- Probe (Batch 235): `repository_dispatch` `land-path-c-on-main` `dry_run=true`
+  succeeded; Actions env shows secret present (masked `***`); `owner_land_path_c.sh
+  --dry-run` OK. `PATH_C_STATUS.write_durable=true`.
+- Prefer **not** pushing tip keepalives solely for health when tip is already ALIGNED.
+
 ## (d) RELAUNCH Cloud Agent from `trial` (required for env token scope)
 
 After (a) and/or after merging `.cursor/environment.json` with

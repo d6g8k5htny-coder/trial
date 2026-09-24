@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 235 — 2026-09-24 ~18:21–18:25 UTC (PERMANENT window; persist write durability via MAIN_PUSH_TOKEN; scientific effect NONE; flipped nothing)
+
+- WRITE still **WRITABLE** via device auth (`/tmp/gh-dylan-auth/access_token`; create-ref probe 201). Token **never printed**.
+- **Secret set OK:** `gh secret set MAIN_PUSH_TOKEN -R d6g8k5htny-coder/trial` (also set on `d6g8k5htny-coder/main`). `gh secret list` / Actions secrets API → name `MAIN_PUSH_TOKEN` present (no value).
+- **land-path-c probe:** `repository_dispatch` `dry_run=true` run `36040871961` → **success**; Actions masks secret as `***`. `owner_land_path_c.sh --dry-run` OK (already-landed idempotent).
+- Cursor/install note: `RELAUNCH_WITH_MAIN_SCOPE` (c) + `GH_DEVICE_LOGIN` — secret makes Path C write **durable** even if install stays trial-only / device session expires. `PATH_C_STATUS.write_durable=true`.
+- No main tip keepalive (prefer not). Tip stable **`377201c`**. Path C already on tip (PR #64). **lemma_closed=false**; **flipped nothing**.
+- Docs: `BATCH235_BRIEF`, this log, durability notes. Trial PR for this batch.
+
 ### Batch 233 — 2026-09-24 ~17:38–17:50 UTC (PERMANENT window; tip stable 377201c; tip RW hunt clean no 0018; guard tip_sha clobber fix; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ **`377201c`** (== BASE_TIP). Default tip **ALIGNED** @ `1c6e74b`. Write **WRITABLE** (device token create-ref). Path C eng stack on tip (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). **No Path B / no Path C delta / no tip-refresh**.
