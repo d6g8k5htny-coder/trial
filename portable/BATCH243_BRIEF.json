@@ -1,7 +1,7 @@
 {
   "batch": "243",
-  "generated_at_utc": "2026-09-24T21:40:24Z",
-  "status": "path_a_aligned_noop_shipped",
+  "generated_at_utc": "2026-09-24T21:47:16Z",
+  "status": "trial_main_direct_land_path_a_aligned_noop",
   "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
@@ -49,5 +49,9 @@
     "docs/OWNER_ACTIONS_MAIN.md",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "shipped": true
+  "shipped": true,
+  "trial_land": "direct_push_main_pr_create_403",
+  "trial_land_sha": "6c338c60ab4bf4faf458121e8821e486f7ec8920",
+  "trial_pr": null,
+  "main_pr": null
 }
