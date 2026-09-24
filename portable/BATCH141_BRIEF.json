@@ -1,6 +1,6 @@
 {
   "batch": "141",
-  "generated_at_utc": "2026-09-24T07:34:24Z",
+  "generated_at_utc": "2026-09-24T07:34:45Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -24,7 +24,7 @@
   "device_code": "16F5-39F5",
   "prior_device_code": "F11F-5064",
   "auth_renewed": true,
-  "seconds_left": 708,
+  "seconds_left": 687,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
@@ -44,12 +44,13 @@
   "note": "ALIGNED@1c6e74b; write DENIED; W3f=false_positive (DISPATCH_OK_DRY_RUN on trial dry_run); path_b_ready false; tip drifted to 10c077e (#54) vs BASE c82c9357; device 16F5-39F5 renewed after F11F-5064; research untouched",
   "lemma_closed_verify": false,
   "engineering_gap": "w3f_dry_run_false_positive_neutralized",
-  "trial_main_sha": "8c5784e",
+  "trial_main_sha": "a40f8c6",
   "vectors_live_verify": {
     "state": "DENIED",
     "path_b_ready": false,
     "w3f_state": "DISPATCH_OK_DRY_RUN",
     "w3f_false_positive": true
   },
-  "pytest": "ok"
+  "pytest": "ok",
+  "ci_subscribed": true
 }
