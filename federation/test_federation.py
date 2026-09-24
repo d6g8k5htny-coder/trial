@@ -80,7 +80,8 @@ class Federation(unittest.TestCase):
         data=q.load_catalog(ROOT/'meta-framework/registry.json')
         self.assertEqual(len(data['repositories']),8)
         self.assertEqual(data['repositories']['sandbox']['visibility'],'private')
-        self.assertEqual(len(q.verify(data,ROOT)['verified']),5)
+        self.assertGreater(len(data['artifacts']),0)
+        self.assertEqual(set(q.verify(data,ROOT)['verified']),{row['key'] for row in data['artifacts']})
     def test_cli_refusal_is_clean(self):
         self.load()
         p=subprocess.run([sys.executable,'-B','-S',str(ROOT/'query-/research_query.py'),'--registry',str(self.path),'--key','missing'],capture_output=True,text=True,timeout=10)
