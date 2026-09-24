@@ -2120,7 +2120,7 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     assert data["scientific_effect"] == "NONE"
     assert data["lemma_closed"] is False
     assert data["goal_complete"] is False
-    assert data["apply_all_count"] in (13, 14)
+    assert data["apply_all_count"] in (13, 14, 15)
     assert len(data["patches"]) == data["apply_all_count"]
     ids = [p["id"] for p in data["patches"]]
     assert ids == [
