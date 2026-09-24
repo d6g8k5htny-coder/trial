@@ -102,8 +102,9 @@
   "ci_status": "success",
   "ci_batch183_run": "https://github.com/d6g8k5htny-coder/trial/actions/runs/35995617136",
   "code_changed": true,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
   "issue_title": "Path C unblock \u2014 Batch 185 canonical (46EC-0B00)",
-  "auth_renew_threshold_note": "renew if expired or seconds_left<90; DF9C was <90 -> renewed to 46EC-0B00"
+  "auth_renew_threshold_note": "renew if expired or seconds_left<90; DF9C was <90 -> renewed to 46EC-0B00",
+  "trial_main_sha": "98a77bb76978db823cf515e5e8459d22ed283b01"
 }
