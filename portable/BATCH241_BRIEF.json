@@ -1,7 +1,7 @@
 {
   "batch": "241",
-  "generated_at_utc": "2026-09-24T21:01:04Z",
-  "status": "path_b_aligned_skip_from_bundle_fallback_pack_release",
+  "generated_at_utc": "2026-09-24T21:13:32Z",
+  "status": "trial_pr64_merged_path_b_aligned_skip",
   "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
@@ -14,7 +14,9 @@
   "tip_moved": false,
   "write": "WRITABLE",
   "write_durable": true,
-  "merged_prs": [],
+  "merged_prs": [
+    "trial#64"
+  ],
   "research_hold_prs_skipped": [
     73,
     47,
@@ -45,5 +47,7 @@
     ".github/workflows/land-option-b-on-main.yml",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "trial_pr_branch": "cursor/batch241-misalign-guard-7fbd"
+  "trial_pr_branch": "cursor/batch241-misalign-guard-7fbd",
+  "trial_pr_merged": true,
+  "trial_pr_url": "https://github.com/d6g8k5htny-coder/trial/pull/64"
 }
