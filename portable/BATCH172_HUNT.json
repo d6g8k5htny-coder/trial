@@ -1,0 +1,25 @@
+{
+  "batch": "172",
+  "generated_at_utc": "2026-09-24T10:42:28Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "tip": "8ea3b5f",
+  "prior_tip": "8ea3b5f",
+  "tip_refresh": false,
+  "apply_stack": "0001-0004+0008-0016",
+  "hunt_result": "clean",
+  "patch_0017": false,
+  "bare_except_pass_actionable": 0,
+  "bare_open_actionable": 0,
+  "skipped_non_actionable": [
+    "drive/mirrors/.../q0_verify.py except Exception: pass (mirror; out of Path-C patch stack)"
+  ],
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "focused_passed": 90,
+  "focused_non_resource_warnings": 0,
+  "claims_recovery_passed": 83,
+  "claims_recovery_non_resource_warnings": 0,
+  "combined_passed": 173,
+  "note": "Non-ResourceWarning hunt on tip 8ea3b5f WITH patches: no actionable bare except:pass / missing-close outside already-patched modules; pytest focused+claims+recovery clean under -W default ignoring ResourceWarning; no 0017"
+}

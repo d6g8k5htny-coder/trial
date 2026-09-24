@@ -3496,3 +3496,45 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert "bundle" in log.lower()
     assert "lemma_closed" in log.lower()
 
+
+def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
+    """Batch 172: tip stable; issue #33 canonical; hunt clean no 0017; auth pending; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH172_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "172"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["device_code"] == "7BCB-0057"
+    assert data["write"] == "DENIED"
+    assert data.get("patch_0017") is False
+    assert data.get("hunt") == "clean_no_0017"
+    assert data.get("canonical_issue") == 33 or data.get("issue_number") == 33
+    assert data.get("auth_renewed") is False
+    assert int(data.get("seconds_left", 0)) >= 0
+
+    hunt = ROOT / "portable" / "BATCH172_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["batch"] == "172"
+    assert h["patch_0017"] is False
+    assert h["hunt_result"] == "clean"
+    assert h["lemma_closed"] is False
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "7BCB-0057" in gh
+    assert "issues/33" in gh or "#33" in gh
+    assert "batch169-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 172" in log
+    assert "7BCB-0057" in log
+    assert "lemma_closed" in log.lower()
+

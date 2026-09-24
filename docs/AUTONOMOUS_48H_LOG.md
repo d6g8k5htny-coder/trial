@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 172 — 2026-09-24 ~10:39–10:42 UTC (PERMANENT window; tip stable 8ea3b5f; issue hygiene #33 canonical; non-RW hunt clean no 0017; auth 7BCB pending; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `7BCB-0057` still **pending** (`authorization_pending`); seconds_left≈286 (≥90 → **no renew**). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- **Issue hygiene:** created canonical [#33](https://github.com/d6g8k5htny-coder/trial/issues/33) with current device code + `batch169-path-c-bundle` + oneshot commands. App **cannot** comment/edit/close existing issues (403) → duplicates #32/#31/#30/#29/#28/#27/#26/#25 left open (no spam retries).
+- **Hunt (non-ResourceWarning) on tip WITH patches:** bare `except: pass` / missing-close actionable **0** (mirror `q0_verify` skipped); focused **90** + claims/recovery **83** clean; **no 0017**.
+- Tiny JSON: `portable/BATCH172_BRIEF.json` + `BATCH172_HUNT.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `7BCB-0057` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle`. See issue #33.
+
 ### Batch 170 — 2026-09-24 ~10:20–10:35 UTC (PERMANENT window; tip stable 8ea3b5f; E2E path-c-on-hardening.bundle shallow fetch+merge; CI intent supersession fix; auth renew EC83→7BCB; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

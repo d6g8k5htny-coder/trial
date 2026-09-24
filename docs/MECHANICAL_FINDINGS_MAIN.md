@@ -3,6 +3,26 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 172 — tip stable; issue hygiene #33; non-RW hunt clean; no research flips @ tips `1c6e74b` / `8ea3b5f`
+
+Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8ea3b5fb9368a85e7f971d606b8f75c96c35c05a` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165 counts) |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth pending `7BCB-0057` (seconds_left≥90; no renew) |
+| pack / release | still **`batch169-path-c-bundle`** (tip/bundle unchanged) |
+| issue hygiene | canonical **[#33](https://github.com/d6g8k5htny-coder/trial/issues/33)**; close duplicates **DENIED** (App 403) |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (non-RW hunt clean after patches) |
+
+Artifacts: `portable/BATCH172_BRIEF.json` + `BATCH172_HUNT.json`. Scientific effect: **NONE**.
+
 ## Batch 170 — tip stable; E2E `.bundle` verify; CI intent fix; no research flips @ tips `1c6e74b` / `8ea3b5f`
 
 Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
