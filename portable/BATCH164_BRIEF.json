@@ -1,6 +1,6 @@
 {
   "batch": "164",
-  "generated_at_utc": "2026-09-24T09:40:07Z",
+  "generated_at_utc": "2026-09-24T09:41:57Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -22,7 +22,7 @@
   "device_code": "C8FC-A08F",
   "prior_device_code": "E818-2EE5",
   "auth_renewed": false,
-  "seconds_left": 501,
+  "seconds_left": 391,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -64,5 +64,6 @@
   "release": "batch162-path-c-bundle",
   "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch162-path-c-bundle",
   "code_changed": true,
-  "trial_main_landed": false
+  "trial_main_landed": true,
+  "trial_main_sha": "5a9a3b0"
 }
