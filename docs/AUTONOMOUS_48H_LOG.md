@@ -21,6 +21,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 94 — 2026-09-24 ~03:28 UTC (PERMANENT window; IDLE; `INSTALL_ADD_MAIN_ATTEMPT.json`; scientific effect NONE; flipped nothing)
+
 ### Batch 93 — 2026-09-24 ~03:22 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; IDLE)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

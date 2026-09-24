@@ -1,0 +1,42 @@
+{
+  "generated_at_utc": "2026-09-24T03:27:45Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "token_kind": "ghs",
+  "app_id": 1210556,
+  "repo": "d6g8k5htny-coder/main",
+  "repo_id": 1117225690,
+  "installation_id": null,
+  "install_has_main": false,
+  "path_c_landed": false,
+  "route_now": "IDLE",
+  "commits": 0,
+  "tip_moved": false,
+  "main_default_tip": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+  "GET_/installation/repositories": 200,
+  "install_names": ["d6g8k5htny-coder/trial"],
+  "repository_selection": "selected",
+  "discovery": {
+    "GET_/user/installations": 403,
+    "GET_/app/installations": 401,
+    "GET_/installation": 404,
+    "GET_/app": 401,
+    "GET_/users/d6g8k5htny-coder/installation": 401,
+    "GET_/repos/.../trial/installation": 401,
+    "GET_/repos/.../main/installation": 401,
+    "GET_/orgs/d6g8k5htny-coder/installation": 401,
+    "GET_/orgs/d6g8k5htny-coder/installations": 404,
+    "GET_/apps/cursor/installations": 404
+  },
+  "add_attempts": {
+    "PUT_/user/installations/1/repositories/{repo_id}": 404,
+    "PUT_/app/installations/1/repositories/{repo_id}": 404,
+    "POST_/installation/repositories/{repo_id}": 404,
+    "PUT_/installation/repositories/{repo_id}": 404,
+    "POST_/user/installations/1/repositories/{repo_id}": 404,
+    "PUT_/orgs/.../installations/1/repositories/{repo_id}": 404,
+    "POST_/orgs/.../installations/1/repositories/{repo_id}": 404
+  },
+  "note": "installation_id absent from headers; ghs cannot resolve or mutate install selection (needs classic PAT admin on PUT /user/installations/{id}/repositories/{repo_id})"
+}
