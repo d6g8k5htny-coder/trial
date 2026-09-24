@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 111 — 2026-09-24 ~04:46 UTC (PERMANENT window; auth pulse; scientific effect NONE; flipped nothing)
+
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `BC1B-2C58`); `seconds_left≈238`; no Path C land.
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tiny JSON: `portable/BATCH111_BRIEF.json`. `goal_complete=false`. Re-armed once timer **208s** (`gh-dylan-device-auth-check`).
+
+**Land note:** Path C blocked (auth pending + `install_has_main=false`). Waiting on Dylan device code `BC1B-2C58`.
+
 ### Batch 110 — 2026-09-24 ~04:44 UTC (PERMANENT window; auth pulse; scientific effect NONE; flipped nothing)
 
 - Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `BC1B-2C58`); `seconds_left≈361`; no Path C land.
