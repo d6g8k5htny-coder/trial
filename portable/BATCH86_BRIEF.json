@@ -26,6 +26,7 @@
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "window": "PERMANENT_OPEN",
-  "note": "Shipped guard_no_status_promotion.py (OPEN→closed/discharged/promoted detection vs BATCH70/last snapshot); STATUS_GUARD_SNAPSHOT.json; CI job research-stack-status-guard (shallow hardening clone + GITHUB_TOKEN; continue-on-error + artifact); intent fixture promote tests. Path C still 403.",
-  "land_note": "gh_pr_create_403_direct_push_main"
+  "note": "Shipped guard_no_status_promotion.py (OPEN\u2192closed/discharged/promoted detection vs BATCH70/last snapshot); STATUS_GUARD_SNAPSHOT.json; CI job research-stack-status-guard (shallow hardening clone + GITHUB_TOKEN; continue-on-error + artifact); intent fixture promote tests. Path C still 403.",
+  "land_note": "gh_pr_create_403_direct_push_main",
+  "landed_trial_main": "962ffb2"
 }
