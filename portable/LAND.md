@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 76) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C applied bundle for owner `git am`
+> ## STATUS (Batch 80) — PERMANENT window; ALIGNED @ `1c6e74b`; GitHub Release `batch80-path-c-bundle`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -19,13 +19,18 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
 > (`restore_main_face` short-circuits). Path C: BASE_TIP still **`ac33581`**
 > (no tip refresh). Write **403** → agent cannot push Path C. **Concrete work:**
-> local hardening `apply_all` @ BASE_TIP in disposable worktree; verified
-> problems=0 / lemma_closed=false / focused **90**/0; packed
+> repack `docs/trial-portable-main-fixes.tgz`; `gh release create` tag
+> **`batch80-path-c-bundle`** on `d6g8k5htny-coder/trial` with the tarball +
+> `path-c-on-hardening.patch` (one-shot `git am` notes; VERIFY problems=0 /
+> lemma_closed=false; tip `ac33581`). Open PRs targeting `base=main`:
+> see `BATCH80_OPEN_PR_THREATS.json`. See `RESTORE_PLAN_80.json` +
+> `BATCH80_TOKEN_SEARCH.json` + `BATCH80_BRIEF.json`.
+>
+> ## STATUS (Batch 76 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C applied bundle for owner `git am`
+>
+> Path C: BASE_TIP **`ac33581`**. Write **403**. Packed
 > `portable/path-c-applied-bundle/` (`path-c-on-hardening.patch` + `APPLY.md` +
-> `VERIFY.json`) so Dylan can `git am` without agent write token;
-> `pack_portable.sh` includes the bundle. Open PRs targeting `base=main`:
-> see `BATCH76_OPEN_PR_THREATS.json`. See `RESTORE_PLAN_76.json` +
-> `BATCH76_TOKEN_SEARCH.json` + `BATCH76_BRIEF.json`.
+> `VERIFY.json`). See `RESTORE_PLAN_76.json` + `BATCH76_BRIEF.json`.
 >
 > ## STATUS (Batch 74 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP → `ac33581` (PR #48); Batch 73 CI fix
 >

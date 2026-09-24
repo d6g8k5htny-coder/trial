@@ -1,20 +1,21 @@
-# Project intent audit (2026-09-24 batch 77 refresh)
+# Project intent audit (2026-09-24 batch 80 refresh)
 
 Audit of Dylan Roy’s public GitHub projects visible to this agent.
 **Scientific effect: NONE.** This note does not move any claim, premise, or obligation.
 
-> **Live status (batch 77):** Permanent autonomous window
+> **Live status (batch 80):** Permanent autonomous window
 > (`PERMANENT_UNTIL_OWNER_INTERVENES` / `goal_complete=false`).  
 > `d6g8k5htny-coder/main` default tip **`1c6e74b`** is **ALIGNED**
 > (`aligned_end=true`) after owner PR #41 (superseding #32/`c2b0620`).  
 > Path B land **not needed**. Path C engineering stack is **apply-ready** on
 > hardening `chatgpt/drive-github-hardening-20260919` @ **`ac33581`**;
-> owner `git am` bundle: `portable/path-c-applied-bundle/` (Batch 76).  
+> owner `git am` via trial release **`batch80-path-c-bundle`** (or
+> `portable/path-c-applied-bundle/`).  
 > Write to `main` remains **403 DENIED** (all Path B/C vectors).  
-> See `portable/LAND.md` / `portable/RESTORE_PLAN_77.json`.  
+> See `portable/LAND.md` / `portable/RESTORE_PLAN_80.json`.  
 > Historical sections below keep the original pre-#2/#32/#41 snapshot.
 
-## Live facts (batch 77 probe)
+## Live facts (batch 80 probe)
 
 | Fact | Value |
 |------|-------|

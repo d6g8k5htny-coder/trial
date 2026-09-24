@@ -1,0 +1,50 @@
+{
+  "batch": "80",
+  "generated_at_utc": "2026-09-24T02:23:30Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "new_0017": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "path_b_needed": false,
+  "preferred_when_aligned": "Path_C_on_hardening",
+  "preferred_restore_if_drift": "Path_B",
+  "alternate_restore": "Path_A",
+  "write_state": "DENIED",
+  "route_now": "Path_C_idle_not_writable_owner_am_via_github_release",
+  "concrete_work": [
+    "repack docs/trial-portable-main-fixes.tgz via pack_portable.sh",
+    "gh release create batch80-path-c-bundle on d6g8k5htny-coder/trial (assets: tarball + path-c-on-hardening.patch)",
+    "docs/AUTONOMOUS_48H_LOG.md Batch 80",
+    "portable/RESTORE_PLAN_80.json",
+    "portable/BATCH80_TOKEN_SEARCH.json",
+    "portable/BATCH80_OPEN_PR_THREATS.json",
+    "LAND.md / APPLY.md release pointers"
+  ],
+  "verify": {
+    "problems": 0,
+    "lemma_closed": false,
+    "base_tip_sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+    "source": "portable/path-c-applied-bundle/VERIFY.json (Batch 76)"
+  },
+  "release": {
+    "tag": "batch80-path-c-bundle",
+    "repo": "d6g8k5htny-coder/trial",
+    "assets": [
+      "docs/trial-portable-main-fixes.tgz",
+      "portable/path-c-applied-bundle/path-c-on-hardening.patch"
+    ],
+    "html_url": null
+  },
+  "open_main_prs_threatening_aligned": [],
+  "note": "Write DENIED → Path C not pushed. Tip still ac33581 (no bundle refresh). GitHub Release ships owner git am assets. goal_complete=false.",
+  "source": "aligned_drift_watch + gh release create",
+  "window": "PERMANENT_OPEN"
+}

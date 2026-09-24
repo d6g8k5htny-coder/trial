@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 80 — 2026-09-24 ~02:23 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; GitHub Release `batch80-path-c-bundle`)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `aligned_drift_watch.py --restore-if-writable` → **ALIGNED** (exit 0); tip_sha `1c6e74b…`; write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed**. Path C land **not applied remotely** (not WRITABLE) → Path C idle for push; priority would have been Path C land if writable.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**; **no bundle refresh**).
+- **Concrete work (owner download without clone churn):** repack `docs/trial-portable-main-fixes.tgz` via `pack_portable.sh`; `gh release create` tag **`batch80-path-c-bundle`** on `d6g8k5htny-coder/trial` attaching (1) repacked tarball (2) `portable/path-c-applied-bundle/path-c-on-hardening.patch`. Release notes: one-shot `git am` onto hardening @ `ac33581` + VERIFY **problems=0** / **lemma_closed=false**.
+- Live `RESTORE_PLAN_80.json` + `BATCH80_TOKEN_SEARCH.json` + `BATCH80_OPEN_PR_THREATS.json` + `BATCH80_BRIEF.json`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 77 — 2026-09-24 ~02:16 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; PROJECT_INTENT_AUDIT + deep RW hunt)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

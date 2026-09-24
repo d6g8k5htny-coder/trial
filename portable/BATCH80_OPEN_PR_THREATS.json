@@ -1,0 +1,18 @@
+{
+  "batch": "80",
+  "generated_at_utc": "2026-09-24T02:23:30Z",
+  "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+  "aligned": true,
+  "open_prs_targeting_default_main": [],
+  "threat_note": "ALIGNED can be reverted (PR #32 history). No open PRs currently target base=main.",
+  "open_prs_on_hardening_lane": [
+    {"number": 50, "title": "quarantine digest coverage", "base": "chatgpt/drive-github-hardening-20260919"},
+    {"number": 21, "title": "architectural admission attestations", "base": "chatgpt/drive-github-hardening-20260919"},
+    {"number": 12, "title": "[DRAFT] Fail-closed JETMOD/RN-UNIF status", "base": "chatgpt/drive-github-hardening-20260919"},
+    {"number": 8, "title": "Preserve 16-cell RN sector candidate", "base": "chatgpt/drive-github-hardening-20260919"},
+    {"number": 7, "title": "Review P15 finite-rank composition", "base": "chatgpt/drive-github-hardening-20260919"}
+  ],
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "goal_complete": false
+}
