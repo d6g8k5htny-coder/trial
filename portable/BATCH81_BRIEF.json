@@ -1,0 +1,20 @@
+{
+  "batch": "81",
+  "generated_at_utc": "2026-09-24T02:30:00Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "bundle_refresh": false,
+  "write_state": "DENIED",
+  "path_c_landed": false,
+  "new_0017": false,
+  "obsolete_drop": false,
+  "route_now": "IDLE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "gh auth ok (cursor app); MAIN_PUSH_TOKEN unset; W1–W5 403; tip==BASE_TIP; prefer IDLE"
+}

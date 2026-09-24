@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 81 — 2026-09-24 ~02:30 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; Path C IDLE)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Creds: `gh auth` logged in as `cursor` (ghs_ app token); `MAIN_PUSH_TOKEN` / `GH_TOKEN` / `GITHUB_TOKEN` env **NOT_SET**; `gh secret list` trial → **403**.
+- `aligned_drift_watch.py --restore-if-writable` → **ALIGNED** (exit 0); tip_sha `1c6e74b…`; write probe / vectors → **DENIED** (403) all W1–W5 (incl. W3d/W3e Path C dispatch). Path B **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**; **no bundle refresh**). Obsolete 0005/0006/0007 already dropped from `apply_all` (kept on disk) → **no further drop**. Residual → **IDLE** / **no 0017**.
+- Tiny JSON: `portable/BATCH81_BRIEF.json`. Snapshot refresh only.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s**. `goal_complete=false`.
+
+**Land note:** Path C on `d6g8k5htny-coder/main` still 403. Owner assets remain at release `batch80-path-c-bundle`. Direct push to trial `main` for this idle brief.
+
 ### Batch 80 — 2026-09-24 ~02:23 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; GitHub Release `batch80-path-c-bundle`)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
