@@ -1,6 +1,6 @@
 {
   "batch": "237",
-  "generated_at_utc": "2026-09-24T19:25:00Z",
+  "generated_at_utc": "2026-09-24T19:28:40Z",
   "status": "waiting_ci_69_70",
   "goal_complete": false,
   "lemma_closed": false,
@@ -20,6 +20,7 @@
   "tip_moved": false,
   "path_c_on_tip": true,
   "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
+  "path_c_0018_landed": false,
   "defect_shipped": "pr70_REPOSITORY_TOP_LEVEL_attestations_fix_76f78c5+portable_0018 (merge pending CI)",
   "main_pr_pending": [
     70,
@@ -47,6 +48,23 @@
   "patch_0018_ready": true,
   "apply_all_check_tip": "1200501",
   "apply_all_check": "OK",
+  "apply_all_check_note": "0001-0017 already-applied; 0018 skipped (attestations/ absent pre-#70)",
+  "pr69": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "ci": "PENDING",
+    "head": "e2d166e"
+  },
+  "pr70": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "ci": "PENDING",
+    "head": "76f78c5"
+  },
+  "merged": false,
   "trial_branch": "cursor/batch237-eng-finish-c88a",
-  "trial_pr_merge_sha": "4cbc2a10fe0d6539f0b5dce4c7a1efebfccb4c5d"
+  "trial_pr_merge_sha": "4cbc2a10fe0d6539f0b5dce4c7a1efebfccb4c5d",
+  "note": "Batch 237 finish: PRs #69/#70 still CI PENDING (workspace-landing unit tests in progress). Parallel: apply_all --check OK @1200501; tip ALIGNED; lemma_closed=false; write WRITABLE via device token (never printed). No fake merges."
 }

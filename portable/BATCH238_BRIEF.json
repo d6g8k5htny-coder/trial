@@ -1,0 +1,19 @@
+{
+  "batch": "238",
+  "generated_at_utc": "2026-09-24T19:28:40Z",
+  "status": "waiting_ci_69_70_from_237",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "1200501",
+  "base_tip": "1200501",
+  "aligned": true,
+  "write": "WRITABLE",
+  "merged": false,
+  "path_c_0018_landed": false,
+  "pr69": "PENDING",
+  "pr70": "PENDING",
+  "next_focus": "on_ci_green_merge_69_70_then_refresh_tip_bundle_land_0018_docs",
+  "note": "Batch 238 brief seeded while waiting on main #69/#70 CI. Do not claim merges."
+}

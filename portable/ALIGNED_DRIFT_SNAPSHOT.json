@@ -2,14 +2,14 @@
   "complexity_markers_present": [],
   "default_branch": "main",
   "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
-  "generated_at_utc": "2026-09-24T18:51:38Z",
+  "generated_at_utc": "2026-09-24T19:28:40Z",
   "goal_complete": false,
   "lemma_closed": false,
-  "path_b_ready": null,
+  "path_b_ready": true,
   "preferred_restore_route": {
     "action": "idle_path_c_done_then_drift_watch",
     "alternate_restore": "Path_A",
-    "note": "Path C DONE on hardening (PR #64). Batch 236 tip-refresh to 1200501 (PR #66). Both tips ALIGNED; sibling AGENTS fixed. Prefer tip-sync + aligned_drift_watch. Never flip lemma_closed.",
+    "note": "Path C DONE on hardening (PR #64 @ 93a4ecd). Prefer tip-sync + aligned_drift_watch; do not re-apply Path C. If tip drifts, restore via Path B first. Never flip lemma_closed.",
     "path_c_landed": true,
     "prefer": "tip_sync_drift_watch",
     "restore_if_drift": "Path_B"
@@ -25,7 +25,5 @@
   "state": "ALIGNED",
   "threat_note": "ALIGNED can be reverted (PR #32 history). Keep Path B restore ready.",
   "write_state": "WRITABLE",
-  "hardening_tip_sha": "120050136f5586b9de3c0f054119b978c92f8a49",
-  "hardening_aligned": true,
-  "default_aligned": true
+  "hardening_tip_sha": "120050136f5586b9de3c0f054119b978c92f8a49"
 }
