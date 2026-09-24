@@ -1,6 +1,6 @@
 {
   "batch": "168",
-  "generated_at_utc": "2026-09-24T10:06:03Z",
+  "generated_at_utc": "2026-09-24T10:06:33Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "prior_device_code": "905D-02F4",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left==0 / expired",
-  "seconds_left": 758,
+  "seconds_left": 729,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -74,13 +74,13 @@
   "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth renewed 905D-02F4\u2192831C-CB1C; oneshot dry-run OK; release batch168-path-c-bundle; CI fix; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "preferred_auth_interval_s": 1800,
-  "auth_timers_created": false,
-  "auth_timer_note": "no duplicate auth timer at brief write; preferred_auth_interval_s=1800 for parent re-arm",
+  "auth_timers_created": true,
+  "auth_timer_note": "created gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800; no dups",
   "w3f_false_positive": true,
   "path_b_ready": false,
   "release": "batch168-path-c-bundle",
   "ci_status": "green",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "f9754807b64d7fe28a6ad1b1b5c70ca5164df6a5"
+  "trial_main_sha": "e187a18c1c883b5ab62de108869c6113c20aa3e8"
 }
