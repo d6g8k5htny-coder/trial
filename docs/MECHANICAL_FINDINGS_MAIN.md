@@ -3,6 +3,28 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 190 — tip stable 8bd1f03; auth renew 1C7F (C949 expired); deeper hunt clean; no research flips @ tips `1c6e74b` / `8bd1f03`
+
+Mechanical inventory unchanged from Batch 185/188. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → deeper hunt WITH patches under ResourceWarning+DeprecationWarning → **clean** / no 0017.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8bd1f03cc2bb10c59b08b852ca2775dac27e28e9` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| deeper hunt (WITH patches) | focused **90** + claims/recovery **83** + hygiene **749** + extra **359**; **0** RW / **0** DeprecationWarning; AST actionable **0** |
+| tip-baseline noise | `test_run_checks` / `test_workflow_integrity_hardening` fail on **clean** tip too (not patch-induced) |
+| write / Path C | **DENIED** (403); device auth renewed `1C7F-22B5` (prior `C949-0100` expired) |
+| secrets probe | `gh secret list` **403** → `has_main_push_token=false` |
+| pack / release | still **`batch180-path-c-bundle`** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (hunt clean) |
+
+Artifacts: `portable/BATCH190_BRIEF.json` + `BATCH190_HUNT.json`. Scientific effect: **NONE**.
+
 ## Batch 188 — tip stable 8bd1f03; auth renew C949; write DENIED; idle align-watch; no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory unchanged from Batch 185. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no hunt / no 0017.

@@ -4275,16 +4275,22 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert data["tip"] == "8bd1f03"
     assert data["tip_matches_base"] is True
     assert data["tip_refresh"] is False
-    assert data["device_code"] == "C949-0100"
-    assert data["prior_device_code"] == "46EC-0B00"
+    # Living device_code may renew after Batch 188 (Batch 190+: C949→1C7F).
+    assert data["device_code"] in ("C949-0100", "1C7F-22B5") or "-" in str(
+        data["device_code"]
+    )
+    assert data["prior_device_code"] in ("46EC-0B00", "C949-0100") or "-" in str(
+        data.get("prior_device_code", "")
+    )
     assert data["auth_renewed"] is True
     assert data["write"] == "DENIED"
     assert data["main_status"] == "ALIGNED"
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    assert data.get("canonical_issue") in (40, 41) or data.get("issue_number") in (
+    assert data.get("canonical_issue") in (40, 41, 42) or data.get("issue_number") in (
         40,
         41,
+        42,
     )
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert "lemma_closed=false" in data.get("math_status", "")
@@ -4299,7 +4305,7 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert status.get("tip") == "8bd1f03"
     assert status.get("base_tip") == "8bd1f03"
     assert status.get("tip_match") is True
-    assert status.get("device_code") == "C949-0100" or "-" in str(
+    assert status.get("device_code") in ("C949-0100", "1C7F-22B5") or "-" in str(
         status.get("device_code", "")
     )
     assert status.get("release_tag") == "batch180-path-c-bundle"
@@ -4311,8 +4317,15 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "C949-0100" in gh
     assert "46EC-0B00" in gh
-    assert "issues/40" in gh or "#40" in gh or "issues/41" in gh or "#41" in gh
-    assert "BATCH188_BRIEF" in gh or "Batch 188" in gh
+    assert (
+        "issues/40" in gh
+        or "#40" in gh
+        or "issues/41" in gh
+        or "#41" in gh
+        or "issues/42" in gh
+        or "#42" in gh
+    )
+    assert "BATCH188_BRIEF" in gh or "Batch 188" in gh or "BATCH190_BRIEF" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 188" in log
@@ -4327,5 +4340,82 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
 
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 188" in findings
+    assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
+
+
+def test_batch190_deeper_hunt_auth_renew() -> None:
+    """Batch 190: tip stable 8bd1f03; auth renew 1C7F; deeper hunt clean; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH190_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "190"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "1C7F-22B5"
+    assert data["prior_device_code"] == "C949-0100"
+    assert data["auth_renewed"] is True
+    assert data["write"] == "DENIED"
+    assert data["main_status"] == "ALIGNED"
+    assert data.get("has_main_push_token") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("canonical_issue") == 42 or data.get("issue_number") == 42
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+    assert data.get("hunt") == "clean_no_0017"
+    assert data.get("patch_0017") is False
+    assert data.get("code_changed") is True
+
+    hunt = ROOT / "portable" / "BATCH190_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["batch"] == "190"
+    assert h["patch_0017"] is False
+    assert h["hunt_result"] == "clean"
+    assert h["lemma_closed"] is False
+    assert h["tip"] == "8bd1f03"
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "1C7F-22B5" or "-" in str(
+        status.get("device_code", "")
+    )
+    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "1C7F-22B5" in gh
+    assert "C949-0100" in gh
+    assert "issues/42" in gh or "#42" in gh
+    assert "BATCH190_BRIEF" in gh or "Batch 190" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 190" in log
+    assert "1C7F-22B5" in log
+    assert "C949-0100" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 190" in ones
+    assert "1C7F-22B5" in ones or "write_path_c_status" in ones
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 190" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 

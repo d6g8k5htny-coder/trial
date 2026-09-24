@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 190 — 2026-09-24 ~12:20–12:34 UTC (PERMANENT window; tip stable 8bd1f03; auth C949 expired→1C7F; deeper hunt clean no 0017; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`1C7F-22B5`). `lemma_closed=false`.
+- Device auth `C949-0100` → **expired** mid-batch → **renewed** `1C7F-22B5`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token. `gh secret list -R trial` → **403** → `has_main_push_token=false` (no dispatch land). Daemon `when-writable-land` up.
+- **Deeper hunt** tip `8bd1f03` WITH patches under `-W error::ResourceWarning` + `-W error::DeprecationWarning`: focused **90**/0; claims+recovery **83**/0; hygiene core **749**/0; extra slices **359**/0; tools `--help` 48/0 RW+Dep; AST bare-except/bare-open actionable **0**. Tip-baseline noise (`test_run_checks` / `test_workflow_integrity_hardening` fail on clean tip too) → **not** new patch defects. **No 0017**. Artifacts: `portable/BATCH190_HUNT.json`.
+- Research untouched (`lemma_closed=false`). Intent: `test_batch190_deeper_hunt_auth_renew`. Canonical issue [#42](https://github.com/d6g8k5htny-coder/trial/issues/42). Tiny JSON: `portable/BATCH190_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `1C7F-22B5` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #42.
+
 ### Batch 188 — 2026-09-24 ~12:09–12:13 UTC (PERMANENT window; tip stable 8bd1f03; auth renew 46EC→C949; write DENIED; idle align-watch; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
