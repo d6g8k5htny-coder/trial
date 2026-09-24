@@ -1,0 +1,74 @@
+{
+  "batch": "217",
+  "generated_at_utc": "2026-09-24T14:52:41Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "main_status": "ALIGNED",
+  "default_tip": "1c6e74b",
+  "write": "DENIED",
+  "write_vector": "none",
+  "write_vectors_tried": {
+    "W1_git_refs": "DENIED_403",
+    "W2_contents_put": "DENIED_403",
+    "W3a_workflow_dispatch_option_b": "DENIED_403",
+    "W3d_workflow_dispatch_path_c": "DENIED_403",
+    "W3f_repository_dispatch_apply": "ACCEPTED_204_but_MAIN_PUSH_TOKEN_secret_empty",
+    "git_push": "DENIED_403_cursor_bot",
+    "owner_open_path_c_pr": "DENIED_probe",
+    "owner_land_path_c_from_bundle": "DENIED_probe",
+    "when_writable_land_once": "DENIED_NO_TOKEN",
+    "install_has_main": false,
+    "trial_refs_writable": true
+  },
+  "install_has_main": false,
+  "path_b_landed": false,
+  "path_b_needed": false,
+  "path_c_landed": false,
+  "path_c_pr_url": null,
+  "path_c_sha": null,
+  "tip": "b89448d",
+  "tip_full": "b89448da439d963a404212ae024534169aa22297",
+  "tip_matches_base": true,
+  "device_auth": "pending",
+  "device_code": "BFEF-C1D9",
+  "prior_device_code": "5AEC-4784",
+  "auth_renewed": true,
+  "seconds_left": 605.7,
+  "has_token": false,
+  "path_c_blocked_now": "NO_TOKEN",
+  "flipped_anything": false,
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "assert_path_c_ready": "OK",
+  "release": "batch207-path-c-bundle",
+  "apply_stack": "0001-0004+0008-0017",
+  "dylan_claimed_write_unlocked": true,
+  "actual_write_unlocked": false,
+  "dispatch_apply_runs": [
+    {
+      "id": 36015106778,
+      "conclusion": "failure",
+      "reason": "MAIN_PUSH_TOKEN empty"
+    },
+    {
+      "id": 36015148506,
+      "conclusion": "failure",
+      "reason": "MAIN_PUSH_TOKEN empty"
+    },
+    {
+      "id": 36015148103,
+      "conclusion": "failure",
+      "reason": "MAIN_PUSH_TOKEN empty"
+    },
+    {
+      "id": 36015109021,
+      "conclusion": "success",
+      "reason": "likely dry_run=true"
+    }
+  ],
+  "note": "Dylan claimed WRITE UNLOCKED; aggressive probe still DENIED. ALIGNED@1c6e74b so Path B skipped. Path C ready @ b89448d (assert OK, lemma_closed=false, OPEN_HOLD). Auth renewed BFEF-C1D9. repository_dispatch --apply fires but trial secret MAIN_PUSH_TOKEN empty. Research untouched.",
+  "preferred_auth_interval_s": 1800,
+  "readme_link_only": true,
+  "trial_branch": "cursor/batch217-path-c-denied-5ca0"
+}
