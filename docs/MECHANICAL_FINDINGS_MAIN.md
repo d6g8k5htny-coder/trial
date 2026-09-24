@@ -3,6 +3,27 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 207 — tip stable b89448d; auth renew E577 (1DAB &lt;90s); ship 0017 pinned_sources RW; pack batch207-path-c-bundle; no research flips @ tips `1c6e74b` / `b89448d`
+
+Mechanical inventory unchanged from Batch 185/202 (research AUDIT counts). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip SHA refresh; **force** bundle rebuild for new **0017**.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `b89448da439d963a404212ae024534169aa22297` | **HAS_PACKET** (== BASE_TIP) | OPEN inventory (Batch 165/185/207 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth renewed `E577-EEF9` (prior `1DAB-B7F7` &lt;90s; prior prior `5160-F839`) |
+| hunt | `tests/test_pinned_sources.py` 3× `open().read()` ResourceWarning → **0017** |
+| pack / release | **`batch207-path-c-bundle`** (force refresh @ b89448d + 0017; applied `71d50b1`) |
+| research counts | premises 13 / lemmas 1 / prizes 3 / obligations 2 / claims 26 / OQ 16 — **unchanged** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **yes** — pinned_sources close file handles |
+
+Artifacts: `portable/BATCH207_BRIEF.json`, `portable/BATCH207_HUNT.json`, `portable/BATCH207_RESEARCH_COUNTS.json`. Scientific effect: **NONE**.
+
 ## Batch 202 — tip refresh 8bd1f03→b89448d; auth renew 5160 (6A29 &lt;90s); CI sanity + pack batch202-path-c-bundle; no research flips @ tips `1c6e74b` / `b89448d`
 
 Mechanical inventory unchanged from Batch 199. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip moved (PR #51) → tip refresh + bundle rebuild. CI Batch 199 `903ca64` red (release_tag supersession) → intent living helpers.

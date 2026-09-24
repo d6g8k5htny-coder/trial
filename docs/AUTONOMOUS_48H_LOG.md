@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 207 — 2026-09-24 ~13:54–14:05 UTC (PERMANENT window; tip stable b89448d; auth 1DAB→E577; ship 0017; pack batch207-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
+- Tip **`b89448d` == BASE_TIP** → no tip SHA move; **force** `refresh_path_c_bundle.sh` after shipping **0017**.
+- AUTH: poll `1DAB-B7F7` pending/slow_down → renew `E577-EEF9` (seconds_left&lt;90). Never print tokens.
+- E2E: `assert_path_c_ready` OK; `.bundle` fetch+merge dry OK; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused **90**/0 + claims/recovery **83**/0.
+- RESEARCH AUDIT @ `b89448d`: OPEN_HOLD; counts unchanged (13/1/3/2/26/16); **flipped nothing**.
+- **Hunt:** `tests/test_pinned_sources.py` ResourceWarning (3 sites) WITH patches → **0017-pinned-sources-close-file-handles.patch**; stack now 0001–0004+0008–0017; applied HEAD `71d50b1`.
+- Pack+release **`batch207-path-c-bundle`**. Timers: auth **1800s**, permanent **10800s**. `goal_complete=false`.
+
 ### Batch 202 — 2026-09-24 ~13:27–13:35 UTC (PERMANENT window; CI sanity fix; tip refresh 8bd1f03→b89448d; auth renew 6A29→5160; pack+release batch202-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

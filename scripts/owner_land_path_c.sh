@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0016) onto the
+# Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0017) onto the
 # working tip of d6g8k5htny-coder/main, then push a branch / open a PR.
 #
 # === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
 # Prerequisites (local machine / Codespace — NOT the trial Cloud Agent token):
 #   1. git, python3, gh  (gh auth login with Contents:Write + PullRequests:Write on main)
-#   2. Download latest Path C release on trial (batch202-path-c-bundle or newer; prior batch199-path-c-bundle):
-#        gh release download batch202-path-c-bundle -R d6g8k5htny-coder/trial \
+#   2. Download latest Path C release on trial (batch207-path-c-bundle or newer; prior batch199-path-c-bundle):
+#        gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial \
 #          -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
 #   3. Extract and land in ONE command:
 #        mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
@@ -109,15 +109,15 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
                 With --from-bundle: tip-drift + local git am of path-c-applied-bundle
                 (no push); exit 0/1/2.
                 Exit codes match path_c_dry_run: 0=ready, 1=not ready, 2=transport.
-  (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
+  (default)     Clone tip, apply_all 0001–0004 + 0008–0017, push branch, open PR.
   --from-bundle Prefer portable/path-c-applied-bundle/path-c-on-hardening.bundle
                 (git fetch + ff-merge) when present; else .patch via git am.
                 Preferred one-shot after extracting the release tarball
-                (batch202-path-c-bundle or newer; prior batch199-path-c-bundle / batch180-path-c-bundle / batch179-path-c-bundle / batch169-path-c-bundle / batch142-path-c-bundle / batch142+ had patch-only).
+                (batch207-path-c-bundle or newer; prior batch199-path-c-bundle / batch180-path-c-bundle / batch179-path-c-bundle / batch169-path-c-bundle / batch142-path-c-bundle / batch142+ had patch-only).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 ONE-SHOT from release tarball (owner machine with write on main):
-  gh release download batch202-path-c-bundle -R d6g8k5htny-coder/trial \
+  gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial \
     -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
@@ -178,7 +178,7 @@ if [[ "$FROM_BUNDLE" -eq 1 ]]; then
   elif [[ -f "$BUNDLE_PATCH" ]]; then
     USE_GIT_BUNDLE=0
   else
-    die "missing $BUNDLE_GIT and $BUNDLE_PATCH (need path-c-applied-bundle from batch202-path-c-bundle or newer; prior batch199-path-c-bundle)"
+    die "missing $BUNDLE_GIT and $BUNDLE_PATCH (need path-c-applied-bundle from batch207-path-c-bundle or newer; prior batch199-path-c-bundle)"
   fi
 fi
 
@@ -511,7 +511,7 @@ elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
   fi
   apply_from_bundle_artifact
 else
-  echo "--- apply_all 0001–0004 + 0008–0016 ---"
+  echo "--- apply_all 0001–0004 + 0008–0017 ---"
   if ! "$APPLY_ALL"; then
     die "apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches. Do not PATH_C_BASE=main on post-#41 tip; PATH_C_REBASE_ONTO_MAIN usually CONFLICTS — see --dry-run."
   fi
@@ -545,7 +545,7 @@ if git diff --quiet && git diff --cached --quiet; then
   echo "No uncommitted patch diffs (already applied upstream?)."
 else
   git add -A
-  git commit -m "fix: portable engineering patches 0001-0004+0008-0016 (Path C)
+  git commit -m "fix: portable engineering patches 0001-0004+0008-0017 (Path C)
 
 carriers pycache ignore, math_console paths, gaussian parametrize,
 git fixture timeout, close-file-handles through receipts/bridge tests.
@@ -582,11 +582,11 @@ else
   PR_BASE="main"
 fi
 
-TITLE="fix: portable engineering patches 0001-0004+0008-0016 (Path C)"
+TITLE="fix: portable engineering patches 0001-0004+0008-0017 (Path C)"
 BODY="$(cat <<EOF
 Path C via \`scripts/owner_land_path_c.sh\`.
 
-Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0016**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
+Applies trial \`portable/patches/apply_all.sh\` (**0001–0004 + 0008–0017**) onto \`${BASE_REF}\`$( [[ "$REBASE_ONTO_MAIN" == "1" ]] && echo " (rebased onto main first)" ).
 
 Scientific effect: **NONE**. \`lemma_closed\` stays false. Green checks ≠ obligation discharge.
 

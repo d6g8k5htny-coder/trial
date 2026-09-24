@@ -12,7 +12,7 @@ Owner sandbox for Dylan Roy. **Not** the research repository.
 Engineering only — `lemma_closed` stays **false**. This README does **not** embed a perishable device user code.
 
 1. Open **https://github.com/login/device** → enter the **current** user code from [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md) (single source of truth; see that file for the live code)
-2. Or: download release **`batch202-path-c-bundle`** (or latest `*-path-c-bundle`; prior `batch199-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
+2. Or: download release **`batch207-path-c-bundle`** (or latest `*-path-c-bundle`; prior `batch199-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
 3. Or: Cursor App → add `d6g8k5htny-coder/main` (Read and write) → relaunch
 
 ## #1 unblock — add `main` to Cursor App repo access
@@ -40,7 +40,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `5f352a2` (post-#44; **no 0017**; `owner_land_path_c --dry-run` → keep hardening; Batch 69 Actions: `land-path-c-on-main.yml` dry-run default; Batch 73 CI: `land-workflows-dry-run` validates land-option-b + land-path-c **without** `MAIN_PUSH_TOKEN`; Batch 68 `path_c_rebase_helper.sh --dry-run` for first-stop ours/theirs; Batch 70 `audit_research_stack_open.py` lists OPEN premises/lemmas/prizes without flipping status). Permanent window until owner intervenes. Trial write to `main` still **403**.
+Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `b89448d` (post-#44; **no 0017**; `owner_land_path_c --dry-run` → keep hardening; Batch 69 Actions: `land-path-c-on-main.yml` dry-run default; Batch 73 CI: `land-workflows-dry-run` validates land-option-b + land-path-c **without** `MAIN_PUSH_TOKEN`; Batch 68 `path_c_rebase_helper.sh --dry-run` for first-stop ours/theirs; Batch 70 `audit_research_stack_open.py` lists OPEN premises/lemmas/prizes without flipping status). Permanent window until owner intervenes. Trial write to `main` still **403**.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
@@ -52,7 +52,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`portable/LAND.md`](portable/LAND.md) — Path A/B/C one-page land instructions (needs write access to `main`)
 - [`portable/OWNER_ONE_LINERS.md`](portable/OWNER_ONE_LINERS.md) — copy-paste Path A (`gh pr ready/merge 2`), Path B (Actions + token), Path C (`apply_all`)
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
-- [`portable/patches/`](portable/patches/) — engineering patches 0001–0004 + 0008–0016 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `5f352a2`; tip-cut 0005/0006/0007 dropped; post-#41 topology guard in `apply_all.sh`)
+- [`portable/patches/`](portable/patches/) — engineering patches 0001–0004 + 0008–0017 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `b89448d`; tip-cut 0005/0006/0007 dropped; post-#41 topology guard in `apply_all.sh`)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 0 while default tip is ALIGNED)
 - [`scripts/audit_research_stack_open.py`](scripts/audit_research_stack_open.py) — read-only OPEN premises/lemmas/prizes/claims inventory (never flips status)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON (window + Path C tip + post-#41 critical_path)

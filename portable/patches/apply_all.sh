@@ -10,7 +10,7 @@
 #
 # Patches are checked/applied in order. After main PR #27 merged (batch 48),
 # tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
-# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0016.
+# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0017.
 #
 # Post-#41 tip topology (Path C):
 #   - default main @ 1c6e74b (PR #41) is ALIGNED research *landing* but NOT
@@ -81,6 +81,7 @@ PATCHES=(
   "$ROOT/0014-collision-close-file-handles.patch"
   "$ROOT/0015-frozen-drive-index-close-file-handles.patch"
   "$ROOT/0016-receipts-bridge-close-file-handles.patch"
+  "$ROOT/0017-pinned-sources-close-file-handles.patch"
 )
 
 apply_series() {
@@ -118,3 +119,4 @@ echo "  # math_status_check 0 RW after 0011; inventable negatives 0 after 0012; 
 echo "  # collision_proposal_check + tests/test_collision_proposal.py 0 RW after 0014"
 echo "  # tests/test_frozen_check.py + test_drive_index_overlay.py 0 RW after 0015"
 echo "  # tests/test_receipts.py + test_bridge.py 0 RW after 0016"
+echo "  # tests/test_pinned_sources.py 0 RW after 0017"

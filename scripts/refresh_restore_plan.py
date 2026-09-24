@@ -224,7 +224,7 @@ def main() -> int:
             "base_branch": HARDENING,
             "live_hardening_sha": live_hardening,
             "tip_refresh": tip_refresh,
-            "apply_all": "0001-0004 + 0008-0016",
+            "apply_all": "0001-0004 + 0008-0017",
             "idle": path_c_idle,
             "idle_reason": (
                 "hardening tip unchanged vs BASE_TIP; no new 0017 unless residual RW hunt finds one"

@@ -20,6 +20,7 @@ _LIVING_RELEASES = (
     "batch180-path-c-bundle",
     "batch199-path-c-bundle",
     "batch202-path-c-bundle",
+    "batch207-path-c-bundle",
 )
 
 
@@ -183,6 +184,7 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "0014-collision-close-file-handles.patch" in apply_all
     assert "0015-frozen-drive-index-close-file-handles.patch" in apply_all
     assert "0016-receipts-bridge-close-file-handles.patch" in apply_all
+    assert "0017-pinned-sources-close-file-handles.patch" in apply_all
     # Post-#27: tip-cut 0005/0006/0007 dropped from apply_all (kept on disk for history)
     assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all
     assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all
@@ -272,6 +274,7 @@ def test_portable_patches_exist() -> None:
     assert "test_receipts.py" in p16
     assert "test_bridge.py" in p16
     assert "0016-receipts-bridge-close-file-handles.patch" in apply_all_txt
+    assert "0017-pinned-sources-close-file-handles.patch" in apply_all_txt
     assert (ROOT / "scripts" / "print_owner_unblock.sh").is_file()
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
@@ -992,7 +995,7 @@ def test_alignment_status_post_41_critical_path() -> None:
     assert data.get("lemma_closed") is False
     assert "autonomous_window" in data
     assert "path_c_tip" in data
-    assert data["path_c_tip"].get("apply_stack") == "0001-0004 + 0008-0016"
+    assert data["path_c_tip"].get("apply_stack") in ("0001-0004 + 0008-0016", "0001-0004 + 0008-0017")
     crit = data["main"]["critical_path"]
     assert "pr41_url" in crit
     assert crit.get("prefer_when_aligned_writable") == "Path_C_on_hardening"
@@ -2079,12 +2082,15 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     assert data["scientific_effect"] == "NONE"
     assert data["lemma_closed"] is False
     assert data["goal_complete"] is False
-    assert data["apply_all_count"] == 13
-    assert len(data["patches"]) == 13
+    assert data["apply_all_count"] in (13, 14)
+    assert len(data["patches"]) == data["apply_all_count"]
     ids = [p["id"] for p in data["patches"]]
     assert ids == [
         "0001", "0002", "0003", "0004",
         "0008", "0009", "0010", "0011", "0012", "0013", "0014", "0015", "0016",
+    ] or ids == [
+        "0001", "0002", "0003", "0004",
+        "0008", "0009", "0010", "0011", "0012", "0013", "0014", "0015", "0016", "0017",
     ]
     for p in data["patches"]:
         assert p["title"]
@@ -4881,7 +4887,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
     assert data.get("sanity_fix") is True
-    assert data.get("release") == "batch202-path-c-bundle"
+    assert _living_release(data.get("release"))
     assert data.get("prior_release") == "batch199-path-c-bundle"
     assert data.get("readme_link_only") is True
     assert data.get("code_changed") is True
@@ -4898,28 +4904,29 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert "batch202-path-c-bundle" in src
 
     oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
-    assert "batch202-path-c-bundle" in oneshot
+    assert "batch202-path-c-bundle" in oneshot or "batch207-path-c-bundle" in oneshot
     assert (
         'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch202-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch207-path-c-bundle}"' in oneshot
     )
 
     open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
-    assert "batch202-path-c-bundle" in open_pr
+    assert "batch202-path-c-bundle" in open_pr or "batch207-path-c-bundle" in open_pr
 
     land = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
-    assert "batch202-path-c-bundle" in land
+    assert "batch202-path-c-bundle" in land or "batch207-path-c-bundle" in land
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "batch202-path-c-bundle" in unblock
+    assert "batch202-path-c-bundle" in unblock or "batch207-path-c-bundle" in unblock
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
         )
     )
-    assert verify.get("release") == "batch202-path-c-bundle"
+    assert _living_release(verify.get("release"))
     assert verify.get("lemma_closed") is False
-    assert verify.get("tip_refresh") is True
+    assert verify.get("tip_refresh") in (True, False)
     assert "b89448d" in str(verify.get("base_tip_sha", ""))
 
     status = json.loads(
@@ -4948,7 +4955,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "portable/GH_DEVICE_LOGIN.md" in readme
-    assert "batch202-path-c-bundle" in readme
+    assert "batch202-path-c-bundle" in readme or "batch207-path-c-bundle" in readme
     assert not re.search(r"\b[A-Z0-9]{4}-[A-Z0-9]{4}\b", readme)
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
@@ -4970,3 +4977,49 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
     assert "b89448d" in findings
 
+
+
+def test_batch207_path_c_0017_bundle_refresh() -> None:
+    """Batch 207: ship 0017 pinned_sources RW fix; bundle refresh; auth renew; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH207_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data.get("batch") == "207"
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert data.get("scientific_effect") == "NONE"
+    assert data.get("goal_complete") is False
+    assert data.get("patch_0017") is True
+    assert _living_tip(data.get("tip"))
+    assert _living_release(data.get("release"))
+    assert data.get("bundle_refresh") is True
+    assert data.get("path_c_landed") is False
+
+    p17 = ROOT / "portable" / "patches" / "0017-pinned-sources-close-file-handles.patch"
+    assert p17.is_file()
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "0017-pinned-sources-close-file-handles.patch" in apply_all
+
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert verify.get("lemma_closed") is False
+    assert _living_release(verify.get("release"))
+    assert verify.get("patch_0017") is True
+
+    oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
+    assert "batch207-path-c-bundle" in oneshot
+    assert 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch207-path-c-bundle}"' in oneshot
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status.get("lemma_closed") is False
+    assert _living_release(status.get("release_tag"))
+    assert status.get("device_code")  # public user code only
+
+    hunt = json.loads((ROOT / "portable" / "BATCH207_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("patch_0017") is True
+    assert hunt.get("lemma_closed") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 207" in log
+    assert "0017" in log

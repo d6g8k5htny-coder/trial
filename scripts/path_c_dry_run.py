@@ -29,7 +29,7 @@ from pathlib import Path
 
 REPO = "d6g8k5htny-coder/main"
 HARDENING = "chatgpt/drive-github-hardening-20260919"
-APPLY_STACK = "0001-0004 + 0008-0016"
+APPLY_STACK = "0001-0004 + 0008-0017"
 _SHA40 = re.compile(r"(?i)\b([0-9a-f]{40})\b")
 _SHA_SHORT = re.compile(r"(?i)(?:^|[=:\s])([0-9a-f]{7,39})(?:\b|$)")
 

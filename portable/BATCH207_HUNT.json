@@ -1,0 +1,33 @@
+{
+  "batch": "207",
+  "generated_at_utc": "2026-09-24T14:01:17Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "tip": "b89448d",
+  "tip_full": "b89448da439d963a404212ae024534169aa22297",
+  "prior_tip": "b89448d",
+  "tip_refresh": false,
+  "apply_stack": "0001-0004+0008-0017",
+  "hunt_result": "defect_found_0017",
+  "patch_0017": true,
+  "patch_0017_file": "0017-pinned-sources-close-file-handles.patch",
+  "defect": "tests/test_pinned_sources.py open().read() ResourceWarning (3 sites)",
+  "bare_except_pass_actionable": 0,
+  "bare_open_actionable": 3,
+  "bare_open_fixed": 3,
+  "focused_passed": 90,
+  "focused_resource_warnings": 0,
+  "claims_recovery_passed": 83,
+  "claims_recovery_resource_warnings": 0,
+  "pinned_sources_passed": 19,
+  "pinned_sources_resource_warnings_before": 3,
+  "pinned_sources_resource_warnings_after": 0,
+  "tools_help_checked": 50,
+  "tools_help_resource_warnings": 0,
+  "tools_help_timeouts": [
+    "parallel_math_check.py"
+  ],
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "note": "Hunt WITH patches on tip b89448d: focused+claims/recovery clean; located unclosed open() in tests/test_pinned_sources.py emitting ResourceWarning \u2192 shipped 0017; tools --help 0 RW (1 timeout skip)"
+}
