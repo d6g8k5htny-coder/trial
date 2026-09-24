@@ -32,7 +32,7 @@
   "preferred_auth_interval_s": 1800,
   "release": "batch207-path-c-bundle",
   "code_changed": false,
-  "trial_landed": false,
+  "trial_landed": true,
   "status_snapshot": {
     "tip_match": true,
     "write_state": "DENIED",
@@ -40,5 +40,6 @@
     "device_code": "5AEC-4784",
     "tip": "b89448d",
     "seconds_left": 866.5
-  }
+  },
+  "trial_main_sha": "3cfe9456a01673e2164cc9e2558a27e27116ce2c"
 }
