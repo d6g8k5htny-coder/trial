@@ -4,15 +4,15 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T05:35:24Z |
+| Started (UTC) | 2026-09-24T05:49:16Z |
 | Verification URL | https://github.com/login/device |
-| User code | `9422-24BA` |
+| User code | `FCD3-6B41` |
 | Expires | ~15 minutes from start |
 
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **9422-24BA**
+2. Enter code **FCD3-6B41**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched).
