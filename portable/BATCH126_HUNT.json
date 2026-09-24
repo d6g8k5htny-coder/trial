@@ -1,0 +1,17 @@
+{
+  "batch": "126",
+  "generated_at_utc": "2026-09-24T06:10:00Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "tip": "c82c9357",
+  "apply_stack": "0001-0004+0008-0016",
+  "hunt_result": "clean",
+  "patch_0017": false,
+  "math_status": "problems=0 lemma_closed=false",
+  "pytest_collection": 3209,
+  "pytest_passed": 3065,
+  "resource_warning_count": 0,
+  "tools_help_rw": 0,
+  "note": "disposable clone @ c82c9357 after apply_all; full tests -W default::ResourceWarning 0 RW; tools --help 0 RW; frozen carrier blobs only bare-open (not actionable); no 0017"
+}

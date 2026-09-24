@@ -21,15 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 126 — 2026-09-24 ~05:58 UTC (PERMANENT window; auth pulse; scientific effect NONE; flipped nothing)
+### Batch 126 — 2026-09-24 ~06:10 UTC (PERMANENT window; auth renew + RW hunt clean; scientific effect NONE; flipped nothing)
 
-- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈368`; keep code (still valid); no Path C land (no user token yet).
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **pending** (code `91D3-D72C`); prior `FCD3-6B41` **expired** → **renewed**; poller restarted (`gh-device-login` tmux); no Path C land yet (no user token).
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; hardening tip **`c82c9357` == BASE_TIP** (no bundle rebuild).
+- **RW hunt @ c82c9357** after `apply_all` 0001–0004+0008–0016: `math_status_check` problems=0 / lemma_closed=false; pytest collection **3209** / **3065 passed** / **0 ResourceWarning**; tools `--help` **0 RW** → **clean / no 0017**.
 - `probe_main_write` → **DENIED** / `install_has_main=false` (App sees trial only). Path C waits on user device token.
 - Daemon `when-writable-land` **up** (tmux). Timers re-armed: `gh-dylan-device-auth-check` 300s; `permanent-autonomous-align-watch` 10800s.
-- Tiny JSON: `portable/BATCH126_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+- Tiny JSON: `portable/BATCH126_BRIEF.json`, `portable/BATCH126_HUNT.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
-**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `FCD3-6B41`. On auth success → Path C with user token (ignore `install_has_main`).
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `91D3-D72C`. On auth success → Path C with user token (ignore `install_has_main`).
 
 ### Batch 125 — 2026-09-24 ~05:56 UTC (PERMANENT window; tip refresh + bundle rebuild; scientific effect NONE; flipped nothing)
 
