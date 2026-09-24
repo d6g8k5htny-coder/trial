@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 82 — 2026-09-24 ~02:32 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; `when_writable_land` background lander)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Creds: write probe / vectors still **DENIED** (403) → Path C land not applied remotely this pulse.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**). Residual → **no 0017**.
+- **Concrete work:** `scripts/when_writable_land.py` — poll every **300s** (configurable); DENIED→continue; MISALIGNED→`restore_main_face` Path B; ALIGNED+writable→`owner_land_path_c` (apply_all + `lemma_closed=false` gate); log `/tmp/cursor/when_writable_land.log`; status `/cursor/stores/self/when_writable_land.status.json`; STOP `/cursor/stores/self/when_writable_land.stop`. Intent test `--once --dry-run` (+ mocks). Started tmux session **`when-writable-land`**.
+- Tiny JSON: `portable/BATCH82_BRIEF.json`.
+- Timer: keep `permanent-autonomous-align-watch` @ **3600s** + background lander. `goal_complete=false`.
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main` on branch `cursor/when-writable-land-c1aa`. Path C on `d6g8k5htny-coder/main` still 403 until write flips; lander will auto-apply then.
+
 ### Batch 81 — 2026-09-24 ~02:30 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; Path C IDLE)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

@@ -4,9 +4,9 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 76:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE**. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
+> **Batch 82:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**. Background lander: `python3 scripts/when_writable_land.py` (tmux `when-writable-land`; poll 300s; Path C when writable+ALIGNED; Path B if MISALIGNED; STOP `/cursor/stores/self/when_writable_land.stop`). Write still 403 until token flips. See `BATCH82_BRIEF.json`.
 >
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED. Path C: BASE_TIP still `ac33581` (no tip refresh). Write still 403 → Path C not pushed. **Owner land without agent write token:** `git am portable/path-c-applied-bundle/path-c-on-hardening.patch` onto hardening @ `ac33581` (see `path-c-applied-bundle/APPLY.md`; VERIFY: problems=0 / lemma_closed=false / focused 90/0). `pack_portable.sh` ships the bundle. ALIGNED can revert (#32) — keep Path B ready via `aligned_drift_watch.py`. Open PRs targeting `base=main`: see `BATCH76_OPEN_PR_THREATS.json`. Window: `python3 scripts/check_autonomous_window.py`. Timer 3600s. See `RESTORE_PLAN_76.json` + `BATCH76_TOKEN_SEARCH.json` + `BATCH76_BRIEF.json`.
+> **Batch 76 archive:** path-c-applied-bundle for owner `git am`; BASE_TIP `ac33581`; `RESTORE_PLAN_76.json` retained.
 >
 > **Batch 74 archive:** tip refresh `5f352a2`→`ac33581` (PR #48) + Batch 73 CI fix; `RESTORE_PLAN_74.json` retained.
 >
@@ -42,6 +42,15 @@ ALIGNED drift watch (ready for instant Path B restore if tip reverts):
 ```bash
 python3 scripts/aligned_drift_watch.py                 # exit 0/1/2; writes ALIGNED_DRIFT_SNAPSHOT.json
 python3 scripts/aligned_drift_watch.py --restore-if-writable  # Path B land when MISALIGNED+writable
+```
+
+Background lander (poll write; auto Path C / Path B; Batch 82):
+
+```bash
+python3 scripts/when_writable_land.py --once --dry-run   # decide only
+python3 scripts/when_writable_land.py                    # loop 300s; tmux session when-writable-land
+# STOP: touch /cursor/stores/self/when_writable_land.stop
+# status: /cursor/stores/self/when_writable_land.status.json
 ```
 
 ## Executable owner land scripts (preferred on owner machine / Codespace)

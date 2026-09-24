@@ -68,6 +68,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
   scripts/aligned_drift_watch.py \
+  scripts/when_writable_land.py \
   scripts/validate_land_workflows.py \
   scripts/check_autonomous_window.py \
   scripts/probe_main_write.py \

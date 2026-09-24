@@ -599,6 +599,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
     assert "74c082e" in log or "PR #45" in log or "5f352a2" in log or "ac33581" in log or "PR #48" in log or "Batch 74" in log
     assert "Batch 74" in log
+    assert "Batch 81" in log or "Batch 82" in log
+    assert "when_writable_land" in log or "Batch 82" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
     assert "land-path-c-on-main" in log
@@ -1350,3 +1352,159 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "AGENTS.md" in ob
     assert "create mode 100644 AGENTS.md" in ob or "AGENTS.md" in ob
     assert (ROOT / "portable" / "main-default-branch" / "AGENTS.md").is_file()
+
+
+def test_when_writable_land_once_dry_run() -> None:
+    """Batch 82: background lander --once --dry-run never lands; decides + status JSON."""
+    import json
+    import tempfile
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    assert script.is_file()
+    src = script.read_text(encoding="utf-8")
+    assert "--once" in src and "--dry-run" in src
+    assert "owner_land_path_c" in src
+    assert "restore_main_face" in src
+    assert "lemma_closed" in src
+    assert "when_writable_land.stop" in src
+    assert "when_writable_land.status.json" in src
+    assert "300" in src  # default poll interval
+    assert "scientific_effect" in src.lower() or "Scientific effect" in src
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "when_writable_land.py" in pack
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        log_path = td_path / "when_writable_land.log"
+        status_path = td_path / "when_writable_land.status.json"
+        stop_path = td_path / "when_writable_land.stop"
+
+        # DENIED → continue (no land)
+        denied = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "DENIED",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert denied.returncode == 0, denied.stderr + denied.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["scientific_effect"] == "NONE"
+        assert status["goal_complete"] is False
+        assert status["lemma_closed"] is False
+        assert status["flipped_anything"] is False
+        assert status["dry_run"] is True
+        assert status["once"] is True
+        assert status["last"]["action"] == "continue_denied"
+        assert status["last"]["land"] is None
+        assert log_path.is_file()
+        assert "continue_denied" in log_path.read_text(encoding="utf-8")
+
+        # ALIGNED + WRITABLE dry-run → would Path C, but does not attempt land
+        aligned = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "WRITABLE",
+                "--mock-align",
+                "ALIGNED",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert aligned.returncode == 0, aligned.stderr + aligned.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["last"]["action"] == "path_c_land"
+        land = status["last"]["land"]
+        assert land is not None
+        assert land["attempted"] is False
+        assert land["skipped_reason"] == "dry_run"
+        assert "lemma_closed=false" in (land.get("gate") or "")
+
+        # MISALIGNED + WRITABLE dry-run → would Path B restore, no attempt
+        mis = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "WRITABLE",
+                "--mock-align",
+                "MISALIGNED",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert mis.returncode == 0, mis.stderr + mis.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["last"]["action"] == "path_b_restore"
+        assert status["last"]["land"]["attempted"] is False
+        assert status["lemma_closed"] is False
+
+        # STOP file → clean exit before land
+        stop_path.write_text("stop\n", encoding="utf-8")
+        stopped = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "WRITABLE",
+                "--mock-align",
+                "ALIGNED",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert stopped.returncode == 0, stopped.stderr + stopped.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["stopped"] is True
+        assert status["stop_reason"] == "stop_file"
+        assert status["goal_complete"] is False
