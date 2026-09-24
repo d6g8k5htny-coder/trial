@@ -19,7 +19,7 @@
   "device_auth": "pending",
   "auth_error": "authorization_pending",
   "has_token": false,
-  "seconds_left": 659.3,
+  "seconds_left": 633.7,
   "install_has_main": false,
   "install_has_sandbox": false,
   "install_repos": [
@@ -58,7 +58,7 @@
     "base_tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
     "device_auth": "pending",
     "device_code": "B4B5-42FE",
-    "generated_at": "2026-09-24T16:27:45Z",
+    "generated_at": "2026-09-24T16:28:11Z",
     "goal_complete": false,
     "hardening_ref": "chatgpt/drive-github-hardening-20260919",
     "has_token": false,
@@ -67,7 +67,7 @@
     "path_c_blocked_reason": "NO_TOKEN",
     "release_tag": "batch223-path-c-bundle",
     "scientific_effect": "NONE",
-    "seconds_left": 659.3,
+    "seconds_left": 633.7,
     "tip": "cbaa056",
     "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
     "tip_match": true,
@@ -77,6 +77,6 @@
     "unlock_poll_s": 300,
     "permanent_s": 10800
   },
-  "trial_main_sha": "115cc7c60a92f8461904b8f625134c21a067a6b6",
+  "trial_main_sha": "50d21b0acc98e06c2e518877135ec42c7ff89add",
   "trial_main_landed": true
 }
