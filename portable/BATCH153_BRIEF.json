@@ -37,6 +37,7 @@
     "parse_base_tip_sha hex extract in owner_open_path_c_pr.sh / owner_land_path_c.sh / path_c_dry_run.py (reject awk $NF / trailing-comment → tip)",
     "owner_land_path_c.sh MAIN_PUSH_TOKEN→GH_TOKEN export (match owner_open_path_c_pr)",
     "owner_land_path_c.sh --from-bundle --dry-run: tip-drift + local git am + lemma_closed=false",
+    "owner_land_path_c.sh --from-bundle --dry-run: pin refs/remotes/origin/hardening fetch (rev-parse was returning literal origin/ref)",
     "when_writable_land.py prefers owner_open_path_c_pr.sh for ALIGNED+writable Path C open-PR",
     "ci.yml path-c-applied-bundle tip-drift BASE_SHA hex parse"
   ],

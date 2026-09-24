@@ -217,7 +217,8 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     cleanup_fb() { rm -rf "$FB_WORKDIR"; }
     trap cleanup_fb EXIT
     set +e
-    git clone --depth 80 "https://github.com/${REPO}.git" "$FB_WORKDIR/main"
+    git clone --filter=blob:none --no-checkout "https://github.com/${REPO}.git" "$FB_WORKDIR/main" \
+      || git clone --depth 80 "https://github.com/${REPO}.git" "$FB_WORKDIR/main"
     clone_ec=$?
     set -e
     if [[ "$clone_ec" -ne 0 ]]; then
@@ -225,10 +226,19 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       exit 2
     fi
     cd "$FB_WORKDIR/main"
-    git fetch origin "$HARDENING_REF" 2>/dev/null || true
-    LIVE_SHA="$(git rev-parse "origin/${HARDENING_REF}" 2>/dev/null || true)"
-    if [[ -z "$LIVE_SHA" ]]; then
-      echo "owner_land_path_c: ERROR: cannot resolve origin/${HARDENING_REF} (exit=2)." >&2
+    # Pin remote-tracking ref (plain `git fetch origin <branch>` after shallow clone
+    # often leaves origin/<hardening> unresolved as a literal name, not a SHA).
+    if ! git fetch --depth 80 origin "+refs/heads/${HARDENING_REF}:refs/remotes/origin/${HARDENING_REF}"; then
+      echo "owner_land_path_c: ERROR: fetch hardening failed (exit=2)." >&2
+      exit 2
+    fi
+    LIVE_SHA="$(git rev-parse --verify "refs/remotes/origin/${HARDENING_REF}^{commit}" 2>/dev/null || true)"
+    if [[ -z "$LIVE_SHA" || "$LIVE_SHA" == origin/* || "$LIVE_SHA" != [0-9a-f]* ]]; then
+      # Fallback: ls-remote
+      LIVE_SHA="$(git ls-remote origin "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1 || true)"
+    fi
+    if [[ -z "$LIVE_SHA" || ! "$LIVE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+      echo "owner_land_path_c: ERROR: cannot resolve live hardening SHA (got: ${LIVE_SHA:-empty}) (exit=2)." >&2
       exit 2
     fi
     echo "live_hardening_sha=$LIVE_SHA"
@@ -239,9 +249,9 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "tip_matches_base=true"
     git config user.name "owner-land-path-c-dry"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    if ! git checkout --detach "$BASE_TIP_SHA" 2>/dev/null; then
-      git fetch --depth 80 origin "$BASE_TIP_SHA" 2>/dev/null || true
-      git checkout --detach "$BASE_TIP_SHA" || die "cannot checkout BASE_TIP $BASE_TIP_SHA"
+    if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then
+      git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
+      git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
     fi
     if ! git am --3way "$BUNDLE_PATCH"; then
       git am --abort 2>/dev/null || true
