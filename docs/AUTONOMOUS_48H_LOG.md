@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 192 — 2026-09-24 ~12:40–12:45 UTC (PERMANENT window; tip stable 8bd1f03; auth pending 1C7F; README Path C face; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`1C7F-22B5`). `lemma_closed=false`.
+- Device auth `1C7F-22B5` → **pending** (slow_down); seconds_left in PATH_C_STATUS / BATCH192_BRIEF. No dylan token. `gh secret list -R trial` → **403** → `has_main_push_token=false`. Daemon `when-writable-land` up.
+- **Engineering:** raised Path C unblock visibility on trial repo face — `README.md` top section **Path C — land engineering fixes on main** (device URL + `GH_DEVICE_LOGIN` code / `batch180-path-c-bundle` / `owner_path_c_oneshot.sh` / Cursor App add-main + relaunch; `lemma_closed` stays false). Intent: `test_batch192_readme_path_c_face`.
+- Research untouched (`lemma_closed=false`). Canonical issue [#43](https://github.com/d6g8k5htny-coder/trial/issues/43). Tiny JSON: `portable/BATCH192_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `1C7F-22B5` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #43. Repo face: `README.md` Path C section.
+
 ### Batch 190 — 2026-09-24 ~12:20–12:34 UTC (PERMANENT window; tip stable 8bd1f03; auth C949 expired→1C7F; deeper hunt clean no 0017; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

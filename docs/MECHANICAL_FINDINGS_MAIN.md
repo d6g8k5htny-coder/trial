@@ -3,6 +3,26 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 192 — tip stable 8bd1f03; auth pending 1C7F; README Path C face; no research flips @ tips `1c6e74b` / `8bd1f03`
+
+Mechanical inventory unchanged from Batch 190. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip refresh / no hunt.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8bd1f03cc2bb10c59b08b852ca2775dac27e28e9` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth still pending `1C7F-22B5` (slow_down) |
+| repo face | trial `README.md` top section **Path C — land engineering fixes on main** (device URL+code / `batch180-path-c-bundle` / oneshot / App add-main) |
+| pack / release | still **`batch180-path-c-bundle`** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (tip stable; no hunt) |
+
+Artifacts: `portable/BATCH192_BRIEF.json`. Scientific effect: **NONE**.
+
 ## Batch 190 — tip stable 8bd1f03; auth renew 1C7F (C949 expired); deeper hunt clean; no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory unchanged from Batch 185/188. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → deeper hunt WITH patches under ResourceWarning+DeprecationWarning → **clean** / no 0017.

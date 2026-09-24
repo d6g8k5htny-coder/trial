@@ -7,6 +7,14 @@ Owner sandbox for Dylan Roy. **Not** the research repository.
 | [`d6g8k5htny-coder/main`](https://github.com/d6g8k5htny-coder/main) | q0 / SIDE24 research program (Drive → git). Governing intent lives there. |
 | **this repo** | Empty-by-design testing / agent landing pad. CC0. No scientific authority. |
 
+## Path C — land engineering fixes on main
+
+Engineering only — `lemma_closed` stays **false**. Current device code (see [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md)):
+
+1. Open **https://github.com/login/device** → enter the user code from `GH_DEVICE_LOGIN.md`
+2. Or: download release **`batch180-path-c-bundle`** (or latest `*-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
+3. Or: Cursor App → add `d6g8k5htny-coder/main` (Read and write) → relaunch
+
 ## #1 unblock — add `main` to Cursor App repo access
 
 Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Path C cannot land until you add `d6g8k5htny-coder/main` with **Read and write** under GitHub → Settings → Applications → Cursor → Repository access. Steps: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
