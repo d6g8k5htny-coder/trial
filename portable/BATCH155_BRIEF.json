@@ -1,6 +1,6 @@
 {
   "batch": "155",
-  "generated_at_utc": "2026-09-24T08:49:05Z",
+  "generated_at_utc": "2026-09-24T08:52:10Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -23,7 +23,7 @@
   "device_code": "E136-5AE7",
   "prior_device_code": "1FC8-3D96",
   "auth_renewed": true,
-  "seconds_left": 848,
+  "seconds_left": 663,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -35,8 +35,8 @@
   "batch142_assets_refreshed": true,
   "assert_path_c_ready": true,
   "assert_path_c_ready_local_ok": true,
-  "ci_status": "fixing",
-  "ci_run_id": "35977027355",
+  "ci_status": "success",
+  "ci_run_id": "35977531001",
   "ci_failures_fixed": [
     "ci.yml path-c tip-drift BASE_SHA: \\\\b over-escape emptied SHA (Batch 153 regression)",
     "portable-patches tip-drift: same hex extract (not ##* last field)",
@@ -69,6 +69,6 @@
   "w3f_false_positive": true,
   "path_b_ready": false,
   "trial_main_landed": true,
-  "trial_main_sha": "pending_audit_fix",
+  "trial_main_sha": "843e5f1",
   "auth_renew_reason": "1FC8-3D96 near-expiry <90s still pending"
 }
