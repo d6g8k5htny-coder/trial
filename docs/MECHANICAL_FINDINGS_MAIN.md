@@ -1,6 +1,57 @@
 # Mechanical findings on `d6g8k5htny-coder/main` (hardening tip)
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
+**Never** promote / close / discharge research status. `lemma_closed=false` stays false.
+
+## Batch 70 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `5f352a2`
+
+Mechanical inventory only (`scripts/audit_research_stack_open.py`). Flipped nothing.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face; body under `history/`) | ALIGNED face; no live PACKET/claims at root |
+| hardening | `5f352a2d16aeb260defabffb6154e0ebca8bd23a` | **HAS_PACKET** (BASE_TIP refreshed `74c082e`→`5f352a2` via PR #44) | OPEN inventory below |
+
+| Check | Result |
+|-------|--------|
+| `watch_main_alignment` / `audit_main_alignment` | **ALIGNED**; `EXPECTED_POST_ALIGNMENT` **MATCHES** |
+| write / Path B·C land | **DENIED** (403); Path B not needed |
+| Tip refresh | hardening **`74c082e` → `5f352a2`** ([PR #44](https://github.com/d6g8k5htny-coder/main/pull/44) fail-closed vault path map); `apply_all --check` **OK** |
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** / prizes_solved=false |
+| `lemma_closed` confirmation | **false** (PACKET + audit script; nothing flipped) |
+| new portable **0017** | **none** (audit objective; tip-match after refresh) |
+
+### OPEN premises (frozen layer) — `claims/graph.json` @ hardening
+
+All 13 premises remain mechanically open at `status_frozen_v2_2` ∈ {OPEN, NOT_CLOSED, NAMED_HYPOTHESIS}:
+
+`OBL-D1-PROMOTE`, `OBL-H5-JETMOD`, `OBL-H5-ZBAND`, `OBL-H5-REMOTE-THRESHOLD`, `D3-LEMMA-RN-UNIF` (NOT_CLOSED), `PERC-DECAY`, `PD-CONN`, `OBL-B1-BRANCH(loop|B1)`, `B4.loc-damline`, `H5-RIM`, `H5-AXIS`, `H-B3`, `LM013-JOINT-STACK`.
+
+### OPEN lemmas / packet obligations — `docs/math_status/PACKET.json`
+
+| ID | status | lemma_closed | notes |
+|----|--------|--------------|-------|
+| `OBL-H5-JETMOD` | OPEN | false | grade=display_only; does not discharge |
+| `D3-LEMMA-RN-UNIF` | OPEN | false | piece2_annulus_driver=**UNWRITTEN** |
+
+Packet: disposition=`OPEN_HOLD`; `prizes_solved=false`; `original_prize_closed=false`; bridge=`PROPOSED_NOT_DEPLOYED`; freeze=false.
+
+### OPEN prizes (FW-NO-PRIZE-CLOSURE) — NUMBER_THEORY track
+
+`PR-TAL-003..008`, `P14-A..E`, `P15-A..D` — each carries `original_prize_closed: false`.
+
+### OPEN claims / questions (inventory, not promotion)
+
+- Claims graph: **26** claims inventoried (grades CONDITIONAL / PROPOSED / AUTHOR_SIDE_* / FROZEN_CERTIFICATE / …); D1-v2.2(2) still names validity premises `OBL-D1-PROMOTE`, `D3-LEMMA-RN-UNIF`, `PERC-DECAY`, `OBL-B1-BRANCH(loop|B1)`, `B4.loc-damline`.
+- Register open questions mechanically OPEN/HOLD/REBASED: **16** (`OQ-005`…`OQ-016`, `OQ-014-U1`, `OQ-015-U1`, `OQ-016-U1`, `OQ-016-U2`). Closed terminal rows (`OQ-001`…`OQ-004`) not listed as OPEN.
+
+### Evidence paths
+
+- Hardening: `docs/math_status/PACKET.json`, `STATUS.md`, `STATUS_JETMOD.md`, `STATUS_RN_UNIF.md`, `math_console_snapshot.json`, `claims/graph.json`, `registers/json/open_questions.json`
+- Default tip: `README.md`, `AGENTS.md`, `history/` (no PACKET)
+- Artifact: `portable/BATCH70_RESEARCH_STACK_AUDIT.json`
+
+Default `main` @ `1c6e74b` **ALIGNED** (PR #41); write **DENIED**. Scientific effect: **NONE**. `goal_complete=false`.
 
 ## After portable patches 0001–0004 + 0008–0016 on `6f0f061` (batch 64)
 

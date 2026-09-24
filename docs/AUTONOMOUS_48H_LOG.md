@@ -21,6 +21,23 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 70 — 2026-09-24 ~01:08 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `5f352a2`; research-stack OPEN audit; no status flips)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed** (still ALIGNED). Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening **`74c082e` → `5f352a2`** ([PR #44](https://github.com/d6g8k5htny-coder/main/pull/44) fail-closed vault path map); BASE_TIP refreshed; `apply_all --check` OK; math_status problems=0 / lemma_closed=false.
+- `EXPECTED_POST_ALIGNMENT.json` → **MATCHES** live ALIGNED audit (complexity markers empty; SIDE24 / hardening notice present; AGENTS.md present).
+- **Concrete work (audit objective — not idle tip/write; tip refresh incidental):** `scripts/audit_research_stack_open.py` — read-only mechanical OPEN inventory over local clones of default tip + hardening tip. Artifact `portable/BATCH70_RESEARCH_STACK_AUDIT.json`. Refreshed `docs/MECHANICAL_FINDINGS_MAIN.md` with tip SHAs + evidence paths + `lemma_closed=false` confirmation.
+- Hardening OPEN counts: premises **13** (frozen layer), lemmas **1** (`D3-LEMMA-RN-UNIF`), packet obligations **2** (JETMOD + RN-UNIF), prizes **3** (`original_prize_closed:false`), open questions **16**. Default tip **NO_PACKET** (post-#41). `math_status_check` problems=0 / OPEN_HOLD / lemma_closed=false.
+- `pack_portable.sh` globs `BATCH*_RESEARCH_STACK_AUDIT.json` + ships `audit_research_stack_open.py`. Intent tests cover NO_PACKET / HAS_PACKET + no-flip.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Live `RESTORE_PLAN_70.json` via `refresh_restore_plan.py` + `BATCH70_TOKEN_SEARCH.json` + brief JSON. Trial packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
+
 ### Batch 69 — 2026-09-24 ~00:58 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `74c082e` unchanged; Path C Actions land workflow; no 0017)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

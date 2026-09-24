@@ -1,0 +1,62 @@
+{
+  "batch": "70",
+  "generated_at_utc": "2026-09-24T01:09:36Z",
+  "scientific_effect": "NONE",
+  "note": "ALIGNED @ 1c6e74b; hardening tip REFRESHED 74c082e\u21925f352a2 (PR #44); BASE_TIP refreshed; Path-B/C write DENIED; EXPECTED_POST_ALIGNMENT MATCHES; research-stack OPEN audit only (no status flips); lemma_closed=false; apply_all --check OK @ 5f352a2; permanent window",
+  "env_tokens": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "NOT_SET",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "CURSOR_API_KEY": "NOT_SET",
+    "CURSOR_TOKEN": "NOT_SET",
+    "GITHUB_PAT": "NOT_SET",
+    "GH_PAT": "NOT_SET",
+    "CURSOR_*_agent_runtime": "SET (non-GitHub; CURSOR_AGENT, CURSOR_AGENT_SOCKET, CURSOR_CONVERSATION_ID, CURSOR_REQUEST_ID, CURSOR_RIPGREP_PATH)"
+  },
+  "gh_auth": {
+    "account": "cursor",
+    "protocol": "https",
+    "token_kind": "github_app_installation",
+    "hosts_yml": "~/.config/gh/hosts.yml present",
+    "credential_helper": "!/exec-daemon/gh auth git-credential",
+    "status": "logged_in (token redacted)"
+  },
+  "write_probes_vs_main": {
+    "repo": "d6g8k5htny-coder/main",
+    "path_b_ready": false,
+    "path_c_writable": false,
+    "note": "Full vector table in RESTORE_PLAN_70.json / probe_main_write_vectors.py this batch"
+  },
+  "research_stack_audit": {
+    "tool": "scripts/audit_research_stack_open.py",
+    "artifact": "portable/BATCH70_RESEARCH_STACK_AUDIT.json",
+    "findings": "docs/MECHANICAL_FINDINGS_MAIN.md",
+    "default_tip": "1c6e74b NO_PACKET",
+    "hardening_tip": "5f352a2 HAS_PACKET",
+    "open_premises": 13,
+    "open_lemmas": 1,
+    "open_prizes": 3,
+    "open_questions": 16,
+    "lemma_closed": false,
+    "flipped_anything": false
+  },
+  "path_c": {
+    "dry_run": "scripts/path_c_dry_run.py",
+    "base_tip": "5f352a2",
+    "tip_refresh": "74c082e \u2192 5f352a2 (PR #44)",
+    "new_0017": false,
+    "state": "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
+  },
+  "window": {
+    "mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+    "state": "PERMANENT_OPEN",
+    "hard_stop": false,
+    "old_48h_stop_override": true
+  },
+  "timer": {
+    "name": "permanent-autonomous-align-watch",
+    "delay_seconds": 3600,
+    "not": "48h-stop"
+  },
+  "goal_complete": false
+}

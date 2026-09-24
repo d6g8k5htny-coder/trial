@@ -1,0 +1,34 @@
+{
+  "batch": "70",
+  "generated_at_utc": "2026-09-24T01:09:36Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "aligned": true,
+  "expected_post_alignment_matches": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "5f352a2",
+  "tip_refresh": true,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "path_b_needed": false,
+  "new_0017": false,
+  "concrete_work": [
+    "scripts/audit_research_stack_open.py",
+    "portable/BATCH70_RESEARCH_STACK_AUDIT.json",
+    "docs/MECHANICAL_FINDINGS_MAIN.md",
+    "tests/test_intent.py"
+  ],
+  "open_counts": {
+    "premises": 13,
+    "lemmas": 1,
+    "prizes": 3,
+    "open_questions": 16
+  },
+  "source": "research-stack AUDIT only (no status promotion)",
+  "window": "PERMANENT_OPEN",
+  "hardening_tip_was": "74c082e",
+  "tip_refresh_cause": "PR #44",
+  "apply_all_check_ok": true
+}

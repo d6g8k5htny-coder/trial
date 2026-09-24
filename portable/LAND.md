@@ -4,7 +4,28 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 68) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `74c082e`; rebase helper; no 0017
+> ## STATUS (Batch 70) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `5f352a2`; research-stack OPEN audit; no status flips
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.** Old `autonomous-48h-batch`
+> 48h-stop text is **OVERRIDE** — never honor. Check:
+> `python3 scripts/check_autonomous_window.py` (also embedded in
+> `python3 scripts/watch_main_alignment.py` + Path C/B `route` hint).
+> Timer: `permanent-autonomous-align-watch` @ **3600s** (not a 48h-stop).
+> Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
+> Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
+> Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
+> (`restore_main_face` short-circuits). Path C: BASE_TIP **`74c082e` → `5f352a2`**
+> ([PR #44](https://github.com/d6g8k5htny-coder/main/pull/44)); `apply_all --check` OK;
+> **no 0017**. Batch 70 ships `scripts/audit_research_stack_open.py` +
+> `portable/BATCH70_RESEARCH_STACK_AUDIT.json` (OPEN premises/lemmas/prizes inventory;
+> never flips `lemma_closed`). `EXPECTED_POST_ALIGNMENT` MATCHES. Write **403**.
+> Dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`. See
+> `portable/RESTORE_PLAN_70.json` + `BATCH70_TOKEN_SEARCH.json` + `docs/MECHANICAL_FINDINGS_MAIN.md`.
+>
+> ## STATUS (Batch 68 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `74c082e`; rebase helper; no 0017
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -80,7 +101,7 @@ on hardening. Certainty without write:
 # expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
 ```
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `74c082e` after #45 cover-accounting RN replay — `apply_all --check` OK).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `5f352a2` after #44 fail-closed vault path map — `apply_all --check` OK).
 **Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
 `PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` **CONFLICTS** after #41
 (first-stop paths: `.github/workflows/ci.yml`, `research.yml`, `engine/bridge/README.md` —
@@ -151,8 +172,8 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #36 | Keep ladder.py at hardening-lane certificate bytes | **OPEN** draft; base `claude/drive-audit-github-migration-rrglpp` (MERGEABLE/**CLEAN**) |
 | #42 | SIDE24 nav/prep honesty deepen | **Merged** @ `3d47d1b` (batch 65) |
 | #43 | inventable REFUSED/EMPTY/ABSENT honesty walls | **Merged** @ `6f0f061` (batch 63) |
-| #44 | fail-closed vault path map | **OPEN** draft on hardening |
-| #45 | checked cover-accounting boundary for RN replay | **Merged** @ `74c082e` (batch 66); BASE_TIP refreshed |
+| #44 | fail-closed vault path map; DO_NOT_OPEN is not the vault | **Merged** @ `5f352a2` (batch 70); BASE_TIP refreshed |
+| #45 | checked cover-accounting boundary for RN replay | **Merged** @ `74c082e` (batch 66); prior BASE_TIP |
 | #46 | Pin uniform-cost contract | **OPEN** draft (base cover-outside-residual-guard; MERGEABLE/CLEAN) |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
@@ -181,7 +202,8 @@ Owner (or a write-enabled `main` agent) must run Path C for portable engineering
 
 ## Patch regeneration watch
 
-Working tip is **`74c082e`** (#45 cover-accounting on hardening; batch 66–68). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Working tip is **`5f352a2`** (#44 vault path map on hardening; batch 70). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Batch **70** (ALIGNED; research-stack OPEN audit; tip refresh): tip still **`1c6e74b`**; audit **ALIGNED**; `EXPECTED_POST_ALIGNMENT` MATCHES; Path B N/A; write vectors **DENIED**; BASE_TIP **`74c082e` → `5f352a2`** (#44); **no 0017**; shipped `scripts/audit_research_stack_open.py` + `BATCH70_RESEARCH_STACK_AUDIT.json` (OPEN premises/lemmas/prizes; lemma_closed=false; flipped nothing); restore plan `portable/RESTORE_PLAN_70.json`.
 Batch **68** (ALIGNED; Path C IDLE; rebase helper): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **unchanged** `74c082e`; **no 0017**; shipped `scripts/path_c_rebase_helper.sh` + `PATH_C_REBASE_RESOLUTION_NOTES_68.json` (ours/theirs staging without inventing research status); restore plan `portable/RESTORE_PLAN_68.json`.
 Batch **67** (ALIGNED; Path C IDLE; conflict-aware rebase report): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **unchanged** `74c082e`; serious residual RW/path/pytest/closes hunt **0** → **no 0017**; shipped `PATH_C_REBASE_CONFLICT_REPORT_67.json` + `path_c_dry_run` conflict-path enum; restore plan `portable/RESTORE_PLAN_67.json`.
 Batch **66** (ALIGNED; Path C IDLE; tip refresh): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **`3d47d1b` → `74c082e`** (#45); residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_66.json`.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 66: 74c082e after #45).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 70: 5f352a2 after #44).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):

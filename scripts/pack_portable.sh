@@ -13,6 +13,8 @@ mapfile -t TOKEN_SEARCHES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'B
 mapfile -t REBASE_REPORTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_CONFLICT_REPORT_*.json' | sort)
 # Batch 68+: owner-safe resolution notes for first-stop ours/theirs staging.
 mapfile -t REBASE_NOTES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_RESOLUTION_NOTES_*.json' | sort)
+# Batch 70+: mechanical research-stack OPEN audits (no status flips).
+mapfile -t STACK_AUDITS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_RESEARCH_STACK_AUDIT.json' | sort)
 
 if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
@@ -40,6 +42,10 @@ rel_rebase_notes=()
 for p in "${REBASE_NOTES[@]}"; do
   rel_rebase_notes+=("${p#"$ROOT"/}")
 done
+rel_stack_audits=()
+for p in "${STACK_AUDITS[@]}"; do
+  rel_stack_audits+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -50,11 +56,13 @@ tar -czf "$OUT" -C "$ROOT" \
   "${rel_tokens[@]}" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
   ${rel_rebase_notes[@]+"${rel_rebase_notes[@]}"} \
+  ${rel_stack_audits[@]+"${rel_stack_audits[@]}"} \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
   scripts/audit_main_alignment.py \
   scripts/audit_local_tree.py \
+  scripts/audit_research_stack_open.py \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
   scripts/check_autonomous_window.py \
@@ -71,4 +79,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits)"

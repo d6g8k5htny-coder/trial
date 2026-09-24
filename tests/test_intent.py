@@ -155,7 +155,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "74c082e" in base_tip
+    assert "5f352a2" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -392,9 +392,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "74c082e" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
+    assert "5f352a2" in patches_readme or "PR #44" in patches_readme or "#44" in patches_readme or "74c082e" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
     assert "post-#41" in patches_readme.lower() or "PR #41" in patches_readme
-    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
+    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme or "PR #44" in patches_readme or "#44" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(
@@ -829,6 +829,165 @@ def test_alignment_status_post_41_critical_path() -> None:
     crit = data["main"]["critical_path"]
     assert "pr41_url" in crit
     assert crit.get("prefer_when_aligned_writable") == "Path_C_on_hardening"
+
+
+def test_audit_research_stack_open_read_only() -> None:
+    """Batch 70: mechanical OPEN inventory; never flips lemma_closed / prizes."""
+    import json
+    import subprocess
+    import tempfile
+
+    script = ROOT / "scripts" / "audit_research_stack_open.py"
+    assert script.is_file()
+    # Empty-ish tree → NO_PACKET shape, exit 0
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        (root / "README.md").write_text("sandbox\n", encoding="utf-8")
+        result = subprocess.run(
+            [sys.executable, str(script), str(root), "--tip-sha", "deadbeef"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert result.returncode == 0, result.stderr + result.stdout
+        data = json.loads(result.stdout)
+        assert data["scientific_effect"] == "NONE"
+        assert data["flipped_anything"] is False
+        assert data["lemma_closed"] is False
+        assert data["goal_complete"] is False
+        assert data["shape"] == "NO_PACKET"
+        assert data.get("tip_sha") == "deadbeef"
+
+    # Synthetic PACKET + claims graph → OPEN lists, confirmations stay false
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        (root / "docs" / "math_status").mkdir(parents=True)
+        (root / "claims").mkdir()
+        (root / "registers" / "json").mkdir(parents=True)
+        packet = {
+            "disposition": "OPEN_HOLD",
+            "lemma_closed": False,
+            "prizes_solved": False,
+            "original_prize_closed": False,
+            "independence_credit": 0,
+            "bridge": "PROPOSED_NOT_DEPLOYED",
+            "freeze": False,
+            "OBL-H5-JETMOD": {
+                "status": "OPEN",
+                "lemma_closed": False,
+                "freeze": False,
+                "grade": "display_only",
+            },
+            "D3-LEMMA-RN-UNIF": {
+                "status": "OPEN",
+                "lemma_closed": False,
+                "freeze": False,
+                "piece2_annulus_driver": "UNWRITTEN",
+                "discharges_lemma": False,
+            },
+        }
+        (root / "docs" / "math_status" / "PACKET.json").write_text(
+            json.dumps(packet), encoding="utf-8"
+        )
+        graph = {
+            "as_of": "test",
+            "premises": {
+                "OBL-H5-JETMOD": {
+                    "track": "UPPER2D",
+                    "status_frozen_v2_2": "OPEN",
+                    "status_register_note": "OPEN",
+                    "source": "test",
+                },
+                "D3-LEMMA-RN-UNIF": {
+                    "track": "UPPER2D",
+                    "status_frozen_v2_2": "NOT_CLOSED",
+                    "status_register_note": "OPEN",
+                    "source": "test",
+                },
+            },
+            "claims": {
+                "D1-v2.2(2)": {
+                    "track": "UPPER2D",
+                    "grade": "CONDITIONAL",
+                    "depends_on": ["OBL-H5-JETMOD", "D3-LEMMA-RN-UNIF"],
+                    "source": "test",
+                },
+                "PR-TAL-003..008": {
+                    "track": "NUMBER_THEORY",
+                    "grade": "AUTHOR_SIDE_PROOF_PRESENT",
+                    "original_prize_closed": False,
+                    "depends_on": [],
+                    "source": "test",
+                },
+            },
+            "firewalls": [{"id": "FW-NO-PRIZE-CLOSURE", "rule": "x", "source": "t"}],
+        }
+        (root / "claims" / "graph.json").write_text(json.dumps(graph), encoding="utf-8")
+        oq = {
+            "header": [
+                "OQ ID",
+                "Decision class",
+                "Priority",
+                "Register status",
+                "Current evidence / change",
+                "Live state",
+                "Next decisive action",
+                "Owner or capacity needed",
+                "Source",
+                "Reviewed",
+            ],
+            "rows": [
+                ["OQ-010", "x", "Medium", "OPEN", "e", "OPEN", "next", "", "", ""],
+                ["OQ-001", "x", "High", "CLOSED", "e", "TERMINAL — DONE", "n", "", "", ""],
+            ],
+        }
+        (root / "registers" / "json" / "open_questions.json").write_text(
+            json.dumps(oq), encoding="utf-8"
+        )
+        result = subprocess.run(
+            [sys.executable, str(script), str(root)],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert result.returncode == 0, result.stderr + result.stdout
+        data = json.loads(result.stdout)
+        assert data["shape"] == "HAS_PACKET"
+        assert data["lemma_closed"] is False
+        assert data["lemma_closed_confirmation"] is True
+        assert data["prizes_solved_confirmation"] is True
+        assert data["flipped_anything"] is False
+        assert data["counts"]["open_premises_frozen_layer"] == 2
+        assert data["counts"]["open_prizes"] == 1
+        assert data["counts"]["open_questions"] == 1
+        assert data["open_questions"][0]["id"] == "OQ-010"
+        # PACKET on disk unchanged
+        disk = json.loads(
+            (root / "docs" / "math_status" / "PACKET.json").read_text(encoding="utf-8")
+        )
+        assert disk["lemma_closed"] is False
+        assert disk["prizes_solved"] is False
+
+    audit_art = ROOT / "portable" / "BATCH70_RESEARCH_STACK_AUDIT.json"
+    assert audit_art.is_file()
+    art = json.loads(audit_art.read_text(encoding="utf-8"))
+    assert art["scientific_effect"] == "NONE"
+    assert art["lemma_closed"] is False
+    assert art["flipped_anything"] is False
+    assert art["goal_complete"] is False
+    assert art["expected_post_alignment_matches"] is True
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 70" in findings
+    assert "lemma_closed=false" in findings
+    assert "audit_research_stack_open.py" in findings
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "audit_research_stack_open.py" in pack
+    assert "BATCH*_RESEARCH_STACK_AUDIT.json" in pack
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 70" in unblock
+    assert "audit_research_stack_open.py" in unblock
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
