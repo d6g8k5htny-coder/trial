@@ -1,6 +1,6 @@
 {
   "batch": "157",
-  "generated_at_utc": "2026-09-24T09:04:42Z",
+  "generated_at_utc": "2026-09-24T09:05:37Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -23,7 +23,7 @@
   "device_code": "2513-3A16",
   "prior_device_code": "E136-5AE7",
   "auth_renewed": true,
-  "seconds_left": 804,
+  "seconds_left": 749,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -60,5 +60,7 @@
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
-  "auth_renew_reason": "E136-5AE7 near-expiry <90s still pending"
+  "auth_renew_reason": "E136-5AE7 near-expiry <90s still pending",
+  "trial_main_landed": true,
+  "trial_main_sha": "6977e47"
 }
