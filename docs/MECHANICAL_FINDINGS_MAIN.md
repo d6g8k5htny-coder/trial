@@ -15,7 +15,7 @@ Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_c
 | Check | Result |
 |-------|--------|
 | `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
-| write / Path C | **DENIED** (403); device auth pending `5E05-EA04` (seconds_left≥90; no renew) |
+| write / Path C | **DENIED** (403); device auth renewed `AD78-6206` (prior `5E05-EA04`) |
 | pack / release | still **`batch169-path-c-bundle`**; `owner_open_path_c_pr.sh` PR body links `.bundle` download |
 | CI tip-drift | restore exact `refresh BASE_TIP` + `rebuild path-c-applied-bundle` strings (Batch 147) |
 | preferred auth timer | **`preferred_auth_interval_s=1800`** |

@@ -12,7 +12,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 > ./scripts/owner_path_c_oneshot.sh --from-bundle
 > ```
 >
-> Auth still pending `5E05-EA04` (no renew while seconds_left≥90). Scientific effect: **NONE**.
+> Auth renewed `AD78-6206` (prior `5E05-EA04`). Scientific effect: **NONE**.
 
 > **Batch 176 — tip refresh + CI tip-drift dry-sim** (`scripts/refresh_path_c_bundle.sh`):
 >

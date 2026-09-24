@@ -3724,13 +3724,15 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert data["tip"] == "8ea3b5f"
     assert data["tip_matches_base"] is True
     assert data["tip_refresh"] is False
-    assert data["device_code"] == "5E05-EA04"
-    assert data["auth_renewed"] is False
+    assert data["device_code"] == "AD78-6206"
+    assert data["prior_device_code"] == "5E05-EA04"
+    assert data["auth_renewed"] is True
     assert data["write"] == "DENIED"
     assert data.get("patches_dropped") == [] or data.get("patches_dropped") == 0
     assert data.get("owner_pr_bundle_link") is True
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
+    assert data.get("canonical_issue") == 37 or data.get("issue_number") == 37
 
     open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
     assert open_pr.is_file()
@@ -3772,13 +3774,16 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert "rebuild path-c-applied-bundle" in ci
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "AD78-6206" in gh
     assert "5E05-EA04" in gh
     assert "BATCH162_BRIEF" in gh
     assert "BATCH178_BRIEF" in gh
     assert "owner_open_path_c_pr.sh" in gh
+    assert "issues/37" in gh or "#37" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 178" in log
+    assert "AD78-6206" in log
     assert "5E05-EA04" in log
     assert "owner_open_path_c_pr" in log
     assert "lemma_closed" in log.lower()
