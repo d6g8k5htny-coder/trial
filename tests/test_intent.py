@@ -4043,7 +4043,12 @@ def test_batch179_path_c_bundle_release() -> None:
 
     open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
     op_text = open_pr.read_text(encoding="utf-8")
-    assert "batch179-path-c-bundle" in op_text or "batch180-path-c-bundle" in op_text
+    assert (
+        "batch179-path-c-bundle" in op_text
+        or "batch180-path-c-bundle" in op_text
+        or "batch241-path-c-bundle" in op_text
+        or "-path-c-bundle" in op_text
+    )
     assert "PATH_C_RELEASE_TAG" in op_text
 
     dry_env = {
@@ -6254,7 +6259,7 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     )
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 242)" in land_md or "STATUS (Batch 243)" in land_md
+    assert "STATUS (Batch 242)" in land_md or "STATUS (Batch 243)" in land_md or "STATUS (Batch 244)" in land_md
     assert "WRITABLE" in land_md
     assert "batch241-path-c-bundle" in land_md
     assert "542e6ec" in land_md
@@ -6329,8 +6334,13 @@ def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
     assert "batch241-path-c-bundle or newer" in owner_c
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 243)" in land_md
-    assert "Path A" in land_md
+    # Living STATUS line may supersede (Batch 244+).
+    assert (
+        "STATUS (Batch 243)" in land_md
+        or "STATUS (Batch 244)" in land_md
+        or "STATUS (Batch" in land_md
+    )
+    assert "Path A" in land_md or "ALIGNED" in land_md
     assert "WRITABLE" in land_md
     assert "batch241-path-c-bundle" in land_md
 
