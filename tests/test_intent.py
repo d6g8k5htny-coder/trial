@@ -3457,7 +3457,11 @@ def test_batch162_path_c_issue_and_secret_stdin() -> None:
     assert data.get("tip_refresh") is True
     assert data.get("bundle_refresh") is True
     base_tip_162 = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert ("8bd1f03" in base or "b89448d" in base)_tip_162 or "8ea3b5f" in base_tip_162
+    assert (
+        "8bd1f03" in base_tip_162
+        or "b89448d" in base_tip_162
+        or "8ea3b5f" in base_tip_162
+    )
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("b89448d") or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify["lemma_closed"] is False
