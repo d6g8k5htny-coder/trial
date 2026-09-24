@@ -2950,6 +2950,56 @@ def test_batch160_owner_set_main_push_token_script() -> None:
     assert "E818-2EE5" in log
 
 
+def test_batch164_auth_ci_issue_refresh() -> None:
+    """Batch 164: tip stable; CI green post-batch162; auth pending; issue #29; main comment_denied; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH164_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "164"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "C8FC-A08F"
+    assert data["auth_renewed"] is False
+    assert data["device_auth"] == "pending"
+    assert data["main_comment"] == "comment_denied"
+    assert data["issue_number"] == 29
+    assert "issues/29" in data["issue_url"]
+    assert data["issue_updated"] is True
+    assert data["ci_status"] == "green"
+    assert data["assert_path_c_ready"] is True
+    assert data["write"] == "DENIED"
+    assert data["release"] == "batch162-path-c-bundle"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8ea3b5f" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8")
+    )
+    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["lemma_closed"] is False
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "C8FC-A08F" in gh
+    assert "issues/29" in gh or "#29" in gh
+    assert "comment_denied" in gh
+    assert "batch162-path-c-bundle" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 164" in log
+    assert "C8FC-A08F" in log
+    assert "8ea3b5f" in log
+    assert "comment_denied" in log
+    assert "#29" in log or "issues/29" in log
+    assert "lemma_closed" in log.lower()
+
+
 def test_batch162_path_c_issue_and_secret_stdin() -> None:
     """Batch 162: Path C unblock issue #26; secret set via stdin (not --body -); lemma_closed=false."""
     import json

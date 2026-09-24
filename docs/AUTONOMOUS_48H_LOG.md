@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 164 — 2026-09-24 ~09:38 UTC (PERMANENT window; tip stable 8ea3b5f; CI green post-batch162; auth pending C8FC-A08F; issue #29 refresh; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild** / **no hunt**. `lemma_closed=false`.
+- Device auth `C8FC-A08F` still **pending** (`authorization_pending` / `slow_down`); seconds_left≈500; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- CI: latest trial `main` runs after batch162 land (`12b13fa` / `fe9517c`) → **success** (trial-ci). Older failures pre-land ignored. `assert_path_c_ready.sh` → **OK**.
+- Main PR comment (one shot, open PR #52) → **comment_denied** (403). Issue #27 body/comment also 403 → created [#29 Path C unblock refresh — Batch 164](https://github.com/d6g8k5htny-coder/trial/issues/29) with current `C8FC-A08F` + release `batch162-path-c-bundle`.
+- Tiny JSON: `portable/BATCH164_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `C8FC-A08F` **or** `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / MAIN_PUSH_TOKEN file drop **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight. See issue #29.
+
 ### Batch 162 — 2026-09-24 ~09:22 UTC (PERMANENT window; tip refresh 8ea3b5f + path-c-applied-bundle; Path C unblock issue #26; fix owner_set_main_push_token --body -; auth renew C8FC-A08F; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
