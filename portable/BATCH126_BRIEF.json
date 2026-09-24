@@ -1,0 +1,20 @@
+{
+  "batch": "126",
+  "generated_at_utc": "2026-09-24T05:58:07Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "slow_down",
+  "device_code": "FCD3-6B41",
+  "seconds_left": 368,
+  "install_has_main": false,
+  "main_status": "ALIGNED",
+  "path_c_landed": false,
+  "tip": "c82c9357",
+  "tip_matches_base": true,
+  "daemon": "up",
+  "flipped_anything": false,
+  "timer_gh_device": 300,
+  "timer_permanent_watch": 10800,
+  "note": "ALIGNED@1c6e74b; hardening tip==BASE_TIP c82c9357; slow_down keep FCD3-6B41; Path C blocked; research untouched; timers re-armed"
+}

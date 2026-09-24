@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 126 — 2026-09-24 ~05:58 UTC (PERMANENT window; auth pulse; scientific effect NONE; flipped nothing)
+
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈368`; keep code (still valid); no Path C land (no user token yet).
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; hardening tip **`c82c9357` == BASE_TIP** (no bundle rebuild).
+- `probe_main_write` → **DENIED** / `install_has_main=false` (App sees trial only). Path C waits on user device token.
+- Daemon `when-writable-land` **up** (tmux). Timers re-armed: `gh-dylan-device-auth-check` 300s; `permanent-autonomous-align-watch` 10800s.
+- Tiny JSON: `portable/BATCH126_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `FCD3-6B41`. On auth success → Path C with user token (ignore `install_has_main`).
+
 ### Batch 125 — 2026-09-24 ~05:56 UTC (PERMANENT window; tip refresh + bundle rebuild; scientific effect NONE; flipped nothing)
 
 - Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈528`; no Path C land (no user token yet).

@@ -5,8 +5,10 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T05:49:16Z |
+| Checked (UTC) | 2026-09-24T05:58:07Z |
 | Verification URL | https://github.com/login/device |
 | User code | `FCD3-6B41` |
+| Status | slow_down (still valid; ~368s left) |
 | Expires | ~15 minutes from start |
 
 ## Steps
