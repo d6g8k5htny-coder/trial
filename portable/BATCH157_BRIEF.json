@@ -23,7 +23,7 @@
   "device_code": "2513-3A16",
   "prior_device_code": "E136-5AE7",
   "auth_renewed": true,
-  "seconds_left": 749,
+  "seconds_left": 736,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
