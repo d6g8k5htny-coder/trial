@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 169 — 2026-09-24 ~10:08–10:15 UTC (PERMANENT window; tip stable 8ea3b5f; fetchable git path-c-on-hardening.bundle; release batch169-path-c-bundle; owner prefers .bundle; auth pending 831C; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh**. Disposable worktree: checkout BASE_TIP → `apply_all` → `git bundle create … BASE_TIP..HEAD` → **`portable/path-c-applied-bundle/path-c-on-hardening.bundle`**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `831C-CB1C` still **pending** (authorization_pending / slow_down); seconds_left tracked. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **Engineering:** Path C deliverable as fetchable git bundle. `APPLY.md` / `VERIFY.json` document `git fetch path-c-on-hardening.bundle <branch> && git merge` (or `git pull`). `owner_land_path_c.sh --from-bundle` and `owner_path_c_oneshot.sh` **prefer `.bundle`** when present (fallback `.patch`). Pack + release **`batch169-path-c-bundle`** (`.bundle` + `.patch` + tgz). Intent: `test_batch169_git_bundle_path_c`.
+- Tiny JSON: `portable/BATCH169_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s** (no dups).
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `831C-CB1C` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle` (`.bundle` preferred).
+
 ### Batch 168 — 2026-09-24 ~09:58–10:04 UTC (PERMANENT window; tip stable 8ea3b5f; oneshot dry-run + pack release batch168-path-c-bundle; CI red fix; auth renew 905D→831C; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

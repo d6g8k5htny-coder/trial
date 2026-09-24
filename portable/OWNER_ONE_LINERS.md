@@ -4,6 +4,20 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 169 — Path C fetchable git `.bundle`** (`batch169-path-c-bundle`; prefers `.bundle` over `.patch`):
+>
+> ```bash
+> gh release download batch169-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> # manual: git fetch path-c-on-hardening.bundle cursor/portable-engineering-patches && git merge --ff-only FETCH_HEAD
+> ```
+>
+> Prefer over `batch168-path-c-bundle` / `batch162-path-c-bundle`. BASE_TIP `8ea3b5f`.
+> Auth timer guidance: `preferred_auth_interval_s=1800` (do not duplicate). Scientific effect: **NONE**.
+
 > **Batch 168 — Path C ONE-SHOT pack** (`batch168-path-c-bundle`; includes `owner_path_c_oneshot.sh`):
 >
 > ```bash
@@ -16,6 +30,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 >
 > Prefer over `batch162-path-c-bundle` / `batch142-path-c-bundle`. BASE_TIP `8ea3b5f`.
 > Auth timer guidance: `preferred_auth_interval_s=1800` (do not duplicate). Scientific effect: **NONE**.
+> Superseded by `batch169-path-c-bundle`.
 
 > **Batch 137 — Path C ONE-SHOT from release tarball** (`batch142-path-c-bundle` or newer):
 >

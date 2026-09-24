@@ -1,9 +1,11 @@
-From 83df4fde27fe6dfe50acb667ad4d0d9491d29e3e Mon Sep 17 00:00:00 2001
-From: Path C Bundle <agent@local>
-Date: Thu, 24 Sep 2026 07:36:43 +0000
-Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016
+From 81c09d63ff3dff95fb6a64904b04462e66b60f9c Mon Sep 17 00:00:00 2001
+From: batch169-path-c-bundle
+ <41898282+github-actions[bot]@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 10:09:22 +0000
+Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016 (Path
+ C)
 
-Scientific effect: NONE. Does not flip lemma_closed.
+Scientific effect: NONE. lemma_closed stays false.
 ---
  docs/math_status/PACKET.json                  |   4 +-
  docs/math_status/math_console.py              |  14 +-
@@ -30,7 +32,7 @@ Scientific effect: NONE. Does not flip lemma_closed.
  22 files changed, 337 insertions(+), 214 deletions(-)
 
 diff --git a/docs/math_status/PACKET.json b/docs/math_status/PACKET.json
-index 97a9a5f..4c31f7d 100644
+index 07ba5eb..64c9f2f 100644
 --- a/docs/math_status/PACKET.json
 +++ b/docs/math_status/PACKET.json
 @@ -50,8 +50,8 @@

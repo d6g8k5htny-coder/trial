@@ -4,6 +4,8 @@
 #
 # Batch 168: PATH_C_RELEASE_TAG defaults to batch168-path-c-bundle (pack includes
 # this script); unblock menu prefers oneshot --from-bundle from that release.
+# Batch 169: PATH_C_RELEASE_TAG defaults to batch169-path-c-bundle; --from-bundle
+# prefers path-c-on-hardening.bundle (git fetch) when present.
 #
 # Tries in order:
 #   a) If MAIN_PUSH_TOKEN / GH_TOKEN env OR a dylan/device token file is present
@@ -30,8 +32,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
-# Release tag for local --from-bundle ONE-SHOT (Batch 168 pack includes this script).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch168-path-c-bundle}"
+# Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch169-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0
 MENU_ONLY=0
@@ -163,12 +165,13 @@ print_unblock_menu() {
   echo "   then relaunch Cloud Agent (mid-flight cannot gain main scope):"
   echo "   $TRIAL_ROOT/portable/RELAUNCH_WITH_MAIN_SCOPE.md"
   echo
-  echo "4) Local ONE-SHOT from release tarball (--from-bundle):"
+  echo "4) Local ONE-SHOT from release tarball (--from-bundle; prefers .bundle):"
   echo "   gh release download ${PATH_C_RELEASE_TAG} -R d6g8k5htny-coder/trial \\"
-  echo "     -p 'trial-portable-main-fixes.tgz'"
+  echo "     -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'"
   echo "   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land"
   echo "   /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle"
   echo "   # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle"
+  echo "   # git fetch path-c-on-hardening.bundle cursor/portable-engineering-patches && git merge"
   echo "   # BASE_TIP ${BASE_TIP_SHORT}; release ${PATH_C_RELEASE_TAG}; lemma_closed stays false"
   echo
   echo "Also: $TRIAL_ROOT/scripts/print_owner_unblock.sh"

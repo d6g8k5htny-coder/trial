@@ -4,6 +4,39 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
+> ## STATUS (Batch 169) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `8ea3b5f`; fetchable git `.bundle`; auth pending 831C-CB1C
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.**
+> Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
+> Path C: tip stable **`8ea3b5f`** (PR #53). Write **403** /
+> `install_has_main=false` / env repos **trial ONLY**. Device code: `831C-CB1C`
+> (see `GH_DEVICE_LOGIN.md`). Unblock issue:
+> https://github.com/d6g8k5htny-coder/trial/issues/31
+> (history: [#30](https://github.com/d6g8k5htny-coder/trial/issues/30) / [#27](https://github.com/d6g8k5htny-coder/trial/issues/27) / `BATCH162_BRIEF.json`).
+> Preferred auth timer: **`preferred_auth_interval_s=1800`** (do not duplicate).
+>
+> ### Owner Path C — ONE local command from release tarball (`.bundle` preferred)
+>
+> Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `main`).
+>
+> ```bash
+> gh release download batch169-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> # manual: git fetch path-c-on-hardening.bundle cursor/portable-engineering-patches && git merge --ff-only FETCH_HEAD
+> ```
+>
+> Certainty without write: `/tmp/path-c-land/scripts/owner_path_c_oneshot.sh --dry-run`
+>
+> Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
+> [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md). Issue #31.
+> Release: **`batch169-path-c-bundle`** (latest; `.bundle` + `.patch` + oneshot; tip `8ea3b5f`; prior `batch168-path-c-bundle`).
+>
 > ## STATUS (Batch 168) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `8ea3b5f`; oneshot pack release; auth pending 905D-02F4
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
@@ -34,7 +67,7 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 >
 > Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
 > [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md). Issue #31.
-> Release: **`batch168-path-c-bundle`** (latest; includes oneshot; tip `8ea3b5f`; prior `batch162-path-c-bundle`).
+> Release: **`batch168-path-c-bundle`** (superseded by `batch169-path-c-bundle`).
 >
 > ## STATUS (Batch 162) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP → `8ea3b5f` (PR #53); issue #26; secret stdin fix
 >

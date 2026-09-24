@@ -5,14 +5,16 @@
 # === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
 # Prerequisites (local machine / Codespace — NOT the trial Cloud Agent token):
 #   1. git, python3, gh  (gh auth login with Contents:Write + PullRequests:Write on main)
-#   2. Download latest Path C release on trial (batch142-path-c-bundle or newer):
-#        gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
-#          -p 'trial-portable-main-fixes.tgz'
+#   2. Download latest Path C release on trial (batch169-path-c-bundle or newer):
+#        gh release download batch169-path-c-bundle -R d6g8k5htny-coder/trial \
+#          -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
 #   3. Extract and land in ONE command:
 #        mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 #        /tmp/path-c-land/scripts/owner_land_path_c.sh
-#      Faster (pre-verified patch; same gates): add --from-bundle
+#      Faster (pre-verified; same gates): add --from-bundle
 #        /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+#      Batch 169+: --from-bundle prefers path-c-on-hardening.bundle (git fetch+merge)
+#      when present; falls back to path-c-on-hardening.patch (git am).
 # Cloud Agent mid-flight cannot gain main write — see portable/RELAUNCH_WITH_MAIN_SCOPE.md.
 #
 # Prerequisites (tree shape):
@@ -27,7 +29,9 @@
 #   - Certainty without write: --dry-run → scripts/path_c_dry_run.py
 #
 # Default (safer): clone hardening tip, apply_all, push branch, open PR.
-# Opt-in: --from-bundle uses portable/path-c-applied-bundle/path-c-on-hardening.patch (git am).
+# Opt-in: --from-bundle uses portable/path-c-applied-bundle:
+#   prefer path-c-on-hardening.bundle (git fetch + ff-merge) when present (Batch 169+);
+#   else path-c-on-hardening.patch (git am).
 # Opt-in: --direct-push pushes the patched tip branch straight (no PR).
 #
 # Intended to run on the owner's machine / Codespace with *owner* gh/git auth
@@ -106,14 +110,15 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
                 (no push); exit 0/1/2.
                 Exit codes match path_c_dry_run: 0=ready, 1=not ready, 2=transport.
   (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
-  --from-bundle Use portable/path-c-applied-bundle/path-c-on-hardening.patch (git am)
-                instead of apply_all. Preferred one-shot after extracting the release
-                tarball (batch142-path-c-bundle or newer).
+  --from-bundle Prefer portable/path-c-applied-bundle/path-c-on-hardening.bundle
+                (git fetch + ff-merge) when present; else .patch via git am.
+                Preferred one-shot after extracting the release tarball
+                (batch169-path-c-bundle or newer; prior batch142+ had patch-only).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 ONE-SHOT from release tarball (owner machine with write on main):
-  gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
-    -p 'trial-portable-main-fixes.tgz'
+  gh release download batch169-path-c-bundle -R d6g8k5htny-coder/trial \
+    -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
 
@@ -156,15 +161,46 @@ need_cmd git
 need_cmd python3
 
 APPLY_ALL="$TRIAL_ROOT/portable/patches/apply_all.sh"
-BUNDLE_PATCH="$TRIAL_ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
+BUNDLE_DIR="$TRIAL_ROOT/portable/path-c-applied-bundle"
+BUNDLE_GIT="$BUNDLE_DIR/path-c-on-hardening.bundle"
+BUNDLE_PATCH="$BUNDLE_DIR/path-c-on-hardening.patch"
+BUNDLE_BRANCH="${PATH_C_BUNDLE_BRANCH:-cursor/portable-engineering-patches}"
 PROBE="$TRIAL_ROOT/scripts/probe_main_write.py"
 DRY_RUN_PY="$TRIAL_ROOT/scripts/path_c_dry_run.py"
 BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
 [[ -f "$APPLY_ALL" ]] || die "missing $APPLY_ALL (set TRIAL_ROOT to the trial checkout / extracted release tarball)"
 [[ -x "$APPLY_ALL" ]] || chmod +x "$APPLY_ALL" || true
+# Batch 169: prefer .bundle when present; else require .patch.
+USE_GIT_BUNDLE=0
 if [[ "$FROM_BUNDLE" -eq 1 ]]; then
-  [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH (need path-c-applied-bundle from batch142-path-c-bundle or newer)"
+  if [[ -f "$BUNDLE_GIT" ]]; then
+    USE_GIT_BUNDLE=1
+  elif [[ -f "$BUNDLE_PATCH" ]]; then
+    USE_GIT_BUNDLE=0
+  else
+    die "missing $BUNDLE_GIT and $BUNDLE_PATCH (need path-c-applied-bundle from batch169-path-c-bundle or newer)"
+  fi
 fi
+
+# Apply Path C commits from release artifacts onto current HEAD (must be BASE_TIP).
+# Prefers git bundle fetch+ff-merge; falls back to git am of the format-patch.
+apply_from_bundle_artifact() {
+  if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
+    echo "--- --from-bundle: git fetch $BUNDLE_GIT $BUNDLE_BRANCH (prefer .bundle) ---"
+    if ! git fetch "$BUNDLE_GIT" "$BUNDLE_BRANCH"; then
+      die "git fetch from $BUNDLE_GIT failed (need BASE_TIP present in this clone)."
+    fi
+    if ! git merge --ff-only FETCH_HEAD; then
+      die "git merge --ff-only from bundle failed (HEAD must be BASE_TIP; tip may have moved)."
+    fi
+    return 0
+  fi
+  echo "--- --from-bundle: git am path-c-on-hardening.patch (no .bundle) ---"
+  if ! git am --3way "$BUNDLE_PATCH"; then
+    git am --abort 2>/dev/null || true
+    die "git am --from-bundle failed. Tip may have moved past BASE_TIP; refresh release bundle or use $0 (apply_all) instead."
+  fi
+}
 
 echo "=== owner_land_path_c ==="
 echo "repo=$REPO trial_root=$TRIAL_ROOT"
@@ -177,7 +213,7 @@ elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
 else
   echo "mode=$([ "$DIRECT_PUSH" -eq 1 ] && echo direct-push || echo branch+PR)"
 fi
-echo "base_mode=$BASE_MODE rebase_onto_main=$REBASE_ONTO_MAIN from_bundle=$FROM_BUNDLE"
+echo "base_mode=$BASE_MODE rebase_onto_main=$REBASE_ONTO_MAIN from_bundle=$FROM_BUNDLE use_git_bundle=$USE_GIT_BUNDLE"
 BASE_TIP_LINE=""
 BASE_TIP_SHA=""
 if [[ -f "$BASE_TIP_FILE" ]]; then
@@ -197,10 +233,15 @@ echo
 # --dry-run: certainty only (no write probe, no push). Works with trial 403 tokens.
 # Exit codes (Batch 138): pass through path_c_dry_run.py — 0=ready, 1=not ready,
 # 2=transport/missing inputs. Do not collapse transport into generic die(1).
-# Batch 153: --from-bundle --dry-run verifies tip-drift + local git am (not only apply_all).
+# Batch 153: --from-bundle --dry-run verifies tip-drift + local bundle apply (not only apply_all).
+# Batch 169: prefer .bundle fetch+merge when present.
 if [[ "$DRY_RUN" -eq 1 ]]; then
   if [[ "$FROM_BUNDLE" -eq 1 ]]; then
-    [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH"
+    if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
+      [[ -f "$BUNDLE_GIT" ]] || die "missing $BUNDLE_GIT"
+    else
+      [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH"
+    fi
     [[ -n "$BASE_TIP_SHA" ]] || die "could not parse BASE_TIP SHA (need hex in $BASE_TIP_FILE)"
     VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
     VERIFY_SHA=""
@@ -212,7 +253,7 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
         exit 1
       fi
     fi
-    echo "--- from-bundle dry-run: tip-drift + git am (no push) ---"
+    echo "--- from-bundle dry-run: tip-drift + $([ "$USE_GIT_BUNDLE" -eq 1 ] && echo 'git fetch .bundle' || echo 'git am .patch') (no push) ---"
     FB_WORKDIR="$(mktemp -d "${TMPDIR:-/tmp}/owner-path-c-from-bundle-dry.XXXXXX")"
     cleanup_fb() { rm -rf "$FB_WORKDIR"; }
     trap cleanup_fb EXIT
@@ -253,26 +294,38 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
       git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
     fi
-    if ! git am --3way "$BUNDLE_PATCH"; then
-      git am --abort 2>/dev/null || true
-      echo "owner_land_path_c: ERROR: git am --from-bundle failed on BASE_TIP (exit=1)." >&2
-      exit 1
+    # Need BASE_TIP object for bundle prerequisite; LIVE_SHA == BASE_TIP when tip_matches.
+    if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
+      if ! git fetch "$BUNDLE_GIT" "$BUNDLE_BRANCH"; then
+        echo "owner_land_path_c: ERROR: git fetch from .bundle failed on BASE_TIP (exit=1)." >&2
+        exit 1
+      fi
+      if ! git merge --ff-only FETCH_HEAD; then
+        echo "owner_land_path_c: ERROR: git merge --ff-only from .bundle failed (exit=1)." >&2
+        exit 1
+      fi
+    else
+      if ! git am --3way "$BUNDLE_PATCH"; then
+        git am --abort 2>/dev/null || true
+        echo "owner_land_path_c: ERROR: git am --from-bundle failed on BASE_TIP (exit=1)." >&2
+        exit 1
+      fi
     fi
     STATUS_OUT="$(python3 tools/math_status_check.py 2>&1)" || {
-      echo "owner_land_path_c: ERROR: math_status_check failed after bundle am." >&2
+      echo "owner_land_path_c: ERROR: math_status_check failed after bundle apply." >&2
       echo "$STATUS_OUT" >&2
       exit 1
     }
     echo "$STATUS_OUT"
     if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
-      echo "owner_land_path_c: ERROR: lemma_closed is not false after bundle am." >&2
+      echo "owner_land_path_c: ERROR: lemma_closed is not false after bundle apply." >&2
       exit 1
     fi
     if ! echo "$STATUS_OUT" | grep -q 'problems=0'; then
-      echo "owner_land_path_c: ERROR: math_status problems!=0 after bundle am." >&2
+      echo "owner_land_path_c: ERROR: math_status problems!=0 after bundle apply." >&2
       exit 1
     fi
-    echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; git am OK; lemma_closed=false."
+    echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; $([ "$USE_GIT_BUNDLE" -eq 1 ] && echo 'git bundle fetch' || echo 'git am') OK; lemma_closed=false."
     echo "Land with write creds: $0 --from-bundle"
     echo "Scientific effect: NONE"
     exit 0
@@ -442,7 +495,7 @@ if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
     die "apply_all --check failed on apparently-patched tree. Resolve conflicts or reset to a clean tip."
   fi
 elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
-  echo "--- --from-bundle: git am path-c-on-hardening.patch ---"
+  echo "--- --from-bundle: prefer .bundle fetch+merge when present ---"
   # Pin to BASE_TIP SHA when file lists it (release bundle is cut against that tip).
   if [[ -f "$BASE_TIP_FILE" ]]; then
     if [[ -z "$BASE_TIP_SHA" ]]; then
@@ -452,14 +505,11 @@ elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
     if [[ -n "$BASE_TIP_SHA" ]] && git cat-file -e "${BASE_TIP_SHA}^{commit}" 2>/dev/null; then
       HEAD_NOW="$(git rev-parse HEAD)"
       if [[ "$HEAD_NOW" != "$BASE_TIP_SHA" && "$HEAD_NOW" != "${BASE_TIP_SHA}"* ]]; then
-        echo "warn: HEAD=$HEAD_NOW != BASE_TIP=$BASE_TIP_SHA; attempting am anyway (may fail if tip moved)."
+        echo "warn: HEAD=$HEAD_NOW != BASE_TIP=$BASE_TIP_SHA; attempting bundle apply anyway (may fail if tip moved)."
       fi
     fi
   fi
-  if ! git am --3way "$BUNDLE_PATCH"; then
-    git am --abort 2>/dev/null || true
-    die "git am --from-bundle failed. Tip may have moved past BASE_TIP; refresh release bundle or use $0 (apply_all) instead."
-  fi
+  apply_from_bundle_artifact
 else
   echo "--- apply_all 0001–0004 + 0008–0016 ---"
   if ! "$APPLY_ALL"; then

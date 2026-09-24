@@ -3,6 +3,26 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 169 — tip stable; fetchable git `.bundle`; no research flips @ tips `1c6e74b` / `8ea3b5f`
+
+Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8ea3b5fb9368a85e7f971d606b8f75c96c35c05a` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165 counts) |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth pending `831C-CB1C` |
+| pack / release | **`batch169-path-c-bundle`** ships `path-c-on-hardening.bundle` + `.patch` |
+| owner apply | `--from-bundle` prefers `git fetch` `.bundle` + ff-merge |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** (no duplicate) |
+| new portable **0017** | **none** (tip==BASE_TIP) |
+
+Artifacts: `portable/BATCH169_BRIEF.json` + `portable/path-c-applied-bundle/{path-c-on-hardening.bundle,APPLY.md,VERIFY.json}`. Scientific effect: **NONE**.
+
 ## Batch 168 — tip stable; oneshot pack release; no research flips @ tips `1c6e74b` / `8ea3b5f`
 
 Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
@@ -23,6 +43,7 @@ Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_c
 Artifacts: `portable/BATCH168_BRIEF.json` (counts: Batch 165 research files). Scientific effect: **NONE**.
 
 ## Batch 165 — research-stack OPEN audit refresh (no status flips) @ tips `1c6e74b` / `8ea3b5f`
+
 
 Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip `8ea3b5f`). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
 

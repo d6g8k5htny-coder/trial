@@ -3001,6 +3001,120 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "lemma_closed" in log.lower()
 
 
+def test_batch169_git_bundle_path_c() -> None:
+    """Batch 169: fetchable path-c-on-hardening.bundle; owner prefers .bundle; tip stable; auth pending; lemma_closed=false."""
+    import json
+    import os
+    import subprocess
+
+    bundle_dir = ROOT / "portable" / "path-c-applied-bundle"
+    git_bundle = bundle_dir / "path-c-on-hardening.bundle"
+    patch = bundle_dir / "path-c-on-hardening.patch"
+    assert git_bundle.is_file()
+    assert patch.is_file()
+    assert git_bundle.stat().st_size > 100
+    verify = json.loads((bundle_dir / "VERIFY.json").read_text(encoding="utf-8"))
+    assert verify["batch"] == "169"
+    assert verify["git_bundle"] is True
+    assert verify["lemma_closed"] is False
+    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["bundle_file"] == "path-c-on-hardening.bundle"
+    assert "cursor/portable-engineering-patches" in verify.get("bundle_branch", "")
+    apply_md = (bundle_dir / "APPLY.md").read_text(encoding="utf-8")
+    assert "git fetch" in apply_md
+    assert "path-c-on-hardening.bundle" in apply_md
+    assert "git merge" in apply_md or "git pull" in apply_md
+    assert "batch169-path-c-bundle" in apply_md
+
+    land = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "path-c-on-hardening.bundle" in land
+    assert "USE_GIT_BUNDLE" in land or "use_git_bundle" in land
+    assert "git fetch" in land
+    assert "batch169-path-c-bundle" in land
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    text = oneshot.read_text(encoding="utf-8")
+    assert "batch169-path-c-bundle" in text
+    assert "path-c-on-hardening.bundle" in text
+    assert "PATH_C_RELEASE_TAG" in text
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_p = subprocess.run(
+        ["bash", str(oneshot), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
+    assert "batch169-path-c-bundle" in dry_out
+    assert "path-c-on-hardening.bundle" in dry_out
+    assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+
+    # --from-bundle --dry-run prefers .bundle
+    land_c = ROOT / "scripts" / "owner_land_path_c.sh"
+    fb = subprocess.run(
+        ["bash", str(land_c), "--from-bundle", "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert fb.returncode == 0, fb.stderr + fb.stdout
+    fb_out = fb.stdout + fb.stderr
+    assert "use_git_bundle=1" in fb_out or "git bundle" in fb_out.lower() or ".bundle" in fb_out
+    assert "from-bundle dry-run OK" in fb_out or "dry-run OK" in fb_out
+    assert "lemma_closed=false" in fb_out
+
+    brief = ROOT / "portable" / "BATCH169_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "169"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["git_bundle"] is True
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["device_code"] == "831C-CB1C"
+    assert data["write"] == "DENIED"
+    assert data["release"] == "batch169-path-c-bundle"
+    assert data.get("preferred_auth_interval_s") == 1800
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "path-c-applied-bundle" in pack
+    assert "owner_path_c_oneshot.sh" in pack
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "batch169-path-c-bundle" in unblock
+    assert "path-c-on-hardening.bundle" in unblock
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 169" in log
+    assert "path-c-on-hardening.bundle" in log
+    assert "batch169-path-c-bundle" in log
+    assert "lemma_closed" in log.lower()
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "831C-CB1C" in gh
+    assert "batch169-path-c-bundle" in gh
+    assert "path-c-on-hardening.bundle" in gh
+    assert "issues/27" in gh
+    assert "BATCH162_BRIEF" in gh
+
+
 def test_batch168_oneshot_pack_ci() -> None:
     """Batch 168: oneshot dry-run + pack release tag; CI history fix; tip stable; auth pending; lemma_closed=false."""
     import json
