@@ -2,7 +2,8 @@
 
 Base tip (see `BASE_TIP.txt`):
 `chatgpt/drive-github-hardening-20260919` @ `5f352a2d16aeb260defabffb6154e0ebca8bd23a`
-(batch 70: tip refresh via PR #44 fail-closed vault path map; prior BASE_TIP `74c082e` / #45)
+(batch 71: BASE_TIP confirmed == live hardening; re-verify apply_all + residual RW IDLE / no 0017;
+batch 70: tip refresh via PR #44 fail-closed vault path map; prior BASE_TIP `74c082e` / #45)
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,

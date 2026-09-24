@@ -1,0 +1,59 @@
+{
+  "batch": "71",
+  "generated_at_utc": "2026-09-24T01:23:00Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "aligned": true,
+  "expected_post_alignment_matches": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "5f352a2",
+  "tip_refresh": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "path_b_needed": false,
+  "new_0017": false,
+  "path_c_dry_run_state": "APPLY_READY_POST_ALIGNED_KEEP_HARDENING",
+  "apply_all_check_ok": true,
+  "apply_all_apply_ok": true,
+  "math_status": {
+    "problems": 0,
+    "disposition": "OPEN_HOLD",
+    "lemma_closed": false
+  },
+  "focused_tests": {
+    "passed": 90,
+    "resource_warnings": 0
+  },
+  "residual_rw_hunt": {
+    "claims_recovery": "83/0",
+    "receipts_bridge": "541/0",
+    "frozen_dio": "19/0",
+    "collision": "189/0",
+    "mirrors": "85/0",
+    "registers": "53/0",
+    "lean_frontier": "42/0",
+    "cover_more": "77/0",
+    "drive_more": "120/0",
+    "ops_more": "165/0",
+    "rn_sample": "25/0",
+    "newish_vault_cover": "86/0",
+    "tools_bare_open_remaining": 0,
+    "verdict": "IDLE"
+  },
+  "land_path_c_workflow_gap_vs_owner": false,
+  "concrete_work": [
+    "portable/patches/COMPATIBILITY.md",
+    "portable/LAND.md",
+    "portable/OWNER_ONE_LINERS.md",
+    "portable/patches/README.md",
+    "scripts/print_owner_unblock.sh",
+    "portable/RESTORE_PLAN_71.json",
+    "portable/BATCH71_TOKEN_SEARCH.json",
+    "portable/BATCH71_BRIEF.json",
+    "docs/AUTONOMOUS_48H_LOG.md"
+  ],
+  "source": "BASE_TIP 5f352a2 confirm + residual RW hunt + COMPATIBILITY currency (no 0017; no workflow gap)",
+  "window": "PERMANENT_OPEN"
+}

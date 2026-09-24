@@ -986,8 +986,24 @@ def test_audit_research_stack_open_read_only() -> None:
     assert "audit_research_stack_open.py" in pack
     assert "BATCH*_RESEARCH_STACK_AUDIT.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "Batch 70" in unblock
+    assert "Batch 70" in unblock or "Batch 71" in unblock
     assert "audit_research_stack_open.py" in unblock
+    assert (ROOT / "portable" / "BATCH71_BRIEF.json").is_file()
+    brief71 = json.loads(
+        (ROOT / "portable" / "BATCH71_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief71["scientific_effect"] == "NONE"
+    assert brief71["goal_complete"] is False
+    assert brief71["lemma_closed"] is False
+    assert brief71["new_0017"] is False
+    assert brief71["hardening_tip"].startswith("5f352a2")
+    assert (ROOT / "portable" / "RESTORE_PLAN_71.json").is_file()
+    restore71 = json.loads(
+        (ROOT / "portable" / "RESTORE_PLAN_71.json").read_text(encoding="utf-8")
+    )
+    assert restore71["goal_complete"] is False
+    assert restore71["lemma_closed"] is False
+    assert "5f352a2" in str(restore71.get("path_c", {}).get("base_tip", ""))
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:

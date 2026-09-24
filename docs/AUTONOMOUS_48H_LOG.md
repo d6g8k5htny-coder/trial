@@ -21,6 +21,25 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 71 — 2026-09-24 ~01:20 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `5f352a2` confirmed; residual RW IDLE / no 0017)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403) all W1–W5 incl. Path C dispatch. Path B land **not needed** (still ALIGNED). Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`5f352a2`** (== BASE_TIP; no tip refresh). `path_c_dry_run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING** (ci.yml / research.yml / bridge README).
+- Local hardening clone @ `5f352a2`: `apply_all --check` OK; apply OK; `math_status_check` problems=0 / OPEN_HOLD / lemma_closed=false; focused **90**/0 RW.
+- Residual RW hunt @ CPython **3.11** after apply_all: claims+recovery **83**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; mirrors **85**/0; registers **53**/0; lean/frontier **42**/0; cover **77**/0; drive **120**/0; ops **165**/0; RN sample **25**/0; vault/cover newish **86**/0; tools bare-open remaining **0** → **IDLE** / **no 0017**.
+- `land-path-c-on-main.yml` vs `owner_land_path_c.sh`: parity OK (hardening base, apply_all, lemma_closed=false, problems=0, focused pytest, dry_run default true, direct_push). Owner-only deltas (PATH_C_REBASE / PATH_C_BASE / write probe / path_c_dry_run dry mode) are intentional — **no real gap to ship**.
+- **Meaningful improvement:** COMPATIBILITY + LAND / OWNER_ONE_LINERS / patches README / print_owner_unblock Batch 71 currency; `RESTORE_PLAN_71.json` + `BATCH71_TOKEN_SEARCH.json` + `BATCH71_BRIEF.json`; `pack_portable.sh`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
+
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: (pending). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 70 — 2026-09-24 ~01:08 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `5f352a2`; research-stack OPEN audit; no status flips)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

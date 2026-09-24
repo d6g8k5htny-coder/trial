@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~01:08 UTC (batch 70: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP → `5f352a2` via PR #44; research-stack OPEN audit; no 0017; apply_all post-#41 topology guard).
+Checked 2026-09-24 ~01:20 UTC (batch 71: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP still `5f352a2` via PR #44; re-verify apply_all + residual RW hunt; no 0017; no land-path-c workflow gap vs owner_land_path_c).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -16,7 +16,7 @@ If a forced rebase hits first-stop conflicts: `./scripts/path_c_rebase_helper.sh
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#44) | `5f352a2` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 70** |
+| hardening (post-#44) | `5f352a2` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 70–71** (batch 71 re-verify: focused 90/0 RW; claims+recovery 83/0; receipts/bridge 541/0; frozen/dio 19/0; collision 189/0; mirrors 85/0; registers 53/0; cover/RN/lean/drive/ops residual 0 RW; tools bare-open 0) |
 | hardening (post-#45) | `74c082e` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 66–69) |
 | hardening (post-#42) | `3d47d1b` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 65) |
 | hardening (post-#43) | `6f0f061` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 63–64) |

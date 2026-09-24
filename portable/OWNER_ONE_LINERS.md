@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 70:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE** — never honor. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
+> **Batch 71:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE** — never honor. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP `5f352a2` (post-#44; was `74c082e`); `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). Actions: `.github/workflows/land-path-c-on-main.yml` (`dry_run` default true; `MAIN_PUSH_TOKEN` for land). Research-stack OPEN audit: `./scripts/audit_research_stack_open.py` (never flips status). No 0017.
-> Window: `python3 scripts/check_autonomous_window.py`. Watch embeds window+route: `python3 scripts/watch_main_alignment.py`. Timer 3600s. Trial write still 403. See `RESTORE_PLAN_70.json` + `BATCH70_TOKEN_SEARCH.json` + `BATCH70_RESEARCH_STACK_AUDIT.json`.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP still `5f352a2` (== live hardening; confirmed apply_all + math_status + residual RW IDLE / no 0017). `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). Actions: `.github/workflows/land-path-c-on-main.yml` (`dry_run` default true; parity vs owner script OK — no gap). Batch 70 research-stack OPEN audit artifact retained: `./scripts/audit_research_stack_open.py` (never flips status).
+> Window: `python3 scripts/check_autonomous_window.py`. Watch embeds window+route: `python3 scripts/watch_main_alignment.py`. Timer 3600s. Trial write still 403. See `RESTORE_PLAN_71.json` + `BATCH71_TOKEN_SEARCH.json` + `BATCH71_BRIEF.json`.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a

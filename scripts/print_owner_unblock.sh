@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 70 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; research-stack OPEN audit (no status flips); unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 71 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; residual RW IDLE / no 0017; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -37,8 +37,9 @@ echo "Rebase conflict paths: portable/PATH_C_REBASE_CONFLICT_REPORT_67.json (ci.
 echo "Rebase helper: $ROOT/scripts/path_c_rebase_helper.sh --dry-run  # prefer abort; never invent research status"
 echo "Resolution notes: portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json"
 echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
+echo "Batch 71: BASE_TIP ${BASE_TIP_SHORT} confirmed; apply_all --check/apply OK; residual RW hunt IDLE / no 0017; land-path-c workflow gap vs owner_land_path_c: none."
 echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_* + BATCH*_RESEARCH_STACK_AUDIT (Batch 64+/67+/68+/70+)."
-echo "Research-stack OPEN audit (read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
+echo "Research-stack OPEN audit (Batch 70; read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
 echo "  artifact: portable/BATCH70_RESEARCH_STACK_AUDIT.json  |  docs/MECHANICAL_FINDINGS_MAIN.md"
 echo "Scientific effect: NONE"
 echo
