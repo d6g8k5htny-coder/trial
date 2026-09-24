@@ -1409,13 +1409,16 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "owner_land_path_b.sh" in unblock
     assert "wait_until_aligned.sh" in unblock
     # --after-merge: fail-closed while MISALIGNED; succeed once default tip is ALIGNED (PR #2).
+    # Batch 227: Path B retries transport (exit 2); Intent allows one re-invoke if a
+    # prior flake still surfaces while a fresh watch reports ALIGNED.
     result = subprocess.run(
         ["bash", str(path_b), "--after-merge"],
         capture_output=True,
         text=True,
-        timeout=90,
+        timeout=120,
         check=False,
         cwd=str(ROOT),
+        env={**os.environ, "PATH_B_TRANSPORT_RETRIES": "3", "PATH_B_TRANSPORT_SLEEP_S": "1"},
     )
     watch = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "watch_main_alignment.py")],
@@ -1426,12 +1429,27 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
         cwd=str(ROOT),
     )
     watch_state = __import__("json").loads(watch.stdout).get("state") if watch.returncode in (0, 1) else None
+    if watch_state == "ALIGNED" and result.returncode != 0:
+        combined = (result.stderr + result.stdout).lower()
+        if "transport" in combined or "exit=2" in combined or "exit 2" in combined:
+            result = subprocess.run(
+                ["bash", str(path_b), "--after-merge"],
+                capture_output=True,
+                text=True,
+                timeout=120,
+                check=False,
+                cwd=str(ROOT),
+                env={**os.environ, "PATH_B_TRANSPORT_RETRIES": "3", "PATH_B_TRANSPORT_SLEEP_S": "1"},
+            )
     if watch_state == "ALIGNED":
-        assert result.returncode == 0
+        assert result.returncode == 0, (result.stdout, result.stderr)
         assert "ALIGNED" in (result.stderr + result.stdout)
     else:
         assert result.returncode != 0
         assert "ERROR" in (result.stderr + result.stdout)
+    b_text_live = path_b.read_text(encoding="utf-8")
+    assert "TRANSPORT_RETRIES" in b_text_live or "transport" in b_text_live.lower()
+    assert "PATH_B_TRANSPORT_RETRIES" in b_text_live
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "owner_land_path_a.sh" in pack
     assert "owner_land_path_b.sh" in pack
@@ -5362,3 +5380,39 @@ def test_batch224_sandbox_eight_repos() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 224" in log
     assert "sandbox" in log
+
+
+def test_batch227_path_b_transport_retry() -> None:
+    """Batch 227: Path B --after-merge retries audit/watch transport (CI sanity flake)."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH227_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "227"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["write"] == "DENIED"
+    assert data["sanity_fix"] == "path_b_after_merge_transport_retry"
+    assert _living_tip(data.get("tip"))
+    assert _living_release(data.get("release") or data.get("status_snapshot", {}).get("release_tag"))
+
+    path_b = (ROOT / "scripts" / "owner_land_path_b.sh").read_text(encoding="utf-8")
+    assert "PATH_B_TRANSPORT_RETRIES" in path_b
+    assert "transport exhausted" in path_b or "TRANSPORT_RETRIES" in path_b
+    assert "watch transport" in path_b or "audit transport" in path_b
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    assert "Batch 227" in intent
+    assert "PATH_B_TRANSPORT_RETRIES" in intent
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("tip_match") is True
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 227" in log
+    assert "transport" in log.lower()

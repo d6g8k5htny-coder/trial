@@ -22,6 +22,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 227 — 2026-09-24 ~16:19–16:24 UTC (PERMANENT window; CI sanity transport fix; auth renew 84FB→B4B5; tip stable cbaa056; write DENIED; scientific effect NONE; flipped nothing)
+
+- **CI root cause:** trial-ci sanity on `2da7a02` (run `36025481948`) — `test_owner_land_scripts_exist_and_fail_closed` failed when `owner_land_path_b.sh --after-merge` got `watch_main_alignment` **exit=2** (transport) while a follow-up watch reported **ALIGNED**.
+- **FIX:** `owner_land_path_b.sh` retries audit/watch on transport (exit 2) up to `PATH_B_TRANSPORT_RETRIES` (default 3); Intent re-invokes once on transport flake when watch is ALIGNED. Intent: `test_batch227_path_b_transport_retry`.
+- AUTH: poll `84FB-0605` → **expired** → renew **`B4B5-42FE`**; poller `batch227-device-poll`. Never print tokens.
+- WRITE: `probe_main_write` **DENIED** 403; `install_has_main=false`. Path C blocked `NO_TOKEN`. Path C **not** landed.
+- Tip **`cbaa056` == BASE_TIP** → no tip refresh / no bundle rebuild. `assert_path_c_ready` **OK**; math_status problems=0 / OPEN_HOLD / **lemma_closed=false**.
+- Env: still **8** repos incl. sandbox. Research untouched; **flipped nothing**.
+
 ### Batch 226 — 2026-09-24 ~16:14–16:17 UTC (PERMANENT window; poll 84FB-0605 pending; tip stable cbaa056; write DENIED; inventory; scientific effect NONE; flipped nothing)
 
 - AUTH: poll `84FB-0605` → **pending** (`authorization_pending`; seconds_left≈300+). No renew (not expired). Poller `batch224-device-poll` still up. Never print tokens.

@@ -119,27 +119,52 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   exit 0
 fi
 
+# Batch 227: CI Intent flake — audit/watch can return exit 2 (transport /
+# RemoteDisconnected / rate limit) even when tip is ALIGNED. Retry briefly
+# like wait_until_aligned.sh; only fail-closed on persistent MISALIGNED/errors.
+TRANSPORT_RETRIES="${PATH_B_TRANSPORT_RETRIES:-3}"
+TRANSPORT_SLEEP_S="${PATH_B_TRANSPORT_SLEEP_S:-2}"
+
 run_remote_audit() {
-  echo "--- remote audit_main_alignment (expect ALIGNED / exit 0) ---"
-  set +e
-  python3 "$AUDIT_REMOTE"
-  local audit_ec=$?
-  set -e
-  if [[ "$audit_ec" -ne 0 ]]; then
-    die "audit_main_alignment exit=$audit_ec (expected 0=ALIGNED). If you just merged, wait a few seconds and re-run with --after-merge."
-  fi
-  echo
-  echo "--- watch_main_alignment (expect ALIGNED) ---"
-  set +e
-  python3 "$WATCH"
-  local watch_ec=$?
-  set -e
-  if [[ "$watch_ec" -ne 0 ]]; then
-    die "watch_main_alignment exit=$watch_ec (expected 0=ALIGNED)"
-  fi
-  echo
-  echo "owner_land_path_b: OK — default tip ALIGNED."
-  echo "Scientific effect: NONE"
+  local attempt=1
+  local audit_ec=0
+  local watch_ec=0
+  while [[ "$attempt" -le "$TRANSPORT_RETRIES" ]]; do
+    echo "--- remote audit_main_alignment (expect ALIGNED / exit 0; attempt $attempt/$TRANSPORT_RETRIES) ---"
+    set +e
+    python3 "$AUDIT_REMOTE"
+    audit_ec=$?
+    set -e
+    if [[ "$audit_ec" -eq 2 ]]; then
+      echo "owner_land_path_b: audit transport (exit=2); retrying in ${TRANSPORT_SLEEP_S}s..." >&2
+      sleep "$TRANSPORT_SLEEP_S"
+      attempt=$((attempt + 1))
+      continue
+    fi
+    if [[ "$audit_ec" -ne 0 ]]; then
+      die "audit_main_alignment exit=$audit_ec (expected 0=ALIGNED). If you just merged, wait a few seconds and re-run with --after-merge."
+    fi
+    echo
+    echo "--- watch_main_alignment (expect ALIGNED; attempt $attempt/$TRANSPORT_RETRIES) ---"
+    set +e
+    python3 "$WATCH"
+    watch_ec=$?
+    set -e
+    if [[ "$watch_ec" -eq 2 ]]; then
+      echo "owner_land_path_b: watch transport (exit=2); retrying in ${TRANSPORT_SLEEP_S}s..." >&2
+      sleep "$TRANSPORT_SLEEP_S"
+      attempt=$((attempt + 1))
+      continue
+    fi
+    if [[ "$watch_ec" -ne 0 ]]; then
+      die "watch_main_alignment exit=$watch_ec (expected 0=ALIGNED)"
+    fi
+    echo
+    echo "owner_land_path_b: OK — default tip ALIGNED."
+    echo "Scientific effect: NONE"
+    return 0
+  done
+  die "audit/watch transport exhausted after $TRANSPORT_RETRIES attempts (last audit=$audit_ec watch=$watch_ec)"
 }
 
 # --after-merge is read-only python audit/watch; no gh write auth required
