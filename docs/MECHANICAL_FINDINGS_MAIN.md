@@ -3,6 +3,27 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 195 — tip stable 8bd1f03; auth renew 50DB (CC72 &lt;90s); PATH_C_STATUS watch wire; no research flips @ tips `1c6e74b` / `8bd1f03`
+
+Mechanical inventory unchanged from Batch 194. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip refresh / no hunt.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8bd1f03cc2bb10c59b08b852ca2775dac27e28e9` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth renewed `50DB-FD4D` (prior `CC72-DB3D` &lt;90s) |
+| watch wire | `aligned_drift_watch.py` + `watch-main-alignment.yml` refresh `PATH_C_STATUS.json` each hourly run |
+| CI batch194 | README link-only land `8f48da5` → **success** (no red fix) |
+| pack / release | still **`batch180-path-c-bundle`** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (tip stable; no hunt) |
+
+Artifacts: `portable/BATCH195_BRIEF.json`. Scientific effect: **NONE**.
+
 ## Batch 194 — tip stable 8bd1f03; auth pending CC72; README Path C link-only (no embedded user code); no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory unchanged from Batch 192. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip refresh / no hunt.

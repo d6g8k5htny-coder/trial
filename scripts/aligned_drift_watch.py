@@ -37,7 +37,9 @@ PROBE = ROOT / "scripts" / "probe_main_write.py"
 VECTORS = ROOT / "scripts" / "probe_main_write_vectors.py"
 RESTORE = ROOT / "scripts" / "restore_main_face.sh"
 WINDOW = ROOT / "scripts" / "check_autonomous_window.py"
+PATH_C_STATUS = ROOT / "scripts" / "write_path_c_status.py"
 SNAPSHOT = ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json"
+PATH_C_STATUS_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
 
 # Prefer Path B for restore when MISALIGNED; Path A is the alternate
 # (PR #2 ready/merge or revert-of-revert). Path C is post-ALIGNED hardening.
@@ -71,6 +73,30 @@ def _run_json(cmd: list[str], timeout: int = 120) -> tuple[int, dict, str]:
         env=os.environ.copy(),
     )
     return proc.returncode, _parse_json_stdout(proc.stdout), (proc.stderr or "").strip()
+
+
+def _maybe_write_path_c_status(report: dict | None = None) -> None:
+    """Best-effort refresh of portable/PATH_C_STATUS.json (Batch 195).
+
+    Keeps tip/base_tip/write_state/device_code fresh on each hourly watch run.
+    Never prints secrets; never flips lemma_closed / research status.
+    """
+    if not PATH_C_STATUS.is_file():
+        return
+    try:
+        subprocess.run(
+            [sys.executable, str(PATH_C_STATUS), "--skip-write-probe"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=str(ROOT),
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return
+    if report is not None and PATH_C_STATUS_OUT.is_file():
+        report["path_c_status_path"] = "portable/PATH_C_STATUS.json"
+        report["path_c_status_refreshed"] = True
 
 
 def _preferred_restore_route(align_state: str) -> dict:
@@ -223,6 +249,11 @@ def main() -> int:
         action="store_true",
         help="Skip autonomous window embed",
     )
+    parser.add_argument(
+        "--no-path-c-status",
+        action="store_true",
+        help="Skip write_path_c_status.py refresh (Batch 195 default: refresh)",
+    )
     args = parser.parse_args()
 
     watched_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -309,6 +340,10 @@ def main() -> int:
 
     if not args.no_snapshot:
         _write_snapshot(report, Path(args.snapshot))
+
+    # Batch 195: keep PATH_C_STATUS.json fresh on each watch run (hourly CI + local).
+    if not args.no_path_c_status:
+        _maybe_write_path_c_status(report)
 
     print(json.dumps(report, indent=2, sort_keys=True))
 

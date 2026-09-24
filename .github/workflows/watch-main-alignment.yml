@@ -45,6 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e
+          # Batch 195: aligned_drift_watch refreshes PATH_C_STATUS.json each run
+          # (write_path_c_status.py --skip-write-probe; no secrets; lemma_closed=false).
           python scripts/aligned_drift_watch.py --no-probe --no-snapshot \
             | tee aligned-drift-watch.json
           code=$?
@@ -62,6 +64,9 @@ jobs:
           echo "state=${state}" >> "$GITHUB_OUTPUT"
           echo "tip_sha=${tip}" >> "$GITHUB_OUTPUT"
           echo "drift_state=${state} tip=${tip} exit=${code}"
+          if [ -f portable/PATH_C_STATUS.json ]; then
+            echo "path_c_status_refreshed=true tip_match=$(python -c 'import json; print(json.load(open("portable/PATH_C_STATUS.json")).get("tip_match"))' 2>/dev/null || true)"
+          fi
 
       - name: Upsert or close trial Issue (never touch main repo)
         env:

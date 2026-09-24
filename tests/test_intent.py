@@ -4611,3 +4611,101 @@ def test_batch194_readme_link_only_device_code() -> None:
     assert "link-only" in findings.lower()
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 
+
+def test_batch195_path_c_status_watch_wire() -> None:
+    """Batch 195: tip stable; auth renew 50DB; PATH_C_STATUS refresh on watch; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH195_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "195"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "50DB-FD4D" or "-" in str(data["device_code"])
+    assert data["prior_device_code"] == "CC72-DB3D" or "-" in str(
+        data.get("prior_device_code", "")
+    )
+    assert data["auth_renewed"] is True
+    assert data["device_auth"] == "pending"
+    assert data["write"] == "DENIED"
+    assert data["main_status"] == "ALIGNED"
+    assert data.get("has_main_push_token") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("watch_path_c_status_wire") is True
+    assert data.get("ci_status") == "green"
+    assert data.get("canonical_issue") in (45, 46) or data.get("issue_number") in (
+        45,
+        46,
+    )
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+    assert data.get("hunt") == "skipped_tip_stable"
+    assert data.get("patch_0017") is False
+    assert data.get("code_changed") is True
+
+    # Watch wiring: aligned_drift_watch refreshes PATH_C_STATUS by default.
+    adw = (ROOT / "scripts" / "aligned_drift_watch.py").read_text(encoding="utf-8")
+    assert "_maybe_write_path_c_status" in adw
+    assert "write_path_c_status" in adw
+    assert "--no-path-c-status" in adw
+    assert "path_c_status_refreshed" in adw
+
+    wf = (ROOT / ".github" / "workflows" / "watch-main-alignment.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "aligned_drift_watch.py" in wf
+    assert "PATH_C_STATUS" in wf or "write_path_c_status" in wf or "Batch 195" in wf
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "50DB-FD4D" or "-" in str(
+        status.get("device_code", "")
+    )
+    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+    assert status.get("path_c_blocked") == "NO_TOKEN"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "50DB-FD4D" in gh
+    assert "CC72-DB3D" in gh
+    assert "issues/46" in gh or "#46" in gh or "BATCH195_BRIEF" in gh
+    assert "aligned_drift_watch" in gh or "PATH_C_STATUS" in gh
+    assert "BATCH195_BRIEF" in gh or "Batch 195" in gh
+    # README stays link-only (no embedded XXXX-XXXX).
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "portable/GH_DEVICE_LOGIN.md" in readme
+    import re
+
+    assert not re.search(r"\b[A-Z0-9]{4}-[A-Z0-9]{4}\b", readme)
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 195" in log
+    assert "50DB-FD4D" in log
+    assert "CC72-DB3D" in log
+    assert "PATH_C_STATUS" in log or "aligned_drift_watch" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 195" in ones
+    assert "aligned_drift_watch" in ones or "PATH_C_STATUS" in ones
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 195" in findings
+    assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
+
