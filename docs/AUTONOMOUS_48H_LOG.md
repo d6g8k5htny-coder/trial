@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 151 — 2026-09-24 ~08:17 UTC (PERMANENT window; auth renew 1DAC-111C; ship owner_open_path_c_pr.sh; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `lemma_closed=false`.
+- Device auth `A450-C91F` **<90s** still pending → **renewed** `1DAC-111C`; poller `gh-device-login` restarted; daemon `when-writable-land` up. Updated `portable/GH_DEVICE_LOGIN.md`.
+- **Concrete Path C unlock:** shipped `scripts/owner_open_path_c_pr.sh` — owner `gh` / `MAIN_PUSH_TOKEN` → clone hardening @ BASE_TIP → `git am` path-c-applied-bundle → push `cursor/path-c-portable-fixes` → open/reuse PR into hardening. `--dry-run` / `--help`; idempotent. PR body: engineering-only; **lemma_closed stays false**; no research promotion. Wired into `print_owner_unblock.sh`, `OWNER_ONE_LINERS.md`, `LAND.md`, `APPLY.md`, `OWNER_ACTIONS_MAIN.md`. Intent coverage: `test_batch151_owner_open_path_c_pr_script`.
+- Tiny JSON: `portable/BATCH151_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `1DAC-111C` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` from `batch142-path-c-bundle`.
+
 ### Batch 149 — 2026-09-24 ~08:10 UTC (PERMANENT window; auth pending A450-C91F; research audit OPEN; CI intent fix; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).

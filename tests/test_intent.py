@@ -2446,3 +2446,83 @@ def test_batch149_research_audit_and_ci_intent_fix() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 149" in log
     assert "research audit" in log.lower() or "Research audit" in log
+
+
+def test_batch151_owner_open_path_c_pr_script() -> None:
+    """Batch 151: owner_open_path_c_pr.sh present; --dry-run/--help; wired; lemma_closed=false."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "cursor/path-c-portable-fixes" in text
+    assert "path-c-on-hardening.patch" in text
+    assert "git am" in text
+    assert "--dry-run" in text
+    assert "MAIN_PUSH_TOKEN" in text
+    assert "lemma_closed" in text
+    assert "no research promotion" in text.lower() or "no_research_promotion" in text
+    assert "chatgpt/drive-github-hardening-20260919" in text
+    assert "BASE_TIP" in text
+
+    help_p = subprocess.run(
+        ["bash", str(script), "--help"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert help_p.returncode == 0
+    help_out = help_p.stdout + help_p.stderr
+    assert "--dry-run" in help_out
+    assert "cursor/path-c-portable-fixes" in help_out
+    assert "lemma_closed" in help_out
+
+    dry_p = subprocess.run(
+        ["bash", str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert dry_p.returncode == 0
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "dry-run" in dry_out.lower()
+    assert "cursor/path-c-portable-fixes" in dry_out
+    assert "lemma_closed=false" in dry_out or "lemma_closed stays false" in dry_out
+    assert "Scientific effect: NONE" in dry_out or "scientific_effect=NONE" in dry_out
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "owner_open_path_c_pr.sh" in unblock
+
+    owner_one = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "owner_open_path_c_pr.sh" in owner_one
+    assert "cursor/path-c-portable-fixes" in owner_one
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "owner_open_path_c_pr.sh" in land
+    assert "cursor/path-c-portable-fixes" in land
+
+    brief = ROOT / "portable" / "BATCH151_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "151"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["owner_pr_script"] is True
+    assert data["tip"] == "10c077e"
+    assert data["device_code"] == "1DAC-111C"
+    assert data["auth_renewed"] is True
+    assert data["prior_device_code"] == "A450-C91F"
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "1DAC-111C" in gh
+    assert "A450-C91F" in gh
+    assert "owner_open_path_c_pr.sh" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 151" in log
+    assert "owner_open_path_c_pr" in log
