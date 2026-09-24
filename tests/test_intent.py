@@ -5024,3 +5024,51 @@ def test_batch207_path_c_0017_bundle_refresh() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 207" in log
     assert "0017" in log
+
+
+def test_batch210_auth_renew_hunt_clean_has_0017() -> None:
+    """Batch 210: tip stable b89448d; auth renew B064; has_0017; hunt clean no 0018; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH210_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data.get("batch") == "210"
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert data.get("scientific_effect") == "NONE"
+    assert data.get("goal_complete") is False
+    assert data.get("has_0017") is True
+    assert data.get("patch_0018") is False
+    assert data.get("hunt") == "clean_no_0018"
+    assert data.get("auth_renewed") is True
+    assert _living_tip(data.get("tip"))
+    assert _living_release(data.get("release"))
+    assert data.get("path_c_landed") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "0017-pinned-sources-close-file-handles.patch" in apply_all
+    manifest = json.loads((ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8"))
+    assert any(p.get("id") == "0017" for p in manifest.get("patches", []))
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert verify.get("lemma_closed") is False
+    assert verify.get("patch_0017") is True
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status.get("lemma_closed") is False
+    assert status.get("device_code")  # public user code only
+
+    hunt = json.loads((ROOT / "portable" / "BATCH210_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("hunt_result") == "clean"
+    assert hunt.get("patch_0018") is False
+    assert hunt.get("has_0017") is True
+    assert hunt.get("lemma_closed") is False
+
+    login = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "B064-C458" in login
+    assert "Batch 210" in login
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 210" in log
+    assert "B064-C458" in log

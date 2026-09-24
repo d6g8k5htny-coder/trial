@@ -3,6 +3,22 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 210 — tip stable b89448d; auth renew B064 (E577 &lt;90s); has_0017 verified; hunt clean no 0018; no research flips @ tips `1c6e74b` / `b89448d`
+
+Mechanical inventory unchanged from Batch 207. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip SHA refresh / no bundle rebuild.
+
+| Face | Tip | Shape | Notes |
+|------|-----|-------|-------|
+| default main | `1c6e74b` | ALIGNED (PR #41) | Path C not shaped here |
+| hardening | `b89448da439d963a404212ae024534169aa22297` | **HAS_PACKET** (== BASE_TIP) | OPEN inventory (Batch 165/185/207/210 counts) |
+| write | DENIED (403) | `install_has_main=false` | Path C blocked `NO_TOKEN` |
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth renewed `B064-C458` (prior `E577-EEF9` &lt;90s; prior prior `1DAB-B7F7`) |
+| hunt | beyond 0017: focused+hygiene+tools `--help` **0** RW → **clean** (no 0018) |
+| pack / release | still **`batch207-path-c-bundle`** (0017 stack unchanged) |
+| new portable **0018** | **none** (hunt clean) |
+| research flips | **none**; `lemma_closed=false` |
+
 ## Batch 207 — tip stable b89448d; auth renew E577 (1DAB &lt;90s); ship 0017 pinned_sources RW; pack batch207-path-c-bundle; no research flips @ tips `1c6e74b` / `b89448d`
 
 Mechanical inventory unchanged from Batch 185/202 (research AUDIT counts). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip SHA refresh; **force** bundle rebuild for new **0017**.

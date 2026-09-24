@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 210 — 2026-09-24 ~14:13–14:25 UTC (PERMANENT window; tip stable b89448d; auth E577→B064; has_0017 verified; hunt clean no 0018; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
+- Tip **`b89448d` == BASE_TIP** → no tip SHA refresh / no bundle rebuild.
+- AUTH: poll `E577-EEF9` pending/slow_down → renew `B064-C458` (seconds_left&lt;90). Never print tokens.
+- E2E: `assert_path_c_ready` OK; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; apply_all/MANIFEST/VERIFY include **0017**.
+- RESEARCH AUDIT @ `b89448d`: OPEN_HOLD; counts unchanged (13/1/3/2/26/16); **flipped nothing**.
+- **Hunt:** beyond 0017 WITH patches — focused/claims/recovery/pinned/receipts/bridge/frozen/collision/registers/mirrors/ops/lean/vault/cover + tools `--help` all **0** ResourceWarning → **clean** (no **0018**). Frozen/mirror bare `open()` out of Path C scope.
+- Release still **`batch207-path-c-bundle`**. Timers: auth **1800s**, permanent **10800s**. `goal_complete=false`.
+
 ### Batch 207 — 2026-09-24 ~13:54–14:05 UTC (PERMANENT window; tip stable b89448d; auth 1DAB→E577; ship 0017; pack batch207-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
