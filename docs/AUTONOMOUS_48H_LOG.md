@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 176 — 2026-09-24 ~10:55–11:05 UTC (PERMANENT window; tip stable 8ea3b5f; auth renew 9671→5E05; refresh fetch/CI tip-drift wire; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `9671-4918` **<90s** still pending → **renewed** `5E05-EA04`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **Engineering:** hardened `scripts/refresh_path_c_bundle.sh` tip-fetch (HTTP status + clear API message; no KeyError traceback). Tip-stable `--dry-run` / no-arg → exit 0 (no-op). Wired CI tip-drift jobs (`portable-patches-on-main` + `path-c-applied-bundle-dry-apply`) to fail with fix path `./scripts/refresh_path_c_bundle.sh` and dry-sim `--dry-run` only (never auto-pushes to main hardening). Intent: `test_batch176_refresh_ci_tip_drift`.
+- Tiny JSON: `portable/BATCH176_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `5E05-EA04` (renewed from `9671-4918`) **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #35.
+
 ### Batch 173 — 2026-09-24 ~10:45–10:50 UTC (PERMANENT window; tip stable 8ea3b5f; auth renew 7BCB→9671; ship refresh_path_c_bundle.sh; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

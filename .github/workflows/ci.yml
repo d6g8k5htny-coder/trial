@@ -139,6 +139,7 @@ jobs:
         run: |
           set -euo pipefail
           # Batch 147: fail loudly when portable patches BASE_TIP lags the live tip.
+          # Batch 176: document fix path = scripts/refresh_path_c_bundle.sh (no auto-push to main).
           TIP="$(git -C main-work rev-parse HEAD)"
           BASE_LINE="$(tr -d '\r' < trial/portable/patches/BASE_TIP.txt | head -n1)"
           # Batch 155: hex SHA extract (single-quoted python -c: \b is word-boundary).
@@ -146,14 +147,23 @@ jobs:
           BASE_SHA="$(printf '%s' "$BASE_LINE" | python3 -c 'import re,sys; t=sys.stdin.read(); m=re.search(r"(?i)\b([0-9a-f]{40})\b", t); print(m.group(1).lower() if m else "")')"
           echo "TIP=$TIP BASE_TIP=$BASE_SHA"
           if [[ -z "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: empty BASE_TIP.txt"
+            echo "::error::tip-drift: empty BASE_TIP.txt — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
           if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA — refresh BASE_TIP / re-cut patches"
+            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
+            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (updates BASE_TIP + rebuilds path-c-applied-bundle; does NOT push to main hardening)"
+            echo "::error::tip-drift: dry-sim only in CI — never auto-refresh onto main from Actions"
             exit 1
           fi
           echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
+      - name: Tip-drift dry-sim (refresh_path_c_bundle --dry-run)
+        run: |
+          set -euo pipefail
+          # Batch 176: exercise refresh helper on tip-stable trees (exit 0 no-op).
+          # On TIP_DRIFT this exits 1 with the same fix-path message; never pushes to main.
+          cd trial
+          ./scripts/refresh_path_c_bundle.sh --dry-run
       - name: Apply portable patches
         run: |
           cd main-work
@@ -229,22 +239,28 @@ jobs:
           VERIFY_SHA="$(python3 -c "import json; print(json.load(open('$VERIFY_FILE'))['base_tip_sha'])")"
           echo "BASE_TIP=$BASE_SHA VERIFY.base_tip_sha=$VERIFY_SHA"
           if [[ -z "$BASE_SHA" || -z "$VERIFY_SHA" ]]; then
-            echo "::error::tip-drift: empty BASE_TIP or VERIFY.base_tip_sha"
+            echo "::error::tip-drift: empty BASE_TIP or VERIFY.base_tip_sha — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
           if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
+            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (updates BASE_TIP + rebuilds path-c-applied-bundle; does NOT push to main hardening)"
+            echo "::error::tip-drift: CI dry-sim only — never auto-refresh onto main from Actions"
             exit 1
           fi
           if [[ "$TIP" != "$VERIFY_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != VERIFY.json base_tip_sha $VERIFY_SHA — rebuild path-c-applied-bundle"
+            echo "::error::tip-drift: live hardening SHA $TIP != VERIFY.json base_tip_sha $VERIFY_SHA"
+            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
           if [[ "$BASE_SHA" != "$VERIFY_SHA" ]]; then
-            echo "::error::tip-drift: BASE_TIP $BASE_SHA != VERIFY.json base_tip_sha $VERIFY_SHA"
+            echo "::error::tip-drift: BASE_TIP $BASE_SHA != VERIFY.json base_tip_sha $VERIFY_SHA — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
           echo "tip-drift gate OK: live==BASE_TIP==VERIFY @ ${TIP:0:7}"
+          # Batch 176: dry-sim refresh helper (tip-stable → exit 0; never pushes to main).
+          echo "--- refresh_path_c_bundle.sh --dry-run (Batch 176 tip-drift dry-sim) ---"
+          (cd "${GITHUB_WORKSPACE}/trial" && ./scripts/refresh_path_c_bundle.sh --dry-run)
           # Configure identity for git am (no push; local commits only).
           git -C main-bundle config user.email "trial-ci@users.noreply.github.com"
           git -C main-bundle config user.name "trial-ci"

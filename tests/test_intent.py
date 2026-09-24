@@ -3617,3 +3617,92 @@ def test_batch173_refresh_path_c_bundle() -> None:
     assert "refresh_path_c_bundle" in log
     assert "lemma_closed" in log.lower()
 
+
+def test_batch176_refresh_ci_tip_drift() -> None:
+    """Batch 176: tip stable; auth renew 5E05; refresh fetch harden + CI tip-drift dry-sim; lemma_closed=false."""
+    import json
+    import os
+    import stat
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH176_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "176"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "5E05-EA04"
+    assert data["prior_device_code"] == "9671-4918"
+    assert data["auth_renewed"] is True
+    assert data["write"] == "DENIED"
+    assert data.get("refresh_ok") is True
+    assert data.get("refresh_script") == "scripts/refresh_path_c_bundle.sh"
+    assert data.get("canonical_issue") == 35 or data.get("issue_number") == 35
+    assert int(data.get("seconds_left", 0)) >= 0
+    assert data.get("preferred_auth_interval_s") == 1800
+
+    script = ROOT / "scripts" / "refresh_path_c_bundle.sh"
+    assert script.is_file()
+    mode = script.stat().st_mode
+    assert mode & stat.S_IXUSR, "refresh_path_c_bundle.sh must be executable"
+    text = script.read_text(encoding="utf-8")
+    assert "tip fetch HTTP" in text or "HTTP_CODE" in text
+    assert "--dry-run" in text
+    assert "fix path" in text.lower() or "TIP_DRIFT" in text
+    assert "REFRESH_BATCH_TAG" in text
+
+    dry = subprocess.run(
+        [str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+    )
+    assert dry.returncode == 0, dry.stdout + dry.stderr
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+
+    # Bad remote should die cleanly (no KeyError traceback)
+    bad = subprocess.run(
+        [str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+        env={
+            **os.environ,
+            "GIT_TERMINAL_PROMPT": "0",
+            "MAIN_REPO": "d6g8k5htny-coder/does-not-exist",
+            "HARDENING_REF": "nope",
+        },
+    )
+    assert bad.returncode != 0
+    combined = bad.stdout + bad.stderr
+    assert "KeyError" not in combined
+    assert "tip fetch HTTP" in combined or "ERROR" in combined
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "refresh_path_c_bundle.sh" in ci
+    assert "Tip-drift dry-sim" in ci or "dry-sim" in ci
+    assert "does NOT push to main" in ci or "never auto-refresh" in ci or "never auto-pushes" in ci
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "5E05-EA04" in gh
+    assert "9671-4918" in gh
+    assert "issues/35" in gh or "#35" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 176" in log
+    assert "5E05-EA04" in log
+    assert "refresh_path_c_bundle" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 176" in ones
+    assert "refresh_path_c_bundle.sh" in ones
+

@@ -30,7 +30,7 @@ FORCE=0
 DRY_RUN=0
 KEEP_WORKDIR=0
 SKIP_PYTEST=0
-BATCH_TAG="${REFRESH_BATCH_TAG:-173}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-176}"
 
 usage() {
   cat <<'EOF'
@@ -45,7 +45,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   recorded in VERIFY.json (default 173)
+  REFRESH_BATCH_TAG   recorded in VERIFY.json (default 176)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional clone auth (never printed)
 
 Exit:
@@ -112,8 +112,36 @@ if [[ -n "$TOK" ]]; then
   AUTH_HDR=(-H "Authorization: Bearer ${TOK}")
 fi
 echo "refresh_path_c_bundle: fetching live tip ${MAIN_REPO}@${HARDENING_REF}"
-LIVE_JSON="$(curl -sS "${AUTH_HDR[@]}" -H 'Accept: application/vnd.github+json' "$API_URL")" || die "tip fetch failed"
-LIVE_SHA="$(printf '%s' "$LIVE_JSON" | python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"].lower())')" || die "could not parse live tip sha"
+# -f: treat HTTP >=400 as failure (404 repo/ref, 403 rate-limit, etc.)
+HTTP_CODE=0
+LIVE_JSON="$(curl -sS -w '\n%{http_code}' "${AUTH_HDR[@]}" -H 'Accept: application/vnd.github+json' "$API_URL")" || die "tip fetch failed (curl transport)"
+HTTP_CODE="$(printf '%s' "$LIVE_JSON" | tail -n1)"
+LIVE_JSON="$(printf '%s' "$LIVE_JSON" | sed '$d')"
+if [[ "$HTTP_CODE" != "200" ]]; then
+  API_MSG="$(printf '%s' "$LIVE_JSON" | python3 -c '
+import json,sys
+try:
+    d=json.load(sys.stdin)
+except Exception:
+    print("non-json body"); raise SystemExit(0)
+print(d.get("message") or d.get("error") or d.get("documentation_url") or "unknown")
+' 2>/dev/null || echo "unparseable")"
+  die "tip fetch HTTP ${HTTP_CODE}: ${API_MSG}"
+fi
+LIVE_SHA="$(printf '%s' "$LIVE_JSON" | python3 -c '
+import json,sys,re
+try:
+    d=json.load(sys.stdin)
+except Exception as e:
+    print(f"json_error:{e}", file=sys.stderr)
+    raise SystemExit(1)
+sha=(d.get("sha") or "").strip().lower()
+if not re.fullmatch(r"[0-9a-f]{40}", sha):
+    msg=d.get("message") or d.get("error") or "missing sha"
+    print(f"bad_sha:{msg}", file=sys.stderr)
+    raise SystemExit(1)
+print(sha)
+')" || die "could not parse live tip sha from API JSON"
 LIVE_SHORT="${LIVE_SHA:0:7}"
 PRIOR_SHORT="${PRIOR_SHA:0:7}"
 
@@ -132,7 +160,8 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "refresh_path_c_bundle: dry-run OK tip stable @ ${LIVE_SHORT} (no rebuild needed)"
     exit 0
   fi
-  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT}; would update BASE_TIP + rebuild .patch+.bundle + VERIFY.json"
+  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT}"
+  echo "refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)"
   exit 1
 fi
 
