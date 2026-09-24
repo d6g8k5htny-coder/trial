@@ -1,7 +1,7 @@
 {
   "batch": "240",
-  "generated_at_utc": "2026-09-24T20:35:00Z",
-  "status": "deep_hunt_0020_negative_post_0019",
+  "generated_at_utc": "2026-09-24T20:50:00Z",
+  "status": "deep_hunt_0020_negative_plus_auto_path_b_restore",
   "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
@@ -25,25 +25,36 @@
   "patch_0020_ready": false,
   "hunt_0020": "NEGATIVE",
   "hunt_0020_artifact": "portable/HUNT_240_NEGATIVE.json",
+  "auto_path_b_restore_strengthened": true,
+  "auto_path_b_restore_scripts": [
+    "scripts/aligned_drift_watch.py",
+    "scripts/when_writable_land.py"
+  ],
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "main_pr_merged_this_batch": null,
   "owned_eng_green_merged": [],
+  "eng_extract_or_null": null,
   "research_hold_prs_skipped": [73, 47, 46, 38, 36, 21, 12, 8, 7],
   "parallel_shipped": [
     "land_path_c_0019_apply",
     "deep_post_0019_rw_hunt_0020_negative",
     "research_audit_open_hold_no_flip",
-    "living_tip_supersession_542e6ec"
+    "living_tip_supersession_542e6ec",
+    "auto_path_b_restore_main_push_token",
+    "trial_land_hunt_240_docs"
   ],
   "next_focus": "idle_or_next_eng_surface_beyond_0020_when_signal",
-  "note": "Batch 240 deep eng hunt for portable 0020 on tip 542e6ec (0019 already on tip via #71). NEGATIVE — 0 ResourceWarning across focused+broad slices; AST bare-open 0; no owned eng green PR to merge. lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 240: deep hunt NEGATIVE on tip 542e6ec; land HUNT_240+BATCH240 docs to trial main; strengthen aligned_drift_watch/when_writable_land MAIN_PUSH_TOKEN + auto Path B restore on MISALIGNED. lemma_closed=false; flipped nothing. Never printed tokens.",
   "artifacts": [
     "portable/HUNT_240_NEGATIVE.json",
     "portable/BATCH240_HUNT.json",
     "portable/BATCH240_BRIEF.json",
+    "portable/BATCH240_AUTO_RESTORE.json",
     "portable/BATCH240_RESEARCH_STACK_AUDIT.json",
     "docs/AUTONOMOUS_48H_LOG.md",
+    "scripts/aligned_drift_watch.py",
+    "scripts/when_writable_land.py",
     "tests/test_intent.py"
   ],
-  "trial_pr_branch": "cursor/batch240-deep-hunt-0020-3343"
+  "trial_pr_branch": "cursor/batch240-auto-restore-f10d"
 }

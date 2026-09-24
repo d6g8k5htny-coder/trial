@@ -69,6 +69,13 @@ Batch 239 — future deltas (0019+) auto-land:
   path_c_00NN_landed marker is not True. Cutting 0019+ must re-arm Path C land
   even when path_c_0018_landed=true / path_c_landed=true. Never flips research.
 
+Batch 240 — MAIN_PUSH_TOKEN + auto Path B restore:
+  Token discovery (env / well-known files) is injected into every child env at
+  start. If default tip is ever MISALIGNED while write is WRITABLE, this lander
+  auto-runs restore_main_face.sh (Path B) before any Path C work — same contract
+  as aligned_drift_watch.py auto-restore. Token value never printed. Never flips
+  research status.
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -1171,21 +1178,29 @@ def _one_iteration(
         return report
 
     if align_state == "MISALIGNED":
+        # Batch 240: auto Path B restore under MAIN_PUSH_TOKEN (never print value).
+        _tok, tok_src = resolve_main_push_token()
         report["action"] = "path_b_restore"
         report["reason"] = (
             "misaligned_writable_after_install_flip" if flipped else "misaligned_writable"
         )
+        report["auto_path_b_restore"] = True
+        report["token_source"] = tok_src
         cmd = ["bash", str(RESTORE), "--batch", str(batch)]
         if dry_run:
             cmd = ["bash", str(RESTORE), "--dry-run", "--batch", str(batch)]
             land = _run_land(cmd, dry_run=True, label="restore_main_face_path_b")
         else:
             land = _run_land(cmd, dry_run=False, label="restore_main_face_path_b")
+        if isinstance(land, dict):
+            land["token_source"] = tok_src
+            land["auto_path_b_restore"] = True
         report["land"] = land
         _log(
             log_path,
             f"action=path_b_restore attempted={land.get('attempted')} "
-            f"exit={land.get('exit')} dry_run={dry_run}",
+            f"exit={land.get('exit')} dry_run={dry_run} "
+            f"token_source={tok_src or 'none'} auto_path_b_restore=true",
         )
         return report
 

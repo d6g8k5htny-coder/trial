@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 240 (auto Path B + trial land) — 2026-09-24 ~20:50– UTC (PERMANENT window; HUNT_240 NEGATIVE land + MAIN_PUSH_TOKEN auto-restore; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP). Default tip **ALIGNED**. `lemma_closed=false`.
+- **Land** trial branch docs: `HUNT_240_NEGATIVE.json` + BATCH240 artifacts → trial `main`.
+- **Strengthen:** `aligned_drift_watch.py` discovers `MAIN_PUSH_TOKEN` (env/file; never printed) and **auto Path B** restores via `restore_main_face.sh` when default tip is MISALIGNED+WRITABLE (`--no-restore` / `--dry-run` supported). `when_writable_land.py` records `auto_path_b_restore` + `token_source` on MISALIGNED path.
+- Dry-run once: drift watch `--dry-run` + lander `--once --dry-run` (ALIGNED → no restore attempt).
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **no eng extract**.
+- **flipped nothing**. Never printed tokens.
+
 ### Batch 240 (deep hunt close) — 2026-09-24 ~20:30– UTC (PERMANENT window; post-0019 0020 hunt NEGATIVE; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP; **ALIGNED**; tip_moved=false). Path C **0019** already on tip via [main #71](https://github.com/d6g8k5htny-coder/main/pull/71).

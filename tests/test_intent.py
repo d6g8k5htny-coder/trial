@@ -1298,6 +1298,11 @@ def test_aligned_drift_watch_script_and_ci_record_only() -> None:
     assert "preferred_restore_route" in src
     assert "Path_B" in src and "Path_A" in src
     assert "--restore-if-writable" in src
+    assert "--no-restore" in src
+    assert "--dry-run" in src
+    assert "MAIN_PUSH_TOKEN" in src
+    assert "auto_path_b_restore" in src or "auto Path B" in src
+    assert "resolve_main_push_token" in src or "when_writable_land" in src
     assert "ALIGNED_DRIFT_SNAPSHOT" in src
     assert "restore_main_face" in src
     assert "lemma_closed" in src
@@ -1386,12 +1391,71 @@ def test_aligned_drift_watch_script_and_ci_record_only() -> None:
         timeout=90,
         check=False,
         cwd=str(ROOT),
+        env={k: v for k, v in os.environ.items() if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")},
     )
     assert skip.returncode in (0, 1, 2), skip.stderr + skip.stdout
     skip_data = json.loads(skip.stdout)
     if "restore" in skip_data:
         # Without probe, write state is None → skipped not_writable or not_misaligned
         assert skip_data["restore"].get("attempted") is False
+
+    # Batch 240: --dry-run + --no-restore never attempts; token_source reported
+    dry = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--no-probe",
+            "--no-snapshot",
+            "--no-window",
+            "--no-path-c-status",
+            "--dry-run",
+            "--batch",
+            "240",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+        env={k: v for k, v in os.environ.items() if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")},
+    )
+    assert dry.returncode in (0, 1, 2), dry.stderr + dry.stdout
+    dry_data = json.loads(dry.stdout)
+    assert dry_data["lemma_closed"] is False
+    assert dry_data["flipped_anything"] is False
+    assert dry_data["scientific_effect"] == "NONE"
+    assert "token_source" in dry_data
+    assert dry_data.get("auto_path_b_restore") is True
+    if "restore" in dry_data:
+        assert dry_data["restore"].get("attempted") is False
+        assert dry_data["restore"].get("skipped_reason") in (
+            "not_misaligned",
+            "not_writable",
+            "dry_run",
+        )
+
+    no_restore = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--no-probe",
+            "--no-snapshot",
+            "--no-window",
+            "--no-path-c-status",
+            "--no-restore",
+            "--batch",
+            "240",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert no_restore.returncode in (0, 1, 2), no_restore.stderr + no_restore.stdout
+    nr_data = json.loads(no_restore.stdout)
+    assert "restore" not in nr_data or nr_data["restore"].get("attempted") is False
+    assert nr_data["instant_restore_ready"].get("auto_restore") is False
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
@@ -6072,3 +6136,13 @@ def test_batch240_land_path_c_apply_includes_0019() -> None:
     assert "0019" in log
     assert "HUNT_240_NEGATIVE" in log or "0020" in log
     assert "land-path-c" in log.lower() or "land_path_c" in log
+
+    # Batch 240: auto Path B restore + MAIN_PUSH_TOKEN on drift watch / lander
+    adw = (ROOT / "scripts" / "aligned_drift_watch.py").read_text(encoding="utf-8")
+    assert "--no-restore" in adw and "--dry-run" in adw
+    assert "MAIN_PUSH_TOKEN" in adw
+    assert "auto_path_b_restore" in adw or "auto Path B" in adw
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "Batch 240" in ww
+    assert "auto_path_b_restore" in ww
+    assert "MAIN_PUSH_TOKEN" in ww
