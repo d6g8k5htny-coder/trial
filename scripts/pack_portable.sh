@@ -79,6 +79,7 @@ done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
+  portable/RELAUNCH_WITH_MAIN_SCOPE.md \
   portable/OWNER_ONE_LINERS.md \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \

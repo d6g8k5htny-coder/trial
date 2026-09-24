@@ -2,7 +2,20 @@
 # Owner Path C land: apply portable engineering patches (0001–0004 + 0008–0016) onto the
 # working tip of d6g8k5htny-coder/main, then push a branch / open a PR.
 #
-# Prerequisites:
+# === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
+# Prerequisites (local machine / Codespace — NOT the trial Cloud Agent token):
+#   1. git, python3, gh  (gh auth login with Contents:Write + PullRequests:Write on main)
+#   2. Download latest Path C release on trial (batch125-path-c-bundle or newer):
+#        gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+#          -p 'trial-portable-main-fixes.tgz'
+#   3. Extract and land in ONE command:
+#        mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+#        /tmp/path-c-land/scripts/owner_land_path_c.sh
+#      Faster (pre-verified patch; same gates): add --from-bundle
+#        /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+# Cloud Agent mid-flight cannot gain main write — see portable/RELAUNCH_WITH_MAIN_SCOPE.md.
+#
+# Prerequisites (tree shape):
 #   - Default tip may already be ALIGNED (owner PR #41 @ 1c6e74b, or historical PR #2).
 #   - Apply target is still chatgpt/drive-github-hardening-20260919 (BASE_TIP).
 #     Post-ALIGNED default main is a *different tree* (no docs/math_status/PACKET.json;
@@ -14,6 +27,7 @@
 #   - Certainty without write: --dry-run → scripts/path_c_dry_run.py
 #
 # Default (safer): clone hardening tip, apply_all, push branch, open PR.
+# Opt-in: --from-bundle uses portable/path-c-applied-bundle/path-c-on-hardening.patch (git am).
 # Opt-in: --direct-push pushes the patched tip branch straight (no PR).
 #
 # Intended to run on the owner's machine / Codespace with *owner* gh/git auth
@@ -32,6 +46,7 @@
 # Usage:
 #   ./scripts/owner_land_path_c.sh --dry-run
 #   ./scripts/owner_land_path_c.sh
+#   ./scripts/owner_land_path_c.sh --from-bundle
 #   ./scripts/owner_land_path_c.sh --direct-push
 #   TRIAL_ROOT=/path/to/trial ./scripts/owner_land_path_c.sh
 #   PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # usually conflicts post-#41
@@ -46,6 +61,7 @@ BRANCH="${PATH_C_BRANCH:-cursor/portable-engineering-patches}"
 WORKDIR="${PATH_C_WORKDIR:-}"
 DIRECT_PUSH=0
 DRY_RUN=0
+FROM_BUNDLE=0
 # PATH_C_BASE: auto | hardening | main
 # auto (post-ALIGNED): always prefer hardening — default main lacks PACKET.json / patch shape.
 BASE_MODE="${PATH_C_BASE:-auto}"
@@ -62,11 +78,24 @@ need_cmd() {
 
 usage() {
   cat <<'EOF'
-Usage: owner_land_path_c.sh [--dry-run] [--direct-push] [--help]
+Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
 
   --dry-run     Certainty only: path_c_dry_run.py (apply_all --check + tip shape; no push).
   (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
+  --from-bundle Use portable/path-c-applied-bundle/path-c-on-hardening.patch (git am)
+                instead of apply_all. Preferred one-shot after extracting the release
+                tarball (batch125-path-c-bundle or newer).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
+
+ONE-SHOT from release tarball (owner machine with write on main):
+  gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+    -p 'trial-portable-main-fixes.tgz'
+  mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+  /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+
+Prerequisites: git, python3, gh (authenticated with Contents:Write + PullRequests:Write
+on d6g8k5htny-coder/main). Trial Cloud Agent tokens get 403 — see
+portable/RELAUNCH_WITH_MAIN_SCOPE.md.
 
 Env:
   TRIAL_ROOT            Path to trial checkout (default: repo containing this script)
@@ -92,6 +121,7 @@ EOF
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
+    --from-bundle) FROM_BUNDLE=1 ;;
     --direct-push) DIRECT_PUSH=1 ;;
     -h|--help) usage; exit 0 ;;
     *) die "unknown argument: $arg (see --help)" ;;
@@ -102,23 +132,31 @@ need_cmd git
 need_cmd python3
 
 APPLY_ALL="$TRIAL_ROOT/portable/patches/apply_all.sh"
+BUNDLE_PATCH="$TRIAL_ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
 PROBE="$TRIAL_ROOT/scripts/probe_main_write.py"
 DRY_RUN_PY="$TRIAL_ROOT/scripts/path_c_dry_run.py"
 BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
-[[ -f "$APPLY_ALL" ]] || die "missing $APPLY_ALL (set TRIAL_ROOT to the trial checkout)"
+[[ -f "$APPLY_ALL" ]] || die "missing $APPLY_ALL (set TRIAL_ROOT to the trial checkout / extracted release tarball)"
 [[ -x "$APPLY_ALL" ]] || chmod +x "$APPLY_ALL" || true
+if [[ "$FROM_BUNDLE" -eq 1 ]]; then
+  [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH (need path-c-applied-bundle from batch125-path-c-bundle or newer)"
+fi
 
 echo "=== owner_land_path_c ==="
 echo "repo=$REPO trial_root=$TRIAL_ROOT"
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "mode=dry-run"
+elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
+  echo "mode=from-bundle+$([ "$DIRECT_PUSH" -eq 1 ] && echo direct-push || echo branch+PR)"
 else
   echo "mode=$([ "$DIRECT_PUSH" -eq 1 ] && echo direct-push || echo branch+PR)"
 fi
-echo "base_mode=$BASE_MODE rebase_onto_main=$REBASE_ONTO_MAIN"
+echo "base_mode=$BASE_MODE rebase_onto_main=$REBASE_ONTO_MAIN from_bundle=$FROM_BUNDLE"
 if [[ -f "$BASE_TIP_FILE" ]]; then
   echo "base_tip_file=$(cat "$BASE_TIP_FILE")"
 fi
+echo "prerequisites: git+python3+gh auth with Contents:Write on $REPO"
+echo "cloud_agent_midflight_cannot_gain_main_write: see portable/RELAUNCH_WITH_MAIN_SCOPE.md"
 echo "scientific_effect=NONE"
 echo
 
@@ -132,7 +170,8 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   set -e
   if [[ "$dry_ec" -eq 0 ]]; then
     echo "owner_land_path_c: dry-run OK — apply_ready on hardening BASE_TIP."
-    echo "Land with write creds: $0   (do NOT PATH_C_BASE=main on post-#41 tip)"
+    echo "Land with write creds: $0   (or $0 --from-bundle after extracting release tarball)"
+    echo "Do NOT PATH_C_BASE=main on post-#41 tip."
     echo "Scientific effect: NONE"
     exit 0
   fi
@@ -142,7 +181,7 @@ fi
 need_cmd gh
 
 if ! gh auth status >/dev/null 2>&1; then
-  die "gh is not authenticated. Run: gh auth login  (owner account with write on $REPO)"
+  die "gh is not authenticated. Prerequisites: gh auth login (owner account with write on $REPO). Trial Cloud Agent tokens get 403 — use owner machine, MAIN_PUSH_TOKEN, device-flow, or relaunch (portable/RELAUNCH_WITH_MAIN_SCOPE.md). Certainty without write: $0 --dry-run"
 fi
 LOGIN="$(gh api user --jq .login 2>/dev/null || true)"
 echo "gh login: ${LOGIN:-unknown}"
@@ -271,6 +310,22 @@ if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
   echo "Tree already looks patched; running apply_all --check only."
   if ! "$APPLY_ALL" --check; then
     die "apply_all --check failed on apparently-patched tree. Resolve conflicts or reset to a clean tip."
+  fi
+elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
+  echo "--- --from-bundle: git am path-c-on-hardening.patch ---"
+  # Pin to BASE_TIP SHA when file lists it (release bundle is cut against that tip).
+  if [[ -f "$BASE_TIP_FILE" ]]; then
+    BASE_TIP_SHA="$(awk '{print $NF}' "$BASE_TIP_FILE" | head -n1)"
+    if [[ -n "$BASE_TIP_SHA" ]] && git cat-file -e "${BASE_TIP_SHA}^{commit}" 2>/dev/null; then
+      HEAD_NOW="$(git rev-parse HEAD)"
+      if [[ "$HEAD_NOW" != "$BASE_TIP_SHA" && "$HEAD_NOW" != "${BASE_TIP_SHA}"* ]]; then
+        echo "warn: HEAD=$HEAD_NOW != BASE_TIP=$BASE_TIP_SHA; attempting am anyway (may fail if tip moved)."
+      fi
+    fi
+  fi
+  if ! git am --3way "$BUNDLE_PATCH"; then
+    git am --abort 2>/dev/null || true
+    die "git am --from-bundle failed. Tip may have moved past BASE_TIP; refresh release bundle or use $0 (apply_all) instead."
   fi
 else
   echo "--- apply_all 0001–0004 + 0008–0016 ---"

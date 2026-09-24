@@ -1,10 +1,27 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
+Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 # Owner actions for `d6g8k5htny-coder/main`
 
 This agent **cannot push** to `main` (cursor[bot] 403). Only you (or an environment with write access to that repo) can apply these.
 
 Scientific effect of following this plan carefully: **NONE** on claim status, if you only land already-reviewed packaging. Do not use a default-branch update as premise discharge.
+
+## Fastest Path C — ONE local command from release tarball (Batch 137)
+
+**Prerequisites:** `git`, `python3`, `gh auth login` with Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`.
+
+```bash
+gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz'
+mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+/tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+```
+
+- `--from-bundle` applies the pre-verified `path-c-on-hardening.patch` (`git am`) onto hardening @ BASE_TIP `c82c9357`, asserts `lemma_closed=false`, pushes branch + opens PR.
+- Certainty without write: `/tmp/path-c-land/scripts/owner_land_path_c.sh --dry-run`
+- Do **not** apply onto post-#41 default `main` (no `PACKET.json`).
+- If you prefer Cloud Agent write instead of local: see [`RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md) — (a) App add `main` R/W, (b) device code, (c) `MAIN_PUSH_TOKEN`, then **(d) RELAUNCH** (this run cannot gain main mid-flight).
 
 ## Exact fix — add `main` to Cursor App repository access (Batch 92)
 

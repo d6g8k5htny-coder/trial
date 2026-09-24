@@ -4,6 +4,19 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 137 — Path C ONE-SHOT from release tarball** (`batch125-path-c-bundle` or newer):
+>
+> ```bash
+> gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> ```
+>
+> Prerequisites: `git`, `python3`, `gh auth login` (write on `main`). Cloud scope
+> unblock / relaunch: [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md).
+> Scientific effect: **NONE**. BASE_TIP `c82c9357`.
+
 > **Batch 86:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**. Status guard: `scripts/guard_no_status_promotion.py` vs `BATCH70_RESEARCH_STACK_AUDIT` / `STATUS_GUARD_SNAPSHOT` (fail on OPEN→closed/promoted); CI `research-stack-status-guard` (`continue-on-error` + artifact). Write still 403. See `BATCH86_BRIEF.json`.
 
 > **Batch 84:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**. Env: `.cursor/environment.json` `repositoryDependencies` → `main` (write intent); **relaunch Cloud Agent from trial AFTER merge** for token scope. Lander token discovery: env `MAIN_PUSH_TOKEN` → `/cursor/stores/self/MAIN_PUSH_TOKEN` → `/workspace/.secrets/MAIN_PUSH_TOKEN` (never printed). Write still 403 until token flips. See `BATCH84_BRIEF.json`.
@@ -64,10 +77,8 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ```bash
 # Path C — engineering on hardening tip: apply_all 0001–0004 + 0008–0016
 ./scripts/owner_land_path_c.sh --dry-run   # certainty (works without write)
-./scripts/owner_land_path_c.sh
-# Owner without MAIN_PUSH_TOKEN — git am the pre-verified bundle (Batch 76):
-#   git checkout -B cursor/portable-engineering-patches ac335815b277ac0c076082ac6af2344261c2093a
-#   git am portable/path-c-applied-bundle/path-c-on-hardening.patch && git push -u origin HEAD
+./scripts/owner_land_path_c.sh --from-bundle   # ONE-SHOT after extracting release tarball
+./scripts/owner_land_path_c.sh                 # apply_all path (same gates)
 # Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (CONFLICTS) / PATH_C_BASE=main (no PACKET)
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 # If a forced rebase hits first-stop conflicts (ci.yml / research.yml / bridge):

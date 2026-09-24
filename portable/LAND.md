@@ -4,6 +4,35 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
+> ## STATUS (Batch 137) — PERMANENT window; ALIGNED @ `1c6e74b`; owner Path C ONE-SHOT from release tarball; RELAUNCH_WITH_MAIN_SCOPE
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.**
+> Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
+> Path C: BASE_TIP still **`c82c9357`** (tip match; no bundle rebuild). Write **403** /
+> `install_has_main=false` / env repos **trial ONLY** — this run cannot gain main
+> write mid-flight. Device code: see `GH_DEVICE_LOGIN.md`.
+>
+> ### Owner Path C — ONE local command from release tarball
+>
+> Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `main`).
+>
+> ```bash
+> gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> ```
+>
+> (`--from-bundle` = `git am` the pre-verified `path-c-on-hardening.patch`. Omit the
+> flag to run `apply_all` instead.) Certainty without write:
+> `/tmp/path-c-land/scripts/owner_land_path_c.sh --dry-run`
+>
+> Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
+> [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md).
+>
 > ## STATUS (Batch 86) — PERMANENT window; ALIGNED @ `1c6e74b`; no-status-promotion guard
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
@@ -242,8 +271,13 @@ Notes: `portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json`.
 
 
 ```bash
-# Preferred (owner write creds):
+# Preferred ONE-SHOT (owner write creds; from release tarball batch125-path-c-bundle+):
+#   gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz'
+#   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+#   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+# Or from a trial checkout:
 ./scripts/owner_land_path_c.sh --dry-run
+./scripts/owner_land_path_c.sh --from-bundle
 ./scripts/owner_land_path_c.sh
 # Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (conflicts) / PATH_C_BASE=main (no PACKET)
 # If forced rebase hits first-stop conflicts:

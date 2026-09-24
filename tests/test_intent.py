@@ -2044,3 +2044,58 @@ def test_patches_manifest_and_pack_includes_it() -> None:
         with tarfile.open(out, "r:gz") as tf:
             names = tf.getnames()
         assert "portable/patches/MANIFEST.json" in names
+
+
+def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
+    """Batch 137: owner one-shot --from-bundle + RELAUNCH_WITH_MAIN_SCOPE.md."""
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "--from-bundle" in owner_c
+    assert "path-c-on-hardening.patch" in owner_c
+    assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_c
+    assert "batch125-path-c-bundle" in owner_c
+    assert "trial-portable-main-fixes.tgz" in owner_c
+
+    relaunch = ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md"
+    assert relaunch.is_file()
+    rel_text = relaunch.read_text(encoding="utf-8")
+    assert "Applications" in rel_text or "applications" in rel_text.lower()
+    assert "d6g8k5htny-coder/main" in rel_text
+    assert "device" in rel_text.lower()
+    assert "MAIN_PUSH_TOKEN" in rel_text
+    assert "RELAUNCH" in rel_text.upper()
+    assert "mid-flight" in rel_text.lower() or "midflight" in rel_text.lower().replace("-", "")
+    assert "repositoryDependencies" in rel_text
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "--from-bundle" in land
+    assert "RELAUNCH_WITH_MAIN_SCOPE" in land
+    assert "batch125-path-c-bundle" in land
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "--from-bundle" in owner_actions
+    assert "batch125-path-c-bundle" in owner_actions
+    assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_actions
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "portable/RELAUNCH_WITH_MAIN_SCOPE.md" in pack
+
+    # --help and --dry-run still work
+    help_proc = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "owner_land_path_c.sh"), "--help"],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert help_proc.returncode == 0, help_proc.stderr
+    assert "--from-bundle" in help_proc.stdout
+    dry = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "owner_land_path_c.sh"), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
