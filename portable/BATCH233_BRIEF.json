@@ -37,10 +37,10 @@
   },
   "repos_count": 8,
   "inventory_accurate": true,
-  "note": "Batch 233: tip stable 377201c (ALIGNED default 1c6e74b; write WRITABLE; Path C on tip via PR #64 ancestor). No tip-refresh. Residual RW hunt on tip clean → no 0018 / no Path C delta. Trial defect: guard_no_status_promotion wiped tip_sha/baseline_tip_sha when --tip-sha omitted — recover via git HEAD + baseline_tip_sha. Research OPEN_HOLD lemma_closed=false; flipped nothing. No auth renew.",
+  "note": "Batch 233: tip stable 377201c (ALIGNED default 1c6e74b; write WRITABLE; Path C on tip via PR #64 ancestor). No tip-refresh. Residual RW hunt on tip clean \u2192 no 0018 / no Path C delta. Trial defect: guard_no_status_promotion wiped tip_sha/baseline_tip_sha when --tip-sha omitted \u2014 recover via git HEAD + baseline_tip_sha. Research OPEN_HOLD lemma_closed=false; flipped nothing. No auth renew.",
   "trial_branch": "cursor/batch233-tip-sync-drift-87a4",
-  "trial_pr": null,
-  "trial_pr_url": null,
-  "trial_sha": null,
-  "trial_land": null
+  "trial_pr": 51,
+  "trial_pr_url": "https://github.com/d6g8k5htny-coder/trial/pull/51",
+  "trial_sha": "1fd267b3e768c7eadd3079d52026be09aa8729c3",
+  "trial_land": "pr_51_merged"
 }
