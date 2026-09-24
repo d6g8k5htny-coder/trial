@@ -267,6 +267,48 @@ def _lemma_closed_from_verify() -> bool:
     return False
 
 
+def _read_verify() -> dict:
+    if not VERIFY_FILE.is_file():
+        return {}
+    try:
+        data = json.loads(VERIFY_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _prior_status(out: Path | None = None) -> dict:
+    """Read existing PATH_C_STATUS so assert refresh does not wipe land fields."""
+    path = out or DEFAULT_OUT
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _land_fields_from_verify(verify: dict) -> dict:
+    """Carry Path C land evidence from VERIFY into PATH_C_STATUS (no research flip)."""
+    if verify.get("path_c_landed") is not True:
+        return {}
+    out: dict = {"path_c_landed": True}
+    pr = verify.get("path_c_pr_url")
+    if isinstance(pr, str) and pr:
+        out["path_c_pr_url"] = pr
+    merge_sha = verify.get("merge_commit_sha") or verify.get("base_tip_sha")
+    if isinstance(merge_sha, str) and merge_sha:
+        out["path_c_sha"] = merge_sha
+    applied = verify.get("applied_commit_sha")
+    if isinstance(applied, str) and applied:
+        out["path_c_applied_sha"] = applied
+    vector = verify.get("write_vector")
+    if isinstance(vector, str) and vector:
+        out["write_vector"] = vector
+    return out
+
+
 def _classify_blocked(
     *,
     has_token: bool,
@@ -287,12 +329,22 @@ def _classify_blocked(
     return ",".join(reasons)
 
 
-def build_status(*, skip_write_probe: bool = False) -> dict:
+def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> dict:
     base_sha, _base_line = _read_base_tip()
     live_sha = _fetch_live_tip()
     tip_match = _tip_matches(base_sha, live_sha)
+    verify = _read_verify()
+    land = _land_fields_from_verify(verify)
+    prior = _prior_status(out)
     if skip_write_probe:
-        write_state = "SKIPPED"
+        # Do not clobber a recorded WRITABLE/DENIED land snapshot with SKIPPED.
+        prior_ws = prior.get("write_state")
+        if land.get("path_c_landed") and prior_ws in ("WRITABLE", "DENIED"):
+            write_state = prior_ws
+        elif land.get("path_c_landed") and tip_match is True:
+            write_state = "WRITABLE"
+        else:
+            write_state = "SKIPPED"
     else:
         write_state = _probe_write_state()
     has_token = _has_main_push_token()
@@ -307,6 +359,9 @@ def build_status(*, skip_write_probe: bool = False) -> dict:
 
     tip_short = (live_sha or "")[:7] or None
     base_short = (base_sha or "")[:7] or None
+
+    # Operational Path C land goal (not research). VERIFY.goal_complete stays false.
+    goal_complete = bool(land.get("path_c_landed") is True and tip_match is True)
 
     status = {
         "tip": tip_short,
@@ -324,10 +379,19 @@ def build_status(*, skip_write_probe: bool = False) -> dict:
         "release_tag": release_tag,
         "generated_at": _utc_now(),
         "scientific_effect": "NONE",
-        "goal_complete": False,
+        "goal_complete": goal_complete,
         "hardening_ref": HARDENING_REF,
         "has_token": has_token,
     }
+    if land:
+        status.update(land)
+        # Preserve prior write_vector when VERIFY omitted it.
+        if "write_vector" not in status:
+            prior_vec = prior.get("write_vector")
+            if isinstance(prior_vec, str) and prior_vec:
+                status["write_vector"] = prior_vec
+            elif write_state == "WRITABLE":
+                status["write_vector"] = prior.get("write_vector") or "device_auth_create_ref+git_push_dylan_token"
     # Ensure schema keys exist even if None.
     for key in SCHEMA_KEYS:
         status.setdefault(key, None)
@@ -365,7 +429,11 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(list(SCHEMA_KEYS)))
         return 0
 
-    status = build_status(skip_write_probe=args.skip_write_probe)
+    out: Path = args.out
+    if not out.is_absolute():
+        out = ROOT / out
+
+    status = build_status(skip_write_probe=args.skip_write_probe, out=out)
     text = json.dumps(status, indent=2, sort_keys=True) + "\n"
 
     if args.dry_run:
@@ -373,9 +441,6 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(text)
         return 0
 
-    out: Path = args.out
-    if not out.is_absolute():
-        out = ROOT / out
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text, encoding="utf-8")
     print(f"write_path_c_status: wrote {out}")
