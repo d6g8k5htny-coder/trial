@@ -21,16 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 160 — 2026-09-24 ~09:14 UTC (PERMANENT window; ship owner_set_main_push_token.sh; tip stable @ 10c077e; auth pending 2513-3A16; scientific effect NONE; flipped nothing)
+### Batch 160 — 2026-09-24 ~09:17 UTC (PERMANENT window; ship owner_set_main_push_token.sh; tip stable @ 10c077e; auth renew E818-2EE5; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
 - Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild** / **no hunt**. `lemma_closed=false`.
-- Device auth `2513-3A16` → **pending** (`slow_down`); `seconds_left≈227`; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- Device auth `2513-3A16` **<90s** still pending after timer arm → **renewed** `E818-2EE5`; poller `gh-device-login` restarted; daemon `when-writable-land` up.
 - **Concrete Path C unlock:** shipped `scripts/owner_set_main_push_token.sh` — reads token from env / well-known files / `gh auth token` (never printed) → `gh secret set MAIN_PUSH_TOKEN` on trial; optional `--dispatch` fires `repository_dispatch` land-path-c `dry_run=false`. `--dry-run` / `--help`. Wired into `print_owner_unblock.sh`, `OWNER_ONE_LINERS.md`, `RELAUNCH_WITH_MAIN_SCOPE.md`, `LAND.md`, `GH_DEVICE_LOGIN.md`, `OWNER_ACTIONS_MAIN.md`, `pack_portable.sh`. Intent: `test_batch160_owner_set_main_push_token_script`.
 - Open PR scan (`gh pr list --state open` → 11): **no** PR contains portable file-handle / close-handles stack; **merge_candidates=[]** (no clean Path C vehicle). Notes: `portable/CONFLICTING_PR_NOTES.md` Batch 160 section.
-- Tiny JSON: `portable/BATCH160_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+- Landed trial `main` @ `8a06884`. Tiny JSON: `portable/BATCH160_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
 
-**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `2513-3A16` **or** `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / MAIN_PUSH_TOKEN file drop **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight.
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `E818-2EE5` **or** `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / MAIN_PUSH_TOKEN file drop **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight.
 
 ### Batch 159 — 2026-09-24 ~09:09 UTC (PERMANENT window; idle align-watch; tip stable @ 10c077e; auth pending 2513-3A16; scientific effect NONE; flipped nothing)
 

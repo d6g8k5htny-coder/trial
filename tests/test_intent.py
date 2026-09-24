@@ -2930,13 +2930,17 @@ def test_batch160_owner_set_main_push_token_script() -> None:
     assert data["path_c_landed"] is False
     assert data["secret_script"] is True
     assert data["tip"] == "10c077e"
-    assert data["device_code"] == "2513-3A16"
+    assert data["device_code"] == "E818-2EE5"
+    assert data["auth_renewed"] is True
+    assert data["prior_device_code"] == "2513-3A16"
     assert isinstance(data.get("merge_candidates"), list)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "E818-2EE5" in gh
     assert "2513-3A16" in gh
     assert "owner_set_main_push_token.sh" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 160" in log
     assert "owner_set_main_push_token" in log
+    assert "E818-2EE5" in log

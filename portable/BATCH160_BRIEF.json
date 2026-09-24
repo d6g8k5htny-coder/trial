@@ -1,6 +1,6 @@
 {
   "batch": "160",
-  "generated_at_utc": "2026-09-24T09:16:48Z",
+  "generated_at_utc": "2026-09-24T09:18:02Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -19,11 +19,11 @@
   "path_c_landed": false,
   "dry_run_ok": true,
   "device_auth": "pending",
-  "device_auth_error": "slow_down",
-  "device_code": "2513-3A16",
-  "prior_device_code": "E136-5AE7",
-  "auth_renewed": false,
-  "seconds_left": 77,
+  "device_auth_error": null,
+  "device_code": "E818-2EE5",
+  "prior_device_code": "2513-3A16",
+  "auth_renewed": true,
+  "seconds_left": 847,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -63,13 +63,13 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "tests/test_intent.py"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; auth pending 2513-3A16; secret_script shipped; merge_candidates=[]; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; auth renewed 2513-3A16\u2192E818-2EE5; secret_script shipped; merge_candidates=[]; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
-  "auth_renew_reason": null,
+  "auth_renew_reason": "seconds_left<90 still pending after timer arm",
   "trial_main_landed": true,
   "code_changed": true,
-  "trial_main_sha": "aa687d2"
+  "trial_main_sha": "8a06884"
 }
