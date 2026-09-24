@@ -405,11 +405,44 @@ def resolve_baseline(trial_root: Path, explicit: Path | None) -> tuple[Path, dic
     )
 
 
+def _git_head_sha(checkout: Path) -> str:
+    """Best-effort HEAD SHA for tip tracking; empty string if unavailable."""
+    import subprocess
+
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(checkout), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    if proc.returncode != 0:
+        return ""
+    sha = (proc.stdout or "").strip()
+    return sha if len(sha) >= 7 else ""
+
+
+def _baseline_tip_sha(baseline_raw: dict[str, Any], baseline_inv: dict[str, Any]) -> str | None:
+    """Recover baseline tip even when a prior write clobbered inventory.tip_sha."""
+    for candidate in (
+        baseline_inv.get("tip_sha"),
+        baseline_raw.get("tip_sha"),
+        baseline_raw.get("baseline_tip_sha"),
+    ):
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    return None
+
+
 def build_snapshot(
     *,
     tip_sha: str,
     baseline_path: Path,
     baseline_inv: dict[str, Any],
+    baseline_raw: dict[str, Any] | None = None,
     current_inv: dict[str, Any],
     live_report: dict[str, Any],
     violations: list[dict[str, Any]],
@@ -432,7 +465,7 @@ def build_snapshot(
         "flipped_anything": False,
         "tip_sha": tip_sha,
         "baseline_path": str(baseline_path),
-        "baseline_tip_sha": baseline_inv.get("tip_sha"),
+        "baseline_tip_sha": _baseline_tip_sha(baseline_raw or {}, baseline_inv),
         "pass": len(violations) == 0,
         "violations": violations,
         "new_open_only": {
@@ -526,18 +559,24 @@ def main(argv: list[str] | None = None) -> int:
             "guard"
         ) == "no_status_promotion":
             baseline_inv = baseline_raw["inventory"]
-            # Preserve tip from snapshot root when inventory lacks it
-            if not baseline_inv.get("tip_sha") and baseline_raw.get("tip_sha"):
-                baseline_inv = {**baseline_inv, "tip_sha": baseline_raw["tip_sha"]}
+            # Preserve tip from snapshot root / prior baseline when inventory lacks it
+            recovered = _baseline_tip_sha(baseline_raw, baseline_inv)
+            if recovered and not baseline_inv.get("tip_sha"):
+                baseline_inv = {**baseline_inv, "tip_sha": recovered}
         else:
             baseline_inv = extract_open_inventory(baseline_raw)
 
         live_report = audit_checkout(checkout)
-        if args.tip_sha:
-            live_report["tip_sha"] = args.tip_sha
+        # Batch 233: never clobber tip tracking. Prefer --tip-sha, else git HEAD,
+        # else whatever the live audit already carried.
+        tip_sha = (args.tip_sha or "").strip() or _git_head_sha(checkout)
+        if tip_sha:
+            live_report["tip_sha"] = tip_sha
         current_inv = extract_open_inventory(live_report)
-        if args.tip_sha:
-            current_inv["tip_sha"] = args.tip_sha
+        if tip_sha:
+            current_inv["tip_sha"] = tip_sha
+        elif current_inv.get("tip_sha"):
+            tip_sha = str(current_inv["tip_sha"])
 
         # NO_PACKET on default tip cannot be compared as a promotion pass against
         # a HAS_PACKET baseline — treat as usage error so CI clones hardening tip.
@@ -550,11 +589,11 @@ def main(argv: list[str] | None = None) -> int:
             return 2
 
         violations = compare_inventories(baseline_inv, current_inv)
-        tip_sha = args.tip_sha or current_inv.get("tip_sha") or ""
         snapshot = build_snapshot(
             tip_sha=str(tip_sha),
             baseline_path=baseline_path,
             baseline_inv=baseline_inv,
+            baseline_raw=baseline_raw if isinstance(baseline_raw, dict) else {},
             current_inv=current_inv,
             live_report=live_report,
             violations=violations,

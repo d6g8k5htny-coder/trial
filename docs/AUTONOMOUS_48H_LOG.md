@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 233 — 2026-09-24 ~17:38–17:50 UTC (PERMANENT window; tip stable 377201c; tip RW hunt clean no 0018; guard tip_sha clobber fix; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ **`377201c`** (== BASE_TIP). Default tip **ALIGNED** @ `1c6e74b`. Write **WRITABLE** (device token create-ref). Path C eng stack on tip (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). **No Path B / no Path C delta / no tip-refresh**.
+- `apply_all.sh --check` already-applied OK (0001–0004+0008–0017). `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**. Guard pass. Research audit OPEN; **flipped nothing**.
+- **Hunt (tip):** focused **192**/0 RW; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; registers **53**/0; cover **40**/0; eng bare-open **0** → **no 0018**. (workflow/`run_checks` fails here are host env: no `python` shim / Python 3.12 vs required 3.11 — not tip defects.)
+- **Defect shipped (trial):** `guard_no_status_promotion` wiped `tip_sha`/`baseline_tip_sha` when `--tip-sha` omitted → recover via `git rev-parse HEAD` + baseline tip fields. Intent: `test_batch233_guard_tip_sha_clobber`.
+- Timer **`post-path-c-align-watch` @ 1800s** re-armed (no auth renew). next_focus=`tip-sync+drift+no-flip`.
+
 
 ### Batch 232 — 2026-09-24 ~17:20–17:30 UTC (PERMANENT window; tip 93a4ecd→377201c PR #62; tip-refresh; status+VERIFY land preserve; RW hunt clean no 0018; scientific effect NONE; flipped nothing)
 
