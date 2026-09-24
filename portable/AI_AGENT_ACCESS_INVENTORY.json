@@ -301,7 +301,7 @@
     "device_auth": "pending",
     "auth_error": "authorization_pending",
     "has_token": false,
-    "seconds_left": 309.1,
+    "seconds_left": 275.7,
     "checked_at_utc": "2026-09-24T16:17:15Z",
     "auth_renewed": false
   },
@@ -323,5 +323,5 @@
   "assert_path_c_ready": "OK",
   "apply_stack": "0001-0004+0008-0017",
   "release": "batch223-path-c-bundle",
-  "seconds_left": 309.1
+  "seconds_left": 275.7
 }
