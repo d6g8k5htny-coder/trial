@@ -3,7 +3,7 @@
   "base_tip_full": "a1ed37bf668153526bf04d3a3b840c3b2ef533fa",
   "device_auth": "SUCCESS",
   "device_code": "B4B5-42FE",
-  "generated_at": "2026-09-24T19:58:09Z",
+  "generated_at": "2026-09-24T20:05:29Z",
   "goal_complete": true,
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
   "has_token": true,
@@ -15,21 +15,13 @@
   ],
   "path_c_0018_landed": true,
   "path_c_0018_via": "main_pr_70_merge_62f955a",
-  "path_c_0019_landed": false,
-  "path_c_0019_pending": true,
-  "path_c_0019_pr": "https://github.com/d6g8k5htny-coder/main/pull/71",
   "path_c_applied_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
   "path_c_blocked": "NONE",
   "path_c_blocked_reason": "NONE",
-  "path_c_followon_pending_ids": [
-    "0019"
-  ],
   "path_c_landed": true,
   "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
   "path_c_sha": "93a4ecd7e09884c7272c912412db0a7559116e1f",
-  "pr69": "MERGED",
-  "pr71": "OPEN",
-  "release_tag": "batch239-path-c-bundle",
+  "release_tag": "batch240-ci-wait-parallel",
   "scientific_effect": "NONE",
   "seconds_left": 0.0,
   "tip": "a1ed37b",
@@ -38,5 +30,18 @@
   "write_durable": true,
   "write_durable_via": "trial_actions_secret_MAIN_PUSH_TOKEN+device_auth_file",
   "write_state": "WRITABLE",
-  "write_vector": "device_auth_create_ref+git_push_dylan_token"
+  "write_vector": "device_auth_create_ref+git_push_dylan_token",
+  "path_c_0019_landed": false,
+  "path_c_0019_pending": true,
+  "path_c_0019_pr": "https://github.com/d6g8k5htny-coder/main/pull/71",
+  "pr71": "OPEN",
+  "waiting_ci": true,
+  "waiting_ci_prs": [
+    71
+  ],
+  "batch240_parallel": "post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
+  "path_c_followon_pending_ids": [
+    "0019"
+  ],
+  "batch240_parallel_at": "2026-09-24T20:05:29Z"
 }

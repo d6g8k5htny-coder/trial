@@ -1,44 +1,8 @@
 {
-  "generated_at_utc": "2026-09-24T20:05:30Z",
   "batch": "240",
-  "install_has_main": false,
-  "install_repos": [
-    "d6g8k5htny-coder/trial"
-  ],
-  "repos_connected": [
-    {
-      "name": "d6g8k5htny-coder/google-drive",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/governance-",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/main",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/Math-",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/meta-framework",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/query-",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/sandbox",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/trial",
-      "perm": "push"
-    }
-  ],
+  "generated_at_utc": "2026-09-24T20:04:51Z",
+  "repos_count": 8,
+  "sibling_write_count": 8,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -121,11 +85,9 @@
       "write": "WRITABLE"
     }
   ],
-  "repos_count": 8,
-  "sibling_write_count": 8,
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 240 sibling inventory refresh while main #71 CI pending."
+  "note": "Sibling inventory refresh while main #71 CI pending."
 }

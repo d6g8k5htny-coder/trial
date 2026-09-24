@@ -1,0 +1,40 @@
+{
+  "batch": "240",
+  "generated_at_utc": "2026-09-24T20:05:27Z",
+  "status": "waiting_ci_pr71_0019",
+  "waiting_ci": true,
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "a1ed37b",
+  "tip_full": "a1ed37bf668153526bf04d3a3b840c3b2ef533fa",
+  "base_tip": "a1ed37b",
+  "aligned": true,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "pr71": "PENDING",
+  "pr71_ci": "PENDING",
+  "pr71_url": "https://github.com/d6g8k5htny-coder/main/pull/71",
+  "path_c_0018_landed": true,
+  "path_c_0019_landed": false,
+  "path_c_0019_pending": true,
+  "path_c_landed": true,
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020_seed": "NEGATIVE_tools_tests_post_0019",
+  "parallel_shipped": [
+    "post_0019_rw_hunt_seed_0020",
+    "durable_write_probe_WRITABLE",
+    "sibling_inventory_refresh_8of8"
+  ],
+  "parallel": "post_0019_rw_hunt_seed_0020+write_durable+sibling_inventory",
+  "next_focus": "on_ci_green_merge_71_0019_then_tip_refresh_mark_landed",
+  "note": "Batch 240: main #71 Path C 0019 CI still PENDING (verify in progress). Parallel non-noop: post-0019 RW hunt seed for 0020 (NEGATIVE on tools/tests; carrier-blob noise excluded), durable write probe WRITABLE via device_auth, sibling inventory 8/8 push. waiting_ci true. Never printed tokens; flipped nothing.",
+  "artifacts": [
+    "portable/BATCH240_HUNT_SEED_0020.json",
+    "portable/BATCH240_WRITE_DURABLE.json",
+    "portable/BATCH240_SIBLING_INVENTORY.json",
+    "portable/BATCH240_BRIEF.json"
+  ]
+}
