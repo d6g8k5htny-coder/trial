@@ -97,34 +97,34 @@ jobs:
           git config user.name "trial-land-option-b"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "${BRANCH}"
-          # Idempotent: skip am only for the Option-B *notice* (not honest program-map).
-          if grep -q 'q0 Research Program' README.md 2>/dev/null \
-             && grep -qE 'SIDE24|default branch notice' README.md 2>/dev/null \
-             && ! grep -q 'complexity-physics-framework' README.md 2>/dev/null \
-             && ! grep -q 'Multiscale Retrodiction Complexity' README.md 2>/dev/null; then
-            echo "README already looks post-Option-B / q0 notice; skipping git am (still push/PR if requested)."
+
+          # Same marker predicate as scripts/audit_main_alignment.py (local, no network).
+          # Batch 241: prefer auditor ALIGNED short-circuit over Option-B notice
+          # string match — renewed default tips (e.g. PR #72 Universal-law face)
+          # carry SIDE24 + hardening + AGENTS without "q0 Research Program" prose,
+          # so a narrow notice grep false-fails git am and breaks Path B readiness.
+          AUDIT_LOCAL="${GITHUB_WORKSPACE}/scripts/audit_local_tree.py"
+          if [ ! -f "$AUDIT_LOCAL" ]; then
+            echo "::error::Missing ${AUDIT_LOCAL}. Option-B dry-run cannot verify auditor markers."
+            exit 1
+          fi
+          echo "Running local auditor (pre-am; skip git am when already ALIGNED):"
+          if python3 "$AUDIT_LOCAL" .; then
+            echo "README/tree already ALIGNED (q0/notice markers, no complexity face); skipping git am (still push/PR if requested)."
           else
             if ! git am "$PATCH"; then
               echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."
               git am --abort 2>/dev/null || true
               exit 1
             fi
+            echo "Running local auditor against post-Option-B tree:"
+            if ! python3 "$AUDIT_LOCAL" .; then
+              echo "::error::Post-Option-B tree would NOT satisfy audit_main_alignment (need q0/notice markers, no complexity face). Fix portable/main-default-branch/ before landing Path B."
+              exit 1
+            fi
           fi
-          echo "Applied Option-B (or reused existing). README head:"
+          echo "Applied Option-B (or reused existing ALIGNED tip). README head:"
           head -8 README.md
-
-          # Same marker predicate as scripts/audit_main_alignment.py (local, no network).
-          # Path B must flip this to ALIGNED; fail the job if the patch drifts.
-          AUDIT_LOCAL="${GITHUB_WORKSPACE}/scripts/audit_local_tree.py"
-          if [ ! -f "$AUDIT_LOCAL" ]; then
-            echo "::error::Missing ${AUDIT_LOCAL}. Option-B dry-run cannot verify auditor markers."
-            exit 1
-          fi
-          echo "Running local auditor against post-Option-B tree:"
-          if ! python3 "$AUDIT_LOCAL" .; then
-            echo "::error::Post-Option-B tree would NOT satisfy audit_main_alignment (need q0/notice markers, no complexity face). Fix portable/main-default-branch/ before landing Path B."
-            exit 1
-          fi
           echo "Local auditor: would-align=true (ALIGNED for remote audit_main_alignment)."
 
           if [ "${DRY_RUN}" = "true" ]; then

@@ -1,0 +1,38 @@
+{
+  "batch": "241",
+  "generated_at_utc": "2026-09-24T21:01:04Z",
+  "hunt": "broader_eng_surface_beyond_rw",
+  "hunt_result": "DEFECT_FOUND_PATH_B_SKIP_AND_FROM_BUNDLE",
+  "defect_found": true,
+  "defect_id": "path_b_aligned_skip_plus_from_bundle_already_on_tip",
+  "defect_shipped": true,
+  "patch_0020": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "base_tip": "542e6ec",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "surfaces": {
+    "ci_timeouts_hardening": "0 failures last 20; timeouts present 5/10/30m \u2014 no defect",
+    "flaky_fixtures": "bridge .git/index env flake noted batch240; not tip defect",
+    "sibling_AGENTS": "8/8 present (trial main sandbox google-drive governance- Math- meta-framework query-)",
+    "pack_release_drift": "latest release was batch239 while status claimed batch241 \u2014 publish batch241",
+    "default_readme_q0": "ALIGNED @ f47026c Universal-law face carries SIDE24+hardening+AGENTS",
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) \u2014 skipped",
+    "trial_pr_62": "catalog-coverage MERGEABLE UNSTABLE / CI red \u2014 skipped"
+  },
+  "evidence": {
+    "land_option_b_dry_fail": "git am failed: AGENTS.md exists; README patch does not apply; body missing \u2014 skip condition required 'q0 Research Program'",
+    "from_bundle_ff_fail": "Not possible to fast-forward from path-c-on-hardening.bundle while tip_matches and apply_all --check OK (0001-0019 already-applied)",
+    "fix": [
+      ".github/workflows/land-option-b-on-main.yml auditor ALIGNED short-circuit",
+      "scripts/owner_land_path_b.sh auditor ALIGNED short-circuit",
+      "scripts/owner_land_path_c.sh from-bundle apply_all fallback when ff/am diverges"
+    ]
+  },
+  "note": "Real eng defect: Path B land workflow / owner script false-failed on renewed ALIGNED tip; from-bundle dry-run false-failed when Path C already on tip. Fixed for MISALIGNED-restore readiness. No 0020. Never printed tokens."
+}

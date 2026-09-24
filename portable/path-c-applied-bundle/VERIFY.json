@@ -33,7 +33,7 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 241: merged main #71 (0019); tip-refresh @ 542e6ec; apply_all 0001\u20130019 already-applied; lemma_closed=false; problems=0; flipped nothing",
+  "note": "Batch 241: Path B ALIGNED skip + from-bundle already-on-tip; tip 542e6ec stable; lemma_closed=false",
   "force": false,
   "path_c_landed": true,
   "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
@@ -46,5 +46,6 @@
   "path_c_0019_landed": true,
   "path_c_0019_via": "main_pr_71_merge_542e6ec",
   "path_c_0019_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/71",
-  "path_c_0019_merge_commit_sha": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c"
+  "path_c_0019_merge_commit_sha": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "flipped_anything": false
 }

@@ -219,21 +219,16 @@ else
   git checkout -B "$BRANCH"
 fi
 
-# Idempotent: skip am only when tip already carries the Option-B *notice*
-# (not Dylan's honest program-map, which still trips complexity markers).
-already_option_b() {
-  local readme="${1:-README.md}"
-  [[ -f "$readme" ]] || return 1
-  grep -q 'q0 Research Program' "$readme" 2>/dev/null \
-    && grep -qE 'SIDE24|default branch notice' "$readme" 2>/dev/null \
-    && ! grep -q 'complexity-physics-framework' "$readme" 2>/dev/null \
-    && ! grep -q 'Multiscale Retrodiction Complexity' "$readme" 2>/dev/null
-}
-
-if already_option_b README.md; then
-  echo "README already looks post-Option-B / q0 notice; skipping git am."
+# Batch 241: skip git am when audit_local_tree already reports ALIGNED.
+# Renewed default tips (PR #72 Universal-law face) carry SIDE24 + hardening +
+# AGENTS without the Option-B "q0 Research Program" notice strings; a narrow
+# notice grep false-fails am and breaks Path B restore readiness. Prefer the
+# same predicate as audit_main_alignment / path_b_dry_run ALREADY_ALIGNED.
+if python3 "$AUDIT_LOCAL" . >/tmp/owner-path-b-pre-am.json 2>/tmp/owner-path-b-pre-am.err; then
+  echo "Tree already ALIGNED (audit_local_tree); skipping git am."
+  cat /tmp/owner-path-b-pre-am.err 2>/dev/null || true
 else
-  echo "--- git am Option-B format-patch ---"
+  echo "--- git am Option-B format-patch (pre-am tip not ALIGNED) ---"
   if ! git am "$PATCH"; then
     git am --abort 2>/dev/null || true
     die "git am failed for $PATCH. Default tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."

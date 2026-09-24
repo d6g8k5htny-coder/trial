@@ -4940,6 +4940,7 @@ def test_batch199_path_c_bundle_pack_release() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch218-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 
@@ -5061,6 +5062,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch218-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 
@@ -5187,6 +5189,7 @@ def test_batch207_path_c_0017_bundle_refresh() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch207-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 
@@ -6146,3 +6149,72 @@ def test_batch240_land_path_c_apply_includes_0019() -> None:
     assert "Batch 240" in ww
     assert "auto_path_b_restore" in ww
     assert "MAIN_PUSH_TOKEN" in ww
+
+
+def test_batch241_path_b_aligned_skip_and_from_bundle_fallback() -> None:
+    """Batch 241: Path B auditor ALIGNED short-circuit; from-bundle apply_all fallback; pack release."""
+    import json
+
+    land_b = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "audit_local_tree.py" in land_b
+    assert "already ALIGNED" in land_b or "skipping git am" in land_b
+    # Narrow Option-B notice-only skip must not be the sole gate (renewed tip face).
+    assert "Running local auditor (pre-am" in land_b or "pre-am; skip git am" in land_b
+
+    owner_b = (ROOT / "scripts" / "owner_land_path_b.sh").read_text(encoding="utf-8")
+    assert "audit_local_tree" in owner_b
+    assert "Batch 241" in owner_b
+    assert "Tree already ALIGNED" in owner_b or "skipping git am" in owner_b
+
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "already_applied_on_tip" in owner_c
+    assert "apply_all --check" in owner_c or '"$APPLY_ALL" --check' in owner_c
+    assert "Batch 241" in owner_c
+
+    oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
+    assert (
+        'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
+    )
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert (
+        'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in open_pr
+    )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH241_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "241"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert _living_release(brief.get("pack_release") or brief.get("release_tag"))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH241_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "241"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+    assert _living_tip(hunt.get("tip"))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH241_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 241" in log
+    assert "ALIGNED skip" in log or "aligned skip" in log.lower() or "audit_local_tree" in log
+    assert "from-bundle" in log.lower() or "already_applied" in log.lower()

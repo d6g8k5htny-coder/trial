@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 241 (Path B ALIGNED skip + from-bundle fallback) — 2026-09-24 ~20:55– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f47026c` (Universal-law / SIDE24 face). `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge. Trial #62 catalog UNSTABLE — skipped.
+- Broader eng surface: sibling AGENTS **8/8**; hardening CI fails last 20 **[]**; default README still q0-aligned; pack release lagged at `batch239` while status claimed `batch241`.
+- **Defect shipped:** `land-option-b-on-main.yml` + `owner_land_path_b.sh` used narrow "q0 Research Program" skip → `git am` false-failed on renewed ALIGNED tip (AGENTS present / README different). Fixed to **audit_local_tree ALIGNED short-circuit** (Path B restore readiness / MISALIGNED drift prevention).
+- **Automation:** `owner_land_path_c.sh --from-bundle` falls back to `apply_all` / `--check` when `.bundle` ff-only diverges while tip already carries 0001–0019. Dry-runs exit 0 with `already_applied_on_tip=true`.
+- Pack/release **`batch241-path-c-bundle`**; bump `PATH_C_RELEASE_TAG` defaults. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 240 (auto Path B + trial land) — 2026-09-24 ~20:50– UTC (PERMANENT window; HUNT_240 NEGATIVE land + MAIN_PUSH_TOKEN auto-restore; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP). Default tip **ALIGNED**. `lemma_closed=false`.
@@ -39,7 +48,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Open main PRs: skip research-hold drafts (#73/#47/#46/#38/#36/#21/#12/#8/#7); no owned eng green mergeable. (#72 homepage merged to DEFAULT `main`, not hardening.)
 - Artifacts: `HUNT_240_NEGATIVE.json`, `BATCH240_HUNT.json`, living-tip supersession `542e6ec`. **No 0020 patch.** Never printed tokens.
 
-### Batch 241 — 2026-09-24 ~20:23– UTC (PERMANENT window; merge #71 0019; tip-refresh 542e6ec; scientific effect NONE; flipped nothing)
+### Batch 241 (earlier tip-refresh note) — 2026-09-24 ~20:23– UTC (PERMANENT window; merge #71 0019; tip-refresh 542e6ec; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.
 - [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) Path C **0019** — `mergeable=MERGEABLE` / `mergeStateStatus=CLEAN`; required workspace-landing **verify SUCCESS** (duplicate push verify also SUCCESS) → **`gh pr merge --merge`** → hardening tip **`542e6ec`**.
