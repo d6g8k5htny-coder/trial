@@ -1,6 +1,6 @@
 {
   "batch": "195",
-  "generated_at_utc": "2026-09-24T13:05:46Z",
+  "generated_at_utc": "2026-09-24T13:06:22Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -31,7 +31,7 @@
   "prior_device_code": "CC72-DB3D",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 658.0,
+  "seconds_left": 621.5,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
