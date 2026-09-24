@@ -1,6 +1,6 @@
 {
   "batch": "137",
-  "generated_at_utc": "2026-09-24T07:02:13Z",
+  "generated_at_utc": "2026-09-24T07:02:30Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -18,7 +18,7 @@
   "device_code": "2983-6CCD",
   "prior_device_code": "5816-A241",
   "auth_renewed": true,
-  "seconds_left": 872,
+  "seconds_left": 855,
   "daemon": "up",
   "flipped_anything": false,
   "trial_main_landed": true,
