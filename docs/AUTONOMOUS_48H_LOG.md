@@ -31,6 +31,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Concrete work:** `portable/OBJECTIVE_EVIDENCE_83.json` (align / portable_prepared / audit / iterate_permanent / `path_c_landed=false` `blocked_by` write 403); `portable/BATCH83_BRIEF.json`; `pack_portable.sh` auto-globs `OBJECTIVE_EVIDENCE_*.json`.
 - `goal_complete=false`.
 
+**Land note:** `gh pr create` → **403**. Direct push to trial `main` (`cursor/objective-evidence-83-b4ec`). Path C on `d6g8k5htny-coder/main` still 403; lander tmux `when-writable-land` polling.
+
 ### Batch 82 — 2026-09-24 ~02:32 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; `when_writable_land` background lander)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
