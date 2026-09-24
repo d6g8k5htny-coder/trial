@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 129 — 2026-09-24 ~06:17 UTC (PERMANENT window; align-watch; tip stable; hunt_skipped_stable; scientific effect NONE; flipped nothing)
+
+- `alignment_status` / `aligned_drift_watch` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Path B not needed; Path C idle (not writable / no user token).
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
+- Tip stable + write-blocked + Batch 126 RW hunt clean → **hunt_skipped_stable** (no 0017).
+- Device auth `91D3-D72C` → **pending** (`slow_down`); `seconds_left≈477`; no renew; no Path C land.
+- Daemon `when-writable-land` **up**; `gh-device-login` poller **up**. Timers re-armed: `permanent-autonomous-align-watch` 10800s; `gh-dylan-device-auth-check` 300s.
+- Tiny JSON: `portable/BATCH129_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `91D3-D72C`.
+
 ### Batch 127 — 2026-09-24 ~06:12 UTC (PERMANENT window; auth pending/slow_down; scientific effect NONE; flipped nothing)
 
 - Device auth `91D3-D72C` → **pending** (`slow_down`); `seconds_left≈740`; no renew; no Path C; daemon up; timers `gh-dylan-device-auth-check` + `gh-device-login-check` re-armed 300s. Tiny JSON: `portable/BATCH127_BRIEF.json`. `goal_complete=false`. Research untouched.

@@ -5,12 +5,12 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T06:09:55Z |
-| Checked (UTC) | 2026-09-24T06:10:00Z |
+| Checked (UTC) | 2026-09-24T06:16:28Z |
 | Verification URL | https://github.com/login/device |
 | User code | `91D3-D72C` |
 | Prior code | `FCD3-6B41` (expired) |
-| Status | pending (renewed batch 126) |
-| Expires | ~15 minutes from start |
+| Status | pending / slow_down (batch 129) |
+| Expires | ~seconds_left≈477 from check |
 
 ## Steps
 
