@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 239 — 2026-09-24 ~19:48– UTC (PERMANENT window; #69 CI PENDING; tip hunt → 0019; future-delta gate; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **stable** @ **`62f955a`** (post-#70).
+- [main #69](https://github.com/d6g8k5htny-coder/main/pull/69) inventable nav — `verify` still **PENDING**; subscribed CI+PR. Do not idle.
+- **Tip RW hunt beyond 0018:** focused 90/0; claims/recovery/pinned 102/0; **attestations** 41 + **1 ResourceWarning** (`test_attestations` bare `open`) + `attestations_check` **8** unclosed reads → cut portable **0019**.
+- **when_writable:** generalized `path_c_followon_pending` to scan `00NN≥0018` markers so future deltas re-arm land after `path_c_0018_landed=true`. `write_path_c_status` preserves all `path_c_00NN_landed`.
+- Sibling AGENTS: satellite repos fresh @ batch236 (identical Always/Never shape); sandbox App-token 404 (device-writable per inventory). **lemma_closed=false**; **flipped nothing**.
+- Pack/release `batch239-path-c-bundle`; next: merge #69 on green → tip-refresh → land 0019.
+
 ### Batch 238 — 2026-09-24 ~19:31– UTC (PERMANENT window; merge #70; tip-refresh 62f955a; wait #69; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.

@@ -64,6 +64,11 @@ Batch 238 — follow-on 0018 auto-land (do not idle-suppress):
   when pending, lander falls through to path_c_land with
   reason=path_c_followon_pending. Never flips research status.
 
+Batch 239 — future deltas (0019+) auto-land:
+  path_c_followon_pending() scans portable/patches for any 00NN ≥ 0018 whose
+  path_c_00NN_landed marker is not True. Cutting 0019+ must re-arm Path C land
+  even when path_c_0018_landed=true / path_c_landed=true. Never flips research.
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -385,11 +390,16 @@ def tip_matches_base(base_sha: str | None, live_sha: str | None) -> bool | None:
 
 
 def path_c_followon_pending() -> tuple[bool, dict]:
-    """Batch 238: detect pending eng follow-ons (0018+) idle must not suppress.
+    """Detect pending eng follow-ons (0018+) idle must not suppress.
 
     Path C base stack may already be on tip (PR #64 → path_c_landed=true) while
     a follow-on patch still needs auto-land once tip prerequisites exist
-    (0018 requires top-level attestations/ from main PR #70).
+    (0018 requires top-level attestations/ from main PR #70; 0019+ are tip
+    ResourceWarning / eng deltas cut after 0018).
+
+    Batch 239: scan portable/patches for any 00NN (≥0018) patch whose
+    path_c_00NN_landed marker is not True in VERIFY / PATH_C_STATUS / newest
+    BATCH briefs. Hardcoded 0018-only idle would swallow future deltas.
 
     Never flips research. Returns (pending, detail).
     pending=True → when_writable must fall through to path_c_land, not idle.
@@ -399,15 +409,62 @@ def path_c_followon_pending() -> tuple[bool, dict]:
         "lemma_closed": False,
         "followons": [],
         "sources": [],
+        "batch": "239",
     }
-    patch_0018 = ROOT / "portable" / "patches" / (
-        "0018-repository-top-level-attestations.patch"
-    )
-    if not patch_0018.is_file():
-        detail["skipped_reason"] = "no_0018_patch"
+    patches_dir = ROOT / "portable" / "patches"
+    followon_ids: list[str] = []
+    if patches_dir.is_dir():
+        for path in sorted(patches_dir.glob("*.patch")):
+            name = path.name
+            # Match 0018+, skip obsolete 0005-pre17 style and non-numbered.
+            if len(name) < 4 or not name[:4].isdigit():
+                continue
+            pid = name[:4]
+            try:
+                n = int(pid)
+            except ValueError:
+                continue
+            if n < 18:
+                continue
+            followon_ids.append(pid)
+    # Deduplicate while preserving order.
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for pid in followon_ids:
+        if pid in seen:
+            continue
+        seen.add(pid)
+        ordered.append(pid)
+    followon_ids = ordered
+
+    if not followon_ids:
+        detail["skipped_reason"] = "no_followon_patches_ge_0018"
         return False, detail
 
-    # Explicit landed markers (VERIFY / PATH_C_STATUS / newest BATCH brief).
+    def _marker_for(data: dict, pid: str):
+        return data.get(f"path_c_{pid}_landed")
+
+    pending_ids: list[str] = []
+    resolved_ids: list[str] = []
+
+    # Merge markers from VERIFY / PATH_C_STATUS / newest briefs (first True wins).
+    marker_map: dict[str, bool | None] = {pid: None for pid in followon_ids}
+    marker_sources: dict[str, str] = {}
+
+    def _ingest(label: str, data: dict) -> None:
+        for pid in followon_ids:
+            key = f"path_c_{pid}_landed"
+            if key not in data:
+                continue
+            marker = data.get(key)
+            detail["sources"].append({"file": label, key: marker})
+            if marker is True:
+                marker_map[pid] = True
+                marker_sources[pid] = f"{label}:{key}=true"
+            elif marker is False and marker_map[pid] is not True:
+                marker_map[pid] = False
+                marker_sources.setdefault(pid, f"{label}:{key}=false")
+
     for label, path in (
         ("VERIFY.json", VERIFY_FILE),
         ("PATH_C_STATUS.json", PATH_C_STATUS_FILE),
@@ -419,77 +476,55 @@ def path_c_followon_pending() -> tuple[bool, dict]:
         except (OSError, json.JSONDecodeError) as exc:
             detail["sources"].append({"file": label, "error": str(exc)})
             continue
-        marker = data.get("path_c_0018_landed")
-        detail["sources"].append(
-            {"file": label, "path_c_0018_landed": marker}
-        )
-        if marker is True:
-            detail["followons"].append(
-                {
-                    "id": "0018",
-                    "pending": False,
-                    "reason": f"{label}:path_c_0018_landed=true",
-                }
-            )
-            return False, detail
-        if marker is False:
-            detail["followons"].append(
-                {
-                    "id": "0018",
-                    "pending": True,
-                    "reason": f"{label}:path_c_0018_landed=false",
-                }
-            )
-            detail["pending_ids"] = ["0018"]
-            return True, detail
+        _ingest(label, data)
 
-    # Newest BATCH*_BRIEF.json with an explicit path_c_0018_landed field.
     briefs = sorted(
         (ROOT / "portable").glob("BATCH*_BRIEF.json"),
         key=lambda p: p.stat().st_mtime,
         reverse=True,
     )
-    for brief in briefs[:5]:
+    for brief in briefs[:8]:
         try:
             data = json.loads(brief.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
-        if "path_c_0018_landed" not in data:
+        # Only ingest briefs that mention at least one follow-on marker.
+        if not any(f"path_c_{pid}_landed" in data for pid in followon_ids):
             continue
-        marker = data.get("path_c_0018_landed")
-        detail["sources"].append(
-            {"file": brief.name, "path_c_0018_landed": marker}
-        )
+        _ingest(brief.name, data)
+        break  # newest brief with markers is enough
+
+    for pid in followon_ids:
+        marker = marker_map.get(pid)
         if marker is True:
+            resolved_ids.append(pid)
             detail["followons"].append(
                 {
-                    "id": "0018",
+                    "id": pid,
                     "pending": False,
-                    "reason": f"{brief.name}:path_c_0018_landed=true",
+                    "reason": marker_sources.get(pid, f"path_c_{pid}_landed=true"),
                 }
             )
-            return False, detail
-        detail["followons"].append(
-            {
-                "id": "0018",
-                "pending": True,
-                "reason": f"{brief.name}:path_c_0018_landed=false",
-            }
-        )
-        detail["pending_ids"] = ["0018"]
-        return True, detail
+        else:
+            # Missing marker OR explicit false → pending (patch on disk needs land).
+            pending_ids.append(pid)
+            reason = marker_sources.get(pid)
+            if reason is None:
+                reason = f"{pid}_patch_present_no_landed_marker"
+            detail["followons"].append(
+                {
+                    "id": pid,
+                    "pending": True,
+                    "reason": reason,
+                }
+            )
 
-    # Default: 0018 patch present but no landed marker → treat as pending so
-    # idle_path_c_done cannot swallow the auto-land window after PR #70.
-    detail["followons"].append(
-        {
-            "id": "0018",
-            "pending": True,
-            "reason": "0018_patch_present_no_landed_marker",
-        }
-    )
-    detail["pending_ids"] = ["0018"]
-    return True, detail
+    detail["pending_ids"] = pending_ids
+    detail["resolved_ids"] = resolved_ids
+    detail["followon_patch_ids"] = followon_ids
+    if pending_ids:
+        return True, detail
+    return False, detail
 
 
 def path_c_already_landed() -> tuple[bool, dict]:
@@ -497,7 +532,7 @@ def path_c_already_landed() -> tuple[bool, dict]:
 
     Reads VERIFY.json / PATH_C_STATUS.json. Never flips research. Returns
     (landed, detail). When landed, when_writable_land must not re-open Path C
-    unless Batch 238 follow-on patches (0018+) are still pending.
+    unless follow-on patches (0018+) are still pending.
     """
     detail: dict = {"sources": []}
     for label, path in (
@@ -1156,7 +1191,7 @@ def _one_iteration(
 
     if align_state == "ALIGNED":
         # Batch 231: Path C already on tip (PR #64) — do not re-land; drift watch.
-        # Batch 238: unless follow-on eng patches (0018+) still pending auto-land.
+        # Batch 238/239: unless follow-on eng patches (0018+) still pending auto-land.
         landed, land_detail = path_c_already_landed()
         followon_pending, followon_detail = path_c_followon_pending()
         report["path_c_followon_detail"] = followon_detail
@@ -1166,25 +1201,29 @@ def _one_iteration(
             report["path_c_landed"] = True
             report["path_c_landed_detail"] = land_detail
             report["path_c_0018_landed"] = True
+            report["path_c_followon_pending_ids"] = []
             report["next_focus"] = "tip-sync+drift+no-flip"
             report["preferred_autonomy"] = "aligned_drift_watch"
             _log(
                 log_path,
                 "action=idle_path_c_done path_c_landed=true "
-                "path_c_0018_landed=true "
+                "followons_resolved=true "
                 "next=tip-sync+drift+no-flip (skip re-land)",
             )
             return report
         if landed and followon_pending:
             report["path_c_landed"] = True
             report["path_c_landed_detail"] = land_detail
-            report["path_c_0018_landed"] = False
+            pending_ids = list(followon_detail.get("pending_ids") or [])
+            resolved_ids = list(followon_detail.get("resolved_ids") or [])
+            report["path_c_followon_pending_ids"] = pending_ids
+            report["path_c_0018_landed"] = "0018" in resolved_ids and "0018" not in pending_ids
             report["reason"] = "path_c_followon_pending"
             _log(
                 log_path,
                 "action=path_c_land reason=path_c_followon_pending "
-                f"pending={followon_detail.get('pending_ids')} "
-                "path_c_landed=true (base) path_c_0018_landed=false "
+                f"pending={pending_ids} resolved={resolved_ids} "
+                "path_c_landed=true (base) "
                 "gate=lemma_closed=false",
             )
         report["action"] = "path_c_land"

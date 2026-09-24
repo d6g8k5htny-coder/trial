@@ -34,6 +34,7 @@ _LIVING_RELEASES = (
     "batch223-path-c-bundle",
     "batch236-path-c-bundle",
     "batch238-path-c-bundle",
+    "batch239-path-c-bundle",
 )
 
 
@@ -5872,8 +5873,11 @@ def test_batch238_merge70_wait69_followon_gate() -> None:
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     pending, detail = mod.path_c_followon_pending()
-    assert pending is False
+    # Batch 239 may cut 0019+ → pending True is OK; 0018 must stay resolved.
     assert detail.get("scientific_effect") == "NONE"
+    assert "0018" in (detail.get("resolved_ids") or []) or (
+        pending is False and data["path_c_0018_landed"] is True
+    )
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -5898,3 +5902,71 @@ def test_batch238_merge70_wait69_followon_gate() -> None:
     assert "Batch 238" in log
     assert "pull/70" in log or "#70" in log
     assert "waiting_ci" in log.lower() or "PENDING" in log
+
+
+def test_batch239_0019_future_delta_gate() -> None:
+    """Batch 239: tip hunt → 0019; when_writable future-delta gate; #69 wait; no flip."""
+    import json
+    import importlib.util
+
+    brief = ROOT / "portable" / "BATCH239_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "239"
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["scientific_effect"] == "NONE"
+    assert data["pr69"] == "PENDING"
+    assert data["pr70"] == "MERGED"
+    assert data.get("path_c_0018_landed") is True
+    assert data.get("path_c_0019_landed") is False
+    assert data.get("patch_0019") is True
+    assert _living_tip(data.get("tip"))
+    assert _living_release(data.get("release_tag"))
+
+    patch = ROOT / "portable" / "patches" / "0019-attestations-close-file-handles.patch"
+    assert patch.is_file()
+    ptxt = patch.read_text(encoding="utf-8")
+    assert "attestations" in ptxt
+    assert "with open" in ptxt
+
+    apply = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "0019-attestations-close-file-handles.patch" in apply
+
+    manifest = json.loads(
+        (ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8")
+    )
+    ids = {p["id"] for p in manifest["patches"]}
+    assert "0019" in ids
+    assert manifest["lemma_closed"] is False
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "Batch 239" in ww
+    assert "followon_patch_ids" in ww or "future deltas" in ww.lower() or "0019+" in ww
+
+    spec = importlib.util.spec_from_file_location(
+        "when_writable_land_b239", ROOT / "scripts" / "when_writable_land.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    pending, detail = mod.path_c_followon_pending()
+    assert pending is True
+    assert "0019" in (detail.get("pending_ids") or [])
+    assert "0018" in (detail.get("resolved_ids") or [])
+    assert detail.get("scientific_effect") == "NONE"
+    assert detail.get("lemma_closed") is False
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert status.get("path_c_0018_landed") is True
+    assert status.get("path_c_0019_landed") is not True
+    assert _living_tip(status.get("tip"))
+
+    wps = (ROOT / "scripts" / "write_path_c_status.py").read_text(encoding="utf-8")
+    assert "path_c_" in wps and "_landed" in wps
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 239" in log
+    assert "0019" in log
+    assert "sibling" in log.lower() or "AGENTS" in log

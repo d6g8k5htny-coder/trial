@@ -10,7 +10,7 @@
 #
 # Patches are checked/applied in order. After main PR #27 merged (batch 48),
 # tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
-# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0017.
+# restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0019.
 #
 # Post-#41 tip topology (Path C):
 #   - default main @ 1c6e74b (PR #41) is ALIGNED research *landing* but NOT
@@ -85,6 +85,8 @@ PATCHES=(
   # 0018: REPOSITORY_TOP_LEVEL += attestations (main PR #70). Requires attestations/;
   # skipped when that top-level dir is absent so pre-#70 tips stay green.
   "$ROOT/0018-repository-top-level-attestations.patch"
+  # 0019: attestations_check + test_attestations close file handles (tip @ 62f955a).
+  "$ROOT/0019-attestations-close-file-handles.patch"
 )
 
 # Batch 231: idempotent apply — if a patch is already on the tree (Path C landed
@@ -156,3 +158,4 @@ echo "  # collision_proposal_check + tests/test_collision_proposal.py 0 RW after
 echo "  # tests/test_frozen_check.py + test_drive_index_overlay.py 0 RW after 0015"
 echo "  # tests/test_receipts.py + test_bridge.py 0 RW after 0016"
 echo "  # tests/test_pinned_sources.py 0 RW after 0017"
+echo "  # tools/attestations_check.py + tests/test_attestations.py 0 RW after 0019"

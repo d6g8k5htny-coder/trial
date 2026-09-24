@@ -1,12 +1,14 @@
-From 9d578886bab02c10e1c9dda05ce986db64d72540 Mon Sep 17 00:00:00 2001
-From: path-c-refresh <path-c-refresh@local>
-Date: Thu, 24 Sep 2026 19:54:19 +0000
-Subject: [PATCH] portable engineering patches (apply_all 0001-0004+0008-0016)
- on 62f955a
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursor-agent@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 19:50:00 +0000
+Subject: [PATCH] fix: close file handles in attestations check/tests
 
+Tip @ 62f955a ResourceWarning hunt beyond 0018: bare open() in
+tools/attestations_check.py and tests/test_attestations.py.
+Scientific effect: NONE. No claim/lemma status flip.
 ---
- tests/test_attestations.py  | 3 ++-
- tools/attestations_check.py | 3 ++-
+ tests/test_attestations.py   | 3 ++-
+ tools/attestations_check.py  | 3 ++-
  2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/tests/test_attestations.py b/tests/test_attestations.py
@@ -38,4 +40,3 @@ index 05cfdf2..656031d 100644
              successor = record.get("superseded_by")
 -- 
 2.43.0
-

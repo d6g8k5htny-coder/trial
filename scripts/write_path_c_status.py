@@ -306,12 +306,21 @@ def _land_fields_from_verify(verify: dict) -> dict:
     vector = verify.get("write_vector")
     if isinstance(vector, str) and vector:
         out["write_vector"] = vector
-    # Batch 238: preserve follow-on 0018 land marker across status refreshes.
-    if verify.get("path_c_0018_landed") is True:
-        out["path_c_0018_landed"] = True
-        via = verify.get("path_c_0018_via")
-        if isinstance(via, str) and via:
-            out["path_c_0018_via"] = via
+    # Batch 238/239: preserve follow-on 00NN (≥0018) land markers across refreshes.
+    # Explicit keys include path_c_0018_landed (PR #70) and later path_c_0019_landed+.
+    for key, val in verify.items():
+        if (
+            isinstance(key, str)
+            and key.startswith("path_c_")
+            and key.endswith("_landed")
+            and key != "path_c_landed"
+            and val is True
+        ):
+            out[key] = True
+            via_key = key[: -len("_landed")] + "_via"
+            via = verify.get(via_key)
+            if isinstance(via, str) and via:
+                out[via_key] = via
     return out
 
 
@@ -435,16 +444,23 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
             status["main_push_token_set"] = True
             if prior.get("main_push_token_set_repos"):
                 status["main_push_token_set_repos"] = prior["main_push_token_set_repos"]
-    # Batch 238: preserve path_c_0018_landed from VERIFY or prior across assert.
-    if status.get("path_c_0018_landed") is not True:
-        if prior.get("path_c_0018_landed") is True:
-            status["path_c_0018_landed"] = True
-            if prior.get("path_c_0018_via"):
-                status["path_c_0018_via"] = prior["path_c_0018_via"]
-        elif verify.get("path_c_0018_landed") is True:
-            status["path_c_0018_landed"] = True
-            if verify.get("path_c_0018_via"):
-                status["path_c_0018_via"] = verify["path_c_0018_via"]
+    # Batch 238/239: preserve path_c_00NN_landed (≥0018) from VERIFY or prior.
+    # Covers path_c_0018_landed and any later path_c_0019_landed+ follow-ons.
+    for src in (prior, verify):
+        for key, val in src.items():
+            if (
+                isinstance(key, str)
+                and key.startswith("path_c_")
+                and key.endswith("_landed")
+                and key != "path_c_landed"
+                and val is True
+                and status.get(key) is not True
+            ):
+                status[key] = True
+                via_key = key[: -len("_landed")] + "_via"
+                via = src.get(via_key)
+                if isinstance(via, str) and via and not status.get(via_key):
+                    status[via_key] = via
     # Ensure schema keys exist even if None.
     for key in SCHEMA_KEYS:
         status.setdefault(key, None)

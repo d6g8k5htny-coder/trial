@@ -1,13 +1,13 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-24T19:32:54Z",
+  "generated_at_utc": "2026-09-24T19:54:19Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
   ],
   "base_tip_ref": "chatgpt/drive-github-hardening-20260919 62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
   "verified_on_tip": "62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
-  "apply_all_count": 15,
+  "apply_all_count": 16,
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "goal_complete": false,
@@ -189,6 +189,19 @@
       "in_apply_all": true,
       "verified_on_tip": "62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
       "note": "apply_all skips when attestations/ absent; lands with main PR #70"
+    },
+    {
+      "id": "0019",
+      "file": "0019-attestations-close-file-handles.patch",
+      "title": "attestations_check + test_attestations close file handles",
+      "files-touched": [
+        "tests/test_attestations.py",
+        "tools/attestations_check.py"
+      ],
+      "obsolete-if": null,
+      "in_apply_all": true,
+      "verified_on_tip": "62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
+      "note": "Batch 239: tip RW hunt beyond 0018; 1+8 ResourceWarnings closed"
     }
   ],
   "obsolete_kept_on_disk": [
@@ -238,9 +251,9 @@
       "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
     }
   ],
-  "verified_batch": "238",
+  "verified_batch": "239",
   "tip_refresh_via": "refresh_path_c_bundle.sh",
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",
-  "note": "Batch 232: tip refresh 93a4ecd\u2192377201c (PR #62). Path C 0001\u20130004+0008\u20130017 already on tip (ancestor PR #64). apply_all idempotent. ready_to_apply superseded. lemma_closed=false."
+  "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false."
 }

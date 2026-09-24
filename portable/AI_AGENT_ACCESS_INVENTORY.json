@@ -1,6 +1,6 @@
 {
   "batch": "236",
-  "generated_at_utc": "2026-09-24T18:41:27Z",
+  "generated_at_utc": "2026-09-24T19:54:52Z",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false,
@@ -332,5 +332,20 @@
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "defect_shipped": "sandbox README restore + AGENTS.md on google-drive/governance-/Math-/meta-framework/query-/sandbox",
-  "script": "scripts/owner_grant_ai_agent_access.sh"
+  "script": "scripts/owner_grant_ai_agent_access.sh",
+  "sibling_agents_freshness": {
+    "checked_at_utc": "2026-09-24T19:53:45Z",
+    "satellites": {
+      "meta-framework": "1494d7c batch236 AGENTS",
+      "query-": "d17e2b9 batch236 AGENTS",
+      "Math-": "5f1d0d6 batch236 AGENTS",
+      "governance-": "081280e batch236 AGENTS",
+      "google-drive": "ad44f9c batch236 AGENTS"
+    },
+    "sandbox": "app_token_404; device_writable per batch236 inventory",
+    "main_AGENTS_sha": "d6eaef15672edba4349e9611ac4e4d805d7f2c87",
+    "trial_AGENTS": "present; 8-repo mandate incl sandbox",
+    "action": "no_rewrite_needed_satellites_fresh"
+  },
+  "refreshed_batch": "239"
 }

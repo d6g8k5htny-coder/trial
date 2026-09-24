@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~09:26 UTC (batch 162: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP refreshed `10c077e`→`8ea3b5f` via PR #53; apply_all + focused 90/0 RW; bundle rebuild).
+Checked 2026-09-24 ~19:50 UTC (batch 239: PERMANENT window; tip `62f955a` post-#70; #69 CI pending; cut **0019** attestations close-handles; when_writable future-delta gate).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -8,7 +8,7 @@ Checked 2026-09-24 ~09:26 UTC (batch 162: PERMANENT window; ALIGNED @ 1c6e74b vi
 | Tip | Role | Path-C shaped? | apply_all |
 |-----|------|----------------|-----------|
 | default `main` @ `1c6e74b` (PR #41) | ALIGNED research **landing** (README + `AGENTS.md` + `.github`; `body` under `history/`) | **No** — missing `PACKET.json` / `carriers_verify` | **Refuse** (`PATH_C_BASE=main` blocked) |
-| hardening `chatgpt/drive-github-hardening-20260919` @ BASE_TIP | Engineering working tip | **Yes** | **0001–0004 + 0008–0017** |
+| hardening `chatgpt/drive-github-hardening-20260919` @ BASE_TIP | Engineering working tip | **Yes** | **0001–0004 + 0008–0019** |
 | rebase hardening → `main` | Integration attempt | — | Usually **CONFLICTING** after #41 (`ci.yml` / bridge / history relocation) |
 
 Keep Path C on hardening. Certainty: `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`.
@@ -16,6 +16,7 @@ If a forced rebase hits first-stop conflicts: `./scripts/path_c_rebase_helper.sh
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
+| hardening (post-#70) | `62f955a` | **0001–0004 + 0008–0018** (+**0019** pending) | problems=0 | **BASE_TIP batch 239** (0019 attestations RW; followon gate) |
 | hardening (post-#51) | `b89448d` | **0001–0004 + 0008–0017** | problems=0 | **BASE_TIP batch 207** (+0017 pinned_sources RW; path-c-applied-bundle rebuilt) |
 | hardening (post-#53) | `8ea3b5f` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 162** (apply_all OK; focused 90/0 RW; path-c-applied-bundle rebuilt) |
 | hardening (post-#54) | `10c077e` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 142–161) |

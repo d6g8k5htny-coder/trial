@@ -1,0 +1,54 @@
+{
+  "batch": "239",
+  "generated_at_utc": "2026-09-24T19:53:35Z",
+  "status": "waiting_ci_69_parallel_0019",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "62f955a",
+  "tip_full": "62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
+  "base_tip": "62f955a",
+  "aligned": true,
+  "write": "WRITABLE",
+  "pr69": "PENDING",
+  "pr70": "MERGED",
+  "merged_prs": [
+    70
+  ],
+  "waiting_main_prs": [
+    69
+  ],
+  "path_c_0018_landed": true,
+  "path_c_0018_via": "main_pr_70_merge_62f955a",
+  "path_c_0019_landed": false,
+  "patch_0019": true,
+  "path_c_landed": true,
+  "hunt": "attestations_rw_found_0019",
+  "hunt_detail": "test_attestations+attestations_check ResourceWarning beyond 0018",
+  "when_writable_followon_gate": "path_c_followon_pending",
+  "when_writable_pending_ids": [
+    "0019"
+  ],
+  "when_writable_resolved_ids": [
+    "0018"
+  ],
+  "sibling_agents": "fresh_batch236_satellite_identical_shape; sandbox_app_404",
+  "release_tag": "batch239-path-c-bundle",
+  "assert_path_c_ready": "OK",
+  "pack_portable": true,
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "parallel_shipped": [
+    "tip_rw_hunt_beyond_0018",
+    "cut_0019_attestations_close_handles",
+    "when_writable_future_delta_gate",
+    "write_path_c_status_preserve_00NN",
+    "sibling_agents_freshness_audit",
+    "refresh_PATH_C_STATUS",
+    "pack_portable"
+  ],
+  "next_focus": "on_ci_green_merge_69_then_land_0019_tip_refresh",
+  "note": "Batch 239: #69 CI PENDING. Parallel eng: tip hunt found attestations RW beyond 0018 \u2192 cut 0019; generalized when_writable for future deltas; PATH_C_STATUS refreshed; sibling AGENTS fresh (batch236). Never printed tokens; flipped nothing.",
+  "bundle_refreshed": true,
+  "path_c_bundle_applied_sha": "9d57888"
+}
