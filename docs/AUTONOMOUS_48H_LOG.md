@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 240 (deep hunt close) — 2026-09-24 ~20:30– UTC (PERMANENT window; post-0019 0020 hunt NEGATIVE; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP; **ALIGNED**; tip_moved=false). Path C **0019** already on tip via [main #71](https://github.com/d6g8k5htny-coder/main/pull/71).
+- **Deep eng hunt for portable 0020** (ResourceWarning / leak / flake): apply_all 0001–0019 already-applied; focused 214 + receipts/bridge 540 + mid 322 + lean/side 298 under `-W default::ResourceWarning` → **0 RW**; AST bare-open actionable **0**; ZipFile FPs only; tools `--help` 0 RW; hardening CI failures last 30 **[]**.
+- Host noise (not tip defect): twelve/h3 need python3.11 (cleared under 3.11, 85 pass / 0 RW); bridge `.git/index` drift on shared clone.
+- Research audit: problems=0 / **OPEN_HOLD** / **lemma_closed=false**; stack OPEN (13 premises / 1 lemma / 3 prizes / 16 OQ); **flipped nothing**.
+- Open main PRs: skip research-hold drafts (#73/#47/#46/#38/#36/#21/#12/#8/#7); no owned eng green mergeable. (#72 homepage merged to DEFAULT `main`, not hardening.)
+- Artifacts: `HUNT_240_NEGATIVE.json`, `BATCH240_HUNT.json`, living-tip supersession `542e6ec`. **No 0020 patch.** Never printed tokens.
+
 ### Batch 241 — 2026-09-24 ~20:23– UTC (PERMANENT window; merge #71 0019; tip-refresh 542e6ec; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.
@@ -30,10 +39,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ### Batch 240 — 2026-09-24 ~20:08– UTC (PERMANENT window; #71 CI PENDING; land-path-c 0019 apply harden; scientific effect NONE; flipped nothing)
 
-- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **`a1ed37b`** (== BASE_TIP).
-- [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) Path C **0019** — CI still **PENDING** (workspace-landing verify); subscribed; merge if green.
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **`a1ed37b`** (== BASE_TIP) at open; later tip-refresh to **`542e6ec`** after #71 (see Batch 241 + Batch 240 deep-hunt close).
+- [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) Path C **0019** — CI was **PENDING** at open; later merged (Batch 241).
 - **Concrete harden (while waiting):** `land-path-c-on-main` + `owner_land_path_c.sh` always run `apply_all` through **0001–0004 + 0008–0019** (removed early-patch `--check`-only short-circuit that skipped 0019 on trees already carrying 0001–0018). `apply_all` skips **0018/0019** when `attestations/` absent. Stack labels refreshed in dry-run / alignment_status / refresh helpers.
-- Parallel earlier: post-0019 RW hunt seed for 0020 (NEGATIVE); durable write probe; sibling inventory 8/8. **flipped nothing**. `lemma_closed=false`.
+- Parallel: post-0019 RW hunt seed → **deep hunt NEGATIVE** (`HUNT_240_NEGATIVE.json`); durable write probe; sibling inventory 8/8. **flipped nothing**. `lemma_closed=false`.
 
 ### Batch 239 — 2026-09-24 ~19:48– UTC (PERMANENT window; #69 CI SUCCESS→merge a1ed37b; 0019+future-delta; scientific effect NONE; flipped nothing)
 

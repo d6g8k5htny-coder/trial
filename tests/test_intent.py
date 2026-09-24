@@ -25,6 +25,7 @@ _LIVING_TIPS = (
     "1200501",
     "62f955a",
     "a1ed37b",
+    "542e6ec",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -36,6 +37,7 @@ _LIVING_RELEASES = (
     "batch236-path-c-bundle",
     "batch238-path-c-bundle",
     "batch239-path-c-bundle",
+    "batch241-path-c-bundle",
 )
 
 
@@ -5957,16 +5959,20 @@ def test_batch239_0019_future_delta_gate() -> None:
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     pending, detail = mod.path_c_followon_pending()
-    assert pending is True
-    assert "0019" in (detail.get("pending_ids") or [])
-    assert "0018" in (detail.get("resolved_ids") or [])
     assert detail.get("scientific_effect") == "NONE"
     assert detail.get("lemma_closed") is False
-
+    assert "0018" in (detail.get("resolved_ids") or [])
+    # Living supersession (Batch 241+): after #71 merge, 0019 is resolved on tip.
     status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
     assert status["lemma_closed"] is False
     assert status.get("path_c_0018_landed") is True
-    assert status.get("path_c_0019_landed") is not True
+    if status.get("path_c_0019_landed") is True:
+        assert pending is False
+        assert "0019" in (detail.get("resolved_ids") or [])
+    else:
+        assert pending is True
+        assert "0019" in (detail.get("pending_ids") or [])
+        assert status.get("path_c_0019_landed") is not True
     assert _living_tip(status.get("tip"))
 
     wps = (ROOT / "scripts" / "write_path_c_status.py").read_text(encoding="utf-8")
@@ -5979,7 +5985,7 @@ def test_batch239_0019_future_delta_gate() -> None:
 
 
 def test_batch240_land_path_c_apply_includes_0019() -> None:
-    """Batch 240: land-path-c + owner_land always apply through 0019; no early --check skip."""
+    """Batch 240: land-path-c + owner_land always apply through 0019; deep 0020 hunt NEGATIVE."""
     import json
 
     path_c = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
@@ -6014,11 +6020,36 @@ def test_batch240_land_path_c_apply_includes_0019() -> None:
     assert data["lemma_closed"] is False
     assert data["flipped_anything"] is False
     assert data["scientific_effect"] == "NONE"
+    assert data.get("patch_0020") is False
+    assert data.get("hunt_0020") == "NEGATIVE" or data.get("hunt_0020_seed")
     assert "land_path_c_0019_apply" in (data.get("parallel_shipped") or []) or (
         "land-path-c" in (data.get("parallel") or "")
+    ) or "deep_post_0019_rw_hunt_0020_negative" in (
+        data.get("parallel_shipped") or []
     )
+    assert _living_tip(data.get("tip"))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "HUNT_240_NEGATIVE.json").read_text(encoding="utf-8")
+    )
+    assert hunt["hunt_result"] == "NEGATIVE"
+    assert hunt["defect_found"] is False
+    assert hunt["patch_0020"] is False
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert _living_tip(hunt.get("tip"))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH240_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 240" in log
     assert "0019" in log
+    assert "HUNT_240_NEGATIVE" in log or "0020" in log
     assert "land-path-c" in log.lower() or "land_path_c" in log
