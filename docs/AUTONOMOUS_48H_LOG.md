@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 217 — 2026-09-24 ~14:44–14:51 UTC (PERMANENT window; Dylan claimed WRITE UNLOCKED; aggressive probe still DENIED; auth 5AEC→BFEF; Path C NOT landed; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- WRITE+ALIGN: Dylan said write unlocked → probed hard: `probe_main_write` **DENIED** 403; vectors W1/W2/W3a/W3d **DENIED**; `git push` **403 cursor[bot]**; `install_has_main=false` (trial-only). Default tip **ALIGNED** @ `1c6e74b` → **Path B skipped**. Path C blocked `NO_TOKEN`.
+- `repository_dispatch land-path-c-on-main` `dry_run=false` **accepted (204)** but Actions runs **failed**: trial secret `MAIN_PUSH_TOKEN` **empty**. `workflow_dispatch` still 403.
+- Tip **`b89448d` == BASE_TIP**; `assert_path_c_ready` **OK**; `math_status_check` problems=0 / **OPEN_HOLD** / **lemma_closed=false**.
+- AUTH: `5AEC-4784` **expired** → renew **`BFEF-C1D9`**; poller `batch217-device-poll` up. Never print tokens.
+- Tried `owner_open_path_c_pr` / `owner_land_path_c --from-bundle` / `when_writable_land --once` → all blocked on write probe.
+- RESEARCH: untouched; **lemma_closed=false**; **flipped nothing**. `goal_complete=false` (Path C not verified on main).
+- Docs: `PATH_C_STATUS`, `BATCH217_BRIEF`, `GH_DEVICE_LOGIN`, this log. Release still **`batch207-path-c-bundle`**.
+
 ### Batch 216 — 2026-09-24 ~14:39–14:42 UTC (PERMANENT window; tip stable b89448d; auth 5AEC pending; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - WRITE+ALIGN: main write **DENIED** (403; `install_has_main=false`); default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
