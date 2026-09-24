@@ -79,6 +79,9 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 ./scripts/owner_land_path_c.sh --dry-run   # certainty (works without write)
 ./scripts/owner_land_path_c.sh --from-bundle   # ONE-SHOT after extracting release tarball
 ./scripts/owner_land_path_c.sh                 # apply_all path (same gates)
+# Path C — owner PR from path-c-applied-bundle (Batch 151)
+./scripts/owner_open_path_c_pr.sh --dry-run    # certainty; no clone/push
+./scripts/owner_open_path_c_pr.sh              # git am → cursor/path-c-portable-fixes → PR hardening
 # Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (CONFLICTS) / PATH_C_BASE=main (no PACKET)
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 # If a forced rebase hits first-stop conflicts (ci.yml / research.yml / bridge):
@@ -168,6 +171,12 @@ Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0
 ./scripts/owner_land_path_c.sh --dry-run
 ./scripts/owner_land_path_c.sh
 # Avoid: PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # CONFLICTS after PR #41
+
+# Batch 151 — owner PR opener (bundle git am → branch cursor/path-c-portable-fixes):
+./scripts/owner_open_path_c_pr.sh --dry-run
+./scripts/owner_open_path_c_pr.sh
+# Uses owner gh auth or MAIN_PUSH_TOKEN. Idempotent if branch/PR exists.
+# PR body: engineering-only; lemma_closed stays false; no research promotion.
 ```
 
 ### C1 — Actions UI (trial workflow; Batch 69+)

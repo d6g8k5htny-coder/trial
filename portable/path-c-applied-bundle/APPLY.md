@@ -6,6 +6,8 @@
 
 **Batch 137:** preferred owner path is **one command** via `scripts/owner_land_path_c.sh --from-bundle` after extracting the release tarball (same patch + lemma gates + branch/PR).
 
+**Batch 151:** dedicated PR opener `scripts/owner_open_path_c_pr.sh` — same bundle `git am` onto BASE_TIP, pushes `cursor/path-c-portable-fixes`, opens/reuses PR into hardening. `--dry-run` certainty. Idempotent. Engineering-only; `lemma_closed` stays false; no research promotion.
+
 ## ONE-SHOT (owner / write token) — preferred
 
 ```bash
@@ -13,6 +15,8 @@ gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
   -p 'trial-portable-main-fixes.tgz'
 mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+# or Batch 151 PR branch:
+# /tmp/path-c-land/scripts/owner_open_path_c_pr.sh
 ```
 
 Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).

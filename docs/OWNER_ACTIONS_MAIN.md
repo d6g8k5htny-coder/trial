@@ -20,6 +20,10 @@ mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path
 
 - `--from-bundle` applies the pre-verified `path-c-on-hardening.patch` (`git am`) onto hardening @ BASE_TIP `10c077e` (PR #54), asserts `lemma_closed=false`, pushes branch + opens PR.
 - Certainty without write: `/tmp/path-c-land/scripts/owner_land_path_c.sh --dry-run`
+- **Batch 151 alternative (same bundle, dedicated PR branch):**
+  `./scripts/owner_open_path_c_pr.sh --dry-run` then `./scripts/owner_open_path_c_pr.sh`
+  → `git am` → push `cursor/path-c-portable-fixes` → PR into hardening. Idempotent.
+  Engineering-only; `lemma_closed` stays false; no research promotion. Accepts owner `gh` or `MAIN_PUSH_TOKEN`.
 - Do **not** apply onto post-#41 default `main` (no `PACKET.json`).
 - If you prefer Cloud Agent write instead of local: see [`RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md) — (a) App add `main` R/W, (b) device code, (c) `MAIN_PUSH_TOKEN`, then **(d) RELAUNCH** (this run cannot gain main mid-flight).
 

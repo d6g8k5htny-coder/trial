@@ -257,6 +257,10 @@ on hardening. Certainty without write:
 ```bash
 ./scripts/owner_land_path_c.sh --dry-run   # path_c_dry_run.py JSON
 # expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
+
+# Batch 151 — owner PR from path-c-applied-bundle (git am → cursor/path-c-portable-fixes):
+./scripts/owner_open_path_c_pr.sh --dry-run
+./scripts/owner_open_path_c_pr.sh   # needs write; PR into hardening; lemma_closed stays false
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `5f352a2` after #44 fail-closed vault path map — `apply_all --check` OK).
@@ -405,6 +409,7 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 | `scripts/refresh_restore_plan.py` | Refresh `portable/RESTORE_PLAN_<N>.json` from live audit/vectors/dry-run. |
 | `scripts/owner_land_path_a.sh` | **HOLD VOID** — default `PATH_A_MODE=revert32` (or `ready_merge` for a fresh OPEN port). Prefer Path B. |
 | `scripts/owner_land_path_c.sh` | Write probe → clone **hardening** (auto; not post-#2 default main) → optional `PATH_C_REBASE_ONTO_MAIN=1` → `apply_all` 0001–0004 + 0008–0016 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
+| `scripts/owner_open_path_c_pr.sh` | **Batch 151.** Owner gh / `MAIN_PUSH_TOKEN` → clone hardening @ BASE_TIP → `git am` path-c-applied-bundle → push `cursor/path-c-portable-fixes` → open/reuse PR into hardening. `--dry-run` certainty. Idempotent. Engineering-only; `lemma_closed` stays false; no research promotion. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
