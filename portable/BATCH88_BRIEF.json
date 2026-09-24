@@ -1,0 +1,23 @@
+{
+  "batch": "88",
+  "generated_at_utc": "2026-09-24T02:59:09Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "path_c_landed": false,
+  "blocked_by": "write_DENIED_403_cursor_bot",
+  "new_0017": false,
+  "exact_push_403": "Permission to d6g8k5htny-coder/main.git denied to cursor[bot].",
+  "exact_api_403": "Resource not accessible by integration",
+  "secrets_admin": false,
+  "collaborator_put": false,
+  "route_now": "IDLE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "Path C perm probe: all writes 403; tip ALIGNED no drift; hardening==ac33581"
+}
