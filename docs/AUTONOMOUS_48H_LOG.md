@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 168 — 2026-09-24 ~09:58 UTC (PERMANENT window; tip stable 8ea3b5f; oneshot dry-run + pack release batch168-path-c-bundle; CI red fix; auth pending 905D-02F4; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `905D-02F4` still **pending** (`authorization_pending` / `slow_down`); seconds_left≈200; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- **Engineering:** thorough dry-run of `scripts/owner_path_c_oneshot.sh` (help/menu/dry-run/token dry-run/from-bundle). Fixed stale unblock release tag → `batch168-path-c-bundle` + `PATH_C_RELEASE_TAG`; menu prefers oneshot `--from-bundle`. Fixed CI red: `GH_DEVICE_LOGIN.md` retained `issues/27` + `BATCH162_BRIEF` history (batch162 intent). Rebuilt pack **with oneshot**; published release **`batch168-path-c-bundle`**. `preferred_auth_interval_s=1800` (no duplicate auth timer if one exists). Intent: `test_batch168_oneshot_pack_ci`.
+- Tiny JSON: `portable/BATCH168_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Issue [#30](https://github.com/d6g8k5htny-coder/trial/issues/30).
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `905D-02F4` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch168-path-c-bundle`.
+
 ### Batch 165 — 2026-09-24 ~09:48 UTC (PERMANENT window; tip stable 8ea3b5f; ship owner_path_c_oneshot.sh; research audit refresh OPEN_HOLD; auth renew 905D-02F4; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

@@ -4,6 +4,19 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 168 — Path C ONE-SHOT pack** (`batch168-path-c-bundle`; includes `owner_path_c_oneshot.sh`):
+>
+> ```bash
+> gh release download batch168-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> ```
+>
+> Prefer over `batch162-path-c-bundle` / `batch142-path-c-bundle`. BASE_TIP `8ea3b5f`.
+> Auth timer guidance: `preferred_auth_interval_s=1800` (do not duplicate). Scientific effect: **NONE**.
+
 > **Batch 137 — Path C ONE-SHOT from release tarball** (`batch142-path-c-bundle` or newer):
 >
 > ```bash

@@ -3001,6 +3001,102 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "lemma_closed" in log.lower()
 
 
+def test_batch168_oneshot_pack_ci() -> None:
+    """Batch 168: oneshot dry-run + pack release tag; CI history fix; tip stable; auth pending; lemma_closed=false."""
+    import json
+    import os
+    import subprocess
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    assert oneshot.is_file()
+    text = oneshot.read_text(encoding="utf-8")
+    assert "batch168-path-c-bundle" in text
+    assert "PATH_C_RELEASE_TAG" in text
+    assert "owner_path_c_oneshot.sh --from-bundle" in text
+    assert "lemma_closed" in text
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_p = subprocess.run(
+        ["bash", str(oneshot), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
+    assert "batch168-path-c-bundle" in dry_out
+    assert "905D-02F4" in dry_out or "github.com/login/device" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+
+    # Token dry-run path still OK (fake token never printed).
+    tok_env = dict(dry_env)
+    tok_env["MAIN_PUSH_TOKEN"] = "fake-batch168-dry-run-token-not-real"
+    tok_p = subprocess.run(
+        ["bash", str(oneshot), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=tok_env,
+    )
+    assert tok_p.returncode == 0, tok_p.stderr + tok_p.stdout
+    tok_out = tok_p.stdout + tok_p.stderr
+    assert "dry-run OK" in tok_out
+    assert "fake-batch168-dry-run-token-not-real" not in tok_out
+    assert "token_source=env:MAIN_PUSH_TOKEN" in tok_out
+
+    brief = ROOT / "portable" / "BATCH168_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "168"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["oneshot"] is True
+    assert data["dry_run_ok"] is True
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "905D-02F4"
+    assert data["device_auth"] == "pending"
+    assert data["write"] == "DENIED"
+    assert data["release"] == "batch168-path-c-bundle"
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "905D-02F4" in gh
+    assert "batch168-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh
+    assert "issues/27" in gh
+    assert "BATCH162_BRIEF" in gh
+    assert "preferred_auth_interval_s=1800" in gh or "1800" in gh
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "batch168-path-c-bundle" in unblock
+    assert "1800" in unblock
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "owner_path_c_oneshot.sh" in pack
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 168" in log
+    assert "905D-02F4" in log
+    assert "batch168-path-c-bundle" in log
+    assert "preferred_auth_interval_s=1800" in log
+    assert "lemma_closed" in log.lower()
+
+
 def test_batch165_owner_path_c_oneshot() -> None:
     """Batch 165: owner_path_c_oneshot.sh; research audit refresh; tip stable; auth renew; lemma_closed=false."""
     import json

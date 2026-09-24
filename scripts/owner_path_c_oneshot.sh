@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-# Owner Path C ONE-SHOT (Batch 165): single entry that either lands Path C when a
+# Owner Path C ONE-SHOT (Batch 165+): single entry that either lands Path C when a
 # write token is present, or prints the unblock menu when it is not.
+#
+# Batch 168: PATH_C_RELEASE_TAG defaults to batch168-path-c-bundle (pack includes
+# this script); unblock menu prefers oneshot --from-bundle from that release.
 #
 # Tries in order:
 #   a) If MAIN_PUSH_TOKEN / GH_TOKEN env OR a dylan/device token file is present
@@ -27,6 +30,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
+# Release tag for local --from-bundle ONE-SHOT (Batch 168 pack includes this script).
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch168-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0
 MENU_ONLY=0
@@ -159,11 +164,12 @@ print_unblock_menu() {
   echo "   $TRIAL_ROOT/portable/RELAUNCH_WITH_MAIN_SCOPE.md"
   echo
   echo "4) Local ONE-SHOT from release tarball (--from-bundle):"
-  echo "   gh release download batch162-path-c-bundle -R d6g8k5htny-coder/trial \\"
+  echo "   gh release download ${PATH_C_RELEASE_TAG} -R d6g8k5htny-coder/trial \\"
   echo "     -p 'trial-portable-main-fixes.tgz'"
   echo "   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land"
-  echo "   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle"
-  echo "   # BASE_TIP ${BASE_TIP_SHORT}; lemma_closed stays false"
+  echo "   /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle"
+  echo "   # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle"
+  echo "   # BASE_TIP ${BASE_TIP_SHORT}; release ${PATH_C_RELEASE_TAG}; lemma_closed stays false"
   echo
   echo "Also: $TRIAL_ROOT/scripts/print_owner_unblock.sh"
   echo "      $TRIAL_ROOT/scripts/assert_path_c_ready.sh"

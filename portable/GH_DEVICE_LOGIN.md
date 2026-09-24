@@ -5,21 +5,22 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T09:47:57Z |
-| Checked (UTC) | 2026-09-24T09:47:57Z |
+| Checked (UTC) | 2026-09-24T09:58:00Z |
 | Verification URL | https://github.com/login/device |
 | User code | `905D-02F4` |
 | Prior code | `C8FC-A08F` (near-expiry / renewed Batch 165) |
 | Prior prior | `E818-2EE5` (expired / renewed) |
 | Older priors | `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 165 renew) |
-| Expires | see `seconds_left` in BATCH165_BRIEF |
-| Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle current; release `batch162-path-c-bundle` (prior `batch155-path-c-bundle` @ `10c077e`) |
-| Owner ONE-SHOT | `scripts/owner_path_c_oneshot.sh` (Batch 165: token→open PR/land; else unblock menu) |
+| Status | pending (authorization_pending; Batch 168 poll) |
+| Expires | see `seconds_left` in BATCH168_BRIEF |
+| Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle current; release `batch168-path-c-bundle` (includes `owner_path_c_oneshot.sh`; prior `batch162-path-c-bundle` / `batch155-path-c-bundle` @ `10c077e`) |
+| Owner ONE-SHOT | `scripts/owner_path_c_oneshot.sh` (Batch 165+: token→open PR/land; else unblock menu; Batch 168 pack+release) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
 | Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 162: stdin `gh secret set` — **not** `--body -`; optional `--dispatch`) |
-| Unblock issue | [#30 Batch 165 refresh](https://github.com/d6g8k5htny-coder/trial/issues/30) (prior [#29](https://github.com/d6g8k5htny-coder/trial/issues/29) / #27 / #26 — App cannot comment/edit existing issues) |
+| Unblock issue | [#30 Batch 165 refresh](https://github.com/d6g8k5htny-coder/trial/issues/30) (prior [#29](https://github.com/d6g8k5htny-coder/trial/issues/29) / [#27](https://github.com/d6g8k5htny-coder/trial/issues/27) / [#26](https://github.com/d6g8k5htny-coder/trial/issues/26) — App cannot comment/edit existing issues; history: `portable/BATCH162_BRIEF.json`) |
 | Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
 | Path C blocked codes | `when_writable_land` logs `PATH_C_BLOCKED=NO_TOKEN\|TIP_DRIFT\|APPLY_FAIL` (Batch 157) |
+| Preferred auth timer | `preferred_auth_interval_s=1800` (Batch 168; parent may re-arm; do not duplicate) |
 | Main PR comment | Batch 164 one-shot on open PR #52 → **comment_denied** (403); do not spam |
 
 ## Steps
