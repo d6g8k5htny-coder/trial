@@ -6912,3 +6912,75 @@ def test_batch247_ci_yml_workflow_file_flake() -> None:
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 247" in owner_actions
     assert "workflow" in owner_actions.lower()
+
+
+def test_batch248_workspace_landing_ci_path_split() -> None:
+    """Batch 248: workspace-landing/ci.yml path collision fixed on main; tip stable; no flip."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH248_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "248"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "workspace_landing_ci_yml_path_collision"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("patch_0020") is False
+    assert 78 in (brief.get("merged_prs") or [])
+    assert brief.get("main_pr_or_null") == 78
+    wl = brief.get("workspace_landing_investigation") or {}
+    assert wl.get("not_hang") is True
+    assert "path collision" in (wl.get("root_cause") or "") or "ci.yml" in (
+        wl.get("root_cause") or ""
+    )
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH248_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "248"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+    assert hunt.get("defect_id") == "workspace_landing_ci_yml_path_collision"
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH248_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 248" in log
+    assert "workspace-landing" in log.lower() or "workspace_landing" in log.lower()
+    assert "path" in log.lower() and ("collision" in log.lower() or "split" in log.lower())
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 248)" in land_md
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 248" in ones
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 248" in owner_actions
+    assert "workspace-landing" in owner_actions.lower() or "#78" in owner_actions
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert status.get("tip_match") is True
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"

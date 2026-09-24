@@ -5,6 +5,20 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 248 — tip stable `542e6ec`; default ALIGNED `72558a5`; write WRITABLE; workspace-landing/ci path split (#78); release `batch241-path-c-bundle`**:
+>
+> ```bash
+> gh run list -R d6g8k5htny-coder/main --workflow workspace-landing --limit 5
+> gh run list -R d6g8k5htny-coder/main --workflow ci.yml --limit 5
+> ./scripts/when_writable_land.py --once --dry-run    # idle_path_c_done (0018+0019)
+> ./scripts/owner_path_c_oneshot.sh --from-bundle --dry-run
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: shared `ci.yml` path folded hardening 12–22m into workspace-landing.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 247 — tip stable `542e6ec`; default ALIGNED `f3a41a75`; write WRITABLE; trial-ci.yml workflow-file flake fixed; release `batch241-path-c-bundle`**:
 >
 > ```bash

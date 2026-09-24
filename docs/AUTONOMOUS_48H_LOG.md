@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 248 (workspace-landing / ci.yml path collision) — 2026-09-24 ~22:43– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75` → **`72558a5`** after eng merge. `lemma_closed=false`.
+- Open main PRs before ship: research-hold drafts only (#73 inventable tip-observe / #47/#46/#38/#36/#21/#12/#8/#7) — **skipped**.
+- **Investigate ~20m workspace-landing verify:** not a hang. Default-main landing checks lived at `.github/workflows/ci.yml` under `name: workspace-landing`, sharing Actions `workflow_id` with hardening-branch full research CI → 12–22m verifies appeared under the workspace-landing filter.
+- **Defect shipped (not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not Batch 247 YAML one-liner):** [main #78](https://github.com/d6g8k5htny-coder/main/pull/78) — move landing to `workspace-landing.yml`; keep `ci.yml` as path holder (`name: ci`); unittest for the split. PR verify **SUCCESS 10s**; merged @ `72558a5`; post-merge landing **9s** under new workflow_id `366506002`. Historical long runs now list under workflow `ci`.
+- Path C: tip stable → **IDLE_PATH_C_DONE** (no refresh/apply). Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 247 (trial-ci.yml workflow-file flake) — 2026-09-24 ~22:33– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`. `lemma_closed=false`.

@@ -1,0 +1,18 @@
+{
+  "batch": "248",
+  "generated_at_utc": "2026-09-24T22:50:30Z",
+  "repo": "d6g8k5htny-coder/main",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "default_tip": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "disposition": "OPEN_HOLD",
+  "problems": 0,
+  "status_promotions": [],
+  "premises_closed": [],
+  "prizes_discharged": [],
+  "note": "Default-main eng workflow path split only (PR #78). Hardening tip untouched. No research tree edits. lemma_closed stays false."
+}

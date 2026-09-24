@@ -1,0 +1,40 @@
+{
+  "batch": "248",
+  "generated_at_utc": "2026-09-24T22:50:30Z",
+  "hunt": "tip_stable_or_workspace_landing_stuck_or_eng_merge_or_tip_observe",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "542e6ec",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "workspace_landing_ci_yml_path_collision",
+  "patch_0020": false,
+  "signals": {
+    "hardening_tip_vs_542e6ec": "match tip_moved=false — no Path C delta; IDLE_PATH_C_DONE",
+    "workspace_landing_20m": "not hang: unit+math suite 12-22m on hardening commits sharing workflow path ci.yml with default-main landing name workspace-landing (workflow_id 361293290)",
+    "open_main_prs": "all draft research HOLD (#73 tip-observe inventable, #47,#46,#38,#36,#21,#12,#8,#7) — skipped; no prior eng-only green merge before #78",
+    "default_tip": "ALIGNED @ f3a41a75 → 72558a5 after #78",
+    "inventable_tip_observe_pr73": "draft research docs (PACKET/STATUS/NAV) —HOLD; not eng merge",
+    "eng_pr_78": "MERGEABLE CLEAN verify SUCCESS 10s → merged; post-merge landing 9s under new workflow_id 366506002"
+  },
+  "avoided_repeats": [
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS links",
+    "living-tag pack",
+    "assert idle",
+    "empty RW hunts",
+    "OWNER face refresh only",
+    "ci.yml YAML one-liner (Batch 247)"
+  ],
+  "shipped_paths": [
+    "d6g8k5htny-coder/main:.github/workflows/workspace-landing.yml",
+    "d6g8k5htny-coder/main:.github/workflows/ci.yml (path holder)",
+    "d6g8k5htny-coder/main:tests/test_workspace_landing.py",
+    "trial:portable/BATCH248_*.json + LAND/OWNER/LOG + intent test"
+  ],
+  "note": "NEW signal: Actions path collision made hardening 12–22m verifies look like stuck workspace-landing. Split workflows on default main (#78). Never printed tokens."
+}
