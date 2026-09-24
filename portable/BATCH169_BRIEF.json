@@ -1,6 +1,6 @@
 {
   "batch": "169",
-  "generated_at_utc": "2026-09-24T10:13:32Z",
+  "generated_at_utc": "2026-09-24T10:17:08Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -28,7 +28,7 @@
   "device_code": "831C-CB1C",
   "prior_device_code": "905D-02F4",
   "auth_renewed": false,
-  "seconds_left": 310,
+  "seconds_left": 94,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -78,13 +78,13 @@
   "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth pending 831C-CB1C; git_bundle true; release batch169-path-c-bundle; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "preferred_auth_interval_s": 1800,
-  "auth_timers_created": false,
-  "auth_timer_note": "prefer existing timers; create gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s only if absent",
+  "auth_timers_created": true,
+  "auth_timer_note": "created gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800; no dups (list was empty)",
   "w3f_false_positive": true,
   "path_b_ready": false,
   "release": "batch169-path-c-bundle",
   "ci_status": "pending",
   "code_changed": true,
-  "trial_main_landed": false,
-  "trial_main_sha": null
+  "trial_main_landed": true,
+  "trial_main_sha": "fd740f2dfdd5ee350d54e828fb4eb3f412977fd8"
 }
