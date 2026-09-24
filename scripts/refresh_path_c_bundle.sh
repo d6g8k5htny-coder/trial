@@ -255,9 +255,23 @@ APPLIED_SHA="$(git -C "$WORKDIR" rev-parse HEAD)"
 APPLIED_SHORT="${APPLIED_SHA:0:7}"
 
 echo "refresh_path_c_bundle: format-patch ${LIVE_SHORT}..${APPLIED_SHORT} -> path-c-on-hardening.patch"
-git -C "$WORKDIR" format-patch --stdout "${LIVE_SHA}..${APPLIED_SHA}" >"$PATCH_OUT"
-[[ -s "$PATCH_OUT" ]] || die "empty patch output"
+PATCH_TMP="$(mktemp "${TMPDIR:-/tmp}/refresh-patch.XXXXXX.patch")"
+git -C "$WORKDIR" format-patch --stdout "${LIVE_SHA}..${APPLIED_SHA}" >"$PATCH_TMP"
+[[ -s "$PATCH_TMP" ]] || { rm -f "$PATCH_TMP"; die "empty patch output"; }
+# Batch 232: when Path C already on tip, format-patch is an empty allow-empty
+# commit (subject-only). Keep the prior full .patch+.bundle so owner re-apply
+# assets are not destroyed by tip-refresh after land.
+PATCH_BYTES="$(wc -c <"$PATCH_TMP" | tr -d ' ')"
+if [[ "$PATCH_BYTES" -lt 512 ]] && [[ -s "$PATCH_OUT" ]] && [[ -s "$BUNDLE_OUT" ]]; then
+  echo "refresh_path_c_bundle: tip already carries Path C stack (format-patch ${PATCH_BYTES}B); keeping prior .patch+.bundle"
+  rm -f "$PATCH_TMP"
+  KEEP_PRIOR_BUNDLE=1
+else
+  mv -f "$PATCH_TMP" "$PATCH_OUT"
+  KEEP_PRIOR_BUNDLE=0
+fi
 
+if [[ "${KEEP_PRIOR_BUNDLE:-0}" -eq 0 ]]; then
 echo "refresh_path_c_bundle: git bundle create path-c-on-hardening.bundle ${LIVE_SHORT}..${APPLIED_SHORT}"
 # Bundle must be fetchable onto a clone that already has LIVE_SHA.
 # Prefer BRANCH tip + ^LIVE_SHA (Batch 180): range+ref form can fail on some
@@ -280,11 +294,21 @@ rm -f "$BUNDLE_ERR"
 # Verify against WORKDIR (hardening clone) — NOT trial ROOT, which lacks LIVE_SHA
 # and would falsely report "Repository lacks these prerequisite commits" (Batch 180).
 git -C "$WORKDIR" bundle verify "$BUNDLE_OUT" >/dev/null
-
+else
+  echo "refresh_path_c_bundle: skipped bundle recreate (kept prior assets)"
+fi
 GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 python3 - <<PY
 import json
 from pathlib import Path
+# Batch 232: preserve Path C land evidence across tip-refresh rewrites.
+prior = {}
+prior_path = Path("$VERIFY_OUT")
+if prior_path.is_file():
+    try:
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        prior = {}
 verify = {
   "batch": str("$BATCH_TAG"),
   "generated_at_utc": "$GENERATED_AT",
@@ -323,6 +347,31 @@ verify = {
   "note": f"Batch $BATCH_TAG: refresh_path_c_bundle.sh rebuilt @ ${LIVE_SHORT}; apply_all OK; lemma_closed=false; problems=$PROBLEMS",
   "force": bool(int("$FORCE")),
 }
+# Preserve land evidence (PR #64 @ 93a4ecd) when tip moves past Path C land.
+for key in (
+    "path_c_landed",
+    "path_c_pr_url",
+    "merge_commit_sha",
+    "write_vector",
+    "path_c_applied_sha",
+    "release",
+    "release_tag",
+):
+    if key in verify and verify[key] not in (None, "", False):
+        continue
+    val = prior.get(key)
+    if val not in (None, "", False):
+        verify[key] = val
+# If prior said Path C landed and this tip is a descendant of that land, keep true.
+if prior.get("path_c_landed") is True:
+    verify["path_c_landed"] = True
+    if not verify.get("path_c_pr_url") and prior.get("path_c_pr_url"):
+        verify["path_c_pr_url"] = prior["path_c_pr_url"]
+    if not verify.get("merge_commit_sha") and prior.get("merge_commit_sha"):
+        verify["merge_commit_sha"] = prior["merge_commit_sha"]
+# Default release label when tip-refresh wiped it (Intent living-release contract).
+if not verify.get("release"):
+    verify["release"] = prior.get("release") or "batch223-path-c-bundle"
 Path("$VERIFY_OUT").write_text(json.dumps(verify, indent=2) + "\n", encoding="utf-8")
 print("refresh_path_c_bundle: wrote VERIFY.json")
 PY

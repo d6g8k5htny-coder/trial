@@ -1,0 +1,17 @@
+{
+  "batch": "232",
+  "generated_at_utc": "2026-09-24T17:27:48Z",
+  "tip": "377201c",
+  "tip_full": "377201c456a5081d4c79701940e5ca678226d15d",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "guard_pass": true,
+  "guard_violations": 0,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "note": "Research-stack audit WITHOUT status promotion after tip move PR #62. math_status OPEN_HOLD; guard pass; lemma_closed=false. Campaign is inventable delivery only; PACKET kept; no flips."
+}

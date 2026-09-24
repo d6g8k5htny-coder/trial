@@ -136,6 +136,17 @@ DEFAULT_TOKEN_FILES: tuple[Path, ...] = (
 )
 
 
+def _ignore_file_tokens(environ: dict[str, str] | None = None) -> bool:
+    """Batch 232: PATH_C_IGNORE_FILE_TOKENS=1 skips well-known file drops (tests)."""
+    env = environ if environ is not None else os.environ
+    return (env.get("PATH_C_IGNORE_FILE_TOKENS") or "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+
+
 def resolve_main_push_token(
     *,
     env: dict[str, str] | None = None,
@@ -149,6 +160,9 @@ def resolve_main_push_token(
     env_val = (environ.get("MAIN_PUSH_TOKEN") or "").strip()
     if env_val:
         return env_val, "env:MAIN_PUSH_TOKEN"
+
+    if _ignore_file_tokens(environ):
+        return None, None
 
     candidates = file_candidates if file_candidates is not None else DEFAULT_TOKEN_FILES
     for path in candidates:
@@ -293,8 +307,11 @@ def token_file_present(
 ) -> tuple[bool, str | None]:
     """Return (present, path_str) for first non-empty well-known token file.
 
-    Does not read env. Never returns file contents.
+    Does not read env token values. Never returns file contents.
+    Honors PATH_C_IGNORE_FILE_TOKENS=1 (Batch 232 test isolation).
     """
+    if _ignore_file_tokens():
+        return False, None
     candidates = file_candidates if file_candidates is not None else DEFAULT_TOKEN_FILES
     for path in candidates:
         try:

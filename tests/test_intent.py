@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Living Path C tip/release may supersede across tip-refresh / pack batches.
 # Batch 180 tip 8bd1f03 → Batch 202 tip b89448d; release batch180 → batch199 → batch202.
-_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb", "cbaa056", "93a4ecd")
+_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb", "cbaa056", "93a4ecd", "377201c")
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
     "batch199-path-c-bundle",
@@ -2887,7 +2887,11 @@ def test_batch157_path_c_blocked_reason_codes() -> None:
             timeout=30,
             check=False,
             cwd=str(ROOT),
-            env={**os.environ, "MAIN_PUSH_TOKEN": ""},
+            env={
+                **os.environ,
+                "MAIN_PUSH_TOKEN": "",
+                "PATH_C_IGNORE_FILE_TOKENS": "1",
+            },
         )
         assert denied.returncode == 0, denied.stderr + denied.stdout
         status = json.loads(status_path.read_text(encoding="utf-8"))
@@ -2957,6 +2961,7 @@ def test_batch160_owner_set_main_push_token_script() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_p = subprocess.run(
         ["bash", str(script), "--dry-run"],
         cwd=str(ROOT),
@@ -3130,6 +3135,7 @@ def test_batch169_git_bundle_path_c() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_p = subprocess.run(
         ["bash", str(oneshot), "--dry-run"],
         cwd=str(ROOT),
@@ -3232,6 +3238,7 @@ def test_batch168_oneshot_pack_ci() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_p = subprocess.run(
         ["bash", str(oneshot), "--dry-run"],
         cwd=str(ROOT),
@@ -3363,6 +3370,7 @@ def test_batch165_owner_path_c_oneshot() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_p = subprocess.run(
         ["bash", str(oneshot), "--dry-run"],
         cwd=str(ROOT),
@@ -3457,6 +3465,7 @@ def test_batch162_path_c_issue_and_secret_stdin() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_p = subprocess.run(
         ["bash", str(script), "--dry-run"],
         cwd=str(ROOT),
@@ -3826,6 +3835,7 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry = subprocess.run(
         ["bash", str(open_pr), "--dry-run"],
         cwd=str(ROOT),
@@ -3927,6 +3937,7 @@ def test_batch179_path_c_bundle_release() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry = subprocess.run(
         ["bash", str(open_pr), "--dry-run"],
         cwd=str(ROOT),
@@ -4090,6 +4101,7 @@ def test_batch180_path_c_status_json_schema() -> None:
         for k, v in os.environ.items()
         if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     }
+    dry_env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
     dry_pr = subprocess.run(
         ["bash", str(open_pr), "--dry-run"],
         cwd=str(ROOT),
@@ -5513,7 +5525,7 @@ def test_batch231_post_land_hygiene() -> None:
     assert data["preferred_autonomy"] == "aligned_drift_watch"
     assert data.get("ready_to_apply") == "superseded_already_on_tip"
     assert _living_tip(data.get("tip"))
-    assert "93a4ecd" in str(data.get("tip_full") or data.get("tip"))
+    assert _living_tip(data.get("tip_full") or data.get("tip"))
 
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied" in apply_all
@@ -5535,7 +5547,7 @@ def test_batch231_post_land_hygiene() -> None:
         (ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8")
     )
     assert manifest.get("path_c_landed") is True
-    assert "93a4ecd" in str(manifest.get("verified_on_tip", ""))
+    assert _living_tip(manifest.get("verified_on_tip", ""))
     assert manifest.get("ready_to_apply") == "superseded_already_on_tip"
     assert manifest["lemma_closed"] is False
 
@@ -5543,3 +5555,75 @@ def test_batch231_post_land_hygiene() -> None:
     assert "Batch 231" in log
     assert "tip-sync+drift" in log or "idle_path_c_done" in log
 
+
+
+def test_batch232_path_c_status_write_state_clobber() -> None:
+    """Batch 232: skip-write-probe recovers WRITABLE after Path C land; no sticky DENIED."""
+    import json
+    import tempfile
+    from pathlib import Path
+
+    # Unit: build_status recovers WRITABLE when land+tip_match even if prior DENIED.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "write_path_c_status", ROOT / "scripts" / "write_path_c_status.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td) / "PATH_C_STATUS.json"
+        # Seed a clobbered DENIED snapshot after land.
+        seed = {
+            "write_state": "DENIED",
+            "path_c_landed": True,
+            "tip_match": True,
+            "lemma_closed": False,
+            "goal_complete": True,
+            "tip": "93a4ecd",
+            "base_tip": "93a4ecd",
+            "write_vector": "device_auth_create_ref+git_push_dylan_token",
+        }
+        out.write_text(json.dumps(seed, indent=2) + "\n", encoding="utf-8")
+        status = mod.build_status(skip_write_probe=True, out=out)
+        assert status["lemma_closed"] is False
+        assert status.get("path_c_landed") is True
+        assert status.get("tip_match") is True
+        assert status.get("write_state") == "WRITABLE"
+
+    # Live status + brief contracts.
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert status.get("path_c_landed") is True
+    assert status.get("write_state") == "WRITABLE"
+    assert status.get("tip_match") is True
+
+    brief = ROOT / "portable" / "BATCH232_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "232"
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is True
+    assert data["tip_moved"] is True
+    assert "377201c" in str(data.get("tip") or "") or _living_tip(data.get("tip"))
+    assert "write_state" in str(data.get("defect_shipped") or "")
+    assert data.get("patch_0018") is False
+    assert "OPEN_HOLD" in data.get("math_status", "")
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "PATH_C_IGNORE_FILE_TOKENS" in ww
+    oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
+    assert "PATH_C_IGNORE_FILE_TOKENS" in oneshot or "IGNORE_FILE_TOKENS" in oneshot
+
+    hunt = ROOT / "portable" / "BATCH232_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["hunt_result"] == "clean"
+    assert h["patch_0018"] is False
+    assert h["lemma_closed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 232" in log

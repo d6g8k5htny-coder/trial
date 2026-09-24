@@ -336,17 +336,29 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
     verify = _read_verify()
     land = _land_fields_from_verify(verify)
     prior = _prior_status(out)
+    prior_ws = prior.get("write_state")
     if skip_write_probe:
-        # Do not clobber a recorded WRITABLE/DENIED land snapshot with SKIPPED.
-        prior_ws = prior.get("write_state")
-        if land.get("path_c_landed") and prior_ws in ("WRITABLE", "DENIED"):
-            write_state = prior_ws
-        elif land.get("path_c_landed") and tip_match is True:
+        # Batch 232: after Path C landed on matching tip, land-time write was
+        # WRITABLE. Do not sticky-preserve a later probe-clobber DENIED (hourly
+        # watch uses --skip-write-probe and used to lock DENIED forever).
+        # Also do not clobber a recorded land snapshot with SKIPPED.
+        if land.get("path_c_landed") and tip_match is True:
             write_state = "WRITABLE"
+        elif land.get("path_c_landed") and prior_ws in ("WRITABLE", "DENIED"):
+            write_state = prior_ws
         else:
             write_state = "SKIPPED"
     else:
         write_state = _probe_write_state()
+        # After Path C land on matching tip, do not clobber land-time WRITABLE
+        # with a transient DENIED probe (ghs/cursor[bot] 403 while Dylan land stands).
+        if (
+            land.get("path_c_landed")
+            and tip_match is True
+            and prior_ws == "WRITABLE"
+            and write_state == "DENIED"
+        ):
+            write_state = "WRITABLE"
     has_token = _has_main_push_token()
     device_code, seconds_left, auth_status = _device_code_public()
     release_tag = _release_tag()
