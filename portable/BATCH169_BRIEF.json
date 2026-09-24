@@ -1,6 +1,6 @@
 {
   "batch": "169",
-  "generated_at_utc": "2026-09-24T10:17:08Z",
+  "generated_at_utc": "2026-09-24T10:17:11Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -28,7 +28,7 @@
   "device_code": "831C-CB1C",
   "prior_device_code": "905D-02F4",
   "auth_renewed": false,
-  "seconds_left": 94,
+  "seconds_left": 91,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -86,5 +86,5 @@
   "ci_status": "pending",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "fd740f2dfdd5ee350d54e828fb4eb3f412977fd8"
+  "trial_main_sha": "5b8da58cc1648e07502c1c9f78d9a6a4dbec2118"
 }
