@@ -21,6 +21,21 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 68 — 2026-09-24 ~00:50 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `74c082e` unchanged; Path C rebase helper; no 0017)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`74c082e`** (== BASE_TIP; no tip refresh).
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING** (same 3 first-stop paths as Batch 67).
+- **Meaningful improvement (not RESTORE_PLAN fluff):** `scripts/path_c_rebase_helper.sh` (`--dry-run` / `--stage` profiles `keep-hardening-engineering` | `preserve-main-face`) stages ours/theirs for `ci.yml` / `research.yml` / bridge README **without inventing research status**; primary advice remains abort + keep hardening. Validated both profiles on a real conflict worktree then aborted. Notes: `portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json`. `pack_portable` + `refresh_restore_plan` wired.
+- Residual hunt: no new tip defect → **IDLE** / **no 0017**.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Live `RESTORE_PLAN_68.json` via `refresh_restore_plan.py` + `BATCH68_TOKEN_SEARCH.json` + brief JSON. Trial packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 67 — 2026-09-24 ~00:45 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `74c082e` unchanged; Path C IDLE / no 0017; conflict-aware rebase report)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

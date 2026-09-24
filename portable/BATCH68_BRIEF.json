@@ -1,0 +1,20 @@
+{
+  "batch": "68",
+  "generated_at_utc": "2026-09-24T00:51:41Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "74c082e",
+  "tip_refresh": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "new_0017": false,
+  "concrete_work": [
+    "scripts/path_c_rebase_helper.sh",
+    "portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json"
+  ],
+  "source": "PATH_C_REBASE_CONFLICT_REPORT_67",
+  "window": "PERMANENT_OPEN"
+}
