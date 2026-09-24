@@ -12,6 +12,7 @@
   "install_has_main": false,
   "installation_names": [],
   "path_c_landed": false,
+  "land_trial": "direct push cursor/batch113-auth-renew-b6fb → trial main @b52e5e6",
   "timer_rearm_s": 300,
   "flipped_anything": false,
   "note": "auth renewed BC1B-2C58→46E7-69A0; seconds_left<90; Path C blocked; research untouched"
