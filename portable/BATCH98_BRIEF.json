@@ -1,11 +1,13 @@
 {
   "batch": "98",
-  "generated_at_utc": "2026-09-24T03:46:54Z",
+  "generated_at_utc": "2026-09-24T03:47:30Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "install_has_main": false,
-  "installation_names": ["d6g8k5htny-coder/trial"],
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
   "path_c_landed": false,
   "main_default_tip": "1c6e74b",
   "hardening_tip": "ac33581",
@@ -16,5 +18,7 @@
   "intent_test": "test_watch_main_alignment_workflow_exists",
   "timer": "permanent-autonomous-align-watch@3600s",
   "flipped_anything": false,
-  "note": "install_has_main=false; Path C not landed; research status untouched; never touch main"
+  "note": "install_has_main=false; Path C not landed; research status untouched; never touch main",
+  "land_trial": "direct push cursor/watch-main-alignment-wf-873b \u2192 trial main @845f29b",
+  "workflow_id": 365715167
 }
