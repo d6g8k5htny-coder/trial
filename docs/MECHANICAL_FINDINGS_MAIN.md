@@ -3,6 +3,28 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 185 — tip stable 8bd1f03; auth renew 46EC; research AUDIT counts refresh; bundle E2E OK; no research flips @ tips `1c6e74b` / `8bd1f03`
+
+Mechanical inventory **refreshed** (audit only) on tip `8bd1f03`. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Obsolescence on tip WITHOUT patches: **0** of 0001–0004/0008–0016 already present (no drops).
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8bd1f03cc2bb10c59b08b852ca2775dac27e28e9` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `math_status_check` @ hardening (clean == patched) | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
+| research counts | premises=13 lemmas=1 prizes=3 obligations=2 claims=26 OQ=16 |
+| write / Path C | **DENIED** (403); device auth renewed `46EC-0B00` (prior `DF9C-5DF9`) |
+| E2E `.bundle` | shallow clone → fetch → ff-merge → `b6a1ff3`; focused **90**/0; claims+recovery **83**/0 |
+| pack / release | still **`batch180-path-c-bundle`** |
+| CI batch183 | **success** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** |
+
+Artifacts: `portable/BATCH185_BRIEF.json` + `BATCH185_RESEARCH_COUNTS.json`. Scientific effect: **NONE**.
+
 ## Batch 178 — tip stable; auth pending 5E05; owner_open_path_c_pr release-bundle link; CI tip-drift string restore; no research flips @ tips `1c6e74b` / `8ea3b5f`
 
 Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Obsolescence on tip WITHOUT patches: **0** of 0001–0004/0008–0016 already present (no drops).

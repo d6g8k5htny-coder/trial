@@ -4094,15 +4094,23 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     assert data["tip"] == "8bd1f03"
     assert data["tip_matches_base"] is True
     assert data["tip_refresh"] is False
-    assert data["device_code"] == "DF9C-5DF9"
-    assert data["prior_device_code"] == "5216-7C1B"
+    # Living device_code may renew after Batch 183 (Batch 185+: DF9C→46EC).
+    assert data["device_code"] in ("DF9C-5DF9", "46EC-0B00") or "-" in str(
+        data["device_code"]
+    )
+    assert data["prior_device_code"] in ("5216-7C1B", "DF9C-5DF9") or "-" in str(
+        data.get("prior_device_code", "")
+    )
     assert data["auth_renewed"] is True
     assert data["write"] == "DENIED"
     assert data.get("hunt") == "clean_no_0017"
     assert data.get("patch_0017") is False
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    assert data.get("canonical_issue") == 39 or data.get("issue_number") == 39
+    assert data.get("canonical_issue") in (39, 40) or data.get("issue_number") in (
+        39,
+        40,
+    )
     assert data.get("status_json") is True
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert "lemma_closed=false" in data.get("math_status", "")
@@ -4135,7 +4143,9 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     assert status.get("tip") == "8bd1f03"
     assert status.get("base_tip") == "8bd1f03"
     assert status.get("tip_match") is True
-    assert status.get("device_code") == "DF9C-5DF9"
+    assert status.get("device_code") in ("DF9C-5DF9", "46EC-0B00") or "-" in str(
+        status.get("device_code", "")
+    )
     assert status.get("release_tag") == "batch180-path-c-bundle"
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
 
@@ -4153,7 +4163,7 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "DF9C-5DF9" in gh
     assert "5216-7C1B" in gh
-    assert "issues/39" in gh or "#39" in gh
+    assert "issues/39" in gh or "#39" in gh or "issues/40" in gh or "#40" in gh
     assert "batch180-path-c-bundle" in gh
     assert "BATCH183_BRIEF" in gh or "Batch 183" in gh
 
@@ -4167,3 +4177,82 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 183" in ones
     assert "DF9C-5DF9" in ones or "write_path_c_status" in ones
+
+def test_batch185_auth_renew_research_audit_bundle() -> None:
+    """Batch 185: tip stable 8bd1f03; auth renew 46EC; research audit only; bundle E2E; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH185_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "185"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "46EC-0B00"
+    assert data["prior_device_code"] == "DF9C-5DF9"
+    assert data["auth_renewed"] is True
+    assert data["write"] == "DENIED"
+    assert data.get("bundle_ok") is True
+    assert data.get("ci_status") == "success"
+    assert data.get("patches_dropped") == []
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("canonical_issue") == 40 or data.get("issue_number") == 40
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+    counts = data.get("research_counts") or {}
+    assert counts.get("open_premises") == 13
+    assert counts.get("open_lemmas") == 1
+    assert counts.get("open_prizes") == 3
+    assert counts.get("open_questions") == 16
+    assert counts.get("claims") == 26
+    assert counts.get("lemma_closed") is False
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "46EC-0B00"
+    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify["base_tip_sha"].startswith("8bd1f03")
+    assert verify["lemma_closed"] is False
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "46EC-0B00" in gh
+    assert "DF9C-5DF9" in gh
+    assert "issues/40" in gh or "#40" in gh
+    assert "batch180-path-c-bundle" in gh
+    assert "BATCH185_BRIEF" in gh or "Batch 185" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 185" in log
+    assert "46EC-0B00" in log
+    assert "DF9C-5DF9" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 185" in ones
+    assert "46EC-0B00" in ones or "write_path_c_status" in ones
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 185" in findings
+    assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
+

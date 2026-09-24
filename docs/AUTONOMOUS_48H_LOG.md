@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 185 — 2026-09-24 ~11:54–12:00 UTC (PERMANENT window; tip stable 8bd1f03; auth renew DF9C→46EC; research AUDIT counts refresh; obsolescence none; bundle E2E OK; CI batch183 green; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`46EC-0B00`). `lemma_closed=false`.
+- Device auth `DF9C-5DF9` **<90s** still pending → **renewed** `46EC-0B00`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **Research AUDIT only** on tip `8bd1f03`: clean==patched `math_status` OPEN_HOLD; counts premises=13 lemmas=1 prizes=3 obligations=2 claims=26 OQ=16; MECHANICAL_FINDINGS refreshed; **no flips**.
+- **Obsolescence** after PR #52 tip: 0001–0004+0008–0016 all `not_present_applies` → **no drops**.
+- **E2E `.bundle`:** verify+fetch+ff-merge → `b6a1ff3`; focused 90 + claims/recovery 83; 0 ResourceWarning; lemma_closed=false.
+- **CI:** Batch 183 branch `cursor/batch183-path-c-ci-auth-10cc` → **success**.
+- Canonical issue [#40](https://github.com/d6g8k5htny-coder/trial/issues/40). Tiny JSON: `portable/BATCH185_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `46EC-0B00` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #40.
+
 ### Batch 183 — 2026-09-24 ~11:41–11:50 UTC (PERMANENT window; tip stable 8bd1f03; auth renew 5216→DF9C; CI tip-drift supersession after batch180; hunt clean no 0017; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

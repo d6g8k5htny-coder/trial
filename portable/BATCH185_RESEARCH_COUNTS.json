@@ -1,0 +1,25 @@
+{
+  "batch": "185",
+  "tip": "8bd1f03",
+  "tip_full": "8bd1f03cc2bb10c59b08b852ca2775dac27e28e9",
+  "generated_at_utc": "2026-09-24T11:59:50Z",
+  "clean": {
+    "shape": "HAS_PACKET",
+    "disposition": "OPEN_HOLD",
+    "lemma_closed": false,
+    "open_premises": 13,
+    "open_lemmas": 1,
+    "open_prizes": 3,
+    "open_obligations_packet": 2,
+    "claims": 26,
+    "open_questions": 16,
+    "flipped_anything": false
+  },
+  "patched_math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "clean_math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "math_status_clean_eq_patched": true,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "note": "research AUDIT only on tip 8bd1f03 (post PR #52); OPEN_HOLD; counts unchanged vs Batch 165; no status promotion"
+}
