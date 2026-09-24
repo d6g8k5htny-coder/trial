@@ -1,6 +1,6 @@
 {
   "batch": "199",
-  "generated_at_utc": "2026-09-24T13:19:34Z",
+  "generated_at_utc": "2026-09-24T13:20:16Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -32,7 +32,7 @@
   "prior_device_code": "50DB-FD4D",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 671.7,
+  "seconds_left": 629.6,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -92,11 +92,12 @@
   "canonical_issue": 47,
   "prior_canonical_issue": 46,
   "issue_title": "Path C unblock \u2014 Batch 199 canonical (batch199-path-c-bundle; see GH_DEVICE_LOGIN for code)",
-  "trial_landed": false,
+  "trial_landed": true,
   "status_snapshot": {
     "tip_match": true,
     "write_state": "DENIED",
     "release_tag": "batch199-path-c-bundle",
     "device_code": "6A29-F464"
-  }
+  },
+  "trial_main_sha": "f5d9464ff5ba1797c3c02d21289e8c2a31df7d83"
 }
