@@ -1,0 +1,43 @@
+{
+  "batch": "249",
+  "generated_at_utc": "2026-09-24T23:26:00Z",
+  "hunt": "tip_moved_or_hardening_collision_or_eng_merge_or_tip_observe",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "tip_moved": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "inventable_tip_observe_stale_b89448da_vs_live_542e6ec",
+  "patch_0020": false,
+  "signals": {
+    "hardening_tip_vs_542e6ec_pre": "match tip_moved=false at batch start",
+    "hardening_path_collision": "false — hardening has full ci.yml name=ci only; no workspace-landing.yml; workflow_ids ci=361293290 vs workspace-landing=366506002 already split by #78",
+    "port_78": "skipped_not_needed",
+    "open_main_prs": "all draft research HOLD (#73 tip-observe research docs, #47,#46,#38,#36,#21,#12,#8,#7) — skipped",
+    "inventable_tip_observe_stale": "hardening_tip_observed_at_edit still b89448da while live tip was 542e6ec — eng honesty wall",
+    "eng_pr_79": "tip-observe LOCK 542e6ec2 without re-running receipts; MERGED → tip fa32d11",
+    "path_c_post_merge": "BASE_TIP+bundle refresh; apply_all already-on-tip 0001–0019; IDLE_PATH_C_DONE; focused 90 + claims/recovery 83; math_status problems=0 OPEN_HOLD"
+  },
+  "avoided_repeats": [
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS links",
+    "living-tag pack",
+    "assert idle",
+    "empty RW hunts",
+    "OWNER face refresh only",
+    "ci.yml YAML one-liner (Batch 247)",
+    "default-only #78 path collision docs churn"
+  ],
+  "shipped_paths": [
+    "d6g8k5htny-coder/main:docs/math_status_probes/INVENTABLE_PROBES_INDEX.json",
+    "d6g8k5htny-coder/main:docs/math_status_probes/INVENTABLE_INSTRUMENTATION_STATUS_INDEX.json",
+    "d6g8k5htny-coder/main:docs/math_status_probes/README.md",
+    "trial:portable/BATCH249_*.json + BASE_TIP + path-c refresh + LAND/OWNER/LOG + intent test"
+  ],
+  "note": "NEW signal: inventable tip-observe field lagged live hardening tip. Shipped eng #79; refreshed Path C after tip move. Never printed tokens."
+}
