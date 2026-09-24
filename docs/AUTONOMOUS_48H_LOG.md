@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 100 — 2026-09-24 ~03:52 UTC (PERMANENT window; watch dispatch fix; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; **no tip refresh**).
+- `gh workflow run watch-main-alignment.yml` → **403** (Actions:write). Fix: add `repository_dispatch` type `watch-main-alignment` (ghs Contents write can POST `/dispatches`). Fire after land; record run URL.
+- Tiny JSON: `portable/BATCH100_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial `main` (`cursor/watch-repo-dispatch-eac8`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 99 — 2026-09-24 ~03:49 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.

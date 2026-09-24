@@ -3,6 +3,10 @@
 # Runs on trial only. Never pushes to main. Never flips lemma_closed /
 # prizes / premises / research status. Scientific effect: NONE.
 #
+# Triggers: hourly cron, workflow_dispatch (owner UI / PAT), and
+# repository_dispatch type=watch-main-alignment (cursor[bot] ghs path —
+# workflow_dispatch returns 403 for this installation).
+#
 # On MISALIGNED: create or update a trial Issue titled "main ALIGNED drift"
 # (body includes tip SHA). On ALIGNED: close that issue if open.
 # Transport failures leave issues untouched.
@@ -14,6 +18,10 @@ on:
     # Every hour (UTC). Actions schedule is best-effort.
     - cron: "0 * * * *"
   workflow_dispatch:
+  # cursor[bot] ghs cannot workflow_dispatch (403 Actions:write).
+  # repository_dispatch works with Contents write — agent trigger path.
+  repository_dispatch:
+    types: [watch-main-alignment]
 
 permissions:
   contents: read

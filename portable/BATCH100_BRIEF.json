@@ -1,0 +1,21 @@
+{
+  "batch": "100",
+  "generated_at_utc": "2026-09-24T03:52:00Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "install_has_main": false,
+  "installation_names": ["d6g8k5htny-coder/trial"],
+  "path_c_landed": false,
+  "main_default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_moved": false,
+  "route_now": "LANDED_TRIAL",
+  "change": "watch-main-alignment: repository_dispatch (workflow_dispatch 403 for ghs)",
+  "workflow": ".github/workflows/watch-main-alignment.yml",
+  "dispatch": "repository_dispatch event_type=watch-main-alignment",
+  "run_url": null,
+  "timer": "permanent-autonomous-align-watch@3600s",
+  "flipped_anything": false,
+  "note": "install_has_main=false; tips stable; Path C not landed; research untouched"
+}

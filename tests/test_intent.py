@@ -701,6 +701,8 @@ def test_watch_main_alignment_workflow_exists() -> None:
     text = path.read_text(encoding="utf-8")
     assert "name: watch-main-alignment" in text
     assert "workflow_dispatch" in text
+    assert "repository_dispatch" in text
+    assert "watch-main-alignment" in text
     assert "schedule:" in text
     assert 'cron: "0 * * * *"' in text or "cron: '0 * * * *'" in text
     assert "aligned_drift_watch.py" in text or "audit_main_alignment.py" in text
