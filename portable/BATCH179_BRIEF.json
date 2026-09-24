@@ -1,6 +1,6 @@
 {
   "batch": "179",
-  "generated_at_utc": "2026-09-24T11:26:15Z",
+  "generated_at_utc": "2026-09-24T11:26:34Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -29,7 +29,7 @@
   "device_code": "AD78-6206",
   "prior_device_code": "5E05-EA04",
   "auth_renewed": false,
-  "seconds_left": 204,
+  "seconds_left": 185,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -84,5 +84,6 @@
   "trial_main_landed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
   "issue_title": "Path C unblock \u2014 Batch 178 canonical (AD78-6206)",
-  "trial_main_sha": "83b3ae24abd6f5672005740637ed7d14d87ccd31"
+  "trial_main_sha": "8d978944c507ac11b214f002b783c216bbd18869",
+  "auth_renew_threshold_note": "renew if expired or seconds_left<90; current no renew"
 }
