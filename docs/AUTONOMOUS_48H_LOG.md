@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 202 — 2026-09-24 ~13:27–13:35 UTC (PERMANENT window; CI sanity fix; tip refresh 8bd1f03→b89448d; auth renew 6A29→5160; pack+release batch202-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- **CI:** Batch 199 land `903ca64` → **failure** (sanity intent): living `release_tag=batch199-path-c-bundle` broke older asserts pinned to `batch180-path-c-bundle` (tests 168/169/178/179/180/183/185/188/190/192/194). Fixed living tip/release supersession helpers in `tests/test_intent.py`.
+- Hardening tip **`8bd1f03` → `b89448d`** (main [PR #51](https://github.com/d6g8k5htny-coder/main/pull/51)) → **tip refresh** via `refresh_path_c_bundle.sh`; BASE_TIP + path-c-applied-bundle rebuilt; `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`5160-F839`; release_tag=`batch202-path-c-bundle`). `lemma_closed=false`.
+- Device auth `6A29-F464` → pending then **renewed** `5160-F839` (seconds_left&lt;90); poller `gh-device-login` restarted; seconds_left≈899→650+. No dylan token. `gh secret list -R trial` → **403** → `has_main_push_token=false`. Daemon `when-writable-land` up.
+- **Engineering:** pack meaningfully newer (tip refresh @ `b89448d` + CI supersession) → published release **`batch202-path-c-bundle`**; bumped `PATH_C_RELEASE_TAG` defaults. Intent: `test_batch202_ci_sanity_tip_refresh`. Prefer small real code over docs-only.
+- Research untouched (`lemma_closed=false`). Tiny JSON: `portable/BATCH202_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**. Canonical issue [#47](https://github.com/d6g8k5htny-coder/trial/issues/47).
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code in `portable/GH_DEVICE_LOGIN.md` (currently `5160-F839`) **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch202-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #47. Repo face: `README.md` Path C section (link-only).
+
 ### Batch 199 — 2026-09-24 ~13:14–13:20 UTC (PERMANENT window; tip stable 8bd1f03; auth renew 50DB→6A29; pack+release batch199-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

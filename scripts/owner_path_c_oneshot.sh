@@ -8,6 +8,7 @@
 # Batch 179: PATH_C_RELEASE_TAG defaults to batch179-path-c-bundle (pack+oneshot+refresh)
 # Batch 180: PATH_C_RELEASE_TAG defaults to batch180-path-c-bundle (tip 8bd1f03 + PATH_C_STATUS)
 # Batch 199: PATH_C_RELEASE_TAG defaults to batch199-path-c-bundle (status/watch/readme link-only pack)
+# Batch 202: PATH_C_RELEASE_TAG defaults to batch202-path-c-bundle (tip refresh b89448d + CI release-tag supersession)
 # prefers path-c-on-hardening.bundle (git fetch) when present.
 #
 # Tries in order:
@@ -36,7 +37,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
 # Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch199-path-c-bundle}"
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch202-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0
 MENU_ONLY=0

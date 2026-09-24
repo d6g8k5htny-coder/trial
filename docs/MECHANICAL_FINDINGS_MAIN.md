@@ -3,6 +3,26 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 202 — tip refresh 8bd1f03→b89448d; auth renew 5160 (6A29 &lt;90s); CI sanity + pack batch202-path-c-bundle; no research flips @ tips `1c6e74b` / `b89448d`
+
+Mechanical inventory unchanged from Batch 199. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip moved (PR #51) → tip refresh + bundle rebuild. CI Batch 199 `903ca64` red (release_tag supersession) → intent living helpers.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `b89448da439d963a404212ae024534169aa22297` | **HAS_PACKET** (== BASE_TIP after refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth renewed `5160-F839` (prior `6A29-F464` &lt;90s) |
+| pack / release | **`batch202-path-c-bundle`** (tip refresh @ b89448d; release-tag defaults bumped) |
+| CI batch199 | `903ca64` → **failure** → fixed living release/tip supersession in `test_intent.py` |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (tip refresh only; no hunt) |
+
+Artifacts: `portable/BATCH202_BRIEF.json`. Scientific effect: **NONE**.
+
 ## Batch 199 — tip stable 8bd1f03; auth renew 6A29 (50DB &lt;90s); pack+release batch199-path-c-bundle; no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory unchanged from Batch 195. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip refresh / no hunt. Pack meaningfully newer (PATH_C_STATUS.json in tarball + watch/readme link-only assets since batch180) → published **`batch199-path-c-bundle`**.
