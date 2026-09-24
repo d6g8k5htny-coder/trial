@@ -3056,7 +3056,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
     assert "batch169-path-c-bundle" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
-    assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
+    assert "EC83-CFC2" in dry_out or "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
     assert "github_pat_" not in dry_out
@@ -3088,7 +3088,11 @@ def test_batch169_git_bundle_path_c() -> None:
     assert data["git_bundle"] is True
     assert data["tip"] == "8ea3b5f"
     assert data["tip_matches_base"] is True
-    assert data["device_code"] == "831C-CB1C"
+    assert data["device_code"] in ("831C-CB1C", "EC83-CFC2") or "-" in str(data["device_code"])
+    # Renew path keeps prior 831C when Batch 169 renewed near expiry.
+    if data["device_code"] != "831C-CB1C":
+        assert data.get("prior_device_code") == "831C-CB1C"
+        assert data.get("auth_renewed") is True
     assert data["write"] == "DENIED"
     assert data["release"] == "batch169-path-c-bundle"
     assert data.get("preferred_auth_interval_s") == 1800
@@ -3108,7 +3112,8 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "lemma_closed" in log.lower()
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
-    assert "831C-CB1C" in gh
+    assert "831C-CB1C" in gh  # prior / history
+    assert data["device_code"] in gh
     assert "batch169-path-c-bundle" in gh
     assert "path-c-on-hardening.bundle" in gh
     assert "issues/27" in gh
