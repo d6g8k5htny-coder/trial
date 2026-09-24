@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 68 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 69 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; land-path-c-on-main workflow; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -29,6 +29,9 @@ echo "Path A OR Path B OK when MISALIGNED. Prefer Path B (Option-B README+AGENTS
 echo "One-command: $ROOT/scripts/restore_main_face.sh  # short-circuits when already ALIGNED"
 echo "Path C BASE_TIP file: $BASE_TIP_LINE"
 echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT}"
+echo "Path C Actions: $ROOT/.github/workflows/land-path-c-on-main.yml  # dry_run default true; MAIN_PUSH_TOKEN for land"
+echo "  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true"
+echo "  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
 echo "Path C stays on chatgpt/drive-github-hardening-20260919 (has PACKET.json; rebase onto main CONFLICTS)."
 echo "Rebase conflict paths: portable/PATH_C_REBASE_CONFLICT_REPORT_67.json (ci.yml, research.yml, bridge README)."
 echo "Rebase helper: $ROOT/scripts/path_c_rebase_helper.sh --dry-run  # prefer abort; never invent research status"
@@ -43,6 +46,7 @@ echo "  $ROOT/portable/OWNER_ONE_LINERS.md"
 echo "  $ROOT/portable/LAND.md"
 echo "  $ROOT/docs/OWNER_ACTIONS_MAIN.md"
 echo "  $ROOT/.github/workflows/land-option-b-on-main.yml"
+echo "  $ROOT/.github/workflows/land-path-c-on-main.yml"
 echo "  $ROOT/scripts/restore_main_face.sh"
 echo
 
@@ -97,6 +101,11 @@ echo "=== copy-paste Path C (needs write on main) ==="
 echo "# dry-run first (no write); then land on hardening BASE_TIP — avoid PATH_C_REBASE_ONTO_MAIN post-#41:"
 echo "$ROOT/scripts/owner_land_path_c.sh --dry-run"
 echo "$ROOT/scripts/owner_land_path_c.sh"
+echo "# or Actions (trial secret MAIN_PUSH_TOKEN):"
+echo "# 1) Settings → Secrets → Actions → MAIN_PUSH_TOKEN (Contents:Write on main)"
+echo "# 2) Actions → land-path-c-on-main → Run workflow → dry_run=false"
+echo "gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true"
+echo "gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
 echo "# or: $ROOT/portable/patches/apply_all.sh on a writable hardening tip checkout"
 echo
 echo "=== copy-paste Path B (optional) ==="

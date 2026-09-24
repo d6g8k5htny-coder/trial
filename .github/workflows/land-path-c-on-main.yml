@@ -1,0 +1,247 @@
+# Optional owner-triggered Path C land onto d6g8k5htny-coder/main hardening tip.
+#
+# This does NOT run automatically. It requires:
+#   1. Repo secret MAIN_PUSH_TOKEN — a PAT/fine-grained token with Contents:Write
+#      (and PullRequests:Write) on d6g8k5htny-coder/main
+#   2. Manual workflow_dispatch from the Actions tab (or gh workflow run)
+#
+# Scientific effect: NONE. Engineering hygiene only (portable apply_all
+# 0001–0004 + 0008–0016). lemma_closed must stay false. Never flips research
+# status / prizes / premises.
+#
+# dry_run semantics:
+#   true  (default) — clone hardening tip anonymously, run apply_all +
+#                     math_status_check gates, print tip SHAs, exit 0 without push.
+#   false           — requires MAIN_PUSH_TOKEN; clone with the token, apply_all,
+#                     assert lemma_closed=false / problems=0, push branch
+#                     cursor/portable-engineering-patches, then open (or reuse)
+#                     a PR into chatgpt/drive-github-hardening-20260919.
+#                     Failure messages name the missing secret / HTTP denial.
+#
+# Prefer: ./scripts/owner_land_path_c.sh on an owner machine with write auth.
+# This workflow is the Actions equivalent for MAIN_PUSH_TOKEN holders.
+
+name: land-path-c-on-main
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "true = apply locally only (no push). false = push branch + open PR (needs MAIN_PUSH_TOKEN)."
+        type: boolean
+        default: true
+      direct_push:
+        description: "When dry_run=false: true = push branch only (no PR). Default false opens/reuses a PR into hardening."
+        type: boolean
+        default: false
+
+jobs:
+  land:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout trial (portable Path C patches)
+        uses: actions/checkout@v4
+
+      - name: Locate apply_all + BASE_TIP
+        id: patches
+        run: |
+          set -euo pipefail
+          APPLY="portable/patches/apply_all.sh"
+          BASE_TIP="portable/patches/BASE_TIP.txt"
+          if [ ! -f "$APPLY" ]; then
+            echo "::error::Missing ${APPLY} (checked out ref=${GITHUB_REF}). Re-run from trial main/default that contains portable/patches/."
+            exit 1
+          fi
+          if [ ! -f "$BASE_TIP" ]; then
+            echo "::error::Missing ${BASE_TIP}."
+            exit 1
+          fi
+          chmod +x "$APPLY" || true
+          echo "apply_path=${APPLY}" >> "$GITHUB_OUTPUT"
+          echo "base_tip_line=$(tr -d '\r' <"$BASE_TIP" | head -n1)" >> "$GITHUB_OUTPUT"
+          echo "Found apply_all + BASE_TIP: $(tr -d '\r' <"$BASE_TIP" | head -n1)"
+
+      - name: Require token unless dry-run
+        if: ${{ inputs.dry_run == false }}
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${MAIN_PUSH_TOKEN}" ]; then
+            echo "::error::dry_run=false but repository secret MAIN_PUSH_TOKEN is empty."
+            echo "Add a PAT with Contents:Write (+ PullRequests:Write) on d6g8k5htny-coder/main, or re-run with dry_run=true."
+            exit 1
+          fi
+          echo "MAIN_PUSH_TOKEN is set (value redacted)."
+
+      - name: Clone hardening tip, apply_all, gate lemma_closed, push or dry-run
+        id: land
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          DIRECT_PUSH: ${{ inputs.direct_push }}
+          APPLY_PATH: ${{ steps.patches.outputs.apply_path }}
+        run: |
+          set -euo pipefail
+          APPLY="${GITHUB_WORKSPACE}/${APPLY_PATH}"
+          HARDENING_REF="chatgpt/drive-github-hardening-20260919"
+          BRANCH="cursor/portable-engineering-patches"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+          echo "hardening_ref=${HARDENING_REF}" >> "$GITHUB_OUTPUT"
+
+          rm -rf main-land
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "dry_run=true — cloning d6g8k5htny-coder/main anonymously (no push)."
+            if ! git clone --depth 80 https://github.com/d6g8k5htny-coder/main.git main-land; then
+              echo "::error::git clone of d6g8k5htny-coder/main failed (transport)."
+              exit 1
+            fi
+          else
+            echo "dry_run=false — cloning with MAIN_PUSH_TOKEN."
+            if ! git clone --depth 80 "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land; then
+              echo "::error::Authenticated clone failed. Token may lack Contents:Read/Write on d6g8k5htny-coder/main, or network failed."
+              exit 1
+            fi
+          fi
+
+          cd main-land
+          git config user.name "trial-land-path-c"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${HARDENING_REF}"
+          git checkout -B "${BRANCH}" "origin/${HARDENING_REF}"
+          TIP="$(git rev-parse HEAD)"
+          echo "hardening_tip=${TIP}" >> "$GITHUB_OUTPUT"
+          echo "Checked out hardening tip ${TIP} as ${BRANCH}."
+
+          # Fail closed: Path C requires hardening-shaped tree (PACKET.json + tools).
+          if [ ! -f docs/math_status/PACKET.json ] || [ ! -f tools/carriers_verify.py ] || [ ! -f tools/math_status_check.py ]; then
+            echo "::error::Hardening tip lacks Path-C shape (need docs/math_status/PACKET.json + tools/carriers_verify.py + tools/math_status_check.py). Do NOT retarget this workflow at post-#41 default main."
+            exit 1
+          fi
+
+          # Idempotent: skip apply if patches already present.
+          if grep -q '__pycache__' tools/carriers_verify.py 2>/dev/null \
+             && grep -q 'ResourceWarning\|read_bytes\|close-file' tests/test_inventable_jetmod_probes.py 2>/dev/null; then
+            echo "Tree already looks patched; running apply_all --check only."
+            if ! "${APPLY}" --check; then
+              echo "::error::apply_all --check failed on apparently-patched tree."
+              exit 1
+            fi
+          else
+            echo "Running portable apply_all (0001–0004 + 0008–0016)…"
+            if ! "${APPLY}"; then
+              echo "::error::apply_all failed. Tip may have moved past BASE_TIP; refresh portable/patches on trial."
+              exit 1
+            fi
+          fi
+
+          echo
+          echo "--- math_status_check (assert lemma_closed=false; problems=0) ---"
+          STATUS_OUT="$(python3 tools/math_status_check.py 2>&1)" || {
+            echo "::error::math_status_check failed"
+            echo "${STATUS_OUT}"
+            exit 1
+          }
+          echo "${STATUS_OUT}"
+          if ! echo "${STATUS_OUT}" | grep -q 'lemma_closed=false'; then
+            echo "::error::lemma_closed is not false after Path C patches. Aborting (no status promotion)."
+            exit 1
+          fi
+          if ! echo "${STATUS_OUT}" | grep -q 'problems=0'; then
+            echo "::error::math_status_check problems!=0 after Path C patches."
+            exit 1
+          fi
+          echo "Gates OK: lemma_closed=false; problems=0. Scientific effect: NONE."
+
+          # Lightweight focused pytest (skip if pytest missing on runner).
+          if python3 -c 'import pytest' 2>/dev/null; then
+            echo "--- focused pytest ---"
+            python3 -m pytest -q \
+              tests/test_carriers.py \
+              tests/test_math_status.py \
+              tests/test_inventable_jetmod_probes.py \
+              tests/test_gaussian_moments.py \
+              tests/test_inventable_jetmod_instrumentation_status.py \
+              || {
+                echo "::error::focused pytest failed after apply_all."
+                exit 1
+              }
+          else
+            echo "pytest not installed on runner — skipping focused tests (math_status gates already passed)."
+            pip install -q pytest || true
+            if python3 -c 'import pytest' 2>/dev/null; then
+              python3 -m pytest -q \
+                tests/test_carriers.py \
+                tests/test_math_status.py \
+                tests/test_inventable_jetmod_probes.py \
+                tests/test_gaussian_moments.py \
+                tests/test_inventable_jetmod_instrumentation_status.py \
+                || {
+                  echo "::error::focused pytest failed after apply_all."
+                  exit 1
+                }
+            fi
+          fi
+
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No uncommitted patch diffs (already applied upstream?)."
+          else
+            git add -A
+            git commit -m "fix: portable engineering patches 0001-0004+0008-0016 (Path C)" \
+              -m "Via trial land-path-c-on-main. Scientific effect: NONE. lemma_closed stays false."
+          fi
+
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "dry_run=true — apply_all + lemma_closed/problems gates OK; not pushing."
+            echo "Re-run with dry_run=false + MAIN_PUSH_TOKEN to land on hardening."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! git push -u origin "HEAD:refs/heads/${BRANCH}"; then
+            if ! git push -u --force origin "HEAD:refs/heads/${BRANCH}"; then
+              echo "::error::git push denied or failed. Confirm MAIN_PUSH_TOKEN has Contents:Write on d6g8k5htny-coder/main (expected HTTP 403 if scope missing)."
+              exit 1
+            fi
+            echo "Pushed ${BRANCH} with --force (non-ff)."
+          fi
+          echo "Pushed branch ${BRANCH}."
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "direct_push=${DIRECT_PUSH}" >> "$GITHUB_OUTPUT"
+
+      - name: Open (or reuse) Path C PR into hardening
+        if: ${{ inputs.dry_run == false && inputs.direct_push == false && steps.land.outputs.pushed == 'true' }}
+        env:
+          MAIN_PUSH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
+          BRANCH: cursor/portable-engineering-patches
+          HARDENING_REF: chatgpt/drive-github-hardening-20260919
+        run: |
+          set -euo pipefail
+          export GH_TOKEN="${MAIN_PUSH_TOKEN}"
+          TITLE="fix: portable engineering patches 0001-0004+0008-0016 (Path C)"
+          BODY="$(cat <<'EOF'
+          Path C via trial workflow `land-path-c-on-main`.
+
+          Applies trial `portable/patches/apply_all.sh` (**0001–0004 + 0008–0016**) onto
+          `chatgpt/drive-github-hardening-20260919`.
+
+          Scientific effect: **NONE**. `lemma_closed` stays false. Green checks ≠ obligation discharge.
+          Never flips research status / prizes / premises.
+
+          Post-ALIGNED default tip (PR #41) is a different tree — Path C stays on hardening.
+          EOF
+          )"
+          EXISTING="$(gh pr list --repo d6g8k5htny-coder/main --head "${BRANCH}" --base "${HARDENING_REF}" --state open --json number,url --jq '.[0].url // empty')"
+          if [ -n "${EXISTING}" ]; then
+            echo "Reusing open PR: ${EXISTING}"
+            exit 0
+          fi
+          if ! URL="$(gh pr create --repo d6g8k5htny-coder/main --base "${HARDENING_REF}" --head "${BRANCH}" \
+              --title "${TITLE}" --body "${BODY}")"; then
+            echo "::warning::gh pr create failed (token may lack PullRequests:Write). Branch is pushed: ${BRANCH}"
+            echo "Open manually: https://github.com/d6g8k5htny-coder/main/compare/${HARDENING_REF}...${BRANCH}"
+            exit 0
+          fi
+          echo "Opened Path C PR: ${URL}"

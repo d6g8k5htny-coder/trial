@@ -4,10 +4,10 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 68:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE** — never honor. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
+> **Batch 69:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE** — never honor. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP `74c082e` (post-#45); `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). Rebase helper: `./scripts/path_c_rebase_helper.sh --dry-run` (prefer abort; never invent research status). No 0017.
-> Window: `python3 scripts/check_autonomous_window.py`. Watch embeds window+route: `python3 scripts/watch_main_alignment.py`. Timer 3600s. Trial write still 403. See `RESTORE_PLAN_68.json` + `BATCH68_TOKEN_SEARCH.json`.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP `74c082e` (post-#45); `./scripts/owner_land_path_c.sh --dry-run` → keep hardening (rebase CONFLICTING). Actions: `.github/workflows/land-path-c-on-main.yml` (`dry_run` default true; `MAIN_PUSH_TOKEN` for land). Rebase helper: `./scripts/path_c_rebase_helper.sh --dry-run` (prefer abort; never invent research status). No 0017.
+> Window: `python3 scripts/check_autonomous_window.py`. Watch embeds window+route: `python3 scripts/watch_main_alignment.py`. Timer 3600s. Trial write still 403. See `RESTORE_PLAN_69.json` + `BATCH69_TOKEN_SEARCH.json`.
 
 After merging a trial PR that adds `.cursor/environment.json`
 (`repositoryDependencies` → `github.com/d6g8k5htny-coder/main`): **relaunch** a
@@ -127,6 +127,20 @@ Independent of default-tip alignment: apply `apply_all` **0001–0004 + 0008–0
 ./scripts/owner_land_path_c.sh --dry-run
 ./scripts/owner_land_path_c.sh
 # Avoid: PATH_C_REBASE_ONTO_MAIN=1 ./scripts/owner_land_path_c.sh   # CONFLICTS after PR #41
+```
+
+### C1 — Actions UI (trial workflow; Batch 69+)
+
+1. On **trial**: Settings → Secrets → Actions → add `MAIN_PUSH_TOKEN`
+   (PAT with Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).
+2. Actions → **land-path-c-on-main** → Run workflow.
+3. Default `dry_run=true` verifies `apply_all` + `lemma_closed=false` / `problems=0` (no push).
+4. Set `dry_run=false` to push `cursor/portable-engineering-patches` and open (or reuse)
+   a PR into `chatgpt/drive-github-hardening-20260919`. Optional `direct_push=true` skips the PR.
+
+```bash
+gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true
+gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` @ tip in

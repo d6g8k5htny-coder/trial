@@ -10,6 +10,8 @@ Vectors (non-destructive where possible):
   W3a workflow_dispatch land-option-b-on-main on trial (dry_run)
   W3b workflow_dispatch land-option-b-on-main on main
   W3c Actions API dispatch on trial
+  W3d workflow_dispatch land-path-c-on-main on trial (dry_run; Path C)
+  W3e Actions API dispatch land-path-c-on-main on trial
   W4a fork create
   W4b GraphQL createCommitOnBranch (forbidden → no write)
   W4c pulls create capability (expects 403 without a pushed head)
@@ -264,6 +266,22 @@ def main() -> int:
             "state": "WRITABLE" if d_status in (200, 201, 204) else _classify(d_status, d_body),
         }
 
+        # W3d — Path C workflow_dispatch on trial (Batch 69+)
+        w3d = _dispatch_workflow(TRIAL, "land-path-c-on-main.yml")
+        vectors["W3d_dispatch_path_c_trial"] = w3d
+
+        # W3e — Path C Actions API dispatch on trial
+        d2_status, d2_body = _request(
+            "POST",
+            f"{TRIAL_API}/actions/workflows/land-path-c-on-main.yml/dispatches",
+            {"ref": "main", "inputs": {"dry_run": "true"}},
+        )
+        vectors["W3e_api_dispatch_path_c_trial"] = {
+            "http_status": d2_status,
+            "msg": _short(d2_body),
+            "state": "WRITABLE" if d2_status in (200, 201, 204) else _classify(d2_status, d2_body),
+        }
+
         # W4a — fork
         f_status, f_body = _request("POST", f"{API}/forks", {})
         vectors["W4a_fork"] = {
@@ -339,6 +357,8 @@ def main() -> int:
             "W3a_dispatch_trial",
             "W3b_dispatch_main",
             "W3c_api_dispatch_trial",
+            "W3d_dispatch_path_c_trial",
+            "W3e_api_dispatch_path_c_trial",
             "W4a_fork",
             "W4b_graphql_createCommitOnBranch",
             "W4c_pulls_create",

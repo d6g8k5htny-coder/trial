@@ -234,3 +234,17 @@ Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/la
    into default `main` — merge that PR. (HOLD VOID; Path B PREFERRED.)
 
 Default `dry_run=true` verifies `git am` + local auditor (no push).
+
+## Path C via trial Actions (token secret; Batch 69+)
+
+Workflow [`.github/workflows/land-path-c-on-main.yml`](../.github/workflows/land-path-c-on-main.yml):
+
+1. Add Actions secret `MAIN_PUSH_TOKEN` on **trial** (Contents:Write + PullRequests:Write on `main`).
+2. Run workflow `land-path-c-on-main` with `dry_run=true` (default) to verify
+   `apply_all` + `lemma_closed=false` / `problems=0` on hardening (no push).
+3. Re-run with `dry_run=false` to push `cursor/portable-engineering-patches` and
+   open/reuse a PR into `chatgpt/drive-github-hardening-20260919`.
+4. Optional `direct_push=true` (with `dry_run=false`) pushes the branch only.
+
+Also: `./scripts/owner_land_path_c.sh` (local owner auth) mentions this workflow.
+Scientific effect: **NONE**. Never flips research status.

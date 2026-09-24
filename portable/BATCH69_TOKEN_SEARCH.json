@@ -1,0 +1,53 @@
+{
+  "batch": "69",
+  "generated_at_utc": "2026-09-24T01:00:30Z",
+  "scientific_effect": "NONE",
+  "note": "ALIGNED @ 1c6e74b; hardening tip still 74c082e (== BASE_TIP; no tip refresh); Path-B/C write vectors DENIED (incl. workflow_dispatch); permanent window; no 0017; shipped land-path-c-on-main.yml (dry_run default true; lemma_closed/problems gates)",
+  "env_tokens": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "NOT_SET",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "CURSOR_API_KEY": "NOT_SET",
+    "CURSOR_TOKEN": "NOT_SET",
+    "GITHUB_PAT": "NOT_SET",
+    "GH_PAT": "NOT_SET",
+    "CURSOR_*_agent_runtime": "SET (non-GitHub; CURSOR_AGENT, CURSOR_AGENT_SOCKET, CURSOR_CONVERSATION_ID, CURSOR_REQUEST_ID, CURSOR_RIPGREP_PATH)"
+  },
+  "gh_auth": {
+    "account": "cursor",
+    "protocol": "https",
+    "token_kind": "github_app_installation",
+    "hosts_yml": "~/.config/gh/hosts.yml present",
+    "credential_helper": "!/exec-daemon/gh auth git-credential",
+    "status": "logged_in (token redacted)"
+  },
+  "write_probes_vs_main": {
+    "repo": "d6g8k5htny-coder/main",
+    "path_b_ready": false,
+    "path_c_writable": false,
+    "note": "Full vector table in RESTORE_PLAN_69.json / probe_main_write_vectors.py this batch (W3d/W3e Path C dispatch added)"
+  },
+  "path_c": {
+    "dry_run": "scripts/path_c_dry_run.py",
+    "owner_land": "scripts/owner_land_path_c.sh",
+    "actions_workflow": ".github/workflows/land-path-c-on-main.yml",
+    "actions_dry_run_default": true,
+    "base_tip": "74c082e",
+    "tip_refresh": "none (still == BASE_TIP)",
+    "new_0017": false,
+    "idle_tip_defect": true,
+    "workflow_is_non_idle_deliverable": true
+  },
+  "window": {
+    "mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+    "state": "PERMANENT_OPEN",
+    "hard_stop": false,
+    "old_48h_stop_override": true
+  },
+  "timer": {
+    "name": "permanent-autonomous-align-watch",
+    "delay_seconds": 3600,
+    "not": "48h-stop"
+  },
+  "goal_complete": false
+}

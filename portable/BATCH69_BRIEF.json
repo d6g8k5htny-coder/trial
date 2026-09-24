@@ -1,0 +1,22 @@
+{
+  "batch": "69",
+  "generated_at_utc": "2026-09-24T01:00:30Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "74c082e",
+  "tip_refresh": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "new_0017": false,
+  "concrete_work": [
+    ".github/workflows/land-path-c-on-main.yml",
+    "scripts/owner_land_path_c.sh",
+    "scripts/probe_main_write_vectors.py",
+    "tests/test_intent.py"
+  ],
+  "source": "land-option-b-on-main.yml + owner_land_path_c.sh",
+  "window": "PERMANENT_OPEN"
+}

@@ -19,6 +19,12 @@
 # Intended to run on the owner's machine / Codespace with *owner* gh/git auth
 # that has write on d6g8k5htny-coder/main. This trial cloud token cannot (403).
 #
+# Actions equivalent (trial secret MAIN_PUSH_TOKEN):
+#   .github/workflows/land-path-c-on-main.yml
+#   gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true
+#   gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false
+# Default dry_run=true. Same gates: apply_all + lemma_closed=false + problems=0.
+#
 # Scientific effect: NONE. Engineering hygiene only; lemma_closed must stay false.
 # Fail-closed: clear errors on missing patches, apply failure, write denial,
 # lemma_closed!=false, or pytest failure.
@@ -75,6 +81,11 @@ Env:
   PATH_C_BRANCH         Feature branch name (default: cursor/portable-engineering-patches)
   PATH_C_WORKDIR        Existing clone dir to reuse (optional)
   MAIN_PUSH_TOKEN / GH_TOKEN — optional; gh/git use owner auth by default
+
+Actions (trial):
+  .github/workflows/land-path-c-on-main.yml  # workflow_dispatch; dry_run default true
+  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true
+  # dry_run=false needs MAIN_PUSH_TOKEN secret on trial
 EOF
 }
 
@@ -370,6 +381,10 @@ echo
 echo "=== NEXT (owner) ==="
 echo "1. Review and merge: $PR_URL"
 echo "2. Confirm lemma_closed=false on the merged tip"
+echo
+echo "Actions alternative (trial secret MAIN_PUSH_TOKEN):"
+echo "  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
+echo "  # workflow: .github/workflows/land-path-c-on-main.yml (dry_run default true)"
 echo
 echo "owner_land_path_c: branch+PR ready."
 echo "Scientific effect: NONE"

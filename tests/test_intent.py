@@ -114,6 +114,17 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "Locate Option-B patch" in land_wf or "PATCH_PATH" in land_wf
     assert "audit_local_tree.py" in land_wf
     assert "would-align" in land_wf
+    path_c_wf = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text()
+    assert "MAIN_PUSH_TOKEN" in path_c_wf
+    assert "dry_run" in path_c_wf
+    assert "default: true" in path_c_wf
+    assert "apply_all.sh" in path_c_wf
+    assert "lemma_closed=false" in path_c_wf
+    assert "math_status_check" in path_c_wf
+    assert "chatgpt/drive-github-hardening-20260919" in path_c_wf
+    assert "workflow_dispatch" in path_c_wf
+    assert "cursor/portable-engineering-patches" in path_c_wf
+    assert "Scientific effect: NONE" in path_c_wf or "scientific effect: NONE" in path_c_wf.lower()
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text()
     assert "--check" in apply_all
     assert "CHECK_ONLY" in apply_all
@@ -210,6 +221,13 @@ def test_portable_patches_exist() -> None:
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(encoding="utf-8")
     assert "gh pr create" in land_wf
     assert "option-b-notice-from-trial" in land_wf
+    path_c_wf = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "gh pr create" in path_c_wf
+    assert "portable-engineering-patches" in path_c_wf
+    assert "lemma_closed" in path_c_wf
+    assert "problems=0" in path_c_wf or "problems!=0" in path_c_wf
     assert (ROOT / "portable" / "patches" / "0005-pre17-inventable-probes-restore-receipts-after-test.patch").is_file()
     assert (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").is_file()
     ob = (ROOT / "portable" / "main-default-branch" / "0001-option-b-default-branch-notice.patch").read_text()
@@ -500,12 +518,15 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "auto-approve" in unblock or "unrestricted" in unblock
     assert "BASE_TIP.txt" in unblock
     assert (
-        "Batch 66" in unblock
+        "Batch 69" in unblock
+        or "Batch 68" in unblock
+        or "Batch 66" in unblock
         or "Batch 65" in unblock
         or "Batch 64" in unblock
         or "Batch 63" in unblock
         or "PERMANENT" in unblock
         or "1c6e74b" in unblock
+        or "land-path-c-on-main" in unblock
     )
     assert "3600" in unblock or "permanent-autonomous-align-watch" in unblock
     assert "check_autonomous_window.py" in unblock
@@ -513,6 +534,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 69" in log
+    assert "Batch 68" in log
     assert "Batch 66" in log
     assert "Batch 65" in log
     assert "Batch 64" in log
@@ -533,6 +556,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "74c082e" in log or "PR #45" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
+    assert "land-path-c-on-main" in log
     assert "watch_main_alignment" in log and (
         "autonomous_window" in log
         or "route" in log
@@ -541,6 +565,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
         or "Batch 64" in log
         or "Batch 65" in log
         or "Batch 66" in log
+        or "Batch 69" in log
     )
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
@@ -579,6 +604,37 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     )
     assert land.returncode == 0, land.stderr + land.stdout
     assert "already ALIGNED" in (land.stdout + land.stderr)
+
+
+def test_land_path_c_workflow_dry_run_default() -> None:
+    """Batch 69: Path C Actions land workflow exists; dry_run defaults true; never flips status."""
+    path = ROOT / ".github" / "workflows" / "land-path-c-on-main.yml"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    assert "name: land-path-c-on-main" in text
+    assert "workflow_dispatch" in text
+    assert "dry_run" in text
+    # default true appears near dry_run input
+    assert "default: true" in text
+    assert "MAIN_PUSH_TOKEN" in text
+    assert "apply_all" in text
+    assert "lemma_closed=false" in text
+    assert "math_status_check" in text
+    assert "chatgpt/drive-github-hardening-20260919" in text
+    assert "cursor/portable-engineering-patches" in text
+    assert "direct_push" in text
+    # Must not flip research status
+    assert "lemma_closed" in text
+    assert "Scientific effect" in text or "scientific effect" in text.lower()
+    assert "NONE" in text
+    # Owner script mentions the workflow
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "land-path-c-on-main" in owner_c
+    assert "MAIN_PUSH_TOKEN" in owner_c
+    # Vectors probe covers Path C dispatch
+    vectors = (ROOT / "scripts" / "probe_main_write_vectors.py").read_text(encoding="utf-8")
+    assert "land-path-c-on-main" in vectors
+    assert "W3d_dispatch_path_c_trial" in vectors
 
 
 def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
