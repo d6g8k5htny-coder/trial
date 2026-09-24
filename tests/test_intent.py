@@ -2526,3 +2526,127 @@ def test_batch151_owner_open_path_c_pr_script() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 151" in log
     assert "owner_open_path_c_pr" in log
+
+
+def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
+    """Batch 153: robust BASE_TIP hex parse; --from-bundle --dry-run; daemon prefers open-PR."""
+    import json
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    land_c = ROOT / "scripts" / "owner_land_path_c.sh"
+    dry_py = ROOT / "scripts" / "path_c_dry_run.py"
+    ww = ROOT / "scripts" / "when_writable_land.py"
+
+    open_txt = open_pr.read_text(encoding="utf-8")
+    land_txt = land_c.read_text(encoding="utf-8")
+    dry_txt = dry_py.read_text(encoding="utf-8")
+    ww_txt = ww.read_text(encoding="utf-8")
+
+    assert "parse_base_tip_sha" in open_txt
+    assert "parse_base_tip_sha" in land_txt
+    assert "_parse_base_tip_sha" in dry_txt
+    assert "MAIN_PUSH_TOKEN" in land_txt and 'export GH_TOKEN="$MAIN_PUSH_TOKEN"' in land_txt
+    assert "from-bundle+dry-run" in land_txt or "from-bundle dry-run" in land_txt
+    assert "owner_open_path_c_pr" in ww_txt
+    assert "OWNER_OPEN_PR" in ww_txt
+
+    # Trailing comment must not become the SHA (old awk $NF bug → "tip").
+    with tempfile.TemporaryDirectory(prefix="b153-basetip-") as td:
+        td_path = Path(td)
+        (td_path / "portable" / "patches").mkdir(parents=True)
+        (td_path / "portable" / "path-c-applied-bundle").mkdir(parents=True)
+        tip_line = (
+            "chatgpt/drive-github-hardening-20260919 "
+            "10c077e08261fa3d07317e290826604a749d4e49  # tip\n"
+        )
+        (td_path / "portable" / "patches" / "BASE_TIP.txt").write_text(tip_line, encoding="utf-8")
+        # Minimal bundle + VERIFY so dry-run can proceed past missing-file gates.
+        real_bundle = ROOT / "portable" / "path-c-applied-bundle" / "path-c-on-hardening.patch"
+        real_verify = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+        (td_path / "portable" / "path-c-applied-bundle" / "path-c-on-hardening.patch").write_bytes(
+            real_bundle.read_bytes()
+        )
+        (td_path / "portable" / "path-c-applied-bundle" / "VERIFY.json").write_text(
+            real_verify.read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        import os
+
+        env = os.environ.copy()
+        env["TRIAL_ROOT"] = str(td_path)
+        p = subprocess.run(
+            ["bash", str(open_pr), "--dry-run"],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+            env=env,
+            timeout=120,
+        )
+        out = p.stdout + p.stderr
+        assert p.returncode == 0, out
+        assert "base_tip_sha=10c077e08261fa3d07317e290826604a749d4e49" in out
+        assert "base_tip_sha=tip" not in out
+        assert "tip_matches_base=true" in out or "dry-run OK" in out
+
+    # Live --dry-run scripts (workspace tree).
+    dry_open = subprocess.run(
+        ["bash", str(open_pr), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=120,
+    )
+    assert dry_open.returncode == 0, dry_open.stderr + dry_open.stdout
+    assert "10c077e08261fa3d07317e290826604a749d4e49" in (dry_open.stdout + dry_open.stderr)
+
+    dry_land = subprocess.run(
+        ["bash", str(land_c), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=180,
+    )
+    assert dry_land.returncode == 0, dry_land.stderr + dry_land.stdout
+
+    # --from-bundle --dry-run is slower (clone+am); still must exit 0 and say OK.
+    dry_fb = subprocess.run(
+        ["bash", str(land_c), "--from-bundle", "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=300,
+    )
+    fb_out = dry_fb.stdout + dry_fb.stderr
+    assert dry_fb.returncode == 0, fb_out
+    assert "from-bundle" in fb_out.lower()
+    assert "lemma_closed=false" in fb_out
+    assert "dry-run OK" in fb_out or "from-bundle dry-run OK" in fb_out
+
+    brief = ROOT / "portable" / "BATCH153_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "153"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["dry_run_ok"] is True
+    assert data["device_code"] == "1FC8-3D96"
+    assert data.get("prior_device_code") == "1DAC-111C"
+    assert data.get("auth_renewed") is True
+    assert data.get("dry_run_ok") is True
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "1FC8-3D96" in gh
+    assert "1DAC-111C" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 153" in log
+    assert "1FC8-3D96" in log

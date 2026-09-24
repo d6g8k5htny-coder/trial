@@ -21,6 +21,21 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 153 — 2026-09-24 ~08:34 UTC (PERMANENT window; auth renew 1FC8-3D96; Path C dry-run fixes; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `lemma_closed=false`.
+- Device auth `1DAC-111C` → **expired** → **renewed** `1FC8-3D96`; poller `gh-device-login` restarted; daemon `when-writable-land` up (prefers `owner_open_path_c_pr.sh` when token/write appears).
+- **Script fixes (prefer real fixes over docs):**
+  - Robust `parse_base_tip_sha` / `_parse_base_tip_sha` (hex extract) in `owner_open_path_c_pr.sh`, `owner_land_path_c.sh`, `path_c_dry_run.py` — trailing comments no longer become SHA `tip`.
+  - `owner_land_path_c.sh` exports `MAIN_PUSH_TOKEN`→`GH_TOKEN` (same as open-PR script).
+  - `--from-bundle --dry-run` now does tip-drift + local `git am` + `lemma_closed=false` (not only `apply_all --check`). Fixed shallow-clone `rev-parse` returning literal `origin/<ref>` (pin `+refs/heads/…:refs/remotes/origin/…`).
+  - CI tip-drift `BASE_SHA` hex parse.
+  - Intent: `test_batch153_base_tip_parse_and_from_bundle_dry_run` (full `tests/test_intent.py` green).
+- Tiny JSON: `portable/BATCH153_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `1FC8-3D96` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle`.
+
 ### Batch 151 — 2026-09-24 ~08:17 UTC (PERMANENT window; auth renew 1DAC-111C; ship owner_open_path_c_pr.sh; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).

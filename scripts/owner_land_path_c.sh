@@ -76,11 +76,34 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"
 }
 
+# Batch 153: extract a real commit SHA from BASE_TIP.txt (hex, not $NF / last field).
+parse_base_tip_sha() {
+  local line="$1"
+  local sha
+  sha="$(printf '%s' "$line" | python3 -c '
+import re, sys
+text = sys.stdin.read()
+m = re.search(r"(?i)\b([0-9a-f]{40})\b", text)
+if m:
+    print(m.group(1).lower())
+    raise SystemExit(0)
+m = re.search(r"(?i)(?:^|[=:\s])([0-9a-f]{7,39})(?:\b|$)", text)
+if m:
+    print(m.group(1).lower())
+    raise SystemExit(0)
+raise SystemExit(1)
+' 2>/dev/null)" || return 1
+  [[ -n "$sha" ]] || return 1
+  printf '%s\n' "$sha"
+}
+
 usage() {
   cat <<'EOF'
 Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
 
   --dry-run     Certainty only: path_c_dry_run.py (apply_all --check + tip shape; no push).
+                With --from-bundle: tip-drift + local git am of path-c-applied-bundle
+                (no push); exit 0/1/2.
                 Exit codes match path_c_dry_run: 0=ready, 1=not ready, 2=transport.
   (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
   --from-bundle Use portable/path-c-applied-bundle/path-c-on-hardening.patch (git am)
@@ -145,7 +168,9 @@ fi
 
 echo "=== owner_land_path_c ==="
 echo "repo=$REPO trial_root=$TRIAL_ROOT"
-if [[ "$DRY_RUN" -eq 1 ]]; then
+if [[ "$DRY_RUN" -eq 1 && "$FROM_BUNDLE" -eq 1 ]]; then
+  echo "mode=from-bundle+dry-run"
+elif [[ "$DRY_RUN" -eq 1 ]]; then
   echo "mode=dry-run"
 elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
   echo "mode=from-bundle+$([ "$DIRECT_PUSH" -eq 1 ] && echo direct-push || echo branch+PR)"
@@ -153,18 +178,105 @@ else
   echo "mode=$([ "$DIRECT_PUSH" -eq 1 ] && echo direct-push || echo branch+PR)"
 fi
 echo "base_mode=$BASE_MODE rebase_onto_main=$REBASE_ONTO_MAIN from_bundle=$FROM_BUNDLE"
+BASE_TIP_LINE=""
+BASE_TIP_SHA=""
 if [[ -f "$BASE_TIP_FILE" ]]; then
-  echo "base_tip_file=$(cat "$BASE_TIP_FILE")"
+  BASE_TIP_LINE="$(tr -d '\r' <"$BASE_TIP_FILE" | head -n1)"
+  echo "base_tip_file=$BASE_TIP_LINE"
+  if BASE_TIP_SHA="$(parse_base_tip_sha "$BASE_TIP_LINE")"; then
+    echo "base_tip_sha=$BASE_TIP_SHA"
+  else
+    echo "warn: could not parse BASE_TIP SHA from $BASE_TIP_FILE"
+  fi
 fi
 echo "prerequisites: git+python3+gh auth with Contents:Write on $REPO"
 echo "cloud_agent_midflight_cannot_gain_main_write: see portable/RELAUNCH_WITH_MAIN_SCOPE.md"
 echo "scientific_effect=NONE"
 echo
 
-# --dry-run: certainty JSON only (no write probe, no push). Works with trial 403 tokens.
+# --dry-run: certainty only (no write probe, no push). Works with trial 403 tokens.
 # Exit codes (Batch 138): pass through path_c_dry_run.py — 0=ready, 1=not ready,
 # 2=transport/missing inputs. Do not collapse transport into generic die(1).
+# Batch 153: --from-bundle --dry-run verifies tip-drift + local git am (not only apply_all).
 if [[ "$DRY_RUN" -eq 1 ]]; then
+  if [[ "$FROM_BUNDLE" -eq 1 ]]; then
+    [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH"
+    [[ -n "$BASE_TIP_SHA" ]] || die "could not parse BASE_TIP SHA (need hex in $BASE_TIP_FILE)"
+    VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
+    VERIFY_SHA=""
+    if [[ -f "$VERIFY_JSON" ]]; then
+      VERIFY_SHA="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('base_tip_sha') or '')" "$VERIFY_JSON" 2>/dev/null || true)"
+      echo "verify_base_tip_sha=$VERIFY_SHA"
+      if [[ -n "$VERIFY_SHA" && "$VERIFY_SHA" != "$BASE_TIP_SHA" && "$VERIFY_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${VERIFY_SHA}"* ]]; then
+        echo "owner_land_path_c: ERROR: tip-drift BASE_TIP $BASE_TIP_SHA != VERIFY $VERIFY_SHA" >&2
+        exit 1
+      fi
+    fi
+    echo "--- from-bundle dry-run: tip-drift + git am (no push) ---"
+    FB_WORKDIR="$(mktemp -d "${TMPDIR:-/tmp}/owner-path-c-from-bundle-dry.XXXXXX")"
+    cleanup_fb() { rm -rf "$FB_WORKDIR"; }
+    trap cleanup_fb EXIT
+    set +e
+    git clone --filter=blob:none --no-checkout "https://github.com/${REPO}.git" "$FB_WORKDIR/main" \
+      || git clone --depth 80 "https://github.com/${REPO}.git" "$FB_WORKDIR/main"
+    clone_ec=$?
+    set -e
+    if [[ "$clone_ec" -ne 0 ]]; then
+      echo "owner_land_path_c: ERROR: clone failed (exit=2 transport)." >&2
+      exit 2
+    fi
+    cd "$FB_WORKDIR/main"
+    # Pin remote-tracking ref (plain `git fetch origin <branch>` after shallow clone
+    # often leaves origin/<hardening> unresolved as a literal name, not a SHA).
+    if ! git fetch --depth 80 origin "+refs/heads/${HARDENING_REF}:refs/remotes/origin/${HARDENING_REF}"; then
+      echo "owner_land_path_c: ERROR: fetch hardening failed (exit=2)." >&2
+      exit 2
+    fi
+    LIVE_SHA="$(git rev-parse --verify "refs/remotes/origin/${HARDENING_REF}^{commit}" 2>/dev/null || true)"
+    if [[ -z "$LIVE_SHA" || "$LIVE_SHA" == origin/* || "$LIVE_SHA" != [0-9a-f]* ]]; then
+      # Fallback: ls-remote
+      LIVE_SHA="$(git ls-remote origin "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1 || true)"
+    fi
+    if [[ -z "$LIVE_SHA" || ! "$LIVE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+      echo "owner_land_path_c: ERROR: cannot resolve live hardening SHA (got: ${LIVE_SHA:-empty}) (exit=2)." >&2
+      exit 2
+    fi
+    echo "live_hardening_sha=$LIVE_SHA"
+    if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
+      echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh bundle." >&2
+      exit 1
+    fi
+    echo "tip_matches_base=true"
+    git config user.name "owner-land-path-c-dry"
+    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then
+      git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
+      git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
+    fi
+    if ! git am --3way "$BUNDLE_PATCH"; then
+      git am --abort 2>/dev/null || true
+      echo "owner_land_path_c: ERROR: git am --from-bundle failed on BASE_TIP (exit=1)." >&2
+      exit 1
+    fi
+    STATUS_OUT="$(python3 tools/math_status_check.py 2>&1)" || {
+      echo "owner_land_path_c: ERROR: math_status_check failed after bundle am." >&2
+      echo "$STATUS_OUT" >&2
+      exit 1
+    }
+    echo "$STATUS_OUT"
+    if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
+      echo "owner_land_path_c: ERROR: lemma_closed is not false after bundle am." >&2
+      exit 1
+    fi
+    if ! echo "$STATUS_OUT" | grep -q 'problems=0'; then
+      echo "owner_land_path_c: ERROR: math_status problems!=0 after bundle am." >&2
+      exit 1
+    fi
+    echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; git am OK; lemma_closed=false."
+    echo "Land with write creds: $0 --from-bundle"
+    echo "Scientific effect: NONE"
+    exit 0
+  fi
   [[ -f "$DRY_RUN_PY" ]] || die "missing $DRY_RUN_PY"
   echo "--- path_c_dry_run (apply_all --check + post-ALIGNED tip shape) ---"
   set +e
@@ -188,11 +300,21 @@ fi
 
 need_cmd gh
 
+# Batch 153: prefer MAIN_PUSH_TOKEN / GH_TOKEN for git+gh (same as owner_open_path_c_pr).
+# Without this, MAIN_PUSH_TOKEN=… alone leaves the Cursor gh hosts.yml token active.
+if [[ -n "${MAIN_PUSH_TOKEN:-}" ]]; then
+  export GH_TOKEN="$MAIN_PUSH_TOKEN"
+elif [[ -n "${GH_TOKEN:-}" ]]; then
+  export MAIN_PUSH_TOKEN="$GH_TOKEN"
+fi
+
 if ! gh auth status >/dev/null 2>&1; then
-  die "gh is not authenticated. Prerequisites: gh auth login (owner account with write on $REPO). Trial Cloud Agent tokens get 403 — use owner machine, MAIN_PUSH_TOKEN, device-flow, or relaunch (portable/RELAUNCH_WITH_MAIN_SCOPE.md). Certainty without write: $0 --dry-run"
+  if [[ -z "${GH_TOKEN:-}" ]]; then
+    die "gh is not authenticated and MAIN_PUSH_TOKEN/GH_TOKEN unset. Prerequisites: gh auth login (owner account with write on $REPO) or export MAIN_PUSH_TOKEN. Trial Cloud Agent tokens get 403 — see portable/RELAUNCH_WITH_MAIN_SCOPE.md. Certainty without write: $0 --dry-run"
+  fi
 fi
 LOGIN="$(gh api user --jq .login 2>/dev/null || true)"
-echo "gh login: ${LOGIN:-unknown}"
+echo "gh login: ${LOGIN:-token-env}"
 
 # Fail closed early if this credential cannot write.
 if [[ -f "$PROBE" ]]; then
@@ -323,7 +445,10 @@ elif [[ "$FROM_BUNDLE" -eq 1 ]]; then
   echo "--- --from-bundle: git am path-c-on-hardening.patch ---"
   # Pin to BASE_TIP SHA when file lists it (release bundle is cut against that tip).
   if [[ -f "$BASE_TIP_FILE" ]]; then
-    BASE_TIP_SHA="$(awk '{print $NF}' "$BASE_TIP_FILE" | head -n1)"
+    if [[ -z "$BASE_TIP_SHA" ]]; then
+      BASE_TIP_LINE="$(tr -d '\r' <"$BASE_TIP_FILE" | head -n1)"
+      BASE_TIP_SHA="$(parse_base_tip_sha "$BASE_TIP_LINE" || true)"
+    fi
     if [[ -n "$BASE_TIP_SHA" ]] && git cat-file -e "${BASE_TIP_SHA}^{commit}" 2>/dev/null; then
       HEAD_NOW="$(git rev-parse HEAD)"
       if [[ "$HEAD_NOW" != "$BASE_TIP_SHA" && "$HEAD_NOW" != "${BASE_TIP_SHA}"* ]]; then
