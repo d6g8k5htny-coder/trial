@@ -1,6 +1,6 @@
 {
   "batch": "165",
-  "generated_at_utc": "2026-09-24T09:48:30Z",
+  "generated_at_utc": "2026-09-24T09:50:29Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "prior_device_code": "C8FC-A08F",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left<90 still pending",
-  "seconds_left": 880,
+  "seconds_left": 747,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -39,7 +39,7 @@
   "trial_branch": "cursor/batch165-path-c-oneshot-d387",
   "issue_url": "https://github.com/d6g8k5htny-coder/trial/issues/30",
   "issue_number": 30,
-  "issue_title": "Path C unblock refresh — Batch 165 (905D-02F4)",
+  "issue_title": "Path C unblock refresh \u2014 Batch 165 (905D-02F4)",
   "prior_issue_number": 29,
   "prior_issue_note": "App cannot edit/comment #29 (403); created #30 with current 905D-02F4 + oneshot",
   "issue_updated": true,
@@ -57,7 +57,7 @@
     "disposition": "OPEN_HOLD",
     "lemma_closed": false
   },
-  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth renewed C8FC→905D; shipped owner_path_c_oneshot; research OPEN_HOLD refresh",
+  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth renewed C8FC\u2192905D; shipped owner_path_c_oneshot; research OPEN_HOLD refresh",
   "artifacts_updated": [
     "scripts/owner_path_c_oneshot.sh",
     "scripts/print_owner_unblock.sh",
@@ -71,12 +71,13 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "tests/test_intent.py"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth renewed C8FC-A08F→905D-02F4; oneshot shipped; research OPEN_HOLD counts refreshed; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth renewed C8FC-A08F\u2192905D-02F4; oneshot shipped; research OPEN_HOLD counts refreshed; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
   "release": "batch162-path-c-bundle",
   "code_changed": true,
-  "trial_main_landed": false
+  "trial_main_landed": true,
+  "trial_main_sha": "c363a24"
 }
