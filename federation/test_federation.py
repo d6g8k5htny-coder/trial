@@ -10,6 +10,10 @@ import tempfile
 import unittest
 
 ROOT=Path(os.environ.get('FEDERATION_WORKSPACE',Path(__file__).resolve().parents[2])).resolve()
+if not (ROOT/'query-/research_query.py').is_file():
+    if 'FEDERATION_WORKSPACE' in os.environ:
+        raise RuntimeError('declared federation fixture is incomplete')
+    raise unittest.SkipTest('multi-repository fixture absent; use the pinned federation workflow')
 sys.path.insert(0,str(ROOT/'query-'))
 import research_query as q
 
