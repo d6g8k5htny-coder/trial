@@ -1,6 +1,6 @@
 {
   "batch": "195",
-  "generated_at_utc": "2026-09-24T13:05:17Z",
+  "generated_at_utc": "2026-09-24T13:05:46Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -31,7 +31,7 @@
   "prior_device_code": "CC72-DB3D",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 687.0,
+  "seconds_left": 658.0,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -86,5 +86,7 @@
   "issue_number": 46,
   "canonical_issue": 46,
   "prior_canonical_issue": 45,
-  "issue_title": "Path C unblock \u2014 Batch 195 canonical (PATH_C_STATUS watch wire; see GH_DEVICE_LOGIN for code)"
+  "issue_title": "Path C unblock \u2014 Batch 195 canonical (PATH_C_STATUS watch wire; see GH_DEVICE_LOGIN for code)",
+  "trial_landed": true,
+  "trial_main_sha": "2d64bc5924eea974aa18c5b0239574a46bbf045a"
 }
