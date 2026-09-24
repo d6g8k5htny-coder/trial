@@ -5,8 +5,8 @@
 # === ONE-SHOT from release tarball (Batch 137; preferred for Dylan) ===
 # Prerequisites (local machine / Codespace — NOT the trial Cloud Agent token):
 #   1. git, python3, gh  (gh auth login with Contents:Write + PullRequests:Write on main)
-#   2. Download latest Path C release on trial (batch125-path-c-bundle or newer):
-#        gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+#   2. Download latest Path C release on trial (batch142-path-c-bundle or newer):
+#        gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
 #          -p 'trial-portable-main-fixes.tgz'
 #   3. Extract and land in ONE command:
 #        mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
@@ -85,11 +85,11 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
   (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
   --from-bundle Use portable/path-c-applied-bundle/path-c-on-hardening.patch (git am)
                 instead of apply_all. Preferred one-shot after extracting the release
-                tarball (batch125-path-c-bundle or newer).
+                tarball (batch142-path-c-bundle or newer).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 ONE-SHOT from release tarball (owner machine with write on main):
-  gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+  gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
     -p 'trial-portable-main-fixes.tgz'
   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
@@ -140,7 +140,7 @@ BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
 [[ -f "$APPLY_ALL" ]] || die "missing $APPLY_ALL (set TRIAL_ROOT to the trial checkout / extracted release tarball)"
 [[ -x "$APPLY_ALL" ]] || chmod +x "$APPLY_ALL" || true
 if [[ "$FROM_BUNDLE" -eq 1 ]]; then
-  [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH (need path-c-applied-bundle from batch125-path-c-bundle or newer)"
+  [[ -f "$BUNDLE_PATCH" ]] || die "missing $BUNDLE_PATCH (need path-c-applied-bundle from batch142-path-c-bundle or newer)"
 fi
 
 echo "=== owner_land_path_c ==="

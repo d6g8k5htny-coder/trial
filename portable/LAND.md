@@ -11,7 +11,7 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > **Permanent extension:** “48 hours is now extended permanently until I intervene.”
 > Stop only on owner intervene — **no 48h finale.**
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
-> Path C: BASE_TIP still **`c82c9357`** (tip match; no bundle rebuild). Write **403** /
+> Path C: BASE_TIP refreshed **`10c077e`** (PR #54; was `10c077e`). Write **403** /
 > `install_has_main=false` / env repos **trial ONLY** — this run cannot gain main
 > write mid-flight. Device code: see `GH_DEVICE_LOGIN.md`.
 >
@@ -20,7 +20,7 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `main`).
 >
 > ```bash
-> gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+> gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
 >   -p 'trial-portable-main-fixes.tgz'
 > mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 > /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
@@ -271,8 +271,8 @@ Notes: `portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json`.
 
 
 ```bash
-# Preferred ONE-SHOT (owner write creds; from release tarball batch125-path-c-bundle+):
-#   gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz'
+# Preferred ONE-SHOT (owner write creds; from release tarball batch142-path-c-bundle+):
+#   gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz'
 #   mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 #   /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
 # Or from a trial checkout:

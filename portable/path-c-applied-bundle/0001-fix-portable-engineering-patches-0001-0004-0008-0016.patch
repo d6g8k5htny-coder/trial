@@ -1,13 +1,9 @@
-From c5c6912080782f0518525abda3d1d2a044da1dee Mon Sep 17 00:00:00 2001
-From: Cursor Agent <cursoragent@cursor.com>
-Date: Thu, 24 Sep 2026 05:54:50 +0000
-Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016 (Path C
- batch 125)
+From 83df4fde27fe6dfe50acb667ad4d0d9491d29e3e Mon Sep 17 00:00:00 2001
+From: Path C Bundle <agent@local>
+Date: Thu, 24 Sep 2026 07:36:43 +0000
+Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016
 
-carriers pycache ignore, math_console paths, gaussian parametrize,
-git fixture timeout, close-file-handles through receipts/bridge tests.
-
-Scientific effect: NONE. lemma_closed stays false.
+Scientific effect: NONE. Does not flip lemma_closed.
 ---
  docs/math_status/PACKET.json                  |   4 +-
  docs/math_status/math_console.py              |  14 +-
@@ -1044,10 +1040,10 @@ index 5e06d99..302b6bc 100644
          )
      return problems
 diff --git a/tools/quarantine_check.py b/tools/quarantine_check.py
-index 4ce33ab..745c84e 100644
+index 2428b01..75603ad 100644
 --- a/tools/quarantine_check.py
 +++ b/tools/quarantine_check.py
-@@ -135,21 +135,23 @@ def manifest_digests(root: str) -> dict[str, str]:
+@@ -145,21 +145,23 @@ def manifest_digests(root: str) -> dict[str, str]:
          for fn in filenames:
              p = os.path.join(dirpath, fn)
              if fn.endswith("_MANIFEST.jsonl") or fn == "MANIFEST.jsonl":

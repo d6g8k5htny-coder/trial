@@ -5,12 +5,13 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T07:31:14Z |
-| Checked (UTC) | 2026-09-24T07:31:14Z |
+| Checked (UTC) | 2026-09-24T07:41:03Z |
 | Verification URL | https://github.com/login/device |
 | User code | `16F5-39F5` |
 | Prior code | `F11F-5064` (expired / renewed) |
 | Status | pending (authorization_pending) |
-| Expires | see `seconds_left` in BATCH141_BRIEF |
+| Expires | see `seconds_left` in BATCH142_BRIEF (~309s at check) |
+| Hardening tip | `10c077e` (PR #54); path-c-applied-bundle refreshed; release `batch142-path-c-bundle` |
 
 ## Steps
 

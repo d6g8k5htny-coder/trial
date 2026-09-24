@@ -57,10 +57,10 @@ personal env stay `[trial]` until relaunch.
 ## Owner local one-shot (no Cloud Agent write needed)
 
 If you prefer not to wait on Cloud scope, land Path C from your laptop using the
-release tarball (`batch125-path-c-bundle` or newer):
+release tarball (`batch142-path-c-bundle` or newer):
 
 ```bash
-gh release download batch125-path-c-bundle -R d6g8k5htny-coder/trial \
+gh release download batch142-path-c-bundle -R d6g8k5htny-coder/trial \
   -p 'trial-portable-main-fixes.tgz'
 mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
