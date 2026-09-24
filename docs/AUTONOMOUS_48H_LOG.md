@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 243 (Path A ALIGNED no-op + land_c release pointers) — 2026-09-24 ~21:38– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Broader eng: hardening/default CI green; sibling AGENTS **8/8** via device token; pack `batch241` tip-accurate; `owner_land_path_c.sh --help` still said **batch218**.
+- **Defect shipped:** Path A lander had **no ALIGNED short-circuit** — would `gh pr revert 32` on an already-ALIGNED tip (and `--help` was absent so bare invocation ran land). Fixed: `owner_land_path_a.sh` **exit 0 without revert/merge** when ALIGNED; added `--help` / `--dry-run`. Also bumped `owner_land_path_c.sh` ONE-SHOT/help pointers to **`batch241-path-c-bundle`**.
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 242 (Path B ALIGNED no-op + OWNER face) — 2026-09-24 ~21:18– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth create-ref 201; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30` (Universal-law / SIDE24 face). `lemma_closed=false`.

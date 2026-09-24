@@ -20,8 +20,15 @@
 # Fail-closed: any non-zero gh/audit step exits non-zero with a clear error.
 # Never flips lemma_closed / prize / premise status.
 #
+# Batch 243: when default tip is already ALIGNED, exit 0 without revert/merge
+# (no-op land). Reverting #32 on an ALIGNED Universal-law tip (e.g. ea41a30)
+# is lander noise and can damage the restored face. Same contract as Path B
+# Batch 242 ALIGNED no-op / restore_main_face short-circuit.
+#
 # Usage:
-#   ./scripts/owner_land_path_a.sh                 # default: revert #32
+#   ./scripts/owner_land_path_a.sh                 # default: revert #32 (if MISALIGNED)
+#   ./scripts/owner_land_path_a.sh --dry-run       # remote ALIGNED check only; no revert
+#   ./scripts/owner_land_path_a.sh --help
 #   PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh
 #   PATH_A_MODE=ready_merge PATH_A_PR=N ./scripts/owner_land_path_a.sh
 #   TRIAL_ROOT=/path/to/trial ./scripts/owner_land_path_a.sh
@@ -32,6 +39,7 @@ TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
 REPO="${MAIN_REPO:-d6g8k5htny-coder/main}"
 PR_NUMBER="${PATH_A_PR:-2}"
 MODE="${PATH_A_MODE:-revert32}"
+DRY_RUN=0
 
 die() {
   echo "owner_land_path_a: ERROR: $*" >&2
@@ -41,6 +49,33 @@ die() {
 need_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"
 }
+
+usage() {
+  cat <<'EOF'
+Usage: owner_land_path_a.sh [--dry-run] [--help]
+
+  (default)     If default tip is ALIGNED → exit 0 (no revert/merge).
+                If MISALIGNED → PATH_A_MODE (default revert32).
+  --dry-run     Remote ALIGNED audit only; never revert / ready / merge.
+  --help        Show this help.
+
+Env:
+  PATH_A_MODE=revert32|ready_merge|fresh   (default: revert32)
+  PATH_A_PR=<n>                            (ready_merge only; default 2)
+  TRIAL_ROOT / MAIN_REPO
+
+Prefer Path B: ./scripts/owner_land_path_b.sh
+Scientific effect: NONE. lemma_closed stays false.
+EOF
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) die "unknown argument: $arg (see --help)" ;;
+  esac
+done
 
 need_cmd gh
 need_cmd python3
@@ -52,10 +87,28 @@ WATCH="$TRIAL_ROOT/scripts/watch_main_alignment.py"
 
 echo "=== owner_land_path_a ==="
 echo "HOLD on PR #2 is VOID (Batch 54 OWNER OVERRIDE). Prefer Path B when possible."
-echo "repo=$REPO mode=$MODE path_a_pr=#$PR_NUMBER trial_root=$TRIAL_ROOT"
+echo "repo=$REPO mode=$MODE path_a_pr=#$PR_NUMBER trial_root=$TRIAL_ROOT dry_run=$DRY_RUN"
 echo "scientific_effect=NONE"
 echo "hint: ./scripts/owner_land_path_b.sh  # preferred ALIGNED restore"
 echo
+
+# Batch 243: ALIGNED no-op before any auth-gated revert/merge. Prefer Path B
+# for restore; Path A must not fire gh pr revert 32 on an already-ALIGNED tip.
+echo "--- remote audit_main_alignment (ALIGNED? short-circuit) ---"
+set +e
+python3 "$AUDIT"
+AUDIT_EC=$?
+set -e
+if [[ "$AUDIT_EC" -eq 0 ]]; then
+  echo "owner_land_path_a: already ALIGNED — Path A land not needed (no revert/merge)."
+  echo "Scientific effect: NONE"
+  exit 0
+fi
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "owner_land_path_a: --dry-run — tip not ALIGNED (audit exit=$AUDIT_EC); would run PATH_A_MODE=$MODE (no write)."
+  echo "Prefer Path B: $TRIAL_ROOT/scripts/owner_land_path_b.sh --dry-run"
+  exit 1
+fi
 
 if ! gh auth status >/dev/null 2>&1; then
   die "gh is not authenticated. Run: gh auth login  (use the owner account with write on $REPO)"

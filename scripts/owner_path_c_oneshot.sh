@@ -10,6 +10,7 @@
 # Batch 199: PATH_C_RELEASE_TAG defaults to batch199-path-c-bundle (status/watch/readme link-only pack)
 # Batch 207: PATH_C_RELEASE_TAG defaults to batch207-path-c-bundle
 # Batch 218: PATH_C_RELEASE_TAG defaults to batch218-path-c-bundle (tip refresh b89448d + CI release-tag supersession)
+# Batch 241: PATH_C_RELEASE_TAG defaults to batch241-path-c-bundle (tip 542e6ec; Path C 0001–0019)
 # prefers path-c-on-hardening.bundle (git fetch) when present.
 #
 # Tries in order:

@@ -1,0 +1,37 @@
+{
+  "batch": "243",
+  "generated_at_utc": "2026-09-24T21:40:24Z",
+  "hunt": "broader_eng_surface_beyond_rw",
+  "hunt_result": "DEFECT_FOUND_PATH_A_ALIGNED_NOOP_PLUS_LAND_C_RELEASE_POINTERS",
+  "defect_found": true,
+  "defect_id": "path_a_aligned_noop_plus_owner_land_c_batch218_stale",
+  "defect_shipped": true,
+  "patch_0020": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "base_tip": "542e6ec",
+  "tip_moved": false,
+  "default_tip": "ea41a30",
+  "aligned": true,
+  "write": "WRITABLE",
+  "surfaces": {
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) \u2014 skipped",
+    "ci_hardening_default": "green last 20",
+    "sibling_AGENTS": "8/8 via device token; App install still trial-only (sandbox 404 to App)",
+    "pack_release": "batch241 tip-accurate @ 542e6ec; owner_land_path_c --help still said batch218 (fixed)",
+    "lander_edge": "Path A had no ALIGNED short-circuit \u2014 would gh pr revert 32 on ALIGNED tip"
+  },
+  "evidence": {
+    "owner_land_path_a_no_aligned_gate": "script jumped to gh pr revert 32 with no remote ALIGNED check; --help absent so bare args ran land",
+    "owner_land_path_c_help_batch218": "ONE-SHOT download + usage still pointed at batch218-path-c-bundle after living release batch241",
+    "fix": [
+      "scripts/owner_land_path_a.sh ALIGNED \u2192 exit 0 no revert/merge; --help/--dry-run",
+      "scripts/owner_land_path_c.sh --help + header \u2192 batch241-path-c-bundle",
+      "tests/test_intent.py test_batch243_path_a_aligned_noop_and_land_c_release"
+    ]
+  },
+  "note": "Real eng defect beyond exhausted RW: Path A lander no-op missing on ALIGNED tip (Batch 242 fixed Path B only). Also pack/release help mismatch in owner_land_path_c. No 0020. Never printed tokens."
+}

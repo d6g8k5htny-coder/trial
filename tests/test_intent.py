@@ -6296,3 +6296,77 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 242" in log
     assert "no-op" in log.lower() or "noop" in log.lower() or "no push/PR" in log
+
+
+def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
+    """Batch 243: Path A ALIGNED no-op (no revert/merge); owner_land_path_c help → batch241."""
+    import json
+
+    owner_a = (ROOT / "scripts" / "owner_land_path_a.sh").read_text(encoding="utf-8")
+    assert "Batch 243" in owner_a
+    assert "already ALIGNED" in owner_a
+    assert "Path A land not needed" in owner_a
+    assert "no revert/merge" in owner_a
+    assert "--dry-run" in owner_a
+    assert "--help" in owner_a
+    # Must audit before any revert32 / ready_merge work.
+    assert owner_a.index("audit_main_alignment") < owner_a.index("gh pr revert 32")
+
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "gh release download batch241-path-c-bundle" in owner_c
+    # Living ONE-SHOT must not still lead with batch218 as the download tag.
+    help_block = owner_c.split("usage()", 1)[-1].split("EOF", 1)[0]
+    assert "batch241-path-c-bundle" in help_block
+    assert "gh release download batch218-path-c-bundle" not in help_block
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 243)" in land_md
+    assert "Path A" in land_md
+    assert "WRITABLE" in land_md
+    assert "batch241-path-c-bundle" in land_md
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 243" in owner_actions
+    assert "Path A" in owner_actions
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 243" in ones
+    assert "owner_land_path_a.sh" in ones
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH243_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "243"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("main_pr_or_null") is None
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH243_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "243"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH243_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 243" in log
+    assert "Path A" in log
+    assert "no-op" in log.lower() or "noop" in log.lower() or "ALIGNED" in log
