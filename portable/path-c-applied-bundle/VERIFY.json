@@ -33,7 +33,9 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 180: tip 8ea3b5f\u21928bd1f03 (PR #52); refresh_path_c_bundle rebuilt; bundle verify fixed to use WORKDIR; write_path_c_status.py shipped; lemma_closed=false; release batch180-path-c-bundle",
+  "note": "Batch 199: tip still 8bd1f03 (no tip refresh); pack republish with PATH_C_STATUS.json + watch/readme link-only assets; release defaults batch199-path-c-bundle (prior batch180); lemma_closed=false",
   "force": true,
-  "release": "batch180-path-c-bundle"
+  "release": "batch199-path-c-bundle",
+  "prior_release": "batch180-path-c-bundle",
+  "pack_reason": "status_watch_readme_link_only_newer"
 }

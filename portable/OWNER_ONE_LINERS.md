@@ -4,6 +4,19 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 199 — tip stable `8bd1f03`; auth renew `6A29-F464` (from `50DB-FD4D` &lt;90s); pack+release `batch199-path-c-bundle` (PATH_C_STATUS in tarball); write DENIED**:
+>
+> ```bash
+> # Pack includes PATH_C_STATUS.json + watch/readme link-only assets (no tip refresh)
+> python3 scripts/write_path_c_status.py          # PATH_C_STATUS.json (no secrets)
+> ./scripts/assert_path_c_ready.sh
+> # https://github.com/login/device + live code ONLY in GH_DEVICE_LOGIN.md (link-only README)
+> ./scripts/owner_open_path_c_pr.sh --dry-run     # release_bundle_url → batch199
+> ./scripts/owner_path_c_oneshot.sh --from-bundle # after MAIN_PUSH_TOKEN / device auth
+> ```
+>
+> Path C blocked NO_TOKEN. Scientific effect: **NONE**. `lemma_closed` stays false.
+
 > **Batch 195 — tip stable `8bd1f03`; auth renew `50DB-FD4D` (from `CC72-DB3D` &lt;90s); PATH_C_STATUS watch wire; write DENIED**:
 >
 > ```bash
@@ -12,7 +25,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 > python3 scripts/write_path_c_status.py          # PATH_C_STATUS.json (no secrets)
 > ./scripts/assert_path_c_ready.sh
 > # https://github.com/login/device + live code ONLY in GH_DEVICE_LOGIN.md (link-only README)
-> ./scripts/owner_open_path_c_pr.sh --dry-run     # release_bundle_url → batch180
+> ./scripts/owner_open_path_c_pr.sh --dry-run     # release_bundle_url → batch199
 > ./scripts/owner_path_c_oneshot.sh --from-bundle # after MAIN_PUSH_TOKEN / device auth
 > ```
 >

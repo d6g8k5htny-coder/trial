@@ -4673,7 +4673,10 @@ def test_batch195_path_c_status_watch_wire() -> None:
     assert status.get("device_code") == "50DB-FD4D" or "-" in str(
         status.get("device_code", "")
     )
-    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("release_tag") in (
+        "batch180-path-c-bundle",
+        "batch199-path-c-bundle",
+    ) or str(status.get("release_tag", "")).endswith("-path-c-bundle")
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
@@ -4707,5 +4710,114 @@ def test_batch195_path_c_status_watch_wire() -> None:
 
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 195" in findings
+    assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
+
+
+def test_batch199_path_c_bundle_pack_release() -> None:
+    """Batch 199: tip stable; auth renew 6A29; pack+release batch199; lemma_closed=false."""
+    import json
+    import re
+
+    brief = ROOT / "portable" / "BATCH199_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "199"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "6A29-F464" or "-" in str(data["device_code"])
+    assert data["prior_device_code"] == "50DB-FD4D" or "-" in str(
+        data.get("prior_device_code", "")
+    )
+    assert data["auth_renewed"] is True
+    assert data["device_auth"] == "pending"
+    assert data["write"] == "DENIED"
+    assert data["main_status"] == "ALIGNED"
+    assert data.get("has_main_push_token") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("pack_meaningfully_newer") is True
+    assert data.get("release") == "batch199-path-c-bundle"
+    assert data.get("prior_release") == "batch180-path-c-bundle"
+    assert data.get("path_c_status_in_pack") is True
+    assert data.get("readme_link_only") is True
+    assert data.get("hunt") == "skipped_tip_stable"
+    assert data.get("patch_0017") is False
+    assert data.get("code_changed") is True
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+
+    # Pack includes PATH_C_STATUS.json; release defaults bumped to batch199.
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "portable/PATH_C_STATUS.json" in pack
+
+    oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
+    assert "batch199-path-c-bundle" in oneshot
+    assert 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch199-path-c-bundle}"' in oneshot
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert "batch199-path-c-bundle" in open_pr
+
+    land = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "batch199-path-c-bundle" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "batch199-path-c-bundle" in unblock
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("release") == "batch199-path-c-bundle"
+    assert verify.get("lemma_closed") is False
+    assert "8bd1f03" in str(verify.get("base_tip_sha", ""))
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "6A29-F464" or "-" in str(
+        status.get("device_code", "")
+    )
+    assert status.get("release_tag") == "batch199-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+    assert status.get("path_c_blocked") == "NO_TOKEN"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "6A29-F464" in gh
+    assert "50DB-FD4D" in gh
+    assert "BATCH199_BRIEF" in gh or "Batch 199" in gh
+    assert "batch199-path-c-bundle" in gh
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "portable/GH_DEVICE_LOGIN.md" in readme
+    assert "batch199-path-c-bundle" in readme
+    assert not re.search(r"\b[A-Z0-9]{4}-[A-Z0-9]{4}\b", readme)
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 199" in log
+    assert "6A29-F464" in log
+    assert "50DB-FD4D" in log
+    assert "batch199-path-c-bundle" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 199" in ones
+    assert "batch199-path-c-bundle" in ones
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 199" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 

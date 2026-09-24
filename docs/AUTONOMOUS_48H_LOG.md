@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 199 — 2026-09-24 ~13:14–13:20 UTC (PERMANENT window; tip stable 8bd1f03; auth renew 50DB→6A29; pack+release batch199-path-c-bundle; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`6A29-F464`; release_tag=`batch199-path-c-bundle`). `lemma_closed=false`.
+- Device auth `50DB-FD4D` → pending (`slow_down`, seconds_left≈105→80) then **renewed** `6A29-F464` (seconds_left&lt;90); poller `gh-device-login` restarted; seconds_left≈899. No dylan token. `gh secret list -R trial` → **403** → `has_main_push_token=false`. Daemon `when-writable-land` up.
+- **CI:** Batch 195 watch-wire land `7028104` / prior → **success** on trial `main` — no red fix needed.
+- **Engineering:** pack meaningfully newer than `batch180` (PATH_C_STATUS.json now in tarball; watch/readme link-only assets already present) → published release **`batch199-path-c-bundle`**; bumped `PATH_C_RELEASE_TAG` defaults in oneshot/open-pr/land/unblock + README. Intent: `test_batch199_path_c_bundle_pack_release`. Prefer small real code over docs-only.
+- Research untouched (`lemma_closed=false`). Tiny JSON: `portable/BATCH199_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**. Canonical issue [#47](https://github.com/d6g8k5htny-coder/trial/issues/47) (prior [#46](https://github.com/d6g8k5htny-coder/trial/issues/46)).
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code in `portable/GH_DEVICE_LOGIN.md` (currently `6A29-F464`) **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch199-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #47. Repo face: `README.md` Path C section (link-only).
+
 ### Batch 195 — 2026-09-24 ~13:00–13:05 UTC (PERMANENT window; tip stable 8bd1f03; auth renew CC72→50DB; PATH_C_STATUS watch wire; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

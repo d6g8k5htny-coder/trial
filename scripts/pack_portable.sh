@@ -84,6 +84,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \
   portable/ALIGNED_DRIFT_SNAPSHOT.json \
+  portable/PATH_C_STATUS.json \
   portable/GH_DEVICE_LOGIN.md \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
