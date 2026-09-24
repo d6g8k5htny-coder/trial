@@ -1,0 +1,18 @@
+{
+  "batch": "162",
+  "generated_at_utc": "2026-09-24T09:26:30Z",
+  "tip": "8ea3b5f",
+  "tip_full": "8ea3b5fb9368a85e7f971d606b8f75c96c35c05a",
+  "prior_base_tip": "10c077e",
+  "tip_refresh_via": "PR #53",
+  "apply_all": "0001-0004+0008-0016 OK",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "focused_pytest": {"passed": 90, "resource_warnings": 0},
+  "claims_recovery": {"passed": 83, "resource_warnings": 0},
+  "git_am_sanity": true,
+  "patch_0017": false,
+  "hunt_result": "clean",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "note": "tip refresh hunt @ 8ea3b5f after apply_all; focused 90/0 RW; claims+recovery 83/0; no 0017"
+}

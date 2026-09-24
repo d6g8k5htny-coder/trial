@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 162 — 2026-09-24 ~09:22 UTC (PERMANENT window; tip refresh 8ea3b5f + path-c-applied-bundle; Path C unblock issue #26; fix owner_set_main_push_token --body -; auth renew C8FC-A08F; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`10c077e` → `8ea3b5f`** ([PR #53](https://github.com/d6g8k5htny-coder/main/pull/53)); SHA confirmed via `gh api`. **BASE_TIP** + **path-c-applied-bundle** rebuilt (APPLY.md / VERIFY.json / format-patch). `apply_all` 0001–0004+0008–0016 OK; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90**/0 ResourceWarning; claims+recovery **83**/0; `git am` sanity OK.
+- Device auth `E818-2EE5` → **expired** mid-batch → **renewed** `C8FC-A08F`; poller `gh-device-login` restarted; seconds_left≈875. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- **GitHub Issue:** created [#26 Path C unblock — land portable engineering fixes on main](https://github.com/d6g8k5htny-coder/trial/issues/26) (no prior similar issue; App cannot edit/comment/close — create-only). Body: device code `E818-2EE5`, one-liners (`owner_land_path_c --from-bundle`, `owner_open_path_c_pr`, `owner_set_main_push_token`), Cursor App add main + relaunch, release `batch162-path-c-bundle` (also notes batch155), `lemma_closed` stays false.
+- **Bug fix:** `owner_set_main_push_token.sh` used `gh secret set --body -` which stores the **literal hyphen**, not stdin. Fixed to pipe stdin with `--body` omitted (`gh` docs: reads stdin if not specified). `--dry-run` OK. Intent: `test_batch162_path_c_issue_and_secret_stdin`.
+- Release: **`batch162-path-c-bundle`**. Tiny JSON: `portable/BATCH162_BRIEF.json` + `BATCH162_HUNT.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `C8FC-A08F` **or** `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / MAIN_PUSH_TOKEN file drop **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight. See issue #26.
+
 ### Batch 160 — 2026-09-24 ~09:17 UTC (PERMANENT window; ship owner_set_main_push_token.sh; tip stable @ 10c077e; auth renew E818-2EE5; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

@@ -182,9 +182,10 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    # Batch 142+: tip advanced to 10c077e (PR #54); keep older SHAs accepted for history.
+    # Batch 162+: tip advanced to 8ea3b5f (PR #53); keep older SHAs accepted for history.
     assert (
-        "10c077e" in base_tip
+        "8ea3b5f" in base_tip
+        or "10c077e" in base_tip
         or "c82c9357" in base_tip
         or "ac33581" in base_tip
     )
@@ -2045,7 +2046,8 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert (
-        data["verified_on_tip"].startswith("10c077e")
+        data["verified_on_tip"].startswith("8ea3b5f")
+        or data["verified_on_tip"].startswith("10c077e")
         or data["verified_on_tip"].startswith("c82c9357")
         or data["verified_on_tip"].startswith("ac33581")
     )
@@ -2572,13 +2574,15 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
     assert "OWNER_OPEN_PR" in ww_txt
 
     # Trailing comment must not become the SHA (old awk $NF bug → "tip").
+    live_base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8").strip().split()[-1]
+    assert live_base and all(c in "0123456789abcdef" for c in live_base.lower())
     with tempfile.TemporaryDirectory(prefix="b153-basetip-") as td:
         td_path = Path(td)
         (td_path / "portable" / "patches").mkdir(parents=True)
         (td_path / "portable" / "path-c-applied-bundle").mkdir(parents=True)
         tip_line = (
             "chatgpt/drive-github-hardening-20260919 "
-            "10c077e08261fa3d07317e290826604a749d4e49  # tip\n"
+            f"{live_base}  # tip\n"
         )
         (td_path / "portable" / "patches" / "BASE_TIP.txt").write_text(tip_line, encoding="utf-8")
         # Minimal bundle + VERIFY so dry-run can proceed past missing-file gates.
@@ -2606,7 +2610,7 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
         )
         out = p.stdout + p.stderr
         assert p.returncode == 0, out
-        assert "base_tip_sha=10c077e08261fa3d07317e290826604a749d4e49" in out
+        assert f"base_tip_sha={live_base}" in out
         assert "base_tip_sha=tip" not in out
         assert "tip_matches_base=true" in out or "dry-run OK" in out
 
@@ -2620,7 +2624,7 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
         timeout=120,
     )
     assert dry_open.returncode == 0, dry_open.stderr + dry_open.stdout
-    assert "10c077e08261fa3d07317e290826604a749d4e49" in (dry_open.stdout + dry_open.stderr)
+    assert live_base in (dry_open.stdout + dry_open.stderr)
 
     dry_land = subprocess.run(
         ["bash", str(land_c), "--dry-run"],
@@ -2944,3 +2948,84 @@ def test_batch160_owner_set_main_push_token_script() -> None:
     assert "Batch 160" in log
     assert "owner_set_main_push_token" in log
     assert "E818-2EE5" in log
+
+
+def test_batch162_path_c_issue_and_secret_stdin() -> None:
+    """Batch 162: Path C unblock issue #26; secret set via stdin (not --body -); lemma_closed=false."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "owner_set_main_push_token.sh"
+    text = script.read_text(encoding="utf-8")
+    # Must NOT use --body - on the live set path (stores literal hyphen).
+    assert "gh secret set" in text
+    assert "| gh secret set" in text or "printf" in text
+    # Active set command must omit --body (stdin). Allow mention only as warning.
+    live_lines = [
+        ln
+        for ln in text.splitlines()
+        if "gh secret set" in ln and "echo" not in ln and not ln.strip().startswith("#")
+    ]
+    for ln in live_lines:
+        assert "--body -" not in ln, f"live secret set must not use --body -: {ln}"
+    assert "literal" in text.lower() or "hyphen" in text.lower() or "stdin" in text.lower()
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_p = subprocess.run(
+        ["bash", str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "dry-run" in dry_out.lower()
+    assert "gh secret set" in dry_out
+    assert "--body -" in dry_out  # warning note only
+    assert "do NOT pass --body -" in dry_out or "literal hyphen" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+    assert "lemma_closed=false" in dry_out or "lemma_closed stays false" in dry_out
+
+    brief = ROOT / "portable" / "BATCH162_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "162"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["device_code"] == "C8FC-A08F"
+    assert data["auth_renewed"] is True
+    assert data["prior_device_code"] == "E818-2EE5"
+    assert data["issue_number"] == 27
+    assert "issues/27" in data["issue_url"]
+    assert data.get("secret_script_bug_fixed")
+    assert data.get("tip_refresh") is True
+    assert data.get("bundle_refresh") is True
+    assert "8ea3b5f" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["lemma_closed"] is False
+    assert verify["batch"] == "162"
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "C8FC-A08F" in gh
+    assert "E818-2EE5" in gh
+    assert "issues/27" in gh or "BATCH162_BRIEF" in gh
+    assert "owner_set_main_push_token.sh" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 162" in log
+    assert "issues/27" in log or "#27" in log
+    assert "C8FC-A08F" in log
+    assert "8ea3b5f" in log
+    assert "lemma_closed" in log.lower()

@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~07:37 UTC (batch 142: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP refreshed `c82c9357`→`10c077e` via PR #54; apply_all + focused 90/0 RW; bundle rebuild).
+Checked 2026-09-24 ~09:26 UTC (batch 162: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP refreshed `10c077e`→`8ea3b5f` via PR #53; apply_all + focused 90/0 RW; bundle rebuild).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -16,7 +16,8 @@ If a forced rebase hits first-stop conflicts: `./scripts/path_c_rebase_helper.sh
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#54) | `10c077e` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 142** (apply_all OK; focused 90/0 RW; path-c-applied-bundle rebuilt) |
+| hardening (post-#53) | `8ea3b5f` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 162** (apply_all OK; focused 90/0 RW; path-c-applied-bundle rebuilt) |
+| hardening (post-#54) | `10c077e` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 142–161) |
 | hardening (post-#50) | `c82c9357` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 125–141) |
 | hardening (post-#48) | `ac33581` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 74–124) |
 | hardening (post-#44) | `5f352a2` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 70–73) |

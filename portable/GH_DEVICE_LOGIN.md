@@ -4,25 +4,26 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T09:17:10Z |
-| Checked (UTC) | 2026-09-24T09:17:10Z |
+| Started (UTC) | 2026-09-24T09:33:53Z |
+| Checked (UTC) | 2026-09-24T09:33:53Z |
 | Verification URL | https://github.com/login/device |
-| User code | `E818-2EE5` |
-| Prior code | `2513-3A16` (near-expiry &lt;90s / renewed) |
-| Prior prior | `E136-5AE7` (near-expiry / renewed) |
-| Older priors | `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (renewed) |
-| Expires | see `seconds_left` in BATCH160_BRIEF |
-| Hardening tip | `10c077e` (PR #54); path-c-applied-bundle current; release `batch155-path-c-bundle` (refresh of batch142 pack) |
+| User code | `C8FC-A08F` |
+| Prior code | `E818-2EE5` (expired / renewed) |
+| Prior prior | `2513-3A16` (near-expiry / renewed) |
+| Older priors | `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
+| Status | pending (renewed after expiry) |
+| Expires | see `seconds_left` in BATCH162_BRIEF |
+| Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle current; release `batch162-path-c-bundle` (prior `batch155-path-c-bundle` @ `10c077e`) |
 | Owner PR script | `scripts/owner_open_path_c_pr.sh` (bundle → `cursor/path-c-portable-fixes`) |
-| Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 160: `gh secret set` + optional `--dispatch`) |
+| Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 162: stdin `gh secret set` — **not** `--body -`; optional `--dispatch`) |
+| Unblock issue | [#27 Path C unblock](https://github.com/d6g8k5htny-coder/trial/issues/27) (prior #26 stale code) |
 | Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
 | Path C blocked codes | `when_writable_land` logs `PATH_C_BLOCKED=NO_TOKEN\|TIP_DRIFT\|APPLY_FAIL` (Batch 157) |
 
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **E818-2EE5**
+2. Enter code **C8FC-A08F**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically.

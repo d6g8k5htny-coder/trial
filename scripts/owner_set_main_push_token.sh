@@ -182,7 +182,10 @@ else
 fi
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
-  echo "dry-run: would run: gh secret set ${SECRET_NAME} --repo ${TRIAL_REPO} --body <redacted>"
+  # IMPORTANT: omit --body so gh reads stdin. `--body -` would set the literal
+  # string "-" (gh secret set: "reads from standard input if not specified").
+  echo "dry-run: would run: printf '%s' <redacted> | gh secret set ${SECRET_NAME} --repo ${TRIAL_REPO}"
+  echo "dry-run: note: do NOT pass --body - (that stores literal hyphen, not stdin)"
   if [[ "$DO_DISPATCH" -eq 1 ]]; then
     if [[ "$DISPATCH_DIRECT_PUSH" -eq 1 ]]; then
       echo "dry-run: would run: $ROOT/scripts/dispatch_land_path_c.sh --apply --direct-push"
@@ -199,18 +202,13 @@ fi
 [[ "$token_present" -eq 1 ]] || die "refusing to set empty secret"
 
 # Pipe token to gh secret set via stdin — never argv, never log.
-# `gh secret set NAME --repo R --body -` reads body from stdin when body is `-`
-# (gh >=2); fall back to env-body via process substitution if needed.
+# gh secret set: "--body reads from standard input if not specified".
+# Do NOT pass `--body -` — that stores the literal string "-" as the secret.
 echo "setting secret ${SECRET_NAME} on ${TRIAL_REPO} (body redacted)…"
-if printf '%s' "$TOKEN" | gh secret set "$SECRET_NAME" --repo "$TRIAL_REPO" --body -; then
+if printf '%s' "$TOKEN" | gh secret set "$SECRET_NAME" --repo "$TRIAL_REPO"; then
   echo "secret_set=ok"
 else
-  # Older gh: --body - may not work; try without printing via env file fd
-  if printf '%s' "$TOKEN" | gh secret set "$SECRET_NAME" --repo "$TRIAL_REPO"; then
-    echo "secret_set=ok"
-  else
-    die "gh secret set failed (need admin/Secrets:Write on ${TRIAL_REPO})"
-  fi
+  die "gh secret set failed (need admin/Secrets:Write on ${TRIAL_REPO})"
 fi
 
 # Drop token from shell memory as best-effort

@@ -1,12 +1,12 @@
 {
-  "batch": "142",
-  "generated_at_utc": "2026-09-24T07:37:10Z",
-  "base_tip_sha": "10c077e08261fa3d07317e290826604a749d4e49",
-  "applied_commit_sha": "83df4fde27fe6dfe50acb667ad4d0d9491d29e3e",
+  "batch": "162",
+  "generated_at_utc": "2026-09-24T09:26:30Z",
+  "base_tip_sha": "8ea3b5fb9368a85e7f971d606b8f75c96c35c05a",
+  "applied_commit_sha": "4a0baab099087f6012dc2e0051f9e25ba9b16fd2",
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-  "prior_base_tip_sha": "c82c9357db381e8fd60d939a7243dab4cc863118",
+  "prior_base_tip_sha": "10c077e08261fa3d07317e290826604a749d4e49",
   "tip_refresh": true,
-  "tip_refresh_via": "PR #54",
+  "tip_refresh_via": "PR #53",
   "problems": 0,
   "disposition": "OPEN_HOLD",
   "lemma_closed": false,
@@ -26,5 +26,5 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "apply_all 0001-0004+0008-0016 committed on disposable worktree @ BASE_TIP 10c077e (PR #54); owner git am without agent write token"
+  "note": "apply_all 0001-0004+0008-0016 committed on disposable worktree @ BASE_TIP 8ea3b5f (PR #53); owner git am without agent write token"
 }
