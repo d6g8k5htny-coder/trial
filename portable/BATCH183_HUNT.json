@@ -1,0 +1,22 @@
+{
+  "batch": "183",
+  "generated_at_utc": "2026-09-24T11:48:00Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "tip": "8bd1f03",
+  "prior_tip": "8bd1f03",
+  "tip_refresh": false,
+  "apply_stack": "0001-0004+0008-0016",
+  "hunt_result": "clean",
+  "patch_0017": false,
+  "bare_except_pass_actionable": 0,
+  "bare_open_actionable": 0,
+  "focused_passed": 90,
+  "focused_resource_warnings": 0,
+  "claims_recovery_passed": 83,
+  "claims_recovery_resource_warnings": 0,
+  "combined_passed": 173,
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "note": "Non-ResourceWarning hunt on tip 8bd1f03 WITH patches: no actionable bare except:pass / missing-close outside already-patched modules; pytest focused+claims+recovery clean under -W error::ResourceWarning; no 0017"
+}

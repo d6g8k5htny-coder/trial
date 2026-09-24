@@ -4,6 +4,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 183 — tip stable `8bd1f03`; auth renew `DF9C-5DF9` (from `5216-7C1B` <90s); CI tip-drift supersession; hunt clean no 0017**:
+>
+> ```bash
+> python3 scripts/write_path_c_status.py          # PATH_C_STATUS.json (no secrets)
+> ./scripts/assert_path_c_ready.sh
+> ./scripts/owner_open_path_c_pr.sh --dry-run     # release_bundle_url → batch180
+> ./scripts/owner_path_c_oneshot.sh --from-bundle # after MAIN_PUSH_TOKEN / device auth
+> ```
+>
+> Path C blocked NO_TOKEN. Scientific effect: **NONE**.
+
 > **Batch 180 — tip `8ea3b5f`→`8bd1f03` (PR #52); release `batch180-path-c-bundle`; `write_path_c_status.py` → `portable/PATH_C_STATUS.json`**:
 >
 > ```bash

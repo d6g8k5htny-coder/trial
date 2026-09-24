@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 183 — 2026-09-24 ~11:41–11:50 UTC (PERMANENT window; tip stable 8bd1f03; auth renew 5216→DF9C; CI tip-drift supersession after batch180; hunt clean no 0017; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`DF9C-5DF9`). `lemma_closed=false`.
+- Device auth `5216-7C1B` **<90s** still pending → **renewed** `DF9C-5DF9`; poller `gh-device-login` restarted; seconds_left≈899. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **CI:** latest Batch 180 push on trial `main` → **failure** (intent tip/release drift vs living BASE_TIP `8bd1f03` / release `batch180-path-c-bundle`). Fixed supersession ORs in `tests/test_intent.py` + GH history (`BATCH162_BRIEF` / `batch162-path-c-bundle`); intent: `test_batch183_ci_tip_drift_auth_renew`.
+- **Hunt:** tip `8bd1f03` WITH patches 0001–0004+0008–0016 — focused 90 + claims/recovery 83 under `-W error::ResourceWarning`; no actionable bare `except: pass` / unclosed `open`; **no 0017**.
+- Canonical issue [#39](https://github.com/d6g8k5htny-coder/trial/issues/39). Tiny JSON: `portable/BATCH183_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `DF9C-5DF9` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #39.
+
 ### Batch 180 — 2026-09-24 ~11:28–11:37 UTC (PERMANENT window; tip 8ea3b5f→8bd1f03 PR #52; auth renew AD78→5216; write_path_c_status + PATH_C_STATUS.json; refresh bundle-verify fix; release batch180-path-c-bundle; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

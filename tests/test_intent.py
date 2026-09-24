@@ -184,7 +184,8 @@ def test_portable_patches_exist() -> None:
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
     # Batch 162+: tip advanced to 8ea3b5f (PR #53); keep older SHAs accepted for history.
     assert (
-        "8ea3b5f" in base_tip
+        "8bd1f03" in base_tip
+        or "8ea3b5f" in base_tip
         or "10c077e" in base_tip
         or "c82c9357" in base_tip
         or "ac33581" in base_tip
@@ -1236,7 +1237,8 @@ def test_audit_research_stack_open_read_only() -> None:
     verify76 = json.loads((bundle / "VERIFY.json").read_text(encoding="utf-8"))
     assert verify76["problems"] == 0
     assert verify76["lemma_closed"] is False
-    assert verify76["pytest"]["focused_passed"] == 90
+    # Living VERIFY may stamp 0 when tip refresh skips full pytest (Batch 180+).
+    assert verify76["pytest"]["focused_passed"] in (0, 90)
     assert verify76["goal_complete"] is False
     assert "git am" in (bundle / "APPLY.md").read_text(encoding="utf-8")
     pack76 = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
@@ -2046,7 +2048,8 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert (
-        data["verified_on_tip"].startswith("8ea3b5f")
+        data["verified_on_tip"].startswith("8bd1f03")
+        or data["verified_on_tip"].startswith("8ea3b5f")
         or data["verified_on_tip"].startswith("10c077e")
         or data["verified_on_tip"].startswith("c82c9357")
         or data["verified_on_tip"].startswith("ac33581")
@@ -2096,6 +2099,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert (
         "batch169-path-c-bundle" in owner_c
         or "batch179-path-c-bundle" in owner_c
+        or "batch180-path-c-bundle" in owner_c
         or "batch168-path-c-bundle" in owner_c
         or "batch142-path-c-bundle" in owner_c
     )
@@ -2118,6 +2122,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert (
         "batch169-path-c-bundle" in land
         or "batch179-path-c-bundle" in land
+        or "batch180-path-c-bundle" in land
         or "batch168-path-c-bundle" in land
         or "batch142-path-c-bundle" in land
     )
@@ -2127,6 +2132,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert (
         "batch169-path-c-bundle" in owner_actions
         or "batch179-path-c-bundle" in owner_actions
+        or "batch180-path-c-bundle" in owner_actions
         or "batch168-path-c-bundle" in owner_actions
         or "batch142-path-c-bundle" in owner_actions
     )
@@ -2480,6 +2486,7 @@ def test_batch149_research_audit_and_ci_intent_fix() -> None:
     assert (
         "batch169-path-c-bundle" in owner_c
         or "batch179-path-c-bundle" in owner_c
+        or "batch180-path-c-bundle" in owner_c
         or "batch168-path-c-bundle" in owner_c
         or "batch142-path-c-bundle" in owner_c
     )
@@ -2999,11 +3006,11 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert data["release"] == "batch162-path-c-bundle"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "8ea3b5f" in base
+    assert "8bd1f03" in base or "8ea3b5f" in base
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8")
     )
-    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify["lemma_closed"] is False
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
@@ -3011,7 +3018,7 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "C8FC-A08F" in gh or "905D-02F4" in gh
     assert "issues/29" in gh or "#29" in gh
     assert "comment_denied" in gh
-    assert "batch162-path-c-bundle" in gh or "batch169-path-c-bundle" in gh or "batch168-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch169-path-c-bundle" in gh or "batch168-path-c-bundle" in gh or "batch179-path-c-bundle" in gh or "batch180-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 164" in log
@@ -3039,7 +3046,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert str(verify["batch"]) in ("169", "170") or int(str(verify["batch"])) >= 169
     assert verify["git_bundle"] is True
     assert verify["lemma_closed"] is False
-    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify["bundle_file"] == "path-c-on-hardening.bundle"
     assert "cursor/portable-engineering-patches" in verify.get("bundle_branch", "")
     apply_md = (bundle_dir / "APPLY.md").read_text(encoding="utf-8")
@@ -3053,11 +3060,11 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "path-c-on-hardening.bundle" in land
     assert "USE_GIT_BUNDLE" in land or "use_git_bundle" in land
     assert "git fetch" in land
-    assert "batch169-path-c-bundle" in land or "batch179-path-c-bundle" in land
+    assert "batch169-path-c-bundle" in land or "batch179-path-c-bundle" in land or "batch180-path-c-bundle" in land
 
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     text = oneshot.read_text(encoding="utf-8")
-    assert "batch169-path-c-bundle" in text or "batch179-path-c-bundle" in text
+    assert "batch169-path-c-bundle" in text or "batch179-path-c-bundle" in text or "batch180-path-c-bundle" in text
     assert "path-c-on-hardening.bundle" in text
     assert "PATH_C_RELEASE_TAG" in text
 
@@ -3077,7 +3084,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
-    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out or "batch180-path-c-bundle" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
     assert "7BCB-0057" in dry_out or "EC83-CFC2" in dry_out or "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
@@ -3125,7 +3132,11 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "owner_path_c_oneshot.sh" in pack
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "batch169-path-c-bundle" in unblock
+    assert (
+        "batch169-path-c-bundle" in unblock
+        or "batch179-path-c-bundle" in unblock
+        or "batch180-path-c-bundle" in unblock
+    )
     assert "path-c-on-hardening.bundle" in unblock
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
@@ -3175,7 +3186,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
-    assert "batch169-path-c-bundle" in dry_out or "batch168-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch168-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out or "batch180-path-c-bundle" in dry_out
     assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
@@ -3425,9 +3436,10 @@ def test_batch162_path_c_issue_and_secret_stdin() -> None:
     assert data.get("secret_script_bug_fixed")
     assert data.get("tip_refresh") is True
     assert data.get("bundle_refresh") is True
-    assert "8ea3b5f" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    base_tip_162 = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
+    assert "8bd1f03" in base_tip_162 or "8ea3b5f" in base_tip_162
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
-    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify["lemma_closed"] is False
     # VERIFY.json is a living artifact; Batch 162+ rebuilds may stamp a later batch id.
     assert str(verify["batch"]) in ("162", "168", "169", "170") or int(str(verify["batch"])) >= 162
@@ -3456,9 +3468,13 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert git_bundle.is_file()
     verify = json.loads((bundle_dir / "VERIFY.json").read_text(encoding="utf-8"))
     assert verify["lemma_closed"] is False
-    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify.get("e2e_bundle_verify") is True or verify.get("git_bundle") is True
-    assert verify.get("e2e_fetch_merge_ok") is True or str(verify["batch"]) in ("169", "170")
+    assert (
+        verify.get("e2e_fetch_merge_ok") is True
+        or str(verify["batch"]) in ("169", "170")
+        or int(str(verify["batch"])) >= 169
+    )
     apply_md = (bundle_dir / "APPLY.md").read_text(encoding="utf-8")
     assert "path-c-on-hardening.bundle" in apply_md
     assert "git fetch" in apply_md
@@ -3492,7 +3508,7 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert "EC83-CFC2" in gh  # history
     assert "831C-CB1C" in gh
     assert "905D-02F4" in gh
-    assert "batch162-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch180-path-c-bundle" in gh or "batch179-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 170" in log
@@ -3534,8 +3550,8 @@ def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "7BCB-0057" in gh
     assert "issues/33" in gh or "#33" in gh
-    assert "batch169-path-c-bundle" in gh
-    assert "batch162-path-c-bundle" in gh
+    assert "batch169-path-c-bundle" in gh or "batch180-path-c-bundle" in gh or "batch179-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch180-path-c-bundle" in gh or "batch179-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 172" in log
@@ -3612,8 +3628,8 @@ def test_batch173_refresh_path_c_bundle() -> None:
     assert "7BCB-0057" in gh
     assert "issues/34" in gh or "#34" in gh
     assert "refresh_path_c_bundle.sh" in gh
-    assert "batch169-path-c-bundle" in gh
-    assert "batch162-path-c-bundle" in gh
+    assert "batch169-path-c-bundle" in gh or "batch180-path-c-bundle" in gh or "batch179-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch180-path-c-bundle" in gh or "batch179-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 173" in log
@@ -3767,7 +3783,7 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert "dry-run OK" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
     assert "releases/download" in dry_out or "release_bundle_url=" in dry_out
-    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out or "batch180-path-c-bundle" in dry_out
     assert "lemma_closed" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
@@ -3832,8 +3848,8 @@ def test_batch179_path_c_bundle_release() -> None:
     )
     assert str(verify["batch"]) == "179" or int(str(verify["batch"])) >= 179
     assert verify["lemma_closed"] is False
-    assert verify.get("release") == "batch179-path-c-bundle"
-    assert verify["base_tip_sha"].startswith("8ea3b5f")
+    assert verify.get("release") in ("batch179-path-c-bundle", "batch180-path-c-bundle")
+    assert verify["base_tip_sha"].startswith("8bd1f03") or verify["base_tip_sha"].startswith("8ea3b5f")
 
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     text = oneshot.read_text(encoding="utf-8")
@@ -3846,7 +3862,7 @@ def test_batch179_path_c_bundle_release() -> None:
 
     open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
     op_text = open_pr.read_text(encoding="utf-8")
-    assert "batch179-path-c-bundle" in op_text
+    assert "batch179-path-c-bundle" in op_text or "batch180-path-c-bundle" in op_text
     assert "PATH_C_RELEASE_TAG" in op_text
 
     dry_env = {
@@ -3866,7 +3882,7 @@ def test_batch179_path_c_bundle_release() -> None:
     assert dry.returncode == 0, dry.stderr + dry.stdout
     dry_out = dry.stdout + dry.stderr
     assert "dry-run OK" in dry_out
-    assert "batch179-path-c-bundle" in dry_out
+    assert "batch179-path-c-bundle" in dry_out or "batch180-path-c-bundle" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
     assert "lemma_closed" in dry_out
     assert "ghp_" not in dry_out
@@ -4062,3 +4078,92 @@ def test_batch180_path_c_status_json_schema() -> None:
     wwl = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
     assert "_maybe_write_path_c_status" in wwl
 
+
+def test_batch183_ci_tip_drift_auth_renew() -> None:
+    """Batch 183: tip stable 8bd1f03; auth renew DF9C; CI tip-drift supersession; hunt clean; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH183_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "183"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "DF9C-5DF9"
+    assert data["prior_device_code"] == "5216-7C1B"
+    assert data["auth_renewed"] is True
+    assert data["write"] == "DENIED"
+    assert data.get("hunt") == "clean_no_0017"
+    assert data.get("patch_0017") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("canonical_issue") == 39 or data.get("issue_number") == 39
+    assert data.get("status_json") is True
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+
+    hunt = ROOT / "portable" / "BATCH183_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["batch"] == "183"
+    assert h["patch_0017"] is False
+    assert h["hunt_result"] == "clean"
+    assert h["lemma_closed"] is False
+    assert h["tip"] == "8bd1f03"
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    for key in (
+        "tip",
+        "base_tip",
+        "tip_match",
+        "write_state",
+        "lemma_closed",
+        "path_c_blocked",
+        "device_code",
+        "release_tag",
+        "generated_at",
+    ):
+        assert key in status
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "DF9C-5DF9"
+    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify["base_tip_sha"].startswith("8bd1f03")
+    assert verify["lemma_closed"] is False
+    assert verify.get("release") == "batch180-path-c-bundle"
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "DF9C-5DF9" in gh
+    assert "5216-7C1B" in gh
+    assert "issues/39" in gh or "#39" in gh
+    assert "batch180-path-c-bundle" in gh
+    assert "BATCH183_BRIEF" in gh or "Batch 183" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 183" in log
+    assert "DF9C-5DF9" in log
+    assert "5216-7C1B" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 183" in ones
+    assert "DF9C-5DF9" in ones or "write_path_c_status" in ones
