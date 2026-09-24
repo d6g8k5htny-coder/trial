@@ -452,6 +452,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     data = __import__("json").loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
     assert data["state"] in {"WRITABLE", "DENIED", "TRANSPORT_ERROR"}
+    assert "install_has_main" in data
+    assert "installation_repositories" in data
     if result.returncode == 1:
         assert data["state"] == "DENIED"
     vectors = ROOT / "scripts" / "probe_main_write_vectors.py"
@@ -1361,7 +1363,7 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
 
 
 def test_when_writable_land_once_dry_run() -> None:
-    """Batch 82: background lander --once --dry-run never lands; decides + status JSON."""
+    """Batch 82/92: background lander --once --dry-run; install_has_main status."""
     import json
     import tempfile
 
@@ -1376,6 +1378,17 @@ def test_when_writable_land_once_dry_run() -> None:
     assert "when_writable_land.status.json" in src
     assert "300" in src  # default poll interval
     assert "scientific_effect" in src.lower() or "Scientific effect" in src
+    assert "install_has_main" in src
+    assert "/installation/repositories" in src
+    assert "--mock-install-has-main" in src
+    probe_src = (ROOT / "scripts" / "probe_main_write.py").read_text(encoding="utf-8")
+    assert "check_installation_repositories" in probe_src
+    assert "install_has_main" in probe_src
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Repository access" in owner
+    assert "d6g8k5htny-coder/main" in owner
+    assert "CURSOR_BOT_ACCESS_91.json" in owner
+    assert "Read and write" in owner
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "when_writable_land.py" in pack
@@ -1386,7 +1399,7 @@ def test_when_writable_land_once_dry_run() -> None:
         status_path = td_path / "when_writable_land.status.json"
         stop_path = td_path / "when_writable_land.stop"
 
-        # DENIED → continue (no land)
+        # DENIED → continue (no land); install_has_main=false recorded
         denied = subprocess.run(
             [
                 sys.executable,
@@ -1395,6 +1408,8 @@ def test_when_writable_land_once_dry_run() -> None:
                 "--dry-run",
                 "--mock-probe",
                 "DENIED",
+                "--mock-install-has-main",
+                "false",
                 "--log",
                 str(log_path),
                 "--status",
@@ -1416,12 +1431,49 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["flipped_anything"] is False
         assert status["dry_run"] is True
         assert status["once"] is True
+        assert status["install_has_main"] is False
         assert status["last"]["action"] == "continue_denied"
         assert status["last"]["land"] is None
         assert log_path.is_file()
         assert "continue_denied" in log_path.read_text(encoding="utf-8")
 
-        # ALIGNED + WRITABLE dry-run → would Path C, but does not attempt land
+        # Flip false→true + DENIED then WRITABLE mock: Path C attempt on flip
+        # (second run with install true after status already false)
+        flip = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "WRITABLE",
+                "--mock-align",
+                "ALIGNED",
+                "--mock-install-has-main",
+                "true",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert flip.returncode == 0, flip.stderr + flip.stdout
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        assert status["install_has_main"] is True
+        assert status["install_has_main_flipped_true"] is True
+        assert status["last"]["action"] == "path_c_land"
+        assert status["last"]["reason"] == "install_has_main_flipped_true"
+        assert status["last"]["land"]["attempted"] is False
+        assert status["last"]["land"].get("triggered_by") == "install_has_main_flipped_true"
+
+        # ALIGNED + WRITABLE dry-run (install already true; no flip) → Path C
         aligned = subprocess.run(
             [
                 sys.executable,
@@ -1432,6 +1484,8 @@ def test_when_writable_land_once_dry_run() -> None:
                 "WRITABLE",
                 "--mock-align",
                 "ALIGNED",
+                "--mock-install-has-main",
+                "true",
                 "--log",
                 str(log_path),
                 "--status",
@@ -1448,6 +1502,7 @@ def test_when_writable_land_once_dry_run() -> None:
         assert aligned.returncode == 0, aligned.stderr + aligned.stdout
         status = json.loads(status_path.read_text(encoding="utf-8"))
         assert status["last"]["action"] == "path_c_land"
+        assert status["install_has_main_flipped_true"] is False
         land = status["last"]["land"]
         assert land is not None
         assert land["attempted"] is False
@@ -1465,6 +1520,8 @@ def test_when_writable_land_once_dry_run() -> None:
                 "WRITABLE",
                 "--mock-align",
                 "MISALIGNED",
+                "--mock-install-has-main",
+                "true",
                 "--log",
                 str(log_path),
                 "--status",
@@ -1496,6 +1553,8 @@ def test_when_writable_land_once_dry_run() -> None:
                 "WRITABLE",
                 "--mock-align",
                 "ALIGNED",
+                "--mock-install-has-main",
+                "false",
                 "--log",
                 str(log_path),
                 "--status",

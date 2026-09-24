@@ -4,6 +4,9 @@
 Creates (or attempts to create) a unique throwaway ref via the Git Data API,
 then deletes it on success. Never touches default ``main`` contents.
 
+Also queries ``GET /installation/repositories`` and reports ``install_has_main``
+(true when ``d6g8k5htny-coder/main`` is in the App installation selection).
+
 Exit codes (for CI / owner automation):
   0 — writable (ref create + delete succeeded)
   1 — denied (HTTP 401/403/404 resource-not-accessible)
@@ -22,7 +25,9 @@ import urllib.error
 import urllib.request
 
 REPO = "d6g8k5htny-coder/main"
+MAIN_FULL = "d6g8k5htny-coder/main"
 API = f"https://api.github.com/repos/{REPO}"
+INSTALL_REPOS_URL = "https://api.github.com/installation/repositories"
 
 
 def _token() -> str | None:
@@ -107,12 +112,52 @@ def _request(method: str, url: str, body: dict | None = None) -> tuple[int, dict
         raise RuntimeError(f"transport: {exc}") from exc
 
 
+def check_installation_repositories() -> dict:
+    """Return install_has_main + names from GET /installation/repositories.
+
+    Fail-soft: transport errors yield install_has_main=None with detail.
+    """
+    out: dict = {
+        "endpoint": "/installation/repositories",
+        "install_has_main": None,
+        "http_status": None,
+        "total_count": None,
+        "repository_selection": None,
+        "names": [],
+    }
+    try:
+        status, body = _request("GET", INSTALL_REPOS_URL)
+    except RuntimeError as exc:
+        out["error"] = str(exc)
+        return out
+    out["http_status"] = status
+    if status != 200 or not isinstance(body, dict):
+        out["body"] = body if isinstance(body, dict) else {"raw": str(body)[:500]}
+        return out
+    repos = body.get("repositories") or []
+    names: list[str] = []
+    for repo in repos:
+        if isinstance(repo, dict):
+            full = repo.get("full_name") or ""
+            if full:
+                names.append(str(full))
+    out["total_count"] = body.get("total_count")
+    out["repository_selection"] = body.get("repository_selection")
+    out["names"] = names
+    out["install_has_main"] = MAIN_FULL in names
+    return out
+
+
 def main() -> int:
     report: dict = {
         "repo": REPO,
         "scientific_effect": "NONE",
         "probe": "git_refs_create_delete",
     }
+    # Always surface installation selection (even when write is DENIED).
+    install = check_installation_repositories()
+    report["installation_repositories"] = install
+    report["install_has_main"] = install.get("install_has_main")
     try:
         status, tip = _request("GET", f"{API}/git/ref/heads/main")
         if status != 200 or not isinstance(tip, dict):

@@ -6,6 +6,20 @@ This agent **cannot push** to `main` (cursor[bot] 403). Only you (or an environm
 
 Scientific effect of following this plan carefully: **NONE** on claim status, if you only land already-reviewed packaging. Do not use a default-branch update as premise discharge.
 
+## Exact fix — add `main` to Cursor App repository access (Batch 92)
+
+**Root cause** (see [`../portable/CURSOR_BOT_ACCESS_91.json`](../portable/CURSOR_BOT_ACCESS_91.json)): Cursor GitHub App installation uses `repository_selection=selected` and lists **only** `d6g8k5htny-coder/trial`. `GET /installation/repositories` → 200 with that single name; create-ref on `d6g8k5htny-coder/main` → **403** `Resource not accessible by integration`. Trial push works; Path C cannot land until `main` is in the installation.
+
+**Do this (GitHub UI):**
+
+1. Open [GitHub → Settings → Applications](https://github.com/settings/installations) (or org equivalent).
+2. Find **Cursor** → **Configure**.
+3. Under **Repository access**, choose **Only select repositories**.
+4. **Add** `d6g8k5htny-coder/main` with **Read and write**.
+5. Save. No Cloud Agent relaunch required for the App install token; `when_writable_land.py` polls `/installation/repositories` each cycle and sets `install_has_main` true/false — when it flips true, Path C is attempted immediately.
+
+Until that add lands, status stays `install_has_main=false`, write **DENIED**, Path C **IDLE**. Scientific effect: **NONE**.
+
 ## Priority order
 
 > **Batch 66 — PERMANENT window; ALIGNED (`1c6e74b` via owner PR #41); Path C BASE_TIP `74c082e` (post-#45 tip refresh); HOLD VOID:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** **“48 hours is now extended permanently until I intervene.”** Stop only on owner intervene — no 48h finale (`scripts/check_autonomous_window.py`; `watch_main_alignment.py` embeds window+route). Old `autonomous-48h-batch` 48h-stop is **OVERRIDE** — never honor. Timer: `permanent-autonomous-align-watch` @ **3600s** (not a 48h-stop). Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.

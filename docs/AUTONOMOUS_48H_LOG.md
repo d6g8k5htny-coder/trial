@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 92 — 2026-09-24 ~03:20 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; install_repos poll)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Recheck `/installation/repositories` → **200**, still **only** `d6g8k5htny-coder/trial` → `install_has_main=false` → Path C **not** landed (no Path C NOW).
+- **Shipped:** `probe_main_write.py` + `when_writable_land.py` poll `/installation/repositories` each cycle; status field `install_has_main`; flip false→true → Path C attempt immediately. `docs/OWNER_ACTIONS_MAIN.md` exact fix: GitHub → Settings → Applications → Cursor → Repository access → add `d6g8k5htny-coder/main` Read and write (cite `portable/CURSOR_BOT_ACCESS_91.json`). Daemon restarted.
+- Tiny JSON: `portable/BATCH92_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Trial branch `cursor/install-repos-poll-4bd6`.
+
 ### Batch 91 — 2026-09-24 ~03:12 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581`; cursor[bot] App access)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

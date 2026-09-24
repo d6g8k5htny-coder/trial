@@ -1,0 +1,27 @@
+{
+  "batch": "92",
+  "generated_at_utc": "2026-09-24T03:20:00Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "install_has_main": false,
+  "installation_names": ["d6g8k5htny-coder/trial"],
+  "path_c_landed": false,
+  "path_c_now": false,
+  "shipped": [
+    "scripts/probe_main_write.py",
+    "scripts/when_writable_land.py",
+    "docs/OWNER_ACTIONS_MAIN.md"
+  ],
+  "owner_fix": "GitHub → Settings → Applications → Cursor → Repository access → add d6g8k5htny-coder/main Read and write",
+  "cite": "portable/CURSOR_BOT_ACCESS_91.json",
+  "daemon": "when-writable-land restarted",
+  "route_now": "IDLE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "Install still trial-only; lander polls install_has_main each cycle; Path C on flip"
+}

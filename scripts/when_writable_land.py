@@ -3,19 +3,21 @@
 
 Loop (default interval 300s):
   1. Exit cleanly if STOP file exists.
-  2. Probe write on d6g8k5htny-coder/main; if DENIED → sleep / continue.
-  3. Audit alignment:
+  2. Call GET /installation/repositories; set status install_has_main true/false.
+     If install_has_main flips false→true, attempt Path C immediately this cycle.
+  3. Probe write on d6g8k5htny-coder/main; if DENIED (and no install flip) → sleep.
+  4. Audit alignment:
        MISALIGNED → restore_main_face (Path B) then continue.
        ALIGNED + writable → owner_land_path_c (apply_all on hardening + push).
-  4. Always respect lemma_closed=false (owner_land_path_c fail-closed gate).
-  5. Log to /tmp/cursor/when_writable_land.log and status JSON under
+  5. Always respect lemma_closed=false (owner_land_path_c fail-closed gate).
+  6. Log to /tmp/cursor/when_writable_land.log and status JSON under
      /cursor/stores/self/when_writable_land.status.json.
 
 Flags:
   --once       Single iteration then exit (no sleep).
   --dry-run    Decide and log only; never invoke real land scripts.
   --interval N Poll interval seconds (default 300; env WHEN_WRITABLE_INTERVAL).
-  --mock-probe / --mock-align  Deterministic states for intent tests.
+  --mock-probe / --mock-align / --mock-install-has-main  Intent-test states.
 
 Token discovery (first existing wins; value never printed):
   1. env MAIN_PUSH_TOKEN
@@ -45,6 +47,9 @@ PROBE = ROOT / "scripts" / "probe_main_write.py"
 AUDIT = ROOT / "scripts" / "audit_main_alignment.py"
 RESTORE = ROOT / "scripts" / "restore_main_face.sh"
 OWNER_C = ROOT / "scripts" / "owner_land_path_c.sh"
+
+MAIN_FULL = "d6g8k5htny-coder/main"
+INSTALL_REPOS_PATH = "/installation/repositories"
 
 DEFAULT_INTERVAL = int(os.environ.get("WHEN_WRITABLE_INTERVAL", "300"))
 DEFAULT_LOG = Path(os.environ.get("WHEN_WRITABLE_LOG", "/tmp/cursor/when_writable_land.log"))
@@ -168,6 +173,102 @@ def _stop_requested(stop_path: Path) -> bool:
     return stop_path.is_file()
 
 
+def _read_prev_install_has_main(status_path: Path) -> bool | None:
+    """Previous cycle's install_has_main from status JSON (None if unknown)."""
+    try:
+        if not status_path.is_file():
+            return None
+        data = json.loads(status_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if "install_has_main" in data:
+        val = data["install_has_main"]
+        if val is None:
+            return None
+        return bool(val)
+    last = data.get("last") or {}
+    if "install_has_main" in last:
+        val = last["install_has_main"]
+        if val is None:
+            return None
+        return bool(val)
+    return None
+
+
+def check_installation_repositories(
+    *,
+    mock: bool | None = None,
+) -> tuple[bool | None, dict]:
+    """GET /installation/repositories → (install_has_main, detail).
+
+    install_has_main is True iff d6g8k5htny-coder/main is listed; None on
+    transport failure. Prefer probe_main_write.check_installation_repositories
+    when available; fall back to ``gh api``.
+    """
+    if mock is not None:
+        return mock, {
+            "mocked": True,
+            "install_has_main": mock,
+            "endpoint": INSTALL_REPOS_PATH,
+            "names": [MAIN_FULL] if mock else ["d6g8k5htny-coder/trial"],
+        }
+
+    # Prefer shared helper from probe_main_write (same token discovery).
+    try:
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location("probe_main_write", PROBE)
+        if spec is not None and spec.loader is not None:
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            helper = getattr(mod, "check_installation_repositories", None)
+            if callable(helper):
+                detail = helper()
+                return detail.get("install_has_main"), detail
+    except Exception:  # noqa: BLE001 — fall through to gh
+        pass
+
+    proc = subprocess.run(
+        ["gh", "api", INSTALL_REPOS_PATH],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=60,
+        cwd=str(ROOT),
+        env=_child_env(),
+    )
+    detail: dict = {
+        "endpoint": INSTALL_REPOS_PATH,
+        "install_has_main": None,
+        "http_status": None,
+        "names": [],
+    }
+    raw = (proc.stdout or "").strip()
+    if proc.returncode != 0:
+        detail["error"] = (proc.stderr or raw or f"gh exit {proc.returncode}")[-500:]
+        detail["http_status"] = 403 if "403" in (proc.stderr or "") else None
+        return None, detail
+    try:
+        body = json.loads(raw) if raw else {}
+    except json.JSONDecodeError:
+        detail["error"] = "json_decode"
+        detail["raw_tail"] = raw[-500:]
+        return None, detail
+    repos = body.get("repositories") or []
+    names = [
+        str(r.get("full_name"))
+        for r in repos
+        if isinstance(r, dict) and r.get("full_name")
+    ]
+    detail["http_status"] = 200
+    detail["total_count"] = body.get("total_count")
+    detail["repository_selection"] = body.get("repository_selection")
+    detail["names"] = names
+    has_main = MAIN_FULL in names
+    detail["install_has_main"] = has_main
+    return has_main, detail
+
+
 def _probe(mock: str | None) -> tuple[str, dict]:
     if mock:
         state = mock.upper()
@@ -243,8 +344,10 @@ def _one_iteration(
     dry_run: bool,
     mock_probe: str | None,
     mock_align: str | None,
+    mock_install_has_main: bool | None,
     batch: str,
     log_path: Path,
+    status_path: Path,
 ) -> dict:
     report: dict = {
         "iterated_at_utc": _utc_now(),
@@ -258,17 +361,66 @@ def _one_iteration(
         "probe": None,
         "align": None,
         "land": None,
+        "install_has_main": None,
+        "install_has_main_flipped_true": False,
+        "installation_repositories": None,
     }
 
+    prev_install = _read_prev_install_has_main(status_path)
+    install_has_main, install_detail = check_installation_repositories(
+        mock=mock_install_has_main,
+    )
+    report["install_has_main"] = install_has_main
+    report["installation_repositories"] = install_detail
+    flipped = prev_install is False and install_has_main is True
+    report["install_has_main_flipped_true"] = flipped
+    report["prev_install_has_main"] = prev_install
+    _log(
+        log_path,
+        f"install_has_main={install_has_main} prev={prev_install} "
+        f"flipped_true={flipped} names={install_detail.get('names')}",
+    )
+
     probe_state, probe_payload = _probe(mock_probe)
+    # Prefer install_has_main from live probe JSON when not mocked.
+    if mock_install_has_main is None and "install_has_main" in probe_payload:
+        probe_install = probe_payload.get("install_has_main")
+        if probe_install is not None:
+            install_has_main = bool(probe_install)
+            report["install_has_main"] = install_has_main
+            flipped = prev_install is False and install_has_main is True
+            report["install_has_main_flipped_true"] = flipped
+        if isinstance(probe_payload.get("installation_repositories"), dict):
+            report["installation_repositories"] = probe_payload["installation_repositories"]
+
     report["probe"] = {"state": probe_state, "detail": probe_payload}
     _log(log_path, f"probe={probe_state}")
 
-    if probe_state == "DENIED":
+    if probe_state == "DENIED" and not flipped:
         report["action"] = "continue_denied"
         report["reason"] = "write_denied"
         _log(log_path, "action=continue_denied (write DENIED)")
         return report
+
+    if probe_state == "DENIED" and flipped:
+        # Install just gained main — re-probe once, then attempt Path C if writable.
+        _log(log_path, "install_has_main flipped true — re-probe then Path C attempt")
+        probe_state, probe_payload = _probe(mock_probe)
+        report["probe"] = {
+            "state": probe_state,
+            "detail": probe_payload,
+            "reprobe_after_install_flip": True,
+        }
+        _log(log_path, f"reprobe_after_install_flip={probe_state}")
+        if probe_state != "WRITABLE":
+            report["action"] = "continue_denied_after_install_flip"
+            report["reason"] = "install_has_main_true_but_write_still_denied"
+            _log(
+                log_path,
+                "action=continue_denied_after_install_flip "
+                "(install has main; write still DENIED)",
+            )
+            return report
 
     if probe_state == "TRANSPORT_ERROR":
         report["action"] = "continue_transport"
@@ -282,7 +434,7 @@ def _one_iteration(
         _log(log_path, f"action=continue_unknown_probe probe={probe_state}")
         return report
 
-    # Writable: decide Path B restore vs Path C land from alignment.
+    # Writable (or install flip + writable after re-probe): Path B vs Path C.
     align_state, align_payload = _align(mock_align)
     report["align"] = {"state": align_state, "detail": align_payload}
     tip = align_payload.get("default_tip_sha") or align_payload.get("tip_sha")
@@ -296,13 +448,12 @@ def _one_iteration(
 
     if align_state == "MISALIGNED":
         report["action"] = "path_b_restore"
-        report["reason"] = "misaligned_writable"
+        report["reason"] = (
+            "misaligned_writable_after_install_flip" if flipped else "misaligned_writable"
+        )
         cmd = ["bash", str(RESTORE), "--batch", str(batch)]
         if dry_run:
-            # Certainty-only Path B path in dry mode.
             cmd = ["bash", str(RESTORE), "--dry-run", "--batch", str(batch)]
-            # Still mark as dry — do not execute even --dry-run child unless asked;
-            # decide-only keeps network out of unit tests with mocks.
             land = _run_land(cmd, dry_run=True, label="restore_main_face_path_b")
         else:
             land = _run_land(cmd, dry_run=False, label="restore_main_face_path_b")
@@ -316,7 +467,9 @@ def _one_iteration(
 
     if align_state == "ALIGNED":
         report["action"] = "path_c_land"
-        report["reason"] = "aligned_writable"
+        report["reason"] = (
+            "install_has_main_flipped_true" if flipped else "aligned_writable"
+        )
         # owner_land_path_c fail-closed on lemma_closed!=false after apply_all.
         cmd = ["bash", str(OWNER_C)]
         if dry_run:
@@ -333,11 +486,14 @@ def _one_iteration(
         else:
             land = _run_land(cmd, dry_run=False, label="owner_land_path_c", timeout=1200)
             land["gate"] = "lemma_closed=false (owner_land_path_c fail-closed)"
+        if flipped:
+            land["triggered_by"] = "install_has_main_flipped_true"
         report["land"] = land
         _log(
             log_path,
             f"action=path_c_land attempted={land.get('attempted')} "
-            f"exit={land.get('exit')} dry_run={dry_run} gate=lemma_closed=false",
+            f"exit={land.get('exit')} dry_run={dry_run} gate=lemma_closed=false "
+            f"flipped_install={flipped}",
         )
         return report
 
@@ -397,6 +553,12 @@ def main() -> int:
         default=None,
         help="Intent-test: skip live audit; use this state",
     )
+    parser.add_argument(
+        "--mock-install-has-main",
+        choices=("true", "false"),
+        default=None,
+        help="Intent-test: skip live /installation/repositories; force true/false",
+    )
     args = parser.parse_args()
 
     if args.interval < 0:
@@ -406,6 +568,9 @@ def main() -> int:
     log_path = Path(args.log)
     status_path = Path(args.status)
     stop_path = Path(args.stop)
+    mock_install: bool | None = None
+    if args.mock_install_has_main is not None:
+        mock_install = args.mock_install_has_main == "true"
 
     # Resolve once at start; inject into process env so all children see it.
     # Log source label only — never the token value.
@@ -419,7 +584,8 @@ def main() -> int:
     _log(
         log_path,
         f"start once={args.once} dry_run={args.dry_run} interval={args.interval}s "
-        f"batch={args.batch} {token_note} scientific_effect=NONE lemma_closed=false",
+        f"batch={args.batch} {token_note} scientific_effect=NONE lemma_closed=false "
+        f"install_repos_poll=true",
     )
 
     iteration = 0
@@ -438,11 +604,11 @@ def main() -> int:
                     "goal_complete": False,
                     "lemma_closed": False,
                     "flipped_anything": False,
+                    "install_has_main": (last_report or {}).get("install_has_main"),
                     "last": last_report or None,
                 }
                 _write_status(status_path, status)
                 _log(log_path, f"STOP file present ({stop_path}) — exiting cleanly")
-                # Remove stop file is NOT done — owner owns it; leave for inspection.
                 return 0
 
             iteration += 1
@@ -451,8 +617,10 @@ def main() -> int:
                     dry_run=args.dry_run,
                     mock_probe=args.mock_probe,
                     mock_align=args.mock_align,
+                    mock_install_has_main=mock_install,
                     batch=str(args.batch),
                     log_path=log_path,
+                    status_path=status_path,
                 )
             except Exception as exc:  # noqa: BLE001 — keep loop alive
                 report = {
@@ -465,6 +633,8 @@ def main() -> int:
                     "action": "continue_error",
                     "reason": f"exception:{exc}",
                     "traceback": traceback.format_exc()[-2000:],
+                    "install_has_main": None,
+                    "install_has_main_flipped_true": False,
                 }
                 _log(log_path, f"action=continue_error err={exc}")
 
@@ -484,6 +654,10 @@ def main() -> int:
                 "goal_complete": False,
                 "lemma_closed": False,
                 "flipped_anything": False,
+                "install_has_main": report.get("install_has_main"),
+                "install_has_main_flipped_true": report.get(
+                    "install_has_main_flipped_true", False
+                ),
                 "tmux_session_hint": "when-writable-land",
                 "last": report,
             }
@@ -491,6 +665,7 @@ def main() -> int:
             _log(
                 log_path,
                 f"iter={iteration} action={report.get('action')} "
+                f"install_has_main={report.get('install_has_main')} "
                 f"status_written={status_path}",
             )
 
@@ -498,7 +673,6 @@ def main() -> int:
                 _log(log_path, "once=true — exiting after single iteration")
                 return 0
 
-            # Re-check STOP before sleeping so owner can halt promptly.
             if _stop_requested(stop_path):
                 continue
 
@@ -514,6 +688,7 @@ def main() -> int:
             "goal_complete": False,
             "lemma_closed": False,
             "flipped_anything": False,
+            "install_has_main": (last_report or {}).get("install_has_main"),
             "last": last_report or None,
         }
         _write_status(status_path, status)
