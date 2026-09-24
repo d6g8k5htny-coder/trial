@@ -16,7 +16,8 @@ If a forced rebase hits first-stop conflicts: `./scripts/path_c_rebase_helper.sh
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#70) | `62f955a` | **0001–0004 + 0008–0018** (+**0019** pending) | problems=0 | **BASE_TIP batch 239** (0019 attestations RW; followon gate) |
+| hardening (post-#69) | `a1ed37b` | **0001–0004 + 0008–0018** (+**0019** via [#71](https://github.com/d6g8k5htny-coder/main/pull/71)) | problems=0 | **BASE_TIP batch 239** (merged #69; 0019 PR open) |
+| hardening (post-#70) | `62f955a` | **0001–0004 + 0008–0018** | problems=0 | (prior BASE_TIP batch 238) |
 | hardening (post-#51) | `b89448d` | **0001–0004 + 0008–0017** | problems=0 | **BASE_TIP batch 207** (+0017 pinned_sources RW; path-c-applied-bundle rebuilt) |
 | hardening (post-#53) | `8ea3b5f` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 162** (apply_all OK; focused 90/0 RW; path-c-applied-bundle rebuilt) |
 | hardening (post-#54) | `10c077e` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 142–161) |

@@ -21,14 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 239 — 2026-09-24 ~19:48– UTC (PERMANENT window; #69 CI PENDING; tip hunt → 0019; future-delta gate; scientific effect NONE; flipped nothing)
+### Batch 239 — 2026-09-24 ~19:48– UTC (PERMANENT window; #69 CI SUCCESS→merge a1ed37b; 0019+future-delta; scientific effect NONE; flipped nothing)
 
-- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`. Hardening tip **stable** @ **`62f955a`** (post-#70).
-- [main #69](https://github.com/d6g8k5htny-coder/main/pull/69) inventable nav — `verify` still **PENDING**; subscribed CI+PR. Do not idle.
-- **Tip RW hunt beyond 0018:** focused 90/0; claims/recovery/pinned 102/0; **attestations** 41 + **1 ResourceWarning** (`test_attestations` bare `open`) + `attestations_check` **8** unclosed reads → cut portable **0019**.
-- **when_writable:** generalized `path_c_followon_pending` to scan `00NN≥0018` markers so future deltas re-arm land after `path_c_0018_landed=true`. `write_path_c_status` preserves all `path_c_00NN_landed`.
-- Sibling AGENTS: satellite repos fresh @ batch236 (identical Always/Never shape); sandbox App-token 404 (device-writable per inventory). **lemma_closed=false**; **flipped nothing**.
-- Pack/release `batch239-path-c-bundle`; next: merge #69 on green → tip-refresh → land 0019.
+- WRITE **WRITABLE** (device token; **never printed**). Default tip **ALIGNED** @ `1c6e74b`.
+- [main #69](https://github.com/d6g8k5htny-coder/main/pull/69) inventable nav — CI **SUCCESS** → **merged** → hardening tip **`a1ed37b`**. Tip-refresh BASE_TIP; apply_all 0001–0018 already-applied; **0019** applies clean; focused 90 + claims/recovery 83; `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**.
+- **Tip RW hunt beyond 0018** (while #69 pending): attestations RW → cut portable **0019**; opened [main #71](https://github.com/d6g8k5htny-coder/main/pull/71) (`cursor/path-c-0019-attestations-rw-0c9d`).
+- **when_writable:** generalized `path_c_followon_pending` for `00NN≥0018` so future deltas re-arm land; `write_path_c_status` preserves all `path_c_00NN_landed`.
+- Sibling AGENTS: satellites fresh @ batch236; sandbox App 404. Pack/release `batch239-path-c-bundle`. **flipped nothing**.
 
 ### Batch 238 — 2026-09-24 ~19:31– UTC (PERMANENT window; merge #70; tip-refresh 62f955a; wait #69; scientific effect NONE; flipped nothing)
 

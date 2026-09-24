@@ -1,8 +1,8 @@
-From 9d578886bab02c10e1c9dda05ce986db64d72540 Mon Sep 17 00:00:00 2001
+From b4fdbdc1aaf43aede7f42b6dca2358806f7299ed Mon Sep 17 00:00:00 2001
 From: path-c-refresh <path-c-refresh@local>
-Date: Thu, 24 Sep 2026 19:54:19 +0000
+Date: Thu, 24 Sep 2026 19:56:14 +0000
 Subject: [PATCH] portable engineering patches (apply_all 0001-0004+0008-0016)
- on 62f955a
+ on a1ed37b
 
 ---
  tests/test_attestations.py  | 3 ++-

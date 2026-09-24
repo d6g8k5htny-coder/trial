@@ -24,6 +24,7 @@ _LIVING_TIPS = (
     "377201c",
     "1200501",
     "62f955a",
+    "a1ed37b",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -5916,11 +5917,12 @@ def test_batch239_0019_future_delta_gate() -> None:
     assert data["lemma_closed"] is False
     assert data["flipped_anything"] is False
     assert data["scientific_effect"] == "NONE"
-    assert data["pr69"] == "PENDING"
+    assert data["pr69"] == "MERGED"
     assert data["pr70"] == "MERGED"
     assert data.get("path_c_0018_landed") is True
     assert data.get("path_c_0019_landed") is False
     assert data.get("patch_0019") is True
+    assert data.get("pr71") == "OPEN" or 71 in (data.get("waiting_main_prs") or [])
     assert _living_tip(data.get("tip"))
     assert _living_release(data.get("release_tag"))
 

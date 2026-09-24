@@ -1,23 +1,24 @@
 {
   "batch": "239",
-  "generated_at_utc": "2026-09-24T19:53:35Z",
-  "status": "waiting_ci_69_parallel_0019",
+  "generated_at_utc": "2026-09-24T19:57:43Z",
+  "status": "merged_69_tip_a1ed37b_0019_pr71_open",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "flipped_anything": false,
-  "tip": "62f955a",
-  "tip_full": "62f955aa61f608481e48b1fc0d657a1c1ae8e1b5",
-  "base_tip": "62f955a",
+  "tip": "a1ed37b",
+  "tip_full": "a1ed37bf668153526bf04d3a3b840c3b2ef533fa",
+  "base_tip": "a1ed37b",
   "aligned": true,
   "write": "WRITABLE",
-  "pr69": "PENDING",
+  "pr69": "MERGED",
   "pr70": "MERGED",
   "merged_prs": [
-    70
+    70,
+    69
   ],
   "waiting_main_prs": [
-    69
+    71
   ],
   "path_c_0018_landed": true,
   "path_c_0018_via": "main_pr_70_merge_62f955a",
@@ -45,10 +46,17 @@
     "write_path_c_status_preserve_00NN",
     "sibling_agents_freshness_audit",
     "refresh_PATH_C_STATUS",
-    "pack_portable"
+    "pack_portable",
+    "merge_main_pr_69",
+    "tip_refresh_BASE_TIP_a1ed37b",
+    "open_main_pr_71_0019"
   ],
-  "next_focus": "on_ci_green_merge_69_then_land_0019_tip_refresh",
-  "note": "Batch 239: #69 CI PENDING. Parallel eng: tip hunt found attestations RW beyond 0018 \u2192 cut 0019; generalized when_writable for future deltas; PATH_C_STATUS refreshed; sibling AGENTS fresh (batch236). Never printed tokens; flipped nothing.",
+  "next_focus": "on_ci_green_merge_71_0019_then_mark_landed",
+  "note": "Batch 239: #69 CI SUCCESS \u2192 merged (a1ed37b). Tip-refresh; ALIGNED; lemma_closed=false. Parallel: cut 0019 + future-delta gate; opened main #71. Never printed tokens; flipped nothing.",
   "bundle_refreshed": true,
-  "path_c_bundle_applied_sha": "9d57888"
+  "path_c_bundle_applied_sha": "9d57888",
+  "pr69_merge_sha": "a1ed37bf668153526bf04d3a3b840c3b2ef533fa",
+  "pr71": "OPEN",
+  "pr71_url": "https://github.com/d6g8k5htny-coder/main/pull/71",
+  "path_c_0019_pr": 71
 }

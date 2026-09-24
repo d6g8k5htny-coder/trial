@@ -2,10 +2,10 @@
   "complexity_markers_present": [],
   "default_branch": "main",
   "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
-  "generated_at_utc": "2026-09-24T19:37:39Z",
+  "generated_at_utc": "2026-09-24T19:58:02Z",
   "goal_complete": false,
   "lemma_closed": false,
-  "path_b_ready": true,
+  "path_b_ready": false,
   "preferred_restore_route": {
     "action": "idle_path_c_done_then_drift_watch",
     "alternate_restore": "Path_A",
@@ -24,5 +24,5 @@
   "scientific_effect": "NONE",
   "state": "ALIGNED",
   "threat_note": "ALIGNED can be reverted (PR #32 history). Keep Path B restore ready.",
-  "write_state": "WRITABLE"
+  "write_state": "DENIED"
 }
