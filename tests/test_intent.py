@@ -2077,7 +2077,8 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert "--from-bundle" in owner_c
     assert "path-c-on-hardening.patch" in owner_c
     assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_c
-    assert "batch125-path-c-bundle" in owner_c
+    # Current Path C release tag (tip 10c077e / PR #54); older batch125 still valid historically.
+    assert "batch142-path-c-bundle" in owner_c
     assert "trial-portable-main-fixes.tgz" in owner_c
 
     relaunch = ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md"
@@ -2094,11 +2095,11 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "--from-bundle" in land
     assert "RELAUNCH_WITH_MAIN_SCOPE" in land
-    assert "batch125-path-c-bundle" in land
+    assert "batch142-path-c-bundle" in land
 
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "--from-bundle" in owner_actions
-    assert "batch125-path-c-bundle" in owner_actions
+    assert "batch142-path-c-bundle" in owner_actions
     assert "RELAUNCH_WITH_MAIN_SCOPE" in owner_actions
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
@@ -2397,3 +2398,51 @@ def test_batch147_tip_drift_gate_and_auth_renew() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 147" in log
     assert "tip-drift" in log
+
+
+def test_batch149_research_audit_and_ci_intent_fix() -> None:
+    """Batch 149: research audit OPEN_HOLD; intent release tag current; lemma_closed=false."""
+    import json
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 149" in findings
+    assert "OPEN_HOLD" in findings
+    assert "lemma_closed=false" in findings
+    assert "open premises" in findings.lower()
+    assert "**13**" in findings
+    assert "**1**" in findings
+    assert "**3**" in findings
+    assert "**26**" in findings
+
+    brief = ROOT / "portable" / "BATCH149_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "149"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "10c077e"
+    assert data["device_code"] == "A450-C91F"
+    assert data["auth_renewed"] is False
+    assert data["ci_ok"] is True
+    assert data["release_published_batch149"] is False
+    rc = data["research_counts"]
+    assert rc["differ"] is False
+    assert rc["clean"]["open_premises"] == 13
+    assert rc["clean"]["open_lemmas"] == 1
+    assert rc["clean"]["open_prizes"] == 3
+    assert rc["clean"]["claims"] == 26
+    assert rc["clean"]["lemma_closed"] is False
+
+    counts = ROOT / "portable" / "BATCH149_RESEARCH_COUNTS.json"
+    assert counts.is_file()
+    audit = ROOT / "portable" / "BATCH149_RESEARCH_STACK_AUDIT.json"
+    assert audit.is_file()
+
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "batch142-path-c-bundle" in owner_c
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 149" in log
+    assert "research audit" in log.lower() or "Research audit" in log

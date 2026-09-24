@@ -3,6 +3,30 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 149 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `10c077e`
+
+Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip). Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `10c077e08261fa3d07317e290826604a749d4e49` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory below |
+
+| Check | clean tip (no patches) | after `apply_all` 0001–0004+0008–0016 |
+|-------|------------------------|----------------------------------------|
+| `math_status_check` | problems=0 / `OPEN_HOLD` / **lemma_closed=false** | **same** (no differ) |
+| `guard_no_status_promotion` | **pass** — 0 violations | **pass** |
+| open premises (frozen) | **13** | **13** |
+| open lemmas | **1** (`D3-LEMMA-RN-UNIF`) | **1** |
+| open packet obligations | **2** (`OBL-H5-JETMOD`, `D3-LEMMA-RN-UNIF`) | **2** |
+| open prizes (FW-NO-PRIZE-CLOSURE) | **3** | **3** |
+| claims inventory | **26** (not promoted) | **26** |
+| open questions | **16** mechanically OPEN/HOLD/REBASED | **16** |
+
+Packet: disposition=`OPEN_HOLD`; `prizes_solved=false`; `original_prize_closed=false`; bridge=`PROPOSED_NOT_DEPLOYED`; freeze=false.
+
+Artifacts: `portable/BATCH149_RESEARCH_STACK_AUDIT.json`, `portable/BATCH149_RESEARCH_COUNTS.json`. Scientific effect: **NONE**.
+
 ## Batch 132 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `c82c9357`
 
 Mechanical inventory only (`scripts/audit_research_stack_open.py` + `tools/math_status_check.py` on live hardening tip). Flipped nothing.
