@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 149 — 2026-09-24 ~08:10 UTC (PERMANENT window; auth pending A450-C91F; research audit OPEN; CI intent fix; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. Local tip-drift gates OK (live==BASE_TIP==VERIFY); bundle `git am` OK; `math_status` problems=0 / OPEN_HOLD / **lemma_closed=false**.
+- Device auth `A450-C91F` still **pending** (`slow_down`); seconds_left≈380+; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- **Research audit (no flips):** clean vs patched counts **identical** — open premises **13** / lemmas **1** / prizes **3** / packet obligations **2** / claims **26** / open questions **16**; disposition `OPEN_HOLD`; **lemma_closed=false**. Guard pass. Artifacts: `docs/MECHANICAL_FINDINGS_MAIN.md`, `portable/BATCH149_RESEARCH_STACK_AUDIT.json`.
+- **CI:** tip-drift jobs on trial main were already **success**; `sanity` Intent suite failed on stale `batch125-path-c-bundle` assertion after docs moved to `batch142-path-c-bundle` — **fixed** `tests/test_intent.py`. Release **skipped** (pack not newer than `batch142-path-c-bundle`).
+- Tiny JSON: `portable/BATCH149_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `A450-C91F` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
+
 ### Batch 147 — 2026-09-24 ~08:03 UTC (PERMANENT window; auth renew A450-C91F; tip-drift gate; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).

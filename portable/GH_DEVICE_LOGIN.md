@@ -5,12 +5,12 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T08:00:35Z |
-| Checked (UTC) | 2026-09-24T08:00:35Z |
+| Checked (UTC) | 2026-09-24T08:09:11Z |
 | Verification URL | https://github.com/login/device |
 | User code | `A450-C91F` |
 | Prior code | `A9D3-16CD` (expired / renewed) |
-| Status | pending (authorization_pending) |
-| Expires | see `seconds_left` in BATCH147_BRIEF (~899s at renew) |
+| Status | pending (slow_down / authorization_pending) |
+| Expires | see `seconds_left` in BATCH149_BRIEF |
 | Hardening tip | `10c077e` (PR #54); path-c-applied-bundle current; release `batch142-path-c-bundle` |
 
 ## Steps
