@@ -1,6 +1,6 @@
 {
   "batch": "168",
-  "generated_at_utc": "2026-09-24T10:05:37Z",
+  "generated_at_utc": "2026-09-24T10:06:03Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "prior_device_code": "905D-02F4",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left==0 / expired",
-  "seconds_left": 784,
+  "seconds_left": 758,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -79,8 +79,8 @@
   "w3f_false_positive": true,
   "path_b_ready": false,
   "release": "batch168-path-c-bundle",
-  "ci_status": "pending_on_main",
+  "ci_status": "green",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "297438a30a68fcb733459a7bf8d1752b6aeca123"
+  "trial_main_sha": "f9754807b64d7fe28a6ad1b1b5c70ca5164df6a5"
 }
