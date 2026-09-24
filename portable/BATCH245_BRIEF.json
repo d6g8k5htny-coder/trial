@@ -47,5 +47,11 @@
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
   "shipped": true,
-  "where": ["trial"]
+  "where": ["trial"],
+  "trial_pr": null,
+  "trial_pr_merged": false,
+  "trial_direct_land": true,
+  "trial_land_sha": "ddb9080",
+  "trial_land_branch": "cursor/batch245-living-tag-pack-9be9",
+  "note": "Batch 245: hardening tip 542e6ec tip_moved=false (default tip moved to f3a41a75 ALIGNED; Path C tracks hardening); ALIGNED+WRITABLE; research HOLD drafts skipped; shipped pack_portable living-tag automation; lemma_closed=false; flipped nothing. Never printed tokens. Did NOT ship Path A/B ALIGNED no-op or sibling AGENTS churn. PR create 403 → direct land on trial main @ ddb9080."
 }
