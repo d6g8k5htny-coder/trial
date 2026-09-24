@@ -1,6 +1,6 @@
 {
   "batch": "140",
-  "generated_at_utc": "2026-09-24T07:25:00Z",
+  "generated_at_utc": "2026-09-24T07:28:26Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -17,10 +17,10 @@
   "device_auth_error": "slow_down",
   "device_code": "F11F-5064",
   "auth_renewed": false,
-  "seconds_left": 342,
+  "seconds_left": 238,
   "daemon": "up",
   "flipped_anything": false,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "trial_branch": "cursor/batch140-path-c-dispatch-token-41f7",
   "open_main_prs_count": 12,
   "ci_dry_apply": "green",
@@ -36,7 +36,7 @@
     "docs/OWNER_ACTIONS_MAIN.md",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; W3f repository_dispatch WRITABLE; env trial-only; device F11F-5064 pending slow_down seconds_left~342; tools/body RW/bare-open clean (no 0017); when_writable_land fires dispatch --apply when MAIN_PUSH_TOKEN file appears at well-known paths; research untouched",
+  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; W3f WRITABLE; env trial-only; device F11F-5064 pending slow_down seconds_left~238; tools/body clean (no 0017); when_writable_land repository_dispatch on MAIN_PUSH_TOKEN file drop; trial main @ffa5226; research untouched",
   "has_token": false,
   "new_0017": false,
   "engineering_gap": "when_writable_land_repository_dispatch_on_token_file",
@@ -47,5 +47,7 @@
   ],
   "vectors_w3f": "WRITABLE",
   "lemma_closed_verify": false,
-  "repository_dispatch_on_token_file": true
+  "repository_dispatch_on_token_file": true,
+  "trial_main_sha": "ffa5226",
+  "ci_subscribed": true
 }
