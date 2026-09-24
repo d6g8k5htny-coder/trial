@@ -1,6 +1,6 @@
 {
   "batch": "192",
-  "generated_at_utc": "2026-09-24T12:43:50Z",
+  "generated_at_utc": "2026-09-24T12:46:21Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -31,7 +31,7 @@
   "prior_device_code": "C949-0100",
   "auth_renewed": false,
   "auth_renew_reason": null,
-  "seconds_left": 247,
+  "seconds_left": 96,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -78,5 +78,7 @@
   "code_changed": true,
   "auth_timer_note": "ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
   "issue_title": "Path C unblock \u2014 Batch 192 canonical (1C7F-22B5; README face)",
-  "auth_renew_threshold_note": "renew if expired or seconds_left<90; Batch 192 poll still pending above threshold"
+  "auth_renew_threshold_note": "renew if expired or seconds_left<90; Batch 192 poll still pending above threshold",
+  "trial_main_sha": "6863dc046fa32318c2289d4018f73ce93a04f81c",
+  "trial_landed": true
 }
