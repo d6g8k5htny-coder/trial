@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 99 — 2026-09-24 ~03:49 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; **no tip refresh**).
+- Trial CI @ `70869f8` (Batch 98 tip / watch-main-alignment land): sanity / research-stack-status-guard / land-workflows-dry-run / portable-patches-on-main → **success**. Workflow `watch-main-alignment` active (id 365715167); **0** runs yet (cron/dispatch). No fix → **IDLE**.
+- Tiny JSON: `portable/BATCH99_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial `main` (`cursor/batch99-idle-ci-green-b34a`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 98 — 2026-09-24 ~03:45 UTC (PERMANENT window; watch-main-alignment workflow; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
