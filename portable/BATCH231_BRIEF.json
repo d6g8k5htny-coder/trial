@@ -1,0 +1,33 @@
+{
+  "batch": "231",
+  "generated_at_utc": "2026-09-24T16:50:00Z",
+  "goal_complete": true,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "path_c_landed": true,
+  "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
+  "path_c_sha": "93a4ecd7e09884c7272c912412db0a7559116e1f",
+  "tip": "93a4ecd",
+  "tip_full": "93a4ecd7e09884c7272c912412db0a7559116e1f",
+  "base_tip": "93a4ecd",
+  "tip_matches_base": true,
+  "ready_to_apply": "superseded_already_on_tip",
+  "apply_all_idempotent": true,
+  "when_writable_land": "idle_path_c_done",
+  "preferred_autonomy": "aligned_drift_watch",
+  "next_focus": "tip-sync+drift+no-flip",
+  "aligned": true,
+  "path_b_needed": false,
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "trial_pr": 48,
+  "trial_branch": "cursor/batch231-post-land-hygiene-e54d",
+  "prior_trial_pr": 48,
+  "note": "Batch 231 post-land hygiene: Path C DONE on main hardening PR #64 @ 93a4ecd. BASE_TIP already 93a4ecd. apply_all idempotent (already-applied skips); ready_to_apply superseded. when_writable_land → idle_path_c_done; prefer aligned_drift_watch. next=tip-sync+drift+no-flip. lemma_closed never flipped. flipped_anything=false.",
+  "timers": {
+    "unlock_poll_s": 300,
+    "permanent_s": 10800,
+    "drift_watch_s": 1800
+  }
+}

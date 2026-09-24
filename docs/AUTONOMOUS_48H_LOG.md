@@ -22,6 +22,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 231 — 2026-09-24 ~16:50 UTC (PERMANENT window; Path C DONE hygiene; tip-sync+drift; scientific effect NONE; flipped nothing)
+
+- Path C **DONE** on hardening [main PR #64](https://github.com/d6g8k5htny-coder/main/pull/64) @ **`93a4ecd`**. `lemma_closed=false`. **flipped nothing**.
+- Hygiene: BASE_TIP already `93a4ecd`. `apply_all.sh` idempotent (already-applied skips) so CI/dry-run no longer APPLY_CHECK_FAILED on landed tip. `ready_to_apply` superseded. MANIFEST tip refreshed.
+- Autonomy: `when_writable_land` → **`idle_path_c_done`** when `path_c_landed=true` (stop re-open PR loop). Prefer **`aligned_drift_watch`**. next_focus=`tip-sync+drift+no-flip`.
+- Trial: BATCH230 docs + PATH_C_STATUS already on trial PR #48 (merged); this batch lands hygiene on trial. `goal_complete=true`.
+
 ### Batch 230 — 2026-09-24 ~16:33–16:39 UTC (PERMANENT window; device auth B4B5 SUCCESS; write WRITABLE; Path C LANDED on hardening PR #64; scientific effect NONE; flipped nothing)
 
 - AUTH: device **`B4B5-42FE`** → **SUCCESS**; token at `GH_CONFIG_DIR=/tmp/gh-dylan-auth/access_token` (never printed). `create-ref` write probe → **WRITABLE**.

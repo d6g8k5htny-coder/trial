@@ -301,8 +301,19 @@ def main() -> int:
             return 1
 
         # apply_all --check on a clean hardening worktree
+        # Batch 231: when Path C already landed, apply_all is idempotent
+        # (already-applied skips); treat tip as apply_ready.
         apply_exit = None
         apply_out = ""
+        path_c_landed = False
+        verify_path = trial / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+        if verify_path.is_file():
+            try:
+                verify = json.loads(verify_path.read_text(encoding="utf-8"))
+                path_c_landed = verify.get("path_c_landed") is True
+            except (OSError, json.JSONDecodeError):
+                path_c_landed = False
+        report["path_c_landed"] = path_c_landed
         if args.skip_apply_check:
             report["apply_all_check"] = "skipped"
         else:
@@ -318,6 +329,8 @@ def main() -> int:
             apply_out = ((check.stdout or "") + (check.stderr or ""))[-800:]
             report["apply_all_check_exit"] = apply_exit
             report["apply_all_check_tail"] = apply_out
+            if path_c_landed and apply_exit == 0:
+                report["apply_all_check"] = "ok_already_landed_idempotent"
             _run(["git", "worktree", "remove", "--force", str(apply_wt)], cwd=clone_dir)
 
         # Rebase probe: PATH_C_REBASE_ONTO_MAIN after #41 typically CONFLICTS.

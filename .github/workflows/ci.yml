@@ -166,9 +166,24 @@ jobs:
           ./scripts/refresh_path_c_bundle.sh --dry-run
       - name: Apply portable patches
         run: |
+          set -euo pipefail
+          VERIFY_FILE="${GITHUB_WORKSPACE}/trial/portable/path-c-applied-bundle/VERIFY.json"
+          LANDED=0
+          if [[ -f "$VERIFY_FILE" ]]; then
+            LANDED="$(python3 -c "import json; print('1' if json.load(open('$VERIFY_FILE')).get('path_c_landed') is True else '0')")"
+          fi
           cd main-work
+          if [[ "$LANDED" == "1" ]]; then
+            echo "path_c_landed=true — apply_all --check is idempotent (already-applied skips)"
+          fi
           ../trial/portable/patches/apply_all.sh --check
-          ../trial/portable/patches/apply_all.sh
+          if [[ "$LANDED" == "1" ]]; then
+            echo "path_c_landed=true — skip re-apply; verify math_status on tip"
+            python tools/math_status_check.py | tee /tmp/math_status_landed.out
+            grep -q 'lemma_closed=false' /tmp/math_status_landed.out
+          else
+            ../trial/portable/patches/apply_all.sh
+          fi
       - name: Focused verification on patched tree
         run: |
           cd main-work

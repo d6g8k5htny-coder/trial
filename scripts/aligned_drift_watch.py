@@ -100,7 +100,38 @@ def _maybe_write_path_c_status(report: dict | None = None) -> None:
 
 
 def _preferred_restore_route(align_state: str) -> dict:
-    """Prefer Path B over Path A for restore; Path C when already ALIGNED."""
+    """Prefer Path B over Path A for restore; Path C when already ALIGNED.
+
+    Batch 231: when Path C already landed on hardening, prefer tip-sync + drift
+    watch (no re-land, no research flip).
+    """
+    path_c_landed = False
+    verify = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+    status = ROOT / "portable" / "PATH_C_STATUS.json"
+    for path in (verify, status):
+        if not path.is_file():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if data.get("path_c_landed") is True:
+            path_c_landed = True
+            break
+
+    if align_state == "ALIGNED" and path_c_landed:
+        return {
+            "prefer": "tip_sync_drift_watch",
+            "restore_if_drift": ROUTE_WHEN_MISALIGNED,
+            "alternate_restore": ROUTE_ALTERNATE,
+            "path_c_landed": True,
+            "action": "idle_path_c_done_then_drift_watch",
+            "note": (
+                "Path C DONE on hardening (PR #64 @ 93a4ecd). Prefer tip-sync + "
+                "aligned_drift_watch; do not re-apply Path C. If tip drifts, "
+                "restore via Path B first. Never flip lemma_closed."
+            ),
+        }
     if align_state == "ALIGNED":
         return {
             "prefer": ROUTE_WHEN_ALIGNED,

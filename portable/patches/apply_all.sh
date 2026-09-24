@@ -84,11 +84,38 @@ PATCHES=(
   "$ROOT/0017-pinned-sources-close-file-handles.patch"
 )
 
+# Batch 231: idempotent apply — if a patch is already on the tree (Path C landed
+# @ 93a4ecd / PR #64), skip it via reverse --check. Fail only when neither
+# forward nor reverse applies (real conflict / tip drift).
+apply_one() {
+  local p="$1"
+  local check_only="${2:-0}"
+  if git apply --check "$p" >/dev/null 2>&1; then
+    if [[ "$check_only" -eq 0 ]]; then
+      git apply "$p"
+      echo "applied: $(basename "$p")"
+    else
+      # In --check mode, still apply into the disposable worktree so later
+      # patches in the stack see the expected sequential base.
+      git apply "$p"
+      echo "check-ok: $(basename "$p")"
+    fi
+    return 0
+  fi
+  if git apply --reverse --check "$p" >/dev/null 2>&1; then
+    echo "already-applied: $(basename "$p")"
+    return 0
+  fi
+  echo "error: patch does not apply (forward or reverse): $(basename "$p")" >&2
+  git apply --check "$p" 2>&1 | tail -n 20 >&2 || true
+  return 1
+}
+
 apply_series() {
   local p
+  local check_only="${1:-0}"
   for p in "${PATCHES[@]}"; do
-    git apply --check "$p"
-    git apply "$p"
+    apply_one "$p" "$check_only" || return 1
   done
 }
 
@@ -102,16 +129,16 @@ if [[ "$CHECK_ONLY" -eq 1 ]]; then
   git worktree add --detach "$WT" HEAD >/dev/null
   (
     cd "$WT"
-    apply_series
+    apply_series 1
   )
   trap - EXIT
   cleanup
-  echo "Check OK (no changes applied)."
+  echo "Check OK (no changes applied; already-applied patches skipped)."
   exit 0
 fi
 
-apply_series
-echo "Applied. Recommended verification:"
+apply_series 0
+echo "Applied (or already on tip). Recommended verification:"
 echo "  python3 tools/math_status_check.py"
 echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py tests/test_recovery.py"
 echo "  # expect: problems=0, lemma_closed=false; 90 focused + 47 claims + 36 recovery passed; free of ResourceWarning"

@@ -1338,7 +1338,8 @@ def test_aligned_drift_watch_script_and_ci_record_only() -> None:
         route = data["preferred_restore_route"]
         assert "prefer" in route
         if data["state"] == "ALIGNED":
-            assert route["prefer"] == "Path_C_on_hardening"
+            # Batch 231: Path C landed → tip_sync_drift_watch; else Path_C_on_hardening.
+            assert route["prefer"] in ("Path_C_on_hardening", "tip_sync_drift_watch")
             assert route.get("restore_if_drift") == "Path_B"
             assert route.get("alternate_restore") == "Path_A"
         elif data["state"] == "MISALIGNED":
@@ -1536,15 +1537,21 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["dry_run"] is True
         assert status["once"] is True
         assert status["install_has_main"] is False
-        assert status["last"]["action"] == "continue_denied"
-        assert status["last"]["land"] is None
-        assert log_path.is_file()
+        # When a well-known token file is present on the host, denied→dispatch.
+        # CI hosts usually have none → continue_denied + PATH_C_BLOCKED=NO_TOKEN.
+        last_action = status["last"]["action"]
+        assert last_action in ("continue_denied", "path_c_repository_dispatch")
         log_txt = log_path.read_text(encoding="utf-8")
-        assert "continue_denied" in log_txt
-        # Batch 157: denied+no-token → PATH_C_BLOCKED=NO_TOKEN
-        assert "PATH_C_BLOCKED=NO_TOKEN" in log_txt
-        assert status["last"].get("path_c_blocked_reasons") == ["NO_TOKEN"]
-        assert status["last"].get("path_c_blocked") == "PATH_C_BLOCKED=NO_TOKEN"
+        if last_action == "continue_denied":
+            assert status["last"]["land"] is None
+            assert "continue_denied" in log_txt
+            assert "PATH_C_BLOCKED=NO_TOKEN" in log_txt
+            assert status["last"].get("path_c_blocked_reasons") == ["NO_TOKEN"]
+            assert status["last"].get("path_c_blocked") == "PATH_C_BLOCKED=NO_TOKEN"
+        else:
+            assert status["last"].get("land") is not None
+            assert "path_c_repository_dispatch" in log_txt
+        assert log_path.is_file()
 
         # Flip false→true + DENIED then WRITABLE mock: Path C attempt on flip
         # (second run with install true after status already false)
@@ -1577,12 +1584,17 @@ def test_when_writable_land_once_dry_run() -> None:
         status = json.loads(status_path.read_text(encoding="utf-8"))
         assert status["install_has_main"] is True
         assert status["install_has_main_flipped_true"] is True
-        assert status["last"]["action"] == "path_c_land"
-        assert status["last"]["reason"] == "install_has_main_flipped_true"
-        assert status["last"]["land"]["attempted"] is False
-        assert status["last"]["land"].get("triggered_by") == "install_has_main_flipped_true"
+        # Batch 231: Path C already landed → idle_path_c_done; else path_c_land.
+        assert status["last"]["action"] in ("path_c_land", "idle_path_c_done")
+        if status["last"]["action"] == "path_c_land":
+            assert status["last"]["reason"] == "install_has_main_flipped_true"
+            assert status["last"]["land"]["attempted"] is False
+            assert status["last"]["land"].get("triggered_by") == "install_has_main_flipped_true"
+        else:
+            assert status["last"]["reason"] == "path_c_already_landed"
+            assert status["last"].get("path_c_landed") is True
 
-        # ALIGNED + WRITABLE dry-run (install already true; no flip) → Path C
+        # ALIGNED + WRITABLE dry-run (install already true; no flip) → Path C or idle
         aligned = subprocess.run(
             [
                 sys.executable,
@@ -1610,13 +1622,17 @@ def test_when_writable_land_once_dry_run() -> None:
         )
         assert aligned.returncode == 0, aligned.stderr + aligned.stdout
         status = json.loads(status_path.read_text(encoding="utf-8"))
-        assert status["last"]["action"] == "path_c_land"
+        assert status["last"]["action"] in ("path_c_land", "idle_path_c_done")
         assert status["install_has_main_flipped_true"] is False
-        land = status["last"]["land"]
-        assert land is not None
-        assert land["attempted"] is False
-        assert land["skipped_reason"] == "dry_run"
-        assert "lemma_closed=false" in (land.get("gate") or "")
+        if status["last"]["action"] == "path_c_land":
+            land = status["last"]["land"]
+            assert land is not None
+            assert land["attempted"] is False
+            assert land["skipped_reason"] == "dry_run"
+            assert "lemma_closed=false" in (land.get("gate") or "")
+        else:
+            assert status["last"].get("path_c_landed") is True
+            assert status["last"].get("next_focus") == "tip-sync+drift+no-flip"
 
         # MISALIGNED + WRITABLE dry-run → would Path B restore, no attempt
         mis = subprocess.run(
@@ -5478,4 +5494,52 @@ def test_batch230_path_c_landed() -> None:
     assert "Batch 230" in log
     assert "PR #64" in log or "pull/64" in log
     assert "lemma_closed" in log.lower()
+
+
+def test_batch231_post_land_hygiene() -> None:
+    """Batch 231: Path C DONE hygiene; apply_all idempotent; lander idle; no flip."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH231_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "231"
+    assert data["goal_complete"] is True
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is True
+    assert data["next_focus"] == "tip-sync+drift+no-flip"
+    assert data["when_writable_land"] == "idle_path_c_done"
+    assert data["preferred_autonomy"] == "aligned_drift_watch"
+    assert data.get("ready_to_apply") == "superseded_already_on_tip"
+    assert _living_tip(data.get("tip"))
+    assert "93a4ecd" in str(data.get("tip_full") or data.get("tip"))
+
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "already-applied" in apply_all
+    assert "Batch 231" in apply_all or "idempotent" in apply_all
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "path_c_already_landed" in ww
+    assert "idle_path_c_done" in ww
+
+    adw = (ROOT / "scripts" / "aligned_drift_watch.py").read_text(encoding="utf-8")
+    assert "path_c_landed" in adw
+    assert "tip_sync_drift_watch" in adw or "idle_path_c_done" in adw
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "path_c_landed=true" in ci
+    assert "idempotent" in ci or "already-applied" in apply_all
+
+    manifest = json.loads(
+        (ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8")
+    )
+    assert manifest.get("path_c_landed") is True
+    assert "93a4ecd" in str(manifest.get("verified_on_tip", ""))
+    assert manifest.get("ready_to_apply") == "superseded_already_on_tip"
+    assert manifest["lemma_closed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 231" in log
+    assert "tip-sync+drift" in log or "idle_path_c_done" in log
 

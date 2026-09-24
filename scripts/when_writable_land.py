@@ -101,6 +101,8 @@ PATH_C_BLOCKED_CODES: tuple[str, ...] = (
     PATH_C_BLOCKED_APPLY_FAIL,
 )
 BASE_TIP_FILE = ROOT / "portable" / "patches" / "BASE_TIP.txt"
+PATH_C_STATUS_FILE = ROOT / "portable" / "PATH_C_STATUS.json"
+VERIFY_FILE = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
 APPLY_ALL_SH = ROOT / "portable" / "patches" / "apply_all.sh"
 HARDENING_CACHE = Path(
     os.environ.get(
@@ -356,6 +358,44 @@ def tip_matches_base(base_sha: str | None, live_sha: str | None) -> bool | None:
     if 7 <= len(b) < 40:
         return live.startswith(b)
     return None
+
+
+def path_c_already_landed() -> tuple[bool, dict]:
+    """Batch 231: Path C DONE on hardening (PR #64) — idle lander; prefer drift watch.
+
+    Reads VERIFY.json / PATH_C_STATUS.json. Never flips research. Returns
+    (landed, detail). When landed, when_writable_land must not re-open Path C.
+    """
+    detail: dict = {"sources": []}
+    for label, path in (
+        ("VERIFY.json", VERIFY_FILE),
+        ("PATH_C_STATUS.json", PATH_C_STATUS_FILE),
+    ):
+        if not path.is_file():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            detail["sources"].append({"file": label, "error": str(exc)})
+            continue
+        landed = data.get("path_c_landed") is True
+        detail["sources"].append(
+            {
+                "file": label,
+                "path_c_landed": landed,
+                "base_tip": data.get("base_tip_sha")
+                or data.get("base_tip")
+                or data.get("tip"),
+            }
+        )
+        if landed:
+            detail["path_c_landed"] = True
+            detail["lemma_closed"] = data.get("lemma_closed", False)
+            detail["scientific_effect"] = data.get("scientific_effect", "NONE")
+            detail["next_focus"] = "tip-sync+drift+no-flip"
+            return True, detail
+    detail["path_c_landed"] = False
+    return False, detail
 
 
 def classify_path_c_blocked(
@@ -982,6 +1022,21 @@ def _one_iteration(
         return report
 
     if align_state == "ALIGNED":
+        # Batch 231: Path C already on tip (PR #64) — do not re-land; drift watch.
+        landed, land_detail = path_c_already_landed()
+        if landed:
+            report["action"] = "idle_path_c_done"
+            report["reason"] = "path_c_already_landed"
+            report["path_c_landed"] = True
+            report["path_c_landed_detail"] = land_detail
+            report["next_focus"] = "tip-sync+drift+no-flip"
+            report["preferred_autonomy"] = "aligned_drift_watch"
+            _log(
+                log_path,
+                "action=idle_path_c_done path_c_landed=true "
+                "next=tip-sync+drift+no-flip (skip re-land)",
+            )
+            return report
         report["action"] = "path_c_land"
         report["reason"] = (
             "install_has_main_flipped_true" if flipped else "aligned_writable"
