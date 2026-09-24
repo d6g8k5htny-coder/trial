@@ -21,7 +21,7 @@
   "path_b_needed": false,
   "disposition": "OPEN_HOLD",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "trial_pr": "direct-push-main",
+  "trial_pr": null,
   "trial_branch": "cursor/batch231-post-land-hygiene-e54d",
   "prior_trial_pr": 48,
   "note": "Batch 231 post-land hygiene: Path C DONE on main hardening PR #64 @ 93a4ecd. BASE_TIP already 93a4ecd. apply_all idempotent (already-applied skips); ready_to_apply superseded. when_writable_land \u2192 idle_path_c_done; prefer aligned_drift_watch. next=tip-sync+drift+no-flip. lemma_closed never flipped. flipped_anything=false.",
@@ -30,8 +30,9 @@
     "permanent_s": 10800,
     "drift_watch_s": 1800
   },
-  "trial_main_sha": "8fded871ed924c56e6969fc36570a9a813a8b551",
+  "trial_main_sha": "53f7cfcfb1c34dc9099775bc57fee8355a8fe515",
   "trial_main_landed": true,
   "ci_status": "success",
-  "ci_run": 36030592354
+  "ci_run": 36030592354,
+  "trial_land": "direct_push_main"
 }
