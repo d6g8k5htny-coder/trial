@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 101 — 2026-09-24 ~03:56 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; ahead_by=0; **no tip refresh** / **no bundle refresh**).
+- Scan: `gh api .../commits?per_page=5` main@`1c6e74b`; merged PRs #48/#45/#44/#43/#42 (hardening tip still merge of #48 = `ac33581`). Recently updated heads present but hardening tip unchanged → **IDLE 0 commits**.
+- Tiny JSON: `portable/BATCH101_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial (`cursor/batch101-idle-3e58`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
+
 ### Batch 100 — 2026-09-24 ~03:52 UTC (PERMANENT window; watch dispatch fix; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.

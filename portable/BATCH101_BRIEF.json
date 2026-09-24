@@ -1,0 +1,21 @@
+{
+  "batch": "101",
+  "generated_at_utc": "2026-09-24T03:56:05Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "install_has_main": false,
+  "installation_names": ["d6g8k5htny-coder/trial"],
+  "path_c_landed": false,
+  "main_default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "base_tip": "ac33581",
+  "tip_moved": false,
+  "tip_refresh": false,
+  "route_now": "IDLE",
+  "commits": 0,
+  "merged_recent": [48, 45, 44, 43, 42],
+  "timer": "permanent-autonomous-align-watch@3600s",
+  "flipped_anything": false,
+  "note": "install_has_main=false→Path C blocked; hardening==BASE_TIP ac33581; tips stable; IDLE 0 commits; research untouched"
+}
