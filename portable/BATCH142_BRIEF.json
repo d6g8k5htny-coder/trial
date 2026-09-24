@@ -1,6 +1,6 @@
 {
   "batch": "142",
-  "generated_at_utc": "2026-09-24T07:41:31Z",
+  "generated_at_utc": "2026-09-24T07:42:34Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -26,11 +26,11 @@
   "device_code": "16F5-39F5",
   "prior_device_code": "F11F-5064",
   "auth_renewed": false,
-  "seconds_left": 281,
+  "seconds_left": 232,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "trial_branch": "cursor/batch142-tip-refresh-02de",
   "open_main_prs_count": 11,
   "release": "batch142-path-c-bundle",
@@ -54,5 +54,8 @@
   "lemma_closed_verify": false,
   "pytest": "ok",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "applied_commit_sha": "83df4fde27fe6dfe50acb667ad4d0d9491d29e3e"
+  "applied_commit_sha": "83df4fde27fe6dfe50acb667ad4d0d9491d29e3e",
+  "trial_main_sha": "99cb845",
+  "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch142-path-c-bundle",
+  "auth_timers_created": true
 }
