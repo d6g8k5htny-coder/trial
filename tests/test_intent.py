@@ -144,7 +144,7 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "3d47d1b" in base_tip
+    assert "74c082e" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
@@ -374,9 +374,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "3d47d1b" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme
+    assert "74c082e" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
     assert "post-#41" in patches_readme.lower() or "PR #41" in patches_readme
-    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme
+    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme or "PR #42" in patches_readme or "#42" in patches_readme or "PR #45" in patches_readme or "#45" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(
@@ -471,6 +471,18 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     )
     assert "3d47d1b" in restore65_data["path_c"].get("base_tip", "")
     assert (ROOT / "portable" / "BATCH65_TOKEN_SEARCH.json").is_file()
+    restore66 = ROOT / "portable" / "RESTORE_PLAN_66.json"
+    assert restore66.is_file()
+    restore66_data = __import__("json").loads(restore66.read_text())
+    assert restore66_data["scientific_effect"] == "NONE"
+    assert restore66_data["aligned"] is True
+    assert restore66_data.get("goal_complete") is False
+    assert restore66_data.get("lemma_closed") is False
+    assert restore66_data.get("autonomous_window", {}).get("window_mode") == (
+        "PERMANENT_UNTIL_OWNER_INTERVENES"
+    )
+    assert "74c082e" in restore66_data["path_c"].get("base_tip", "")
+    assert (ROOT / "portable" / "BATCH66_TOKEN_SEARCH.json").is_file()
     assert (ROOT / "scripts" / "check_autonomous_window.py").is_file()
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
@@ -488,7 +500,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "auto-approve" in unblock or "unrestricted" in unblock
     assert "BASE_TIP.txt" in unblock
     assert (
-        "Batch 65" in unblock
+        "Batch 66" in unblock
+        or "Batch 65" in unblock
         or "Batch 64" in unblock
         or "Batch 63" in unblock
         or "PERMANENT" in unblock
@@ -500,6 +513,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 66" in log
     assert "Batch 65" in log
     assert "Batch 64" in log
     assert "Batch 63" in log
@@ -516,7 +530,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
-    assert "3d47d1b" in log or "PR #42" in log
+    assert "74c082e" in log or "PR #45" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
     assert "watch_main_alignment" in log and (
@@ -526,6 +540,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
         or "Batch 63" in log
         or "Batch 64" in log
         or "Batch 65" in log
+        or "Batch 66" in log
     )
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()

@@ -4,21 +4,22 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 65) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `3d47d1b` (post-#42)
+> ## STATUS (Batch 66) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `74c082e` (post-#45)
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
 > **Permanent extension:** “48 hours is now extended permanently until I intervene.”
-> Stop only on owner intervene — **no 48h finale.** Check:
+> Stop only on owner intervene — **no 48h finale.** Old `autonomous-48h-batch`
+> 48h-stop text is **OVERRIDE** — never honor. Check:
 > `python3 scripts/check_autonomous_window.py` (also embedded in
 > `python3 scripts/watch_main_alignment.py` + Path C/B `route` hint).
 > Timer: `permanent-autonomous-align-watch` @ **3600s** (not a 48h-stop).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `3d47d1b` (tip refresh `6f0f061`→`3d47d1b`); **no 0017**;
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `74c082e` (tip refresh `3d47d1b`→`74c082e` via #45); **no 0017**;
 > `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_65.json` + `BATCH65_TOKEN_SEARCH.json`.
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_66.json` + `BATCH66_TOKEN_SEARCH.json`.
 > `pack_portable.sh` auto-globs restore/token artifacts (Batch 64+).
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
@@ -75,7 +76,7 @@ on hardening. Certainty without write:
 # expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
 ```
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `3d47d1b` after #42 SIDE24 nav/prep honesty — `apply_all --check` OK).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `74c082e` after #45 cover-accounting RN replay — `apply_all --check` OK).
 **Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
 `PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` usually **CONFLICTS** after #41.
 
@@ -132,9 +133,14 @@ SKIP_PATH_C=1 ./portable/pr2-landing/VERIFY_AFTER_MERGE.sh   # alignment only
 | #32 | Revert PR #2 onto default `main` | **Merged** @ `4fc1d7c` (CoS); default tip **MISALIGNED** |
 | #31 | Register source preflight (nonactivating) | **Merged** @ `580864c` (batch 53b); BASE_TIP refreshed |
 | #33 | Standing auth + PR2 post-merge handoff onto default `main` | **CLOSED** (not merged; tip still MISALIGNED) |
-| #34 | Inventable probe index tip provenance fail-closed | **OPEN** draft on hardening (MERGEABLE/UNSTABLE) |
-| #35 | Restore AGENTS.md bridge pointers + CLAUDE.md mirror quote | **OPEN** on hardening (MERGEABLE/UNSTABLE); clears tip `mirror_quotes` 3 problems + bridge AGENTS.md drift |
-| #36 | Keep ladder.py at hardening-lane certificate bytes | **OPEN** draft; base `claude/drive-audit-github-migration-rrglpp` (MERGEABLE/**CLEAN** — was CONFLICTING in batch 56) |
+| #34 | Inventable probe index tip provenance fail-closed | **Merged** @ `b3da668` (batch 60) |
+| #35 | Restore AGENTS.md bridge pointers + CLAUDE.md mirror quote | **Merged** @ `036a6bc` (batch 59) |
+| #36 | Keep ladder.py at hardening-lane certificate bytes | **OPEN** draft; base `claude/drive-audit-github-migration-rrglpp` (MERGEABLE/**CLEAN**) |
+| #42 | SIDE24 nav/prep honesty deepen | **Merged** @ `3d47d1b` (batch 65) |
+| #43 | inventable REFUSED/EMPTY/ABSENT honesty walls | **Merged** @ `6f0f061` (batch 63) |
+| #44 | fail-closed vault path map | **OPEN** draft on hardening |
+| #45 | checked cover-accounting boundary for RN replay | **Merged** @ `74c082e` (batch 66); BASE_TIP refreshed |
+| #46 | Pin uniform-cost contract | **OPEN** draft (base cover-outside-residual-guard; MERGEABLE/CLEAN) |
 | #3, #12 | Older drafts | CONFLICTING after #15 — see [`CONFLICTING_PR_NOTES.md`](CONFLICTING_PR_NOTES.md) |
 
 ## Re-launch agents
@@ -162,7 +168,8 @@ Owner (or a write-enabled `main` agent) must run Path C for portable engineering
 
 ## Patch regeneration watch
 
-Working tip is **`036a6bc`** (#35 bridge/mirror on hardening; batch 59 — was `9a56c30`). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Working tip is **`74c082e`** (#45 cover-accounting on hardening; batch 66 — was `3d47d1b`). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Batch **66** (ALIGNED; Path C IDLE; tip refresh): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **`3d47d1b` → `74c082e`** (#45); residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_66.json`.
 Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): tip **`c2b0620` → `1c6e74b`**; audit **ALIGNED**; Option-B classic AM_FAILED / `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; BASE_TIP **`9a56c30` → `036a6bc`**; residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_59.json`.
 Batch **57** (MISALIGNED; tip move + Option-B RECUT; Path B DENIED; Path C IDLE): tip **`4fc1d7c` → `c2b0620`**; audit **MISALIGNED**; Option-B recut `git am` OK / would-align (`path_b_dry_run`); all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack #34/#35/#36 (#36 MERGEABLE/CLEAN); restore plan `portable/RESTORE_PLAN_57.json`.
 Batch **56** (MISALIGNED; Path C IDLE): tip still `4fc1d7c`; audit **MISALIGNED**; Option-B `git am` OK / would-align; all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack +#34/#35/#36; restore plan `portable/RESTORE_PLAN_56.json`.

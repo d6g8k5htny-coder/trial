@@ -1,7 +1,7 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `3d47d1bf2e8823376b29c32284bbcac9d36b93db`
+`chatgpt/drive-github-hardening-20260919` @ `74c082e799d8d338da9adb24a968c1231842851a`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
@@ -13,7 +13,8 @@ honesty #28, STATUS_RN_UNIF inventable ABSENT/EMPTY honesty #30,
 register source preflight #31, agent-decided governance delegation,
 AGENTS.md bridge / CLAUDE.md mirror-quote fix #35, inventable probe
 index tip provenance fail-closed #34, inventable REFUSED/EMPTY/ABSENT
-honesty walls tip provenance #43, and SIDE24 nav/prep honesty deepen #42).
+honesty walls tip provenance #43, SIDE24 nav/prep honesty deepen #42,
+and checked cover-accounting boundary for RN replay #45).
 
 **Post-#41 tip topology:** default `main` @ `1c6e74b` is ALIGNED landing
 (not Path-C shaped). Apply these patches only on hardening BASE_TIP.

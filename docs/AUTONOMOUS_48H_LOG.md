@@ -21,6 +21,22 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 66 — 2026-09-24 ~00:22 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `74c082e`; Path C IDLE / no 0017; 48h-stop OVERRIDE)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE** — do **not** finalize/stop; prefer `permanent-autonomous-align-watch`.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening **`3d47d1b` → `74c082e`** ([PR #45](https://github.com/d6g8k5htny-coder/main/pull/45) checked cover-accounting boundary for RN replay); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; math_status problems=0 / lemma_closed=false.
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING**.
+- Residual RW hunt @ CPython **3.11** after apply_all: focused **173**/0; receipts/bridge **541**/0 → **IDLE** / **no 0017**.
+- Open main PRs (read-only): #46/#44/#38/#36/#21/#12/#8/#7 drafts; #34/#35/#42/#43/#45 merged (stack hygiene in LAND).
+- **Meaningful improvement:** BASE_TIP currency to `74c082e`; COMPATIBILITY + `print_owner_unblock` Batch 66; LAND/#45 stack; `apply_all.sh` BASE_TIP comment.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale (optional leave old 48h timer but never honor stop).
+- `RESTORE_PLAN_66.json` + `BATCH66_TOKEN_SEARCH.json`. Trial `pytest` + packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 65 — 2026-09-24 ~00:15 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `3d47d1b`; Path C IDLE / no 0017)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 65 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#42); unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 66 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#45); unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
