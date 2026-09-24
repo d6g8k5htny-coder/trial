@@ -36,6 +36,9 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
 - `goal_complete=false` (permanent window open; keep iterating).
 
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `545132c..e1aed3d` (`cursor/batch65-tip-refresh-defd`). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 64 — 2026-09-24 ~00:10 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `6f0f061` unchanged; Path C IDLE / no 0017; pack glob)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Override: do **not** finalize for elapsed≥48h.
