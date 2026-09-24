@@ -1,6 +1,6 @@
 {
   "batch": "170",
-  "generated_at_utc": "2026-09-24T10:26:03Z",
+  "generated_at_utc": "2026-09-24T10:27:37Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -34,7 +34,7 @@
   "device_code": "EC83-CFC2",
   "prior_device_code": "831C-CB1C",
   "auth_renewed": false,
-  "seconds_left": 404,
+  "seconds_left": 310,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -83,5 +83,7 @@
   "release": "batch169-path-c-bundle",
   "ci_status": "pending",
   "code_changed": true,
-  "trial_main_landed": false
+  "trial_main_landed": true,
+  "trial_main_sha": "a8a5975601f0f8d64942a1617630cc94586b6ee8",
+  "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800"
 }
