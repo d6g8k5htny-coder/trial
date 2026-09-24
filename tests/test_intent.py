@@ -5087,6 +5087,8 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
         or "batch207-path-c-bundle" in open_pr
         or "batch218-path-c-bundle" in open_pr
         or "batch236-path-c-bundle" in open_pr
+        or "batch241-path-c-bundle" in open_pr
+        or "-path-c-bundle" in open_pr
         or _living_release(open_pr)
     )
 
