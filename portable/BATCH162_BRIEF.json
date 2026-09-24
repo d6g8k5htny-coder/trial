@@ -1,6 +1,6 @@
 {
   "batch": "162",
-  "generated_at_utc": "2026-09-24T09:34:52Z",
+  "generated_at_utc": "2026-09-24T09:35:19Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "device_code": "C8FC-A08F",
   "prior_device_code": "E818-2EE5",
   "auth_renewed": true,
-  "seconds_left": 816,
+  "seconds_left": 789,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -75,10 +75,11 @@
   "w3f_false_positive": true,
   "path_b_ready": false,
   "auth_renew_reason": "E818-2EE5 expired_token during batch",
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "code_changed": true,
   "release": "batch162-path-c-bundle",
   "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch162-path-c-bundle",
   "prior_issue_number": 26,
-  "prior_issue_note": "App cannot edit/comment #26 (expired E818); created #27 with current C8FC-A08F"
+  "prior_issue_note": "App cannot edit/comment #26 (expired E818); created #27 with current C8FC-A08F",
+  "trial_main_sha": "7f636f5"
 }
