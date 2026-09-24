@@ -1,6 +1,6 @@
 {
   "batch": "138",
-  "generated_at_utc": "2026-09-24T07:08:30Z",
+  "generated_at_utc": "2026-09-24T07:09:20Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -17,7 +17,7 @@
   "device_auth_error": "authorization_pending",
   "device_code": "2983-6CCD",
   "auth_renewed": false,
-  "seconds_left": 495,
+  "seconds_left": 445,
   "daemon": "up",
   "flipped_anything": false,
   "trial_main_landed": true,
@@ -34,5 +34,6 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "portable/GH_DEVICE_LOGIN.md"
   ],
-  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device 2983-6CCD pending seconds_left=561; CI dry-applies path-c-applied-bundle + lemma_closed=false; open PRs 12 (#53 PACKET watch); research untouched"
+  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device 2983-6CCD pending seconds_left=561; CI dry-applies path-c-applied-bundle + lemma_closed=false; open PRs 12 (#53 PACKET watch); research untouched",
+  "has_token": false
 }

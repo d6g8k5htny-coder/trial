@@ -5,12 +5,12 @@
 | Field | Value |
 |-------|-------|
 | Started (UTC) | 2026-09-24T07:01:46Z |
-| Checked (UTC) | 2026-09-24T07:08:30Z |
+| Checked (UTC) | 2026-09-24T07:09:20Z |
 | Verification URL | https://github.com/login/device |
 | User code | `2983-6CCD` |
 | Prior code | `5816-A241` (expired) |
 | Status | pending / authorization_pending (batch 138 poll) |
-| Expires | ~seconds_left≈495 from check |
+| Expires | ~seconds_left≈445 from check |
 
 ## Steps
 
