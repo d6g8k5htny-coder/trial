@@ -6450,25 +6450,44 @@ def test_batch244_pack_living_tip_siblings_idle() -> None:
     assert "0019" in (detail.get("resolved_ids") or [])
     assert detail.get("pending_ids") == []
 
-    proc = subprocess.run(
-        [
-            sys.executable,
-            str(ROOT / "scripts" / "when_writable_land.py"),
-            "--once",
-            "--dry-run",
-            "--mock-probe",
-            "WRITABLE",
-            "--mock-align",
-            "ALIGNED",
-            "--mock-install-has-main",
-            "true",
-        ],
-        cwd=str(ROOT),
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert proc.returncode == 0
+    import os
+    import tempfile
+
+    with tempfile.TemporaryDirectory(prefix="ww-batch244-") as td:
+        env = {
+            k: v
+            for k, v in os.environ.items()
+            if k
+            not in (
+                "MAIN_PUSH_TOKEN",
+                "GH_TOKEN",
+                "GITHUB_TOKEN",
+            )
+        }
+        env["WHEN_WRITABLE_STATUS"] = str(Path(td) / "when_writable_land.status.json")
+        env["WHEN_WRITABLE_LOG"] = str(Path(td) / "when_writable_land.log")
+        env["WHEN_WRITABLE_STOP"] = str(Path(td) / "when_writable_land.stop")
+        env["PATH_C_IGNORE_FILE_TOKENS"] = "1"
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "when_writable_land.py"),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "WRITABLE",
+                "--mock-align",
+                "ALIGNED",
+                "--mock-install-has-main",
+                "true",
+            ],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+            env=env,
+        )
+    assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
     assert "idle_path_c_done" in combined
     assert "followons_resolved=true" in combined or "path_c_landed=true" in combined
