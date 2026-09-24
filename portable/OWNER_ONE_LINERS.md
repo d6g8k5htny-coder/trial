@@ -4,6 +4,18 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 173 — tip refresh automation** (`scripts/refresh_path_c_bundle.sh`):
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run   # exit 0 tip-stable / 1 TIP_DRIFT
+> ./scripts/refresh_path_c_bundle.sh             # no-op if tip == BASE_TIP
+> ./scripts/refresh_path_c_bundle.sh --force     # rebuild .patch+.bundle + VERIFY.json anyway
+> ./scripts/assert_path_c_ready.sh               # preflight after refresh
+> ```
+>
+> Tip fetch → BASE_TIP update → `apply_all` → rebuild `path-c-on-hardening.{patch,bundle}` → VERIFY.json.
+> Use when hardening tip moves. Tip currently stable `8ea3b5f`. Scientific effect: **NONE**.
+
 > **Batch 169 — Path C fetchable git `.bundle`** (`batch169-path-c-bundle`; prefers `.bundle` over `.patch`):
 >
 > ```bash

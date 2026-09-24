@@ -3538,3 +3538,82 @@ def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
     assert "7BCB-0057" in log
     assert "lemma_closed" in log.lower()
 
+
+def test_batch173_refresh_path_c_bundle() -> None:
+    """Batch 173: tip stable; auth renew 9671; refresh_path_c_bundle.sh; lemma_closed=false."""
+    import json
+    import os
+    import stat
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH173_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "173"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "9671-4918"
+    assert data["prior_device_code"] == "7BCB-0057"
+    assert data["auth_renewed"] is True
+    assert data["write"] == "DENIED"
+    assert data.get("refresh_script") == "scripts/refresh_path_c_bundle.sh"
+    assert data.get("refresh_script_shipped") is True
+    assert data.get("canonical_issue") == 34 or data.get("issue_number") == 34
+    assert int(data.get("seconds_left", 0)) >= 0
+    assert data.get("preferred_auth_interval_s") == 1800
+
+    script = ROOT / "scripts" / "refresh_path_c_bundle.sh"
+    assert script.is_file()
+    mode = script.stat().st_mode
+    assert mode & stat.S_IXUSR, "refresh_path_c_bundle.sh must be executable"
+    text = script.read_text(encoding="utf-8")
+    assert "BASE_TIP" in text
+    assert "apply_all" in text
+    assert "path-c-on-hardening.patch" in text
+    assert "path-c-on-hardening.bundle" in text
+    assert "VERIFY.json" in text
+    assert "lemma_closed=false" in text or "lemma_closed" in text
+    assert "--dry-run" in text
+    assert "--force" in text
+
+    # Tip-stable dry-run exits 0 without mutating tree.
+    dry = subprocess.run(
+        [str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+    )
+    assert dry.returncode == 0, dry.stdout + dry.stderr
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "refresh_path_c_bundle.sh" in pack
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "refresh_path_c_bundle.sh" in unblock
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "refresh_path_c_bundle.sh" in ones
+    assert "Batch 173" in ones
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "9671-4918" in gh
+    assert "7BCB-0057" in gh
+    assert "issues/34" in gh or "#34" in gh
+    assert "refresh_path_c_bundle.sh" in gh
+    assert "batch169-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 173" in log
+    assert "9671-4918" in log
+    assert "refresh_path_c_bundle" in log
+    assert "lemma_closed" in log.lower()
+

@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 173 — 2026-09-24 ~10:45–10:50 UTC (PERMANENT window; tip stable 8ea3b5f; auth renew 7BCB→9671; ship refresh_path_c_bundle.sh; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `7BCB-0057` **<90s** still pending → **renewed** `9671-4918`; poller `gh-device-login` restarted; seconds_left≈786. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- Issue comment/edit on [#33](https://github.com/d6g8k5htny-coder/trial/issues/33) → **403** → created canonical [#34](https://github.com/d6g8k5htny-coder/trial/issues/34) with new device code + oneshot + refresh helper.
+- **Engineering (tip stable + write blocked):** shipped `scripts/refresh_path_c_bundle.sh` — tip fetch → BASE_TIP update → `apply_all` → rebuild `.patch`+`.bundle` → VERIFY.json (`--dry-run` / `--force` / `--skip-pytest`). Wired into `pack_portable.sh` + `print_owner_unblock.sh` + `OWNER_ONE_LINERS.md`. Intent: `test_batch173_refresh_path_c_bundle`.
+- CI latest trial `main` (Batch 172 lands) → **success**. Tiny JSON: `portable/BATCH173_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `9671-4918` (renewed from `7BCB-0057`) **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #34.
+
 ### Batch 172 — 2026-09-24 ~10:39–10:42 UTC (PERMANENT window; tip stable 8ea3b5f; issue hygiene #33 canonical; non-RW hunt clean no 0017; auth 7BCB pending; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

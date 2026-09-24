@@ -124,6 +124,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_path_c_oneshot.sh \
   scripts/owner_set_main_push_token.sh \
   scripts/assert_path_c_ready.sh \
+  scripts/refresh_path_c_bundle.sh \
   scripts/dispatch_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
