@@ -177,4 +177,12 @@ if echo "$STATUS_OUT" | grep -Eq 'problems[=:][[:space:]]*[1-9]'; then
 fi
 
 echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} apply_all=check+apply lemma_closed=false scientific_effect=NONE"
+
+# Batch 180: emit portable/PATH_C_STATUS.json (no secrets; lemma_closed stays false).
+STATUS_PY="${ROOT}/scripts/write_path_c_status.py"
+if [[ -f "$STATUS_PY" ]]; then
+  echo "assert_path_c_ready: writing PATH_C_STATUS.json"
+  python3 "$STATUS_PY" --skip-write-probe || echo "assert_path_c_ready: warn PATH_C_STATUS write soft-failed" >&2
+fi
+
 exit 0

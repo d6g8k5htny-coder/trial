@@ -3890,3 +3890,175 @@ def test_batch179_path_c_bundle_release() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "batch179-path-c-bundle" in unblock
 
+
+def test_batch180_path_c_status_json_schema() -> None:
+    """Batch 180: write_path_c_status.py dry-run emits required PATH_C_STATUS schema keys; tip refresh 8bd1f03; auth renew; lemma_closed=false."""
+    import json
+    import os
+    import re
+    import subprocess
+
+    script = ROOT / "scripts" / "write_path_c_status.py"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "SCHEMA_KEYS" in text
+    assert "lemma_closed" in text
+    assert "device_code" in text
+    assert "path_c_blocked" in text
+    assert "release_tag" in text
+    assert "generated_at" in text
+    # Never emit secrets
+    assert "access_token" not in text.lower() or "ACCESS_TOKEN" in text  # path ref OK
+    assert "gho_" not in text
+    assert "ghp_" not in text
+
+    required = [
+        "tip",
+        "base_tip",
+        "tip_match",
+        "write_state",
+        "lemma_closed",
+        "path_c_blocked",
+        "device_code",
+        "release_tag",
+        "generated_at",
+    ]
+    schema = subprocess.run(
+        [sys.executable, str(script), "--schema-keys"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+    assert schema.returncode == 0, schema.stderr
+    keys = json.loads(schema.stdout)
+    for k in required:
+        assert k in keys
+
+    dry = subprocess.run(
+        [sys.executable, str(script), "--dry-run", "--skip-write-probe"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    data = json.loads(dry.stdout)
+    for k in required:
+        assert k in data, f"missing schema key {k}"
+    assert data["lemma_closed"] is False
+    assert data.get("tip") == "8bd1f03" or (
+        isinstance(data.get("tip_full"), str)
+        and data["tip_full"].startswith("8bd1f03")
+    )
+    assert data.get("base_tip") == "8bd1f03" or (
+        isinstance(data.get("base_tip_full"), str)
+        and data["base_tip_full"].startswith("8bd1f03")
+    )
+    assert data.get("tip_match") is True
+    assert data.get("release_tag") == "batch180-path-c-bundle"
+    assert "ghp_" not in dry.stdout
+    assert "gho_" not in dry.stdout
+    # device_code is user code only (XXXX-XXXX), never the oauth device_code secret
+    dc = data.get("device_code")
+    if dc:
+        assert re.match(r"^[A-Z0-9]{4,}-[A-Z0-9]{4,}$", dc), dc
+
+    assert_sh = ROOT / "scripts" / "assert_path_c_ready.sh"
+    assert "write_path_c_status" in assert_sh.read_text(encoding="utf-8")
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert 'git -C "$WORKDIR" bundle verify' in refresh
+
+    brief = ROOT / "portable" / "BATCH180_BRIEF.json"
+    assert brief.is_file()
+    b = json.loads(brief.read_text(encoding="utf-8"))
+    assert b["batch"] == "180"
+    assert b["goal_complete"] is False
+    assert b["lemma_closed"] is False
+    assert b["flipped_anything"] is False
+    assert b["path_c_landed"] is False
+    assert b["tip"] == "8bd1f03"
+    assert b["tip_matches_base"] is True
+    assert b["tip_refresh"] is True
+    assert b["auth_renewed"] is True
+    assert b["device_code"] == "5216-7C1B"
+    assert b["prior_device_code"] == "AD78-6206"
+    assert b["write"] == "DENIED"
+    assert b["release"] == "batch180-path-c-bundle"
+    assert b.get("status_json") is True
+    assert b.get("preferred_auth_interval_s") == 1800
+    assert b.get("assert_path_c_ready") is True
+    assert "OPEN_HOLD" in b.get("math_status", "")
+    assert "lemma_closed=false" in b.get("math_status", "")
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify["batch"]) == "180" or int(str(verify["batch"])) >= 180
+    assert verify["lemma_closed"] is False
+    assert verify.get("release") == "batch180-path-c-bundle"
+    assert verify["base_tip_sha"].startswith("8bd1f03")
+    assert verify.get("tip_refresh") is True
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    assert "batch180-path-c-bundle" in oneshot.read_text(encoding="utf-8")
+
+    open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    op_text = open_pr.read_text(encoding="utf-8")
+    assert "batch180-path-c-bundle" in op_text
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_pr = subprocess.run(
+        ["bash", str(open_pr), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        env={**dry_env, "GIT_TERMINAL_PROMPT": "0"},
+        check=False,
+    )
+    assert dry_pr.returncode == 0, dry_pr.stderr + dry_pr.stdout
+    dry_out = dry_pr.stdout + dry_pr.stderr
+    assert "dry-run OK" in dry_out
+    assert "batch180-path-c-bundle" in dry_out
+    assert "path-c-on-hardening.bundle" in dry_out
+    assert "lemma_closed" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "5216-7C1B" in gh
+    assert "AD78-6206" in gh
+    assert "batch180-path-c-bundle" in gh
+    assert "write_path_c_status" in gh or "PATH_C_STATUS" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 180" in log
+    assert "batch180-path-c-bundle" in log
+    assert "5216-7C1B" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 180" in ones
+    assert "batch180-path-c-bundle" in ones
+    assert "write_path_c_status" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "batch180-path-c-bundle" in unblock
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "write_path_c_status.py" in pack
+
+    wwl = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "_maybe_write_path_c_status" in wwl
+

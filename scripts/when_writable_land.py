@@ -739,6 +739,30 @@ def _annotate_path_c_blocked(
     report["has_token"] = has_token
     blocked_tok = format_path_c_blocked(reasons)
     _log(log_path, f"{blocked_tok} {extra_log}")
+    # Batch 180: refresh portable/PATH_C_STATUS.json (no secrets).
+    _maybe_write_path_c_status(report)
+
+
+def _maybe_write_path_c_status(report: dict | None = None) -> None:
+    """Best-effort write of portable/PATH_C_STATUS.json via write_path_c_status.py."""
+    script = ROOT / "scripts" / "write_path_c_status.py"
+    if not script.is_file():
+        return
+    try:
+        subprocess.run(
+            [sys.executable, str(script), "--skip-write-probe"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=str(ROOT),
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return
+    if report is not None:
+        status_path = ROOT / "portable" / "PATH_C_STATUS.json"
+        if status_path.is_file():
+            report["path_c_status_path"] = "portable/PATH_C_STATUS.json"
 
 
 def _one_iteration(

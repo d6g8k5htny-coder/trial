@@ -4,22 +4,23 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T11:14:40Z |
-| Checked (UTC) | 2026-09-24T11:21:00Z |
+| Started (UTC) | 2026-09-24T11:29:37Z |
+| Checked (UTC) | 2026-09-24T11:34:00Z |
 | Verification URL | https://github.com/login/device |
-| User code | `AD78-6206` |
-| Prior code | `5E05-EA04` (near-expiry / renewed Batch 178) |
-| Prior prior | `9671-4918` (Batch 176); older: `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
+| User code | `5216-7C1B` |
+| Prior code | `AD78-6206` (near-expiry / renewed Batch 180) |
+| Prior prior | `5E05-EA04` (Batch 178); older: `9671-4918` (Batch 176); `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
 | Older priors | `C8FC-A08F` → `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending / slow_down; Batch 179 poll; seconds_left in BATCH179_BRIEF) |
-| Expires | see `seconds_left` in BATCH179_BRIEF (history: BATCH178_BRIEF / BATCH176_BRIEF / BATCH162_BRIEF) |
-| Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch179-path-c-bundle` (prior `batch169-path-c-bundle` / `batch168-path-c-bundle` / `batch162-path-c-bundle`; Batch 170 E2E: shallow clone + fetch/merge OK) |
-| Tip refresh helper | `scripts/refresh_path_c_bundle.sh` (Batch 173+; Batch 176: clearer HTTP tip-fetch errors + CI tip-drift dry-sim / fix-path messages) |
+| Status | pending (authorization_pending; Batch 180 renew; seconds_left in BATCH180_BRIEF) |
+| Expires | see `seconds_left` in BATCH180_BRIEF (history: BATCH179_BRIEF / BATCH178_BRIEF / BATCH176_BRIEF) |
+| Hardening tip | `8bd1f03` (PR #52); prior `8ea3b5f` (PR #53); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch180-path-c-bundle` (prior `batch179-path-c-bundle` / `batch169-path-c-bundle`) |
+| Tip refresh helper | `scripts/refresh_path_c_bundle.sh` (Batch 173+; Batch 180: `git bundle verify` uses WORKDIR so trial ROOT does not false-fail prerequisites) |
+| Path C status JSON | `scripts/write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip/base_tip/tip_match/write_state/lemma_closed/path_c_blocked/device_code/release_tag/generated_at; no secrets) |
 | Owner ONE-SHOT | `scripts/owner_path_c_oneshot.sh` (Batch 169: `--from-bundle` prefers `.bundle` fetch+merge) |
-| Owner PR script | `scripts/owner_open_path_c_pr.sh` (Batch 178/179: PR body links release `path-c-on-hardening.bundle`; branch `cursor/path-c-portable-fixes`) |
+| Owner PR script | `scripts/owner_open_path_c_pr.sh` (Batch 178/180: PR body links release `path-c-on-hardening.bundle`; branch `cursor/path-c-portable-fixes`) |
 | Owner secret script | `scripts/owner_set_main_push_token.sh` (Batch 162: stdin `gh secret set` — **not** `--body -`; optional `--dispatch`) |
-| Unblock issue | **[#37 Batch 178 canonical](https://github.com/d6g8k5htny-coder/trial/issues/37)** (priors [#36](https://github.com/d6g8k5htny-coder/trial/issues/36) / [#35](https://github.com/d6g8k5htny-coder/trial/issues/35) / [#34](https://github.com/d6g8k5htny-coder/trial/issues/34) / [#33](https://github.com/d6g8k5htny-coder/trial/issues/33) / [#32](https://github.com/d6g8k5htny-coder/trial/issues/32) / [#31](https://github.com/d6g8k5htny-coder/trial/issues/31) / [#30](https://github.com/d6g8k5htny-coder/trial/issues/30) / [#29](https://github.com/d6g8k5htny-coder/trial/issues/29) / [#27](https://github.com/d6g8k5htny-coder/trial/issues/27) / [#26](https://github.com/d6g8k5htny-coder/trial/issues/26) — App cannot comment/edit/close existing issues; create-only hygiene) |
-| Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false) |
+| Unblock issue | **[#38 Batch 180 canonical](https://github.com/d6g8k5htny-coder/trial/issues/38)** (priors [#37](https://github.com/d6g8k5htny-coder/trial/issues/37) / [#36](https://github.com/d6g8k5htny-coder/trial/issues/36) / [#35](https://github.com/d6g8k5htny-coder/trial/issues/35) / [#34](https://github.com/d6g8k5htny-coder/trial/issues/34) / [#33](https://github.com/d6g8k5htny-coder/trial/issues/33) / [#32](https://github.com/d6g8k5htny-coder/trial/issues/32) / [#31](https://github.com/d6g8k5htny-coder/trial/issues/31) / [#30](https://github.com/d6g8k5htny-coder/trial/issues/30) / [#29](https://github.com/d6g8k5htny-coder/trial/issues/29) / [#27](https://github.com/d6g8k5htny-coder/trial/issues/27) / [#26](https://github.com/d6g8k5htny-coder/trial/issues/26) — App cannot comment/edit/close existing issues; create-only hygiene) |
+| Ready assert | `scripts/assert_path_c_ready.sh` (BASE_TIP==live + apply_all --check + lemma_closed=false; Batch 180 also writes PATH_C_STATUS.json) |
 | Path C blocked codes | `when_writable_land` logs `PATH_C_BLOCKED=NO_TOKEN\|TIP_DRIFT\|APPLY_FAIL` (Batch 157) |
 | Preferred auth timer | `preferred_auth_interval_s=1800` (Batch 168+; parent may re-arm; do not duplicate) |
 | Main PR comment | Batch 164 one-shot on open PR #52 → **comment_denied** (403); do not spam |
@@ -27,10 +28,10 @@
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **AD78-6206**
+2. Enter code **5216-7C1B**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
-The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically. Batch 165+: `scripts/owner_path_c_oneshot.sh` is the preferred owner entry (token→`owner_open_path_c_pr` / `owner_land_path_c`; else unblock menu). Batch 169+: release ships fetchable `path-c-on-hardening.bundle`; `--from-bundle` prefers `git fetch` + merge over `git am`. Batch 173+: when hardening tip moves, run `scripts/refresh_path_c_bundle.sh` before land. Batch 176+: CI tip-drift jobs fail with that fix path and dry-sim `refresh_path_c_bundle.sh --dry-run` (never auto-pushes to main). Batch 178+: `owner_open_path_c_pr.sh` PR body links the release `.bundle` download + release page (`--dry-run` prints the URL). Batch 179+: release **`batch179-path-c-bundle`** (oneshot + bundle + refresh scripts; supersedes `batch169-path-c-bundle`).
+The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically. Batch 165+: `scripts/owner_path_c_oneshot.sh` is the preferred owner entry (token→`owner_open_path_c_pr` / `owner_land_path_c`; else unblock menu). Batch 169+: release ships fetchable `path-c-on-hardening.bundle`; `--from-bundle` prefers `git fetch` + merge over `git am`. Batch 173+: when hardening tip moves, run `scripts/refresh_path_c_bundle.sh` before land. Batch 176+: CI tip-drift jobs fail with that fix path and dry-sim `refresh_path_c_bundle.sh --dry-run` (never auto-pushes to main). Batch 178+: `owner_open_path_c_pr.sh` PR body links the release `.bundle` download + release page (`--dry-run` prints the URL). Batch 180+: tip `8bd1f03` (PR #52); release **`batch180-path-c-bundle`**; `write_path_c_status.py` emits `portable/PATH_C_STATUS.json`; auth renewed `5216-7C1B` from `AD78-6206`.
 
 ## W3f false positive (Batch 141)
 

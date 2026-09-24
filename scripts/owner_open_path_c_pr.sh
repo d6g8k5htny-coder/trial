@@ -73,7 +73,7 @@ Env:
   PATH_C_HARDENING_REF  Hardening branch (default: chatgpt/drive-github-hardening-20260919)
   PATH_C_PR_BRANCH      Feature branch (default: cursor/path-c-portable-fixes)
   PATH_C_PR_WORKDIR     Existing clone dir to reuse (optional)
-  PATH_C_RELEASE_TAG    Prefer this trial release for .bundle link (default: batch179-path-c-bundle)
+  PATH_C_RELEASE_TAG    Prefer this trial release for .bundle link (default: batch180-path-c-bundle)
   TRIAL_REPO            Trial repo slug for release lookup (default: d6g8k5htny-coder/trial)
   MAIN_PUSH_TOKEN / GH_TOKEN — optional; never printed
 
@@ -100,8 +100,8 @@ BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
 APPLY_MD="$TRIAL_ROOT/portable/path-c-applied-bundle/APPLY.md"
 VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
 # Batch 178+: prefer linking the fetchable .bundle from the latest Path C release in the PR body.
-# Batch 179: default release tag batch179-path-c-bundle (supersedes batch169).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch179-path-c-bundle}"
+# Batch 180: default release tag batch180-path-c-bundle (supersedes batch179/batch169).
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch180-path-c-bundle}"
 TRIAL_REPO_SLUG="${TRIAL_REPO:-d6g8k5htny-coder/trial}"
 
 resolve_path_c_bundle_release_url() {

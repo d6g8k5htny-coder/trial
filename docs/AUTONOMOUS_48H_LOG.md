@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 180 — 2026-09-24 ~11:28–11:37 UTC (PERMANENT window; tip 8ea3b5f→8bd1f03 PR #52; auth renew AD78→5216; write_path_c_status + PATH_C_STATUS.json; refresh bundle-verify fix; release batch180-path-c-bundle; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` → `8bd1f03`** (main [PR #52](https://github.com/d6g8k5htny-coder/main/pull/52)) → **tip refresh** via `refresh_path_c_bundle.sh`; BASE_TIP + path-c-applied-bundle rebuilt; `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `AD78-6206` **<90s** still pending → **renewed** `5216-7C1B`; poller `gh-device-login` restarted; seconds_left≈899→~495. No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up.
+- **Engineering:** shipped `scripts/write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip/base_tip/tip_match/write_state/lemma_closed/path_c_blocked/device_code/release_tag/generated_at; no secrets). Wired into `assert_path_c_ready.sh` + `when_writable_land.py`. Fixed `refresh_path_c_bundle.sh` `git bundle verify` to use WORKDIR (trial ROOT false-failed prerequisites). Intent: `test_batch180_path_c_status_json_schema`.
+- Release: **`batch180-path-c-bundle`**. Canonical issue [#38](https://github.com/d6g8k5htny-coder/trial/issues/38). Tiny JSON: `portable/BATCH180_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `5216-7C1B` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #38.
+
 ### Batch 179 — 2026-09-24 ~11:18–11:25 UTC (PERMANENT window; tip stable 8ea3b5f; auth pending AD78; CI batch178 green; release batch179-path-c-bundle; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

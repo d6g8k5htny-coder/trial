@@ -260,9 +260,26 @@ git -C "$WORKDIR" format-patch --stdout "${LIVE_SHA}..${APPLIED_SHA}" >"$PATCH_O
 
 echo "refresh_path_c_bundle: git bundle create path-c-on-hardening.bundle ${LIVE_SHORT}..${APPLIED_SHORT}"
 # Bundle must be fetchable onto a clone that already has LIVE_SHA.
+# Prefer BRANCH tip + ^LIVE_SHA (Batch 180): range+ref form can fail on some
+# shallow checkouts with "Repository lacks these prerequisite commits".
 rm -f "$BUNDLE_OUT"
-git -C "$WORKDIR" bundle create "$BUNDLE_OUT" "${LIVE_SHA}..${APPLIED_SHA}" "$BRANCH"
-git bundle verify "$BUNDLE_OUT" >/dev/null
+BUNDLE_ERR="$(mktemp "${TMPDIR:-/tmp}/refresh-bundle.XXXXXX.err")"
+if ! git -C "$WORKDIR" bundle create "$BUNDLE_OUT" "$BRANCH" "^${LIVE_SHA}" 2>"$BUNDLE_ERR"; then
+  echo "refresh_path_c_bundle: bundle create (BRANCH ^LIVE) failed; deepening + retry" >&2
+  cat "$BUNDLE_ERR" >&2 || true
+  git -C "$WORKDIR" fetch --deepen=30 origin "$HARDENING_REF" 2>/dev/null \
+    || git -C "$WORKDIR" fetch --deepen=30 origin 2>/dev/null \
+    || true
+  if ! git -C "$WORKDIR" bundle create "$BUNDLE_OUT" "$BRANCH" "^${LIVE_SHA}" 2>"$BUNDLE_ERR"; then
+    echo "refresh_path_c_bundle: deepen retry failed; falling back to range form" >&2
+    cat "$BUNDLE_ERR" >&2 || true
+    git -C "$WORKDIR" bundle create "$BUNDLE_OUT" "${LIVE_SHA}..${APPLIED_SHA}" "$BRANCH"
+  fi
+fi
+rm -f "$BUNDLE_ERR"
+# Verify against WORKDIR (hardening clone) — NOT trial ROOT, which lacks LIVE_SHA
+# and would falsely report "Repository lacks these prerequisite commits" (Batch 180).
+git -C "$WORKDIR" bundle verify "$BUNDLE_OUT" >/dev/null
 
 GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 python3 - <<PY

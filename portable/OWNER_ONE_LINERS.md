@@ -4,7 +4,21 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 179 — release `batch179-path-c-bundle`** (oneshot + `.bundle` + `refresh_path_c_bundle.sh`; tip stable `8ea3b5f`; CI green; Path C blocked NO_TOKEN):
+> **Batch 180 — tip `8ea3b5f`→`8bd1f03` (PR #52); release `batch180-path-c-bundle`; `write_path_c_status.py` → `portable/PATH_C_STATUS.json`**:
+>
+> ```bash
+> gh release download batch180-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # tip moved?: /tmp/path-c-land/scripts/refresh_path_c_bundle.sh && assert_path_c_ready.sh
+> python3 scripts/write_path_c_status.py --dry-run   # schema: tip/base_tip/tip_match/write_state/lemma_closed/path_c_blocked/device_code/release_tag/generated_at
+> ./scripts/owner_open_path_c_pr.sh --dry-run   # prints release_bundle_url → batch180
+> ```
+>
+> Auth renewed `5216-7C1B` (prior `AD78-6206` near-expiry). Path C blocked NO_TOKEN. Scientific effect: **NONE**.
+
+> **Batch 179 — release `batch179-path-c-bundle`** (oneshot + `.bundle` + `refresh_path_c_bundle.sh`; tip was `8ea3b5f`; superseded by batch180):
 >
 > ```bash
 > gh release download batch179-path-c-bundle -R d6g8k5htny-coder/trial \
