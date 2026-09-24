@@ -63,5 +63,10 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_pr": 70,
+  "trial_pr_merged": true,
+  "trial_land_branch": "cursor/batch250-verify-bundle-honesty-a6f3",
+  "trial_direct_land": false,
+  "trial_land_sha": "744a4c8"
 }
