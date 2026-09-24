@@ -6,7 +6,7 @@ Cursor App install is often **trial-only** (git push / Git Data API **403** on
 `main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
 See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
-> ## STATUS (Batch 243) — PERMANENT window; ALIGNED @ `ea41a30`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**
+> ## STATUS (Batch 244) — PERMANENT window; ALIGNED @ `ea41a30`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -16,9 +16,10 @@ See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 > Hardening / Path C tip **`542e6ec`** (== BASE_TIP; tip_moved=false; Path C 0001–0019 landed).
 > Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
 > often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**.
-> Path A + Path B: when tip is already ALIGNED, landers **exit 0 without
-> revert/merge/push/PR** (Batch 243 Path A no-op; Batch 242 Path B no-op).
-> Prefer `./scripts/restore_main_face.sh` for restore.
+> Pack `APPLY.md` ONE-SHOT now matches living tip (was stale `batch207`).
+> `when_writable_land` → `idle_path_c_done` with 0018+0019 resolved.
+> Sibling AGENTS (6) refreshed with absolute Start-here links + trial env-deps note.
+> Prefer `./scripts/restore_main_face.sh` for MISALIGNED restore (ALIGNED → no-op).
 > Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
 > grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.
 > `lemma_closed=false`. Scientific effect: **NONE**.

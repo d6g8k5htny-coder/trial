@@ -1,0 +1,101 @@
+{
+  "batch": "244",
+  "generated_at_utc": "2026-09-24T21:59:26Z",
+  "repos_count": 8,
+  "sibling_write_count": 8,
+  "details": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:17Z",
+      "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:18Z",
+      "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:59:08Z",
+      "tip_sha": "ea41a30948c4ed60268f54ec5ee84b150cf379f2",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:51Z",
+      "tip_sha": "4926b589cd0b6abca8e37a18745741c7339395cb",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:20Z",
+      "tip_sha": "c96d574bfca0802f35bccb13a5115dcf89383533",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:21Z",
+      "tip_sha": "1bd71fffce1eae12fd517017873bd4b7ffe25bc9",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/sandbox",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:58:22Z",
+      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "push": true,
+      "admin": true,
+      "default_branch": "main",
+      "pushed_at": "2026-09-24T21:47:26Z",
+      "tip_sha": "1b95a84f146b42e51d3f9a498ee986b2b09ac806",
+      "has_agents": true,
+      "write": "WRITABLE"
+    }
+  ],
+  "agents_absolute_links_shipped": [
+    "google-drive",
+    "governance-",
+    "Math-",
+    "meta-framework",
+    "query-",
+    "sandbox"
+  ],
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "token_printed": false,
+  "note": "Sibling inventory after Batch 244 AGENTS absolute-link land."
+}

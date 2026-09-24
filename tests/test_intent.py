@@ -6379,3 +6379,135 @@ def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
     assert "Batch 243" in log
     assert "Path A" in log
     assert "no-op" in log.lower() or "noop" in log.lower() or "ALIGNED" in log
+
+
+def test_batch244_pack_living_tip_siblings_idle() -> None:
+    """Batch 244: APPLY.md living tip (not batch207); sibling AGENTS; idle after 0019."""
+    import json
+    import subprocess
+    import sys
+
+    apply = (ROOT / "portable" / "path-c-applied-bundle" / "APPLY.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 244" in apply
+    assert "gh release download batch241-path-c-bundle" in apply
+    # Living ONE-SHOT must not still lead with superseded batch207.
+    assert "gh release download batch207-path-c-bundle" not in apply
+    assert "already_applied_on_tip" in apply or "already on tip" in apply.lower()
+    assert "542e6ec" in apply
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in open_pr
+    assert "batch241-path-c-bundle (tip 542e6ec" in open_pr
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 244)" in land_md
+    assert "batch241-path-c-bundle" in land_md
+    assert "WRITABLE" in land_md
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 244" in owner_actions
+    assert "APPLY.md" in owner_actions or "pack" in owner_actions.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 244" in ones
+    assert "idle_path_c_done" in ones or "already_applied_on_tip" in ones
+
+    sib = (ROOT / "portable" / "SIBLING_AGENTS_BATCH244.md").read_text(encoding="utf-8")
+    assert "Batch 244" in sib
+    for name in (
+        "google-drive",
+        "governance-",
+        "Math-",
+        "meta-framework",
+        "query-",
+        "sandbox",
+    ):
+        assert name in sib
+
+    # when_writable idle correctness after 0019 markers.
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import when_writable_land as ww  # type: ignore
+
+    landed, _ = ww.path_c_already_landed()
+    pending, detail = ww.path_c_followon_pending()
+    assert landed is True
+    assert pending is False
+    assert "0018" in (detail.get("resolved_ids") or [])
+    assert "0019" in (detail.get("resolved_ids") or [])
+    assert detail.get("pending_ids") == []
+
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "when_writable_land.py"),
+            "--once",
+            "--dry-run",
+            "--mock-probe",
+            "WRITABLE",
+            "--mock-align",
+            "ALIGNED",
+            "--mock-install-has-main",
+            "true",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0
+    combined = (proc.stdout or "") + (proc.stderr or "")
+    assert "idle_path_c_done" in combined
+    assert "followons_resolved=true" in combined or "path_c_landed=true" in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH244_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "244"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("path_c_0019_landed") is True
+    assert "path_a" not in (brief.get("defect_id") or "").lower() or "aligned_noop" not in (
+        brief.get("defect_id") or ""
+    )
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH244_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "244"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH244_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    inv = json.loads(
+        (ROOT / "portable" / "BATCH244_SIBLING_INVENTORY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert inv["batch"] == "244"
+    assert inv["repos_count"] == 8
+    assert inv["sibling_write_count"] == 8
+    assert inv["lemma_closed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 244" in log
+    assert "batch207" in log.lower() or "APPLY" in log

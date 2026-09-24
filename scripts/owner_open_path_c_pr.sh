@@ -100,8 +100,8 @@ BASE_TIP_FILE="$TRIAL_ROOT/portable/patches/BASE_TIP.txt"
 APPLY_MD="$TRIAL_ROOT/portable/path-c-applied-bundle/APPLY.md"
 VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
 # Batch 178+: prefer linking the fetchable .bundle from the latest Path C release in the PR body.
-# Batch 199: default release tag batch199-path-c-bundle (supersedes batch180-path-c-bundle / batch179 / batch169).
-# Batch 207: default release tag batch218-path-c-bundle (tip b89448d refresh; supersedes batch202-path-c-bundle).
+# Batch 241/244: default release tag batch241-path-c-bundle (tip 542e6ec; 0001–0019 already on tip).
+# Prior tags (batch239 / batch218 / batch207 / …) are historical only.
 PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"
 TRIAL_REPO_SLUG="${TRIAL_REPO:-d6g8k5htny-coder/trial}"
 

@@ -1,0 +1,39 @@
+{
+  "batch": "244",
+  "generated_at_utc": "2026-09-24T21:59:00Z",
+  "hunt": "pack_vs_living_tip_plus_sibling_agents_plus_idle_0019",
+  "hunt_result": "DEFECT_FOUND_APPLY_MD_BATCH207_STALE_PLUS_SIBLING_AGENTS_LINKS",
+  "defect_found": true,
+  "defect_id": "path_c_apply_md_oneshot_batch207_vs_living_batch241",
+  "defect_shipped": true,
+  "patch_0020": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "base_tip": "542e6ec",
+  "tip_moved": false,
+  "default_tip": "ea41a30",
+  "aligned": true,
+  "write": "WRITABLE",
+  "surfaces": {
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) — skipped",
+    "ci_hardening_default": "green; failures last 50 []",
+    "sibling_AGENTS": "6 repos absolute Start-here + trial env-deps note; main+trial unchanged",
+    "pack_vs_living_tip": "APPLY.md ONE-SHOT still batch207; living batch241 @ 542e6ec already_applied_on_tip",
+    "when_writable_idle_after_0019": "idle_path_c_done; followons 0018+0019 resolved; pending_ids []"
+  },
+  "evidence": {
+    "apply_md_batch207_oneshot": "portable/path-c-applied-bundle/APPLY.md ONE-SHOT downloaded batch207-path-c-bundle",
+    "from_bundle_dry_run": "already_applied_on_tip=true; apply_all --check OK; lemma_closed=false",
+    "when_writable": "action=idle_path_c_done path_c_landed=true followons_resolved=true",
+    "fix": [
+      "portable/path-c-applied-bundle/APPLY.md → batch241 ONE-SHOT + Batch 244 living tip header",
+      "scripts/owner_open_path_c_pr.sh comment → batch241",
+      "sibling AGENTS x6 absolute links",
+      "tests/test_intent.py test_batch244_pack_living_tip_siblings_idle"
+    ]
+  },
+  "note": "NEW signal beyond Path A/B ALIGNED no-ops: pack APPLY.md vs living tip + sibling AGENTS drift. Never printed tokens."
+}
