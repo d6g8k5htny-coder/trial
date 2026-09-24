@@ -2161,6 +2161,10 @@ def test_batch139_path_c_repository_dispatch_and_ci_green() -> None:
     assert "Resolve dry_run" in path_c or "steps.mode.outputs.dry_run" in path_c
     assert "MAIN_PUSH_TOKEN" in path_c
     assert "lemma_closed=false" in path_c
+    # Batch 139 fix: clone hardening ref directly (not default main + fetch)
+    assert "--branch" in path_c
+    assert 'clone --depth 80 --branch "${HARDENING_REF}"' in path_c or \
+        "clone --depth 80 --branch" in path_c
 
     dispatch = (ROOT / "scripts" / "dispatch_land_path_c.sh").read_text(encoding="utf-8")
     assert "land-path-c-on-main" in dispatch

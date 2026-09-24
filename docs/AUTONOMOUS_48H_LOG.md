@@ -29,6 +29,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **VERIFY batch 138 CI:** job `path-c-applied-bundle-dry-apply` — local `git am` OK (`lemma_closed=false` / problems=0 @ `c82c9357`); GitHub main run [35968047551](https://github.com/d6g8k5htny-coder/trial/actions/runs/35968047551) **success** (same job green on follow-up 35968103983).
 - Open main PRs: **12** (read-only). None carry portable Path C stack.
 - **Concrete readiness (CI green + tip stable + write blocked):** `land-path-c-on-main` gains `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; `workflow_dispatch` 403). Helper `scripts/dispatch_land_path_c.sh` (`--apply` when `MAIN_PUSH_TOKEN` secret appears). Vectors W3f. Release tgz refresh with batch138/139 artifacts.
+- **Fix:** first `repository_dispatch` dry-run [35968688730](https://github.com/d6g8k5htny-coder/trial/actions/runs/35968688730) failed — shallow clone of default main left `origin/<hardening>` unset. Clone now uses `--branch ${HARDENING_REF}` directly.
 - Tiny JSON: `portable/BATCH139_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
 **Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `F11F-5064` (renewed after `2983-6CCD` expired) **or** `dispatch_land_path_c.sh --apply` once `MAIN_PUSH_TOKEN` secret exists **or** local `--from-bundle` one-shot.

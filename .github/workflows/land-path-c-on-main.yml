@@ -143,16 +143,21 @@ jobs:
           echo "hardening_ref=${HARDENING_REF}" >> "$GITHUB_OUTPUT"
 
           rm -rf main-land
+          # Clone the hardening ref directly (default main is ALIGNED post-#41 and
+          # is a different tree). Shallow clone of default + fetch left
+          # origin/<hardening> unset on some runners (FETCH_HEAD only) — Batch 139 fix.
           if [ "${DRY_RUN}" = "true" ]; then
-            echo "dry_run=true — cloning d6g8k5htny-coder/main anonymously (no push)."
-            if ! git clone --depth 80 https://github.com/d6g8k5htny-coder/main.git main-land; then
-              echo "::error::git clone of d6g8k5htny-coder/main failed (transport)."
+            echo "dry_run=true — cloning hardening tip anonymously (no push)."
+            if ! git clone --depth 80 --branch "${HARDENING_REF}" \
+                https://github.com/d6g8k5htny-coder/main.git main-land; then
+              echo "::error::git clone of d6g8k5htny-coder/main@${HARDENING_REF} failed (transport)."
               exit 1
             fi
           else
-            echo "dry_run=false — cloning with MAIN_PUSH_TOKEN."
-            if ! git clone --depth 80 "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land; then
-              echo "::error::Authenticated clone failed. Token may lack Contents:Read/Write on d6g8k5htny-coder/main, or network failed."
+            echo "dry_run=false — cloning hardening tip with MAIN_PUSH_TOKEN."
+            if ! git clone --depth 80 --branch "${HARDENING_REF}" \
+                "https://x-access-token:${MAIN_PUSH_TOKEN}@github.com/d6g8k5htny-coder/main.git" main-land; then
+              echo "::error::Authenticated clone of ${HARDENING_REF} failed. Token may lack Contents:Read/Write on d6g8k5htny-coder/main, or network failed."
               exit 1
             fi
           fi
@@ -160,8 +165,8 @@ jobs:
           cd main-land
           git config user.name "trial-land-path-c"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin "${HARDENING_REF}"
-          git checkout -B "${BRANCH}" "origin/${HARDENING_REF}"
+          # Already on HARDENING_REF tip from clone --branch; rename to land branch.
+          git checkout -B "${BRANCH}"
           TIP="$(git rev-parse HEAD)"
           echo "hardening_tip=${TIP}" >> "$GITHUB_OUTPUT"
           echo "Checked out hardening tip ${TIP} as ${BRANCH}."

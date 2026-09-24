@@ -1,6 +1,6 @@
 {
   "batch": "139",
-  "generated_at_utc": "2026-09-24T07:17:52Z",
+  "generated_at_utc": "2026-09-24T07:18:55Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -17,7 +17,7 @@
   "device_auth_error": "authorization_pending",
   "device_code": "F11F-5064",
   "auth_renewed": true,
-  "seconds_left": 899,
+  "seconds_left": 809,
   "daemon": "up",
   "flipped_anything": false,
   "trial_main_landed": true,
@@ -26,7 +26,7 @@
   "ci_dry_apply": "green",
   "ci_dry_apply_local": "ok",
   "ci_dry_apply_main_run": "35968047551",
-  "readiness_change": "land-path-c repository_dispatch + dispatch_land_path_c.sh; release tgz refresh",
+  "readiness_change": "land-path-c repository_dispatch + hardening --branch clone fix; release tgz",
   "auth_timers_created": true,
   "artifacts_updated": [
     ".github/workflows/land-path-c-on-main.yml",
@@ -42,6 +42,7 @@
   "has_token": false,
   "trial_main_sha": "af7b6db",
   "release": "batch139-path-c-bundle",
-  "repository_dispatch_dry_run": "accepted_204",
-  "prior_device_code": "2983-6CCD"
+  "repository_dispatch_dry_run": "fixed_clone_hardening_branch",
+  "prior_device_code": "2983-6CCD",
+  "repository_dispatch_fix": "clone --branch HARDENING_REF (was FETCH_HEAD/origin unset)"
 }
