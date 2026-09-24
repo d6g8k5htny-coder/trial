@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 142 — 2026-09-24 ~07:40 UTC (PERMANENT window; tip refresh + path-c-applied-bundle rebuild @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).
+- Hardening tip **`c82c9357` → `10c077e`** ([PR #54](https://github.com/d6g8k5htny-coder/main/pull/54)); SHA confirmed via `gh api`. **BASE_TIP** + **path-c-applied-bundle** rebuilt (APPLY.md / VERIFY.json / format-patch). `apply_all` 0001–0004+0008–0016 OK; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90**/0 ResourceWarning; claims+recovery **83**/0; `git am` sanity OK.
+- Device auth `16F5-39F5` still **pending** (`authorization_pending`); seconds_left≈300+; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- **RW hunt @ 10c077e** after patches: tools `--help` 0 RW; vault_hygiene/quarantine 0 RW; tools/tests bare-open **0** actionable (frozen carrier blobs only) → **clean / no 0017**. Artifact: `portable/BATCH142_HUNT.json`.
+- GitHub Release **`batch142-path-c-bundle`** + `pack_portable.sh`. Tiny JSON: `portable/BATCH142_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `16F5-39F5` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
+
+
 ### Batch 141 — 2026-09-24 ~07:31 UTC (PERMANENT window; W3f false_positive neutralized; auth renew; scientific effect NONE; flipped nothing)
 
 - Investigated Batch 140 mismatch: `vectors_w3f=WRITABLE` + `write=DENIED` + `path_c_landed=false`.

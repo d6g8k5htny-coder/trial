@@ -5,8 +5,8 @@
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
   ],
-  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 c82c9357db381e8fd60d939a7243dab4cc863118",
-  "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118",
+  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 10c077e08261fa3d07317e290826604a749d4e49",
+  "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49",
   "apply_all_count": 13,
   "scientific_effect": "NONE",
   "lemma_closed": false,
@@ -22,7 +22,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0002",
@@ -34,7 +34,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0003",
@@ -45,7 +45,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0004",
@@ -57,7 +57,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0008",
@@ -70,7 +70,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0009",
@@ -81,7 +81,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0010",
@@ -93,7 +93,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0011",
@@ -104,7 +104,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0012",
@@ -116,7 +116,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0013",
@@ -128,7 +128,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0014",
@@ -140,7 +140,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0015",
@@ -152,7 +152,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     },
     {
       "id": "0016",
@@ -164,7 +164,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "c82c9357db381e8fd60d939a7243dab4cc863118"
+      "verified_on_tip": "10c077e08261fa3d07317e290826604a749d4e49"
     }
   ],
   "obsolete_kept_on_disk": [
@@ -213,5 +213,7 @@
       "in_apply_all": false,
       "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
     }
-  ]
+  ],
+  "verified_batch": "142",
+  "tip_refresh_via": "PR #54"
 }
