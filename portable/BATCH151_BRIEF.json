@@ -23,12 +23,12 @@
   "patches_dropped": [],
   "new_0017": false,
   "device_auth": "pending",
-  "device_auth_error": "authorization_pending",
+  "device_auth_error": "slow_down",
   "device_code": "1DAC-111C",
   "prior_device_code": "A450-C91F",
   "auth_renewed": true,
   "auth_renew_reason": "A450-C91F seconds_left<90 still pending",
-  "seconds_left": 697,
+  "seconds_left": 681,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
@@ -56,5 +56,5 @@
   "w3f_false_positive": true,
   "path_b_ready": false,
   "trial_main_landed": true,
-  "trial_main_sha": "ee232e6"
+  "trial_main_sha": "c403633"
 }
