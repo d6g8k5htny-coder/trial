@@ -1,6 +1,6 @@
 {
   "batch": "202",
-  "generated_at_utc": "2026-09-24T13:34:40Z",
+  "generated_at_utc": "2026-09-24T13:42:29Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -32,7 +32,7 @@
   "prior_device_code": "6A29-F464",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 653.9,
+  "seconds_left": 184.0,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -57,7 +57,7 @@
   "pack_reason": "tip_refresh_b89448d_plus_ci_release_tag_supersession",
   "ci_batch199": "failure",
   "ci_batch199_sha": "903ca64",
-  "ci_status": "fixing",
+  "ci_status": "green_local",
   "ci_root_cause": "living release_tag batch199 broke older intent asserts pinned to batch180-path-c-bundle",
   "readiness_change": "CI sanity red @903ca64 (release_tag supersession); tip 8bd1f03->b89448d (PR #51) refresh; auth renew 6A29->5160 (<90s); pack+release batch202-path-c-bundle; write DENIED; preferred_auth_interval_s=1800",
   "artifacts_updated": [
@@ -98,6 +98,8 @@
     "tip_match": true,
     "write_state": "DENIED",
     "release_tag": "batch202-path-c-bundle",
-    "device_code": "5160-F839"
+    "device_code": "5160-F839",
+    "tip": "b89448d",
+    "seconds_left": 184.0
   }
 }

@@ -202,9 +202,10 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    # Batch 162+: tip advanced to 8ea3b5f (PR #53); keep older SHAs accepted for history.
+    # Batch 162+: tip advanced to 8ea3b5f (PR #53); Batch 202: tip b89448d (PR #51); keep older SHAs accepted for history.
     assert (
-        "8bd1f03" in base_tip
+        "b89448d" in base_tip
+        or "8bd1f03" in base_tip
         or "8ea3b5f" in base_tip
         or "10c077e" in base_tip
         or "c82c9357" in base_tip
@@ -2068,7 +2069,8 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert (
-        data["verified_on_tip"].startswith("8bd1f03")
+        data["verified_on_tip"].startswith("b89448d")
+        or data["verified_on_tip"].startswith("8bd1f03")
         or data["verified_on_tip"].startswith("8ea3b5f")
         or data["verified_on_tip"].startswith("10c077e")
         or data["verified_on_tip"].startswith("c82c9357")
