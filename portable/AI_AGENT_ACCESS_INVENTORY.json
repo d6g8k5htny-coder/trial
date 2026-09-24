@@ -127,12 +127,182 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 240 deep-hunt close: sibling inventory living fields restored; lemma_closed=false.",
+  "note": "Batch 240 deep-hunt close: living inventory schema restored (apps_documented); sibling 8/8 WRITABLE.",
   "main_writable": true,
   "sandbox_added": true,
   "sandbox": {
     "readable": true,
     "write": "WRITABLE",
     "has_agents": true
-  }
+  },
+  "apps_documented": [
+    "cursor",
+    "chatgpt-codex-connector",
+    "claude",
+    "grok-pat-fallback"
+  ],
+  "apps": [
+    {
+      "slug": "cursor",
+      "label": "Cursor",
+      "app_url": "https://github.com/apps/cursor",
+      "install_url": "https://github.com/apps/cursor/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null,
+      "owner_hint": "select ALL repositories including sandbox"
+    },
+    {
+      "slug": "chatgpt-codex-connector",
+      "label": "ChatGPT Codex Connector",
+      "app_url": "https://github.com/apps/chatgpt-codex-connector",
+      "install_url": "https://github.com/apps/chatgpt-codex-connector/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null,
+      "owner_hint": "select ALL repositories including sandbox"
+    },
+    {
+      "slug": "claude",
+      "label": "Claude",
+      "app_url": "https://github.com/apps/claude",
+      "install_url": "https://github.com/apps/claude/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null,
+      "owner_hint": "select ALL repositories including sandbox"
+    },
+    {
+      "slug": "grok",
+      "label": "Grok (xAI)",
+      "app_url": "https://github.com/apps/grok",
+      "install_url": null,
+      "http_status": 404,
+      "official_documented": false,
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
+      "owner_hint": "PAT on ALL 8 repos including sandbox"
+    },
+    {
+      "slug": "xai",
+      "label": "xAI",
+      "app_url": "https://github.com/apps/xai",
+      "install_url": null,
+      "http_status": 404,
+      "official_documented": false,
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
+      "owner_hint": "PAT on ALL 8 repos including sandbox"
+    }
+  ],
+  "install_has_sandbox": false,
+  "repository_selection": "selected",
+  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "script": "scripts/owner_grant_ai_agent_access.sh",
+  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret",
+  "gh_api_inventory": [
+    {
+      "name": "google-drive",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "governance-",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "Math-",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "meta-framework",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "query-",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "sandbox",
+      "api_ok": true,
+      "http_status": 200,
+      "private": true,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "trial",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    },
+    {
+      "name": "main",
+      "api_ok": true,
+      "http_status": 200,
+      "private": false,
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      }
+    }
+  ],
+  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W"
 }
