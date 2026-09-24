@@ -1,0 +1,132 @@
+{
+  "generated_at_utc": "2026-09-24T15:20:04Z",
+  "install_has_main": false,
+  "install_repos": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "repos_connected": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "push"
+    }
+  ],
+  "details": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "a7c8d1e3deee448f4e01ed27eb24653b80a4554f\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "8afbc663573dad0f219398285549f20bb94e795f\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "636b98327e9000a4e1fc6bc881ac49fd896e0405\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "ed31d63dc668aaacfc619339df345fe704571955\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": false,
+      "ls_remote_head": "e3595de5c2b99327b3b175aaeb4b59e0ce921528\tHEAD"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "push",
+      "permissions_api": {
+        "admin": false,
+        "maintain": false,
+        "push": false,
+        "triage": false,
+        "pull": false
+      },
+      "install": true,
+      "ls_remote_head": "8d06ac731fe486fc8befcd7b9fa0da2da2e95e9f\tHEAD"
+    }
+  ],
+  "scientific_effect": "NONE",
+  "lemma_closed": false
+}

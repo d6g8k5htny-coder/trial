@@ -22,6 +22,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 219 — 2026-09-24 ~15:19 UTC (connect ALL 7 visible owner repos; auth renew 0867; intent tip-supersession; write DENIED; scientific effect NONE; flipped nothing)
+
+- Dylan: more repos added → inventory **all 7** public `d6g8k5htny-coder/*` (google-drive, governance-, main, Math-, meta-framework, query-, trial). `.cursor/environment.json` `repositoryDependencies` lists **ALL**. Live install still **trial-only** (`install_has_main=false`); main write **DENIED** 403; Path C **not** landed.
+- Device `4B66-CE85` low seconds → renewed **`0867-BD4B`**; poller `batch219-device-poll`. Never print tokens.
+- CI: Batch 218 sanity red — living BASE_TIP `1d0dceb` broke hardcoded `b89448d`/`8bd1f03` asserts (7d6d22f Batch216 land itself was green). Fixed via `_living_tip()` supersession.
+- Tip stable **`1d0dceb`**; `lemma_closed=false`. Research untouched. Owner: authorize device / MAIN_PUSH_TOKEN / App-add repos + relaunch.
+
 ### Batch 218 — 2026-09-24 ~15:06 UTC (aggressive write retry; tip refresh 1d0dceb; auth renew 4B66; write DENIED; scientific effect NONE; flipped nothing)
 
 - Dylan claimed WRITE UNLOCKED; probe still DENIED (refs/contents/git-push/workflow_dispatch 403; `install_has_main=false`).

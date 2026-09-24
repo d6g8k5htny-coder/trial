@@ -1,12 +1,20 @@
 {
-  "name": "trial-plus-main-scope",
+  "name": "trial-plus-all-owner-repos-scope",
   "install": "python3 -m pip install -q pytest",
-  // Write intent: repositoryDependencies asks Cursor to include d6g8k5htny-coder/main
-  // in the Cloud Agent GitHub token scope (Contents/PR write on main). Schema items
+  // Write intent: repositoryDependencies asks Cursor to include every visible
+  // d6g8k5htny-coder repo in the Cloud Agent GitHub token scope. Schema items
   // are repo URL strings (https://cursor.com/schemas/environment.schema.json).
-  // After this file merges on trial, RELAUNCH a Cloud Agent from trial so the new
-  // token picks up main scope — existing runs keep the old trial-only token.
+  // After this file merges on trial, RELAUNCH a Cloud Agent from trial so the
+  // new token picks up full scope — existing runs keep the old trial-only token.
+  // Batch 219 inventory (install currently trial-only; public pull on all):
+  // google-drive, governance-, main, Math-, meta-framework, query-, trial.
   "repositoryDependencies": [
-    "github.com/d6g8k5htny-coder/main"
+    "github.com/d6g8k5htny-coder/google-drive",
+    "github.com/d6g8k5htny-coder/governance-",
+    "github.com/d6g8k5htny-coder/main",
+    "github.com/d6g8k5htny-coder/Math-",
+    "github.com/d6g8k5htny-coder/meta-framework",
+    "github.com/d6g8k5htny-coder/query-",
+    "github.com/d6g8k5htny-coder/trial"
   ]
 }

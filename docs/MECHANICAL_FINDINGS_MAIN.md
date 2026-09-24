@@ -1,4 +1,9 @@
 
+### Batch 219 — 2026-09-24 ~15:19 UTC (connect ALL repos; auth renew 0867; write DENIED; scientific effect NONE; flipped nothing)
+
+- Repo inventory: 7 public owner repos connected in `repositoryDependencies`; install still trial-only; main write DENIED.
+- Hardening tip stable `1d0dceb` == BASE_TIP. Device renewed `0867-BD4B`. `lemma_closed=false`. Research untouched.
+
 ### Batch 218 — 2026-09-24 ~15:06 UTC (aggressive write retry; tip refresh 1d0dceb; auth renew 4B66; write DENIED; scientific effect NONE; flipped nothing)
 
 - Dylan claimed WRITE UNLOCKED; probe still DENIED (refs/contents/git-push/workflow_dispatch 403; `install_has_main=false`).

@@ -17,7 +17,7 @@ Engineering only — `lemma_closed` stays **false**. This README does **not** em
 
 ## #1 unblock — add `main` to Cursor App repo access
 
-Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Path C cannot land until you add `d6g8k5htny-coder/main` with **Read and write** under GitHub → Settings → Applications → Cursor → Repository access. Steps: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
+Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Batch 219: `.cursor/environment.json` lists **all** visible owner repos (`google-drive`, `governance-`, `main`, `Math-`, `meta-framework`, `query-`, `trial`) under `repositoryDependencies` — **RELAUNCH** after Cursor App adds them. Path C cannot land until you add at least `d6g8k5htny-coder/main` with **Read and write** under GitHub → Settings → Applications → Cursor → Repository access. Steps: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
 
 ## Intent (this repository)
 

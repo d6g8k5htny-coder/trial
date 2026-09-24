@@ -26,8 +26,9 @@ _LIVING_RELEASES = (
 
 
 def _living_tip(val) -> bool:
+    """True if val is / contains / starts with a living Path C tip SHA prefix."""
     s = str(val or "")
-    return any(s == t or s.startswith(t) for t in _LIVING_TIPS)
+    return any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS)
 
 
 def _living_release(val) -> bool:
@@ -205,14 +206,10 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    # Batch 162+: tip advanced to 8ea3b5f (PR #53); Batch 202: tip b89448d (PR #51); keep older SHAs accepted for history.
-    assert (
-        "b89448d" in base_tip
-        or "8bd1f03" in base_tip
-        or "8ea3b5f" in base_tip
-        or "10c077e" in base_tip
-        or "c82c9357" in base_tip
-        or "ac33581" in base_tip
+    # Living tip supersession (Batch 218+: 1d0dceb; keep older SHAs accepted for history).
+    assert _living_tip(base_tip) or any(
+        t in base_tip
+        for t in ("8ea3b5f", "10c077e", "c82c9357", "ac33581")
     )
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
@@ -2072,13 +2069,9 @@ def test_patches_manifest_and_pack_includes_it() -> None:
     manifest_path = ROOT / "portable" / "patches" / "MANIFEST.json"
     assert manifest_path.is_file()
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert (
-        data["verified_on_tip"].startswith("b89448d")
-        or data["verified_on_tip"].startswith("8bd1f03")
-        or data["verified_on_tip"].startswith("8ea3b5f")
-        or data["verified_on_tip"].startswith("10c077e")
-        or data["verified_on_tip"].startswith("c82c9357")
-        or data["verified_on_tip"].startswith("ac33581")
+    assert _living_tip(data["verified_on_tip"]) or any(
+        data["verified_on_tip"].startswith(t)
+        for t in ("8ea3b5f", "10c077e", "c82c9357", "ac33581")
     )
     assert data["scientific_effect"] == "NONE"
     assert data["lemma_closed"] is False
@@ -3035,7 +3028,7 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert data["release"] == "batch162-path-c-bundle"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base) or "8ea3b5f" in base
+    assert _living_tip(base) or "8ea3b5f" in base
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8")
     )
@@ -3466,11 +3459,7 @@ def test_batch162_path_c_issue_and_secret_stdin() -> None:
     assert data.get("tip_refresh") is True
     assert data.get("bundle_refresh") is True
     base_tip_162 = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert (
-        "8bd1f03" in base_tip_162
-        or "b89448d" in base_tip_162
-        or "8ea3b5f" in base_tip_162
-    )
+    assert _living_tip(base_tip_162) or "8ea3b5f" in base_tip_162
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert _living_tip(verify["base_tip_sha"]) or verify["base_tip_sha"].startswith("8ea3b5f")
     assert verify["lemma_closed"] is False
@@ -4183,7 +4172,7 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
@@ -4261,7 +4250,7 @@ def test_batch185_auth_renew_research_audit_bundle() -> None:
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
@@ -4349,7 +4338,7 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "C949-0100" in gh
@@ -4438,7 +4427,7 @@ def test_batch190_deeper_hunt_auth_renew() -> None:
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "1C7F-22B5" in gh
@@ -4526,7 +4515,7 @@ def test_batch192_readme_path_c_face() -> None:
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "CC72-DB3D" in gh or "1C7F-22B5" in gh
@@ -4616,7 +4605,7 @@ def test_batch194_readme_link_only_device_code() -> None:
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "CC72-DB3D" in gh
@@ -4714,7 +4703,7 @@ def test_batch195_path_c_status_watch_wire() -> None:
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert ("8bd1f03" in base or "b89448d" in base)
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "50DB-FD4D" in gh
@@ -4830,7 +4819,7 @@ def test_batch199_path_c_bundle_pack_release() -> None:
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base) or "1d0dceb" in base or "b89448d" in base or "8bd1f03" in base
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "6A29-F464" in gh
@@ -4948,7 +4937,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert status.get("path_c_blocked") == "NO_TOKEN"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base) or "1d0dceb" in base or "b89448d" in base
+    assert _living_tip(base)
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "5160-F839" in gh
@@ -5106,3 +5095,75 @@ def test_batch212_auth_renew_tip_stable() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 212" in log
     assert data["device_code"] in log
+
+
+def test_batch219_repos_connect_all() -> None:
+    """Batch 219: connect ALL visible owner repos; tip living 1d0dceb; auth renew; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH219_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "219"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["main_writable"] is False
+    assert data["write"] == "DENIED"
+    assert data["install_has_main"] is False
+    assert data["auth_renewed"] is True
+    assert data["device_auth"] == "pending"
+    assert "-" in str(data["device_code"])
+    assert data["prior_device_code"] == "4B66-CE85" or "-" in str(data.get("prior_device_code", ""))
+    assert _living_tip(data.get("tip"))
+    assert data.get("repositoryDependencies_updated") is True
+    repos = data.get("repos_connected") or []
+    names = {r["name"] for r in repos}
+    assert "d6g8k5htny-coder/main" in names
+    assert "d6g8k5htny-coder/trial" in names
+    assert len(names) >= 7
+
+    env = (ROOT / ".cursor" / "environment.json").read_text(encoding="utf-8")
+    for repo in (
+        "google-drive",
+        "governance-",
+        "main",
+        "Math-",
+        "meta-framework",
+        "query-",
+        "trial",
+    ):
+        assert f"github.com/d6g8k5htny-coder/{repo}" in env
+
+    inv = ROOT / "portable" / "BATCH219_REPO_INVENTORY.json"
+    assert inv.is_file()
+    inv_data = json.loads(inv.read_text(encoding="utf-8"))
+    assert inv_data["lemma_closed"] is False
+    assert inv_data["install_has_main"] is False
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("tip_match") is True
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+    assert status.get("path_c_blocked") == "NO_TOKEN"
+    assert "-" in str(status.get("device_code", ""))
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 219" in owner
+    assert "google-drive" in owner
+    relaunch = (ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md").read_text(encoding="utf-8")
+    assert "Batch 219" in relaunch
+    assert "meta-framework" in relaunch
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    login = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert data["device_code"] in login
+    assert "Batch 219" in login
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 219" in log
+    assert "0867-BD4B" in log or data["device_code"] in log

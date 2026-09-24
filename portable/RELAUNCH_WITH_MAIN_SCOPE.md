@@ -4,7 +4,7 @@
 **Current run cannot gain `main` write mid-flight** — env repos stay trial-only until relaunch.
 
 Committed `.cursor/environment.json` already declares
-`repositoryDependencies: ["github.com/d6g8k5htny-coder/main"]`, but a **personal**
+`repositoryDependencies` → all seven `d6g8k5htny-coder/*` URLs (Batch 219; was main-only), but a **personal**
 Cloud Agent environment that booted before that merge (or without picking up the
 repo-file env) still issues a **trial-only** token (`install_has_main=false`).
 
@@ -61,6 +61,25 @@ After (a) and/or after merging `.cursor/environment.json` with
 1. Start a **new** Cloud Agent from `d6g8k5htny-coder/trial`
 2. Confirm env `repos` includes `github.com/d6g8k5htny-coder/main`
 3. Path C/B can then use the agent GitHub token (not trial-only)
+
+
+## Batch 219 — connect ALL visible owner repos
+
+Committed `.cursor/environment.json` `repositoryDependencies` now includes **every**
+public `d6g8k5htny-coder` repo visible to this auth:
+
+- `github.com/d6g8k5htny-coder/google-drive`
+- `github.com/d6g8k5htny-coder/governance-`
+- `github.com/d6g8k5htny-coder/main`
+- `github.com/d6g8k5htny-coder/Math-`
+- `github.com/d6g8k5htny-coder/meta-framework`
+- `github.com/d6g8k5htny-coder/query-`
+- `github.com/d6g8k5htny-coder/trial`
+
+**Live install** is still trial-only until (a) Cursor App repository access adds them
+and (d) you **RELAUNCH**. Path C still needs Contents:Write on `main` (App R/W, device
+token, or `MAIN_PUSH_TOKEN`). Scientific effect: **NONE**. `lemma_closed=false`.
+
 
 **This running agent cannot pick up `main` mid-flight.** Repositories in the
 personal env stay `[trial]` until relaunch.

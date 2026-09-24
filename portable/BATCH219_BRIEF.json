@@ -1,0 +1,95 @@
+{
+  "batch": "219",
+  "generated_at_utc": "2026-09-24T15:22:53Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "write_unlocked": false,
+  "write": "DENIED",
+  "main_writable": false,
+  "path_c_landed": false,
+  "device_code": "0867-BD4B",
+  "prior_device_code": "4B66-CE85",
+  "auth_renewed": true,
+  "device_auth": "pending",
+  "has_token": false,
+  "install_has_main": false,
+  "install_repos": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "repos_connected": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "push"
+    }
+  ],
+  "repositoryDependencies_updated": true,
+  "tip": "1d0dceb",
+  "tip_full": "1d0dceb3ba6a02ab98965f0d71021f37c371ddf5",
+  "tip_matches_base": true,
+  "tip_refresh": false,
+  "assert_path_c_ready": "OK",
+  "path_c_blocked_now": "NO_TOKEN",
+  "release": "batch218-path-c-bundle",
+  "apply_stack": "0001-0004+0008-0017",
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "land_ci_fix": "intent_local_green_pending_remote",
+  "ci_fix_note": "Batch 218 sanity failed: living BASE_TIP 1d0dceb broke hardcoded b89448d/8bd1f03 asserts; Batch 219 uses _living_tip() for supersession. Commit 7d6d22f Batch216 land itself was green; later tip-drift/intent pins were the failure mode.",
+  "owner_next_action": "authorize device 0867-BD4B OR set MAIN_PUSH_TOKEN OR App-add all repos + relaunch",
+  "alt_actions": [
+    "device authorize 0867-BD4B at https://github.com/login/device",
+    "relaunch after Cursor App adds all d6g8k5htny-coder repos R/W (esp. main)",
+    "MAIN_PUSH_TOKEN=<PAT> ./scripts/owner_set_main_push_token.sh --dispatch"
+  ],
+  "preferred_auth_interval_s": 1800,
+  "readme_link_only": true,
+  "trial_branch": "cursor/batch219-repos-connect-5848",
+  "note": "Connected all 7 visible owner repos into environment.json repositoryDependencies. Live install still trial-only; main write DENIED; Path C not landed. Auth renewed 0867-BD4B. Research untouched lemma_closed=false.",
+  "seconds_left": 695.4,
+  "status_snapshot": {
+    "base_tip": "1d0dceb",
+    "base_tip_full": "1d0dceb3ba6a02ab98965f0d71021f37c371ddf5",
+    "device_auth": "pending",
+    "device_code": "0867-BD4B",
+    "generated_at": "2026-09-24T15:22:53Z",
+    "goal_complete": false,
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "has_token": false,
+    "lemma_closed": false,
+    "path_c_blocked": "NO_TOKEN",
+    "path_c_blocked_reason": "NO_TOKEN",
+    "release_tag": "batch218-path-c-bundle",
+    "scientific_effect": "NONE",
+    "seconds_left": 695.4,
+    "tip": "1d0dceb",
+    "tip_full": "1d0dceb3ba6a02ab98965f0d71021f37c371ddf5",
+    "tip_match": true,
+    "write_state": "DENIED"
+  }
+}

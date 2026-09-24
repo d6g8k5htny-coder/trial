@@ -1,6 +1,28 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 219 — visible repo inventory (connect ALL)
+
+**Scientific effect: NONE.** Agent token / Cursor App install is still **trial-only**
+(`GET /installation/repositories` → `d6g8k5htny-coder/trial` only; `install_has_main=false`).
+Public `d6g8k5htny-coder/*` repos are **readable** (contents list + `git ls-remote`);
+**write** verified only on `trial` (create-ref OK). `main` create-ref → **403**.
+
+| Repo | Effective perm | Install | HEAD (ls-remote) |
+|------|----------------|---------|------------------|
+| `d6g8k5htny-coder/google-drive` | pull | no | `a7c8d1e` |
+| `d6g8k5htny-coder/governance-` | pull | no | `8afbc66` |
+| `d6g8k5htny-coder/main` | pull (write DENIED) | no | `1c6e74b` (default); hardening `1d0dceb` |
+| `d6g8k5htny-coder/Math-` | pull | no | `636b983` |
+| `d6g8k5htny-coder/meta-framework` | pull | no | `ed31d63` |
+| `d6g8k5htny-coder/query-` | pull | no | `e3595de` |
+| `d6g8k5htny-coder/trial` | push | yes | live trial tip |
+
+`.cursor/environment.json` `repositoryDependencies` now lists **all seven**
+`github.com/d6g8k5htny-coder/...` URLs so a **RELAUNCH** can request full scope.
+Until Cursor App adds each repo (or device/`MAIN_PUSH_TOKEN` unlocks write), Path C stays blocked `NO_TOKEN`. `lemma_closed` stays **false** — never flip research.
+
+
 # Owner actions for `d6g8k5htny-coder/main`
 
 This agent **cannot push** to `main` (cursor[bot] 403). Only you (or an environment with write access to that repo) can apply these.
