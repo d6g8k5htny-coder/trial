@@ -9,9 +9,9 @@ Owner sandbox for Dylan Roy. **Not** the research repository.
 
 ## Path C — land engineering fixes on main
 
-Engineering only — `lemma_closed` stays **false**. Current device code (see [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md)):
+Engineering only — `lemma_closed` stays **false**. This README does **not** embed a perishable device user code.
 
-1. Open **https://github.com/login/device** → enter the user code from `GH_DEVICE_LOGIN.md`
+1. Open **https://github.com/login/device** → enter the **current** user code from [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md) (single source of truth; see that file for the live code)
 2. Or: download release **`batch180-path-c-bundle`** (or latest `*-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
 3. Or: Cursor App → add `d6g8k5htny-coder/main` (Read and write) → relaunch
 

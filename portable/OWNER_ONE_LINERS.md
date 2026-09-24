@@ -4,6 +4,19 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 194 — tip stable `8bd1f03`; auth pending `CC72-DB3D`; README Path C link-only (no embedded user code); write DENIED**:
+>
+> ```bash
+> # Repo face: README.md → Path C section links to portable/GH_DEVICE_LOGIN.md (SoT)
+> # https://github.com/login/device + live code ONLY in GH_DEVICE_LOGIN.md
+> python3 scripts/write_path_c_status.py          # PATH_C_STATUS.json (no secrets)
+> ./scripts/assert_path_c_ready.sh
+> ./scripts/owner_open_path_c_pr.sh --dry-run     # release_bundle_url → batch180
+> ./scripts/owner_path_c_oneshot.sh --from-bundle # after MAIN_PUSH_TOKEN / device auth
+> ```
+>
+> Path C blocked NO_TOKEN. Scientific effect: **NONE**. `lemma_closed` stays false.
+
 > **Batch 192 — tip stable `8bd1f03`; auth renew `CC72-DB3D` (from `1C7F-22B5` &lt;90s); README Path C face; write DENIED**:
 >
 > ```bash

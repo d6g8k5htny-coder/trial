@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 194 — 2026-09-24 ~12:54–12:58 UTC (PERMANENT window; tip stable 8bd1f03; auth pending CC72-DB3D; README Path C link-only; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8bd1f03` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip_match=true; write_state=DENIED; device_code=`CC72-DB3D`). `lemma_closed=false`.
+- Device auth `CC72-DB3D` → pending (`slow_down`); seconds_left≈300+; **no renew** (&gt;90s). No dylan token. `gh secret list -R trial` → **403** → `has_main_push_token=false`. Daemon `when-writable-land` up.
+- **Engineering:** stop stale device codes on README — Path C section is **link-only** to `portable/GH_DEVICE_LOGIN.md` (no embedded `XXXX-XXXX`); renew/device-login docs remain the single source of truth for the live code. Fixed stale Steps code in `GH_DEVICE_LOGIN.md`. Intent: `test_batch194_readme_link_only_device_code`. Prefer link-only over `sync_readme_device_code.sh` to avoid churn.
+- Research untouched (`lemma_closed=false`). Tiny JSON: `portable/BATCH194_BRIEF.json`. `goal_complete=false`. Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code in `portable/GH_DEVICE_LOGIN.md` (currently `CC72-DB3D`) **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch180-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. Repo face: `README.md` Path C section (link-only).
+
 ### Batch 192 — 2026-09-24 ~12:40–12:47 UTC (PERMANENT window; tip stable 8bd1f03; auth 1C7F→CC72 renew; README Path C face; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

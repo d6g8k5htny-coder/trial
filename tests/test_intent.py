@@ -4517,3 +4517,97 @@ def test_batch192_readme_path_c_face() -> None:
     assert "Batch 192" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 
+
+def test_batch194_readme_link_only_device_code() -> None:
+    """Batch 194: README Path C must not embed perishable XXXX-XXXX; GH_DEVICE_LOGIN is SoT."""
+    import json
+    import re
+
+    brief = ROOT / "portable" / "BATCH194_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "194"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8bd1f03"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "CC72-DB3D" or "-" in str(data["device_code"])
+    assert data["auth_renewed"] is False
+    assert data["device_auth"] == "pending"
+    assert data["write"] == "DENIED"
+    assert data["main_status"] == "ALIGNED"
+    assert data.get("has_main_push_token") is False
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("readme_link_only") is True
+    assert data.get("readme_updated") is True
+    assert "Path C" in data.get("readme_path_c_section", "")
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+    assert data.get("hunt") == "skipped_tip_stable"
+    assert data.get("patch_0017") is False
+    assert data.get("code_changed") is True
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Path C — land engineering fixes on main" in readme
+    assert "https://github.com/login/device" in readme
+    assert "GH_DEVICE_LOGIN" in readme
+    assert "portable/GH_DEVICE_LOGIN.md" in readme
+    assert "batch180-path-c-bundle" in readme or "path-c-bundle" in readme
+    assert "owner_path_c_oneshot.sh" in readme
+    assert "lemma_closed" in readme.lower()
+    assert "single source of truth" in readme.lower() or "see that file for the live code" in readme
+    # Intent: no hardcoded perishable user-code pattern on README face.
+    assert not re.search(r"\b[A-Z0-9]{4}-[A-Z0-9]{4}\b", readme), (
+        "README must not embed XXXX-XXXX device user codes; link to GH_DEVICE_LOGIN.md"
+    )
+    # Preserve sandbox boundary below the Path C face.
+    assert "research repository" in readme.lower()
+    assert "**Not**" in readme
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status["lemma_closed"] is False
+    assert status.get("tip") == "8bd1f03"
+    assert status.get("base_tip") == "8bd1f03"
+    assert status.get("tip_match") is True
+    assert status.get("device_code") == "CC72-DB3D" or "-" in str(
+        status.get("device_code", "")
+    )
+    assert status.get("release_tag") == "batch180-path-c-bundle"
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+    assert status.get("path_c_blocked") == "NO_TOKEN"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "8bd1f03" in base
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "CC72-DB3D" in gh
+    assert "User code" in gh
+    assert "single source of truth" in gh.lower() or "live source of truth" in gh.lower()
+    assert "link-only" in gh.lower() or "Batch 194" in gh
+    assert "BATCH194_BRIEF" in gh or "Batch 194" in gh
+    # Steps must not hardcode a stale prior code as the live enter-code line.
+    assert "Enter code **1C7F-22B5**" not in gh
+    assert "Enter the **User code** from the table above" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 194" in log
+    assert "link-only" in log.lower()
+    assert "CC72-DB3D" in log
+    assert "8bd1f03" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 194" in ones
+    assert "link-only" in ones.lower() or "GH_DEVICE_LOGIN.md" in ones
+
+    findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 194" in findings
+    assert "link-only" in findings.lower()
+    assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
+
