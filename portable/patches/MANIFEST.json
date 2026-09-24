@@ -184,11 +184,11 @@
       "files-touched": [
         "engine/bridge/work_order.py"
       ],
-      "obsolete-if": "tip already lists attestations in REPOSITORY_TOP_LEVEL",
+      "obsolete-if": null,
       "requires": "top-level attestations/ directory (main PR #70)",
       "in_apply_all": true,
-      "verified_on_tip": null,
-      "note": "apply_all skips when attestations/ absent"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49",
+      "note": "apply_all skips when attestations/ absent; lands with main PR #70"
     }
   ],
   "obsolete_kept_on_disk": [
