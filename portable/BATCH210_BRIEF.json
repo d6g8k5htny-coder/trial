@@ -1,6 +1,6 @@
 {
   "batch": "210",
-  "generated_at_utc": "2026-09-24T14:25:20Z",
+  "generated_at_utc": "2026-09-24T14:25:40Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -33,7 +33,7 @@
   "prior_device_code": "E577-EEF9",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 301.0,
+  "seconds_left": 281.2,
   "has_token": false,
   "has_main_push_token": false,
   "path_c_blocked_now": "NO_TOKEN",
@@ -94,8 +94,9 @@
     "release_tag": "batch207-path-c-bundle",
     "device_code": "B064-C458",
     "tip": "b89448d",
-    "seconds_left": 301.0
+    "seconds_left": 281.2
   },
-  "trial_landed": false,
-  "release_published": false
+  "trial_landed": true,
+  "release_published": false,
+  "trial_main_sha": "168d8690d8bc5a8f431a6a3160c8e6831ad40c3f"
 }
