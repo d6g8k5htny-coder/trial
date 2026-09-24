@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 74) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP → `ac33581` (PR #48); Batch 73 CI fix
+> ## STATUS (Batch 76) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C applied bundle for owner `git am`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -17,13 +17,21 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP **`5f352a2` → `ac33581`**
-> ([PR #48](https://github.com/d6g8k5htny-coder/main/pull/48) checked accounting in
-> inner-wedge RN verifier). Write **403**. **Concrete work:** tip refresh + fix
-> Batch 73 `trial-ci` failures (Intent suite `GITHUB_TOKEN`; Option-B apply skip
-> when already ALIGNED; `--after-merge` without `gh auth`; write-vector anonymous
-> tip GET fallback). Open PRs targeting `base=main`: see `BATCH74_OPEN_PR_THREATS.json`.
-> See `RESTORE_PLAN_74.json` + `BATCH74_TOKEN_SEARCH.json` + `BATCH74_BRIEF.json`.
+> (`restore_main_face` short-circuits). Path C: BASE_TIP still **`ac33581`**
+> (no tip refresh). Write **403** → agent cannot push Path C. **Concrete work:**
+> local hardening `apply_all` @ BASE_TIP in disposable worktree; verified
+> problems=0 / lemma_closed=false / focused **90**/0; packed
+> `portable/path-c-applied-bundle/` (`path-c-on-hardening.patch` + `APPLY.md` +
+> `VERIFY.json`) so Dylan can `git am` without agent write token;
+> `pack_portable.sh` includes the bundle. Open PRs targeting `base=main`:
+> see `BATCH76_OPEN_PR_THREATS.json`. See `RESTORE_PLAN_76.json` +
+> `BATCH76_TOKEN_SEARCH.json` + `BATCH76_BRIEF.json`.
+>
+> ## STATUS (Batch 74 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP → `ac33581` (PR #48); Batch 73 CI fix
+>
+> Tip refresh `5f352a2`→`ac33581`; Intent suite `GITHUB_TOKEN`; Option-B ALIGNED
+> skip; `--after-merge` without gh auth; write-vector anonymous tip GET.
+> See `RESTORE_PLAN_74.json` + `BATCH74_BRIEF.json`.
 >
 > ## STATUS (Batch 73 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `5f352a2`; CI land-workflows-dry-run (no MAIN_PUSH_TOKEN)
 >

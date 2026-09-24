@@ -1065,9 +1065,11 @@ def test_audit_research_stack_open_read_only() -> None:
         "Batch 72" in unblock
         or "Batch 71" in unblock
         or "Batch 70" in unblock
+        or "Batch 76" in unblock
         or "Batch 74" in unblock
         or "Batch 73" in unblock
         or "aligned_drift_watch" in unblock
+        or "path-c-applied-bundle" in unblock
     )
     assert "audit_research_stack_open.py" in unblock
     assert "aligned_drift_watch.py" in unblock
@@ -1129,6 +1131,46 @@ def test_audit_research_stack_open_read_only() -> None:
     assert threats74["scientific_effect"] == "NONE"
     assert threats74["goal_complete"] is False
     assert isinstance(threats74["open_prs_targeting_default_main"], list)
+    assert (ROOT / "portable" / "BATCH76_BRIEF.json").is_file()
+    brief76 = json.loads(
+        (ROOT / "portable" / "BATCH76_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief76["scientific_effect"] == "NONE"
+    assert brief76["goal_complete"] is False
+    assert brief76["lemma_closed"] is False
+    assert brief76["aligned"] is True
+    assert brief76["hardening_tip"].startswith("ac33581")
+    assert brief76["tip_refresh"] is False
+    assert brief76["preferred_restore_if_drift"] == "Path_B"
+    assert (ROOT / "portable" / "RESTORE_PLAN_76.json").is_file()
+    restore76 = json.loads(
+        (ROOT / "portable" / "RESTORE_PLAN_76.json").read_text(encoding="utf-8")
+    )
+    assert restore76["goal_complete"] is False
+    assert restore76["lemma_closed"] is False
+    assert "ac33581" in str(restore76.get("path_c", {}).get("base_tip", ""))
+    assert "path-c-applied-bundle" in str(
+        restore76.get("path_c", {}).get("applied_bundle", "")
+    )
+    assert (ROOT / "portable" / "BATCH76_OPEN_PR_THREATS.json").is_file()
+    threats76 = json.loads(
+        (ROOT / "portable" / "BATCH76_OPEN_PR_THREATS.json").read_text(encoding="utf-8")
+    )
+    assert threats76["scientific_effect"] == "NONE"
+    assert threats76["goal_complete"] is False
+    assert isinstance(threats76["open_prs_targeting_default_main"], list)
+    bundle = ROOT / "portable" / "path-c-applied-bundle"
+    assert (bundle / "path-c-on-hardening.patch").is_file()
+    assert (bundle / "APPLY.md").is_file()
+    assert (bundle / "VERIFY.json").is_file()
+    verify76 = json.loads((bundle / "VERIFY.json").read_text(encoding="utf-8"))
+    assert verify76["problems"] == 0
+    assert verify76["lemma_closed"] is False
+    assert verify76["pytest"]["focused_passed"] == 90
+    assert verify76["goal_complete"] is False
+    assert "git am" in (bundle / "APPLY.md").read_text(encoding="utf-8")
+    pack76 = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "portable/path-c-applied-bundle" in pack76
 
 
 def test_aligned_drift_watch_script_and_ci_record_only() -> None:

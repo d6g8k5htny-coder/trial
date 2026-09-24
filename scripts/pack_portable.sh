@@ -59,6 +59,7 @@ tar -czf "$OUT" -C "$ROOT" \
   ${rel_rebase_notes[@]+"${rel_rebase_notes[@]}"} \
   ${rel_stack_audits[@]+"${rel_stack_audits[@]}"} \
   portable/main-default-branch \
+  portable/path-c-applied-bundle \
   portable/pr2-landing \
   portable/patches \
   scripts/audit_main_alignment.py \

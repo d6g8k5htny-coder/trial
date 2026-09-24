@@ -4,9 +4,11 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 74:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE** — never honor. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
+> **Batch 76:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Old `autonomous-48h-batch` 48h-stop text is **OVERRIDE**. Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**.
 >
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path C: BASE_TIP → `ac33581` ([PR #48](https://github.com/d6g8k5htny-coder/main/pull/48) checked accounting in inner-wedge RN verifier; prior `5f352a2`). Write still 403. **Batch 73 CI fix:** Intent suite exports `GITHUB_TOKEN`; Option-B apply check skips when default tip already ALIGNED; `owner_land_path_b --after-merge` no longer requires `gh auth`; write-vector tip GET falls back to anonymous urllib. ALIGNED can revert (#32) — keep Path B ready via `aligned_drift_watch.py`. Open PRs targeting `base=main`: see `BATCH74_OPEN_PR_THREATS.json`. Window: `python3 scripts/check_autonomous_window.py`. Timer 3600s. See `RESTORE_PLAN_74.json` + `BATCH74_TOKEN_SEARCH.json` + `BATCH74_BRIEF.json`.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED. Path C: BASE_TIP still `ac33581` (no tip refresh). Write still 403 → Path C not pushed. **Owner land without agent write token:** `git am portable/path-c-applied-bundle/path-c-on-hardening.patch` onto hardening @ `ac33581` (see `path-c-applied-bundle/APPLY.md`; VERIFY: problems=0 / lemma_closed=false / focused 90/0). `pack_portable.sh` ships the bundle. ALIGNED can revert (#32) — keep Path B ready via `aligned_drift_watch.py`. Open PRs targeting `base=main`: see `BATCH76_OPEN_PR_THREATS.json`. Window: `python3 scripts/check_autonomous_window.py`. Timer 3600s. See `RESTORE_PLAN_76.json` + `BATCH76_TOKEN_SEARCH.json` + `BATCH76_BRIEF.json`.
+>
+> **Batch 74 archive:** tip refresh `5f352a2`→`ac33581` (PR #48) + Batch 73 CI fix; `RESTORE_PLAN_74.json` retained.
 >
 > **Batch 73 archive:** CI land-workflows-dry-run without MAIN_PUSH_TOKEN; BASE_TIP was still `5f352a2`; `RESTORE_PLAN_73.json` retained.
 >
@@ -50,6 +52,9 @@ These use **your** `gh` auth (write on `d6g8k5htny-coder/main`). Fail closed wit
 # Path C — engineering on hardening tip: apply_all 0001–0004 + 0008–0016
 ./scripts/owner_land_path_c.sh --dry-run   # certainty (works without write)
 ./scripts/owner_land_path_c.sh
+# Owner without MAIN_PUSH_TOKEN — git am the pre-verified bundle (Batch 76):
+#   git checkout -B cursor/portable-engineering-patches ac335815b277ac0c076082ac6af2344261c2093a
+#   git am portable/path-c-applied-bundle/path-c-on-hardening.patch && git push -u origin HEAD
 # Avoid post-#41: PATH_C_REBASE_ONTO_MAIN=1 (CONFLICTS) / PATH_C_BASE=main (no PACKET)
 # Do NOT set PATH_C_BASE=main unless that tip has docs/math_status/PACKET.json
 # If a forced rebase hits first-stop conflicts (ci.yml / research.yml / bridge):

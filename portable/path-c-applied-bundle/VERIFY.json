@@ -1,0 +1,27 @@
+{
+  "batch": "76",
+  "generated_at_utc": "2026-09-24T01:54:15Z",
+  "base_tip_sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+  "applied_commit_sha": "7848ab8ae51e7deda0b41c804593d209ad296986",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "problems": 0,
+  "disposition": "OPEN_HOLD",
+  "lemma_closed": false,
+  "pytest": {
+    "focused_passed": 90,
+    "focused_resource_warnings": 0,
+    "claims_recovery_passed": 83,
+    "claims_recovery_resource_warnings": 0,
+    "focused_files": [
+      "tests/test_carriers.py",
+      "tests/test_math_status.py",
+      "tests/test_inventable_jetmod_probes.py",
+      "tests/test_gaussian_moments.py",
+      "tests/test_inventable_jetmod_instrumentation_status.py"
+    ]
+  },
+  "patch_file": "path-c-on-hardening.patch",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "note": "apply_all 0001-0004+0008-0016 committed on disposable worktree @ BASE_TIP; owner git am without agent write token"
+}

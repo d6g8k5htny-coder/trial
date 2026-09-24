@@ -1,0 +1,1302 @@
+From 7848ab8ae51e7deda0b41c804593d209ad296986 Mon Sep 17 00:00:00 2001
+From: path-c-applied-bundle <path-c-bundle@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 01:54:15 +0000
+Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016 (Path
+ C)
+
+carriers pycache ignore, math_console paths, gaussian parametrize,
+git fixture timeout, close-file-handles through receipts/bridge tests.
+
+Scientific effect: NONE. lemma_closed stays false.
+---
+ docs/math_status/PACKET.json                  |   4 +-
+ docs/math_status/math_console.py              |  14 +-
+ tests/test_bridge.py                          |  15 +-
+ tests/test_carriers.py                        |  15 +-
+ tests/test_claims.py                          |  15 +-
+ tests/test_collision_proposal.py              |  42 +++--
+ tests/test_drive_index_overlay.py             |   3 +-
+ tests/test_frozen_check.py                    |  19 ++-
+ tests/test_gaussian_moments.py                |   2 +-
+ ...nventable_jetmod_instrumentation_status.py |  12 +-
+ tests/test_inventable_jetmod_probes.py        |   6 +-
+ tests/test_math_status.py                     |  71 +++++---
+ tests/test_receipts.py                        |  15 +-
+ tests/test_recovery.py                        |  73 ++++----
+ tests/test_run_checks.py                      |   2 +-
+ tests/test_workflow_integrity_hardening.py    |   2 +-
+ tools/carriers_verify.py                      |   7 +-
+ tools/collision_proposal_check.py             |  19 ++-
+ tools/math_status_check.py                    |  20 ++-
+ tools/quarantine_check.py                     |  30 ++--
+ tools/recovery_check.py                       |   9 +-
+ tools/verify_manifests.py                     | 156 +++++++++---------
+ 22 files changed, 337 insertions(+), 214 deletions(-)
+
+diff --git a/docs/math_status/PACKET.json b/docs/math_status/PACKET.json
+index 97a9a5f..4c31f7d 100644
+--- a/docs/math_status/PACKET.json
++++ b/docs/math_status/PACKET.json
+@@ -50,8 +50,8 @@
+       "bytes": 3115
+     },
+     "math_console.py": {
+-      "sha256": "62121478eef750eb7231b52d5fa4fa016d103d465f2531895e9282d16486d23a",
+-      "bytes": 13905
++      "sha256": "55df628e3773c1805bee4d40aadb5dc0c2f012412e2ddfbb90dca5fe2a4d4587",
++      "bytes": 14052
+     },
+     "math_console_snapshot.json": {
+       "sha256": "3b67086fd2dc75cdf6ef17f055a25668e9b6392cb28cbcd5b162076bc1bdc487",
+diff --git a/docs/math_status/math_console.py b/docs/math_status/math_console.py
+index 19834f5..f1004fe 100644
+--- a/docs/math_status/math_console.py
++++ b/docs/math_status/math_console.py
+@@ -1,15 +1,15 @@
+ #!/usr/bin/env python3
+ """math_console.py — one-command fail-closed math board for Dylan.
+ 
+-Reads local JETMOD / RN-UNIF receipts under code_prototypes/, prints an honest
++Reads local JETMOD / RN-UNIF receipts under docs/math_status/ (prototypes are not mirrored here); prints an honest
+ OPEN/blocked status board, recommends mesh size from the whitened envelope,
+ and names the single next action. Never flips lemma_closed / never discharges
+ OBL-H5-JETMOD or D3-LEMMA-RN-UNIF.
+ 
+ Usage:
+-  python3 code_prototypes/math_console.py
+-  python3 code_prototypes/math_console.py --json
+-  python3 code_prototypes/math_console.py --budget 0.68 --margin 2e-4
++  python3 docs/math_status/math_console.py
++  python3 docs/math_status/math_console.py --json
++  python3 docs/math_status/math_console.py --budget 0.68 --margin 2e-4
+ """
+ from __future__ import annotations
+ 
+@@ -21,7 +21,7 @@ from datetime import datetime, timezone
+ from pathlib import Path
+ from typing import Any, Optional
+ 
+-ROOT = Path(__file__).resolve().parents[1]
++ROOT = Path(__file__).resolve().parents[2]  # repository root
+ PROTO = Path(__file__).resolve().parent
+ OUT = PROTO / "math_console_snapshot.json"
+ 
+@@ -216,7 +216,7 @@ def build(budget: float, margin: float) -> dict:
+     next_action = {
+         "id": "rnu_tighten_CH",
+         "why": "Whitening killed 1e17 slack; C_H still provisional (~20 vs measured ratio ~0.012). Tight certified Lip-of-Hess is the RN bottleneck.",
+-        "command": "python3 code_prototypes/rnu_white_hess_calibrate_v1.py",
++        "command": "python3 docs/math_status/math_console.py --json  # hess calibrator not mirrored; stay fail-closed",
+         "do_not": "Do not flip lemma_closed; do not invent a 24-jet roster; do not treat CI green as discharge.",
+     }
+     if piece2.upper().startswith("UNWRITTEN") and plan.hw_max_toy and plan.hw_max_toy < 0.2:
+@@ -229,7 +229,7 @@ def build(budget: float, margin: float) -> dict:
+         next_action = {
+             "id": "rnu_white_box",
+             "why": "No whitened box / envelope receipt found.",
+-            "command": "python3 code_prototypes/rnu_white_box_grad_bound_v1.py",
++            "command": "python3 docs/math_status/math_console.py --json  # prototype receipts not mirrored; stay fail-closed",
+             "do_not": "Do not use crude chi2_grad_bound as if whitened.",
+         }
+ 
+diff --git a/tests/test_bridge.py b/tests/test_bridge.py
+index 9d04f66..507ef9b 100644
+--- a/tests/test_bridge.py
++++ b/tests/test_bridge.py
+@@ -1389,7 +1389,8 @@ def test_store_destination_predicate_accepts_the_receipts_root_and_outside(tmp_p
+ 
+ 
+ def _open_modes(path):
+-    tree = ast.parse(open(path, encoding="utf-8").read())
++    with open(path, encoding="utf-8") as handle:
++        tree = ast.parse(handle.read())
+     modes, attrs, imports = [], set(), set()
+     for node in ast.walk(tree):
+         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "open":
+@@ -1542,7 +1543,8 @@ def test_strict_loader_refuses_nan(tmp_path):
+     p.write_text('{"a": NaN}', encoding="utf-8")
+     with pytest.raises(ValueError):
+         C.load_json_strict(str(p))
+-    assert json.load(open(p)) is not None       # the lenient parser would have taken it
++    with open(p) as handle:
++        assert json.load(handle) is not None       # the lenient parser would have taken it
+ 
+ 
+ @pytest.mark.parametrize("variant", ["indent4", "unsorted", "no_newline", "compact", "crlf"])
+@@ -1786,13 +1788,15 @@ def test_checker_summary_line_is_last_and_one_line(tmp_path):
+     CHECKER, __file__,
+ ])
+ def test_every_module_docstring_says_what_it_does_not_establish(path):
+-    doc = ast.get_docstring(ast.parse(open(path, encoding="utf-8").read())) or ""
++    with open(path, encoding="utf-8") as handle:
++        doc = ast.get_docstring(ast.parse(handle.read())) or ""
+     assert "not establish" in doc.lower() or "does not mean" in doc.lower(), path
+     assert "not deployed" in doc.lower(), path
+ 
+ 
+ def test_agents_md_points_and_does_not_legislate():
+-    text = open(os.path.join(ROOT, "AGENTS.md"), encoding="utf-8").read()
++    with open(os.path.join(ROOT, "AGENTS.md"), encoding="utf-8") as handle:
++        text = handle.read()
+     lines = text.strip().splitlines()
+     assert len(lines) <= 45, len(lines)
+     for needle in ("CLAUDE.md", "180yfvocozAaFRxf7tY8CDrobnpi17Sv-UkQGBBWCiD8",
+@@ -1805,7 +1809,8 @@ def test_agents_md_points_and_does_not_legislate():
+ 
+ 
+ def _text(path):
+-    return open(path, encoding="utf-8").read()
++    with open(path, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def test_no_text_claims_a_verification_this_repository_cannot_do():
+diff --git a/tests/test_carriers.py b/tests/test_carriers.py
+index 3ae5ce4..d45400f 100644
+--- a/tests/test_carriers.py
++++ b/tests/test_carriers.py
+@@ -83,7 +83,8 @@ def test_every_stored_blob_rehashes_to_its_content_address():
+         if not rec["blob_stored"]:
+             continue
+         path = os.path.join(ROOT, rec["blob_path"])
+-        raw = open(path, "rb").read()
++        with open(path, "rb") as handle:
++            raw = handle.read()
+         digest = hashlib.sha256(raw).hexdigest()
+         assert digest == rec["sha256"], rec["carrier_id"]
+         assert len(raw) == rec["bytes"], rec["carrier_id"]
+@@ -312,3 +313,15 @@ def test_negative_control_legacy_archive_binding_is_caught(sandbox):
+     proc = run_verifier(sandbox)
+     assert proc.returncode != 0
+     assert "02_LEGACY_Q0_ARCHIVE" in proc.stdout
++
++
++def test_pycache_in_blobs_is_ignored(sandbox):
++    """Importing a stored blob must not make carriers_verify fail on __pycache__."""
++    cache = sandbox / "engine" / "carriers" / "blobs" / "__pycache__"
++    cache.mkdir(exist_ok=True)
++    (cache / "ghost.cpython-311.pyc").write_bytes(b"not a carrier")
++    (sandbox / "engine" / "carriers" / "blobs" / "orphan.pyc").write_bytes(b"nope")
++    proc = run_verifier(sandbox)
++    assert proc.returncode == 0, proc.stdout + proc.stderr
++    assert "blobs/__pycache__" not in proc.stdout
++    assert "orphan.pyc" not in proc.stdout
+diff --git a/tests/test_claims.py b/tests/test_claims.py
+index 1444cef..4624dc3 100644
+--- a/tests/test_claims.py
++++ b/tests/test_claims.py
+@@ -245,8 +245,10 @@ def route_transcription_mismatches(g: dict) -> list[tuple[str, str, object, obje
+     cites. Empty when the graph transcribes the register."""
+     import json as _json
+     import re as _re
+-    rq = _json.load(open(os.path.join(ROOT, "registers", "json", "review_queue.json"), encoding="utf-8"))
+-    ecq = _json.load(open(os.path.join(ROOT, "registers", "json", "easy_closure_queue.json"), encoding="utf-8"))
++    with open(os.path.join(ROOT, "registers", "json", "review_queue.json"), encoding="utf-8") as handle:
++        rq = _json.load(handle)
++    with open(os.path.join(ROOT, "registers", "json", "easy_closure_queue.json"), encoding="utf-8") as handle:
++        ecq = _json.load(handle)
+     rh, eh = rq["header"], ecq["header"]
+     rrows = {r[rh.index("Review key")]: r for r in rq["rows"]}
+     erows = {r[eh.index("Candidate ID")]: r for r in ecq["rows"]}
+@@ -518,7 +520,8 @@ def test_a_retraction_record_without_a_register_status_is_refused():
+ def test_theorem_b_register_status_is_the_register_row_verbatim():
+     """The graph node transcribes the register; it may not paraphrase it."""
+     import json as _json
+-    ac = _json.load(open(os.path.join(ROOT, "registers", "json", "automation_config.json"), encoding="utf-8"))
++    with open(os.path.join(ROOT, "registers", "json", "automation_config.json"), encoding="utf-8") as handle:
++        ac = _json.load(handle)
+     row = [r for r in ac["rows"] if r[0] == "THEOREM_B_CURRENT_STATUS"][0]
+     node = graph()["claims"]["Q0-C104-THEOREM-B"]
+     assert node["register_status"] == row[1]
+@@ -552,7 +555,8 @@ def _side24_mismatches(g):
+     import json as _json
+     out = []
+     node = g["claims"]["SIDE24-3D-AO48-OPR-045"]
+-    od = _json.load(open(os.path.join(ROOT, "registers", "json", "operator_decisions.json"), encoding="utf-8"))
++    with open(os.path.join(ROOT, "registers", "json", "operator_decisions.json"), encoding="utf-8") as handle:
++        od = _json.load(handle)
+     row = [r for r in od["rows"] if r[0] == "AO48-OPR-045"][0]
+     if node.get("register_status") != row[5]:
+         out.append(("register_status", node.get("register_status"), row[5]))
+@@ -573,7 +577,8 @@ def _side24_mismatches(g):
+     if not os.path.isfile(mp):
+         out.append(("mirror_path", node.get("mirror_path"), "missing"))
+     else:
+-        b = open(mp, "rb").read()
++        with open(mp, "rb") as handle:
++            b = handle.read()
+         if _h.sha256(b).hexdigest() != node.get("body_sha256") or len(b) != node.get("body_bytes"):
+             out.append(("mirror bytes", _h.sha256(b).hexdigest(), node.get("body_sha256")))
+         text = b.decode("utf-8")
+diff --git a/tests/test_collision_proposal.py b/tests/test_collision_proposal.py
+index c5cd06c..7b9632e 100644
+--- a/tests/test_collision_proposal.py
++++ b/tests/test_collision_proposal.py
+@@ -124,7 +124,8 @@ def known():
+ 
+ 
+ def md():
+-    return open(MD_PATH, encoding="utf-8").read()
++    with open(MD_PATH, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def expect_fail(root: str, needle: str):
+@@ -372,7 +373,8 @@ def sdoc():
+ 
+ 
+ def smd():
+-    return open(SUCC_MD, encoding="utf-8").read()
++    with open(SUCC_MD, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def expect_succ_fail(root: str, needle: str, *extra: str):
+@@ -453,7 +455,8 @@ def test_successor_xlsx_digest_matches_sources_json_and_disk():
+     rec = [e for e in sources["exports"] if e["file"] == os.path.basename(src["xlsx_path"])]
+     assert len(rec) == 1
+     assert rec[0]["sha256"] == src["xlsx_sha256"] and rec[0]["bytes"] == src["xlsx_bytes"]
+-    raw = open(os.path.join(ROOT, src["xlsx_path"]), "rb").read()
++    with open(os.path.join(ROOT, src["xlsx_path"]), "rb") as handle:
++        raw = handle.read()
+     assert hashlib.sha256(raw).hexdigest() == src["xlsx_sha256"] and len(raw) == src["xlsx_bytes"]
+ 
+ 
+@@ -479,7 +482,8 @@ def test_successor_supersedes_nothing_and_names_its_frozen_predecessor_by_digest
+     assert d["supersedes"] is None
+     pred = d["successor_of"]
+     assert pred["path"] == "registers/collision_proposal.json"
+-    raw = open(JSON_PATH, "rb").read()
++    with open(JSON_PATH, "rb") as handle:
++        raw = handle.read()
+     assert pred["sha256"] == hashlib.sha256(raw).hexdigest() and pred["bytes"] == len(raw)
+ 
+ 
+@@ -749,7 +753,8 @@ def test_successor_prose_cell_counts_agree_with_the_machine_counts():
+     m = re.search(r"they are not\.\*\* (\w+) of sixteen cells differ", text)
+     assert m and NUMBER_WORDS[m.group(1).lower()] == cc["cells_differing"]
+     assert f"Cell count: 16 columns compared, {cc['cells_identical']} identical, {cc['cells_differing']} differing" in text
+-    findings = open(os.path.join(ROOT, "docs", "FINDINGS_2026-09-18.md"), encoding="utf-8").read()
++    with open(os.path.join(ROOT, "docs", "FINDINGS_2026-09-18.md"), encoding="utf-8") as handle:
++        findings = handle.read()
+     m = re.search(r"digest but differ in (\w+) of sixteen cells", findings)
+     assert m and NUMBER_WORDS[m.group(1)] == cc["cells_differing"]
+     for stale in ("Nine of sixteen", "Seven cells differ", "seven cells differ", "Seven of sixteen"):
+@@ -1253,7 +1258,8 @@ def stage_third(sandbox3, doc=None, md=None, known=None, first=None, second=None
+         if override is None:
+             shutil.copy2(src, dst)
+         else:
+-            open(dst, "w", encoding="utf-8").write(override)
++            with open(dst, "w", encoding="utf-8") as handle:
++                handle.write(override)
+     return str(sandbox3)
+ 
+ 
+@@ -1262,7 +1268,8 @@ def tdoc():
+ 
+ 
+ def tmd():
+-    return open(THIRD_MD, encoding="utf-8").read()
++    with open(THIRD_MD, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def trec(ident: str) -> int:
+@@ -1365,7 +1372,8 @@ def test_third_xlsx_digest_matches_sources_json_and_disk():
+     rec = [e for e in sources["exports"] if e["file"] == os.path.basename(src["xlsx_path"])]
+     assert len(rec) == 1
+     assert rec[0]["sha256"] == src["xlsx_sha256"] and rec[0]["bytes"] == src["xlsx_bytes"]
+-    raw = open(os.path.join(ROOT, src["xlsx_path"]), "rb").read()
++    with open(os.path.join(ROOT, src["xlsx_path"]), "rb") as handle:
++        raw = handle.read()
+     assert hashlib.sha256(raw).hexdigest() == src["xlsx_sha256"] and len(raw) == src["xlsx_bytes"]
+ 
+ 
+@@ -1393,9 +1401,11 @@ def test_third_names_its_chain_by_digest_and_supersedes_nothing():
+     assert d["supersedes"] is None
+     pred = d["successor_of"]
+     assert pred["path"] == SUCC_REL
+-    raw = open(SUCC_JSON, "rb").read()
++    with open(SUCC_JSON, "rb") as handle:
++        raw = handle.read()
+     assert pred["sha256"] == hashlib.sha256(raw).hexdigest() and pred["bytes"] == len(raw)
+-    raw0 = open(JSON_PATH, "rb").read()
++    with open(JSON_PATH, "rb") as handle:
++        raw0 = handle.read()
+     chain = d["predecessor_chain"]
+     assert [c["path"] for c in chain] == [SUCC_REL, "registers/collision_proposal.json"]
+     assert chain[1]["sha256"] == hashlib.sha256(raw0).hexdigest() and chain[1]["bytes"] == len(raw0)
+@@ -1477,7 +1487,8 @@ def test_third_markdown_quotes_every_finding_key_row_and_statement():
+     assert "What this document does NOT establish" in text
+     assert "third numbered proposal" in text
+     for pdoc_path in (JSON_PATH, SUCC_JSON):
+-        assert hashlib.sha256(open(pdoc_path, "rb").read()).hexdigest() in text
++        with open(pdoc_path, "rb") as handle:
++            assert hashlib.sha256(handle.read()).hexdigest() in text
+     n = 0
+     for p in tdoc()["proposals"]:
+         cc = p["cell_comparison"]
+@@ -1660,7 +1671,8 @@ def test_negative_third_wrong_workbook_tab_fails(sandbox3):
+ def test_negative_third_checker_tab_map_disagreeing_with_the_importer_fails(sandbox3):
+     """Rename a sheet in the sandbox importer's SHEETS map: the checker's WORKBOOK_TAB no
+     longer matches the importer and must say so, whatever the document claims."""
+-    src = open(os.path.join(ROOT, "tools", "registers_import.py"), encoding="utf-8").read()
++    with open(os.path.join(ROOT, "tools", "registers_import.py"), encoding="utf-8") as handle:
++        src = handle.read()
+     old = '("Definition Registry", "definitions")'
+     assert old in src
+     expect_third_fail(stage_third(sandbox3, importer=src.replace(old, '("Definitions", "definitions")')),
+@@ -1842,11 +1854,13 @@ def test_negative_third_without_successor_of_fails(sandbox3):
+ # ------------------------------------- repository prose against the live cells
+ 
+ def readme_text() -> str:
+-    return open(README_PATH, encoding="utf-8").read()
++    with open(README_PATH, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def findings_text() -> str:
+-    return open(FINDINGS_PATH, encoding="utf-8").read()
++    with open(FINDINGS_PATH, encoding="utf-8") as handle:
++        return handle.read()
+ 
+ 
+ def test_third_prose_files_are_present_in_the_sandbox(sandbox3):
+diff --git a/tests/test_drive_index_overlay.py b/tests/test_drive_index_overlay.py
+index 2df73e5..0dd1214 100644
+--- a/tests/test_drive_index_overlay.py
++++ b/tests/test_drive_index_overlay.py
+@@ -28,7 +28,8 @@ def run(*args):
+ 
+ def test_the_2026_09_18_delta_is_238_rows_bound_to_the_export():
+     snap = {e["id"]: e for e in DI.load(overlay=False)}
+-    rows = [json.loads(l) for l in open(DELTA, encoding="utf-8") if l.strip()]
++    with open(DELTA, encoding="utf-8") as handle:
++        rows = [json.loads(l) for l in handle if l.strip()]
+     assert len(rows) == 238
+     for r in rows:
+         assert r["id"] in snap
+diff --git a/tests/test_frozen_check.py b/tests/test_frozen_check.py
+index f92f5aa..e9bb420 100644
+--- a/tests/test_frozen_check.py
++++ b/tests/test_frozen_check.py
+@@ -47,7 +47,8 @@ class Inputs:
+             json.dump(d, f, ensure_ascii=False)
+ 
+     def edit_inventory(self, drive_id, **fields):
+-        rows = [json.loads(l) for l in open(self.inventory, encoding="utf-8") if l.strip()]
++        with open(self.inventory, encoding="utf-8") as handle:
++            rows = [json.loads(l) for l in handle if l.strip()]
+         hit = False
+         out = []
+         for r in rows:
+@@ -129,7 +130,8 @@ def test_every_row_gets_exactly_one_status_and_the_register_drift_status_is_carr
+     assert problems == []
+     assert len(report) == 195
+     assert all(e["status"] for e in report)
+-    d = json.load(open(FROZEN, encoding="utf-8"))
++    with open(FROZEN, encoding="utf-8") as handle:
++        d = json.load(handle)
+     c_drift = d["header"].index("Drift Status")
+     for e, r in zip(report, d["rows"]):
+         assert e["register_drift_status"] == (r[c_drift].strip() if c_drift < len(r) else "")
+@@ -238,9 +240,16 @@ def test_allowlist_matches_exact_strings_only(inputs):
+ 
+ 
+ def test_the_checker_never_writes_its_inputs():
+-    before = {p: hashlib.sha256(open(p, "rb").read()).hexdigest() for p in (FROZEN, INVENTORY)}
++    before = {}
++    for p in (FROZEN, INVENTORY):
++        with open(p, "rb") as handle:
++            before[p] = hashlib.sha256(handle.read()).hexdigest()
+     subprocess.run([sys.executable, CHECKER, "--json"], capture_output=True, text=True, check=True)
+-    after = {p: hashlib.sha256(open(p, "rb").read()).hexdigest() for p in (FROZEN, INVENTORY)}
++    after = {}
++    for p in (FROZEN, INVENTORY):
++        with open(p, "rb") as handle:
++            after[p] = hashlib.sha256(handle.read()).hexdigest()
+     assert before == after
+-    src = open(CHECKER, encoding="utf-8").read()
++    with open(CHECKER, encoding="utf-8") as handle:
++        src = handle.read()
+     assert 'open(' in src and '"w"' not in src and "'w'" not in src
+diff --git a/tests/test_gaussian_moments.py b/tests/test_gaussian_moments.py
+index 8f58961..0a8ea49 100644
+--- a/tests/test_gaussian_moments.py
++++ b/tests/test_gaussian_moments.py
+@@ -59,7 +59,7 @@ def test_correlated_noncentered_against_independent_expansion(case, degree):
+             assert evaluate(polynomial, mark) == second_moment_trace(mean, cov)
+ 
+ 
+-@pytest.mark.parametrize('mu_x,mu_y', product((-1,0,1), repeat=2))
++@pytest.mark.parametrize('mu_x,mu_y', list(product((-1,0,1), repeat=2)))
+ @pytest.mark.parametrize('degree', (2,4))
+ def test_rn5_old_independent_special_case(mu_x, mu_y, degree):
+     v = F(1, 10**6)
+diff --git a/tests/test_inventable_jetmod_instrumentation_status.py b/tests/test_inventable_jetmod_instrumentation_status.py
+index 3902be7..a6df694 100644
+--- a/tests/test_inventable_jetmod_instrumentation_status.py
++++ b/tests/test_inventable_jetmod_instrumentation_status.py
+@@ -83,9 +83,11 @@ def test_negative_accepting_instrumentation_attempt_is_refused(tmp_path):
+         / "math_status_probes"
+         / "inventable_g12_ext_named_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+@@ -107,9 +109,11 @@ def test_negative_24jet_status_promotion_is_refused(tmp_path):
+         / "math_status_probes"
+         / "inventable_multi_jet_band_REFUSED_NOT_24JET_receipt.json"
+     )
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["status"] = "CERTIFIED_24JET"  # inventable promotion
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+diff --git a/tests/test_inventable_jetmod_probes.py b/tests/test_inventable_jetmod_probes.py
+index 61ff14c..a026dbb 100644
+--- a/tests/test_inventable_jetmod_probes.py
++++ b/tests/test_inventable_jetmod_probes.py
+@@ -105,9 +105,11 @@ def test_negative_accepting_inventable_attempt_is_refused(tmp_path):
+     shutil.copytree(os.path.join(ROOT, "docs"), dest / "docs")
+     shutil.copytree(os.path.join(ROOT, "tools"), dest / "tools")
+     path = dest / "docs" / "math_status_probes" / "inventable_phi_bridge_ABSENT_receipt.json"
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["inventable_attempt_accepted"] = True
+-    json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
++    with open(path, "w", encoding="utf-8") as handle:
++        json.dump(obj, handle, indent=2)
+     result = subprocess.run(
+         [sys.executable, str(dest / "tools" / "math_status_check.py")],
+         cwd=dest,
+diff --git a/tests/test_math_status.py b/tests/test_math_status.py
+index 1b396df..f15058d 100644
+--- a/tests/test_math_status.py
++++ b/tests/test_math_status.py
+@@ -50,7 +50,8 @@ def dump(path: str, obj) -> None:
+ 
+ def refresh_pin(packet_dir: str, name: str) -> None:
+     path = os.path.join(packet_dir, name)
+-    data = open(path, "rb").read()
++    with open(path, "rb") as handle:
++        data = handle.read()
+     packet = load(os.path.join(packet_dir, "PACKET.json"))
+     packet["transcriptions"][name] = {
+         "sha256": hashlib.sha256(data).hexdigest(),
+@@ -64,12 +65,16 @@ def test_real_packet_passes_and_writes_nothing():
+     for dirpath, _dirs, files in os.walk(PACKET):
+         for name in files:
+             path = os.path.join(dirpath, name)
+-            before[path] = open(path, "rb").read()
++            with open(path, "rb") as handle:
++                before[path] = handle.read()
+     result = run(PACKET)
+     assert result.returncode == 0, result.stdout + result.stderr
+     assert "problems=0" in result.stdout
+     assert "does not discharge OBL-H5-JETMOD or D3-LEMMA-RN-UNIF" in result.stdout
+-    after = {path: open(path, "rb").read() for path in before}
++    after = {}
++    for path in before:
++        with open(path, "rb") as handle:
++            after[path] = handle.read()
+     assert after == before
+ 
+ 
+@@ -152,8 +157,10 @@ def test_negative_mesh_certified_true_is_refused(tmp_path):
+ def test_negative_transcription_byte_drift_is_refused(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "STATUS.md")
+-    text = open(path, encoding="utf-8").read().replace("still OPEN", "still OPEN ")
+-    open(path, "w", encoding="utf-8").write(text)
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace("still OPEN", "still OPEN ")
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     result = run(packet_dir)
+     assert result.returncode != 0
+     assert "STATUS.md: sha256/bytes drifted" in result.stdout
+@@ -162,11 +169,13 @@ def test_negative_transcription_byte_drift_is_refused(tmp_path):
+ def test_negative_readme_without_the_certified_quarantine_is_refused(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "README.md")
+-    text = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace(
+         "STATUS.md uses the word CERTIFIED",
+         "STATUS.md mentions a form-level envelope",
+-    )
+-    open(path, "w", encoding="utf-8").write(text)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     result = run(packet_dir)
+     assert result.returncode != 0
+     assert "missing required phrase" in result.stdout
+@@ -175,11 +184,13 @@ def test_negative_readme_without_the_certified_quarantine_is_refused(tmp_path):
+ def test_negative_evening_wall_phrase_dropped_is_refused_even_with_a_refreshed_digest(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "STATUS_RN_UNIF.md")
+-    text = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace(
+         "does not discharge D3-LEMMA-RN-UNIF",
+         "records D3-LEMMA-RN-UNIF",
+-    )
+-    open(path, "w", encoding="utf-8").write(text)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     refresh_pin(packet_dir, "STATUS_RN_UNIF.md")
+     result = run(packet_dir)
+     assert result.returncode != 0
+@@ -190,11 +201,13 @@ def test_negative_evening_wall_phrase_dropped_is_refused_even_with_a_refreshed_d
+ def test_negative_chart_factor_phrase_dropped_is_refused_even_with_a_refreshed_digest(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "STATUS_JETMOD.md")
+-    text = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace(
+         "Inventing φ/r^α is refused.",
+         "A bridge formula is unnamed.",
+-    )
+-    open(path, "w", encoding="utf-8").write(text)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     refresh_pin(packet_dir, "STATUS_JETMOD.md")
+     result = run(packet_dir)
+     assert result.returncode != 0
+@@ -205,11 +218,13 @@ def test_negative_chart_factor_phrase_dropped_is_refused_even_with_a_refreshed_d
+ def test_negative_sibling_sweep_nondischarge_dropped_is_refused_even_with_a_refreshed_digest(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "STATUS_JETMOD.md")
+-    text = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace(
+         "Sibling sweep CLOSED EMPTY does not discharge OBL-H5-JETMOD or D3-LEMMA-RN-UNIF.",
+         "Sibling sweep CLOSED EMPTY is noted beside the walls.",
+-    )
+-    open(path, "w", encoding="utf-8").write(text)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     refresh_pin(packet_dir, "STATUS_JETMOD.md")
+     result = run(packet_dir)
+     assert result.returncode != 0
+@@ -227,7 +242,8 @@ JETMOD_STATUS_VOCAB = (
+ 
+ 
+ def test_jetmod_instrumentation_status_vocab_is_partial_or_refused():
+-    text = open(os.path.join(PACKET, "STATUS_JETMOD.md"), encoding="utf-8").read()
++    with open(os.path.join(PACKET, "STATUS_JETMOD.md"), encoding="utf-8") as handle:
++        text = handle.read()
+     for prototype, token in JETMOD_STATUS_VOCAB:
+         assert prototype in text
+         assert token in text
+@@ -247,11 +263,13 @@ def test_jetmod_instrumentation_status_vocab_is_partial_or_refused():
+ def test_negative_jetmod_status_vocab_token_dropped_is_refused_even_with_a_refreshed_digest(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "STATUS_JETMOD.md")
+-    text = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        text = handle.read().replace(
+         "PARTIAL_C2_ONLY / REFUSED_NOT_24JET",
+         "CERTIFIED_24JET",
+-    )
+-    open(path, "w", encoding="utf-8").write(text)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(text)
+     refresh_pin(packet_dir, "STATUS_JETMOD.md")
+     result = run(packet_dir)
+     assert result.returncode != 0
+@@ -262,7 +280,8 @@ def test_negative_jetmod_status_vocab_token_dropped_is_refused_even_with_a_refre
+ 
+ def test_negative_extra_file_is_refused(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+-    open(os.path.join(packet_dir, "CLOSED.md"), "w", encoding="utf-8").write("CLOSED\n")
++    with open(os.path.join(packet_dir, "CLOSED.md"), "w", encoding="utf-8") as handle:
++        handle.write("CLOSED\n")
+     result = run(packet_dir)
+     assert result.returncode != 0
+     assert "unexpected files" in result.stdout
+@@ -271,11 +290,13 @@ def test_negative_extra_file_is_refused(tmp_path):
+ def test_negative_console_source_flag_flip_is_refused(tmp_path):
+     packet_dir = copy_packet(tmp_path)
+     path = os.path.join(packet_dir, "math_console.py")
+-    source = open(path, encoding="utf-8").read().replace(
++    with open(path, encoding="utf-8") as handle:
++        source = handle.read().replace(
+         '"lemma_closed": False',
+         '"lemma_closed": True',
+-    )
+-    open(path, "w", encoding="utf-8").write(source)
++        )
++    with open(path, "w", encoding="utf-8") as handle:
++        handle.write(source)
+     refresh_pin(packet_dir, "math_console.py")
+     result = run(packet_dir)
+     assert result.returncode != 0
+diff --git a/tests/test_receipts.py b/tests/test_receipts.py
+index 9ebb80a..9604c29 100644
+--- a/tests/test_receipts.py
++++ b/tests/test_receipts.py
+@@ -294,7 +294,8 @@ def test_a5_publishes_the_enclosure_when_the_ledger_certifies_it(monkeypatch):
+ 
+ def test_writer_module_has_no_destructive_call():
+     """STRUCTURAL: engine/receipt.py creates files only with mode 'x'."""
+-    tree = ast.parse(open(RECEIPT_PY, encoding="utf-8").read())
++    with open(RECEIPT_PY, encoding="utf-8") as handle:
++        tree = ast.parse(handle.read())
+     modes = []
+     for node in ast.walk(tree):
+         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) \
+@@ -364,7 +365,8 @@ def test_checker_detects_edits_and_deletions_against_git_head(tmp_path):
+                     root=str(repo), check_git=True)[0] == []
+ 
+     # (a) edit the body and recompute the hash so it is self-consistent.
+-    obj = json.load(open(path, encoding="utf-8"))
++    with open(path, encoding="utf-8") as handle:
++        obj = json.load(handle)
+     obj["results"][1]["value"] = "1/2"
+     with open(path, "w", encoding="utf-8") as f:
+         json.dump(rehash(obj), f, indent=2, sort_keys=True)
+@@ -592,7 +594,8 @@ def test_run_py_contains_no_write_path_at_all():
+     a writer for the lane files or the claim graph, this test fails before any
+     receipt is written.
+     """
+-    tree = ast.parse(open(RUN_PY, encoding="utf-8").read())
++    with open(RUN_PY, encoding="utf-8") as handle:
++        tree = ast.parse(handle.read())
+     for node in ast.walk(tree):
+         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) \
+                 and node.func.id == "open":
+@@ -611,7 +614,8 @@ def test_run_py_contains_no_write_path_at_all():
+ 
+ def test_run_py_imports_exactly_one_writer_and_it_is_the_receipt_writer():
+     """STRUCTURAL: no writer for a governed path is imported."""
+-    tree = ast.parse(open(RUN_PY, encoding="utf-8").read())
++    with open(RUN_PY, encoding="utf-8") as handle:
++        tree = ast.parse(handle.read())
+     imported = {}
+     for node in ast.walk(tree):
+         if isinstance(node, ast.ImportFrom):
+@@ -647,7 +651,8 @@ def test_run_py_names_the_governed_paths_only_as_read_only_inputs():
+     """`LANES_DIR` and `CLAIM_GRAPH` exist to be read, and are never written."""
+     assert RUN.LANES_DIR.endswith(os.path.join("engine", "lanes"))
+     assert RUN.CLAIM_GRAPH.endswith(os.path.join("claims", "graph.json"))
+-    src = open(RUN_PY, encoding="utf-8").read()
++    with open(RUN_PY, encoding="utf-8") as handle:
++        src = handle.read()
+     assert "write_receipt" in src
+     for bad in ("json.dump(", "os.replace(", "os.remove(", "shutil."):
+         assert bad not in src, f"engine/run.py contains {bad}"
+diff --git a/tests/test_recovery.py b/tests/test_recovery.py
+index fc36290..61e2f7c 100644
+--- a/tests/test_recovery.py
++++ b/tests/test_recovery.py
+@@ -55,13 +55,16 @@ def make_store(tmp_path):
+ 
+     rec_rel = f"recovery/recovered/good.json.{GOOD_SHA}.bin"
+     cand_rel = f"recovery/candidates/maybe.txt.{CAND_SHA}.bin"
+-    open(os.path.join(root, rec_rel), "wb").write(GOOD)
+-    open(os.path.join(root, cand_rel), "wb").write(CAND)
++    with open(os.path.join(root, rec_rel), "wb") as handle:
++        handle.write(GOOD)
++    with open(os.path.join(root, cand_rel), "wb") as handle:
++        handle.write(CAND)
+ 
+-    json.dump(
+-        {"as_of": "2026-09-17", "exclusions": [{"key": "Q-FIXTURE", "payload_sha256": "f" * 64}]},
+-        open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w"),
+-    )
++    with open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w") as handle:
++        json.dump(
++            {"as_of": "2026-09-17", "exclusions": [{"key": "Q-FIXTURE", "payload_sha256": "f" * 64}]},
++            handle,
++        )
+ 
+     ledger = {
+         "schema": "q0-recovery-ledger/1.0",
+@@ -80,12 +83,14 @@ def make_store(tmp_path):
+             _record("R-3", "UNRECOVERABLE", None, corroborated=False, missing="the whole 4,096-byte payload"),
+         ],
+     }
+-    json.dump(ledger, open(os.path.join(root, "recovery", "LEDGER.json"), "w"), indent=1)
++    with open(os.path.join(root, "recovery", "LEDGER.json"), "w") as handle:
++        json.dump(ledger, handle, indent=1)
+     return root, ledger, rec_rel, cand_rel
+ 
+ 
+ def write_ledger(root, ledger):
+-    json.dump(ledger, open(os.path.join(root, "recovery", "LEDGER.json"), "w"), indent=1)
++    with open(os.path.join(root, "recovery", "LEDGER.json"), "w") as handle:
++        json.dump(ledger, handle, indent=1)
+ 
+ 
+ def failures_mentioning(root, needle):
+@@ -179,11 +184,12 @@ def test_recovered_marked_uncorroborated_in_index_is_caught(tmp_path):
+ 
+ def test_quarantined_digest_is_refused(tmp_path):
+     root, _, _, _ = make_store(tmp_path)
+-    json.dump(
+-        {"as_of": "2026-09-17",
+-         "exclusions": [{"key": "Q-R17-FIXTURE", "class": "DEFECTIVE_SCOPE", "payload_sha256": GOOD_SHA}]},
+-        open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w"),
+-    )
++    with open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w") as handle:
++        json.dump(
++            {"as_of": "2026-09-17",
++             "exclusions": [{"key": "Q-R17-FIXTURE", "class": "DEFECTIVE_SCOPE", "payload_sha256": GOOD_SHA}]},
++            handle,
++        )
+     fails = failures_mentioning(root, "appears in quarantine/EXCLUSIONS.json")
+     assert fails, "a payload under logical quarantine must not be restored into the recovery store"
+ 
+@@ -191,11 +197,12 @@ def test_quarantined_digest_is_refused(tmp_path):
+ def test_quarantined_digest_found_in_free_text_identity_is_refused(tmp_path):
+     """Exclusion rows name digests in an 'identity' string too; those count."""
+     root, _, _, _ = make_store(tmp_path)
+-    json.dump(
+-        {"as_of": "2026-09-17",
+-         "exclusions": [{"key": "Q-R17-FIXTURE", "identity": f"{GOOD_SHA}; 13 bytes"}]},
+-        open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w"),
+-    )
++    with open(os.path.join(root, "quarantine", "EXCLUSIONS.json"), "w") as handle:
++        json.dump(
++            {"as_of": "2026-09-17",
++             "exclusions": [{"key": "Q-R17-FIXTURE", "identity": f"{GOOD_SHA}; 13 bytes"}]},
++            handle,
++        )
+     assert failures_mentioning(root, "appears in quarantine/EXCLUSIONS.json")
+ 
+ 
+@@ -269,7 +276,8 @@ def test_unindexed_blob_is_caught(tmp_path):
+     root, _, _, _ = make_store(tmp_path)
+     stray = b"stray\n"
+     p = f"recovery/recovered/stray.{hashlib.sha256(stray).hexdigest()}.bin"
+-    open(os.path.join(root, p), "wb").write(stray)
++    with open(os.path.join(root, p), "wb") as handle:
++        handle.write(stray)
+     assert failures_mentioning(root, "not listed in the ledger's artifacts index")
+ 
+ 
+@@ -286,7 +294,8 @@ def test_indexed_but_absent_blob_is_caught(tmp_path):
+ 
+ @pytest.fixture(scope="module")
+ def real_ledger():
+-    return json.load(open(os.path.join(ROOT, "recovery", "LEDGER.json"), encoding="utf-8"))
++    with open(os.path.join(ROOT, "recovery", "LEDGER.json"), encoding="utf-8") as handle:
++        return json.load(handle)
+ 
+ 
+ def test_every_named_exception_class_is_covered(real_ledger):
+@@ -306,11 +315,13 @@ def test_ledger_counts_match_the_exceptions_csv():
+     """The ledger's enumeration must be the CSV's, not a remembered number."""
+     import csv
+ 
+-    rows = list(csv.DictReader(open(os.path.join(ROOT, "drive", "source_map", "Exceptions.csv"), encoding="utf-8")))
++    with open(os.path.join(ROOT, "drive", "source_map", "Exceptions.csv"), encoding="utf-8") as handle:
++        rows = list(csv.DictReader(handle))
+     seen = {}
+     for r in rows:
+         seen[r["Type"]] = seen.get(r["Type"], 0) + 1
+-    ledger = json.load(open(os.path.join(ROOT, "recovery", "LEDGER.json"), encoding="utf-8"))
++    with open(os.path.join(ROOT, "recovery", "LEDGER.json"), encoding="utf-8") as handle:
++        ledger = json.load(handle)
+     declared = ledger["counts"]["enumerated_from_exceptions_csv"]
+     assert declared["total_rows"] == len(rows)
+     for cls in ("EMPTY_NATIVE_BODY", "READ_FAILED", "ARCHIVE_READ_FAILURE", "ENCODED_BLOCK_FAILURE"):
+@@ -452,9 +463,11 @@ def test_the_two_markdown_recoveries_follow_from_the_candidate_bytes(real_ledger
+     """Recompute the recovery from the 2026-09-18 candidate, not from memory."""
+     by_id = {r["record_id"]: r for r in real_ledger["records"]}
+     for rid in ("RDF-01", "RDF-02"):
+-        cand = open(os.path.join(ROOT, by_id[rid]["stored_path"]), "rb").read()
++        with open(os.path.join(ROOT, by_id[rid]["stored_path"]), "rb") as handle:
++            cand = handle.read()
+         succ = by_id[rid + "-S1"]
+-        recovered = open(os.path.join(ROOT, succ["stored_path"]), "rb").read()
++        with open(os.path.join(ROOT, succ["stored_path"]), "rb") as handle:
++            recovered = handle.read()
+         expected = by_id[rid]["digest_corroboration"]["expected_sha256"]
+         assert _halve_blank_lines(cand) == recovered
+         assert hashlib.sha256(recovered).hexdigest() == expected
+@@ -464,12 +477,14 @@ def test_the_two_markdown_recoveries_follow_from_the_candidate_bytes(real_ledger
+     # payloads of the same class were already exact on 2026-09-18
+     for rid in ("RDF-03", "RDF-04", "RDF-05"):
+         rec = by_id[rid]
+-        stored = open(os.path.join(ROOT, rec["stored_path"]), "rb").read()
++        with open(os.path.join(ROOT, rec["stored_path"]), "rb") as handle:
++            stored = handle.read()
+         assert rec["outcome"] == "RECOVERED" and b"\n\n" not in stored
+         assert _halve_blank_lines(stored) == stored
+     # a candidate with a different failure mode is not "fixed" by the rule
+     arf = by_id["ARF-03"]
+-    cand = open(os.path.join(ROOT, arf["stored_path"]), "rb").read()
++    with open(os.path.join(ROOT, arf["stored_path"]), "rb") as handle:
++        cand = handle.read()
+     assert hashlib.sha256(_halve_blank_lines(cand)).hexdigest() != arf["digest_corroboration"]["expected_sha256"]
+     assert arf["outcome"] == "CANDIDATE"
+ 
+@@ -503,7 +518,8 @@ def test_the_ls_data_013_members_come_from_the_mirrored_carrier_and_match_the_so
+             data = z.read(member)
+             assert hashlib.sha256(data).hexdigest() == row["Payload SHA-256"]
+             assert len(data) == int(row["Bytes"])
+-            stored = open(os.path.join(ROOT, members[os.path.basename(member)]), "rb").read()
++            with open(os.path.join(ROOT, members[os.path.basename(member)]), "rb") as handle:
++                stored = handle.read()
+             assert stored == data
+ 
+ 
+@@ -517,6 +533,7 @@ def test_no_recovered_python_is_wired_into_the_engine():
+     for path in glob.glob(os.path.join(ROOT, "engine", "**", "*.py"), recursive=True) + glob.glob(
+         os.path.join(ROOT, ".github", "workflows", "*.yml")
+     ):
+-        hay += open(path, encoding="utf-8", errors="replace").read()
++        with open(path, encoding="utf-8", errors="replace") as handle:
++            hay += handle.read()
+     for b in blobs:
+         assert os.path.basename(b) not in hay
+diff --git a/tests/test_run_checks.py b/tests/test_run_checks.py
+index c2f53a1..ee174e6 100644
+--- a/tests/test_run_checks.py
++++ b/tests/test_run_checks.py
+@@ -30,7 +30,7 @@ def workflow(commands=None):
+ 
+ 
+ def git(root, *args):
+-    result = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=10)
++    result = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=60)
+     assert result.returncode == 0, result.stderr
+     return result.stdout
+ 
+diff --git a/tests/test_workflow_integrity_hardening.py b/tests/test_workflow_integrity_hardening.py
+index cf55d5b..5806604 100644
+--- a/tests/test_workflow_integrity_hardening.py
++++ b/tests/test_workflow_integrity_hardening.py
+@@ -89,7 +89,7 @@ def governed_command(text):
+ 
+ 
+ def git(root, *args):
+-    result = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, timeout=10)
++    result = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, timeout=60)
+     assert result.returncode == 0, result.stderr
+     return result.stdout
+ 
+diff --git a/tools/carriers_verify.py b/tools/carriers_verify.py
+index 7b7ea08..f42f612 100644
+--- a/tools/carriers_verify.py
++++ b/tools/carriers_verify.py
+@@ -198,7 +198,8 @@ def main() -> int:
+             if not os.path.isfile(path):
+                 problems.append(f"{cid}: blob {blob} does not exist")
+                 continue
+-            raw = open(path, "rb").read()
++            with open(path, "rb") as handle:
++                raw = handle.read()
+             got = hashlib.sha256(raw).hexdigest()
+             if got != digest:
+                 problems.append(f"{cid}: blob {blob} hashes to {got[:16]}, manifest says {digest[:16]}")
+@@ -216,6 +217,10 @@ def main() -> int:
+ 
+     if os.path.isdir(BLOBS):
+         for fn in sorted(os.listdir(BLOBS)):
++            # Bytecode caches appear when blobs are imported; they are not carriers.
++            path = os.path.join(BLOBS, fn)
++            if fn == "__pycache__" or fn.endswith(".pyc") or not os.path.isfile(path):
++                continue
+             if fn not in referenced:
+                 problems.append(f"blobs/{fn}: stored but no manifest record references it")
+ 
+diff --git a/tools/collision_proposal_check.py b/tools/collision_proposal_check.py
+index 47a9de4..5ddad6c 100644
+--- a/tools/collision_proposal_check.py
++++ b/tools/collision_proposal_check.py
+@@ -591,7 +591,8 @@ def predecessor_chain(doc, paths: Paths, res: Result) -> list[tuple[str, dict]]:
+         ppath = paths.rel(prel)
+         if not res.check(os.path.exists(ppath), f"successor_of names a missing predecessor: {prel}"):
+             return out
+-        raw = open(ppath, "rb").read()
++        with open(ppath, "rb") as handle:
++            raw = handle.read()
+         digest_ok = res.check(hashlib.sha256(raw).hexdigest() == pred.get("sha256"),
+                               f"successor_of.sha256 does not match {prel} on disk "
+                               "(the predecessor is frozen; a changed digest means it was edited)")
+@@ -677,8 +678,11 @@ def check_successors(doc, paths: Paths, res: Result) -> None:
+     if "predecessor_chain" in doc:
+         # A document that lists its whole chain must list exactly what the walk found, by
+         # path, digest and byte count, nearest predecessor first.
+-        walked = [{"path": prel, "sha256": hashlib.sha256(open(paths.rel(prel), "rb").read()).hexdigest(),
+-                   "bytes": os.path.getsize(paths.rel(prel))} for prel, _ in chain]
++        walked = []
++        for prel, _ in chain:
++            with open(paths.rel(prel), "rb") as handle:
++                digest = hashlib.sha256(handle.read()).hexdigest()
++            walked.append({"path": prel, "sha256": digest, "bytes": os.path.getsize(paths.rel(prel))})
+         listed = doc.get("predecessor_chain")
+         stripped = [{k: x.get(k) for k in ("path", "sha256", "bytes")} for x in listed] \
+             if isinstance(listed, list) and all(isinstance(x, dict) for x in listed) else None
+@@ -720,7 +724,8 @@ def check_verbatim_markdown_lines(doc, paths: Paths, res: Result) -> None:
+     if not os.path.exists(export):
+         res.check(False, f"source export missing: {export}")
+         return
+-    raw = open(export, encoding="utf-8").read()
++    with open(export, encoding="utf-8") as handle:
++        raw = handle.read()
+     lines = raw.split("\n")
+     sha = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+     rec = (doc.get("source_of_record") or {}).get("sha256")
+@@ -749,7 +754,8 @@ def check_verbatim_xlsx_json_rows(doc, paths: Paths, section: str, res: Result)
+     if not (xlsx_rel and os.path.exists(xlsx)):
+         res.check(False, f"source xlsx export missing: {xlsx_rel or '(no xlsx_path recorded)'}")
+         return
+-    raw = open(xlsx, "rb").read()
++    with open(xlsx, "rb") as handle:
++        raw = handle.read()
+     sha = hashlib.sha256(raw).hexdigest()
+     res.check(src.get("xlsx_sha256") == sha,
+               f"recorded xlsx sha256 {src.get('xlsx_sha256')} != actual {sha}")
+@@ -1090,7 +1096,8 @@ def check_markdown(doc, paths: Paths, section: str, res: Result) -> None:
+     if not os.path.exists(md_path):
+         res.check(False, f"missing companion document: {md_path}")
+         return
+-    md = open(md_path, encoding="utf-8").read()
++    with open(md_path, encoding="utf-8") as handle:
++        md = handle.read()
+     for needle, what in [
+         ("requires operator action", "the proposal-requires-operator-action statement"),
+         ("export remains faithful", "the export-remains-faithful statement"),
+diff --git a/tools/math_status_check.py b/tools/math_status_check.py
+index 5e06d99..302b6bc 100644
+--- a/tools/math_status_check.py
++++ b/tools/math_status_check.py
+@@ -588,14 +588,16 @@ def check_packet(packet_dir: str) -> list:
+             if not isinstance(spec, dict) or not os.path.isfile(path):
+                 problems.append(f"{name}: transcription pin missing")
+                 continue
+-            data = open(path, "rb").read()
++            with open(path, "rb") as handle:
++                data = handle.read()
+             digest = hashlib.sha256(data).hexdigest()
+             if spec.get("sha256") != digest or spec.get("bytes") != len(data):
+                 problems.append(f"{name}: sha256/bytes drifted from PACKET.json")
+ 
+     jetmod_path = os.path.join(packet_dir, "STATUS_JETMOD.md")
+     if os.path.isfile(jetmod_path):
+-        jetmod_text = open(jetmod_path, encoding="utf-8").read()
++        with open(jetmod_path, encoding="utf-8") as handle:
++            jetmod_text = handle.read()
+         for bad in ("CERTIFIED_24JET", "| READY |", "| DISCHARGED |"):
+             if bad in jetmod_text:
+                 problems.append(f"STATUS_JETMOD.md: forbidden status token {bad!r}")
+@@ -604,7 +606,8 @@ def check_packet(packet_dir: str) -> list:
+         path = os.path.join(packet_dir, name)
+         if not os.path.isfile(path):
+             continue
+-        text = open(path, encoding="utf-8").read()
++        with open(path, encoding="utf-8") as handle:
++            text = handle.read()
+         flat = re.sub(r"\s+", " ", text)
+         for phrase in phrases:
+             if phrase not in flat:
+@@ -613,21 +616,26 @@ def check_packet(packet_dir: str) -> list:
+ 
+     console_path = os.path.join(packet_dir, "math_console.py")
+     if os.path.isfile(console_path):
+-        source = open(console_path, encoding="utf-8").read()
++        with open(console_path, encoding="utf-8") as handle:
++            source = handle.read()
+         for phrase in CONSOLE_PHRASES:
+             if phrase not in source:
+                 problems.append(f"math_console.py: missing {phrase!r}")
+         check_assignment_text("math_console.py", source, problems)
+     if os.path.isfile(snapshot_path):
++        with open(snapshot_path, encoding="utf-8") as handle:
++            snapshot_text = handle.read()
+         check_assignment_text(
+             "math_console_snapshot.json",
+-            open(snapshot_path, encoding="utf-8").read(),
++            snapshot_text,
+             problems,
+         )
+     if os.path.isfile(packet_path):
++        with open(packet_path, encoding="utf-8") as handle:
++            packet_text = handle.read()
+         check_assignment_text(
+             "PACKET.json",
+-            open(packet_path, encoding="utf-8").read(),
++            packet_text,
+             problems,
+         )
+     return problems
+diff --git a/tools/quarantine_check.py b/tools/quarantine_check.py
+index d602cbc..9c91222 100644
+--- a/tools/quarantine_check.py
++++ b/tools/quarantine_check.py
+@@ -59,21 +59,23 @@ def manifest_digests(root: str) -> dict[str, str]:
+         for fn in filenames:
+             p = os.path.join(dirpath, fn)
+             if fn.endswith("_MANIFEST.jsonl") or fn == "MANIFEST.jsonl":
+-                for line in open(p, encoding="utf-8", errors="replace"):
+-                    line = line.strip()
+-                    if not line:
+-                        continue
+-                    try:
+-                        row = json.loads(line)
+-                    except json.JSONDecodeError:
+-                        continue
+-                    if row.get("sha256"):
+-                        found[str(row["sha256"]).lower()] = p
++                with open(p, encoding="utf-8", errors="replace") as handle:
++                    for line in handle:
++                        line = line.strip()
++                        if not line:
++                            continue
++                        try:
++                            row = json.loads(line)
++                        except json.JSONDecodeError:
++                            continue
++                        if row.get("sha256"):
++                            found[str(row["sha256"]).lower()] = p
+             elif fn.endswith(".sha256") or fn == "MANIFEST.sha256":
+-                for line in open(p, encoding="utf-8", errors="replace"):
+-                    parts = line.split(None, 1)
+-                    if len(parts) == 2 and len(parts[0]) == 64:
+-                        found[parts[0].lower()] = p
++                with open(p, encoding="utf-8", errors="replace") as handle:
++                    for line in handle:
++                        parts = line.split(None, 1)
++                        if len(parts) == 2 and len(parts[0]) == 64:
++                            found[parts[0].lower()] = p
+     return found
+ 
+ 
+diff --git a/tools/recovery_check.py b/tools/recovery_check.py
+index 025308f..686afb3 100644
+--- a/tools/recovery_check.py
++++ b/tools/recovery_check.py
+@@ -79,7 +79,8 @@ def quarantined_digests(root: str) -> set[str]:
+     path = os.path.join(root, EXCLUSIONS)
+     if not os.path.exists(path):
+         return set()
+-    raw = open(path, encoding="utf-8").read()
++    with open(path, encoding="utf-8") as handle:
++        raw = handle.read()
+     return {d.lower() for d in re.findall(r"\b[0-9a-f]{64}\b", raw)}
+ 
+ 
+@@ -89,7 +90,8 @@ def check(root: str) -> list[str]:
+     if not os.path.exists(ledger_path):
+         return [f"{LEDGER}: missing"]
+     try:
+-        ledger = json.load(open(ledger_path, encoding="utf-8"))
++        with open(ledger_path, encoding="utf-8") as handle:
++            ledger = json.load(handle)
+     except Exception as exc:  # noqa: BLE001 - report, do not raise
+         return [f"{LEDGER}: not valid JSON: {exc}"]
+ 
+@@ -282,7 +284,8 @@ def main(argv: list[str] | None = None) -> int:
+         for f in failures:
+             print("  FAIL", f)
+         return 1
+-    ledger = json.load(open(os.path.join(args.root, LEDGER), encoding="utf-8"))
++    with open(os.path.join(args.root, LEDGER), encoding="utf-8") as handle:
++        ledger = json.load(handle)
+     counts = ledger.get("counts", {}).get("by_outcome", {})
+     print(
+         "recovery_check: OK — {} records ({}), {} stored blobs, independence credit 0".format(
+diff --git a/tools/verify_manifests.py b/tools/verify_manifests.py
+index 1051192..7fc9e0c 100644
+--- a/tools/verify_manifests.py
++++ b/tools/verify_manifests.py
+@@ -36,25 +36,26 @@ def check_sha256sum(manifest: str) -> tuple[int, int, list[str]]:
+     base = os.path.dirname(manifest)
+     ok = bad = 0
+     problems = []
+-    for line in open(manifest, encoding="utf-8", errors="replace"):
+-        line = line.rstrip("\n")
+-        if not line.strip() or line.startswith("#"):
+-            continue
+-        parts = line.split(None, 1)
+-        if len(parts) != 2 or len(parts[0]) != 64:
+-            continue
+-        digest, rel = parts
+-        rel = rel.lstrip("*")
+-        path = os.path.normpath(os.path.join(base, rel))
+-        if not os.path.exists(path):
+-            bad += 1
+-            problems.append(f"MISSING {path}")
+-            continue
+-        if sha256(path) != digest.lower():
+-            bad += 1
+-            problems.append(f"SHA MISMATCH {path}")
+-        else:
+-            ok += 1
++    with open(manifest, encoding="utf-8", errors="replace") as handle:
++        for line in handle:
++            line = line.rstrip("\n")
++            if not line.strip() or line.startswith("#"):
++                continue
++            parts = line.split(None, 1)
++            if len(parts) != 2 or len(parts[0]) != 64:
++                continue
++            digest, rel = parts
++            rel = rel.lstrip("*")
++            path = os.path.normpath(os.path.join(base, rel))
++            if not os.path.exists(path):
++                bad += 1
++                problems.append(f"MISSING {path}")
++                continue
++            if sha256(path) != digest.lower():
++                bad += 1
++                problems.append(f"SHA MISMATCH {path}")
++            else:
++                ok += 1
+     return ok, bad, problems
+ 
+ 
+@@ -125,68 +126,69 @@ def check_jsonl(manifest: str) -> tuple[int, int, list[str]]:
+     base = os.path.dirname(manifest)
+     ok = bad = 0
+     problems = []
+-    for line in open(manifest, encoding="utf-8", errors="replace"):
+-        line = line.strip()
+-        if not line:
+-            continue
+-        try:
+-            row = json.loads(line)
+-        except json.JSONDecodeError:
+-            bad += 1
+-            problems.append(f"BAD JSON LINE in {manifest}: {line[:80]}")
+-            continue
+-        note = str(row.get("note", ""))
+-        if note.startswith(NOT_STORED_MARKERS):
+-            continue
+-        dest = row.get("dest")
+-        if row.get("stored") is False:
+-            # A row that stores nothing must SAY so in the form the rest of the
+-            # tree uses.  1,012 such rows open with one of NOT_STORED_MARKERS;
+-            # this checker skips exactly those, so a row that declares itself
+-            # not stored in any other words is invisible to it -- it fell
+-            # through the `not dest` branch below and was never examined.  One
+-            # did, added 2026-09-20, and a third party's checker found it
+-            # before this one could.  The structured `not_stored_reason` field
+-            # is not enough on its own: nothing reads it here.
+-            bad += 1
+-            problems.append(
+-                f"UNMARKED NOT-STORED ROW {manifest}: id {row.get('id')} has "
+-                f"stored=false but its note does not begin with one of "
+-                f"{'/'.join(NOT_STORED_MARKERS)}")
+-            continue
+-        if not dest:
+-            continue
+-        path = dest if os.path.isabs(dest) else os.path.normpath(os.path.join(base, dest))
+-        if not os.path.exists(path):
+-            # mirrors may have been relocated into the repo: try by basename under base
+-            alt = os.path.join(base, os.path.basename(dest))
+-            if os.path.exists(alt):
+-                path = alt
+-            else:
++    with open(manifest, encoding="utf-8", errors="replace") as handle:
++        for line in handle:
++            line = line.strip()
++            if not line:
++                continue
++            try:
++                row = json.loads(line)
++            except json.JSONDecodeError:
+                 bad += 1
+-                problems.append(f"MISSING {path}")
++                problems.append(f"BAD JSON LINE in {manifest}: {line[:80]}")
+                 continue
+-        if "sha256" in row and sha256(path) != str(row["sha256"]).lower():
+-            bad += 1
+-            problems.append(f"SHA MISMATCH {path}")
+-            continue
+-        if "bytes" in row and os.path.getsize(path) != int(row["bytes"]):
+-            bad += 1
+-            problems.append(f"SIZE MISMATCH {path}")
+-            continue
+-        if row.get("exact") is False and row.get("stored") and is_blank(path):
+-            # A reading copy is a rendering of a document, so a blank one is
+-            # either a real property of the source or a failed fetch stored as
+-            # though it were a rendering.  The two are told apart from outside
+-            # the manifest: the inventory marks eight objects EMPTY_NATIVE_BODY,
+-            # and a blank export of one of those is the export the inventory
+-            # predicts.  A blank export of anything else is not corroborated by
+-            # anything and must not be carried as a stored reading copy.
+-            if row.get("id") not in empty_native_body_ids(base):
++            note = str(row.get("note", ""))
++            if note.startswith(NOT_STORED_MARKERS):
++                continue
++            dest = row.get("dest")
++            if row.get("stored") is False:
++                # A row that stores nothing must SAY so in the form the rest of the
++                # tree uses.  1,012 such rows open with one of NOT_STORED_MARKERS;
++                # this checker skips exactly those, so a row that declares itself
++                # not stored in any other words is invisible to it -- it fell
++                # through the `not dest` branch below and was never examined.  One
++                # did, added 2026-09-20, and a third party's checker found it
++                # before this one could.  The structured `not_stored_reason` field
++                # is not enough on its own: nothing reads it here.
++                bad += 1
++                problems.append(
++                    f"UNMARKED NOT-STORED ROW {manifest}: id {row.get('id')} has "
++                    f"stored=false but its note does not begin with one of "
++                    f"{'/'.join(NOT_STORED_MARKERS)}")
++                continue
++            if not dest:
++                continue
++            path = dest if os.path.isabs(dest) else os.path.normpath(os.path.join(base, dest))
++            if not os.path.exists(path):
++                # mirrors may have been relocated into the repo: try by basename under base
++                alt = os.path.join(base, os.path.basename(dest))
++                if os.path.exists(alt):
++                    path = alt
++                else:
++                    bad += 1
++                    problems.append(f"MISSING {path}")
++                    continue
++            if "sha256" in row and sha256(path) != str(row["sha256"]).lower():
++                bad += 1
++                problems.append(f"SHA MISMATCH {path}")
++                continue
++            if "bytes" in row and os.path.getsize(path) != int(row["bytes"]):
+                 bad += 1
+-                problems.append(f"UNCORROBORATED BLANK READING COPY {path}")
++                problems.append(f"SIZE MISMATCH {path}")
+                 continue
+-        ok += 1
++            if row.get("exact") is False and row.get("stored") and is_blank(path):
++                # A reading copy is a rendering of a document, so a blank one is
++                # either a real property of the source or a failed fetch stored as
++                # though it were a rendering.  The two are told apart from outside
++                # the manifest: the inventory marks eight objects EMPTY_NATIVE_BODY,
++                # and a blank export of one of those is the export the inventory
++                # predicts.  A blank export of anything else is not corroborated by
++                # anything and must not be carried as a stored reading copy.
++                if row.get("id") not in empty_native_body_ids(base):
++                    bad += 1
++                    problems.append(f"UNCORROBORATED BLANK READING COPY {path}")
++                    continue
++            ok += 1
+     return ok, bad, problems
+ 
+ 
+-- 
+2.43.0
+

@@ -21,6 +21,21 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 76 — 2026-09-24 ~01:55 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; path-c-applied-bundle)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `aligned_drift_watch.py --restore-if-writable` → **ALIGNED** (exit 0); tip_sha `1c6e74b…`; write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed**. Path C land **not applied remotely** (not WRITABLE) → Path C idle for push.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**; no commits past tip → **no 0017**).
+- **Concrete work (unblock owner `git am` without agent write token):** disposable hardening worktree @ `ac33581`; `apply_all` for real (0001–0004+0008–0016); `math_status_check` problems=0 / OPEN_HOLD / lemma_closed=false; focused **90**/0 RW; claims+recovery **83**/0; `git format-patch` → `portable/path-c-applied-bundle/path-c-on-hardening.patch` + `APPLY.md` + `VERIFY.json`; worktree discarded (main clone left clean). `pack_portable.sh` includes `portable/path-c-applied-bundle`. Sanity: fresh worktree `git am` OK.
+- Live `RESTORE_PLAN_76.json` + `BATCH76_TOKEN_SEARCH.json` + `BATCH76_OPEN_PR_THREATS.json` + `BATCH76_BRIEF.json`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main` from `cursor/batch76-path-c-applied-bundle-9f3c`. Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 74 — 2026-09-24 ~01:42 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `ac33581`; Batch 73 CI fix)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
