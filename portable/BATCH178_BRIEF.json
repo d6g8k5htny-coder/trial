@@ -1,6 +1,6 @@
 {
   "batch": "178",
-  "generated_at_utc": "2026-09-24T11:16:06Z",
+  "generated_at_utc": "2026-09-24T11:16:43Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -29,7 +29,7 @@
   "device_code": "AD78-6206",
   "prior_device_code": "5E05-EA04",
   "auth_renewed": true,
-  "seconds_left": 813,
+  "seconds_left": 776,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -76,6 +76,6 @@
   "issue_title": "Path C unblock \u2014 Batch 178 canonical (AD78-6206)",
   "ci_tip_drift_fix_path": "scripts/refresh_path_c_bundle.sh",
   "ci_tip_drift_string_restore": true,
-  "trial_main_sha": "8033cfbc0a0c69976654d4047981e6a0c7d53e35",
+  "trial_main_sha": "ce45301be2be80963c1056fb110447cc7bcf7a78",
   "auth_renew_reason": "seconds_left<90 near expiry"
 }
