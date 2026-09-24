@@ -68,6 +68,6 @@
   "trial_branch": "cursor/batch223-multi-agent-access-3a80",
   "note": "Multi-agent access durable config + owner oneshot. Official Apps only; Grok PAT fallback (no verified xAI App). Live install trial-only; main write DENIED; Path C not landed. Tip refresh 1d0dceb\u2192cbaa056. Research untouched lemma_closed=false.",
   "seconds_left": 726.5,
-  "trial_main_sha": "cd98cbf77bf0187fd22419005752192222d4cbbd",
+  "trial_main_sha": "4c902cb3ced68d45e8d5ade1a93e8aae73383240",
   "trial_main_landed": true
 }
