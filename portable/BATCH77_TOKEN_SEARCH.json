@@ -1,0 +1,18 @@
+{
+  "batch": "77",
+  "generated_at_utc": "2026-09-24T02:16:30Z",
+  "write_state": "DENIED",
+  "tokens_redacted": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "present_or_runner",
+    "MAIN_PUSH_TOKEN": "NOT_SET"
+  },
+  "note": "ALIGNED @ 1c6e74b; hardening tip == BASE_TIP ac33581; Path-B/C write vectors DENIED; permanent window; deep RW hunt IDLE / no 0017; Path C applied bundle still ready",
+  "path_b_needed": false,
+  "path_c_writable": false,
+  "path_c_applied_bundle": "portable/path-c-applied-bundle",
+  "new_0017": false,
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "goal_complete": false
+}

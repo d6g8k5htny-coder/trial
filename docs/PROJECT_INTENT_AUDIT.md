@@ -1,14 +1,45 @@
-# Project intent audit (2026-09-23)
+# Project intent audit (2026-09-24 batch 77 refresh)
 
 Audit of Dylan Roy’s public GitHub projects visible to this agent.
 **Scientific effect: NONE.** This note does not move any claim, premise, or obligation.
 
-> **Batch 59 live status:** `d6g8k5htny-coder/main` default tip **`1c6e74b`** is **ALIGNED**
-> (`aligned_end=true`) after owner PR #41 renewed the landing (superseding #32/`c2b0620`).
-> Path B land not needed. See `portable/LAND.md` / `portable/RESTORE_PLAN_59.json`.
-> Historical table below is the original audit snapshot (pre-#2/#32/#41 churn).
+> **Live status (batch 77):** Permanent autonomous window
+> (`PERMANENT_UNTIL_OWNER_INTERVENES` / `goal_complete=false`).  
+> `d6g8k5htny-coder/main` default tip **`1c6e74b`** is **ALIGNED**
+> (`aligned_end=true`) after owner PR #41 (superseding #32/`c2b0620`).  
+> Path B land **not needed**. Path C engineering stack is **apply-ready** on
+> hardening `chatgpt/drive-github-hardening-20260919` @ **`ac33581`**;
+> owner `git am` bundle: `portable/path-c-applied-bundle/` (Batch 76).  
+> Write to `main` remains **403 DENIED** (all Path B/C vectors).  
+> See `portable/LAND.md` / `portable/RESTORE_PLAN_77.json`.  
+> Historical sections below keep the original pre-#2/#32/#41 snapshot.
 
-## Repositories
+## Live facts (batch 77 probe)
+
+| Fact | Value |
+|------|-------|
+| Autonomous window | `PERMANENT_OPEN` — stop only on owner intervene; no 48h finale |
+| Default `main` tip | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` (**ALIGNED**) |
+| Hardening tip / BASE_TIP | `ac335815b277ac0c076082ac6af2344261c2093a` (unchanged; no tip refresh) |
+| Path B | Not needed while ALIGNED; restore ready if tip drifts |
+| Path C | `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; land blocked by write 403 |
+| Path C owner bundle | `portable/path-c-applied-bundle/path-c-on-hardening.patch` (+ APPLY.md / VERIFY.json) |
+| Write probe | **DENIED** (403) — W1–W5 incl. Path C `workflow_dispatch` |
+| Research status | Unchanged — `lemma_closed=false`; no claim/premise/prize flips |
+| Portable 0017 | **Not shipped** — deep ResourceWarning hunt idle after apply_all |
+
+Deep hunt (CPython 3.11, after local `apply_all` 0001–0004+0008–0016 @ `ac33581`):
+focused+claims+recovery **173**/0 RW; receipts/bridge **541**/0; frozen/dio **19**/0;
+collision **189**/0; mirrors **105**/0; registers **53**/0; lean/frontier **21**/0;
+cover **100**/0; drive **110**/0; ops **214**/0; RN sample **216**/0;
+vault/quarantine **13**/0; collect-only **3188**/0; tools `--help` **0** RW.
+`engine/` bare `open()` hits are only under content-addressed
+`carriers/blobs/` + `rn_engine/frozen/` (not actionable for portable 0017).
+Open-PR engine touch: #21 `work_order.py` (top-level list only; no bare open).
+
+---
+
+## Repositories (original audit snapshot — historical)
 
 | Repo | Description field | Default branch tip (SHA) | What visitors actually see |
 |------|-------------------|--------------------------|----------------------------|
@@ -17,7 +48,8 @@ Audit of Dylan Roy’s public GitHub projects visible to this agent.
 
 ## Intent of `main` (governing)
 
-On the live working branch `chatgpt/drive-github-hardening-20260919` @ `7dd6a141d90d5b3d8c670dcf847fd4fc1de1a83e`:
+On the live working branch `chatgpt/drive-github-hardening-20260919`
+(batch 77 tip `ac33581`; original audit tip was `7dd6a141d90d5b3d8c670dcf847fd4fc1de1a83e`):
 
 - **Program:** q0 / SIDE24 mathematics research (Drive shared drive → git home).
 - **Discipline:** status labels are transcribed, never decided in git. Green CI ≠ obligation discharge.
@@ -27,7 +59,7 @@ On the live working branch `chatgpt/drive-github-hardening-20260919` @ `7dd6a141
   - Prize track — `prizes_solved: false` / HOLD
 - **Authority:** Drive is the governing record; GitHub is the execution workspace (`AGENTS.md` / `CLAUDE.md`).
 
-Local verification on that tip (this agent, Python 3.12 host):
+Local verification on hardening after apply_all (this agent, Python 3.11 host):
 
 ```
 math_status_check: problems=0 disposition=OPEN_HOLD lemma_closed=false prizes_solved=false independence_credit=0
@@ -37,42 +69,43 @@ math_status_check: problems=0 disposition=OPEN_HOLD lemma_closed=false prizes_so
 
 Public description and README both say “testing”. There was no harness, no boundary statement, and no pointer to the research repo — so mobile / cloud agents landing here had no way to know they were off the research tree.
 
-## Misalignment (the real breakage)
+## Misalignment (historical — resolved on default tip by PR #41)
 
-### 1. Default branch of `main` advertises the wrong project
+### 1. Default branch of `main` advertised the wrong project
 
-`origin/main` still presents “A Reconstruction of Physics from Multiscale Retrodiction Complexity…” with fabricated-looking validation checkmarks. That content is not the active program. The complexity-physics setup PR ([#1](https://github.com/d6g8k5htny-coder/main/pull/1)) was closed in Dec 2025.
+Pre-#41 `origin/main` presented “A Reconstruction of Physics from Multiscale Retrodiction Complexity…” with fabricated-looking validation checkmarks. That content is not the active program. The complexity-physics setup PR ([#1](https://github.com/d6g8k5htny-coder/main/pull/1)) was closed in Dec 2025. **Live default tip is now ALIGNED @ `1c6e74b` (PR #41).**
 
-### 2. The real tree never landed on `main`
+### 2. The real tree’s landing path (topology note)
 
-| PR | Role | Base ← Head | State |
-|----|------|-------------|-------|
-| [#2](https://github.com/d6g8k5htny-coder/main/pull/2) | Port Drive program to git (~4.2k files) | `main` ← `claude/drive-audit-github-migration-rrglpp` | **DRAFT, open** |
-| [#3](https://github.com/d6g8k5htny-coder/main/pull/3) | RN wedge / hardening | migration ← `chatgpt/drive-github-hardening-20260919` | DRAFT, open |
-| later work | math_status, JETMOD walls, etc. | hardening ← feature branches | some merged into hardening, not into `main` |
+| PR | Role | Base ← Head | State (at original audit) |
+|----|------|-------------|---------------------------|
+| [#2](https://github.com/d6g8k5htny-coder/main/pull/2) | Port Drive program to git (~4.2k files) | `main` ← `claude/drive-audit-github-migration-rrglpp` | was DRAFT; later closed/superseded in #41 path |
+| [#3](https://github.com/d6g8k5htny-coder/main/pull/3) | RN wedge / hardening | migration ← `chatgpt/drive-github-hardening-20260919` | DRAFT lineage |
+| later work | math_status, JETMOD walls, etc. | hardening ← feature branches | some merged into hardening |
 
-`git rev-list --count origin/main..origin/chatgpt/drive-github-hardening-20260919` → **116** commits ahead of default `main`, **4207** files changed vs default.
+Post-#41: default `main` is an ALIGNED **landing** notice tree; Path C engineering (PACKET.json / carriers_verify shape) stays on hardening. Do not set `PATH_C_BASE=main`. Rebase hardening onto main usually **CONFLICTS** (ci.yml / research.yml / bridge README).
 
 ### 3. Documented deployment gap (already known in-repo)
 
-`governance/rollout/FINDINGS_R2.json` finding **R2-06** (`CONFIRMED_SOURCE_DEPLOYMENT_GAP`): research schedule workflows exist on the working branch; observed default `main` has no `.github/workflows`. Proposed response: do **not** claim scheduled deployment or activate workflows merely to make earlier prose true.
+`governance/rollout/FINDINGS_R2.json` finding **R2-06** (`CONFIRMED_SOURCE_DEPLOYMENT_GAP`): research schedule workflows exist on the working branch; observed default `main` historically lacked full research workflow deployment. Proposed response: do **not** claim scheduled deployment or activate workflows merely to make earlier prose true.
 
-### 4. This cloud agent cannot write to `main`
+### 4. This cloud agent cannot write to `main` (still true)
 
-Push to `d6g8k5htny-coder/main` returns `403 Permission denied to cursor[bot]`. Environment repos list only `github.com/d6g8k5htny-coder/trial`. Fixes that belong on `main` require an agent/environment with write access to that repo, or owner action on the open drafts.
+Push / refs / contents / fork / GraphQL commit / pulls create / Path C dispatch to `d6g8k5htny-coder/main` return **403** (or workflow 404 on default for Option-B land workflow). Environment repos list only `github.com/d6g8k5htny-coder/trial`. Path C land on hardening needs owner write token or owner `git am` of `portable/path-c-applied-bundle/`.
 
 ## What must not be “fixed”
 
-Fail-closed OPEN/HOLD walls (JETMOD REFUSED receipts, RN-UNIF absences, `lemma_closed=false`) are **correct**. Inventable probes that return REFUSED / EMPTY / ABSENT are doing their job. Do not promote them to discharged to make a dashboard green.
+Fail-closed OPEN/HOLD walls (JETMOD REFUSED receipts, RN-UNIF absences, `lemma_closed=false`) are **correct**. Inventable probes that return REFUSED / EMPTY / ABSENT are doing their job. Do not promote them to discharged to make a dashboard green. **Never flip research status** in autonomous batches.
 
 ## What this agent fixed in `trial`
 
 - Honest README + boundary table.
-- This audit.
+- This audit (kept current across batches; batch 77 live-facts refresh).
 - Owner action checklist for `main` ([OWNER_ACTIONS_MAIN.md](OWNER_ACTIONS_MAIN.md)).
 - Minimal pytest sanity suite so the “testing” intent is real.
+- Portable Path C patches + `path-c-applied-bundle` for owner land without agent write token.
 
-## SHAs frozen at audit time
+## SHAs frozen at original audit time
 
 | Ref | SHA |
 |-----|-----|
@@ -81,10 +114,20 @@ Fail-closed OPEN/HOLD walls (JETMOD REFUSED receipts, RN-UNIF absences, `lemma_c
 | research working base | `7dd6a141d90d5b3d8c670dcf847fd4fc1de1a83e` |
 | inventable JETMOD probes | `ae94270d5f48d4c171f134efcea5058997966d71` |
 
-
-## Live tip refresh (2026-09-23 batch 3)
+## Live tip refresh (2026-09-23 batch 3 — historical mid-window)
 
 | Ref | SHA |
 |-----|-----|
 | research working base (post-#15) | `1ea0ae8183fb0459c6678243946295518fded1ba` |
-| default `main` | still `f25b04bb931df2eaee302b666db014913486166b` (MISALIGNED) |
+| default `main` | still `f25b04bb931df2eaee302b666db014913486166b` (MISALIGNED at that time) |
+
+## Live tip refresh (2026-09-24 batch 77)
+
+| Ref | SHA / state |
+|-----|-------------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` (**ALIGNED**, PR #41) |
+| hardening / Path C BASE_TIP | `ac335815b277ac0c076082ac6af2344261c2093a` |
+| write to `main` | **403 DENIED** |
+| Path C applied bundle | ready under `portable/path-c-applied-bundle/` |
+| autonomous window | **PERMANENT_OPEN** |
+| `goal_complete` | **false** |

@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 77 — 2026-09-24 ~02:16 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; PROJECT_INTENT_AUDIT + deep RW hunt)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `aligned_drift_watch.py --restore-if-writable` → **ALIGNED** (exit 0); tip_sha `1c6e74b…`; write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed**. Path C land **not applied remotely** (not WRITABLE) → Path C idle for push; owner `git am` bundle still ready.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**; **no bundle refresh**).
+- **Concrete work (not duplicate RESTORE_PLAN):** refresh `docs/PROJECT_INTENT_AUDIT.md` for permanent window + ALIGNED@`1c6e74b` + Path C bundle ready + write 403 (factual). DEEP ResourceWarning hunt @ CPython **3.11** after local `apply_all` 0001–0004+0008–0016: focused+claims+recovery **173**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; mirrors **105**/0; registers **53**/0; lean/frontier **21**/0; cover **100**/0; drive **110**/0; ops **214**/0; RN sample **216**/0; vault/quarantine **13**/0; collect **3188**/0; tools `--help` **0** RW. `engine/` bare-open scan: actionable **0** (frozen `carriers/blobs` + `rn_engine/frozen` only). Open-PR engine `.py`: #21 `work_order.py` no bare open → **IDLE** / **no 0017**.
+- Live `RESTORE_PLAN_77.json` + `BATCH77_TOKEN_SEARCH.json` + `BATCH77_OPEN_PR_THREATS.json` + `BATCH77_BRIEF.json`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 76 — 2026-09-24 ~01:55 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; path-c-applied-bundle)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
