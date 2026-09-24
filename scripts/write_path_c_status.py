@@ -404,6 +404,31 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
                 status["write_vector"] = prior_vec
             elif write_state == "WRITABLE":
                 status["write_vector"] = prior.get("write_vector") or "device_auth_create_ref+git_push_dylan_token"
+    # Batch 236: preserve write durability markers (Batch 235+) across status
+    # refreshes — do not clobber write_durable / main_push_token_set when a
+    # watch/assert rewrites PATH_C_STATUS.json.
+    for durable_key in (
+        "write_durable",
+        "write_durable_via",
+        "main_push_token_set",
+        "main_push_token_set_repos",
+        "write_vector",
+    ):
+        if durable_key not in status or status.get(durable_key) in (None, ""):
+            prior_val = prior.get(durable_key)
+            if prior_val not in (None, "", False) or (
+                durable_key == "write_durable" and prior_val is True
+            ):
+                if prior_val is not None:
+                    status[durable_key] = prior_val
+    if write_state == "WRITABLE" and prior.get("write_durable") is True:
+        status["write_durable"] = True
+        if prior.get("write_durable_via"):
+            status["write_durable_via"] = prior["write_durable_via"]
+        if prior.get("main_push_token_set") is True:
+            status["main_push_token_set"] = True
+            if prior.get("main_push_token_set_repos"):
+                status["main_push_token_set_repos"] = prior["main_push_token_set_repos"]
     # Ensure schema keys exist even if None.
     for key in SCHEMA_KEYS:
         status.setdefault(key, None)

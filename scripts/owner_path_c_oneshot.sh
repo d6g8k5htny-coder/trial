@@ -38,7 +38,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
 # Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch218-path-c-bundle}"
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0
 MENU_ONLY=0

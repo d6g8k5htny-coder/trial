@@ -1,12 +1,12 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-24T17:26:36Z",
+  "generated_at_utc": "2026-09-24T18:46:47Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
   ],
-  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 377201c456a5081d4c79701940e5ca678226d15d",
-  "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d",
+  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 120050136f5586b9de3c0f054119b978c92f8a49",
+  "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49",
   "apply_all_count": 14,
   "scientific_effect": "NONE",
   "lemma_closed": false,
@@ -22,7 +22,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0002",
@@ -34,7 +34,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0003",
@@ -45,7 +45,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0004",
@@ -57,7 +57,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0008",
@@ -70,7 +70,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0009",
@@ -81,7 +81,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0010",
@@ -93,7 +93,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0011",
@@ -104,7 +104,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0012",
@@ -116,7 +116,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0013",
@@ -128,7 +128,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0014",
@@ -140,7 +140,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0015",
@@ -152,7 +152,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0016",
@@ -164,7 +164,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     },
     {
       "id": "0017",
@@ -175,7 +175,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "377201c456a5081d4c79701940e5ca678226d15d"
+      "verified_on_tip": "120050136f5586b9de3c0f054119b978c92f8a49"
     }
   ],
   "obsolete_kept_on_disk": [
@@ -225,7 +225,7 @@
       "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
     }
   ],
-  "verified_batch": "232",
+  "verified_batch": "236",
   "tip_refresh_via": "refresh_path_c_bundle.sh",
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",

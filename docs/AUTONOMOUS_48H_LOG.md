@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 236 — 2026-09-24 ~18:37–18:48 UTC (PERMANENT window; sibling agent-access + tip-refresh 1200501; scientific effect NONE; flipped nothing)
+
+- Start: hardening **`377201c` ALIGNED**; default **`1c6e74b` ALIGNED** → **Path B skipped**. WRITE **WRITABLE** (device + durable `MAIN_PUSH_TOKEN`; **never printed**).
+- Mid-batch tip **moved** `377201c`→**`1200501`** ([main PR #66](https://github.com/d6g8k5htny-coder/main/pull/66) inventable SIDE24 prep SoT-ABSENT nav). Path C eng stack still ancestor (PR #64). `refresh_path_c_bundle` → BASE_TIP=`1200501`; apply_all already-applied; focused 90 + claims/recovery 83 OK; `math_status` problems=0 / **OPEN_HOLD** / **lemma_closed=false**.
+- Sibling inventory (device token): **all 8** list+push **WRITABLE**. `.cursor/environment.json` on trial only.
+- **Defect shipped:** restored broken `sandbox` README stub; added `AGENTS.md` (eng-only) on `sandbox`, `google-drive`, `governance-`, `Math-`, `meta-framework`, `query-`. Pack release **`batch236-path-c-bundle`**.
+- Research audit OPEN (13 premises / 1 lemma / 3 prizes / 16 OQ); **flipped nothing**. next_focus=`tip-sync+drift+no-flip`.
+
 ### Batch 235 — 2026-09-24 ~18:21–18:25 UTC (PERMANENT window; persist write durability via MAIN_PUSH_TOKEN; scientific effect NONE; flipped nothing)
 
 - WRITE still **WRITABLE** via device auth (`/tmp/gh-dylan-auth/access_token`; create-ref probe 201). Token **never printed**.
