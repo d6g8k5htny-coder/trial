@@ -6808,3 +6808,107 @@ def test_batch246_assert_path_c_idle_catch_0020() -> None:
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 246" in owner_actions
     assert "IDLE_PATH_C_DONE" in owner_actions
+
+
+def test_batch247_ci_yml_workflow_file_flake() -> None:
+    """Batch 247: ci.yml must YAML-parse; no col-0 python; tip stable; no flip."""
+    import json
+    import importlib.util
+
+    ci_path = ROOT / ".github" / "workflows" / "ci.yml"
+    ci = ci_path.read_text(encoding="utf-8")
+    assert "IDLE_PATH_C_DONE" in ci
+    assert "path_c_followon_pending" in ci
+    assert "Batch 247" in ci
+    # Regression: column-0 import/from breaks `run: |` block scalars for Actions.
+    for line in ci.splitlines():
+        assert not line.startswith("import "), line
+        assert not line.startswith("from "), line
+    # One-liner pending probe (YAML-safe), not a multiline -c block.
+    assert "from when_writable_land import path_c_followon_pending" in ci
+    assert "print('1' if pending else '0')" in ci or 'print("1" if pending else "0")' in ci
+
+    try:
+        import yaml  # type: ignore
+    except ImportError:  # pragma: no cover — CI installs pyyaml in land-workflows job
+        yaml = None
+    if yaml is not None:
+        data = yaml.safe_load(ci)
+        assert isinstance(data, dict)
+        assert "portable-patches-on-main" in data.get("jobs", {})
+
+    # validate_land_workflows gates ci.yml (Batch 247).
+    spec = importlib.util.spec_from_file_location(
+        "validate_land_workflows_247", ROOT / "scripts" / "validate_land_workflows.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    ci_errs = mod._check_ci_yml_parses(ci_path)
+    assert ci_errs == [], ci_errs
+
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "validate_land_workflows.py"), "--json"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=120,
+    )
+    assert proc.returncode == 0, proc.stderr
+    payload = json.loads(proc.stdout)
+    assert payload.get("ok") is True
+    assert payload.get("ci_yml_ok") is True
+    assert payload.get("lemma_closed") is False
+    assert any(str(p).endswith("ci.yml") for p in payload.get("workflows") or [])
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH247_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "247"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "ci_yml_col0_python_workflow_file_flake"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("patch_0020") is False
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH247_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "247"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH247_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 247" in log
+    assert "workflow file" in log.lower() or "workflow-file" in log.lower()
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 247)" in land_md
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 247" in ones
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 247" in owner_actions
+    assert "workflow" in owner_actions.lower()

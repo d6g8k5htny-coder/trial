@@ -1,0 +1,18 @@
+{
+  "batch": "247",
+  "generated_at_utc": "2026-09-24T22:35:00Z",
+  "repo": "d6g8k5htny-coder/main",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "default_tip": "f3a41a752e1db05d773063f22a77f1daedefe26b",
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "disposition": "OPEN_HOLD",
+  "problems": 0,
+  "status_promotions": [],
+  "premises_closed": [],
+  "prizes_discharged": [],
+  "note": "Trial-only eng CI YAML flake fix. No research tree edits. lemma_closed stays false."
+}

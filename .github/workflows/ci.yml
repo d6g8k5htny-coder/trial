@@ -174,16 +174,13 @@ jobs:
           fi
           # Batch 246: post-0019 idle — skip redundant apply_all --check when
           # landed and no pending follow-ons; re-check if 0020+ pending.
+          # Batch 247: keep python -c as a one-liner — column-0 multiline
+          # python inside `run: |` terminates the YAML block scalar and makes
+          # Actions reject the workflow ("workflow file issue", 0s failure).
           PENDING=0
           if [[ "$LANDED" == "1" ]]; then
             PENDING="$(
-              cd "${GITHUB_WORKSPACE}/trial" && python3 -c '
-import sys
-sys.path.insert(0, "scripts")
-from when_writable_land import path_c_followon_pending
-pending, _ = path_c_followon_pending()
-print("1" if pending else "0")
-'
+              cd "${GITHUB_WORKSPACE}/trial" && python3 -c "import sys; sys.path.insert(0, 'scripts'); from when_writable_land import path_c_followon_pending; pending, _ = path_c_followon_pending(); print('1' if pending else '0')"
             )"
           fi
           cd main-work

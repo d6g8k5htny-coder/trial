@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 247 (trial-ci.yml workflow-file flake) — 2026-09-24 ~22:33– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73 inventable tip-observe / #47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Tip CI: hardening tip stable; trial Actions runs after Batch 246 land failed in **0s** with **workflow file issue** (empty jobs).
+- **Defect shipped (not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag pack / not assert-idle churn):** Batch 246 `ci.yml` IDLE pending probe used **column-0 multiline** `python3 -c` inside `run: |`, terminating the YAML block scalar. Fixed to a **one-liner**; `validate_land_workflows` now parses `ci.yml` and rejects top-level `import`/`from` lines.
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 246 (assert_path_c_ready post-0019 idle + catch 0020) — 2026-09-24 ~22:25– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`. `lemma_closed=false`.

@@ -1,0 +1,38 @@
+{
+  "batch": "247",
+  "generated_at_utc": "2026-09-24T22:35:00Z",
+  "hunt": "tip_stable_or_failed_actions_flake_or_eng_merge_or_tip_observe",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "542e6ec",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "ci_yml_col0_python_workflow_file_flake",
+  "patch_0020": false,
+  "signals": {
+    "hardening_tip_vs_542e6ec": "match tip_moved=false — no Path C delta",
+    "failed_actions": "trial CI runs 36067616344..36067917470 conclusion=failure 0s empty jobs — workflow file issue from Batch 246 col-0 python in ci.yml",
+    "open_main_prs": "all draft research HOLD (#73 tip-observe inventable, #47,#46,#38,#36,#21,#12,#8,#7) — skipped; no eng-only green merge",
+    "default_tip": "ALIGNED @ f3a41a75 (Path C tracks hardening)",
+    "workspace_landing": "some main runs ~19–22m (stuck-ish) but recent main push verify 7–18s green; no trial-side timeout docs change required this batch",
+    "inventable_tip_observe_pr73": "draft research docs (PACKET/STATUS/NAV) —HOLD; not eng merge"
+  },
+  "avoided_repeats": [
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS links",
+    "living-tag pack",
+    "assert idle",
+    "empty RW hunts",
+    "OWNER face refresh only"
+  ],
+  "shipped_paths": [
+    ".github/workflows/ci.yml",
+    "scripts/validate_land_workflows.py",
+    "tests/test_intent.py test_batch247_ci_yml_workflow_file_flake"
+  ],
+  "note": "NEW signal: Batch 246 IDLE pending probe used unindented multiline python3 -c inside run:| → YAML block scalar terminated → Actions rejected workflow. Fixed to one-liner + validate_land_workflows ci.yml parse gate. Never printed tokens."
+}

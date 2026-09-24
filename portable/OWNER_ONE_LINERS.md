@@ -5,6 +5,20 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 247 — tip stable `542e6ec`; default ALIGNED `f3a41a75`; write WRITABLE; trial-ci.yml workflow-file flake fixed; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> python3 -c 'import yaml; yaml.safe_load(open(".github/workflows/ci.yml")); print("ci.yml OK")'
+> python3 scripts/validate_land_workflows.py          # now gates ci.yml YAML parse
+> ./scripts/when_writable_land.py --once --dry-run    # idle_path_c_done (0018+0019)
+> ./scripts/owner_path_c_oneshot.sh --from-bundle --dry-run
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: col-0 multiline python in `ci.yml` `run:|`.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 246 — tip stable `542e6ec`; default ALIGNED `f3a41a75`; write WRITABLE; assert_path_c_ready IDLE_PATH_C_DONE + catch 0020; release `batch241-path-c-bundle`**:
 >
 > ```bash

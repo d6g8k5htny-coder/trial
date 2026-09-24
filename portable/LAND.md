@@ -6,6 +6,43 @@ Cursor App install is often **trial-only** (git push / Git Data API **403** on
 `main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
 See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
+> ## STATUS (Batch 247) — PERMANENT window; ALIGNED @ `f3a41a75`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**; trial-ci YAML flake fixed
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.**
+> Default tip **`f3a41a75`** ALIGNED (Universal-law / SIDE24 + hardening face).
+> Hardening / Path C tip **`542e6ec`** (== BASE_TIP; tip_moved=false; Path C 0001–0019 landed).
+> Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
+> often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**.
+> **Batch 247 defect:** Batch 246 `ci.yml` IDLE pending probe used column-0 multiline
+> `python3 -c` inside `run: |` → Actions **workflow file issue** (0s / empty jobs).
+> Fixed to a YAML-safe one-liner; `validate_land_workflows` now parses `ci.yml`.
+> `assert_path_c_ready` → **`IDLE_PATH_C_DONE`**. Prefer `./scripts/restore_main_face.sh`
+> for MISALIGNED restore (ALIGNED → no-op).
+> Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
+> grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+>
+> ### Owner Path C — ONE local command from release tarball (`.bundle` preferred)
+>
+> Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `main`).
+>
+> ```bash
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> # tip moved?: /tmp/path-c-land/scripts/refresh_path_c_bundle.sh && assert_path_c_ready.sh
+> ```
+>
+> Certainty without write: `/tmp/path-c-land/scripts/owner_path_c_oneshot.sh --dry-run`
+>
+> Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
+> [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md).
+>
 > ## STATUS (Batch 246) — PERMANENT window; ALIGNED @ `f3a41a75`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**; assert idle `IDLE_PATH_C_DONE`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.

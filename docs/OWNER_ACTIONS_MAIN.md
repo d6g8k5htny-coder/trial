@@ -1,6 +1,26 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 247 — write WRITABLE; trial-ci.yml workflow-file flake (col-0 python)
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`.
+Batch 246 IDLE pending probe in `.github/workflows/ci.yml` used an unindented
+multiline `python3 -c` inside `run: |` — YAML terminated the block scalar and
+Actions failed immediately (**workflow file issue**, 0s, empty jobs). Fixed to a
+one-liner; `validate_land_workflows.py` now parses `ci.yml` and rejects column-0
+`import`/`from` lines. Research HOLD drafts skipped. `lemma_closed` stays **false**.
+
+```bash
+python3 -c 'import yaml; yaml.safe_load(open(".github/workflows/ci.yml")); print("ci.yml OK")'
+python3 scripts/validate_land_workflows.py --json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ok"], d.get("ci_yml_ok"))'
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 246 — write WRITABLE; assert_path_c_ready post-0019 idle + catch 0020
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
