@@ -127,5 +127,12 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 240 sibling inventory refresh while main #71 CI pending."
+  "note": "Batch 240 deep-hunt close: sibling inventory living fields restored; lemma_closed=false.",
+  "main_writable": true,
+  "sandbox_added": true,
+  "sandbox": {
+    "readable": true,
+    "write": "WRITABLE",
+    "has_agents": true
+  }
 }
