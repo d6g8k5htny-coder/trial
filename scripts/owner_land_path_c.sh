@@ -113,7 +113,7 @@ Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
   --from-bundle Prefer portable/path-c-applied-bundle/path-c-on-hardening.bundle
                 (git fetch + ff-merge) when present; else .patch via git am.
                 Preferred one-shot after extracting the release tarball
-                (batch169-path-c-bundle or newer; prior batch142+ had patch-only).
+                (batch169-path-c-bundle or newer; prior batch142-path-c-bundle / batch142+ had patch-only).
   --direct-push Opt-in: push patched commits to PATH_C_BRANCH without opening a PR.
 
 ONE-SHOT from release tarball (owner machine with write on main):

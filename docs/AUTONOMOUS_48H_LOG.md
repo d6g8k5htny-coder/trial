@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 170 — 2026-09-24 ~10:20–10:30 UTC (PERMANENT window; tip stable 8ea3b5f; E2E path-c-on-hardening.bundle shallow fetch+merge; CI intent supersession fix; auth pending EC83; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `EC83-CFC2` still **pending** (`slow_down` / authorization_pending); seconds_left tracked; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- **E2E verify:** shallow clone hardening @ BASE_TIP (`depth=1` and `depth=80`) → `git fetch path-c-on-hardening.bundle cursor/portable-engineering-patches` → `merge --ff-only` → HEAD `81c09d6`; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90**/0; claims+recovery **83**/0. `APPLY.md` documents shallow clone. **bundle_verify_ok=true**.
+- **CI:** trial main after batch169 was **red** (stale intent: `batch142-path-c-bundle` / VERIFY `batch==162` / superseded tags). **Fixed** `tests/test_intent.py` supersession accepts for batch137/149/162/169; retained `batch142-path-c-bundle` mention in `owner_land_path_c.sh`. Hunt after patches → **clean** / **no 0017**.
+- Tiny JSON: `portable/BATCH170_BRIEF.json` + `BATCH170_HUNT.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `EC83-CFC2` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch169-path-c-bundle` (`.bundle` preferred; Batch 170 E2E verified).
+
 ### Batch 169 — 2026-09-24 ~10:08–10:15 UTC (PERMANENT window; tip stable 8ea3b5f; fetchable git path-c-on-hardening.bundle; release batch169-path-c-bundle; owner prefers .bundle; auth pending 831C; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
