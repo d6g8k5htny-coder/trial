@@ -1,0 +1,28 @@
+{
+  "batch": "87",
+  "generated_at_utc": "2026-09-24T02:56:11Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "path_c_landed": false,
+  "blocked_by": "write_DENIED_403",
+  "new_0017": false,
+  "daemon_up": true,
+  "daemon_once": "continue_denied",
+  "tmux_session": "when-writable-land",
+  "status_guard": {
+    "ci_job": "research-stack-status-guard",
+    "sha_53ad2d9": "success",
+    "sha_962ffb2": "success",
+    "fix": true
+  },
+  "route_now": "IDLE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "daemon+drift DENIED; tip==ac33581; Trial CI status-guard green on 53ad2d9/latest — IDLE"
+}
