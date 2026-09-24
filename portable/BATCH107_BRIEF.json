@@ -1,0 +1,16 @@
+{
+  "batch": "107",
+  "generated_at_utc": "2026-09-24T04:35:40Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "authorization_pending",
+  "device_code": "BC1B-2C58",
+  "seconds_left": 899,
+  "gh_config_dir": "/tmp/gh-dylan-auth",
+  "install_has_main": false,
+  "path_c_landed": false,
+  "flipped_anything": false,
+  "land_trial": "direct push cursor/gh-device-login-renew-f389 \u2192 trial main @32d0bdd",
+  "note": "auth expired 6801-AF1E; renewed user_code=BC1B-2C58; poller gh-device-login; research untouched"
+}
