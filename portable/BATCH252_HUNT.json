@@ -1,0 +1,34 @@
+{
+  "batch": "252",
+  "hunt": "watch_main_alignment_issue_hygiene",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_id": "watch_alignment_issue_hygiene_graphql",
+  "bugs_fixed": [
+    "App/install REST GET /issues?state=open returned [] while GraphQL saw open issues",
+    "Search API / gh issue list --search under App tokens returned total_count=0 or ghost number:0",
+    "watch-main-alignment.yml --state all --limit 50 + head -n1 missed duplicates and could miss older exact-title hits"
+  ],
+  "avoided": [
+    "tip-observe",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag",
+    "assert idle",
+    "empty RW",
+    "OWNER faces",
+    "ci.yml YAML",
+    "#78",
+    "VERIFY honesty",
+    "pack_portable TMPDIR"
+  ],
+  "tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "open_issues_before": 23,
+  "open_issues_after": 0,
+  "path_c": "IDLE_PATH_C_DONE"
+}

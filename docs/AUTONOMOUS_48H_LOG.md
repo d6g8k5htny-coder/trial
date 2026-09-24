@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 252 (watch-main-alignment issue hygiene GraphQL) — 2026-09-24 ~23:52– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- `refresh_path_c_bundle --dry-run` tip stable @ fa32d11. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**. No green eng merge candidates.
+- Open trial issues **23 → 0**: closed stale Path C unblock #26–#47 + probe #25 (ALIGNED + Path C idle). Scientific effect NONE.
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack_portable TMPDIR):** App/install REST `issues?state=open` returned `[]` while GraphQL saw opens; Search API / `gh issue list --search` returned ghosts `number:0`. Watch used `--state all --limit 50 | head -n1` (missed duplicates / older exact-title). Fixed: `scripts/watch_alignment_issue_hygiene.py` GraphQL exact-title pagination; ALIGNED **close-all**; MISALIGNED lowest-number canonical + dedupe; wired into `watch-main-alignment.yml`.
+- Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 251 (pack_portable default OUT writable fallback) — 2026-09-24 ~23:45– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

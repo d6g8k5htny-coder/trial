@@ -1,3 +1,7 @@
+## STATUS (Batch 252)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; watch issue GraphQL hygiene shipped; open issues 23→0; lemma_closed=false; scientific effect NONE.
+
 # One-command land paths for `d6g8k5htny-coder/main`
 
 **Scientific effect: NONE** for documentation / packaging lands below.

@@ -778,9 +778,12 @@ def test_watch_main_alignment_workflow_exists() -> None:
     assert "GITHUB_TOKEN" in text
     assert "main ALIGNED drift" in text
     assert "issues: write" in text
-    assert "gh issue" in text
+    assert "gh issue" in text or "watch_alignment_issue_hygiene.py" in text
     assert "MISALIGNED" in text
     assert "ALIGNED" in text
+    # Batch 252: GraphQL hygiene helper — never Search API / App REST open-list
+    assert "watch_alignment_issue_hygiene.py" in text
+    assert "Search API" in text or "exact-title" in text or "Batch 252" in text
     # Must not flip research status; must not push to main repo
     assert "lemma_closed" in text
     assert "Scientific effect" in text or "scientific effect" in text.lower()
@@ -7328,3 +7331,127 @@ def test_batch251_pack_portable_default_out_writable_fallback() -> None:
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 251)" in land
+
+
+def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
+    """Batch 252: GraphQL exact-title drift issue hygiene; close-all; avoid Search."""
+    import json
+    import subprocess
+    import sys
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH252_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "252"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "watch_alignment_issue_hygiene_graphql"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert str(brief.get("tip")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("open_issues_after") == 0
+    assert int(brief.get("open_issues_before") or 0) >= 20
+    assert "tip_observe" not in (brief.get("defect_id") or "")
+    assert "pack_portable" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH252_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "252"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_id") == "watch_alignment_issue_hygiene_graphql"
+    assert hunt.get("open_issues_after") == 0
+
+    script = ROOT / "scripts" / "watch_alignment_issue_hygiene.py"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "graphql" in text.lower()
+    assert "avoid_search_api" in text or "Search API" in text
+    assert "aligned_close_all" in text
+    assert "pick_canonical" in text
+    assert "lemma_closed" in text
+    assert "scientific_effect" in text.lower() or "Scientific effect" in text
+
+    # Offline dry-run: ALIGNED closes all open duplicates; MISALIGNED dedupes.
+    issues = [
+        {"number": 10, "title": "main ALIGNED drift", "state": "CLOSED"},
+        {"number": 12, "title": "main ALIGNED drift", "state": "OPEN"},
+        {"number": 15, "title": "main ALIGNED drift", "state": "OPEN"},
+    ]
+    aligned = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--state",
+            "ALIGNED",
+            "--tip-sha",
+            "72558a5b7ac9",
+            "--dry-run",
+            "--json-issues",
+            json.dumps(issues),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert aligned.returncode == 0, aligned.stderr + aligned.stdout
+    a = json.loads(aligned.stdout)
+    assert a["action"] == "aligned_close_all"
+    assert a["closed"] == [12, 15]
+    assert a["lemma_closed"] is False
+    assert a["avoid_search_api"] is True
+
+    mis = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--state",
+            "MISALIGNED",
+            "--tip-sha",
+            "deadbeefcafe",
+            "--dry-run",
+            "--json-issues",
+            json.dumps(issues),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert mis.returncode == 0, mis.stderr + mis.stdout
+    m = json.loads(mis.stdout)
+    assert m["action"] == "misaligned_upsert_dedupe"
+    assert m["canonical"] == 10
+    assert m["closed"] == [12, 15]
+    assert m["lemma_closed"] is False
+
+    wf = (ROOT / ".github" / "workflows" / "watch-main-alignment.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "watch_alignment_issue_hygiene.py" in wf
+    assert "Batch 252" in wf
+    assert "gh issue list --search" not in wf
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH252_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 252" in log
+    assert "GraphQL" in log or "watch_alignment_issue_hygiene" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 252" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 252)" in land
