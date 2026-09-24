@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 245 (pack_portable living-tag automation) — 2026-09-24 ~22:15– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75` (moved past `ea41a30`; Path C tracks hardening). `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Tip CI: hardening/default green; trial main CI green after #66. `refresh_path_c_bundle --dry-run` tip-stable. `when_writable_land` → **`idle_path_c_done`**.
+- **Defect shipped (not Path A/B ALIGNED no-op / not sibling AGENTS churn):** `pack_portable.sh` had no living release-tag automation — `PATH_C_RELEASE_TAG` defaults were hand-bumped across scripts with no VERIFY pin in the pack. Fixed: sync `portable/LIVING_PATH_C_RELEASE_TAG` from `VERIFY.release`, fail-closed if oneshot/open_pr `:-defaults` drift, include living-tag in tarball; oneshot/open_pr/`write_path_c_status` prefer the living file.
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 244 (pack APPLY living tip + sibling AGENTS + idle after 0019) — 2026-09-24 ~21:53– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30`. `lemma_closed=false`.

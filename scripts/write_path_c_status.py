@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
 BASE_TIP_FILE = ROOT / "portable" / "patches" / "BASE_TIP.txt"
 VERIFY_FILE = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+LIVING_TAG_FILE = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
 HARDENING_REF = os.environ.get(
     "HARDENING_REF", "chatgpt/drive-github-hardening-20260919"
 )
@@ -228,6 +229,14 @@ def _device_code_public() -> tuple[str | None, float | None, str | None]:
 
 
 def _release_tag() -> str | None:
+    # Batch 245: prefer living-tag file stamped by pack_portable / VERIFY sync.
+    if LIVING_TAG_FILE.is_file():
+        try:
+            tag = LIVING_TAG_FILE.read_text(encoding="utf-8").strip()
+            if tag.endswith("-path-c-bundle"):
+                return tag
+        except OSError:
+            pass
     if VERIFY_FILE.is_file():
         try:
             verify = json.loads(VERIFY_FILE.read_text(encoding="utf-8"))

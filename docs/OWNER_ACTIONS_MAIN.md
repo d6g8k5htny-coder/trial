@@ -1,6 +1,24 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 245 — write WRITABLE; pack_portable living-tag automation
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f3a41a75`.
+Release **`batch241-path-c-bundle`** pinned via `portable/LIVING_PATH_C_RELEASE_TAG`
+(synced from `VERIFY.release` by `pack_portable.sh`; oneshot/open_pr prefer that file).
+Research HOLD drafts skipped. `lemma_closed` stays **false**.
+
+```bash
+./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz   # prints living_tag=…
+cat portable/LIVING_PATH_C_RELEASE_TAG
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 244 — write WRITABLE; pack APPLY living tip; sibling AGENTS; idle after 0019
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is

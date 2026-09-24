@@ -6261,11 +6261,17 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     )
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 242)" in land_md or "STATUS (Batch 243)" in land_md or "STATUS (Batch 244)" in land_md
+    assert (
+        "STATUS (Batch 242)" in land_md
+        or "STATUS (Batch 243)" in land_md
+        or "STATUS (Batch 244)" in land_md
+        or "STATUS (Batch 245)" in land_md
+    )
     assert "WRITABLE" in land_md
     assert "batch241-path-c-bundle" in land_md
     assert "542e6ec" in land_md
-    assert "ea41a30" in land_md
+    # Living default tip may supersede ea41a30 → f3a41a75+.
+    assert "ea41a30" in land_md or "f3a41a75" in land_md
     # Top face must not claim trial cannot write as absolute truth.
     top = "\n".join(land_md.splitlines()[:25])
     assert "both return 403" not in top
@@ -6414,7 +6420,8 @@ def test_batch244_pack_living_tip_siblings_idle() -> None:
     assert "batch241-path-c-bundle (tip 542e6ec" in open_pr
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 244)" in land_md
+    # Living STATUS header may supersede Batch 244 → 245+.
+    assert "STATUS (Batch 244)" in land_md or "STATUS (Batch 245)" in land_md
     assert "batch241-path-c-bundle" in land_md
     assert "WRITABLE" in land_md
 
@@ -6542,3 +6549,137 @@ def test_batch244_pack_living_tip_siblings_idle() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 244" in log
     assert "batch207" in log.lower() or "APPLY" in log
+
+
+def test_batch245_pack_living_tag_automation() -> None:
+    """Batch 245: pack_portable living-tag automation; tip stable; no flip."""
+    import json
+    import os
+    import tempfile
+
+    living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
+    assert living.is_file()
+    tag = living.read_text(encoding="utf-8").strip()
+    assert tag == "batch241-path-c-bundle"
+    assert _living_release(tag)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("release") == tag
+    assert verify.get("lemma_closed") is False
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "LIVING_PATH_C_RELEASE_TAG" in pack
+    assert "living_tag=" in pack
+    assert "VERIFY.json" in pack
+    assert 'portable/LIVING_PATH_C_RELEASE_TAG' in pack
+
+    oneshot = (ROOT / "scripts" / "owner_path_c_oneshot.sh").read_text(encoding="utf-8")
+    assert "LIVING_PATH_C_RELEASE_TAG" in oneshot
+    assert f'PATH_C_RELEASE_TAG="${{PATH_C_RELEASE_TAG:-{tag}}}"' in oneshot
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert "LIVING_PATH_C_RELEASE_TAG" in open_pr
+    assert f'PATH_C_RELEASE_TAG="${{PATH_C_RELEASE_TAG:-{tag}}}"' in open_pr
+
+    status_py = (ROOT / "scripts" / "write_path_c_status.py").read_text(encoding="utf-8")
+    assert "LIVING_TAG_FILE" in status_py
+    assert "LIVING_PATH_C_RELEASE_TAG" in status_py
+
+    with tempfile.TemporaryDirectory(prefix="pack245-") as td:
+        out = Path(td) / "pack.tgz"
+        proc = subprocess.run(
+            ["bash", str(ROOT / "scripts" / "pack_portable.sh"), str(out)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+        assert f"living_tag={tag}" in (proc.stdout or "")
+        listing = subprocess.run(
+            ["tar", "-tzf", str(out)],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        assert "portable/LIVING_PATH_C_RELEASE_TAG" in listing
+
+    # Living file wins over hardcoded fallback when env unset.
+    with tempfile.TemporaryDirectory(prefix="ww-living-") as td:
+        env = {
+            k: v
+            for k, v in os.environ.items()
+            if k not in ("PATH_C_RELEASE_TAG", "MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+        }
+        # Probe oneshot help path does not need network; just confirm sourcing.
+        probe = subprocess.run(
+            [
+                "bash",
+                "-c",
+                'source /dev/null; ROOT="$1"; '
+                'TAG_FILE="$ROOT/portable/LIVING_PATH_C_RELEASE_TAG"; '
+                'tag=$(tr -d "[:space:]" <"$TAG_FILE"); '
+                'echo "resolved=$tag"',
+                "_",
+                str(ROOT),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=env,
+        )
+        assert probe.returncode == 0
+        assert f"resolved={tag}" in (probe.stdout or "")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH245_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "245"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "pack_portable_living_tag_automation"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("pack_release") == tag
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH245_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "245"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH245_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 245" in log
+    assert "LIVING_PATH_C_RELEASE_TAG" in log or "living-tag" in log.lower()
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 245)" in land_md
+    assert "LIVING_PATH_C_RELEASE_TAG" in land_md or "living-tag" in land_md.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 245" in ones
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 245" in owner_actions

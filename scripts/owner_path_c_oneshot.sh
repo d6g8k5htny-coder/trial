@@ -38,7 +38,14 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
+# Batch 245: living-tag automation — prefer portable/LIVING_PATH_C_RELEASE_TAG
+# when PATH_C_RELEASE_TAG is unset; keep :-batch241 fallback for older packs.
+_LIVING_TAG_FILE="${TRIAL_ROOT}/portable/LIVING_PATH_C_RELEASE_TAG"
+if [[ -z "${PATH_C_RELEASE_TAG:-}" && -f "$_LIVING_TAG_FILE" ]]; then
+  PATH_C_RELEASE_TAG="$(tr -d '[:space:]' < "$_LIVING_TAG_FILE")"
+fi
 # Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
+# Batch 241/245: default batch241-path-c-bundle (tip 542e6ec; Path C 0001–0019).
 PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0

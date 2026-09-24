@@ -1,0 +1,40 @@
+{
+  "batch": "245",
+  "generated_at_utc": "2026-09-24T22:18:00Z",
+  "hunt": "tip_stable_pack_living_tag_or_assert_idle_or_inventable",
+  "hunt_result": "DEFECT_FOUND_PACK_NO_LIVING_TAG_AUTOMATION",
+  "defect_found": true,
+  "defect_id": "pack_portable_living_tag_automation",
+  "defect_shipped": true,
+  "patch_0020": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "542e6ec",
+  "tip_full": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
+  "base_tip": "542e6ec",
+  "tip_moved": false,
+  "default_tip": "f3a41a75",
+  "aligned": true,
+  "write": "WRITABLE",
+  "surfaces": {
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) — skipped",
+    "ci_hardening_default": "green; trial main CI success after #66; land-option-b dry_run fails on stale Option-B patch (ALIGNED — avoid Path A/B no-op class)",
+    "hardening_vs_base": "refresh_path_c_bundle --dry-run tip stable @ 542e6ec",
+    "default_tip": "moved ea41a30 → f3a41a75 (nav/RN fixed-remote); Path C unchanged",
+    "pack_living_tag": "pack_portable had no VERIFY→LIVING_PATH_C_RELEASE_TAG sync / drift gate; oneshot/open_pr hardcoded only",
+    "assert_path_c_ready": "still skips apply_all --check when path_c_landed (residual next_focus)",
+    "when_writable_idle_after_0019": "idle_path_c_done; followons 0018+0019 resolved; pending_ids []"
+  },
+  "evidence": {
+    "living_tag_missing_before": "no portable/LIVING_PATH_C_RELEASE_TAG; pack tarball lacked living-tag pin",
+    "fix": [
+      "portable/LIVING_PATH_C_RELEASE_TAG ← VERIFY.release",
+      "scripts/pack_portable.sh sync+validate+pack living tag",
+      "scripts/owner_path_c_oneshot.sh + owner_open_path_c_pr.sh prefer living file",
+      "scripts/write_path_c_status.py _release_tag prefers living file",
+      "tests/test_intent.py test_batch245_pack_living_tag_automation"
+    ]
+  },
+  "note": "NEW signal beyond Path A/B ALIGNED no-ops / sibling AGENTS churn: pack living-tag automation. Never printed tokens."
+}

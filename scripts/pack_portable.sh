@@ -3,9 +3,68 @@
 #
 # Batch 64+: auto-includes every portable/RESTORE_PLAN_*.json and
 # portable/BATCH*_TOKEN_SEARCH.json so each batch need not edit this list.
+#
+# Batch 245+: living Path C release-tag automation — sync
+# portable/LIVING_PATH_C_RELEASE_TAG from path-c-applied-bundle/VERIFY.json
+# "release", fail closed if owner oneshot/open_pr :-defaults drift, and pack
+# the living-tag file so downstream ONE-SHOT consumers share one tip pin.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="${1:-$ROOT/../trial-portable-main-fixes.tgz}"
+
+# --- living release tag (Batch 245) -----------------------------------------
+VERIFY_JSON="$ROOT/portable/path-c-applied-bundle/VERIFY.json"
+LIVING_TAG_FILE="$ROOT/portable/LIVING_PATH_C_RELEASE_TAG"
+LIVING_TAG="$(
+  VERIFY_JSON="$VERIFY_JSON" LIVING_TAG_FILE="$LIVING_TAG_FILE" python3 - <<'PY'
+import json, os, sys
+from pathlib import Path
+
+verify = Path(os.environ["VERIFY_JSON"])
+living = Path(os.environ["LIVING_TAG_FILE"])
+tag = None
+if verify.is_file():
+    try:
+        data = json.loads(verify.read_text(encoding="utf-8"))
+        rel = data.get("release")
+        if isinstance(rel, str) and rel.endswith("-path-c-bundle"):
+            tag = rel.strip()
+        elif data.get("batch") is not None:
+            tag = f"batch{data['batch']}-path-c-bundle"
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        tag = None
+if not tag and living.is_file():
+    try:
+        cand = living.read_text(encoding="utf-8").strip()
+        if cand.endswith("-path-c-bundle"):
+            tag = cand
+    except OSError:
+        tag = None
+if not tag:
+    sys.stderr.write(
+        "pack_portable: ERROR: cannot derive living Path C release tag "
+        "from VERIFY.json (release|batch) or LIVING_PATH_C_RELEASE_TAG\n"
+    )
+    raise SystemExit(2)
+living.parent.mkdir(parents=True, exist_ok=True)
+living.write_text(tag + "\n", encoding="utf-8")
+print(tag)
+PY
+)" || exit $?
+
+for _script in \
+  "$ROOT/scripts/owner_path_c_oneshot.sh" \
+  "$ROOT/scripts/owner_open_path_c_pr.sh"
+do
+  if [[ -f "$_script" ]]; then
+    if ! grep -q "PATH_C_RELEASE_TAG=\"\${PATH_C_RELEASE_TAG:-${LIVING_TAG}}\"" "$_script"; then
+      echo "pack_portable: ERROR: $_script :-default != living tag ${LIVING_TAG}" >&2
+      echo "pack_portable: bump PATH_C_RELEASE_TAG fallback (and VERIFY.release) together" >&2
+      exit 2
+    fi
+  fi
+done
+# ---------------------------------------------------------------------------
 
 mapfile -t RESTORE_PLANS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'RESTORE_PLAN_*.json' | sort)
 mapfile -t TOKEN_SEARCHES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_TOKEN_SEARCH.json' | sort)
@@ -85,6 +144,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/EXPECTED_POST_ALIGNMENT.json \
   portable/ALIGNED_DRIFT_SNAPSHOT.json \
   portable/PATH_C_STATUS.json \
+  portable/LIVING_PATH_C_RELEASE_TAG \
   portable/GH_DEVICE_LOGIN.md \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
@@ -130,4 +190,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/dispatch_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence; ${#rel_batch_briefs[@]} briefs; ${#rel_batch_hunts[@]} hunts)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; living_tag=${LIVING_TAG}; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence; ${#rel_batch_briefs[@]} briefs; ${#rel_batch_hunts[@]} hunts)"
