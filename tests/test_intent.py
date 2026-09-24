@@ -2188,3 +2188,127 @@ def test_batch139_path_c_repository_dispatch_and_ci_green() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 139" in log
     assert "repository_dispatch" in log
+
+
+def test_batch140_when_writable_repository_dispatch_on_token_file() -> None:
+    """Batch 140: token-file drop → repository_dispatch land-path-c; no 0017."""
+    import importlib.util
+    import json
+    import tempfile
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    src = script.read_text(encoding="utf-8")
+    assert "WELL_KNOWN_TOKEN_PATHS" in src
+    assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in src
+    assert "/workspace/.secrets/MAIN_PUSH_TOKEN" in src
+    assert "/tmp/gh-dylan-auth/access_token" in src
+    assert "dispatch_land_path_c" in src
+    assert "path_c_repository_dispatch" in src
+    assert "repository_dispatch" in src
+    assert "land-path-c-on-main" in src
+    assert "token_appeared" in src
+
+    gh_login = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "MAIN_PUSH_TOKEN file drop" in gh_login or "well-known" in gh_login.lower()
+    assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in gh_login
+    assert "dispatch_land_path_c.sh --apply" in gh_login
+
+    spec = importlib.util.spec_from_file_location("when_writable_land_b140", script)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.WELL_KNOWN_TOKEN_PATHS[0] == "/cursor/stores/self/MAIN_PUSH_TOKEN"
+    assert mod.DISPATCH_C.name == "dispatch_land_path_c.sh"
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        tok = td_path / "MAIN_PUSH_TOKEN"
+        tok.write_text("ghp_TEST_FAKE_TOKEN_batch140_do_not_use\n", encoding="utf-8")
+        present, path = mod.token_file_present(file_candidates=(tok,))
+        assert present is True and path == str(tok)
+        absent, _ = mod.token_file_present(file_candidates=(td_path / "missing",))
+        assert absent is False
+
+        log_path = td_path / "land.log"
+        detail = mod.try_repository_dispatch_path_c(
+            dry_run=True, log_path=log_path, apply=True
+        )
+        assert detail["skipped_reason"] == "dry_run"
+        assert detail["apply"] is True
+        assert "--apply" in " ".join(detail["would_run"])
+        assert "land-path-c-on-main" in detail["event_type"]
+
+        # --once dry-run with planted token file + seeded status (token absent)
+        # uses DEFAULT_TOKEN_FILES; plant at access_token only if absent.
+        access = Path("/tmp/gh-dylan-auth/access_token")
+        planted = False
+        fake = "ghp_TEST_FAKE_TOKEN_batch140_do_not_use"
+        try:
+            if not access.is_file():
+                access.parent.mkdir(parents=True, exist_ok=True)
+                access.write_text(fake + "\n", encoding="utf-8")
+                access.chmod(0o600)
+                planted = True
+            status_path = td_path / "status.json"
+            stop_path = td_path / "stop"
+            # Seed prior status: no token yet → appearance flip.
+            status_path.write_text(
+                json.dumps(
+                    {
+                        "token_present": False,
+                        "install_has_main": False,
+                        "last_dispatch_token_source": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            proc = subprocess.run(
+                [
+                    sys.executable,
+                    str(script),
+                    "--once",
+                    "--dry-run",
+                    "--mock-probe",
+                    "DENIED",
+                    "--mock-install-has-main",
+                    "false",
+                    "--log",
+                    str(log_path),
+                    "--status",
+                    str(status_path),
+                    "--stop",
+                    str(stop_path),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+                cwd=str(ROOT),
+            )
+            assert proc.returncode == 0, proc.stderr + proc.stdout
+            combined = (proc.stdout or "") + (proc.stderr or "") + log_path.read_text(
+                encoding="utf-8"
+            )
+            assert fake not in combined
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+            assert status["lemma_closed"] is False
+            assert status["goal_complete"] is False
+            assert status["flipped_anything"] is False
+            assert status["last"]["action"] == "path_c_repository_dispatch"
+            assert status["last"]["land"]["skipped_reason"] == "dry_run"
+            assert status["last_dispatch_token_source"] == f"file:{access}"
+        finally:
+            if planted and access.is_file():
+                access.unlink()
+
+    brief = ROOT / "portable" / "BATCH140_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "140"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 140" in log

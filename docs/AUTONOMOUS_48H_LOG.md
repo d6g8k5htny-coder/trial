@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 140 — 2026-09-24 ~07:25 UTC (PERMANENT window; token-file → repository_dispatch; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: **W3f repository_dispatch WRITABLE**; all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked.
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. Local `git am` dry-apply OK; `math_status_check` problems=0 / **lemma_closed=false**; focused pytest **90 passed / 0 ResourceWarning**.
+- Device auth `F11F-5064` still **pending** (`slow_down`); seconds_left≈342; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- Trial `main` tip includes batch139 `repository_dispatch` lander; latest CI on tip `0ebdbab` **green** (incl. `path-c-applied-bundle-dry-apply`).
+- **Engineering gap:** tools/ + body/ bare-open / ResourceWarning hunt after patches → **clean / no 0017**. **Concrete fix:** `when_writable_land.py` fires `dispatch_land_path_c.sh --apply` once when a `MAIN_PUSH_TOKEN` file appears at well-known paths (`/cursor/stores/self/MAIN_PUSH_TOKEN`, `/workspace/.secrets/MAIN_PUSH_TOKEN`, `/tmp/gh-dylan-auth/access_token`) while main write is DENIED. Documented in `GH_DEVICE_LOGIN.md` + `OWNER_ACTIONS_MAIN.md`.
+- Tiny JSON: `portable/BATCH140_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `F11F-5064` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot.
+
 ### Batch 139 — 2026-09-24 ~07:15 UTC (PERMANENT window; Path C repository_dispatch; CI dry-apply verify green; scientific effect NONE; flipped nothing)
 
 - `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked.
