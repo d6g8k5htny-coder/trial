@@ -30,7 +30,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Trial CI @ `8eb1f30` (Batch 92 tip): sanity / research-stack-status-guard / land-workflows-dry-run / portable-patches-on-main → **success**. No fix → **IDLE**.
 - Tiny JSON: `portable/BATCH93_BRIEF.json`. `goal_complete=false`.
 
-**Land note:** Path C still blocked (`install_has_main=false`). Trial branch `cursor/batch93-install-idle-3ee1`.
+**Land note:** Path C still blocked (`install_has_main=false`). `gh pr create` → **403**. Direct push to trial `main` (`cursor/batch93-install-idle-3ee1` @ `9637f50`). Timer `permanent-autonomous-align-watch` @ **3600s**.
 
 ### Batch 92 — 2026-09-24 ~03:20 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; install_repos poll)
 

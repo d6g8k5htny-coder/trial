@@ -13,10 +13,13 @@
   "path_c_now": false,
   "trial_ci_8eb1f30": "success",
   "daemon_once": "continue_denied",
+  "tmux_session": "when-writable-land",
+  "timer": "permanent-autonomous-align-watch@3600s",
   "route_now": "IDLE",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "window": "PERMANENT_OPEN",
+  "land_trial": "direct push cursor/batch93-install-idle-3ee1 → trial main @9637f50",
   "note": "install_has_main=false; tip==ac33581; CI green @8eb1f30 — IDLE; flipped nothing"
 }
