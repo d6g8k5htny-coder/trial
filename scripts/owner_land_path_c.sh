@@ -184,22 +184,36 @@ fi
 
 # Apply Path C commits from release artifacts onto current HEAD (must be BASE_TIP).
 # Prefers git bundle fetch+ff-merge; falls back to git am of the format-patch.
+# Batch 241: when tip already carries Path C via merge commits that diverge from
+# the portable .bundle synthetic history, ff-only fails — fall back to apply_all
+# (idempotent already-applied skips) so Path C land/dry-run stays green.
 apply_from_bundle_artifact() {
   if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
     echo "--- --from-bundle: git fetch $BUNDLE_GIT $BUNDLE_BRANCH (prefer .bundle) ---"
     if ! git fetch "$BUNDLE_GIT" "$BUNDLE_BRANCH"; then
       die "git fetch from $BUNDLE_GIT failed (need BASE_TIP present in this clone)."
     fi
-    if ! git merge --ff-only FETCH_HEAD; then
-      die "git merge --ff-only from bundle failed (HEAD must be BASE_TIP; tip may have moved)."
+    if git merge --ff-only FETCH_HEAD; then
+      return 0
     fi
+    echo "warn: git merge --ff-only from .bundle failed (tip may already carry Path C via different merge commits)."
+    echo "--- fallback: apply_all (idempotent already-applied skips) ---"
+    if ! "$APPLY_ALL"; then
+      die "git merge --ff-only from bundle failed and apply_all fallback failed. Tip may have moved past BASE_TIP; refresh release bundle."
+    fi
+    echo "already_applied_on_tip_via_apply_all=true"
     return 0
   fi
   echo "--- --from-bundle: git am path-c-on-hardening.patch (no .bundle) ---"
-  if ! git am --3way "$BUNDLE_PATCH"; then
-    git am --abort 2>/dev/null || true
-    die "git am --from-bundle failed. Tip may have moved past BASE_TIP; refresh release bundle or use $0 (apply_all) instead."
+  if git am --3way "$BUNDLE_PATCH"; then
+    return 0
   fi
+  git am --abort 2>/dev/null || true
+  echo "warn: git am --from-bundle failed; trying apply_all fallback (already-on-tip?)."
+  if ! "$APPLY_ALL"; then
+    die "git am --from-bundle failed and apply_all fallback failed. Tip may have moved past BASE_TIP; refresh release bundle or use $0 (apply_all) instead."
+  fi
+  echo "already_applied_on_tip_via_apply_all=true"
 }
 
 echo "=== owner_land_path_c ==="
@@ -301,14 +315,27 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
         exit 1
       fi
       if ! git merge --ff-only FETCH_HEAD; then
-        echo "owner_land_path_c: ERROR: git merge --ff-only from .bundle failed (exit=1)." >&2
-        exit 1
+        # Batch 241: Path C already on tip via merge commits that diverge from
+        # portable .bundle synthetic history → ff-only fails while tip_matches.
+        # Fall back to apply_all --check (idempotent); if OK, dry-run succeeds.
+        echo "warn: git merge --ff-only from .bundle failed; checking apply_all --check (already-on-tip?)."
+        if ! "$APPLY_ALL" --check; then
+          echo "owner_land_path_c: ERROR: git merge --ff-only from .bundle failed and apply_all --check failed (exit=1)." >&2
+          exit 1
+        fi
+        echo "already_applied_on_tip=true"
+        echo "apply_all_check=OK"
       fi
     else
       if ! git am --3way "$BUNDLE_PATCH"; then
         git am --abort 2>/dev/null || true
-        echo "owner_land_path_c: ERROR: git am --from-bundle failed on BASE_TIP (exit=1)." >&2
-        exit 1
+        echo "warn: git am --from-bundle failed; checking apply_all --check (already-on-tip?)."
+        if ! "$APPLY_ALL" --check; then
+          echo "owner_land_path_c: ERROR: git am --from-bundle failed and apply_all --check failed (exit=1)." >&2
+          exit 1
+        fi
+        echo "already_applied_on_tip=true"
+        echo "apply_all_check=OK"
       fi
     fi
     STATUS_OUT="$(python3 tools/math_status_check.py 2>&1)" || {
@@ -325,7 +352,7 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       echo "owner_land_path_c: ERROR: math_status problems!=0 after bundle apply." >&2
       exit 1
     fi
-    echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; $([ "$USE_GIT_BUNDLE" -eq 1 ] && echo 'git bundle fetch' || echo 'git am') OK; lemma_closed=false."
+    echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; $([ "$USE_GIT_BUNDLE" -eq 1 ] && echo 'git bundle fetch' || echo 'git am') OK (or already_applied_on_tip); lemma_closed=false."
     echo "Land with write creds: $0 --from-bundle"
     echo "Scientific effect: NONE"
     exit 0

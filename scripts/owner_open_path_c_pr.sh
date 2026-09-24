@@ -102,7 +102,7 @@ VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
 # Batch 178+: prefer linking the fetchable .bundle from the latest Path C release in the PR body.
 # Batch 199: default release tag batch199-path-c-bundle (supersedes batch180-path-c-bundle / batch179 / batch169).
 # Batch 207: default release tag batch218-path-c-bundle (tip b89448d refresh; supersedes batch202-path-c-bundle).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"
 TRIAL_REPO_SLUG="${TRIAL_REPO:-d6g8k5htny-coder/trial}"
 
 resolve_path_c_bundle_release_url() {
