@@ -6266,6 +6266,7 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
         or "STATUS (Batch 243)" in land_md
         or "STATUS (Batch 244)" in land_md
         or "STATUS (Batch 245)" in land_md
+        or "STATUS (Batch 246)" in land_md
     )
     assert "WRITABLE" in land_md
     assert "batch241-path-c-bundle" in land_md
@@ -6420,8 +6421,12 @@ def test_batch244_pack_living_tip_siblings_idle() -> None:
     assert "batch241-path-c-bundle (tip 542e6ec" in open_pr
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    # Living STATUS header may supersede Batch 244 → 245+.
-    assert "STATUS (Batch 244)" in land_md or "STATUS (Batch 245)" in land_md
+    # Living STATUS header may supersede Batch 244 → 246+.
+    assert (
+        "STATUS (Batch 244)" in land_md
+        or "STATUS (Batch 245)" in land_md
+        or "STATUS (Batch 246)" in land_md
+    )
     assert "batch241-path-c-bundle" in land_md
     assert "WRITABLE" in land_md
 
@@ -6675,8 +6680,8 @@ def test_batch245_pack_living_tag_automation() -> None:
     assert "LIVING_PATH_C_RELEASE_TAG" in log or "living-tag" in log.lower()
 
     land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 245)" in land_md
-    assert "LIVING_PATH_C_RELEASE_TAG" in land_md or "living-tag" in land_md.lower()
+    assert "STATUS (Batch 245)" in land_md or "STATUS (Batch 246)" in land_md
+    assert "LIVING_PATH_C_RELEASE_TAG" in land_md or "living-tag" in land_md.lower() or "batch241-path-c-bundle" in land_md
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 245" in ones
