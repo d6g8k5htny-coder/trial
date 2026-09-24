@@ -5627,3 +5627,91 @@ def test_batch232_path_c_status_write_state_clobber() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 232" in log
+
+
+def test_batch233_guard_tip_sha_clobber() -> None:
+    """Batch 233: guard_no_status_promotion preserves tip_sha without --tip-sha."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path
+
+    spec = importlib.util.spec_from_file_location(
+        "guard_no_status_promotion", ROOT / "scripts" / "guard_no_status_promotion.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    # Unit: recover baseline tip when inventory.tip_sha was wiped.
+    baseline_raw = {
+        "tip_sha": "",
+        "baseline_tip_sha": "377201c456a5081d4c79701940e5ca678226d15d",
+        "inventory": {"tip_sha": None, "premises": {}, "lemmas": {}, "prizes": {}},
+    }
+    recovered = mod._baseline_tip_sha(baseline_raw, baseline_raw["inventory"])
+    assert recovered == "377201c456a5081d4c79701940e5ca678226d15d"
+
+    snap = mod.build_snapshot(
+        tip_sha="377201c456a5081d4c79701940e5ca678226d15d",
+        baseline_path=Path("portable/STATUS_GUARD_SNAPSHOT.json"),
+        baseline_inv={"tip_sha": None, "premises": {}, "lemmas": {}, "prizes": {}},
+        baseline_raw=baseline_raw,
+        current_inv={
+            "tip_sha": "377201c456a5081d4c79701940e5ca678226d15d",
+            "premises": {},
+            "lemmas": {},
+            "prizes": {},
+            "counts": {},
+        },
+        live_report={"shape": "HAS_PACKET", "counts": {}},
+        violations=[],
+    )
+    assert snap["tip_sha"] == "377201c456a5081d4c79701940e5ca678226d15d"
+    assert snap["baseline_tip_sha"] == "377201c456a5081d4c79701940e5ca678226d15d"
+    assert snap["lemma_closed"] is False
+    assert snap["scientific_effect"] == "NONE"
+
+    # Live contracts.
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert status.get("path_c_landed") is True
+    assert status.get("write_state") == "WRITABLE"
+    assert status.get("tip_match") is True
+
+    guard = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert guard["lemma_closed"] is False
+    assert guard["pass"] is True
+    assert guard.get("tip_sha")
+    assert len(str(guard["tip_sha"])) >= 7
+    assert guard.get("inventory", {}).get("tip_sha")
+
+    brief = ROOT / "portable" / "BATCH233_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "233"
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is True
+    assert data["tip_moved"] is False
+    assert data.get("path_c_delta_landed") is False
+    assert data.get("patch_0018") is False
+    assert "guard" in str(data.get("defect_shipped") or "")
+    assert "OPEN_HOLD" in data.get("math_status", "")
+
+    hunt = ROOT / "portable" / "BATCH233_HUNT.json"
+    assert hunt.is_file()
+    h = json.loads(hunt.read_text(encoding="utf-8"))
+    assert h["patch_0018"] is False
+    assert h["lemma_closed"] is False
+    assert h["focused_resource_warnings"] == 0
+
+    src = (ROOT / "scripts" / "guard_no_status_promotion.py").read_text(encoding="utf-8")
+    assert "_git_head_sha" in src
+    assert "_baseline_tip_sha" in src
+    assert "never clobber tip tracking" in src
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 233" in log
