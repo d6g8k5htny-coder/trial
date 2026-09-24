@@ -1,6 +1,6 @@
 {
   "batch": "237",
-  "generated_at_utc": "2026-09-24T19:24:00Z",
+  "generated_at_utc": "2026-09-24T19:25:00Z",
   "status": "waiting_ci_69_70",
   "goal_complete": false,
   "lemma_closed": false,
@@ -38,11 +38,15 @@
   "disposition": "OPEN_HOLD",
   "next_focus": "waiting_ci_69_70_then_merge_if_green_no_main_claim_yet",
   "trial_pr": 59,
-  "trial_pr_action": "merge_when_green",
-  "waiting_main_prs": [69, 70],
+  "trial_pr_action": "merged",
+  "waiting_main_prs": [
+    69,
+    70
+  ],
   "main_merge_claimed": false,
   "patch_0018_ready": true,
   "apply_all_check_tip": "1200501",
   "apply_all_check": "OK",
-  "trial_branch": "cursor/batch237-eng-finish-c88a"
+  "trial_branch": "cursor/batch237-eng-finish-c88a",
+  "trial_pr_merge_sha": "4cbc2a10fe0d6539f0b5dce4c7a1efebfccb4c5d"
 }
