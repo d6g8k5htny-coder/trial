@@ -1,6 +1,6 @@
 {
   "batch": "180",
-  "generated_at_utc": "2026-09-24T11:37:38Z",
+  "generated_at_utc": "2026-09-24T11:37:58Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -32,7 +32,7 @@
   "device_code": "5216-7C1B",
   "prior_device_code": "AD78-6206",
   "auth_renewed": true,
-  "seconds_left": 417.3,
+  "seconds_left": 397.9,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -94,5 +94,5 @@
   "issue_title": "Path C unblock \u2014 Batch 180 canonical (5216-7C1B)",
   "auth_renew_threshold_note": "renew if expired or seconds_left<90; AD78 was <90 \u2192 renewed to 5216-7C1B",
   "bundle_verify_fix": "git -C WORKDIR bundle verify (trial ROOT false-failed prerequisites)",
-  "trial_main_sha": "eef923f105876a1ec4bae511746decc00b8bec39"
+  "trial_main_sha": "091f6c83e9e6f9ef5def58bf1ae27e5d35e37306"
 }
