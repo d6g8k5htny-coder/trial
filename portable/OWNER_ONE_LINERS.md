@@ -4,7 +4,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
-> **Batch 192 — tip stable `8bd1f03`; auth pending `1C7F-22B5`; README Path C face; write DENIED**:
+> **Batch 192 — tip stable `8bd1f03`; auth renew `CC72-DB3D` (from `1C7F-22B5` &lt;90s); README Path C face; write DENIED**:
 >
 > ```bash
 > # Repo face: README.md → "Path C — land engineering fixes on main"

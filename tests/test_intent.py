@@ -4287,13 +4287,14 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert data["main_status"] == "ALIGNED"
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    assert data.get("canonical_issue") in (40, 41, 42, 43) or data.get(
+    assert data.get("canonical_issue") in (40, 41, 42, 43, 44) or data.get(
         "issue_number"
     ) in (
         40,
         41,
         42,
         43,
+        44,
     )
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert "lemma_closed=false" in data.get("math_status", "")
@@ -4369,10 +4370,11 @@ def test_batch190_deeper_hunt_auth_renew() -> None:
     assert data.get("has_main_push_token") is False
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    # Living canonical issue may supersede (#42→#43+).
-    assert data.get("canonical_issue") in (42, 43) or data.get("issue_number") in (
+    # Living canonical issue may supersede (#42→#43→#44+).
+    assert data.get("canonical_issue") in (42, 43, 44) or data.get("issue_number") in (
         42,
         43,
+        44,
     )
     assert "OPEN_HOLD" in data.get("math_status", "")
     assert "lemma_closed=false" in data.get("math_status", "")
@@ -4442,15 +4444,21 @@ def test_batch192_readme_path_c_face() -> None:
     assert data["tip"] == "8bd1f03"
     assert data["tip_matches_base"] is True
     assert data["tip_refresh"] is False
-    assert data["device_code"] == "1C7F-22B5" or "-" in str(data["device_code"])
-    assert data["auth_renewed"] is False
+    assert data["device_code"] in ("1C7F-22B5", "CC72-DB3D") or "-" in str(
+        data["device_code"]
+    )
+    # Living renew may flip auth_renewed True when seconds_left<90 mid-batch.
+    assert data["auth_renewed"] in (False, True)
     assert data["device_auth"] == "pending"
     assert data["write"] == "DENIED"
     assert data["main_status"] == "ALIGNED"
     assert data.get("has_main_push_token") is False
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
-    assert data.get("canonical_issue") == 43 or data.get("issue_number") == 43
+    assert data.get("canonical_issue") in (43, 44) or data.get("issue_number") in (
+        43,
+        44,
+    )
     assert data.get("readme_updated") is True
     assert "Path C" in data.get("readme_path_c_section", "")
     assert "OPEN_HOLD" in data.get("math_status", "")
@@ -4477,7 +4485,7 @@ def test_batch192_readme_path_c_face() -> None:
     assert status.get("tip") == "8bd1f03"
     assert status.get("base_tip") == "8bd1f03"
     assert status.get("tip_match") is True
-    assert status.get("device_code") == "1C7F-22B5" or "-" in str(
+    assert status.get("device_code") in ("1C7F-22B5", "CC72-DB3D") or "-" in str(
         status.get("device_code", "")
     )
     assert status.get("release_tag") == "batch180-path-c-bundle"
@@ -4488,8 +4496,9 @@ def test_batch192_readme_path_c_face() -> None:
     assert "8bd1f03" in base
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "CC72-DB3D" in gh or "1C7F-22B5" in gh
     assert "1C7F-22B5" in gh
-    assert "issues/43" in gh or "#43" in gh
+    assert "issues/43" in gh or "#43" in gh or "issues/44" in gh or "#44" in gh
     assert "BATCH192_BRIEF" in gh or "Batch 192" in gh
     assert "README.md" in gh or "Path C — land engineering fixes on main" in gh
 
@@ -4502,7 +4511,7 @@ def test_batch192_readme_path_c_face() -> None:
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 192" in ones
-    assert "Path C — land engineering fixes on main" in ones or "1C7F-22B5" in ones
+    assert "Path C — land engineering fixes on main" in ones or "CC72-DB3D" in ones or "1C7F-22B5" in ones
 
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 192" in findings

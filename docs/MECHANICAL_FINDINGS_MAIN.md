@@ -3,7 +3,7 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
-## Batch 192 — tip stable 8bd1f03; auth pending 1C7F; README Path C face; no research flips @ tips `1c6e74b` / `8bd1f03`
+## Batch 192 — tip stable 8bd1f03; auth renew CC72 (1C7F &lt;90s); README Path C face; no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory unchanged from Batch 190. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip refresh / no hunt.
 
@@ -15,7 +15,7 @@ Mechanical inventory unchanged from Batch 190. Flipped nothing. `lemma_closed=fa
 | Check | Result |
 |-------|--------|
 | `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
-| write / Path C | **DENIED** (403); device auth still pending `1C7F-22B5` (slow_down) |
+| write / Path C | **DENIED** (403); device auth renewed `CC72-DB3D` (prior `1C7F-22B5` &lt;90s) |
 | repo face | trial `README.md` top section **Path C — land engineering fixes on main** (device URL+code / `batch180-path-c-bundle` / oneshot / App add-main) |
 | pack / release | still **`batch180-path-c-bundle`** |
 | preferred auth timer | **`preferred_auth_interval_s=1800`** |
