@@ -36,7 +36,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tiny JSON: `portable/BATCH84_BRIEF.json`.
 - `goal_complete=false`.
 
-**Land note:** `gh pr create` → expect **403**. Direct push to trial `main` (`cursor/token-discovery-env-main-d6b8`). Path C on `d6g8k5htny-coder/main` still 403; lander polling with token discovery.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `85ed511..4e30fba` (`cursor/token-discovery-env-main-d6b8`). Path C on `d6g8k5htny-coder/main` still 403; lander tmux `when-writable-land` polling with token discovery (`token_source=none` this host).
 
 ### Batch 83 — 2026-09-24 ~02:39 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; OBJECTIVE_EVIDENCE_83)
 
