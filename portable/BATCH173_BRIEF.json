@@ -1,6 +1,6 @@
 {
   "batch": "173",
-  "generated_at_utc": "2026-09-24T10:49:30Z",
+  "generated_at_utc": "2026-09-24T10:51:29Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -27,7 +27,7 @@
   "device_code": "9671-4918",
   "prior_device_code": "7BCB-0057",
   "auth_renewed": true,
-  "seconds_left": 786,
+  "seconds_left": 627,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -46,7 +46,7 @@
   "issue_comment_denied": true,
   "assert_path_c_ready": true,
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth 7BCB→9671 renew; shipped refresh_path_c_bundle.sh; preferred_auth_interval_s=1800",
+  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth 7BCB\u21929671 renew; shipped refresh_path_c_bundle.sh; preferred_auth_interval_s=1800",
   "artifacts_updated": [
     "portable/BATCH173_BRIEF.json",
     "portable/GH_DEVICE_LOGIN.md",
@@ -67,7 +67,8 @@
   "release": "batch169-path-c-bundle",
   "ci_status": "success",
   "code_changed": true,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
-  "issue_title": "Path C unblock — Batch 173 canonical (9671-4918)"
+  "issue_title": "Path C unblock \u2014 Batch 173 canonical (9671-4918)",
+  "trial_main_sha": "638b7bf09814d318a316305ce0a78ad287ac0e5e"
 }
