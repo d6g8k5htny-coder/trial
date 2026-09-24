@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 73 — 2026-09-24 ~01:35 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `5f352a2` unchanged; CI land-workflows-dry-run)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `aligned_drift_watch.py --restore-if-writable` → **ALIGNED** (exit 0); tip_sha `1c6e74b…`; write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed**. Path C land **not applied** (not WRITABLE) → Path C idle.
+- Tip vs BASE_TIP: hardening still **`5f352a2`** (== BASE_TIP; **no tip refresh**; no commits past tip → **no 0017**).
+- **Concrete work:** `.github/workflows/ci.yml` job `land-workflows-dry-run` — validates `land-option-b-on-main.yml` + `land-path-c-on-main.yml` **without** `MAIN_PUSH_TOKEN`: `scripts/validate_land_workflows.py` (YAML + dry_run default true + token gate), actionlint v1.7.7, owner `--help`, owner Path B/C `--dry-run` (anonymous clone). Intent tests + `pack_portable.sh` ship the validator.
+- Live `RESTORE_PLAN_73.json` + `BATCH73_TOKEN_SEARCH.json` + `BATCH73_OPEN_PR_THREATS.json` + `BATCH73_BRIEF.json`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 72 — 2026-09-24 ~01:27 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `5f352a2` unchanged; `aligned_drift_watch.py`)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

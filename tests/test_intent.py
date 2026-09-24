@@ -104,6 +104,12 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "portable-patches-on-main" in ci
     assert "apply_all.sh" in ci
     assert "apply_all.sh --check" in ci or "apply_all.sh --check" in ci.replace("\n", " ")
+    # Batch 73: land workflows validated in CI without MAIN_PUSH_TOKEN
+    assert "land-workflows-dry-run" in ci
+    assert "validate_land_workflows.py" in ci
+    assert "actionlint" in ci
+    assert "owner_land_path_b.sh --dry-run" in ci
+    assert "owner_land_path_c.sh --dry-run" in ci
     # Audit/watch steps must export the runner token (avoids unauthenticated API 403s).
     assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" in ci
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
@@ -639,6 +645,34 @@ def test_land_path_c_workflow_dry_run_default() -> None:
     vectors = (ROOT / "scripts" / "probe_main_write_vectors.py").read_text(encoding="utf-8")
     assert "land-path-c-on-main" in vectors
     assert "W3d_dispatch_path_c_trial" in vectors
+
+
+def test_validate_land_workflows_no_token() -> None:
+    """Batch 73: land workflows validate without MAIN_PUSH_TOKEN (CI dry-run contract)."""
+    script = ROOT / "scripts" / "validate_land_workflows.py"
+    assert script.is_file()
+    result = subprocess.run(
+        [sys.executable, str(script), "--json"],
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = __import__("json").loads(result.stdout)
+    assert data["ok"] is True
+    assert data["errors"] == []
+    assert data["scientific_effect"] == "NONE"
+    assert data["lemma_closed"] is False
+    assert data["main_push_token_required"] is False
+    assert "land-option-b-on-main.yml" in data["workflows"][0]
+    assert "land-path-c-on-main.yml" in data["workflows"][1]
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "validate_land_workflows.py" in pack
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "land-workflows-dry-run" in ci
+    assert "validate_land_workflows.py" in ci
 
 
 def test_path_c_dry_run_post_aligned_keep_hardening() -> None:

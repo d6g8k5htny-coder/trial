@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `5f352a2` (post-#44; **no 0017**; `owner_land_path_c --dry-run` → keep hardening; Batch 69 Actions: `land-path-c-on-main.yml` dry-run default; Batch 68 `path_c_rebase_helper.sh --dry-run` for first-stop ours/theirs; Batch 70 `audit_research_stack_open.py` lists OPEN premises/lemmas/prizes without flipping status). Permanent window until owner intervenes. Trial write to `main` still **403**.
+Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `5f352a2` (post-#44; **no 0017**; `owner_land_path_c --dry-run` → keep hardening; Batch 69 Actions: `land-path-c-on-main.yml` dry-run default; Batch 73 CI: `land-workflows-dry-run` validates land-option-b + land-path-c **without** `MAIN_PUSH_TOKEN`; Batch 68 `path_c_rebase_helper.sh --dry-run` for first-stop ours/theirs; Batch 70 `audit_research_stack_open.py` lists OPEN premises/lemmas/prizes without flipping status). Permanent window until owner intervenes. Trial write to `main` still **403**.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 

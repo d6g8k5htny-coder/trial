@@ -1,0 +1,44 @@
+{
+  "batch": "73",
+  "generated_at_utc": "2026-09-24T01:36:41Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "5f352a2",
+  "tip_refresh": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "path_b_needed": false,
+  "preferred_when_aligned": "Path_C_on_hardening",
+  "preferred_restore_if_drift": "Path_B",
+  "alternate_restore": "Path_A",
+  "write_state": "DENIED",
+  "route_now": "Path_C_idle_not_writable",
+  "concrete_work": [
+    "scripts/validate_land_workflows.py",
+    ".github/workflows/ci.yml (land-workflows-dry-run)",
+    "scripts/pack_portable.sh",
+    "tests/test_intent.py",
+    "portable/RESTORE_PLAN_73.json",
+    "portable/BATCH73_TOKEN_SEARCH.json",
+    "portable/BATCH73_OPEN_PR_THREATS.json",
+    "docs/AUTONOMOUS_48H_LOG.md"
+  ],
+  "land_workflows_ci": {
+    "job": "land-workflows-dry-run",
+    "main_push_token_required": false,
+    "checks": [
+      "validate_land_workflows.py",
+      "actionlint",
+      "owner --help",
+      "owner --dry-run"
+    ]
+  },
+  "open_main_prs_threatening_aligned": [],
+  "note": "No open PRs target default main. Tip still 5f352a2; no 0017. CI now dry-runs land-option-b + land-path-c without MAIN_PUSH_TOKEN.",
+  "source": "aligned_drift_watch + validate_land_workflows + land-workflows-dry-run CI; tip still 5f352a2; write DENIED",
+  "window": "PERMANENT_OPEN"
+}

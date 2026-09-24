@@ -97,3 +97,49 @@ jobs:
           git -C main-default apply --check \
             "$GITHUB_WORKSPACE/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch"
           echo "Option-B format-patch still applies on default main"
+
+  # Batch 73: validate land-option-b + land-path-c workflows WITHOUT MAIN_PUSH_TOKEN.
+  # Covers YAML/dry_run contract, owner --help, and anonymous Path B/C --dry-run.
+  # Scientific effect: NONE. Never flips lemma_closed / research status.
+  land-workflows-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyYAML (workflow parse)
+        run: python -m pip install pyyaml
+      - name: Validate land workflow dry_run contract (no MAIN_PUSH_TOKEN)
+        run: |
+          python scripts/validate_land_workflows.py --json | tee land-workflows-validate.json
+          python scripts/validate_land_workflows.py
+      - name: Owner land scripts --help (no token)
+        run: |
+          chmod +x scripts/owner_land_path_b.sh scripts/owner_land_path_c.sh
+          ./scripts/owner_land_path_b.sh --help
+          ./scripts/owner_land_path_c.sh --help
+      - name: actionlint land workflows (syntax; no secrets)
+        run: |
+          set -euo pipefail
+          # Pin a known actionlint release; fail closed if download broken.
+          curl -sSfL -o actionlint.tgz \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz
+          tar -xzf actionlint.tgz actionlint
+          ./actionlint -color \
+            .github/workflows/land-option-b-on-main.yml \
+            .github/workflows/land-path-c-on-main.yml
+      - name: Path B/C owner --dry-run (anonymous clone; no MAIN_PUSH_TOKEN)
+        env:
+          # Unset any accidental token so dry-run cannot rely on push auth.
+          MAIN_PUSH_TOKEN: ""
+          GH_TOKEN: ""
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # GITHUB_TOKEN is fine for read-only API rate limits in dry-run helpers;
+          # MAIN_PUSH_TOKEN stays empty — dry-run must not need it.
+          unset MAIN_PUSH_TOKEN || true
+          ./scripts/owner_land_path_b.sh --dry-run | tee path-b-dry-run.out
+          ./scripts/owner_land_path_c.sh --dry-run | tee path-c-dry-run.out
+          grep -E 'ALREADY_ALIGNED|would-align|APPLY_READY' path-b-dry-run.out path-c-dry-run.out

@@ -1,6 +1,6 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-24 ~01:20 UTC (batch 71: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP still `5f352a2` via PR #44; re-verify apply_all + residual RW hunt; no 0017; no land-path-c workflow gap vs owner_land_path_c).
+Checked 2026-09-24 ~01:35 UTC (batch 73: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP still `5f352a2`; no tip past 5f352a2 / no 0017; CI `land-workflows-dry-run` validates land-option-b + land-path-c without MAIN_PUSH_TOKEN).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
 
 ## Post-#41 tip topology (Path C)
@@ -82,6 +82,7 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **73** (PERMANENT; ALIGNED @ 1c6e74b; no tip move; CI land-workflows-dry-run): hardening still **`5f352a2`** (== BASE_TIP; no commits past tip → **no 0017**). Shipped `scripts/validate_land_workflows.py` + CI job `land-workflows-dry-run` (actionlint + owner `--help`/`--dry-run`) so `land-option-b-on-main` + `land-path-c-on-main` are validated **without** `MAIN_PUSH_TOKEN`. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_73.json`.
 - Batch **70** (PERMANENT; ALIGNED @ 1c6e74b; tip move; research-stack OPEN audit): hardening **`74c082e` → `5f352a2`** ([PR #44](https://github.com/d6g8k5htny-coder/main/pull/44) fail-closed vault path map); BASE_TIP refreshed; `apply_all --check` OK; `math_status_check` problems=0 / lemma_closed=false; OPEN inventory (13 premises / 1 lemma / 3 prizes / 16 OQs) via `scripts/audit_research_stack_open.py` — **flipped nothing**. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_70.json`. Artifact: `portable/BATCH70_RESEARCH_STACK_AUDIT.json`.
 - Batch **68** (PERMANENT; ALIGNED @ 1c6e74b; no tip move; Path C rebase helper): hardening still **`74c082e`** (== BASE_TIP); **no 0017** / **IDLE**. Shipped `scripts/path_c_rebase_helper.sh` (`--dry-run` / `--stage` ours/theirs for first-stop `ci.yml` / `research.yml` / bridge README; never invent research status) + `portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json`. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_68.json`.
 - Batch **67** (PERMANENT; ALIGNED @ 1c6e74b; no tip move; Path C readiness artifact): hardening still **`74c082e`** (== BASE_TIP); `apply_all --check`/apply OK @ 3.11; PACKET transcription digests **6/6 OK**; pytest collection **3172**/0; residual RW hunt focused **173**/0 + receipts/bridge **541**/0 + frozen/dio/collision/registers/mirrors/ops/lean/cover/RN/new-files **~1800**/0 + tools `--help` **0** → **no 0017** / **IDLE**. New-since-0016-era files (cover audit / registers preflight / rn_side24_spatial) use `with open` / `Path.read_*` — no missing closes. Shipped `portable/PATH_C_REBASE_CONFLICT_REPORT_67.json` (rebase onto main first-stop: `ci.yml`, `research.yml`, `engine/bridge/README.md`); `path_c_dry_run` now emits `rebase_conflict_paths`. Write vectors still **DENIED**. Restore plan: `portable/RESTORE_PLAN_67.json`.

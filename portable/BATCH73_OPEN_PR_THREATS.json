@@ -1,0 +1,13 @@
+{
+  "batch": "73",
+  "generated_at_utc": "2026-09-24T01:36:41Z",
+  "repo": "d6g8k5htny-coder/main",
+  "base": "main",
+  "open_prs_targeting_main": [],
+  "historical_revert_threat": {
+    "pr": 32,
+    "note": "CoS revert of PR #2; keep Path B restore ready"
+  },
+  "scientific_effect": "NONE",
+  "lemma_closed": false
+}
