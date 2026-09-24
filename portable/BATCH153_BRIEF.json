@@ -24,7 +24,7 @@
   "prior_device_code": "1DAC-111C",
   "auth_renewed": true,
   "auth_renew_reason": "1DAC-111C expired (seconds_left=0)",
-  "seconds_left": 789,
+  "seconds_left": 771,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
