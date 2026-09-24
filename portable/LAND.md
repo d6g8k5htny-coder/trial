@@ -2,9 +2,45 @@
 
 **Scientific effect: NONE** for documentation / packaging lands below.
 Requires a credential that can push to `d6g8k5htny-coder/main`.
-This `trial` cloud agent cannot (git push and Git Data API both return 403).
+Cursor App install is often **trial-only** (git push / Git Data API **403** on
+`main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
+See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
-> ## STATUS (Batch 179) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `8ea3b5f`; release `batch179-path-c-bundle`; auth pending `AD78-6206`
+> ## STATUS (Batch 242) — PERMANENT window; ALIGNED @ `ea41a30`; Path C BASE_TIP `542e6ec`; release `batch241-path-c-bundle`; write **WRITABLE**
+>
+> Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
+> Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
+> **Permanent extension:** “48 hours is now extended permanently until I intervene.”
+> Stop only on owner intervene — **no 48h finale.**
+> Default tip **`ea41a30`** ALIGNED (Universal-law / SIDE24 + hardening face).
+> Hardening / Path C tip **`542e6ec`** (== BASE_TIP; tip_moved=false; Path C 0001–0019 landed).
+> Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
+> often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**.
+> Path B: when tip is already ALIGNED, landers **exit 0 without push/PR** (Batch 242
+> no-op short-circuit). Prefer `./scripts/restore_main_face.sh` for restore.
+> Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
+> grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+>
+> ### Owner Path C — ONE local command from release tarball (`.bundle` preferred)
+>
+> Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `main`).
+>
+> ```bash
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
+> # tip moved?: /tmp/path-c-land/scripts/refresh_path_c_bundle.sh && assert_path_c_ready.sh
+> ```
+>
+> Certainty without write: `/tmp/path-c-land/scripts/owner_path_c_oneshot.sh --dry-run`
+>
+> Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
+> [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md).
+>
+> ## STATUS (Batch 179 archive) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `8ea3b5f`; release `batch179-path-c-bundle`; auth pending `AD78-6206`
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -35,7 +71,7 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 >
 > Cloud Agent unblock paths (App / device code / MAIN_PUSH_TOKEN / relaunch):
 > [`RELAUNCH_WITH_MAIN_SCOPE.md`](RELAUNCH_WITH_MAIN_SCOPE.md). Issue #37.
-> Release: **`batch179-path-c-bundle`** (latest; oneshot + `.bundle` + refresh; tip `8ea3b5f`; prior `batch169-path-c-bundle`).
+> Release: **`batch179-path-c-bundle`** (superseded by `batch241-path-c-bundle`; oneshot + `.bundle` + refresh; tip `8ea3b5f`; prior `batch169-path-c-bundle`).
 >
 > ## STATUS (Batch 173) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `8ea3b5f`; auth renewed `9671-4918`; tip-refresh helper shipped
 >

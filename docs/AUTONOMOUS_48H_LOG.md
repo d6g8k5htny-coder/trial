@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 242 (Path B ALIGNED no-op + OWNER face) — 2026-09-24 ~21:18– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth create-ref 201; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30` (Universal-law / SIDE24 face). `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Broader eng: hardening/default CI green; sibling AGENTS 7/8 visible (App `sandbox` 404); pack `batch241` tip-accurate; OWNER/LAND faces still claimed write **403** + `batch179` (stale).
+- **Defect shipped:** Path B landers (Batch 241 ALIGNED skip) still **pushed/opened no-op notice PRs** when tip already ALIGNED. Fixed: `land-option-b-on-main.yml` + `owner_land_path_b.sh` **exit 0 without push/PR** on ALIGNED. OWNER face refresh (`LAND.md` / `OWNER_ACTIONS_MAIN.md` / `OWNER_ONE_LINERS.md`) + `--help` release-tag accuracy (`batch241`).
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 241 (Path B ALIGNED skip + from-bundle fallback) — 2026-09-24 ~20:55– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE**. Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `f47026c` (Universal-law / SIDE24 face). `lemma_closed=false`.

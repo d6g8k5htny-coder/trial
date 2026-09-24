@@ -6218,3 +6218,81 @@ def test_batch241_path_b_aligned_skip_and_from_bundle_fallback() -> None:
     assert "Batch 241" in log
     assert "ALIGNED skip" in log or "aligned skip" in log.lower() or "audit_local_tree" in log
     assert "from-bundle" in log.lower() or "already_applied" in log.lower()
+
+
+def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
+    """Batch 242: Path B ALIGNED no-op (no push/PR); OWNER face WRITABLE; pack help batch241."""
+    import json
+
+    land_b = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "already_aligned=true" in land_b or "Path B land not needed" in land_b
+    assert "not pushing / not opening PR" in land_b or "not pushing" in land_b
+    # Must not still claim push/PR after ALIGNED skip.
+    assert "still push/PR if requested" not in land_b
+
+    owner_b = (ROOT / "scripts" / "owner_land_path_b.sh").read_text(encoding="utf-8")
+    assert "Batch 242" in owner_b
+    assert "Path B land not needed" in owner_b
+    assert "no push/PR" in owner_b
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert "default: batch241-path-c-bundle" in open_pr
+    assert (
+        'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in open_pr
+    )
+
+    land_md = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 242)" in land_md
+    assert "WRITABLE" in land_md
+    assert "batch241-path-c-bundle" in land_md
+    assert "542e6ec" in land_md
+    assert "ea41a30" in land_md
+    # Top face must not claim trial cannot write as absolute truth.
+    top = "\n".join(land_md.splitlines()[:25])
+    assert "both return 403" not in top
+
+    owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 242" in owner_actions
+    assert "WRITABLE" in owner_actions
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 242" in ones
+    assert "WRITABLE" in ones
+    assert "batch241-path-c-bundle" in ones
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH242_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "242"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert brief.get("main_pr_or_null") is None
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH242_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "242"
+    assert hunt["defect_found"] is True
+    assert hunt["defect_shipped"] is True
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("patch_0020") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH242_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit["lemma_closed"] is False
+    assert audit["flipped_anything"] is False
+    assert audit["scientific_effect"] == "NONE"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 242" in log
+    assert "no-op" in log.lower() or "noop" in log.lower() or "no push/PR" in log

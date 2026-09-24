@@ -1,11 +1,11 @@
 {
   "complexity_markers_present": [],
   "default_branch": "main",
-  "default_tip_sha": "f47026cc14f906e3268a13a8e35ca237ae874f39",
-  "generated_at_utc": "2026-09-24T21:00:18Z",
+  "default_tip_sha": "ea41a30948c4ed60268f54ec5ee84b150cf379f2",
+  "generated_at_utc": "2026-09-24T21:22:13Z",
   "goal_complete": false,
   "lemma_closed": false,
-  "path_b_ready": true,
+  "path_b_ready": null,
   "preferred_restore_route": {
     "action": "idle_path_c_done_then_drift_watch",
     "alternate_restore": "Path_A",

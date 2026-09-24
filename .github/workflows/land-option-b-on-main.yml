@@ -110,7 +110,16 @@ jobs:
           fi
           echo "Running local auditor (pre-am; skip git am when already ALIGNED):"
           if python3 "$AUDIT_LOCAL" .; then
-            echo "README/tree already ALIGNED (q0/notice markers, no complexity face); skipping git am (still push/PR if requested)."
+            echo "README/tree already ALIGNED (q0/notice markers, no complexity face); skipping git am."
+            # Batch 242: also skip push/PR — a no-op notice branch/PR on an
+            # already-ALIGNED tip (e.g. Universal-law @ ea41a30) is lander noise
+            # and confuses multi-agent Path B restore readiness.
+            echo "Applied Option-B (or reused existing ALIGNED tip). README head:"
+            head -8 README.md
+            echo "Local auditor: would-align=true (ALIGNED for remote audit_main_alignment)."
+            echo "already_aligned=true — Path B land not needed; not pushing / not opening PR."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
           else
             if ! git am "$PATCH"; then
               echo "::error::git am failed for ${PATCH_PATH}. Default main tip may have moved; regenerate portable/main-default-branch/0001-*.patch against current main."
