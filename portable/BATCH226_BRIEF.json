@@ -18,7 +18,7 @@
   "device_auth": "pending",
   "auth_error": "authorization_pending",
   "has_token": false,
-  "seconds_left": 364.3,
+  "seconds_left": 309.1,
   "install_has_main": false,
   "install_has_sandbox": false,
   "install_repos": [
@@ -73,5 +73,7 @@
   "timers": {
     "unlock_poll_s": 300,
     "permanent_s": 10800
-  }
+  },
+  "trial_main_sha": "204dba42e125c83a73b6ca42adef79bf8d4fb623",
+  "trial_main_landed": true
 }
