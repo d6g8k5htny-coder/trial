@@ -1,6 +1,6 @@
 {
   "batch": "236",
-  "generated_at_utc": "2026-09-24T18:47:30Z",
+  "generated_at_utc": "2026-09-24T18:58:04Z",
   "goal_complete": true,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -65,8 +65,8 @@
   "next_focus": "tip-sync+drift+no-flip",
   "note": "Batch 236: start tips hardening=377201c ALIGNED + default=1c6e74b ALIGNED (Path B skipped). Mid-batch tip moved 377201c\u21921200501 via main PR #66 (inventable SIDE24 prep SoT-ABSENT nav; Path C still ancestor). refresh_path_c_bundle OK; patches already-on-tip. Write WRITABLE (device+MAIN_PUSH_TOKEN; never printed). Sibling inventory: all 8 list+push WRITABLE. Fixed broken sandbox README + AGENTS.md on 6 siblings (eng-only). Pack release batch236-path-c-bundle. Research OPEN; lemma_closed=false; flipped nothing.",
   "trial_branch": "cursor/batch236-sibling-access-b5f4",
-  "trial_pr": null,
-  "trial_pr_url": null,
-  "trial_sha": null,
-  "trial_land": "pending"
+  "trial_pr": 57,
+  "trial_pr_url": "https://github.com/d6g8k5htny-coder/trial/pull/57",
+  "trial_sha": "904ec8a2575176d719dc7f1e6049b6769b11c5dc",
+  "trial_land": "pr_57_merged"
 }
