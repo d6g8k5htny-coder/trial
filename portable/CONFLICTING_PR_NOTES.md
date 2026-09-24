@@ -89,6 +89,26 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 Closing or rebasing these drafts does not discharge OBL-H5-JETMOD or
 D3-LEMMA-RN-UNIF.
 
+## Batch 138 open-stack note (2026-09-24) — read-only
+
+`gh pr list --repo d6g8k5htny-coder/main --state open` → **12** PRs. None carry
+the portable Path C stack (`0001–0004 + 0008–0016` / `path-c-applied-bundle`).
+Hardening tip still `c82c9357` == BASE_TIP.
+
+| PR | State | Note vs portable Path C |
+|----|-------|-------------------------|
+| #54 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Vault-path / quarantine docs + tooling; **no** overlap with portable engineering patches |
+| #53 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Docs-only STATUS_JETMOD / inventable index + **PACKET.json** digest churn — if merged before Path C, may force tip-cut / bundle refresh (same class as prior inventable STATUS lands). **Not** a status discharge |
+| #52 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Cover mutants / `tests/test_cover.py` — research; no portable overlap |
+| #51 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Pinned-sources inventory + main `ci.yml` — research tooling; no portable overlap |
+| #47/#46/#38/#36 | OPEN drafts / CLEAN on non-hardening bases | Cover / ladder lanes — independent of Path C apply target |
+| #21 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Attestations + H3 salvage; still not Path C |
+| #12 | OPEN draft / **CONFLICTING** DIRTY | Unchanged recommendation: close as superseded (see above) |
+| #8/#7 | OPEN drafts / MERGEABLE CLEAN | Review archives; no portable overlap |
+
+**Action:** Keep Path C on hardening @ BASE_TIP via `--from-bundle` / apply_all.
+Watch #53 PACKET churn if it merges before land (would trigger tip_refresh).
+
 ## Batch 57 open-stack note (2026-09-23)
 
 | PR | State | Note |

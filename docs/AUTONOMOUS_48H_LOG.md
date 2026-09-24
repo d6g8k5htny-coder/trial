@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 138 — 2026-09-24 ~07:07 UTC (PERMANENT window; path-c-applied-bundle CI dry-apply; dry-run exit codes; scientific effect NONE; flipped nothing)
+
+- `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked.
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. Local `git am` verify OK; `math_status_check` problems=0 / lemma_closed=false.
+- Device auth `2983-6CCD` still **pending** (`authorization_pending` / poller `slow_down`); seconds_left≈561; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- Open main PRs: **12** (read-only). None carry portable Path C stack. #12 still CONFLICTING; #53 PACKET churn watch. Updated `portable/CONFLICTING_PR_NOTES.md`.
+- **Concrete readiness (tip stable + write blocked):** CI job `path-c-applied-bundle-dry-apply` — shallow-clone hardening tip, `git am` bundle, assert `lemma_closed=false`. Also tighten `owner_land_path_c.sh --dry-run` exit codes to pass through path_c_dry_run **0/1/2** (no collapse of transport→1).
+- Tiny JSON: `portable/BATCH138_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** local `--from-bundle` one-shot **or** relaunch with main scope.
+
 ### Batch 137 — 2026-09-24 ~07:02 UTC (PERMANENT window; owner Path C ONE-SHOT; RELAUNCH_WITH_MAIN_SCOPE; scientific effect NONE; flipped nothing)
 
 - `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` / vectors → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY** (personal env did not pick up committed `repositoryDependencies`). Path B not needed; Path C blocked.

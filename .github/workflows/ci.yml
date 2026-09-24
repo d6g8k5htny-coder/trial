@@ -167,6 +167,52 @@ jobs:
             "$GITHUB_WORKSPACE/trial/portable/main-default-branch/0001-option-b-default-branch-notice.patch"
           echo "Option-B format-patch still applies on default main"
 
+  # Batch 138: prove owner --from-bundle path (path-c-applied-bundle) still applies
+  # on a shallow clone of the live hardening tip. Assert lemma_closed=false.
+  # Scientific effect: NONE. Does not push to main. Never flips research status.
+  path-c-applied-bundle-dry-apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: trial
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Shallow-clone hardening tip, git am bundle, gate lemma_closed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BUNDLE="${GITHUB_WORKSPACE}/trial/portable/path-c-applied-bundle/path-c-on-hardening.patch"
+          test -f "$BUNDLE"
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
+              "https://x-access-token:${GITHUB_TOKEN}@github.com/d6g8k5htny-coder/main.git" \
+              main-bundle
+          else
+            git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
+              https://github.com/d6g8k5htny-coder/main.git main-bundle
+          fi
+          TIP="$(git -C main-bundle rev-parse HEAD)"
+          echo "TIP=$TIP"
+          # Configure identity for git am (no push; local commits only).
+          git -C main-bundle config user.email "trial-ci@users.noreply.github.com"
+          git -C main-bundle config user.name "trial-ci"
+          git -C main-bundle am --3way "$BUNDLE"
+          echo "--- math_status_check (assert lemma_closed=false; problems=0) ---"
+          STATUS_OUT="$(cd main-bundle && python tools/math_status_check.py 2>&1 | tee "${GITHUB_WORKSPACE}/math_status_bundle.out")"
+          echo "$STATUS_OUT"
+          if ! echo "${STATUS_OUT}" | grep -q 'lemma_closed=false'; then
+            echo "::error::lemma_closed is not false after path-c-applied-bundle. Aborting (no status promotion)."
+            exit 1
+          fi
+          if echo "${STATUS_OUT}" | grep -Eq 'problems[=:][[:space:]]*[1-9]'; then
+            echo "::error::math_status_check reported problems>0 after bundle apply."
+            exit 1
+          fi
+          echo "Gates OK: path-c-applied-bundle applies @ $TIP; lemma_closed=false. Scientific effect: NONE."
+
   # Batch 73: validate land-option-b + land-path-c workflows WITHOUT MAIN_PUSH_TOKEN.
   # Covers YAML/dry_run contract, owner --help, and anonymous Path B/C --dry-run.
   # Scientific effect: NONE. Never flips lemma_closed / research status.

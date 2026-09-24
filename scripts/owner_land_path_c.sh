@@ -81,6 +81,7 @@ usage() {
 Usage: owner_land_path_c.sh [--dry-run] [--from-bundle] [--direct-push] [--help]
 
   --dry-run     Certainty only: path_c_dry_run.py (apply_all --check + tip shape; no push).
+                Exit codes match path_c_dry_run: 0=ready, 1=not ready, 2=transport.
   (default)     Clone tip, apply_all 0001–0004 + 0008–0016, push branch, open PR.
   --from-bundle Use portable/path-c-applied-bundle/path-c-on-hardening.patch (git am)
                 instead of apply_all. Preferred one-shot after extracting the release
@@ -161,6 +162,8 @@ echo "scientific_effect=NONE"
 echo
 
 # --dry-run: certainty JSON only (no write probe, no push). Works with trial 403 tokens.
+# Exit codes (Batch 138): pass through path_c_dry_run.py — 0=ready, 1=not ready,
+# 2=transport/missing inputs. Do not collapse transport into generic die(1).
 if [[ "$DRY_RUN" -eq 1 ]]; then
   [[ -f "$DRY_RUN_PY" ]] || die "missing $DRY_RUN_PY"
   echo "--- path_c_dry_run (apply_all --check + post-ALIGNED tip shape) ---"
@@ -175,7 +178,12 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "Scientific effect: NONE"
     exit 0
   fi
-  die "path_c_dry_run exit=$dry_ec (apply not ready). See JSON above."
+  if [[ "$dry_ec" -eq 2 ]]; then
+    echo "owner_land_path_c: ERROR: path_c_dry_run transport/missing inputs (exit=2). See JSON above." >&2
+    exit 2
+  fi
+  echo "owner_land_path_c: ERROR: path_c_dry_run exit=$dry_ec (apply not ready). See JSON above." >&2
+  exit 1
 fi
 
 need_cmd gh

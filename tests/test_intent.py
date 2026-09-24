@@ -111,6 +111,10 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "actionlint" in ci
     assert "owner_land_path_b.sh --dry-run" in ci
     assert "owner_land_path_c.sh --dry-run" in ci
+    # Batch 138: path-c-applied-bundle dry-apply on hardening tip + lemma_closed gate
+    assert "path-c-applied-bundle-dry-apply" in ci
+    assert "path-c-on-hardening.patch" in ci
+    assert "lemma_closed=false" in ci
     # Batch 74: Intent suite + audit/watch export runner token; Option-B skips when ALIGNED
     assert "Intent suite" in ci
     assert "Option-B apply check SKIPPED" in ci or "already ALIGNED" in ci
@@ -2099,3 +2103,35 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
         cwd=str(ROOT),
     )
     assert dry.returncode == 0, dry.stderr + dry.stdout
+
+
+def test_batch138_path_c_bundle_ci_and_dry_run_exit_codes() -> None:
+    """Batch 138: CI dry-applies path-c-applied-bundle; dry-run exits 0/1/2."""
+    import json
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "path-c-applied-bundle-dry-apply" in ci
+    assert "path-c-on-hardening.patch" in ci
+    assert "am --3way" in ci
+    assert "lemma_closed=false" in ci
+    assert "Scientific effect: NONE" in ci
+
+    owner_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "pass through path_c_dry_run" in owner_c
+    assert "exit 2" in owner_c
+    assert "dry_ec" in owner_c
+
+    notes = (ROOT / "portable" / "CONFLICTING_PR_NOTES.md").read_text(encoding="utf-8")
+    assert "Batch 138" in notes
+    assert "#53" in notes
+    assert "#54" in notes
+
+    brief = ROOT / "portable" / "BATCH138_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "138"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["tip_refresh"] is False
+    assert data["path_c_landed"] is False
