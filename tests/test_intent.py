@@ -674,6 +674,10 @@ def test_land_path_c_workflow_dry_run_default() -> None:
     text = path.read_text(encoding="utf-8")
     assert "name: land-path-c-on-main" in text
     assert "workflow_dispatch" in text
+    # Batch 139: repository_dispatch so ghs Contents write can land when MAIN_PUSH_TOKEN appears
+    assert "repository_dispatch" in text
+    assert "types: [land-path-c-on-main]" in text
+    assert "steps.mode.outputs.dry_run" in text
     assert "dry_run" in text
     # default true appears near dry_run input
     assert "default: true" in text
@@ -696,6 +700,14 @@ def test_land_path_c_workflow_dry_run_default() -> None:
     vectors = (ROOT / "scripts" / "probe_main_write_vectors.py").read_text(encoding="utf-8")
     assert "land-path-c-on-main" in vectors
     assert "W3d_dispatch_path_c_trial" in vectors
+    assert "W3f_repository_dispatch_path_c" in vectors
+    # Batch 139 helper
+    dispatch = ROOT / "scripts" / "dispatch_land_path_c.sh"
+    assert dispatch.is_file()
+    dtxt = dispatch.read_text(encoding="utf-8")
+    assert "repository_dispatch" in dtxt or "dispatches" in dtxt
+    assert "land-path-c-on-main" in dtxt
+    assert "--apply" in dtxt
 
 
 def test_watch_main_alignment_workflow_exists() -> None:
@@ -2135,3 +2147,40 @@ def test_batch138_path_c_bundle_ci_and_dry_run_exit_codes() -> None:
     assert data["flipped_anything"] is False
     assert data["tip_refresh"] is False
     assert data["path_c_landed"] is False
+
+
+def test_batch139_path_c_repository_dispatch_and_ci_green() -> None:
+    """Batch 139: Path C repository_dispatch + dispatch helper; CI dry-apply verified."""
+    import json
+
+    path_c = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "repository_dispatch" in path_c
+    assert "types: [land-path-c-on-main]" in path_c
+    assert "Resolve dry_run" in path_c or "steps.mode.outputs.dry_run" in path_c
+    assert "MAIN_PUSH_TOKEN" in path_c
+    assert "lemma_closed=false" in path_c
+
+    dispatch = (ROOT / "scripts" / "dispatch_land_path_c.sh").read_text(encoding="utf-8")
+    assert "land-path-c-on-main" in dispatch
+    assert "--apply" in dispatch
+    assert "dispatches" in dispatch
+
+    vectors = (ROOT / "scripts" / "probe_main_write_vectors.py").read_text(encoding="utf-8")
+    assert "W3f_repository_dispatch_path_c" in vectors
+
+    brief = ROOT / "portable" / "BATCH139_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "139"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip_refresh"] is False
+    assert data.get("ci_dry_apply") == "green"
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 139" in log
+    assert "repository_dispatch" in log

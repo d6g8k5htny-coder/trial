@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 139 — 2026-09-24 ~07:15 UTC (PERMANENT window; Path C repository_dispatch; CI dry-apply verify green; scientific effect NONE; flipped nothing)
+
+- `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked.
+- Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
+- Device auth `2983-6CCD` still **pending** (`slow_down`); seconds_left≈174; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- **VERIFY batch 138 CI:** job `path-c-applied-bundle-dry-apply` — local `git am` OK (`lemma_closed=false` / problems=0 @ `c82c9357`); GitHub main run [35968047551](https://github.com/d6g8k5htny-coder/trial/actions/runs/35968047551) **success** (same job green on follow-up 35968103983).
+- Open main PRs: **12** (read-only). None carry portable Path C stack.
+- **Concrete readiness (CI green + tip stable + write blocked):** `land-path-c-on-main` gains `repository_dispatch` type `land-path-c-on-main` (ghs Contents write; `workflow_dispatch` 403). Helper `scripts/dispatch_land_path_c.sh` (`--apply` when `MAIN_PUSH_TOKEN` secret appears). Vectors W3f. Release tgz refresh with batch138/139 artifacts.
+- Tiny JSON: `portable/BATCH139_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** `dispatch_land_path_c.sh --apply` once `MAIN_PUSH_TOKEN` secret exists **or** local `--from-bundle` one-shot.
+
 ### Batch 138 — 2026-09-24 ~07:07 UTC (PERMANENT window; path-c-applied-bundle CI dry-apply; dry-run exit codes; scientific effect NONE; flipped nothing)
 
 - `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked.

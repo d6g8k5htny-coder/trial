@@ -288,6 +288,22 @@ def main() -> int:
             "state": "WRITABLE" if d2_status in (200, 201, 204) else _classify(d2_status, d2_body),
         }
 
+        # W3f — Path C repository_dispatch (Batch 139: ghs Contents write; workflow_dispatch 403)
+        rd_status, rd_body = _request(
+            "POST",
+            f"{TRIAL_API}/dispatches",
+            {
+                "event_type": "land-path-c-on-main",
+                "client_payload": {"dry_run": True},
+            },
+        )
+        vectors["W3f_repository_dispatch_path_c"] = {
+            "http_status": rd_status,
+            "msg": _short(rd_body),
+            "state": "WRITABLE" if rd_status in (200, 201, 204) else _classify(rd_status, rd_body),
+            "note": "repository_dispatch land-path-c-on-main; dry_run default true; apply needs MAIN_PUSH_TOKEN secret",
+        }
+
         # W4a — fork
         f_status, f_body = _request("POST", f"{API}/forks", {})
         vectors["W4a_fork"] = {
@@ -365,6 +381,7 @@ def main() -> int:
             "W3c_api_dispatch_trial",
             "W3d_dispatch_path_c_trial",
             "W3e_api_dispatch_path_c_trial",
+            "W3f_repository_dispatch_path_c",
             "W4a_fork",
             "W4b_graphql_createCommitOnBranch",
             "W4c_pulls_create",

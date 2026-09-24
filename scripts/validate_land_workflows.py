@@ -75,7 +75,14 @@ def _token_gated_on_dry_run_false(text: str, name: str) -> list[str]:
     # Must not require token unconditionally for the job to start.
     if "Require token unless dry-run" not in text and "unless dry-run" not in text.lower():
         errs.append(f"{name}: expected a 'Require token unless dry-run' style gate")
-    if "inputs.dry_run == false" not in text and "dry_run == false" not in text:
+    # Gate may use workflow_dispatch inputs.dry_run or resolved steps.mode.outputs.dry_run
+    # (Batch 139: repository_dispatch shares the same land job).
+    if (
+        "inputs.dry_run == false" not in text
+        and "dry_run == false" not in text
+        and "outputs.dry_run == 'false'" not in text
+        and 'outputs.dry_run == "false"' not in text
+    ):
         errs.append(f"{name}: MAIN_PUSH_TOKEN gate must key off dry_run == false")
     return errs
 
@@ -101,6 +108,8 @@ def _check_path_c(text: str, data: dict) -> list[str]:
     for needle in (
         "name: land-path-c-on-main",
         "workflow_dispatch",
+        "repository_dispatch",
+        "land-path-c-on-main",
         "chatgpt/drive-github-hardening-20260919",
         "apply_all.sh",
         "lemma_closed=false",
