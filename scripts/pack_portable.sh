@@ -121,6 +121,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_b.sh \
   scripts/owner_land_path_c.sh \
   scripts/owner_open_path_c_pr.sh \
+  scripts/owner_set_main_push_token.sh \
   scripts/assert_path_c_ready.sh \
   scripts/dispatch_land_path_c.sh \
   scripts/pack_portable.sh \

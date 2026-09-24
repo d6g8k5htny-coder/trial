@@ -2829,3 +2829,114 @@ def test_batch157_path_c_blocked_reason_codes() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 157" in log
     assert "PATH_C_BLOCKED" in log
+
+
+def test_batch160_owner_set_main_push_token_script() -> None:
+    """Batch 160: owner_set_main_push_token.sh present; --help/--dry-run; wired; lemma_closed=false."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "owner_set_main_push_token.sh"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "gh secret set" in text
+    assert "MAIN_PUSH_TOKEN" in text
+    assert "--dry-run" in text
+    assert "--from-gh" in text or "gh auth token" in text
+    assert "dispatch_land_path_c" in text
+    assert "dry_run=false" in text or "--apply" in text
+    assert "lemma_closed" in text
+    assert "never printed" in text.lower() or "NEVER printed" in text
+    assert "Scientific effect: NONE" in text or "scientific_effect=NONE" in text
+
+    help_p = subprocess.run(
+        ["bash", str(script), "--help"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert help_p.returncode == 0
+    help_out = help_p.stdout + help_p.stderr
+    assert "--dry-run" in help_out
+    assert "MAIN_PUSH_TOKEN" in help_out
+    assert "lemma_closed" in help_out
+    assert "gh secret set" in help_out or "secret" in help_out.lower()
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry_p = subprocess.run(
+        ["bash", str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
+    dry_out = dry_p.stdout + dry_p.stderr
+    assert "dry-run" in dry_out.lower()
+    assert "gh secret set" in dry_out
+    assert "MAIN_PUSH_TOKEN" in dry_out
+    assert "lemma_closed=false" in dry_out or "lemma_closed stays false" in dry_out
+    assert "Scientific effect: NONE" in dry_out or "scientific_effect=NONE" in dry_out
+    # Never print raw tokens
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+    assert "github_pat_" not in dry_out
+
+    dry_d = subprocess.run(
+        ["bash", str(script), "--dry-run", "--dispatch"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=dry_env,
+    )
+    assert dry_d.returncode == 0, dry_d.stderr + dry_d.stdout
+    dry_d_out = dry_d.stdout + dry_d.stderr
+    assert "dispatch_land_path_c" in dry_d_out
+    assert "dry_run=false" in dry_d_out
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "owner_set_main_push_token.sh" in unblock
+
+    owner_one = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "owner_set_main_push_token.sh" in owner_one
+
+    relaunch = (ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md").read_text(encoding="utf-8")
+    assert "owner_set_main_push_token.sh" in relaunch
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "owner_set_main_push_token.sh" in land
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "owner_set_main_push_token.sh" in pack
+
+    notes = (ROOT / "portable" / "CONFLICTING_PR_NOTES.md").read_text(encoding="utf-8")
+    assert "Batch 160" in notes
+    assert "Merge candidates for Path C" in notes or "merge candidates" in notes.lower()
+
+    brief = ROOT / "portable" / "BATCH160_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "160"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["secret_script"] is True
+    assert data["tip"] == "10c077e"
+    assert data["device_code"] == "2513-3A16"
+    assert isinstance(data.get("merge_candidates"), list)
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "2513-3A16" in gh
+    assert "owner_set_main_push_token.sh" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 160" in log
+    assert "owner_set_main_push_token" in log

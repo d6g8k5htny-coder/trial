@@ -261,6 +261,10 @@ on hardening. Certainty without write:
 # Batch 151 — owner PR from path-c-applied-bundle (git am → cursor/path-c-portable-fixes):
 ./scripts/owner_open_path_c_pr.sh --dry-run
 ./scripts/owner_open_path_c_pr.sh   # needs write; PR into hardening; lemma_closed stays false
+# Batch 160 — set trial Actions secret MAIN_PUSH_TOKEN (+ optional Path C dispatch):
+./scripts/owner_set_main_push_token.sh --dry-run
+MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch
+# or: ./scripts/owner_set_main_push_token.sh --from-gh --dispatch
 ```
 
 Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `5f352a2` after #44 fail-closed vault path map — `apply_all --check` OK).
@@ -410,6 +414,7 @@ Executable wrappers that use the **owner's** `gh` auth (not the trial cloud toke
 | `scripts/owner_land_path_a.sh` | **HOLD VOID** — default `PATH_A_MODE=revert32` (or `ready_merge` for a fresh OPEN port). Prefer Path B. |
 | `scripts/owner_land_path_c.sh` | Write probe → clone **hardening** (auto; not post-#2 default main) → optional `PATH_C_REBASE_ONTO_MAIN=1` → `apply_all` 0001–0004 + 0008–0016 → assert `lemma_closed=false` → push branch + open PR. Fail-closed without write. |
 | `scripts/owner_open_path_c_pr.sh` | **Batch 151.** Owner gh / `MAIN_PUSH_TOKEN` → clone hardening @ BASE_TIP → `git am` path-c-applied-bundle → push `cursor/path-c-portable-fixes` → open/reuse PR into hardening. `--dry-run` certainty. Idempotent. Engineering-only; `lemma_closed` stays false; no research promotion. |
+| `scripts/owner_set_main_push_token.sh` | **Batch 160.** Reads token from env / well-known files / `gh auth token` (never printed) → `gh secret set MAIN_PUSH_TOKEN` on trial. Optional `--dispatch` fires `repository_dispatch` land-path-c `dry_run=false`. `--dry-run` / `--help`. |
 
 Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print_owner_unblock.sh`.
 
@@ -418,6 +423,9 @@ Also listed in [`OWNER_ONE_LINERS.md`](OWNER_ONE_LINERS.md) and `./scripts/print
 Workflow [`.github/workflows/land-option-b-on-main.yml`](../.github/workflows/land-option-b-on-main.yml):
 
 1. Add Actions secret `MAIN_PUSH_TOKEN` on **trial** (Contents:Write + PullRequests:Write on `main`).
+   One-shot: `./scripts/owner_set_main_push_token.sh --dry-run` then
+   `MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch`
+   (or `--from-gh --dispatch`). Token never printed.
 2. Run workflow `land-option-b-on-main` with `dry_run=false`.
 3. Workflow `git am`s Option-B, runs `scripts/audit_local_tree.py` (must exit 0 /
    would-align), pushes `cursor/option-b-notice-from-trial` **and opens a PR**
@@ -430,6 +438,9 @@ Default `dry_run=true` verifies `git am` + local auditor (no push).
 Workflow [`.github/workflows/land-path-c-on-main.yml`](../.github/workflows/land-path-c-on-main.yml):
 
 1. Add Actions secret `MAIN_PUSH_TOKEN` on **trial** (Contents:Write + PullRequests:Write on `main`).
+   One-shot: `./scripts/owner_set_main_push_token.sh --dry-run` then
+   `MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch`
+   (or `--from-gh --dispatch`). Token never printed.
 2. Run workflow `land-path-c-on-main` with `dry_run=true` (default) to verify
    `apply_all` + `lemma_closed=false` / `problems=0` on hardening (no push).
 3. Re-run with `dry_run=false` to push `cursor/portable-engineering-patches` and

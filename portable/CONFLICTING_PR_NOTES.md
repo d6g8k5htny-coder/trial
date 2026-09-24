@@ -89,6 +89,28 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 Closing or rebasing these drafts does not discharge OBL-H5-JETMOD or
 D3-LEMMA-RN-UNIF.
 
+## Batch 160 open-stack note (2026-09-24) — read-only
+
+`gh pr list --repo d6g8k5htny-coder/main --state open` → **11** PRs (PR #54
+merged earlier @ `10c077e`). **None** carry the portable Path C file-handle /
+close-handles stack (`0001–0004 + 0008–0016` / `path-c-applied-bundle` /
+`cursor/path-c-portable-fixes`). Hardening tip still `10c077e` == BASE_TIP.
+
+| PR | State | Note vs portable Path C / file-handle fixes |
+|----|-------|-----------------------------------------------|
+| #53 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Inventable STATUS_JETMOD / PACKET digest churn — **not** close-handles; if merged before Path C may force tip-cut / bundle refresh |
+| #52 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Cover mutants — research; no portable overlap |
+| #51 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Pinned-sources + ci.yml — research tooling; no portable overlap |
+| #47/#46/#38/#36 | OPEN / CLEAN on non-hardening bases | Cover / ladder lanes — independent of Path C apply target |
+| #21 | OPEN draft / MERGEABLE **CLEAN** onto hardening | Attestations + H3 salvage; still not Path C |
+| #12 | OPEN draft / **DIRTY** | Unchanged: close as superseded |
+| #8/#7 | OPEN drafts | Review archives; #7 “CLOSURE_*” is research frontier naming, **not** ResourceWarning close-handles |
+
+**Merge candidates for Path C:** **none.** No open PR is a clean vehicle for the
+portable engineering/file-handle stack. Keep Path C via
+`owner_open_path_c_pr.sh` / `--from-bundle` / `owner_set_main_push_token.sh --dispatch`
+onto hardening @ BASE_TIP. Watch #53 PACKET churn if it merges first.
+
 ## Batch 138 open-stack note (2026-09-24) — read-only
 
 `gh pr list --repo d6g8k5htny-coder/main --state open` → **12** PRs. None carry

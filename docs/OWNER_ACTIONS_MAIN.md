@@ -58,7 +58,7 @@ Drop a main-write PAT at one well-known path (value never logged):
 2. `/workspace/.secrets/MAIN_PUSH_TOKEN`
 3. `/tmp/gh-dylan-auth/access_token`
 
-When the file appears while direct write is DENIED, `when_writable_land.py` fires once: `scripts/dispatch_land_path_c.sh --apply` (`repository_dispatch` `land-path-c-on-main`). Also set trial Actions secret `MAIN_PUSH_TOKEN` so the workflow can push. See `portable/GH_DEVICE_LOGIN.md`.
+When the file appears while direct write is DENIED, `when_writable_land.py` fires once: `scripts/dispatch_land_path_c.sh --apply` (`repository_dispatch` `land-path-c-on-main`). Also set trial Actions secret `MAIN_PUSH_TOKEN` so the workflow can push — Batch 160 one-shot: `./scripts/owner_set_main_push_token.sh --dry-run` then `MAIN_PUSH_TOKEN=… ./scripts/owner_set_main_push_token.sh --dispatch` (or `--from-gh --dispatch`; token never printed). See `portable/GH_DEVICE_LOGIN.md`.
 
 **Batch 141 — W3f false positive:** dry-run `repository_dispatch` on trial succeeding (`DISPATCH_OK_DRY_RUN`) is **not** main write. `probe_main_write_vectors` keeps `path_b_ready=false` when only W3f works. Do not treat W3f alone as Path C unlocked.
 
