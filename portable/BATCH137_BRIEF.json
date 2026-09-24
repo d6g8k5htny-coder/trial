@@ -1,6 +1,6 @@
 {
   "batch": "137",
-  "generated_at_utc": "2026-09-24T06:59:16Z",
+  "generated_at_utc": "2026-09-24T07:02:13Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -13,14 +13,19 @@
   "tip_matches_base": true,
   "tip_refresh": false,
   "path_c_landed": false,
-  "device_auth": "authorization_pending",
-  "device_code": "5816-A241",
-  "prior_device_code": "7D13-0E6D",
-  "seconds_left": 96,
+  "device_auth": "renewed",
+  "device_auth_error": "authorization_pending",
+  "device_code": "2983-6CCD",
+  "prior_device_code": "5816-A241",
+  "auth_renewed": true,
+  "seconds_left": 872,
   "daemon": "up",
   "flipped_anything": false,
+  "trial_main_landed": true,
+  "trial_branch": "cursor/batch137-owner-oneshot-81fa",
   "owner_oneshot": "owner_land_path_c.sh --from-bundle from batch125-path-c-bundle tarball",
   "relaunch_doc": "portable/RELAUNCH_WITH_MAIN_SCOPE.md",
+  "auth_timers_created": false,
   "artifacts_updated": [
     "scripts/owner_land_path_c.sh",
     "portable/RELAUNCH_WITH_MAIN_SCOPE.md",
@@ -33,7 +38,8 @@
     "scripts/print_owner_unblock.sh",
     "tests/test_intent.py",
     "portable/BATCH137_BRIEF.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "docs/trial-portable-main-fixes.tgz"
   ],
-  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device pending 5816-A241; owner Path C ONE-SHOT --from-bundle + RELAUNCH_WITH_MAIN_SCOPE; Path C blocked; no auth timer re-arm (parent); research untouched"
+  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; 5816-A241 expired\u2192renewed 2983-6CCD; owner Path C ONE-SHOT --from-bundle + RELAUNCH_WITH_MAIN_SCOPE; landed on trial main; no auth timer re-arm (parent @900s); research untouched"
 }

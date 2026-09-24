@@ -21,16 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 137 — 2026-09-24 ~06:55 UTC (PERMANENT window; owner Path C ONE-SHOT; RELAUNCH_WITH_MAIN_SCOPE; scientific effect NONE; flipped nothing)
+### Batch 137 — 2026-09-24 ~07:02 UTC (PERMANENT window; owner Path C ONE-SHOT; RELAUNCH_WITH_MAIN_SCOPE; scientific effect NONE; flipped nothing)
 
 - `audit_main_alignment` → **ALIGNED** @ `1c6e74b`; `probe_main_write` / vectors → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY** (personal env did not pick up committed `repositoryDependencies`). Path B not needed; Path C blocked.
 - Hardening tip **`c82c9357` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**.
-- Device auth `5816-A241` → **pending** (`authorization_pending`); `seconds_left` live from poller; dylan `access_token` absent; no Path C land. **Did not** create duplicate auth timers (parent re-arms @ 900s).
+- Device auth `5816-A241` → **expired** → **renewed** `2983-6CCD`; poller restarted (`gh-device-login`); no Path C land yet. **Did not** create duplicate auth timers (parent re-arms @ 900s).
 - **Concrete work (owner ONE-SHOT):** `scripts/owner_land_path_c.sh --from-bundle` — land Path C in one local command after extracting `batch125-path-c-bundle` (or newer) `trial-portable-main-fixes.tgz`. Clear prerequisites in script `--help` / `portable/LAND.md` / `docs/OWNER_ACTIONS_MAIN.md` / `portable/OWNER_ONE_LINERS.md` / `path-c-applied-bundle/APPLY.md`.
 - **New:** `portable/RELAUNCH_WITH_MAIN_SCOPE.md` — (a) Cursor App add `main` R/W; (b) OR device code; (c) OR `MAIN_PUSH_TOKEN`; (d) then RELAUNCH Cloud Agent from trial (mid-flight cannot gain main). Packed via `pack_portable.sh`.
-- Daemon `when-writable-land` **up**; `gh-device-login` poller **up**. Tiny JSON: `portable/BATCH137_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
+- Daemon `when-writable-land` **up**; `gh-device-login` poller **up**. Landed on **trial `main`** (`86d896b`). Tiny JSON: `portable/BATCH137_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`).
 
-**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `5816-A241` **or** local `--from-bundle` one-shot **or** relaunch with main scope.
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `2983-6CCD` **or** local `--from-bundle` one-shot **or** relaunch with main scope.
 
 ### Batch 134 — 2026-09-24 ~06:46 UTC (PERMANENT window; auth renew; broader RW hunt clean; pack currency; scientific effect NONE; flipped nothing)
 
