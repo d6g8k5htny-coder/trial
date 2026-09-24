@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 144 — 2026-09-24 ~07:53 UTC (PERMANENT window; auth renew A9D3-16CD; tip stable @ 10c077e; RW hunt clean; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Vectors: W3f dry-run `DISPATCH_OK_DRY_RUN` (false_positive); all other Path-B vectors DENIED. Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).
+- Hardening tip **`10c077e` == BASE_TIP** (PR #54) → **no tip refresh** / **no path-c-applied-bundle rebuild**. VERIFY.json `base_tip_sha` matches BASE_TIP; `lemma_closed=false`. Release **`batch142-path-c-bundle`** VERIFY+patch digests still match local bundle.
+- Device auth `16F5-39F5` near-zero (~38s) still pending → **renewed** `A9D3-16CD`; poller `gh-device-login` restarted; daemon `when-writable-land` up. Updated `portable/GH_DEVICE_LOGIN.md`.
+- **RW hunt @ 10c077e** after `apply_all` 0001–0004+0008–0016: `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused **90**/0; claims+recovery **83**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; registers **53**/0; lean/frontier **42**/0; vault **13**/0; quarantine **21**/0; mirrors **105**/0; ops/prov **214**/0; tools `--help` **0 RW**; context-aware bare open/Popen **0** → **clean / no 0017**. Artifact: `portable/BATCH144_HUNT.json`.
+- Tiny JSON: `portable/BATCH144_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s** (ignore `gh-auth-renew-soon` — already renewed).
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `A9D3-16CD` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `--from-bundle` one-shot from `batch142-path-c-bundle`.
+
+
 ### Batch 142 — 2026-09-24 ~07:40 UTC (PERMANENT window; tip refresh + path-c-applied-bundle rebuild @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending).
