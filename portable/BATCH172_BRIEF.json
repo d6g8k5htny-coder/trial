@@ -1,6 +1,6 @@
 {
   "batch": "172",
-  "generated_at_utc": "2026-09-24T10:44:03Z",
+  "generated_at_utc": "2026-09-24T10:44:37Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,7 +25,7 @@
   "device_code": "7BCB-0057",
   "prior_device_code": "EC83-CFC2",
   "auth_renewed": false,
-  "seconds_left": 190,
+  "seconds_left": 157,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -74,7 +74,8 @@
   "release": "batch169-path-c-bundle",
   "ci_status": "pending",
   "code_changed": true,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
-  "issue_title": "Path C unblock \u2014 Batch 172 canonical (7BCB-0057)"
+  "issue_title": "Path C unblock \u2014 Batch 172 canonical (7BCB-0057)",
+  "trial_main_sha": "647178533de159e5324b434b68425ec283788a7d"
 }
