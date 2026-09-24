@@ -67,7 +67,27 @@
   ],
   "trial_branch": "cursor/batch223-multi-agent-access-3a80",
   "note": "Multi-agent access durable config + owner oneshot. Official Apps only; Grok PAT fallback (no verified xAI App). Live install trial-only; main write DENIED; Path C not landed. Tip refresh 1d0dceb\u2192cbaa056. Research untouched lemma_closed=false.",
-  "seconds_left": 726.5,
-  "trial_main_sha": "4c902cb3ced68d45e8d5ade1a93e8aae73383240",
-  "trial_main_landed": true
+  "seconds_left": 680.8,
+  "trial_main_sha": "6051c2bb5a3de60e4e5aa0d0d43a8d31b9cf32f0",
+  "trial_main_landed": true,
+  "status_snapshot": {
+    "base_tip": "cbaa056",
+    "base_tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+    "device_auth": "pending",
+    "device_code": "BE27-A62D",
+    "generated_at": "2026-09-24T15:57:10Z",
+    "goal_complete": false,
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "has_token": false,
+    "lemma_closed": false,
+    "path_c_blocked": "NO_TOKEN",
+    "path_c_blocked_reason": "NO_TOKEN",
+    "release_tag": "batch223-path-c-bundle",
+    "scientific_effect": "NONE",
+    "seconds_left": 726.5,
+    "tip": "cbaa056",
+    "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+    "tip_match": true,
+    "write_state": "SKIPPED"
+  }
 }
