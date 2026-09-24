@@ -1,0 +1,19 @@
+{
+  "batch": "108",
+  "generated_at_utc": "2026-09-24T04:40:38Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "slow_down",
+  "device_code": "BC1B-2C58",
+  "seconds_left": 607,
+  "gh_config_dir": "/tmp/gh-dylan-auth",
+  "install_has_main": false,
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "path_c_landed": false,
+  "timer_rearm_s": 300,
+  "flipped_anything": false,
+  "note": "auth slow_down BC1B-2C58; seconds_left=607; install_has_main=false\u2192Path C blocked; research untouched"
+}
