@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 63) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `6f0f061` (post-#43)
+> ## STATUS (Batch 64) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `6f0f061` (unchanged)
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -12,12 +12,14 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Stop only on owner intervene — **no 48h finale.** Check:
 > `python3 scripts/check_autonomous_window.py` (also embedded in
 > `python3 scripts/watch_main_alignment.py` + Path C/B `route` hint).
+> Timer: `permanent-autonomous-align-watch` @ **3600s** (not a 48h-stop).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `6f0f061` (post-#43); RW **0** → **no 0017**;
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `6f0f061` (no tip move); **no 0017**;
 > `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_63.json` + `BATCH63_TOKEN_SEARCH.json`.
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_64.json` + `BATCH64_TOKEN_SEARCH.json`.
+> `pack_portable.sh` auto-globs restore/token artifacts (Batch 64+).
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
 

@@ -2,6 +2,17 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `6f0f061` (batch 64)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK on tip `6f0f061` (== BASE_TIP; no tip move since Batch 63 / PR #43) |
+| Path C dry-run | `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase **CONFLICTING** |
+| new portable **0017** | **none** (IDLE; tip-match) |
+| `pack_portable.sh` | auto-globs restore plans + token search logs |
+
+Default `main` @ `1c6e74b` **ALIGNED** (PR #41); write **DENIED**. Scientific effect: **NONE**.
+
 ## After portable patches 0001–0004 + 0008–0016 on `6f0f061` (batch 63)
 
 | Check | Result |

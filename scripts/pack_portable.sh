@@ -1,30 +1,41 @@
 #!/usr/bin/env bash
 # Build a tarball of the portable main-alignment pack for owner download.
+#
+# Batch 64+: auto-includes every portable/RESTORE_PLAN_*.json and
+# portable/BATCH*_TOKEN_SEARCH.json so each batch need not edit this list.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="${1:-$ROOT/../trial-portable-main-fixes.tgz}"
+
+mapfile -t RESTORE_PLANS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'RESTORE_PLAN_*.json' | sort)
+mapfile -t TOKEN_SEARCHES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_TOKEN_SEARCH.json' | sort)
+
+if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
+  echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
+  exit 2
+fi
+if [[ ${#TOKEN_SEARCHES[@]} -eq 0 ]]; then
+  echo "pack_portable: ERROR: no portable/BATCH*_TOKEN_SEARCH.json found" >&2
+  exit 2
+fi
+
+# Relativize paths for tar -C "$ROOT"
+rel_restore=()
+for p in "${RESTORE_PLANS[@]}"; do
+  rel_restore+=("${p#"$ROOT"/}")
+done
+rel_tokens=()
+for p in "${TOKEN_SEARCHES[@]}"; do
+  rel_tokens+=("${p#"$ROOT"/}")
+done
+
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
   portable/OWNER_ONE_LINERS.md \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \
-  portable/RESTORE_PLAN_53b.json \
-  portable/RESTORE_PLAN_54.json \
-  portable/RESTORE_PLAN_55.json \
-  portable/RESTORE_PLAN_56.json \
-  portable/RESTORE_PLAN_57.json \
-  portable/RESTORE_PLAN_58.json \
-  portable/RESTORE_PLAN_59.json \
-  portable/RESTORE_PLAN_60.json \
-  portable/RESTORE_PLAN_61.json \
-  portable/RESTORE_PLAN_62.json \
-  portable/RESTORE_PLAN_63.json \
-  portable/BATCH58_TOKEN_SEARCH.json \
-  portable/BATCH59_TOKEN_SEARCH.json \
-  portable/BATCH60_TOKEN_SEARCH.json \
-  portable/BATCH61_TOKEN_SEARCH.json \
-  portable/BATCH62_TOKEN_SEARCH.json \
-  portable/BATCH63_TOKEN_SEARCH.json \
+  "${rel_restore[@]}" \
+  "${rel_tokens[@]}" \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -43,5 +54,6 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_a.sh \
   scripts/owner_land_path_b.sh \
   scripts/owner_land_path_c.sh \
-  scripts/pack_portable.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes)"
+  scripts/pack_portable.sh \
+  scripts/wait_until_aligned.sh
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs)"

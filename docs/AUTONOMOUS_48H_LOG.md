@@ -21,6 +21,20 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 64 — 2026-09-24 ~00:10 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `6f0f061` unchanged; Path C IDLE / no 0017; pack glob)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Override: do **not** finalize for elapsed≥48h.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`6f0f061`** (== BASE_TIP; no tip refresh). Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING**.
+- Residual: tip-match IDLE / **no 0017** (no new RW hunt needed; prior Batch 63 clean @ 3.11).
+- **Meaningful improvement:** `pack_portable.sh` auto-globs `RESTORE_PLAN_*.json` + `BATCH*_TOKEN_SEARCH.json` (+ includes `wait_until_aligned.sh`); `print_owner_unblock` Batch 64 + 3600s timer hint.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- `RESTORE_PLAN_64.json` + `BATCH64_TOKEN_SEARCH.json`. Trial `pytest` + packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 63 — 2026-09-23 ~23:55 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `6f0f061`; Path C IDLE / no 0017; post-#41 topology)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

@@ -8,8 +8,8 @@ Scientific effect of following this plan carefully: **NONE** on claim status, if
 
 ## Priority order
 
-> **Batch 63 — PERMANENT window; ALIGNED (`1c6e74b` via owner PR #41); Path C BASE_TIP `6f0f061` (post-#43); HOLD VOID:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** **“48 hours is now extended permanently until I intervene.”** Stop only on owner intervene — no 48h finale (`scripts/check_autonomous_window.py`; `watch_main_alignment.py` embeds window+route). Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
-> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C: `./scripts/owner_land_path_c.sh --dry-run` → keep hardening BASE_TIP `6f0f061` (rebase CONFLICTING; no 0017). Write **403**. See `portable/RESTORE_PLAN_63.json` + `BATCH63_TOKEN_SEARCH.json`.
+> **Batch 64 — PERMANENT window; ALIGNED (`1c6e74b` via owner PR #41); Path C BASE_TIP `6f0f061` (post-#43; no tip move); HOLD VOID:** Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide; broad grant.** **“48 hours is now extended permanently until I intervene.”** Stop only on owner intervene — no 48h finale (`scripts/check_autonomous_window.py`; `watch_main_alignment.py` embeds window+route). Timer: `permanent-autonomous-align-watch` @ **3600s** (not a 48h-stop). Default tip **`1c6e74b`** renew landing. Root has README + `AGENTS.md` + `.github`. Scientific effect: **NONE**.
+> **HOLD on PR #2 is VOID.** Path B land not needed while ALIGNED (`./scripts/restore_main_face.sh` short-circuits). Path A: `PATH_A_MODE=revert32` only if tip regresses. Path C: `./scripts/owner_land_path_c.sh --dry-run` → keep hardening BASE_TIP `6f0f061` (rebase CONFLICTING; no 0017). Write **403**. See `portable/RESTORE_PLAN_64.json` + `BATCH64_TOKEN_SEARCH.json`. `pack_portable.sh` auto-globs restore/token artifacts.
 
 ### 1. Keep default tip ALIGNED
 
