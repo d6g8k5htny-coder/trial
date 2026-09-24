@@ -1,6 +1,6 @@
 {
   "batch": "147",
-  "generated_at_utc": "2026-09-24T08:03:00Z",
+  "generated_at_utc": "2026-09-24T08:03:23Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -24,8 +24,19 @@
     "obsolete_count": 0,
     "needed_count": 13,
     "needed": [
-      "0001", "0002", "0003", "0004",
-      "0008", "0009", "0010", "0011", "0012", "0013", "0014", "0015", "0016"
+      "0001",
+      "0002",
+      "0003",
+      "0004",
+      "0008",
+      "0009",
+      "0010",
+      "0011",
+      "0012",
+      "0013",
+      "0014",
+      "0015",
+      "0016"
     ]
   },
   "tip_drift_gate": true,
@@ -39,16 +50,16 @@
   "device_code": "A450-C91F",
   "prior_device_code": "A9D3-16CD",
   "auth_renewed": true,
-  "seconds_left": 789,
+  "seconds_left": 731,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
-  "trial_main_landed": false,
+  "trial_main_landed": true,
   "trial_branch": "cursor/batch147-auth-renew-tip-drift-83c7",
   "open_main_prs_count": 11,
   "release": "batch142-path-c-bundle",
   "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch142-path-c-bundle",
-  "readiness_change": "auth renewed A9D3-16CD→A450-C91F (<90s); tip stable @10c077e; obsolescence none; CI tip-drift gate shipped",
+  "readiness_change": "auth renewed A9D3-16CD\u2192A450-C91F (<90s); tip stable @10c077e; obsolescence none; CI tip-drift gate shipped",
   "artifacts_updated": [
     "portable/GH_DEVICE_LOGIN.md",
     ".github/workflows/ci.yml",
@@ -62,5 +73,5 @@
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
-  "trial_main_sha": null
+  "trial_main_sha": "0e56841"
 }
