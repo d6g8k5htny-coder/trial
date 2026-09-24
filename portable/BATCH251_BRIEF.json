@@ -60,8 +60,14 @@
   "where": [
     "trial"
   ],
+  "trial_pr": null,
+  "trial_pr_merged": false,
+  "trial_land_branch": "cursor/batch251-pack-out-writable-e8af",
+  "trial_direct_land": true,
+  "trial_land_sha": "8026ed7",
   "evidence": {
     "bare_pack_pre": "bash scripts/pack_portable.sh → exit 2; Cannot open: Permission denied on /workspace/../trial-portable-main-fixes.tgz",
-    "bare_pack_post": "falls back to /tmp/trial-portable-main-fixes.tgz; exit 0; writes tarball"
+    "bare_pack_post": "falls back to /tmp/trial-portable-main-fixes.tgz; exit 0; writes tarball",
+    "pr_create": "403 GraphQL createPullRequest → direct land ff-only onto trial main"
   }
 }
