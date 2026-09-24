@@ -21,6 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 93 — 2026-09-24 ~03:22 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; IDLE)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**). Drift **ALIGNED** @ `1c6e74b`; write **DENIED**; daemon `--once` → `continue_denied`.
+- Trial CI @ `8eb1f30` (Batch 92 tip): sanity / research-stack-status-guard / land-workflows-dry-run / portable-patches-on-main → **success**. No fix → **IDLE**.
+- Tiny JSON: `portable/BATCH93_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Trial branch `cursor/batch93-install-idle-3ee1`.
+
 ### Batch 92 — 2026-09-24 ~03:20 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; install_repos poll)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
