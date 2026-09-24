@@ -28,7 +28,7 @@ This repository now:
 
 ## Portable fixes for `main` (owner apply)
 
-Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `74c082e` (post-#45; **tip refreshed**; **no 0017**; `owner_land_path_c --dry-run` → keep hardening). Permanent window until owner intervenes. Trial write to `main` still **403**.
+Default tip is **ALIGNED** @ `1c6e74b` (Batch 66; owner [PR #41](https://github.com/d6g8k5htny-coder/main/pull/41) renew after #32/`c2b0620`). **HOLD on PR #2 is VOID**. Path A OR Path B OK when misaligned; prefer **Path B**. `./scripts/restore_main_face.sh` short-circuits when already ALIGNED. Path C portable patches on hardening BASE_TIP `74c082e` (post-#45; **tip refreshed**; **no 0017**; `owner_land_path_c --dry-run` → keep hardening; Batch 68 `path_c_rebase_helper.sh --dry-run` for first-stop ours/theirs). Permanent window until owner intervenes. Trial write to `main` still **403**.
 
 This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
@@ -49,6 +49,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`scripts/probe_main_write_vectors.py`](scripts/probe_main_write_vectors.py) — multi-vector Path B probe dashboard
 - [`scripts/path_b_dry_run.py`](scripts/path_b_dry_run.py) — Path B dry-run certainty (ALREADY_ALIGNED / would-align JSON; no push)
 - [`scripts/path_c_dry_run.py`](scripts/path_c_dry_run.py) — Path C dry-run certainty (apply_all --check + post-ALIGNED tip shape; no push)
+- [`scripts/path_c_rebase_helper.sh`](scripts/path_c_rebase_helper.sh) — owner-safe first-stop ours/theirs staging (`--dry-run` / `--stage`; never invent research status)
 - [`scripts/refresh_restore_plan.py`](scripts/refresh_restore_plan.py) — refresh `portable/RESTORE_PLAN_<N>.json` from live probes
 - [`scripts/pack_portable.sh`](scripts/pack_portable.sh) — tarball; **Batch 64+** auto-globs `RESTORE_PLAN_*.json` + `BATCH*_TOKEN_SEARCH.json`
 - [`scripts/print_owner_unblock.sh`](scripts/print_owner_unblock.sh) — dump OWNER_ONE_LINERS paths + live probe/audit one-liners (reads BASE_TIP.txt)

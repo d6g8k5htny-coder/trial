@@ -11,6 +11,8 @@ mapfile -t RESTORE_PLANS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'RE
 mapfile -t TOKEN_SEARCHES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_TOKEN_SEARCH.json' | sort)
 # Batch 67+: conflict-aware Path C rebase reports (concrete readiness, not RESTORE fluff).
 mapfile -t REBASE_REPORTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_CONFLICT_REPORT_*.json' | sort)
+# Batch 68+: owner-safe resolution notes for first-stop ours/theirs staging.
+mapfile -t REBASE_NOTES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_RESOLUTION_NOTES_*.json' | sort)
 
 if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
@@ -34,6 +36,10 @@ rel_rebase=()
 for p in "${REBASE_REPORTS[@]}"; do
   rel_rebase+=("${p#"$ROOT"/}")
 done
+rel_rebase_notes=()
+for p in "${REBASE_NOTES[@]}"; do
+  rel_rebase_notes+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -43,6 +49,7 @@ tar -czf "$OUT" -C "$ROOT" \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
+  ${rel_rebase_notes[@]+"${rel_rebase_notes[@]}"} \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -55,6 +62,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/probe_main_write_vectors.py \
   scripts/path_b_dry_run.py \
   scripts/path_c_dry_run.py \
+  scripts/path_c_rebase_helper.sh \
   scripts/refresh_restore_plan.py \
   scripts/print_owner_unblock.sh \
   scripts/restore_main_face.sh \
@@ -63,4 +71,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes)"

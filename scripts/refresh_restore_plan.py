@@ -245,8 +245,11 @@ def main() -> int:
             "rebase_conflict_paths": path_c_dry.get("rebase_conflict_paths"),
             "rebase_conflict_categories": path_c_dry.get("rebase_conflict_categories"),
             "conflict_aware_report": f"portable/PATH_C_REBASE_CONFLICT_REPORT_{args.batch}.json",
+            "rebase_helper": "scripts/path_c_rebase_helper.sh",
+            "rebase_resolution_notes": f"portable/PATH_C_REBASE_RESOLUTION_NOTES_{args.batch}.json",
             "recommended_base": path_c_dry.get("recommended_base") or HARDENING,
             "do_not_set_path_c_base_main": path_c_dry.get("do_not_set_path_c_base_main"),
+            "do_not_set_path_c_rebase_onto_main": True,
             "post_aligned_keep_hardening": bool(
                 path_c_dry.get("state") == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
                 or (
@@ -267,6 +270,7 @@ def main() -> int:
             "./scripts/owner_land_path_c.sh --dry-run   # Path C certainty (post-ALIGNED keep hardening)",
             "./scripts/owner_land_path_c.sh             # land patches on hardening (needs write)",
             "./scripts/path_c_dry_run.py",
+            "./scripts/path_c_rebase_helper.sh --dry-run  # owner-safe ours/theirs; prefer abort",
             "./scripts/restore_main_face.sh --dry-run   # Path B certainty / ALIGNED short-circuit",
             "./scripts/restore_main_face.sh",
             f"./scripts/restore_main_face.sh --plan --batch {args.batch}",
@@ -276,6 +280,7 @@ def main() -> int:
         "one_command_restore": "scripts/restore_main_face.sh",
         "refresh_tool": "scripts/refresh_restore_plan.py",
         "path_c_dry_run": "scripts/path_c_dry_run.py",
+        "path_c_rebase_helper": "scripts/path_c_rebase_helper.sh",
     }
 
     out.parent.mkdir(parents=True, exist_ok=True)

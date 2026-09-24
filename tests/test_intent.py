@@ -625,6 +625,44 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert "APPLY_READY" in combined or "dry-run OK" in combined
 
 
+def test_path_c_rebase_helper_dry_run() -> None:
+    """Batch 68: owner-safe rebase helper documents strategy without inventing status."""
+    helper = ROOT / "scripts" / "path_c_rebase_helper.sh"
+    notes = ROOT / "portable" / "PATH_C_REBASE_RESOLUTION_NOTES_68.json"
+    assert helper.is_file()
+    assert helper.stat().st_mode & 0o111
+    text = helper.read_text(encoding="utf-8")
+    assert "--dry-run" in text
+    assert "keep-hardening-engineering" in text
+    assert "preserve-main-face" in text
+    assert "lemma_closed" in text
+    assert "PACKET.json" in text
+    assert notes.is_file()
+    data = __import__("json").loads(notes.read_text(encoding="utf-8"))
+    assert data["scientific_effect"] == "NONE"
+    assert data["lemma_closed"] is False
+    assert data["goal_complete"] is False
+    assert data["do_not_set_path_c_rebase_onto_main"] is True
+    assert len(data["resolutions"]) == 3
+    result = subprocess.run(
+        ["bash", str(helper), "--dry-run", "--no-abort-advice"],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    out = result.stdout + result.stderr
+    assert "ci.yml" in out
+    assert "research.yml" in out
+    assert "engine/bridge/README.md" in out
+    assert '"scientific_effect": "NONE"' in out
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "path_c_rebase_helper.sh" in pack
+    assert "PATH_C_REBASE_RESOLUTION_NOTES_" in pack
+
+
 def test_check_autonomous_window_permanent_mode(tmp_path, monkeypatch) -> None:
     """Permanent mode must never hard-stop on elapsed wall-clock."""
     import json

@@ -1,0 +1,74 @@
+{
+  "after_stage": [
+    "git status  # confirm only the three paths resolved; no PACKET edits",
+    "git rebase --continue   # expect further commits; re-run helper if new conflicts",
+    "OR: git rebase --abort  # preferred \u2014 return to hardening tip"
+  ],
+  "artifact": "PATH_C_REBASE_RESOLUTION_NOTES",
+  "batch": "68",
+  "batch68_validation": {
+    "dry_run_ok": true,
+    "new_0017": false,
+    "stage_keep_hardening_engineering": "cleared first-stop UU/DU on ci.yml, research.yml, bridge README; no PACKET staged; rebase aborted",
+    "stage_preserve_main_face": "git rm research.yml + bridge README; ci.yml --ours; rebase aborted",
+    "tip_refresh": "none (== BASE_TIP)",
+    "tip_sha_hardening": "74c082e799d8d338da9adb24a968c1231842851a"
+  },
+  "do_not_set_path_c_base_main": true,
+  "do_not_set_path_c_rebase_onto_main": true,
+  "generated_at_utc": "2026-09-24T00:49:33Z",
+  "goal_complete": false,
+  "known_first_stop_paths": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/research.yml",
+    "engine/bridge/README.md"
+  ],
+  "lemma_closed": false,
+  "mode": "notes",
+  "never_touch": [
+    "docs/math_status/PACKET.json",
+    "docs/math_status/STATUS.json",
+    "registers/",
+    "claims/",
+    "lemma_closed",
+    "prize/premise discharge"
+  ],
+  "ours_theirs_note": "During git rebase onto main: ours=main (onto), theirs=hardening commit being applied. modify/delete leaves the hardening file in tree until git add (keep) or git rm (delete).",
+  "owner_land": "./scripts/owner_land_path_c.sh --dry-run && ./scripts/owner_land_path_c.sh",
+  "primary_advice": "DO_NOT_REBASE \u2014 keep Path C on chatgpt/drive-github-hardening-20260919",
+  "profile": "keep-hardening-engineering",
+  "resolutions": [
+    {
+      "choice": "theirs",
+      "conflict_kind": "content",
+      "git": [
+        "git checkout --theirs -- .github/workflows/ci.yml",
+        "git add -- .github/workflows/ci.yml"
+      ],
+      "path": ".github/workflows/ci.yml",
+      "side_meaning": "hardening commit being replayed"
+    },
+    {
+      "choice": "keep_theirs_file",
+      "conflict_kind": "modify/delete",
+      "git": [
+        "git add -- .github/workflows/research.yml"
+      ],
+      "guard": "Do not edit on:/schedule:; do not claim R2-06; never flip lemma_closed",
+      "path": ".github/workflows/research.yml",
+      "side_meaning": "hardening version left in tree after modify/delete"
+    },
+    {
+      "choice": "keep_theirs_file",
+      "conflict_kind": "modify/delete",
+      "git": [
+        "git add -- engine/bridge/README.md"
+      ],
+      "path": "engine/bridge/README.md",
+      "side_meaning": "hardening version left in tree"
+    }
+  ],
+  "scientific_effect": "NONE",
+  "source_conflict_report": "portable/PATH_C_REBASE_CONFLICT_REPORT_67.json",
+  "workdir_state": "no_workdir"
+}
