@@ -1,6 +1,6 @@
 {
   "batch": "169",
-  "generated_at_utc": "2026-09-24T10:18:00Z",
+  "generated_at_utc": "2026-09-24T10:18:59Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -28,7 +28,7 @@
   "device_code": "EC83-CFC2",
   "prior_device_code": "831C-CB1C",
   "auth_renewed": true,
-  "seconds_left": 896,
+  "seconds_left": 829,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -86,6 +86,6 @@
   "ci_status": "pending",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "bb0a4719f480b97f90585b5dc446804a9fbc4f51",
+  "trial_main_sha": "8aff188164a95a550d7d158eeb9e5f9986a83feb",
   "auth_renew_reason": "seconds_left=53 near expiry"
 }
