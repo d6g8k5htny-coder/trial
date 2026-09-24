@@ -1,0 +1,14 @@
+{
+  "batch": "237",
+  "tip": "1200501",
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "open_questions": 16,
+  "open_obligations_packet": 2,
+  "disposition": "OPEN_HOLD",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "guard_pass": true,
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false"
+}

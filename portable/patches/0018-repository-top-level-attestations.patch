@@ -1,0 +1,28 @@
+From 76f78c55dde705277c2949ef019695230765eeff Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursor-agent@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 19:10:32 +0000
+Subject: [PATCH] fix: include attestations in REPOSITORY_TOP_LEVEL
+
+PR #70 adds top-level attestations/; bridge self-authority list must
+match the checkout or test_repository_top_level_list_matches_the_checkout fails.
+Scientific effect: NONE. No claim/lemma status flip.
+---
+ engine/bridge/work_order.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/engine/bridge/work_order.py b/engine/bridge/work_order.py
+index e8971cc..a25c043 100644
+--- a/engine/bridge/work_order.py
++++ b/engine/bridge/work_order.py
+@@ -176,7 +176,7 @@ PROTECTED_SURFACES = (
+ #: ``tests/test_bridge.py`` asserts this list matches the checkout.
+ REPOSITORY_TOP_LEVEL = (
+     ".github", ".gitignore", "requirements-ci.lock", "AGENTS.md", "CITATION.cff", "CLAUDE.md",
+-    "CONTRIBUTING.md", "LICENSE", "README.md", "claims", "docs", "drive",
++    "CONTRIBUTING.md", "LICENSE", "README.md", "attestations", "claims", "docs", "drive",
+     "engine", "governance", "legacy", "packages", "quarantine", "recovery",
+     "registers", "research", "reviews", "sandbox", "tests", "tools",
+ )
+-- 
+2.43.0
+
