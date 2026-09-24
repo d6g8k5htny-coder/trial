@@ -1,6 +1,6 @@
 {
   "batch": "202",
-  "generated_at_utc": "2026-09-24T13:42:29Z",
+  "generated_at_utc": "2026-09-24T13:42:47Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -32,7 +32,7 @@
   "prior_device_code": "6A29-F464",
   "auth_renewed": true,
   "auth_renew_reason": "lt90",
-  "seconds_left": 184.0,
+  "seconds_left": 166.1,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -101,5 +101,7 @@
     "device_code": "5160-F839",
     "tip": "b89448d",
     "seconds_left": 184.0
-  }
+  },
+  "trial_main_sha": "4fe95ab178684fa3236b023347516b58b27692ed",
+  "trial_landed": true
 }
