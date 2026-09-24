@@ -1,6 +1,22 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 223 — multi-agent access (ALL AI agents)
+
+**Scientific effect: NONE.** Grant Cursor + ChatGPT/Codex + Claude + Grok Read/write
+on every repo in `.cursor/environment.json` `repositoryDependencies`.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh          # dry-run (default)
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
+Guide: [`MULTI_AGENT_ACCESS.md`](MULTI_AGENT_ACCESS.md). Snapshot:
+[`../portable/AI_AGENT_ACCESS_INVENTORY.json`](../portable/AI_AGENT_ACCESS_INVENTORY.json).
+Official Apps only (no invented bot usernames). Grok: PAT fallback (no verified xAI App).
+`lemma_closed` stays **false**.
+
+
 ## Batch 219 — visible repo inventory (connect ALL)
 
 **Scientific effect: NONE.** Agent token / Cursor App install is still **trial-only**

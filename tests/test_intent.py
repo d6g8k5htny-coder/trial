@@ -15,13 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Living Path C tip/release may supersede across tip-refresh / pack batches.
 # Batch 180 tip 8bd1f03 → Batch 202 tip b89448d; release batch180 → batch199 → batch202.
-_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb")
+_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb", "cbaa056")
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
     "batch199-path-c-bundle",
     "batch202-path-c-bundle",
     "batch218-path-c-bundle",
     "batch207-path-c-bundle",
+    "batch223-path-c-bundle",
 )
 
 
@@ -5167,3 +5168,99 @@ def test_batch219_repos_connect_all() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 219" in log
     assert "0867-BD4B" in log or data["device_code"] in log
+
+
+def test_batch223_multi_agent_access() -> None:
+    """Batch 223: multi-agent access docs+script; tip cbaa056; auth pending; lemma_closed=false."""
+    import json
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH223_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "223"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["main_writable"] is False
+    assert data["write"] == "DENIED"
+    assert data["install_has_main"] is False
+    assert data["device_auth"] == "pending"
+    assert "-" in str(data["device_code"])
+    assert _living_tip(data.get("tip"))
+    apps = data.get("apps_documented") or []
+    assert "cursor" in apps
+    assert "chatgpt-codex-connector" in apps
+    assert "claude" in apps
+    assert "grok-pat-fallback" in apps
+
+    doc = ROOT / "docs" / "MULTI_AGENT_ACCESS.md"
+    assert doc.is_file()
+    doc_text = doc.read_text(encoding="utf-8")
+    assert "github.com/apps/cursor" in doc_text
+    assert "chatgpt-codex-connector" in doc_text
+    assert "github.com/apps/claude" in doc_text
+    assert "lemma_closed" in doc_text
+    assert "no verified official" in doc_text.lower() or "no verified" in doc_text.lower()
+
+    script = ROOT / "scripts" / "owner_grant_ai_agent_access.sh"
+    assert script.is_file()
+    assert script.stat().st_mode & 0o111  # executable
+    help_out = subprocess.check_output(
+        [str(script), "--help"], cwd=ROOT, text=True
+    )
+    assert "--dry-run" in help_out
+    assert "--check" in help_out
+    assert "chatgpt-codex-connector" in help_out
+    dry = subprocess.check_output([str(script)], cwd=ROOT, text=True)
+    assert "dry-run complete" in dry or "Cursor GitHub App" in dry
+    assert "d6g8k5htny-coder/main" in dry
+
+    inv = ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json"
+    assert inv.is_file()
+    inv_data = json.loads(inv.read_text(encoding="utf-8"))
+    assert inv_data["lemma_closed"] is False
+    assert inv_data["install_has_main"] is False
+    assert inv_data["main_writable"] is False
+    assert "cursor" in (inv_data.get("apps_documented") or [])
+
+    env = (ROOT / ".cursor" / "environment.json").read_text(encoding="utf-8")
+    for repo in (
+        "google-drive",
+        "governance-",
+        "main",
+        "Math-",
+        "meta-framework",
+        "query-",
+        "trial",
+    ):
+        assert f"github.com/d6g8k5htny-coder/{repo}" in env
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("tip_match") is True
+    assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
+    assert "NO_TOKEN" in str(status.get("path_c_blocked", ""))
+    assert "-" in str(status.get("device_code", ""))
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_ACCESS" in readme
+    assert "owner_grant_ai_agent_access" in readme
+    relaunch = (ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md").read_text(encoding="utf-8")
+    assert "Batch 223" in relaunch
+    assert "MULTI_AGENT_ACCESS" in relaunch
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 223" in ones
+    assert "owner_grant_ai_agent_access" in ones
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_ACCESS" in agents
+
+    login = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert data["device_code"] in login
+    assert "Batch 223" in login
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 223" in log
+    assert "MULTI_AGENT" in log.upper() or "multi-agent" in log.lower()

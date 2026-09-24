@@ -1,0 +1,177 @@
+{
+  "batch": "223",
+  "generated_at_utc": "2026-09-24T15:57:10Z",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "goal_complete": false,
+  "main_writable": false,
+  "path_c_landed": false,
+  "trial_push": true,
+  "install_has_main": false,
+  "install_repos": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "repository_selection": "selected",
+  "repos_connected": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "push"
+    }
+  ],
+  "details": [
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "a7c8d1e3deee448f4e01ed27eb24653b80a4554f"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "8afbc663573dad0f219398285549f20bb94e795f"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "636b98327e9000a4e1fc6bc881ac49fd896e0405"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "ed31d63dc668aaacfc619339df345fe704571955"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull",
+      "write": "DENIED",
+      "read_http": "200",
+      "install": false,
+      "tip_sha": "e3595de5c2b99327b3b175aaeb4b59e0ce921528"
+    },
+    {
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "push",
+      "write": "WRITABLE",
+      "read_http": "200",
+      "install": true,
+      "tip_sha": "b4999bbeb3e4b216a07d644cd157aeb29d1377b8"
+    }
+  ],
+  "apps_documented": [
+    "cursor",
+    "chatgpt-codex-connector",
+    "claude",
+    "grok-pat-fallback"
+  ],
+  "apps": [
+    {
+      "slug": "cursor",
+      "label": "Cursor",
+      "app_url": "https://github.com/apps/cursor",
+      "install_url": "https://github.com/apps/cursor/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null
+    },
+    {
+      "slug": "chatgpt-codex-connector",
+      "label": "ChatGPT Codex Connector",
+      "app_url": "https://github.com/apps/chatgpt-codex-connector",
+      "install_url": "https://github.com/apps/chatgpt-codex-connector/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null
+    },
+    {
+      "slug": "claude",
+      "label": "Claude",
+      "app_url": "https://github.com/apps/claude",
+      "install_url": "https://github.com/apps/claude/installations/new",
+      "http_status": 200,
+      "official_documented": true,
+      "fallback": null
+    },
+    {
+      "slug": "grok",
+      "label": "Grok (xAI)",
+      "app_url": "https://github.com/apps/grok",
+      "install_url": null,
+      "http_status": 404,
+      "official_documented": false,
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames"
+    },
+    {
+      "slug": "xai",
+      "label": "xAI",
+      "app_url": "https://github.com/apps/xai",
+      "install_url": null,
+      "http_status": 404,
+      "official_documented": false,
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames"
+    }
+  ],
+  "device_auth": {
+    "device_code": "BE27-A62D",
+    "prior_device_code": "89AF-6638",
+    "device_auth": "pending",
+    "has_token": false,
+    "seconds_left": 764.7,
+    "checked_at_utc": "2026-09-24T15:57:10Z",
+    "auth_renewed": true
+  },
+  "api_grants_attempted": {
+    "topics_put_trial": "403 Resource not accessible by integration",
+    "collaborators_without_usernames": "skipped (no invented bot logins)",
+    "write_probe_non_trial": "DENIED on all except trial"
+  },
+  "owner_next": "Run ./scripts/owner_grant_ai_agent_access.sh; install Cursor+Codex+Claude Apps on ALL repos R/W; PAT for Grok; authorize device BE27-A62D OR MAIN_PUSH_TOKEN; RELAUNCH",
+  "docs": "docs/MULTI_AGENT_ACCESS.md",
+  "script": "scripts/owner_grant_ai_agent_access.sh",
+  "tip": "cbaa056",
+  "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+  "tip_refresh": true
+}

@@ -13,10 +13,22 @@ Pick **one** of (a)/(b)/(c), then do (d).
 ## (a) Cursor GitHub App — add `main` Read/Write
 
 1. GitHub → **Settings** → **Applications** → **Cursor** → Configure  
-   (https://github.com/settings/installations)
-2. Under **Repository access** → **Only select repositories**
-3. **Add** `d6g8k5htny-coder/main` with **Read and write**
+   (https://github.com/settings/installations)  
+   or install: https://github.com/apps/cursor/installations/new
+2. Under **Repository access** → **Only select repositories** (or All)
+3. **Add** `d6g8k5htny-coder/main` with **Read and write** (prefer **all** seven owner repos)
 4. Save
+
+**Batch 223 — all AI agents:** also install ChatGPT Codex Connector + Claude Apps
+(and Grok via PAT) on the same repo set. One-shot:
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh          # dry-run URLs + gh
+./scripts/owner_grant_ai_agent_access.sh --check  # after installs
+```
+
+Guide: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md).
+Inventory: [`portable/AI_AGENT_ACCESS_INVENTORY.json`](AI_AGENT_ACCESS_INVENTORY.json).
 
 `when_writable_land.py` polls `/installation/repositories`; when
 `install_has_main` flips true it attempts Path C immediately (still needs
@@ -79,6 +91,13 @@ public `d6g8k5htny-coder` repo visible to this auth:
 **Live install** is still trial-only until (a) Cursor App repository access adds them
 and (d) you **RELAUNCH**. Path C still needs Contents:Write on `main` (App R/W, device
 token, or `MAIN_PUSH_TOKEN`). Scientific effect: **NONE**. `lemma_closed=false`.
+
+## Batch 223 — multi-agent access (Cursor + Codex + Claude + Grok)
+
+Same seven `repositoryDependencies`. Owner grants **every** agent Read/write via
+official Apps (Cursor / ChatGPT Codex Connector / Claude) plus Grok PAT fallback
+(no verified xAI GitHub App). See `docs/MULTI_AGENT_ACCESS.md` and
+`scripts/owner_grant_ai_agent_access.sh`. After App installs: **RELAUNCH**.
 
 
 **This running agent cannot pick up `main` mid-flight.** Repositories in the

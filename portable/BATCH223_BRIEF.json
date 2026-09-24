@@ -1,0 +1,71 @@
+{
+  "batch": "223",
+  "generated_at_utc": "2026-09-24T15:57:10Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "write_unlocked": false,
+  "write": "DENIED",
+  "main_writable": false,
+  "path_c_landed": false,
+  "device_code": "BE27-A62D",
+  "prior_device_code": "89AF-6638",
+  "auth_renewed": true,
+  "device_auth": "pending",
+  "has_token": false,
+  "install_has_main": false,
+  "install_repos": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "apps_documented": [
+    "cursor",
+    "chatgpt-codex-connector",
+    "claude",
+    "grok-pat-fallback"
+  ],
+  "repos": [
+    "d6g8k5htny-coder/google-drive",
+    "d6g8k5htny-coder/governance-",
+    "d6g8k5htny-coder/main",
+    "d6g8k5htny-coder/Math-",
+    "d6g8k5htny-coder/meta-framework",
+    "d6g8k5htny-coder/query-",
+    "d6g8k5htny-coder/trial"
+  ],
+  "repositoryDependencies_kept_all": true,
+  "multi_agent_docs": "docs/MULTI_AGENT_ACCESS.md",
+  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "inventory": "portable/AI_AGENT_ACCESS_INVENTORY.json",
+  "api_grants": {
+    "trial_push": true,
+    "main_create_ref": "DENIED",
+    "other_repos_create_ref": "DENIED",
+    "topics_put_trial": "403",
+    "collaborator_invite": "skipped_no_usernames"
+  },
+  "tip": "cbaa056",
+  "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+  "tip_refresh": true,
+  "prior_tip": "1d0dceb",
+  "tip_matches_base": true,
+  "assert_path_c_ready": "OK",
+  "path_c_blocked_now": "NO_TOKEN",
+  "release": "batch223-path-c-bundle",
+  "apply_stack": "0001-0004+0008-0017",
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "preferred_auth_interval_s": 1800,
+  "readme_link_only": true,
+  "owner_next_action": "Run ./scripts/owner_grant_ai_agent_access.sh \u2192 install Cursor+Codex+Claude Apps on ALL 7 repos R/W; Grok fine-grained PAT; authorize device BE27-A62D OR MAIN_PUSH_TOKEN; RELAUNCH",
+  "alt_actions": [
+    "device authorize BE27-A62D at https://github.com/login/device",
+    "https://github.com/apps/cursor/installations/new",
+    "https://github.com/apps/chatgpt-codex-connector/installations/new",
+    "https://github.com/apps/claude/installations/new",
+    "MAIN_PUSH_TOKEN=<PAT> ./scripts/owner_set_main_push_token.sh --dispatch"
+  ],
+  "trial_branch": "cursor/batch223-multi-agent-access-3a80",
+  "note": "Multi-agent access durable config + owner oneshot. Official Apps only; Grok PAT fallback (no verified xAI App). Live install trial-only; main write DENIED; Path C not landed. Tip refresh 1d0dceb\u2192cbaa056. Research untouched lemma_closed=false.",
+  "seconds_left": 764.7
+}

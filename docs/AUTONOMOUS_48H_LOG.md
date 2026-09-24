@@ -22,6 +22,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 223 — 2026-09-24 ~15:45 UTC (multi-agent access: Cursor+Codex+Claude+Grok; owner oneshot; write DENIED; scientific effect NONE; flipped nothing)
+
+- Dylan: **ALL** AI agents need R/W on all owner repos. Shipped `docs/MULTI_AGENT_ACCESS.md`, `scripts/owner_grant_ai_agent_access.sh` (`--dry-run` default / `--check` / optional `--invite-collaborators` only if `AI_COLLAB_USERNAMES` set), `portable/AI_AGENT_ACCESS_INVENTORY.json`.
+- Official Apps documented: **Cursor** (`github.com/apps/cursor`), **ChatGPT Codex Connector** (`chatgpt-codex-connector`), **Claude** (`github.com/apps/claude`). Grok/xAI: **no** verified App (`/apps/grok|/apps/xai` 404) → fine-grained PAT + optional owner-supplied collab usernames. No invented bot logins.
+- API grants: trial push only; topics PUT 403; create-ref DENIED on main + other non-trial repos. `install_has_main=false`. Path C **not** landed.
+- Auth: device `89AF-6638` low seconds → renew **`BE27-A62D`**; poller `batch223-device-poll`. Never print tokens.
+- Env `repositoryDependencies` **keeps all 7**. README / RELAUNCH / OWNER_ONE_LINERS / AGENTS point at multi-agent access. `lemma_closed=false`. Research untouched.
+
 ### Batch 219 — 2026-09-24 ~15:19 UTC (connect ALL 7 visible owner repos; auth renew 0867; intent tip-supersession; write DENIED; scientific effect NONE; flipped nothing)
 
 - Dylan: more repos added → inventory **all 7** public `d6g8k5htny-coder/*` (google-drive, governance-, main, Math-, meta-framework, query-, trial). `.cursor/environment.json` `repositoryDependencies` lists **ALL**. Live install still **trial-only** (`install_has_main=false`); main write **DENIED** 403; Path C **not** landed.

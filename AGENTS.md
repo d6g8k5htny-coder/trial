@@ -26,4 +26,5 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 1. `README.md`
 2. `docs/PROJECT_INTENT_AUDIT.md`
 3. `docs/OWNER_ACTIONS_MAIN.md`
-4. `docs/AUTONOMOUS_48H_LOG.md` (if an autonomous window is active)
+4. `docs/MULTI_AGENT_ACCESS.md` — grant Cursor + ChatGPT/Codex + Claude + Grok (PAT) Read/write on all owner repos (`./scripts/owner_grant_ai_agent_access.sh`)
+5. `docs/AUTONOMOUS_48H_LOG.md` (if an autonomous window is active)

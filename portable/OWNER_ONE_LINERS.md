@@ -4,6 +4,19 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 223 — multi-agent access (Cursor + ChatGPT/Codex + Claude + Grok); write DENIED; auth pending `89AF-6638`**:
+>
+> ```bash
+> ./scripts/owner_grant_ai_agent_access.sh          # dry-run: official App install URLs + gh
+> ./scripts/owner_grant_ai_agent_access.sh --check  # probe install + write per repo
+> # Docs: docs/MULTI_AGENT_ACCESS.md | Inventory: portable/AI_AGENT_ACCESS_INVENTORY.json
+> # Then: authorize https://github.com/login/device (code in portable/GH_DEVICE_LOGIN.md)
+> #   or: ./scripts/owner_path_c_oneshot.sh --from-bundle after MAIN_PUSH_TOKEN / App R/W
+> ```
+>
+> Official installs: Cursor `github.com/apps/cursor`, Codex `github.com/apps/chatgpt-codex-connector`,
+> Claude `github.com/apps/claude`. Grok: no verified xAI App → fine-grained PAT. `lemma_closed=false`.
+
 > **Batch 212 — tip stable `b89448d`; auth renew `5AEC-4784` (from `B064-C458` &lt;90s); write DENIED**:
 > Authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md` (or `./scripts/owner_path_c_oneshot.sh --from-bundle` after `gh release download batch218-path-c-bundle`).
 

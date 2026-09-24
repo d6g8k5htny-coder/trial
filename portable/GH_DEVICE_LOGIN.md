@@ -4,16 +4,18 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T15:19:29Z |
-| Checked (UTC) | 2026-09-24T15:19:29Z |
+P26-09-24T15:57:10Z||
+P26-09-24T15:57:10Z||
 | Verification URL | https://github.com/login/device |
-| User code | `0867-BD4B` |
-| Prior code | `4B66-CE85` (Batch 218; low seconds → Batch 219 renew `0867-BD4B`) |
+| User code | `BE27-A62D` |
+| Prior code | `89AF-6638` (Batch 223 mid-batch; low seconds → renew `BE27-A62D`) / `0867-BD4B` (Batch 219)|
 | Prior prior | `B064-C458` (Batch 210/212); `E577-EEF9` (Batch 207); `5160-F839` (Batch 202); older: `50DB-FD4D` (Batch 199); `CC72-DB3D` (Batch 195); `1C7F-22B5` (Batch 192); `C949-0100` (expired Batch 190); `46EC-0B00` (Batch 188); `DF9C-5DF9` (Batch 185); `5216-7C1B` (Batch 183); `AD78-6206` (Batch 180); `5E05-EA04` (Batch 178); `9671-4918` (Batch 176); `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
 | Older priors | `C8FC-A08F` → `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 219 connected all 7 visible owner repos in environment.json; install still trial-only; write DENIED; tip `1d0dceb`; seconds_left in BATCH219_BRIEF / PATH_C_STATUS) |
+| Status | pending (authorization_pending; Batch 223 multi-agent access; auth renew `BE27-A62D` from `89AF-6638`; install trial-only; write DENIED; tip `cbaa056`)|
 | Expires | see `seconds_left` in BATCH219_BRIEF / PATH_C_STATUS (history: BATCH218_BRIEF / BATCH217_BRIEF / BATCH216_BRIEF) |
-| Hardening tip | `1d0dceb` (Batch 218 tip refresh from `b89448d`); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch218-path-c-bundle` (priors `batch207-path-c-bundle` / `batch179-path-c-bundle` / `batch162-path-c-bundle` / `batch168-path-c-bundle` / `batch169-path-c-bundle` / `batch202-path-c-bundle` / `batch199-path-c-bundle`) |
+| Hardening tip | `cbaa056` (Batch 223 tip refresh from `1d0dceb`); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch223-path-c-bundle` (prior `batch218-path-c-bundle`)|
+
+| Release history | `batch162-path-c-bundle` / `batch168-path-c-bundle` / `batch169-path-c-bundle` / `batch179-path-c-bundle` / `batch180-path-c-bundle` / `batch199-path-c-bundle` / `batch202-path-c-bundle` / `batch207-path-c-bundle` / `batch218-path-c-bundle` / `batch223-path-c-bundle` |
 | History briefs | `BATCH219_BRIEF` / `BATCH218_BRIEF` / `BATCH217_BRIEF` / `BATCH216_BRIEF` / `BATCH212_BRIEF` / `BATCH210_BRIEF` / `BATCH207_BRIEF` / `BATCH202_BRIEF` / `BATCH199_BRIEF` / `BATCH195_BRIEF` / `BATCH194_BRIEF` / `BATCH192_BRIEF` / `BATCH190_BRIEF` / `BATCH188_BRIEF` / `BATCH185_BRIEF` / `BATCH183_BRIEF` / `BATCH162_BRIEF` / `BATCH168_BRIEF` / `BATCH169_BRIEF` / `BATCH178_BRIEF` / `BATCH179_BRIEF` / `BATCH180_BRIEF` (issue hygiene create-only) |
 | Repo face | Trial `README.md` top section **Path C — land engineering fixes on main** (Batch 194: **link-only** → this file for live user code; no perishable `XXXX-XXXX` on README; release bundle / oneshot / App add-main; `lemma_closed` stays false) |
 | Tip refresh helper | `scripts/refresh_path_c_bundle.sh` (Batch 173+; Batch 180: `git bundle verify` uses WORKDIR so trial ROOT does not false-fail prerequisites; Batch 202: tip `8bd1f03`→`b89448d`) |

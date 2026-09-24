@@ -1,8 +1,8 @@
-From 873c9019fcf972b5235a934d60693a363c2f6fa1 Mon Sep 17 00:00:00 2001
+From fb3ffe6680e4165970bcec4717621ed9a2a4cab6 Mon Sep 17 00:00:00 2001
 From: path-c-refresh <path-c-refresh@local>
-Date: Thu, 24 Sep 2026 15:07:20 +0000
+Date: Thu, 24 Sep 2026 15:50:47 +0000
 Subject: [PATCH] portable engineering patches (apply_all 0001-0004+0008-0016)
- on 1d0dceb
+ on cbaa056
 
 ---
  docs/math_status/PACKET.json                  |   4 +-
