@@ -5,6 +5,20 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 244 — tip stable `542e6ec`; default ALIGNED `ea41a30`; write WRITABLE; pack APPLY living tip; sibling AGENTS; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/owner_land_path_c.sh --from-bundle --dry-run   # already_applied_on_tip @ 542e6ec
+> ./scripts/when_writable_land.py --once --dry-run         # idle_path_c_done (0018+0019)
+> ./scripts/owner_grant_ai_agent_access.sh --check         # multi-agent; all 8 incl. sandbox
+> gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+> ./scripts/owner_path_c_oneshot.sh --from-bundle --dry-run
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md` | `portable/SIBLING_AGENTS_BATCH244.md`.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 243 — tip stable `542e6ec`; default ALIGNED `ea41a30`; write WRITABLE; Path A ALIGNED no-op; release `batch241-path-c-bundle`**:
 >
 > ```bash

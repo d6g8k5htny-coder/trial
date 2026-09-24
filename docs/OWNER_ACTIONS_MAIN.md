@@ -1,6 +1,26 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 244 — write WRITABLE; pack APPLY living tip; sibling AGENTS; idle after 0019
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`542e6ec`** (== BASE_TIP). Default tip **ALIGNED** @ `ea41a30`. Release
+**`batch241-path-c-bundle`**. Pack `path-c-applied-bundle/APPLY.md` ONE-SHOT was
+still downloading **`batch207`** — fixed to living **`batch241`** + already-on-tip
+note. Sibling AGENTS (6) got absolute Start-here links + trial env-deps note.
+`when_writable_land` idles correctly after 0019 (`idle_path_c_done`). Research HOLD
+drafts skipped. `lemma_closed` stays **false**.
+
+```bash
+./scripts/owner_land_path_c.sh --from-bundle --dry-run   # already_applied_on_tip
+./scripts/when_writable_land.py --once --dry-run         # idle_path_c_done
+./scripts/owner_grant_ai_agent_access.sh --check
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
+  -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'
+```
+
 ## Batch 243 — write WRITABLE; Path A ALIGNED no-op; land_c release batch241
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is

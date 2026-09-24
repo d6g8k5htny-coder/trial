@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 244 (pack APPLY living tip + sibling AGENTS + idle after 0019) — 2026-09-24 ~21:53– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**; no eng-only green merge.
+- Tip CI hardening/default: last failures **[]**. `refresh_path_c_bundle --dry-run` tip-stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`** (0018+0019 resolved).
+- **Defect shipped (not Path A/B ALIGNED no-op):** `portable/path-c-applied-bundle/APPLY.md` ONE-SHOT still said `gh release download batch207-path-c-bundle` while living tip/release is **`batch241` @ 542e6ec** with 0001–0019 already on tip. Fixed APPLY header + ONE-SHOT + already-on-tip note; `owner_open_path_c_pr.sh` comment → batch241.
+- **Siblings (6):** AGENTS absolute Start-here links + trial env-deps note (`google-drive`/`governance-`/`Math-`/`meta-framework`/`query-`/`sandbox`).
+- Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 243 (Path A ALIGNED no-op + land_c release pointers) — 2026-09-24 ~21:38– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `ea41a30`. `lemma_closed=false`.

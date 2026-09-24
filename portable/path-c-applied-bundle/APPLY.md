@@ -1,32 +1,28 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
-**Batch 232 (tip refresh):** hardening tip **`93a4ecd`→`377201c`** ([PR #62](https://github.com/d6g8k5htny-coder/main/pull/62) inventable campaign; PACKET kept; flags unflipped). Path C eng stack **already on tip** (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). Do **not** re-land Path C / re-`git am` onto `377201c`. Historical `.bundle`+`.patch` retained for pre-land tips. `lemma_closed=false`. Scientific effect: **NONE**.
+**Batch 244 (living tip / pack sync):** hardening tip **`542e6ec`** (== BASE_TIP; [PR #71](https://github.com/d6g8k5htny-coder/main/pull/71) 0019 attestations RW). Living release **`batch241-path-c-bundle`**. Patches **0001–0004+0008–0019** are **already on tip** — `owner_land_path_c.sh --from-bundle` dry-run exits 0 with `already_applied_on_tip=true` (`.bundle` ff-only may diverge; apply_all `--check` is the authority). Do **not** re-land Path C onto `542e6ec`. `when_writable_land` → `idle_path_c_done` (0018+0019 markers true). `lemma_closed=false`. Scientific effect: **NONE**.
 
-**Batch 230 (LANDED):** Path C **merged** on main hardening via [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64). Tip **`93a4ecd`** (merge of applied `fb3ffe6` from `.bundle` on prior BASE `cbaa056`). Patches **0001–0004+0008–0017** are **already on tip** — do not re-`apply_all` / re-`git am` the historical `.bundle` onto `93a4ecd`. `lemma_closed=false` / OPEN_HOLD verified. Scientific effect: **NONE**.
+**Batch 232 (tip refresh):** hardening tip **`93a4ecd`→`377201c`** ([PR #62](https://github.com/d6g8k5htny-coder/main/pull/62) inventable campaign; PACKET kept; flags unflipped). Path C eng stack **already on tip** (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). Historical `.bundle`+`.patch` retained for pre-land tips. `lemma_closed=false`. Scientific effect: **NONE**.
 
-**Batch 218:** tip **`1d0dceb`** (refreshed from `b89448d`). Release **`batch218-path-c-bundle`** includes tip-refreshed `.bundle`+`.patch` (0001–0004+0008–0017; applied `873c901`).
+**Batch 230 (LANDED):** Path C **merged** on main hardening via [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64). Tip **`93a4ecd`** (merge of applied `fb3ffe6` from `.bundle` on prior BASE `cbaa056`). Patches **0001–0004+0008–0017** are **already on tip**. `lemma_closed=false` / OPEN_HOLD verified. Scientific effect: **NONE**.
 
-**Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** includes **0017** (pinned_sources RW) + force-refreshed `.bundle` (applied `71d50b1`; supersedes `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch169-path-c-bundle`).
+**Batch 218:** tip **`1d0dceb`** (refreshed from `b89448d`). Release **`batch218-path-c-bundle`** (superseded by `batch241-path-c-bundle`).
+
+**Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** (superseded; included **0017** pinned_sources RW).
 
 **Effect:** engineering hygiene only on `chatgpt/drive-github-hardening-20260919`. Scientific effect: **NONE**. Does not flip `lemma_closed`.
-
-**Batch 179:** tip still **`8ea3b5f`**. Release **`batch207-path-c-bundle`** packs oneshot + `.bundle` + `refresh_path_c_bundle.sh` (supersedes `batch207-path-c-bundle`).
-
-**Batch 169:** tip still **`8ea3b5f`** (no tip move). Ships fetchable **`path-c-on-hardening.bundle`** (`BASE_TIP..HEAD`) plus legacy `.patch`. Release tag `batch207-path-c-bundle` on `d6g8k5htny-coder/trial` (superseded by Batch 179). Owner scripts prefer `.bundle` when present.
-
-**Batch 168:** tip **`8ea3b5f`**. Pack included `scripts/owner_path_c_oneshot.sh`. Prior release `batch168-path-c-bundle`.
-
-**Batch 162:** refreshed against hardening tip **`8ea3b5f`** (PR #53; prior BASE `10c077e` / PR #54). Prior release `batch162-path-c-bundle`.
 
 ## ONE-SHOT (owner / write token) — preferred
 
 ```bash
-gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial \
+gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial \
   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
 mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
 # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
 ```
+
+On tip **`542e6ec`** expect dry-run / land to report **`already_applied_on_tip=true`** (no new commits). Prior release tags (`batch239` / `batch218` / `batch207` / …) are historical only — do not download them for new lands.
 
 Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).
 
@@ -50,6 +46,8 @@ git push -u origin HEAD
 
 Then open a PR into `chatgpt/drive-github-hardening-20260919`. Do **not** apply on post-#41 default `main` (no `PACKET.json`).
 
+**Living tip note:** at `542e6ec` the merge may refuse ff-only (historical applied range diverged); that is expected — patches are already on tip. Prefer `apply_all.sh --check` / `owner_land_path_c.sh --from-bundle --dry-run`.
+
 **Batch 170 E2E:** shallow clone @ `8ea3b5f` → `git fetch` `.bundle` → `merge --ff-only` → HEAD `81c09d6`; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90** passed.
 
 ## Manual — legacy `git am` of `.patch`
@@ -65,5 +63,5 @@ python3 tools/math_status_check.py   # expect problems=0 lemma_closed=false
 python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py
 ```
 
-See `VERIFY.json` for Batch 169 recorded counts (`problems=0`, `lemma_closed=false`, focused 90 / 0 ResourceWarning) and bundle fields.
+See `VERIFY.json` for Batch 241 recorded counts (`problems=0`, `lemma_closed=false`, focused 90 / 0 ResourceWarning) and bundle fields.
 Cloud Agent mid-flight cannot gain main write — see `../RELAUNCH_WITH_MAIN_SCOPE.md`.
