@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 96 — 2026-09-24 ~03:40 UTC (PERMANENT window; README #1 unblock; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- **Shipped:** trial `README.md` short **#1 unblock** near top — add `d6g8k5htny-coder/main` to Cursor App Repository access; cites trial-only install fact. No OWNER_ACTIONS wall duplicate.
+- Tiny JSON: `portable/BATCH96_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial `main` (`cursor/readme-add-main-unblock-875c`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 95 — 2026-09-24 ~03:38 UTC (PERMANENT window; IDLE; repo-create FAIL; scientific effect NONE; flipped nothing)
 
 - **TRY:** `gh repo create d6g8k5htny-coder/main-portable-path-c --public` → **FAIL** `Resource not accessible by integration (createRepository)`.
