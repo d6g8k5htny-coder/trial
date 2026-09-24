@@ -1,6 +1,6 @@
 {
   "batch": "144",
-  "generated_at_utc": "2026-09-24T07:55:52Z",
+  "generated_at_utc": "2026-09-24T07:56:13Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -24,7 +24,7 @@
   "device_code": "A9D3-16CD",
   "prior_device_code": "16F5-39F5",
   "auth_renewed": true,
-  "seconds_left": 304,
+  "seconds_left": 284,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
@@ -49,5 +49,5 @@
   "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
-  "trial_main_sha": "5adf12d"
+  "trial_main_sha": "090ef39"
 }
