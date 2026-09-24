@@ -7180,3 +7180,151 @@ def test_batch250_verify_keep_prior_honesty_and_path_c_noop() -> None:
 
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 250" in owner
+
+
+def test_batch251_pack_portable_default_out_writable_fallback() -> None:
+    """Batch 251: bare pack_portable OUT falls back when $ROOT/.. not writable."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH251_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "251"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "pack_portable_default_out_writable_fallback"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert str(brief.get("tip")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("patch_0020") is False
+    assert brief.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert "tip_observe" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH251_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "251"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "pack_portable_default_out_writable_fallback"
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "_PACK_PARENT" in pack
+    assert "not writable" in pack
+    assert 'TMPDIR:-/tmp' in pack or "${TMPDIR:-/tmp}" in pack
+    assert 'mkdir -p "$(dirname "$OUT")"' in pack
+
+    # Explicit OUT still works (pre-existing contract).
+    with tempfile.TemporaryDirectory(prefix="pack251-") as td:
+        out = Path(td) / "pack.tgz"
+        proc = subprocess.run(
+            ["bash", str(ROOT / "scripts" / "pack_portable.sh"), str(out)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+        assert out.is_file() and out.stat().st_size > 1000
+
+    # Bare default OUT: when parent of ROOT is not writable, must use TMPDIR.
+    with tempfile.TemporaryDirectory(prefix="pack251-root-") as td:
+        fake_root = Path(td) / "repo"
+        fake_root.mkdir()
+        # Unwritable parent simulation: run pack from a copy of the script that
+        # uses a parent we chmod to 555 after creating the repo dir.
+        parent = Path(td)
+        scripts = fake_root / "scripts"
+        portable = fake_root / "portable" / "path-c-applied-bundle"
+        scripts.mkdir(parents=True)
+        portable.mkdir(parents=True)
+        # Minimal tree so living-tag derivation works.
+        (fake_root / "portable").mkdir(exist_ok=True)
+        (fake_root / "portable" / "LIVING_PATH_C_RELEASE_TAG").write_text(
+            "batch241-path-c-bundle\n", encoding="utf-8"
+        )
+        (portable / "VERIFY.json").write_text(
+            json.dumps(
+                {
+                    "release": "batch241-path-c-bundle",
+                    "batch": 241,
+                    "lemma_closed": False,
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        # Copy pack script + patch OUT selection only, then make parent unwritable.
+        pack_src = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+        # Short-circuit after OUT resolution: source a tiny stub that exits after printing OUT.
+        stub = scripts / "pack_portable_out_only.sh"
+        stub.write_text(
+            "#!/usr/bin/env bash\n"
+            "set -euo pipefail\n"
+            'ROOT="$(cd "$(dirname "$0")/.." && pwd)"\n'
+            '_PACK_PARENT="$(cd "$ROOT/.." && pwd)"\n'
+            'if [[ -n "${1:-}" ]]; then OUT="$1"\n'
+            'elif [[ -w "$_PACK_PARENT" ]]; then OUT="$_PACK_PARENT/trial-portable-main-fixes.tgz"\n'
+            'else OUT="${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz"\n'
+            '  echo "pack_portable: note: parent ${_PACK_PARENT} not writable; defaulting OUT=${OUT}" >&2\n'
+            "fi\n"
+            'mkdir -p "$(dirname "$OUT")"\n'
+            'printf "%s\\n" "$OUT"\n',
+            encoding="utf-8",
+        )
+        stub.chmod(0o755)
+        env = dict(os.environ)
+        # Use system tmp (not under locked parent) as TMPDIR fallback target.
+        tmp_fallback = Path(tempfile.mkdtemp(prefix="pack251-fallback-"))
+        env["TMPDIR"] = str(tmp_fallback)
+        os.chmod(parent, 0o555)
+        try:
+            # Parent is 555 so we cannot create files there as this user.
+            proc = subprocess.run(
+                ["bash", str(stub)],
+                cwd=str(fake_root),
+                capture_output=True,
+                text=True,
+                check=False,
+                env=env,
+            )
+            assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+            out_line = (proc.stdout or "").strip().splitlines()[-1]
+            assert out_line.startswith(str(tmp_fallback)), out_line
+            assert "not writable" in (proc.stderr or "")
+        finally:
+            os.chmod(parent, 0o755)
+            try:
+                tmp_fallback.rmdir()
+            except OSError:
+                pass
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH251_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 251" in log
+    assert "pack_portable" in log.lower() or "Permission denied" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 251" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 251)" in land

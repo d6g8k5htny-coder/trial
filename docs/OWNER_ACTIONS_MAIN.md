@@ -1,6 +1,22 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 251 — write WRITABLE; pack_portable default OUT writable fallback
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Hardening tip **`fa32d11`**
+(== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. Research HOLD
+drafts skipped; no green eng-only main PRs. Bare `./scripts/pack_portable.sh`
+failed under Cloud Agent (`$ROOT/..` → `/`, Permission denied, exit 2) — default OUT
+now prefers a writable parent, else `${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz`.
+`lemma_closed` stays **false**.
+
+```bash
+./scripts/pack_portable.sh                                   # writable default OUT
+./scripts/refresh_path_c_bundle.sh --dry-run                   # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+```
+
 ## Batch 250 — write WRITABLE; VERIFY keep-prior honesty + Path C already-on-tip no-op
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is

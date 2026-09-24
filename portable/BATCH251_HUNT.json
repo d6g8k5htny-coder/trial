@@ -1,0 +1,41 @@
+{
+  "batch": "251",
+  "generated_at_utc": "2026-09-24T23:48:00Z",
+  "hunt": "tip_stable_eng_defect_pack_portable_default_out",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "base_tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "pack_portable_default_out_writable_fallback",
+  "patch_0020": false,
+  "signals": {
+    "hardening_tip_vs_base": "match tip_moved=false @ fa32d11",
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) — skipped; open eng-to-main count=0",
+    "failed_actions_last_day": "trial: deleted batch246 branch heads only; main: 0 failures; no tip flake",
+    "pack_pre": "OUT=$ROOT/../trial-portable-main-fixes.tgz → /trial-portable-main-fixes.tgz Permission denied exit 2",
+    "pack_post": "if parent not -w → ${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz; mkdir -p dirname; exit 0"
+  },
+  "avoided_repeats": [
+    "inventable tip-observe (tip stable)",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag pack",
+    "assert idle",
+    "empty RW hunts",
+    "OWNER face-only",
+    "ci.yml YAML",
+    "#78 port",
+    "VERIFY already-on-tip honesty (just shipped batch250)"
+  ],
+  "shipped_paths": [
+    "trial:scripts/pack_portable.sh"
+  ],
+  "note": "NEW signal: bare pack_portable under Cloud Agent /workspace cannot write sibling OUT on /. Fixed writable-parent fallback to TMPDIR. Never printed tokens."
+}

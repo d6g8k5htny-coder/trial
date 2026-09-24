@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 251 (pack_portable default OUT writable fallback) — 2026-09-24 ~23:45– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**. No green eng merge candidates. Main Actions failures last day: **0**. Trial failures: deleted batch246 branch heads only (not tip flake).
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 port / not VERIFY already-on-tip honesty):** bare `pack_portable.sh` defaulted OUT to `$ROOT/../trial-portable-main-fixes.tgz`; under Cloud Agent `/workspace` that is `/…` → **Permission denied exit 2**. Fixed: if parent not writable → `${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz` + `mkdir -p`.
+- Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 250 (VERIFY keep-prior honesty + Path C already-on-tip no-op) — 2026-09-24 ~23:35– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

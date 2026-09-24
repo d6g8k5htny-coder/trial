@@ -10,7 +10,21 @@
 # the living-tag file so downstream ONE-SHOT consumers share one tip pin.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="${1:-$ROOT/../trial-portable-main-fixes.tgz}"
+# Batch 251: default OUT must land somewhere writable. Local clones often use
+# $ROOT/../trial-portable-main-fixes.tgz (sibling of the repo). Cloud Agent
+# mounts the tree at /workspace, so $ROOT/.. is / and bare `./scripts/pack_portable.sh`
+# failed with Permission denied (exit 2) — release publish blocked. Prefer the
+# sibling when the parent dir is writable; otherwise ${TMPDIR:-/tmp}/….
+_PACK_PARENT="$(cd "$ROOT/.." && pwd)"
+if [[ -n "${1:-}" ]]; then
+  OUT="$1"
+elif [[ -w "$_PACK_PARENT" ]]; then
+  OUT="$_PACK_PARENT/trial-portable-main-fixes.tgz"
+else
+  OUT="${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz"
+  echo "pack_portable: note: parent ${_PACK_PARENT} not writable; defaulting OUT=${OUT}" >&2
+fi
+mkdir -p "$(dirname "$OUT")"
 
 # --- living release tag (Batch 245) -----------------------------------------
 VERIFY_JSON="$ROOT/portable/path-c-applied-bundle/VERIFY.json"
