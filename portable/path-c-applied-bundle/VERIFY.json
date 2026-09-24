@@ -1,6 +1,6 @@
 {
-  "batch": "170",
-  "generated_at_utc": "2026-09-24T10:25:18Z",
+  "batch": "179",
+  "generated_at_utc": "2026-09-24T11:22:00Z",
   "base_tip_sha": "8ea3b5fb9368a85e7f971d606b8f75c96c35c05a",
   "applied_commit_sha": "81c09d63ff3dff95fb6a64904b04462e66b60f9c",
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
@@ -33,11 +33,12 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 170: tip stable 8ea3b5f; E2E shallow clone + git fetch .bundle + ff-merge OK; math_status lemma_closed=false; focused 90; CI intent supersession fixes; lemma_closed=false",
+  "note": "Batch 179: tip stable 8ea3b5f; pack+release batch179-path-c-bundle (oneshot+bundle+refresh newer than batch169); math_status lemma_closed=false; lemma_closed=false",
   "e2e_bundle_verify": true,
   "e2e_shallow_clone": "depth=1 and depth=80",
   "e2e_fetch_merge_ok": true,
   "e2e_after_merge_sha": "81c09d63ff3dff95fb6a64904b04462e66b60f9c",
   "e2e_math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "e2e_pytest_focused_passed": 90
+  "e2e_pytest_focused_passed": 90,
+  "release": "batch179-path-c-bundle"
 }

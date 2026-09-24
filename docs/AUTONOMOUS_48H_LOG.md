@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 179 — 2026-09-24 ~11:18–11:25 UTC (PERMANENT window; tip stable 8ea3b5f; auth pending AD78; CI batch178 green; release batch179-path-c-bundle; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
+- Hardening tip **`8ea3b5f` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `assert_path_c_ready.sh` → **OK**. `lemma_closed=false`.
+- Device auth `AD78-6206` still **pending** (`slow_down`); seconds_left≈515 (≥90 → **no renew**). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- **CI:** latest Batch 178 push on trial `main` → **success** (polled; was briefly in_progress).
+- **Research quick check:** `math_status` @ tip still `problems=0 disposition=OPEN_HOLD lemma_closed=false` — counts unchanged → **brief only** (no MECHANICAL_FINDINGS refresh).
+- **Engineering (green+stable+blocked):** pack newer than `batch169` (`owner_open_path_c_pr.sh` + `refresh_path_c_bundle.sh` absent/older in batch169 tgz) → published release **`batch179-path-c-bundle`** (oneshot + `.bundle` + refresh). Defaults `PATH_C_RELEASE_TAG=batch179-path-c-bundle`. Intent: `test_batch179_path_c_bundle_release`.
+- Tiny JSON: `portable/BATCH179_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **1800s**, permanent **10800s**.
+
+**Land note:** Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`). Waiting on Dylan device code `AD78-6206` **or** `./scripts/owner_path_c_oneshot.sh` after token / `./scripts/owner_set_main_push_token.sh --from-gh --dispatch` / local `--from-bundle` via `batch179-path-c-bundle`. Tip moves: `./scripts/refresh_path_c_bundle.sh`. See issue #37.
+
 ### Batch 178 — 2026-09-24 ~11:05–11:15 UTC (PERMANENT window; tip stable 8ea3b5f; auth renew 5E05→AD78; owner_open_path_c_pr release-bundle link; CI tip-drift string restore; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).

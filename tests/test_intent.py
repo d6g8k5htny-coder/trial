@@ -2095,6 +2095,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     # Current Path C release tag may supersede batch142 (Batch 169+ ships batch169-path-c-bundle).
     assert (
         "batch169-path-c-bundle" in owner_c
+        or "batch179-path-c-bundle" in owner_c
         or "batch168-path-c-bundle" in owner_c
         or "batch142-path-c-bundle" in owner_c
     )
@@ -2116,6 +2117,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert "RELAUNCH_WITH_MAIN_SCOPE" in land
     assert (
         "batch169-path-c-bundle" in land
+        or "batch179-path-c-bundle" in land
         or "batch168-path-c-bundle" in land
         or "batch142-path-c-bundle" in land
     )
@@ -2124,6 +2126,7 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     assert "--from-bundle" in owner_actions
     assert (
         "batch169-path-c-bundle" in owner_actions
+        or "batch179-path-c-bundle" in owner_actions
         or "batch168-path-c-bundle" in owner_actions
         or "batch142-path-c-bundle" in owner_actions
     )
@@ -2476,6 +2479,7 @@ def test_batch149_research_audit_and_ci_intent_fix() -> None:
     # Batch 169+ supersedes default release tag; historical batch142 string may remain in docs.
     assert (
         "batch169-path-c-bundle" in owner_c
+        or "batch179-path-c-bundle" in owner_c
         or "batch168-path-c-bundle" in owner_c
         or "batch142-path-c-bundle" in owner_c
     )
@@ -3049,11 +3053,11 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "path-c-on-hardening.bundle" in land
     assert "USE_GIT_BUNDLE" in land or "use_git_bundle" in land
     assert "git fetch" in land
-    assert "batch169-path-c-bundle" in land
+    assert "batch169-path-c-bundle" in land or "batch179-path-c-bundle" in land
 
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     text = oneshot.read_text(encoding="utf-8")
-    assert "batch169-path-c-bundle" in text
+    assert "batch169-path-c-bundle" in text or "batch179-path-c-bundle" in text
     assert "path-c-on-hardening.bundle" in text
     assert "PATH_C_RELEASE_TAG" in text
 
@@ -3073,7 +3077,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
-    assert "batch169-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
     assert "7BCB-0057" in dry_out or "EC83-CFC2" in dry_out or "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
@@ -3148,9 +3152,9 @@ def test_batch168_oneshot_pack_ci() -> None:
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     assert oneshot.is_file()
     text = oneshot.read_text(encoding="utf-8")
-    # Batch 169 superseded the default release tag; Batch 168 history remains in comments/docs.
+    # Batch 169 superseded the default release tag; Batch 179 supersedes again; Batch 168 history remains in comments/docs.
     assert "batch168-path-c-bundle" in text or "Batch 168" in text
-    assert "batch169-path-c-bundle" in text
+    assert "batch169-path-c-bundle" in text or "batch179-path-c-bundle" in text
     assert "PATH_C_RELEASE_TAG" in text
     assert "owner_path_c_oneshot.sh --from-bundle" in text
     assert "lemma_closed" in text
@@ -3171,7 +3175,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert dry_p.returncode == 0, dry_p.stderr + dry_p.stdout
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
-    assert "batch169-path-c-bundle" in dry_out or "batch168-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch168-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
     assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
@@ -3229,7 +3233,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert "issues/31" in gh or "#31" in gh
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "batch169-path-c-bundle" in unblock or "batch168-path-c-bundle" in unblock
+    assert "batch169-path-c-bundle" in unblock or "batch168-path-c-bundle" in unblock or "batch179-path-c-bundle" in unblock
     assert "1800" in unblock
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
@@ -3763,7 +3767,7 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert "dry-run OK" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
     assert "releases/download" in dry_out or "release_bundle_url=" in dry_out
-    assert "batch169-path-c-bundle" in dry_out
+    assert "batch169-path-c-bundle" in dry_out or "batch179-path-c-bundle" in dry_out
     assert "lemma_closed" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
@@ -3792,4 +3796,97 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert "Batch 178" in ones
     assert "owner_open_path_c_pr.sh" in ones
     assert "path-c-on-hardening.bundle" in ones
+
+
+def test_batch179_path_c_bundle_release() -> None:
+    """Batch 179: tip stable; auth pending AD78; CI green; release batch179-path-c-bundle (oneshot+bundle+refresh); lemma_closed=false."""
+    import json
+    import os
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH179_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "179"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "8ea3b5f"
+    assert data["tip_matches_base"] is True
+    assert data["tip_refresh"] is False
+    assert data["device_code"] == "AD78-6206"
+    assert data["auth_renewed"] is False
+    assert data["write"] == "DENIED"
+    assert data["release"] == "batch179-path-c-bundle"
+    assert data.get("preferred_auth_interval_s") == 1800
+    assert data.get("assert_path_c_ready") is True
+    assert data.get("ci_status") in ("success", "green")
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify["batch"]) == "179" or int(str(verify["batch"])) >= 179
+    assert verify["lemma_closed"] is False
+    assert verify.get("release") == "batch179-path-c-bundle"
+    assert verify["base_tip_sha"].startswith("8ea3b5f")
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    text = oneshot.read_text(encoding="utf-8")
+    assert "batch179-path-c-bundle" in text
+    assert "refresh_path_c_bundle" in (
+        ROOT / "scripts" / "refresh_path_c_bundle.sh"
+    ).read_text(encoding="utf-8") or (
+        ROOT / "scripts" / "refresh_path_c_bundle.sh"
+    ).is_file()
+
+    open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    op_text = open_pr.read_text(encoding="utf-8")
+    assert "batch179-path-c-bundle" in op_text
+    assert "PATH_C_RELEASE_TAG" in op_text
+
+    dry_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    }
+    dry = subprocess.run(
+        ["bash", str(open_pr), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        env={**dry_env, "GIT_TERMINAL_PROMPT": "0"},
+        check=False,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    dry_out = dry.stdout + dry.stderr
+    assert "dry-run OK" in dry_out
+    assert "batch179-path-c-bundle" in dry_out
+    assert "path-c-on-hardening.bundle" in dry_out
+    assert "lemma_closed" in dry_out
+    assert "ghp_" not in dry_out
+    assert "gho_" not in dry_out
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "AD78-6206" in gh
+    assert "batch179-path-c-bundle" in gh
+    assert "BATCH179_BRIEF" in gh or "BATCH178_BRIEF" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 179" in log
+    assert "batch179-path-c-bundle" in log
+    assert "AD78-6206" in log
+    assert "lemma_closed" in log.lower()
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 179" in ones
+    assert "batch179-path-c-bundle" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "batch179-path-c-bundle" in unblock
 

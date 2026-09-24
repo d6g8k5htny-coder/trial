@@ -4,11 +4,24 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 179 — release `batch179-path-c-bundle`** (oneshot + `.bundle` + `refresh_path_c_bundle.sh`; tip stable `8ea3b5f`; CI green; Path C blocked NO_TOKEN):
+>
+> ```bash
+> gh release download batch179-path-c-bundle -R d6g8k5htny-coder/trial \
+>   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
+> mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
+> /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle
+> # tip moved?: /tmp/path-c-land/scripts/refresh_path_c_bundle.sh && assert_path_c_ready.sh
+> ./scripts/owner_open_path_c_pr.sh --dry-run   # prints release_bundle_url → batch179
+> ```
+>
+> Auth still pending `AD78-6206` (Batch 178 renew from `5E05-EA04`). Prefer over `batch169-path-c-bundle`. Scientific effect: **NONE**.
+
 > **Batch 178 — owner_open_path_c_pr links release `.bundle`** (tip stable `8ea3b5f`; CI tip-drift string restore):
 >
 > ```bash
 > ./scripts/owner_open_path_c_pr.sh --dry-run   # prints release_bundle_url + release page
-> ./scripts/owner_open_path_c_pr.sh             # PR body links path-c-on-hardening.bundle from batch169-path-c-bundle
+> ./scripts/owner_open_path_c_pr.sh             # PR body links path-c-on-hardening.bundle from batch179-path-c-bundle
 > ./scripts/owner_path_c_oneshot.sh --from-bundle
 > ```
 >
@@ -42,6 +55,7 @@ Copy-paste from a machine or Actions runner that **can write** to
 >
 > Prefer over `batch168-path-c-bundle` / `batch162-path-c-bundle`. BASE_TIP `8ea3b5f`.
 > Auth timer guidance: `preferred_auth_interval_s=1800` (do not duplicate). Scientific effect: **NONE**.
+> Superseded by `batch179-path-c-bundle` (Batch 179 pack with oneshot+refresh).
 
 > **Batch 168 — Path C ONE-SHOT pack** (`batch168-path-c-bundle`; includes `owner_path_c_oneshot.sh`):
 >
