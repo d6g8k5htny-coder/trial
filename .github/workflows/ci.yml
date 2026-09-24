@@ -261,10 +261,17 @@ jobs:
           # Batch 176: dry-sim refresh helper (tip-stable → exit 0; never pushes to main).
           echo "--- refresh_path_c_bundle.sh --dry-run (Batch 176 tip-drift dry-sim) ---"
           (cd "${GITHUB_WORKSPACE}/trial" && ./scripts/refresh_path_c_bundle.sh --dry-run)
-          # Configure identity for git am (no push; local commits only).
-          git -C main-bundle config user.email "trial-ci@users.noreply.github.com"
-          git -C main-bundle config user.name "trial-ci"
-          git -C main-bundle am --3way "$BUNDLE"
+          # Batch 230: when Path C already landed on hardening, patches are on tip —
+          # do not re-git-am the historical cbaa056→fb3ffe6 bundle.
+          LANDED="$(python3 -c "import json; print('1' if json.load(open('$VERIFY_FILE')).get('path_c_landed') is True else '0')")"
+          if [[ "$LANDED" == "1" ]]; then
+            echo "path_c_landed=true — skip git am; verify math_status on live tip"
+          else
+            # Configure identity for git am (no push; local commits only).
+            git -C main-bundle config user.email "trial-ci@users.noreply.github.com"
+            git -C main-bundle config user.name "trial-ci"
+            git -C main-bundle am --3way "$BUNDLE"
+          fi
           echo "--- math_status_check (assert lemma_closed=false; problems=0) ---"
           STATUS_OUT="$(cd main-bundle && python tools/math_status_check.py 2>&1 | tee "${GITHUB_WORKSPACE}/math_status_bundle.out")"
           echo "$STATUS_OUT"
@@ -276,7 +283,11 @@ jobs:
             echo "::error::math_status_check reported problems>0 after bundle apply."
             exit 1
           fi
-          echo "Gates OK: path-c-applied-bundle applies @ $TIP; lemma_closed=false. Scientific effect: NONE."
+          if [[ "$LANDED" == "1" ]]; then
+            echo "Gates OK: path_c_landed @ $TIP; lemma_closed=false. Scientific effect: NONE."
+          else
+            echo "Gates OK: path-c-applied-bundle applies @ $TIP; lemma_closed=false. Scientific effect: NONE."
+          fi
 
   # Batch 73: validate land-option-b + land-path-c workflows WITHOUT MAIN_PUSH_TOKEN.
   # Covers YAML/dry_run contract, owner --help, and anonymous Path B/C --dry-run.

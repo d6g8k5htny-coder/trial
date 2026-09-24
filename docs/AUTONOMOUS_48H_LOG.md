@@ -22,6 +22,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 230 — 2026-09-24 ~16:33–16:39 UTC (PERMANENT window; device auth B4B5 SUCCESS; write WRITABLE; Path C LANDED on hardening PR #64; scientific effect NONE; flipped nothing)
+
+- AUTH: device **`B4B5-42FE`** → **SUCCESS**; token at `GH_CONFIG_DIR=/tmp/gh-dylan-auth/access_token` (never printed). `create-ref` write probe → **WRITABLE**.
+- ALIGN: default tip **ALIGNED** @ `1c6e74b` → **Path B skipped**. Prefer Path C on hardening.
+- PATH C: `assert_path_c_ready` OK @ `cbaa056`. Applied `path-c-on-hardening.bundle` (ff-merge → `fb3ffe6`). Git push needed Dylan `GIT_CONFIG_GLOBAL` override (global `insteadOf` was forcing `cursor[bot]`). Pushed `cursor/path-c-portable-fixes`; opened+**merged** [main PR #64](https://github.com/d6g8k5htny-coder/main/pull/64) into `chatgpt/drive-github-hardening-20260919` → tip **`93a4ecd`**.
+- VERIFY: `math_status_check` problems=0 / **OPEN_HOLD** / **lemma_closed=false** on merged tip. Focused pinned_sources **19** passed. Research untouched; **flipped nothing**.
+- Docs: `PATH_C_STATUS` (goal_complete=true; write_state=WRITABLE; tip_match=true @ 93a4ecd), `BATCH230_BRIEF`, this log. BASE_TIP advanced to `93a4ecd` (patches already on tip; `refresh_path_c_bundle` apply_all N/A).
+- `goal_complete=true` (Path C verified on main repo hardening).
+
 ### Batch 227 — 2026-09-24 ~16:19–16:24 UTC (PERMANENT window; CI sanity transport fix; auth renew 84FB→B4B5; tip stable cbaa056; write DENIED; scientific effect NONE; flipped nothing)
 
 - **CI root cause:** trial-ci sanity on `2da7a02` (run `36025481948`) — `test_owner_land_scripts_exist_and_fail_closed` failed when `owner_land_path_b.sh --after-merge` got `watch_main_alignment` **exit=2** (transport) while a follow-up watch reported **ALIGNED**.
