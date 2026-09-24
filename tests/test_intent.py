@@ -1508,3 +1508,45 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["stopped"] is True
         assert status["stop_reason"] == "stop_file"
         assert status["goal_complete"] is False
+
+
+def test_objective_evidence_83() -> None:
+    """Batch 83: requirement-by-requirement objective evidence; no 0017; goal_complete false."""
+    import json
+
+    evidence = ROOT / "portable" / "OBJECTIVE_EVIDENCE_83.json"
+    brief = ROOT / "portable" / "BATCH83_BRIEF.json"
+    assert evidence.is_file()
+    assert brief.is_file()
+    data = json.loads(evidence.read_text(encoding="utf-8"))
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["scientific_effect"] == "NONE"
+    assert data["new_0017"] is False
+    assert data["tip_refresh"] is False
+    req_ids = [r["id"] for r in data["requirements"]]
+    assert req_ids == [
+        "align",
+        "portable_prepared",
+        "audit",
+        "iterate_permanent",
+        "path_c_landed",
+    ]
+    by_id = {r["id"]: r for r in data["requirements"]}
+    assert by_id["align"]["status"] == "MET"
+    assert by_id["portable_prepared"]["status"] == "MET"
+    assert by_id["path_c_landed"]["path_c_landed"] is False
+    assert by_id["path_c_landed"]["blocked_by"]["write_state"] == "DENIED"
+    assert data["summary"]["path_c_landed"] is False
+    assert data["summary"]["blocked_by"] == "write_DENIED_403"
+
+    brief_data = json.loads(brief.read_text(encoding="utf-8"))
+    assert brief_data["goal_complete"] is False
+    assert brief_data["new_0017"] is False
+    assert brief_data["path_c_landed"] is False
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "OBJECTIVE_EVIDENCE_*.json" in pack
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 83" in log or "OBJECTIVE_EVIDENCE_83" in log

@@ -1,0 +1,161 @@
+{
+  "batch": "83",
+  "artifact": "OBJECTIVE_EVIDENCE_83",
+  "generated_at_utc": "2026-09-24T02:39:30Z",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "goal_complete": false,
+  "window": "PERMANENT_OPEN",
+  "window_mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+  "new_0017": false,
+  "tip_refresh": false,
+  "objective": "Permanent autonomy: keep tip ALIGNED, portable Path C prepared, audit continuously, iterate without flipping research status; Path C land when writable (daemon). Never claim goal_complete while write blocked.",
+  "requirements": [
+    {
+      "id": "align",
+      "requirement": "Default tip of d6g8k5htny-coder/main stays ALIGNED (q0/notice face); restore Path B only on drift.",
+      "status": "MET",
+      "evidence": {
+        "audit_main_alignment": {
+          "exit": 0,
+          "stderr": "audit: OK — default tip carries q0 program or redirect notice.",
+          "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+          "root_has_AGENTS_md": true,
+          "root_has_body": false,
+          "q0_or_notice_markers_present": [
+            "SIDE24",
+            "chatgpt/drive-github-hardening-20260919"
+          ]
+        },
+        "alignment_status.critical_path.aligned": true,
+        "ALIGNED_DRIFT_SNAPSHOT.state": "ALIGNED",
+        "path_b_needed": false,
+        "when_writable_land.align_action": null,
+        "note": "Daemon tip/align/write --once @ 02:36:56Z: probe DENIED → continue_denied (no Path B; already ALIGNED)."
+      }
+    },
+    {
+      "id": "portable_prepared",
+      "requirement": "Portable engineering stack apply-ready on hardening BASE_TIP; owner git-am bundle present; apply_all 0001–0004+0008–0016.",
+      "status": "MET",
+      "evidence": {
+        "hardening_tip": "ac335815b277ac0c076082ac6af2344261c2093a",
+        "BASE_TIP.txt": "chatgpt/drive-github-hardening-20260919 ac335815b277ac0c076082ac6af2344261c2093a",
+        "tip_matches_base": true,
+        "path_c_dry_run": {
+          "apply_ready": true,
+          "apply_stack": "0001-0004 + 0008-0016",
+          "apply_all_check_exit": 0,
+          "dry_run_state": "APPLY_READY_POST_ALIGNED_KEEP_HARDENING",
+          "hardening_path_c_shape.accepts": true
+        },
+        "path_c_applied_bundle": {
+          "dir": "portable/path-c-applied-bundle",
+          "patch": "portable/path-c-applied-bundle/path-c-on-hardening.patch",
+          "verify": "portable/path-c-applied-bundle/VERIFY.json",
+          "verify_problems": 0,
+          "verify_lemma_closed": false,
+          "trial_release_tag": "batch80-path-c-bundle"
+        },
+        "do_not_set_path_c_base_main": true
+      }
+    },
+    {
+      "id": "audit",
+      "requirement": "Audit open PRs / tip for bare open()/ResourceWarning defects not already covered by portable 0001–0016; ship 0017 only for tip-existing files.",
+      "status": "MET_IDLE",
+      "evidence": {
+        "open_prs_fetched": "gh pr list --state open --limit 30",
+        "newest_three_scanned": [
+          {
+            "number": 50,
+            "kind": "open",
+            "base": "chatgpt/drive-github-hardening-20260919",
+            "head": "a9893439575f2eef94551a74180661e5f937903f",
+            "finding": "quarantine_check.py still has bare for-line-in-open on PR head; tip file exists but defect already covered by 0013 after apply_all; test_quarantine_digest_coverage.py is PR-only (absent on tip) → no 0017"
+          },
+          {
+            "number": 21,
+            "kind": "open",
+            "base": "chatgpt/drive-github-hardening-20260919",
+            "head": "55f16f72f37d5ea7d5e01928434539e1723b44b7",
+            "finding": "bare open in tools/attestations_check.py + tests/test_attestations.py — files MISSING on tip ac33581; work_order.py on tip has no bare open → no 0017"
+          },
+          {
+            "number": 48,
+            "kind": "merged_to_hardening",
+            "merge_commit": "ac335815b277ac0c076082ac6af2344261c2093a",
+            "finding": "rn_inner_wedge_check / test_rn_wedge_accounting — no bare open()/ResourceWarning in PR diff; tip == BASE_TIP"
+          }
+        ],
+        "post_apply_all_on_tip": {
+          "sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+          "stack": "0001-0004+0008-0016",
+          "actionable_tools_tests_bare_open": 0,
+          "residual_only": "drive/mirrors archive scripts + one string-literal open() in test_bridge (not a live handle)"
+        },
+        "verdict": "IDLE / no 0017"
+      }
+    },
+    {
+      "id": "iterate_permanent",
+      "requirement": "Permanent window; keep iterating; daemon handles write unlock; never flip research status; goal_complete stays false.",
+      "status": "MET",
+      "evidence": {
+        "autonomous_window.state": "PERMANENT_OPEN",
+        "stop_condition": "owner_intervene_only",
+        "finale": false,
+        "daemon": {
+          "tmux_session": "when-writable-land",
+          "pid_alive": true,
+          "script": "scripts/when_writable_land.py",
+          "interval_seconds": 300,
+          "once_pulse_at_utc": "2026-09-24T02:36:55Z",
+          "once_action": "continue_denied",
+          "status_json": "/cursor/stores/self/when_writable_land.status.json",
+          "log": "/tmp/cursor/when_writable_land.log",
+          "stop_file": "/cursor/stores/self/when_writable_land.stop"
+        },
+        "research_status_flipped": false,
+        "lemma_closed": false,
+        "goal_complete": false
+      }
+    },
+    {
+      "id": "path_c_landed",
+      "requirement": "Land Path C (apply_all) onto hardening remotely when writable.",
+      "status": "NOT_MET",
+      "path_c_landed": false,
+      "blocked_by": {
+        "write_state": "DENIED",
+        "http_status": 403,
+        "probe": "git_refs_create_delete",
+        "message": "Resource not accessible by integration",
+        "repo": "d6g8k5htny-coder/main",
+        "owner_bypass": [
+          "git am portable/path-c-applied-bundle/path-c-on-hardening.patch onto hardening @ ac33581",
+          "gh release download batch80-path-c-bundle (trial)",
+          "flip MAIN_PUSH_TOKEN / write grant → daemon auto-lands"
+        ]
+      },
+      "evidence": {
+        "probe_main_write.state": "DENIED",
+        "when_writable_land.last.action": "continue_denied",
+        "when_writable_land.last.land": null,
+        "path_c_dry_run.apply_ready": true
+      }
+    }
+  ],
+  "summary": {
+    "aligned": true,
+    "portable_prepared": true,
+    "audit_idle_no_0017": true,
+    "iterate_permanent": true,
+    "path_c_landed": false,
+    "blocked_by": "write_DENIED_403",
+    "hardening_tip": "ac33581",
+    "default_tip": "1c6e74b",
+    "goal_complete": false
+  }
+}

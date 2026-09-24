@@ -1,0 +1,23 @@
+{
+  "batch": "83",
+  "generated_at_utc": "2026-09-24T02:39:30Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "path_c_landed": false,
+  "blocked_by": "write_DENIED_403",
+  "new_0017": false,
+  "daemon_up": true,
+  "daemon_once": "continue_denied",
+  "tmux_session": "when-writable-land",
+  "objective_evidence": "portable/OBJECTIVE_EVIDENCE_83.json",
+  "scanned_heads": ["#50", "#21", "#48"],
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "Daemon when-writable-land up; tip/align/write once → DENIED. Newest heads #50/#21/#48: no tip-level bare-open defect beyond 0001–0016 → no 0017. Landed OBJECTIVE_EVIDENCE_83.json."
+}

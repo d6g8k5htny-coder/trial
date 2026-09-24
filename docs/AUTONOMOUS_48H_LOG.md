@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 83 — 2026-09-24 ~02:39 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; OBJECTIVE_EVIDENCE_83)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Daemon `when-writable-land` **up**; tip/align/write `--once` → **DENIED** / `continue_denied`.
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**).
+- Newest heads scanned (#50 open, #21 open, #48 merged tip): bare `open()` on #21 PR-only files / #50 already covered by **0013** → **no 0017**.
+- **Concrete work:** `portable/OBJECTIVE_EVIDENCE_83.json` (align / portable_prepared / audit / iterate_permanent / `path_c_landed=false` `blocked_by` write 403); `portable/BATCH83_BRIEF.json`; `pack_portable.sh` auto-globs `OBJECTIVE_EVIDENCE_*.json`.
+- `goal_complete=false`.
+
 ### Batch 82 — 2026-09-24 ~02:32 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; `when_writable_land` background lander)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

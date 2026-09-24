@@ -15,6 +15,8 @@ mapfile -t REBASE_REPORTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'P
 mapfile -t REBASE_NOTES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_RESOLUTION_NOTES_*.json' | sort)
 # Batch 70+: mechanical research-stack OPEN audits (no status flips).
 mapfile -t STACK_AUDITS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_RESEARCH_STACK_AUDIT.json' | sort)
+# Batch 83+: requirement-by-requirement autonomous objective evidence.
+mapfile -t OBJECTIVE_EVIDENCE < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'OBJECTIVE_EVIDENCE_*.json' | sort)
 
 if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
@@ -46,6 +48,10 @@ rel_stack_audits=()
 for p in "${STACK_AUDITS[@]}"; do
   rel_stack_audits+=("${p#"$ROOT"/}")
 done
+rel_objective_evidence=()
+for p in "${OBJECTIVE_EVIDENCE[@]}"; do
+  rel_objective_evidence+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -58,6 +64,7 @@ tar -czf "$OUT" -C "$ROOT" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
   ${rel_rebase_notes[@]+"${rel_rebase_notes[@]}"} \
   ${rel_stack_audits[@]+"${rel_stack_audits[@]}"} \
+  ${rel_objective_evidence[@]+"${rel_objective_evidence[@]}"} \
   portable/main-default-branch \
   portable/path-c-applied-bundle \
   portable/pr2-landing \
@@ -84,4 +91,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_objective_evidence[@]} objective evidence)"
