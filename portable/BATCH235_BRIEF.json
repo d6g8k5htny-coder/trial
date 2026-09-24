@@ -36,7 +36,7 @@
     "secret_visible_to_actions": true,
     "evidence": "Actions masks MAIN_PUSH_TOKEN as ***; require-token step skipped on dry_run; secret list API name-only MAIN_PUSH_TOKEN present"
   },
-  "cursor_install_note": "RELAUNCH_WITH_MAIN_SCOPE (c) MAIN_PUSH_TOKEN now set — write durable for land-path-c even if Cursor install stays trial-only / device token expires",
+  "cursor_install_note": "RELAUNCH_WITH_MAIN_SCOPE (c) MAIN_PUSH_TOKEN now set \u2014 write durable for land-path-c even if Cursor install stays trial-only / device token expires",
   "keepalive_pushed": false,
   "preferred_autonomy": "aligned_drift_watch",
   "next_focus": "tip-sync+drift+no-flip",
@@ -46,5 +46,9 @@
     "auth_renew_rearmed": false
   },
   "note": "Batch 235: persist write durability. Device token at /tmp/gh-dylan-auth/access_token (never printed). gh secret set MAIN_PUSH_TOKEN succeeded on trial (+ main). land-path-c dry_run success; Actions sees secret exists (masked). owner_land_path_c --dry-run OK. PATH_C_STATUS write_durable=true. No main keepalive. lemma_closed=false; flipped nothing.",
-  "trial_branch": "cursor/batch235-write-durable-a4aa"
+  "trial_branch": "cursor/batch235-write-durable-a4aa",
+  "trial_pr": 55,
+  "trial_pr_url": "https://github.com/d6g8k5htny-coder/trial/pull/55",
+  "trial_sha": "229d83afcf3fb1476ce67221fc51560cf0894eaf",
+  "trial_land": "pr_55_merged"
 }
