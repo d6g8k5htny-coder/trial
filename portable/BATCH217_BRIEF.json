@@ -1,6 +1,6 @@
 {
   "batch": "217",
-  "generated_at_utc": "2026-09-24T14:52:41Z",
+  "generated_at_utc": "2026-09-24T14:54:44Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -34,7 +34,7 @@
   "device_code": "BFEF-C1D9",
   "prior_device_code": "5AEC-4784",
   "auth_renewed": true,
-  "seconds_left": 605.7,
+  "seconds_left": 482.4,
   "has_token": false,
   "path_c_blocked_now": "NO_TOKEN",
   "flipped_anything": false,
@@ -70,5 +70,7 @@
   "note": "Dylan claimed WRITE UNLOCKED; aggressive probe still DENIED. ALIGNED@1c6e74b so Path B skipped. Path C ready @ b89448d (assert OK, lemma_closed=false, OPEN_HOLD). Auth renewed BFEF-C1D9. repository_dispatch --apply fires but trial secret MAIN_PUSH_TOKEN empty. Research untouched.",
   "preferred_auth_interval_s": 1800,
   "readme_link_only": true,
-  "trial_branch": "cursor/batch217-path-c-denied-5ca0"
+  "trial_branch": "cursor/batch217-path-c-denied-5ca0",
+  "trial_main_sha": "4c566ced10b4a5bea05f9f8e23964ef441c03f94",
+  "trial_landed": true
 }
