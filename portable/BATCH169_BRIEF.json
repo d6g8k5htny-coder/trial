@@ -1,6 +1,6 @@
 {
   "batch": "169",
-  "generated_at_utc": "2026-09-24T10:17:11Z",
+  "generated_at_utc": "2026-09-24T10:17:49Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -25,10 +25,10 @@
   "dry_run_ok": true,
   "device_auth": "pending",
   "device_auth_error": "slow_down",
-  "device_code": "831C-CB1C",
-  "prior_device_code": "905D-02F4",
-  "auth_renewed": false,
-  "seconds_left": 91,
+  "device_code": "EC83-CFC2",
+  "prior_device_code": "831C-CB1C",
+  "auth_renewed": true,
+  "seconds_left": 899,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -75,7 +75,7 @@
     "docs/trial-portable-main-fixes.tgz",
     "tests/test_intent.py"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth pending 831C-CB1C; git_bundle true; release batch169-path-c-bundle; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth renewed 831C-CB1C\u2192EC83-CFC2; git_bundle true; release batch169-path-c-bundle; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "preferred_auth_interval_s": 1800,
   "auth_timers_created": true,
@@ -86,5 +86,6 @@
   "ci_status": "pending",
   "code_changed": true,
   "trial_main_landed": true,
-  "trial_main_sha": "5b8da58cc1648e07502c1c9f78d9a6a4dbec2118"
+  "trial_main_sha": "5b8da58cc1648e07502c1c9f78d9a6a4dbec2118",
+  "auth_renew_reason": "seconds_left=53 near expiry"
 }

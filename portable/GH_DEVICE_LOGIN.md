@@ -4,14 +4,14 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T10:03:43Z |
-| Checked (UTC) | 2026-09-24T10:12:00Z |
+| Started (UTC) | 2026-09-24T10:17:49Z |
+| Checked (UTC) | 2026-09-24T10:17:49Z |
 | Verification URL | https://github.com/login/device |
-| User code | `831C-CB1C` |
-| Prior code | `905D-02F4` (expired / renewed Batch 168) |
+| User code | `EC83-CFC2` |
+| Prior code | `831C-CB1C` (near-expiry / renewed Batch 169) |
 | Prior prior | `C8FC-A08F` (near-expiry / renewed Batch 165) |
 | Older priors | `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending / slow_down; Batch 169 poll; tip stable) |
+| Status | pending (authorization_pending; Batch 169 renew after 831C near-expiry) |
 | Expires | see `seconds_left` in BATCH169_BRIEF |
 | Hardening tip | `8ea3b5f` (PR #53); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch169-path-c-bundle` (prior `batch168-path-c-bundle` / `batch162-path-c-bundle`) |
 | Owner ONE-SHOT | `scripts/owner_path_c_oneshot.sh` (Batch 169: `--from-bundle` prefers `.bundle` fetch+merge) |
@@ -26,7 +26,7 @@
 ## Steps
 
 1. Open **https://github.com/login/device**
-2. Enter code **831C-CB1C**
+2. Enter code **EC83-CFC2**
 3. Approve the `gh` / GitHub CLI authorization (repo + workflow scopes)
 
 The agent keeps a device-flow poller alive in tmux session `gh-device-login`. When authorization succeeds, it will attempt Path C land on main using the new user token (isolated `GH_CONFIG_DIR=/tmp/gh-dylan-auth`; existing cloud `gh` auth is untouched). Batch 132+: `when_writable_land.py` also loads `/tmp/gh-dylan-auth/access_token` automatically. Batch 165+: `scripts/owner_path_c_oneshot.sh` is the preferred owner entry (token→`owner_open_path_c_pr` / `owner_land_path_c`; else unblock menu). Batch 169+: release `batch169-path-c-bundle` ships fetchable `path-c-on-hardening.bundle`; `--from-bundle` prefers `git fetch` + merge over `git am`.
