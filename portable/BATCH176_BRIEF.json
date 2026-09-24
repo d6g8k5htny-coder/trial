@@ -1,6 +1,6 @@
 {
   "batch": "176",
-  "generated_at_utc": "2026-09-24T11:03:15Z",
+  "generated_at_utc": "2026-09-24T11:03:27Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -28,7 +28,7 @@
   "device_code": "5E05-EA04",
   "prior_device_code": "9671-4918",
   "auth_renewed": true,
-  "seconds_left": 749,
+  "seconds_left": 737,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -73,5 +73,5 @@
   "issue_title": "Path C unblock \u2014 Batch 176 canonical (5E05-EA04)",
   "ci_tip_drift_fix_path": "scripts/refresh_path_c_bundle.sh",
   "ci_tip_drift_dry_sim": true,
-  "trial_main_sha": "eba028ca6e2d1ab8928fedcdc557b8eeb3b5f7e6"
+  "trial_main_sha": "3853640144f6e4e74759ec6b00ece742ec7cd0b0"
 }
