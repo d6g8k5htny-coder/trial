@@ -1,0 +1,30 @@
+{
+  "batch": "240",
+  "generated_at_utc": "2026-09-24T20:04:51Z",
+  "write_probe": {
+    "state": "WRITABLE",
+    "probe": "git_refs_create_delete",
+    "create_http_status": 201,
+    "delete_http_status": 204,
+    "tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+    "scientific_effect": "NONE"
+  },
+  "vectors": {
+    "state": "WRITABLE",
+    "path_b_ready": true,
+    "path_b_writable_vectors": [
+      "W1_git_refs",
+      "W3a_dispatch_trial",
+      "W3c_api_dispatch_trial",
+      "W3d_dispatch_path_c_trial",
+      "W3e_api_dispatch_path_c_trial"
+    ],
+    "scientific_effect": "NONE",
+    "w3f_false_positive": true
+  },
+  "write_durable": true,
+  "write_durable_via": "device_auth_file_gh_dylan_auth",
+  "token_printed": false,
+  "lemma_closed": false,
+  "flipped_anything": false
+}

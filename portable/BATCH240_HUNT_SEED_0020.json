@@ -1,0 +1,33 @@
+{
+  "batch": "240",
+  "generated_at_utc": "2026-09-24T20:04:45Z",
+  "status": "waiting_ci_pr71_0019",
+  "waiting_ci": true,
+  "pr71": "https://github.com/d6g8k5htny-coder/main/pull/71",
+  "pr71_head": "da664ddb400687121fcd08708453b78500bbfa69",
+  "tip_hardening": "a1ed37bf668153526bf04d3a3b840c3b2ef533fa",
+  "hunt": "post_0019_bare_open_seed_for_0020",
+  "excluded_0019": [
+    "tests/test_attestations.py",
+    "tools/attestations_check.py"
+  ],
+  "noise_prefixes_excluded": [
+    "engine/carriers/blobs/",
+    "mirrors/",
+    "registers/",
+    "frozen/",
+    "drive/"
+  ],
+  "actionable_classic_count": 0,
+  "actionable_files": [],
+  "actionable_hits": [],
+  "tools_tests_hits": [],
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "next_0020_seed": null,
+  "attestations_pytest": "41_passed_0_ResourceWarning_on_pr71_head",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "note": "Static seed while #71 CI pending. No 0020 patch cut. Carrier-blob bare opens treated as noise (prior hunt policy). Confirm with pytest -Werror::ResourceWarning before cutting."
+}
