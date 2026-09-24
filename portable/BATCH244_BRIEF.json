@@ -1,6 +1,6 @@
 {
   "batch": "244",
-  "generated_at_utc": "2026-09-24T21:59:30Z",
+  "generated_at_utc": "2026-09-24T22:14:24Z",
   "status": "trial_pack_living_tip_sibling_agents",
   "waiting_ci": false,
   "goal_complete": true,
@@ -15,8 +15,20 @@
   "tip_moved": false,
   "write": "WRITABLE",
   "write_durable": true,
-  "merged_prs": [],
-  "research_hold_prs_skipped": [73, 47, 46, 38, 36, 21, 12, 8, 7],
+  "merged_prs": [
+    "trial#66"
+  ],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
   "defect_shipped": true,
   "defect_id": "path_c_apply_md_oneshot_batch207_vs_living_batch241",
   "patch_0020": false,
@@ -51,5 +63,12 @@
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
   "shipped": true,
-  "where": ["trial", "sibling"]
+  "where": [
+    "trial",
+    "sibling"
+  ],
+  "trial_pr": "https://github.com/d6g8k5htny-coder/trial/pull/66",
+  "trial_pr_merged": true,
+  "trial_pr_branch": "cursor/batch244-pack-living-tip-siblings-0258",
+  "trial_pr_merge_sha": "2c6538ff3124073030ff01a2b2823d0c80d049d0"
 }
