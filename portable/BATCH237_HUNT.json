@@ -44,15 +44,20 @@
       "head": "cursor/reattest-side24-density-c-b5c8",
       "defect": "REPOSITORY_TOP_LEVEL missing attestations",
       "fix_sha": "76f78c5",
-      "status": "ci_pending"
+      "status": "waiting_ci_69_70",
+      "merge_claimed": false
     },
     {
       "number": 69,
       "head": "cursor/inventable-nav-rescue-334e",
-      "status": "ci_pending",
+      "status": "waiting_ci_69_70",
+      "merge_claimed": false,
       "note": "inventable nav; eng/docs; no status flip"
     }
   ],
+  "status": "waiting_ci_69_70",
+  "patch_0018_ready": true,
+  "apply_all_check": "OK skip_0018_attestations_absent_on_tip_1200501",
   "scientific_effect": "NONE",
   "lemma_closed": false,
   "flipped_anything": false
