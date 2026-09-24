@@ -41,8 +41,9 @@
       "docs/trial-portable-main-fixes.tgz",
       "portable/path-c-applied-bundle/path-c-on-hardening.patch"
     ],
-    "html_url": null
+    "html_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch80-path-c-bundle"
   },
+  "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch80-path-c-bundle",
   "open_main_prs_threatening_aligned": [],
   "note": "Write DENIED → Path C not pushed. Tip still ac33581 (no bundle refresh). GitHub Release ships owner git am assets. goal_complete=false.",
   "source": "aligned_drift_watch + gh release create",

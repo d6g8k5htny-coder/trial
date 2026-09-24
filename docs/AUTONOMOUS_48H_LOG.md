@@ -34,6 +34,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
 - `goal_complete=false` (permanent window open; keep iterating).
 
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `e05a27f..bf494c1` (`cursor/batch80-path-c-release-92a5`). Release: https://github.com/d6g8k5htny-coder/trial/releases/tag/batch80-path-c-bundle (assets: `trial-portable-main-fixes.tgz` + `path-c-on-hardening.patch`). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 77 — 2026-09-24 ~02:16 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; PROJECT_INTENT_AUDIT + deep RW hunt)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
