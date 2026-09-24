@@ -1,6 +1,6 @@
 {
   "batch": "149",
-  "generated_at_utc": "2026-09-24T08:10:47Z",
+  "generated_at_utc": "2026-09-24T08:12:33Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -36,7 +36,7 @@
   "device_code": "A450-C91F",
   "prior_device_code": "A9D3-16CD",
   "auth_renewed": false,
-  "seconds_left": 287,
+  "seconds_left": 181,
   "has_token": false,
   "daemon": "up",
   "flipped_anything": false,
@@ -82,5 +82,7 @@
   "w3f_false_positive": true,
   "path_b_ready": false,
   "trial_main_landed": true,
-  "trial_main_sha": "21ff7e5"
+  "trial_main_sha": "427526d",
+  "ci_main_run_url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/35973731145",
+  "ci_main_conclusion": "success"
 }
