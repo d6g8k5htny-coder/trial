@@ -3032,7 +3032,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     dry_out = dry_p.stdout + dry_p.stderr
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
     assert "batch168-path-c-bundle" in dry_out
-    assert "905D-02F4" in dry_out or "github.com/login/device" in dry_out
+    assert "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
     assert "github_pat_" not in dry_out
@@ -3067,20 +3067,26 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert data["tip"] == "8ea3b5f"
     assert data["tip_matches_base"] is True
     assert data["tip_refresh"] is False
-    assert data["device_code"] == "905D-02F4"
+    assert data["device_code"] == "831C-CB1C"
+    assert data["prior_device_code"] == "905D-02F4"
+    assert data["auth_renewed"] is True
     assert data["device_auth"] == "pending"
     assert data["write"] == "DENIED"
     assert data["release"] == "batch168-path-c-bundle"
     assert data.get("preferred_auth_interval_s") == 1800
     assert data.get("assert_path_c_ready") is True
+    assert data.get("issue_number") == 31
+    assert "issues/31" in (data.get("issue_url") or "")
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "831C-CB1C" in gh
     assert "905D-02F4" in gh
     assert "batch168-path-c-bundle" in gh
     assert "batch162-path-c-bundle" in gh
     assert "issues/27" in gh
     assert "BATCH162_BRIEF" in gh
     assert "preferred_auth_interval_s=1800" in gh or "1800" in gh
+    assert "issues/31" in gh or "#31" in gh
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "batch168-path-c-bundle" in unblock
@@ -3091,9 +3097,11 @@ def test_batch168_oneshot_pack_ci() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 168" in log
+    assert "831C-CB1C" in log
     assert "905D-02F4" in log
     assert "batch168-path-c-bundle" in log
     assert "preferred_auth_interval_s=1800" in log
+    assert "#31" in log or "issues/31" in log
     assert "lemma_closed" in log.lower()
 
 

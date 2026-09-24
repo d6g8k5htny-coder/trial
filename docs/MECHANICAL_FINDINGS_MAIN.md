@@ -15,7 +15,7 @@ Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_c
 | Check | Result |
 |-------|--------|
 | `math_status_check` @ hardening | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
-| write / Path C | **DENIED** (403); device auth pending `905D-02F4` |
+| write / Path C | **DENIED** (403); device auth renewed `831C-CB1C` (prior `905D-02F4`) |
 | pack / release | **`batch168-path-c-bundle`** includes `owner_path_c_oneshot.sh` |
 | preferred auth timer | **`preferred_auth_interval_s=1800`** (no duplicate) |
 | new portable **0017** | **none** (tip==BASE_TIP) |
