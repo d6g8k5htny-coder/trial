@@ -10,8 +10,9 @@ Loop (default interval 300s):
      repository_dispatch land-path-c-on-main (--apply) once, then sleep.
   4. Audit alignment:
        MISALIGNED → restore_main_face (Path B) then continue.
-       ALIGNED + writable → owner_land_path_c (apply_all on hardening + push).
-  5. Always respect lemma_closed=false (owner_land_path_c fail-closed gate).
+       ALIGNED + writable → owner_open_path_c_pr.sh when present (bundle am →
+       open PR into hardening); else owner_land_path_c (apply_all + push/PR).
+  5. Always respect lemma_closed=false (Path C scripts fail-closed).
   6. Log to /tmp/cursor/when_writable_land.log and status JSON under
      /cursor/stores/self/when_writable_land.status.json.
 
@@ -64,6 +65,8 @@ PROBE = ROOT / "scripts" / "probe_main_write.py"
 AUDIT = ROOT / "scripts" / "audit_main_alignment.py"
 RESTORE = ROOT / "scripts" / "restore_main_face.sh"
 OWNER_C = ROOT / "scripts" / "owner_land_path_c.sh"
+# Batch 151/153: preferred Path C open-PR path (bundle am → cursor/path-c-portable-fixes).
+OWNER_OPEN_PR = ROOT / "scripts" / "owner_open_path_c_pr.sh"
 DISPATCH_C = ROOT / "scripts" / "dispatch_land_path_c.sh"
 
 MAIN_FULL = "d6g8k5htny-coder/main"
@@ -674,22 +677,40 @@ def _one_iteration(
         report["reason"] = (
             "install_has_main_flipped_true" if flipped else "aligned_writable"
         )
-        # owner_land_path_c fail-closed on lemma_closed!=false after apply_all.
-        cmd = ["bash", str(OWNER_C)]
+        # Batch 153: prefer owner_open_path_c_pr.sh (bundle → open PR) when present;
+        # fall back to owner_land_path_c.sh (apply_all + PR). Both gate lemma_closed=false.
+        use_open_pr = OWNER_OPEN_PR.is_file()
+        path_c_script = OWNER_OPEN_PR if use_open_pr else OWNER_C
+        path_c_label = "owner_open_path_c_pr" if use_open_pr else "owner_land_path_c"
+        cmd = ["bash", str(path_c_script)]
         if dry_run:
             land = _run_land(
-                ["bash", str(OWNER_C), "--dry-run"],
+                ["bash", str(path_c_script), "--dry-run"],
                 dry_run=True,
-                label="owner_land_path_c",
+                label=path_c_label,
             )
-            land["gate"] = "lemma_closed=false (owner_land_path_c fail-closed)"
-            land["note"] = (
-                "Would run owner_land_path_c.sh (apply_all on hardening + push). "
-                "Never promotes research status."
-            )
+            land["gate"] = f"lemma_closed=false ({path_c_label} fail-closed)"
+            if use_open_pr:
+                land["note"] = (
+                    "Would run owner_open_path_c_pr.sh (path-c-applied-bundle git am "
+                    "→ push cursor/path-c-portable-fixes → open PR into hardening). "
+                    "Never promotes research status."
+                )
+            else:
+                land["note"] = (
+                    "Would run owner_land_path_c.sh (apply_all on hardening + push). "
+                    "Never promotes research status."
+                )
         else:
-            land = _run_land(cmd, dry_run=False, label="owner_land_path_c", timeout=1200)
-            land["gate"] = "lemma_closed=false (owner_land_path_c fail-closed)"
+            land = _run_land(
+                cmd, dry_run=False, label=path_c_label, timeout=1200
+            )
+            land["gate"] = f"lemma_closed=false ({path_c_label} fail-closed)"
+        land["path_c_script"] = (
+            str(path_c_script.relative_to(ROOT))
+            if str(path_c_script).startswith(str(ROOT))
+            else str(path_c_script)
+        )
         if flipped:
             land["triggered_by"] = "install_has_main_flipped_true"
         report["land"] = land
@@ -697,7 +718,7 @@ def _one_iteration(
             log_path,
             f"action=path_c_land attempted={land.get('attempted')} "
             f"exit={land.get('exit')} dry_run={dry_run} gate=lemma_closed=false "
-            f"flipped_install={flipped}",
+            f"script={path_c_label} flipped_install={flipped}",
         )
         return report
 

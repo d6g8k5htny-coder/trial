@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -29,6 +30,22 @@ from pathlib import Path
 REPO = "d6g8k5htny-coder/main"
 HARDENING = "chatgpt/drive-github-hardening-20260919"
 APPLY_STACK = "0001-0004 + 0008-0016"
+_SHA40 = re.compile(r"(?i)\b([0-9a-f]{40})\b")
+_SHA_SHORT = re.compile(r"(?i)(?:^|[=:\s])([0-9a-f]{7,39})(?:\b|$)")
+
+
+def _parse_base_tip_sha(line: str) -> str | None:
+    """Extract hex SHA from BASE_TIP.txt; ignore trailing comments / KEY=value noise."""
+    text = (line or "").strip()
+    if not text:
+        return None
+    m = _SHA40.search(text)
+    if m:
+        return m.group(1).lower()
+    m = _SHA_SHORT.search(text)
+    if m:
+        return m.group(1).lower()
+    return None
 
 
 def _trial_root() -> Path:
@@ -109,8 +126,8 @@ def main() -> int:
     base_tip_line = (
         base_tip_file.read_text(encoding="utf-8").strip() if base_tip_file.is_file() else ""
     )
-    base_parts = base_tip_line.split()
-    base_sha = base_parts[-1] if base_parts else None
+    # Batch 153: hex SHA extract (not last whitespace field — comments spoil $NF).
+    base_sha = _parse_base_tip_sha(base_tip_line.splitlines()[0] if base_tip_line else "")
 
     report: dict = {
         "probe": "path_c_dry_run_certainty",

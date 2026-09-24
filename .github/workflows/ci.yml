@@ -220,7 +220,8 @@ jobs:
           test -f "$BASE_FILE"
           test -f "$VERIFY_FILE"
           BASE_LINE="$(tr -d '\r' <"$BASE_FILE" | head -n1)"
-          BASE_SHA="${BASE_LINE##* }"
+          # Batch 153: hex SHA extract (not last whitespace field / ##* ).
+          BASE_SHA="$(printf '%s' "$BASE_LINE" | python3 -c 'import re,sys; t=sys.stdin.read(); m=re.search(r"(?i)\\b([0-9a-f]{40})\\b", t); print(m.group(1).lower() if m else "")')"
           VERIFY_SHA="$(python3 -c "import json; print(json.load(open('$VERIFY_FILE'))['base_tip_sha'])")"
           echo "BASE_TIP=$BASE_SHA VERIFY.base_tip_sha=$VERIFY_SHA"
           if [[ -z "$BASE_SHA" || -z "$VERIFY_SHA" ]]; then

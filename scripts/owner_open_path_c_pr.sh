@@ -31,11 +31,34 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"
 }
 
+# Batch 153: extract a real commit SHA from BASE_TIP.txt (never take $NF / last
+# whitespace field — trailing comments or KEY=value spoil awk/##* parses).
+parse_base_tip_sha() {
+  local line="$1"
+  local sha
+  sha="$(printf '%s' "$line" | python3 -c '
+import re, sys
+text = sys.stdin.read()
+m = re.search(r"(?i)\b([0-9a-f]{40})\b", text)
+if m:
+    print(m.group(1).lower())
+    raise SystemExit(0)
+m = re.search(r"(?i)(?:^|[=:\s])([0-9a-f]{7,39})(?:\b|$)", text)
+if m:
+    print(m.group(1).lower())
+    raise SystemExit(0)
+raise SystemExit(1)
+' 2>/dev/null)" || return 1
+  [[ -n "$sha" ]] || return 1
+  printf '%s\n' "$sha"
+}
+
 usage() {
   cat <<'EOF'
 Usage: owner_open_path_c_pr.sh [--dry-run] [--help]
 
-  --dry-run   Certainty only: show BASE_TIP, bundle path, merge target, and
+  --dry-run   Certainty only: show BASE_TIP (hex-SHA parse), VERIFY cross-check,
+              tip-drift vs live hardening, bundle path, merge target, and
               whether gh/MAIN_PUSH_TOKEN auth looks present. No clone/push/PR.
   (default)   Clone/fetch hardening @ BASE_TIP, git am path-c-applied-bundle,
               push branch cursor/path-c-portable-fixes, open/reuse PR into
@@ -76,8 +99,17 @@ VERIFY_JSON="$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json"
 [[ -f "$BASE_TIP_FILE" ]] || die "missing $BASE_TIP_FILE"
 
 BASE_TIP_LINE="$(tr -d '\r' <"$BASE_TIP_FILE" | head -n1)"
-BASE_TIP_SHA="$(awk '{print $NF}' <<<"$BASE_TIP_LINE" | head -n1)"
-[[ -n "$BASE_TIP_SHA" ]] || die "could not parse BASE_TIP SHA from $BASE_TIP_FILE"
+BASE_TIP_SHA="$(parse_base_tip_sha "$BASE_TIP_LINE")" \
+  || die "could not parse BASE_TIP SHA from $BASE_TIP_FILE (need 7–40 hex chars; got: ${BASE_TIP_LINE:0:120})"
+# Prefer full 40-char when present; reject obvious garbage (non-hex already filtered).
+if [[ ! "$BASE_TIP_SHA" =~ ^[0-9a-f]{7,40}$ ]]; then
+  die "BASE_TIP SHA failed hex validation: $BASE_TIP_SHA"
+fi
+
+VERIFY_SHA=""
+if [[ -f "$VERIFY_JSON" ]]; then
+  VERIFY_SHA="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('base_tip_sha') or '')" "$VERIFY_JSON" 2>/dev/null || true)"
+fi
 
 # Merge target: hardening ref (Path C apply tree). Default main is ALIGNED landing ≠ BASE_TIP.
 PR_BASE="$HARDENING_REF"
@@ -93,6 +125,7 @@ echo "pr_base=$PR_BASE"
 echo "bundle=$BUNDLE_PATCH"
 [[ -f "$APPLY_MD" ]] && echo "apply_md=$APPLY_MD"
 [[ -f "$VERIFY_JSON" ]] && echo "verify_json=$VERIFY_JSON"
+[[ -n "$VERIFY_SHA" ]] && echo "verify_base_tip_sha=$VERIFY_SHA"
 echo "scientific_effect=NONE lemma_closed=false no_research_promotion=true"
 echo
 
@@ -106,12 +139,29 @@ fi
 echo "auth_mode=$AUTH_MODE"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "--- dry-run tip-drift / VERIFY ---"
+  if [[ -n "$VERIFY_SHA" && "$VERIFY_SHA" != "$BASE_TIP_SHA" && "$VERIFY_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${VERIFY_SHA}"* ]]; then
+    die "tip-drift: BASE_TIP $BASE_TIP_SHA != VERIFY.json base_tip_sha $VERIFY_SHA — rebuild path-c-applied-bundle"
+  fi
+  LIVE_SHA=""
+  set +e
+  LIVE_SHA="$(git ls-remote "https://github.com/${REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1)"
+  set -e
+  if [[ -n "$LIVE_SHA" ]]; then
+    echo "live_hardening_sha=$LIVE_SHA"
+    if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
+      die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+    fi
+    echo "tip_matches_base=true"
+  else
+    echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
+  fi
   echo "--- dry-run summary ---"
   echo "would: clone $REPO; checkout $BRANCH from $HARDENING_REF @ $BASE_TIP_SHA"
   echo "would: git am $BUNDLE_PATCH"
   echo "would: assert math_status lemma_closed=false problems=0"
   echo "would: push origin $BRANCH (idempotent if exists)"
-  echo "would: gh pr create --base $PR_BASE --head $BRANCH (reuse if open)"
+  echo "would: gh pr create --repo $REPO --base $PR_BASE --head $BRANCH (reuse if open)"
   echo "PR body would state: engineering-only; lemma_closed stays false; no research promotion"
   if [[ "$AUTH_MODE" == "none" ]]; then
     echo "owner_open_path_c_pr: dry-run OK (auth not required for certainty)."
