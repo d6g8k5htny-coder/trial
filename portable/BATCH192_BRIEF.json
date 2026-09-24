@@ -31,7 +31,7 @@
   "prior_device_code": "1C7F-22B5",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left<90",
-  "seconds_left": 705,
+  "seconds_left": 655,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
