@@ -1,6 +1,6 @@
 {
   "batch": "155",
-  "generated_at_utc": "2026-09-24T08:41:00Z",
+  "generated_at_utc": "2026-09-24T08:45:37Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -23,30 +23,34 @@
   "device_code": "1FC8-3D96",
   "prior_device_code": "1DAC-111C",
   "auth_renewed": false,
-  "seconds_left": 427,
+  "seconds_left": 173,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
   "flipped_anything": false,
   "trial_branch": "cursor/batch155-ci-basetip-ready-9eef",
   "release": "batch155-path-c-bundle",
-  "release_published_batch155": false,
+  "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch155-path-c-bundle",
+  "release_published_batch155": true,
+  "batch142_assets_refreshed": true,
   "assert_path_c_ready": true,
-  "ci_status": "fixing",
+  "assert_path_c_ready_local_ok": true,
+  "ci_status": "pending",
+  "ci_run_id": "35977027355",
   "ci_failures_fixed": [
-    "ci.yml path-c tip-drift BASE_SHA: \\b over-escape emptied SHA (Batch 153 regression)",
+    "ci.yml path-c tip-drift BASE_SHA: \\\\b over-escape emptied SHA (Batch 153 regression)",
     "portable-patches tip-drift: same hex extract (not ##* last field)",
     "test_batch147 / GH_DEVICE_LOGIN: retain A9D3-16CD in prior chain"
   ],
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "fixes": [
-    "Fix CI BASE_SHA python regex word-boundary (\\b not \\\\b) in path-c-applied-bundle-dry-apply + portable-patches-on-main",
+    "Fix CI BASE_SHA python regex word-boundary (\\\\b not \\\\\\\\b) in path-c-applied-bundle-dry-apply + portable-patches-on-main",
     "Add scripts/assert_path_c_ready.sh (BASE_TIP==live + apply_all --check + lemma_closed=false)",
     "Wire assert_path_c_ready into land-workflows-dry-run CI job",
     "pack_portable.sh includes owner_open_path_c_pr.sh + assert_path_c_ready.sh + dispatch_land_path_c.sh",
     "GH_DEVICE_LOGIN.md prior chain retains A9D3-16CD; release tag batch155-path-c-bundle"
   ],
-  "readiness_change": "CI tip-drift BASE_SHA fixed; assert_path_c_ready.sh; auth still pending 1FC8-3D96",
+  "readiness_change": "CI tip-drift BASE_SHA fixed; assert_path_c_ready.sh; auth still pending 1FC8-3D96; release published",
   "artifacts_updated": [
     ".github/workflows/ci.yml",
     "scripts/assert_path_c_ready.sh",
@@ -56,9 +60,11 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "portable/BATCH155_BRIEF.json"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; auth pending 1FC8-3D96; CI BASE_SHA fix + assert_path_c_ready; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 10c077e; write DENIED; auth pending 1FC8-3D96; CI BASE_SHA fix + assert_path_c_ready landed trial main; release batch155-path-c-bundle; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
+  "auth_timers_created": true,
   "w3f_false_positive": true,
   "path_b_ready": false,
-  "trial_main_landed": false
+  "trial_main_landed": true,
+  "trial_main_sha": "4ff2597"
 }
