@@ -17,7 +17,7 @@
   "device_code": "5AEC-4784",
   "prior_device_code": "B064-C458",
   "auth_renewed": false,
-  "seconds_left": 241.6,
+  "seconds_left": 208.2,
   "has_token": false,
   "path_c_blocked_now": "NO_TOKEN",
   "flipped_anything": false,
@@ -35,13 +35,14 @@
   "preferred_auth_interval_s": 1800,
   "release": "batch207-path-c-bundle",
   "code_changed": false,
-  "trial_landed": false,
+  "trial_landed": true,
   "status_snapshot": {
     "tip_match": true,
     "write_state": "DENIED",
     "release_tag": "batch207-path-c-bundle",
     "device_code": "5AEC-4784",
     "tip": "b89448d",
-    "seconds_left": 241.6
-  }
+    "seconds_left": 208.2
+  },
+  "trial_main_sha": "7b194c5eb17b66a022a78bdb15cc339e4acf0604"
 }
