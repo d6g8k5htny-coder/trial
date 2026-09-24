@@ -53,5 +53,7 @@
   "trial_pr": null,
   "trial_pr_merged": false,
   "trial_direct_land": true,
-  "trial_land_branch": "cursor/batch246-assert-path-c-idle-dff7"
+  "trial_land_sha": "eaec5b9",
+  "trial_land_branch": "cursor/batch246-assert-path-c-idle-dff7",
+  "note": "Batch 246: hardening tip 542e6ec tip_moved=false; default tip ALIGNED f3a41a75; ALIGNED+WRITABLE; research HOLD drafts skipped (incl #73 tip-observe); shipped assert_path_c_ready post-0019 idle + catch 0020; lemma_closed=false; flipped nothing. Never printed tokens. Did NOT ship Path A/B ALIGNED no-op, sibling AGENTS, or living-tag pack churn. PR create 403 → direct land on trial main @ eaec5b9."
 }
