@@ -101,7 +101,7 @@
   "trial_branch": "cursor/batch224-sandbox-multi-agent-324e",
   "note": "Batch 224 adds sandbox to repositoryDependencies (8 total). Grant --check strengthened. Live install trial-only; sandbox 404; main write DENIED; Path C not landed. Auth renew 84FB-0605 from BE27-A62D. Research untouched lemma_closed=false.",
   "seconds_left": 853.0,
-  "trial_main_sha": "133ee7b3236a203d5245c18b7cff75c73532ad36",
+  "trial_main_sha": "fe009d112b2043e334cc452cf2cea689f2a22e99",
   "trial_main_landed": true,
   "status_snapshot": {
     "base_tip": "cbaa056",
