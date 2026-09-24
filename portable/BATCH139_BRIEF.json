@@ -1,6 +1,6 @@
 {
   "batch": "139",
-  "generated_at_utc": "2026-09-24T07:18:55Z",
+  "generated_at_utc": "2026-09-24T07:19:51Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -17,7 +17,7 @@
   "device_auth_error": "authorization_pending",
   "device_code": "F11F-5064",
   "auth_renewed": true,
-  "seconds_left": 809,
+  "seconds_left": 753,
   "daemon": "up",
   "flipped_anything": false,
   "trial_main_landed": true,
@@ -38,11 +38,13 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "portable/GH_DEVICE_LOGIN.md"
   ],
-  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device F11F-5064 renewed after 2983-6CCD expired; seconds_left\u2248899; CI path-c-applied-bundle-dry-apply green; repository_dispatch land-path-c-on-main; release batch139-path-c-bundle; research untouched",
+  "note": "ALIGNED@1c6e74b; tip==BASE_TIP c82c9357; write DENIED; env trial-only; device F11F-5064 renewed after 2983-6CCD expired; seconds_left\u2248753; CI path-c-applied-bundle-dry-apply green; repository_dispatch dry-run success after --branch fix; release batch139-path-c-bundle; research untouched",
   "has_token": false,
-  "trial_main_sha": "af7b6db",
+  "trial_main_sha": "b6dab11",
   "release": "batch139-path-c-bundle",
-  "repository_dispatch_dry_run": "fixed_clone_hardening_branch",
+  "repository_dispatch_dry_run": "success",
   "prior_device_code": "2983-6CCD",
-  "repository_dispatch_fix": "clone --branch HARDENING_REF (was FETCH_HEAD/origin unset)"
+  "repository_dispatch_fix": "clone --branch HARDENING_REF (was FETCH_HEAD/origin unset)",
+  "repository_dispatch_run": "35968953721",
+  "repository_dispatch_prior_fail": "35968688730"
 }
