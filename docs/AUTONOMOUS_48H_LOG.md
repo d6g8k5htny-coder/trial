@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 102 — 2026-09-24 ~04:01 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
+
+- Token check: `MAIN_PUSH_TOKEN` absent (env / `/cursor/stores/self` / `/workspace/.secrets`) → no Path C via token.
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; ahead_by=0; **no tip refresh** / **no bundle refresh**).
+- Tiny JSON: `portable/BATCH102_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial (`cursor/batch102-idle-eaec`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
+
 ### Batch 101 — 2026-09-24 ~03:56 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
