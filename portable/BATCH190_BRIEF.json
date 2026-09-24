@@ -31,7 +31,7 @@
   "prior_device_code": "C949-0100",
   "auth_renewed": true,
   "auth_renew_reason": "expired",
-  "seconds_left": 755,
+  "seconds_left": 703,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -77,5 +77,7 @@
   "code_changed": true,
   "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
   "issue_title": "Path C unblock \u2014 Batch 190 canonical (1C7F-22B5)",
-  "auth_renew_threshold_note": "renew if expired or seconds_left<90; C949 expired mid-batch \u2192 renewed to 1C7F-22B5"
+  "auth_renew_threshold_note": "renew if expired or seconds_left<90; C949 expired mid-batch \u2192 renewed to 1C7F-22B5",
+  "trial_main_sha": "2a55cf736e1bd05fe5281b59657ad01434d53ce5",
+  "trial_landed": true
 }
