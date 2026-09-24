@@ -4,6 +4,8 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 86:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**. Status guard: `scripts/guard_no_status_promotion.py` vs `BATCH70_RESEARCH_STACK_AUDIT` / `STATUS_GUARD_SNAPSHOT` (fail on OPEN→closed/promoted); CI `research-stack-status-guard` (`continue-on-error` + artifact). Write still 403. See `BATCH86_BRIEF.json`.
+
 > **Batch 84:** Owner (Dylan Roy) — **NO restrictions; everything auto-approved; agents decide. Broad grant.** **Permanent window** until Dylan intervenes (no 48h finale). Default tip **ALIGNED** @ `1c6e74b` ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)). Scientific effect: **NONE**. Env: `.cursor/environment.json` `repositoryDependencies` → `main` (write intent); **relaunch Cloud Agent from trial AFTER merge** for token scope. Lander token discovery: env `MAIN_PUSH_TOKEN` → `/cursor/stores/self/MAIN_PUSH_TOKEN` → `/workspace/.secrets/MAIN_PUSH_TOKEN` (never printed). Write still 403 until token flips. See `BATCH84_BRIEF.json`.
 >
 > **Batch 82 archive:** `when_writable_land.py` background lander; tmux `when-writable-land`; `BATCH82_BRIEF.json` retained.

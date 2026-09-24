@@ -117,6 +117,11 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" in ci
     # Audit/watch steps must export the runner token (avoids unauthenticated API 403s).
     assert ci.count("GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}") >= 2
+    # Batch 86: research-stack status guard (hardening shallow clone; continue-on-error)
+    assert "research-stack-status-guard" in ci
+    assert "guard_no_status_promotion.py" in ci
+    assert "STATUS_GUARD_SNAPSHOT.json" in ci
+    assert "continue-on-error: true" in ci
     land_wf = (ROOT / ".github" / "workflows" / "land-option-b-on-main.yml").read_text()
     assert "MAIN_PUSH_TOKEN" in land_wf
     assert "option-b" in land_wf
@@ -1624,6 +1629,240 @@ def test_when_writable_land_token_file_discovery() -> None:
         assert status["token_present"] is True
         assert status["token_source"] == "env:MAIN_PUSH_TOKEN"
         assert fake not in status_path.read_text(encoding="utf-8")
+
+
+def test_guard_no_status_promotion_detects_flips() -> None:
+    """Batch 86: fixture snapshots — pass when unchanged/new OPEN; fail on promote."""
+    import json
+    import tempfile
+
+    script = ROOT / "scripts" / "guard_no_status_promotion.py"
+    assert script.is_file()
+    snap_art = ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json"
+    assert snap_art.is_file()
+    snap = json.loads(snap_art.read_text(encoding="utf-8"))
+    assert snap["scientific_effect"] == "NONE"
+    assert snap["lemma_closed"] is False
+    assert snap["goal_complete"] is False
+    assert snap["flipped_anything"] is False
+    assert snap["guard"] == "no_status_promotion"
+    assert snap["pass"] is True
+    assert snap["violations"] == []
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "research-stack-status-guard" in ci
+    assert "guard_no_status_promotion.py" in ci
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "guard_no_status_promotion.py" in pack
+    assert "STATUS_GUARD_SNAPSHOT.json" in pack
+
+    def _write_checkout(root: Path, *, lemma_closed: bool = False, premise_status: str = "OPEN",
+                        prize_closed: bool = False, drop_premise: bool = False,
+                        lemma_status: str = "OPEN", discharges: bool = False) -> None:
+        (root / "docs" / "math_status").mkdir(parents=True)
+        (root / "claims").mkdir()
+        packet = {
+            "disposition": "OPEN_HOLD",
+            "lemma_closed": lemma_closed,
+            "prizes_solved": False,
+            "original_prize_closed": prize_closed,
+            "independence_credit": 0,
+            "bridge": "PROPOSED_NOT_DEPLOYED",
+            "freeze": False,
+            "OBL-H5-JETMOD": {
+                "status": "OPEN",
+                "lemma_closed": lemma_closed,
+                "freeze": False,
+                "grade": "display_only",
+                "discharges_OBL_H5_JETMOD": False,
+            },
+            "D3-LEMMA-RN-UNIF": {
+                "status": lemma_status,
+                "lemma_closed": lemma_closed,
+                "freeze": False,
+                "piece2_annulus_driver": "UNWRITTEN",
+                "discharges_lemma": discharges,
+            },
+        }
+        (root / "docs" / "math_status" / "PACKET.json").write_text(
+            json.dumps(packet), encoding="utf-8"
+        )
+        premises = {
+            "OBL-H5-JETMOD": {
+                "track": "UPPER2D",
+                "status_frozen_v2_2": premise_status,
+                "status_register_note": premise_status,
+                "source": "test",
+            },
+            "D3-LEMMA-RN-UNIF": {
+                "track": "UPPER2D",
+                "status_frozen_v2_2": "NOT_CLOSED",
+                "status_register_note": "OPEN",
+                "source": "test",
+            },
+        }
+        if drop_premise:
+            del premises["OBL-H5-JETMOD"]
+        graph = {
+            "as_of": "test",
+            "premises": premises,
+            "claims": {
+                "PR-TAL-003..008": {
+                    "track": "NUMBER_THEORY",
+                    "grade": "AUTHOR_SIDE_PROOF_PRESENT",
+                    "original_prize_closed": prize_closed,
+                    "depends_on": [],
+                    "source": "test",
+                },
+            },
+            "firewalls": [],
+        }
+        (root / "claims" / "graph.json").write_text(json.dumps(graph), encoding="utf-8")
+
+    # Baseline fixture (OPEN inventory)
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        base_checkout = td_path / "base"
+        base_checkout.mkdir()
+        _write_checkout(base_checkout)
+        # Build baseline via audit → guard snapshot shape using BATCH70-like wrapper
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from audit_research_stack_open import audit_checkout  # type: ignore
+        from guard_no_status_promotion import (  # type: ignore
+            compare_inventories,
+            extract_open_inventory,
+        )
+
+        base_report = audit_checkout(base_checkout)
+        base_inv = extract_open_inventory(base_report)
+        assert "OBL-H5-JETMOD" in base_inv["premises"]
+        assert base_inv["packet_lemma_closed"] is False
+
+        # Unchanged → no violations
+        cur_same = extract_open_inventory(audit_checkout(base_checkout))
+        assert compare_inventories(base_inv, cur_same) == []
+
+        # New OPEN premise only → pass
+        new_open = td_path / "new_open"
+        new_open.mkdir()
+        _write_checkout(new_open)
+        # Inject an extra OPEN premise
+        graph_path = new_open / "claims" / "graph.json"
+        g = json.loads(graph_path.read_text(encoding="utf-8"))
+        g["premises"]["NEW-OPEN-PREMISE"] = {
+            "track": "UPPER2D",
+            "status_frozen_v2_2": "OPEN",
+            "status_register_note": "OPEN",
+            "source": "test",
+        }
+        graph_path.write_text(json.dumps(g), encoding="utf-8")
+        cur_new = extract_open_inventory(audit_checkout(new_open))
+        assert "NEW-OPEN-PREMISE" in cur_new["premises"]
+        assert compare_inventories(base_inv, cur_new) == []
+
+        # Promote: lemma_closed true → fail
+        promoted = td_path / "promoted"
+        promoted.mkdir()
+        _write_checkout(promoted, lemma_closed=True)
+        cur_bad = extract_open_inventory(audit_checkout(promoted))
+        viol = compare_inventories(base_inv, cur_bad)
+        assert any(v["kind"] == "packet_lemma_closed" for v in viol)
+        assert any(v.get("reason", "").find("lemma_closed") >= 0 for v in viol)
+
+        # Promote: premise CLOSED (absent from open list) → fail
+        closed_p = td_path / "closed_premise"
+        closed_p.mkdir()
+        _write_checkout(closed_p, premise_status="CLOSED", drop_premise=False)
+        # audit filters CLOSED out of open_premises when not in OPEN_FROZEN
+        cur_closed = extract_open_inventory(audit_checkout(closed_p))
+        assert "OBL-H5-JETMOD" not in cur_closed["premises"]
+        viol2 = compare_inventories(base_inv, cur_closed)
+        assert any(v["kind"] == "premise" and v["id"] == "OBL-H5-JETMOD" for v in viol2)
+
+        # Promote: prize original_prize_closed true → fail
+        prize = td_path / "prize"
+        prize.mkdir()
+        _write_checkout(prize, prize_closed=True)
+        cur_prize = extract_open_inventory(audit_checkout(prize))
+        viol3 = compare_inventories(base_inv, cur_prize)
+        assert any(
+            v["kind"] in {"prize", "packet_original_prize_closed"} for v in viol3
+        )
+
+        # Promote: discharges_lemma true → fail
+        disc = td_path / "discharge"
+        disc.mkdir()
+        _write_checkout(disc, discharges=True)
+        cur_disc = extract_open_inventory(audit_checkout(disc))
+        viol4 = compare_inventories(base_inv, cur_disc)
+        assert any("discharges_lemma" in str(v.get("reason", "")) for v in viol4)
+
+        # CLI: exit 1 on promoted checkout vs baseline snapshot file
+        baseline_file = td_path / "baseline.json"
+        baseline_file.write_text(
+            json.dumps({"hardening_tip_audit": base_report, "hardening_tip": "abc"}),
+            encoding="utf-8",
+        )
+        out_snap = td_path / "out_snap.json"
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                str(promoted),
+                "--baseline",
+                str(baseline_file),
+                "--snapshot-out",
+                str(out_snap),
+                "--trial-root",
+                str(ROOT),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert proc.returncode == 1, proc.stderr + proc.stdout
+        assert out_snap.is_file()
+        out = json.loads(out_snap.read_text(encoding="utf-8"))
+        assert out["pass"] is False
+        assert out["violations"]
+        assert out["lemma_closed"] is False  # guard report never claims closed
+        assert out["scientific_effect"] == "NONE"
+
+        # CLI: exit 0 on unchanged
+        out_ok = td_path / "out_ok.json"
+        proc2 = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                str(base_checkout),
+                "--baseline",
+                str(baseline_file),
+                "--snapshot-out",
+                str(out_ok),
+                "--trial-root",
+                str(ROOT),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert proc2.returncode == 0, proc2.stderr + proc2.stdout
+        ok = json.loads(out_ok.read_text(encoding="utf-8"))
+        assert ok["pass"] is True
+        assert ok["violations"] == []
+
+    brief = ROOT / "portable" / "BATCH86_BRIEF.json"
+    assert brief.is_file()
+    brief_data = json.loads(brief.read_text(encoding="utf-8"))
+    assert brief_data["goal_complete"] is False
+    assert brief_data["lemma_closed"] is False
+    assert brief_data["scientific_effect"] == "NONE"
+    assert brief_data["new_0017"] is False
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 86" in log
+    assert "guard_no_status_promotion" in log
 
 
 def test_objective_evidence_83() -> None:

@@ -15,6 +15,8 @@ mapfile -t REBASE_REPORTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'P
 mapfile -t REBASE_NOTES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_RESOLUTION_NOTES_*.json' | sort)
 # Batch 70+: mechanical research-stack OPEN audits (no status flips).
 mapfile -t STACK_AUDITS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_RESEARCH_STACK_AUDIT.json' | sort)
+# Batch 86+: no-status-promotion guard snapshot (OPEN→closed detection).
+mapfile -t STATUS_GUARD < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'STATUS_GUARD_SNAPSHOT.json' | sort)
 # Batch 83+: requirement-by-requirement autonomous objective evidence.
 mapfile -t OBJECTIVE_EVIDENCE < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'OBJECTIVE_EVIDENCE_*.json' | sort)
 
@@ -52,6 +54,10 @@ rel_objective_evidence=()
 for p in "${OBJECTIVE_EVIDENCE[@]}"; do
   rel_objective_evidence+=("${p#"$ROOT"/}")
 done
+rel_status_guard=()
+for p in "${STATUS_GUARD[@]}"; do
+  rel_status_guard+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -64,6 +70,7 @@ tar -czf "$OUT" -C "$ROOT" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
   ${rel_rebase_notes[@]+"${rel_rebase_notes[@]}"} \
   ${rel_stack_audits[@]+"${rel_stack_audits[@]}"} \
+  ${rel_status_guard[@]+"${rel_status_guard[@]}"} \
   ${rel_objective_evidence[@]+"${rel_objective_evidence[@]}"} \
   portable/main-default-branch \
   portable/path-c-applied-bundle \
@@ -72,6 +79,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/audit_main_alignment.py \
   scripts/audit_local_tree.py \
   scripts/audit_research_stack_open.py \
+  scripts/guard_no_status_promotion.py \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
   scripts/aligned_drift_watch.py \
@@ -91,4 +99,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_objective_evidence[@]} objective evidence)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence)"

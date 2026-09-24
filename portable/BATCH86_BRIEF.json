@@ -1,0 +1,31 @@
+{
+  "batch": "86",
+  "generated_at_utc": "2026-09-24T02:52:30Z",
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "ac33581",
+  "tip_past_ac33581": false,
+  "tip_refresh": false,
+  "write_state": "DENIED",
+  "path_c_landed": false,
+  "blocked_by": "write_DENIED_403",
+  "new_0017": false,
+  "daemon_up": true,
+  "daemon_once": "continue_denied",
+  "tmux_session": "when-writable-land",
+  "status_guard": {
+    "script": "scripts/guard_no_status_promotion.py",
+    "baseline": "portable/BATCH70_RESEARCH_STACK_AUDIT.json",
+    "snapshot": "portable/STATUS_GUARD_SNAPSHOT.json",
+    "pass": true,
+    "violations": 0,
+    "ci_job": "research-stack-status-guard",
+    "continue_on_error": true
+  },
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "window": "PERMANENT_OPEN",
+  "note": "Shipped guard_no_status_promotion.py (OPEN→closed/discharged/promoted detection vs BATCH70/last snapshot); STATUS_GUARD_SNAPSHOT.json; CI job research-stack-status-guard (shallow hardening clone + GITHUB_TOKEN; continue-on-error + artifact); intent fixture promote tests. Path C still 403.",
+  "land_note": "gh_pr_create_403_direct_push_main"
+}

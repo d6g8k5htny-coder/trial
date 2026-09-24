@@ -3,6 +3,19 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 86 — no-status-promotion guard @ tips `1c6e74b` / `ac33581`
+
+Mechanical compare only (`scripts/guard_no_status_promotion.py`). Flipped nothing.
+
+| Check | Result |
+|-------|--------|
+| baseline | `portable/BATCH70_RESEARCH_STACK_AUDIT.json` (hardening inventory) |
+| live tip | hardening `ac335815b277ac0c076082ac6af2344261c2093a` (**HAS_PACKET**) |
+| guard | **pass** — 0 violations; open premises **13** / lemmas **1** / prizes **3** unchanged |
+| snapshot | `portable/STATUS_GUARD_SNAPSHOT.json` |
+| CI | `research-stack-status-guard` (`continue-on-error: true` + artifact) |
+| `lemma_closed` | **false** (nothing flipped) |
+
 ## Batch 70 — research-stack OPEN audit (no status flips) @ tips `1c6e74b` / `5f352a2`
 
 Mechanical inventory only (`scripts/audit_research_stack_open.py`). Flipped nothing.

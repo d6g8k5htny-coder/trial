@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 84 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; token discovery + env main scope; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 86 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; status-guard + token discovery; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -29,6 +29,9 @@ echo "  tmux: when-writable-land  |  status: /cursor/stores/self/when_writable_l
 echo "  log: /tmp/cursor/when_writable_land.log  |  STOP: /cursor/stores/self/when_writable_land.stop"
 echo "  token: env MAIN_PUSH_TOKEN | /cursor/stores/self/MAIN_PUSH_TOKEN | /workspace/.secrets/MAIN_PUSH_TOKEN"
 echo "  once dry: python3 scripts/when_writable_land.py --once --dry-run"
+echo "Status guard (Batch 86; fail on OPEN→closed/promoted): $ROOT/scripts/guard_no_status_promotion.py <hardening-checkout>"
+echo "  baseline: portable/BATCH70_RESEARCH_STACK_AUDIT.json or portable/STATUS_GUARD_SNAPSHOT.json"
+echo "  CI job: research-stack-status-guard (continue-on-error; artifact STATUS_GUARD_SNAPSHOT)"
 echo "Env write intent: .cursor/environment.json repositoryDependencies → main; relaunch Cloud Agent AFTER merge"
 echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch80-path-c-bundle"
 echo "Timer: re-arm permanent-autonomous-align-watch @ 3600s (not a 48h-stop timer) + keep when-writable-land tmux."
@@ -51,7 +54,7 @@ echo "Rebase helper: $ROOT/scripts/path_c_rebase_helper.sh --dry-run  # prefer a
 echo "Resolution notes: portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json"
 echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
 echo "Batch 74: BASE_TIP → ${BASE_TIP_SHORT} (PR #48); write DENIED; no 0017; CI Intent suite GITHUB_TOKEN + Option-B ALIGNED skip + --after-merge no-gh-auth."
-echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_* + BATCH*_RESEARCH_STACK_AUDIT + ALIGNED_DRIFT_SNAPSHOT + validate_land_workflows (Batch 64+/67+/68+/70+/72+/73+/74)."
+echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_* + BATCH*_RESEARCH_STACK_AUDIT + STATUS_GUARD_SNAPSHOT + ALIGNED_DRIFT_SNAPSHOT + validate_land_workflows (Batch 64+/67+/68+/70+/72+/73+/74+/86)."
 echo "Research-stack OPEN audit (Batch 70; read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
 echo "  artifact: portable/BATCH70_RESEARCH_STACK_AUDIT.json  |  docs/MECHANICAL_FINDINGS_MAIN.md"
 echo "Scientific effect: NONE"

@@ -21,6 +21,21 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 86 — 2026-09-24 ~02:52 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; no-status-promotion guard)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- Daemon `when-writable-land` tip/align/write `--once` → **DENIED** / `continue_denied`. Path C land **not** applied (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`ac33581`** (== BASE_TIP; **no tip refresh**). **no 0017**.
+- **Concrete work (audit research stack without status promotion):**
+  - `scripts/guard_no_status_promotion.py` — on hardening tip clone (or local), reads PACKET/status via `audit_research_stack_open`; compares to `portable/BATCH70_RESEARCH_STACK_AUDIT.json` or last `STATUS_GUARD_SNAPSHOT.json`; **exit 1** if any premise/lemma/prize flipped OPEN→closed/discharged/promoted or `lemma_closed` true; writes `portable/STATUS_GUARD_SNAPSHOT.json`; **exit 0** if unchanged or only new OPEN items.
+  - Live guard @ `ac33581` vs Batch 70 baseline → **pass** (0 violations; 13 premises / 1 lemma / 3 prizes still OPEN).
+  - CI: `research-stack-status-guard` job in `trial-ci` — shallow-clones hardening with `GITHUB_TOKEN`, runs guard, uploads artifact; `continue-on-error: true` (network flake tolerant).
+  - Intent tests: fixture snapshots for promote detection (lemma_closed / premise CLOSED / prize closed / discharges_lemma) + pass on unchanged/new OPEN.
+  - `pack_portable.sh` ships guard script + `STATUS_GUARD_SNAPSHOT.json`.
+- Tiny JSON: `portable/BATCH86_BRIEF.json`.
+- `goal_complete=false`.
+
 ### Batch 84 — 2026-09-24 ~02:45 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `ac33581` unchanged; token discovery + env main scope)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**.

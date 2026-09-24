@@ -1,0 +1,287 @@
+{
+  "generated_at_utc": "2026-09-24T02:51:04Z",
+  "guard": "no_status_promotion",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+  "baseline_path": "/workspace/portable/BATCH70_RESEARCH_STACK_AUDIT.json",
+  "baseline_tip_sha": "5f352a2d16aeb260defabffb6154e0ebca8bd23a",
+  "pass": true,
+  "violations": [],
+  "new_open_only": {
+    "premises": [],
+    "lemmas": [],
+    "prizes": []
+  },
+  "inventory": {
+    "tip_sha": "ac335815b277ac0c076082ac6af2344261c2093a",
+    "shape": "HAS_PACKET",
+    "packet_lemma_closed": false,
+    "packet_prizes_solved": false,
+    "packet_original_prize_closed": false,
+    "packet_disposition": "OPEN_HOLD",
+    "premises": {
+      "OBL-D1-PROMOTE": "OPEN",
+      "OBL-H5-JETMOD": "OPEN",
+      "OBL-H5-ZBAND": "OPEN",
+      "OBL-H5-REMOTE-THRESHOLD": "OPEN",
+      "D3-LEMMA-RN-UNIF": "NOT_CLOSED",
+      "PERC-DECAY": "OPEN",
+      "PD-CONN": "OPEN",
+      "OBL-B1-BRANCH(loop|B1)": "OPEN",
+      "B4.loc-damline": "OPEN",
+      "H5-RIM": "NAMED_HYPOTHESIS",
+      "H5-AXIS": "NAMED_HYPOTHESIS",
+      "H-B3": "OPEN",
+      "LM013-JOINT-STACK": "OPEN"
+    },
+    "lemmas": {
+      "D3-LEMMA-RN-UNIF": {
+        "status": "OPEN",
+        "lemma_closed": false,
+        "discharges_lemma": false
+      }
+    },
+    "obligations": {
+      "OBL-H5-JETMOD": {
+        "status": "OPEN",
+        "lemma_closed": false,
+        "discharges_lemma": false,
+        "discharges_OBL_H5_JETMOD": false
+      },
+      "D3-LEMMA-RN-UNIF": {
+        "status": "OPEN",
+        "lemma_closed": false,
+        "discharges_lemma": false,
+        "discharges_OBL_H5_JETMOD": false
+      }
+    },
+    "prizes": {
+      "PR-TAL-003..008": {
+        "original_prize_closed": false,
+        "grade": "AUTHOR_SIDE_PROOF_PRESENT"
+      },
+      "P14-A..E": {
+        "original_prize_closed": false,
+        "grade": "AUTHOR_SIDE_COMPLETE"
+      },
+      "P15-A..D": {
+        "original_prize_closed": false,
+        "grade": "AUTHOR_SIDE_COMPLETE_ARGUMENTS_WITH_EXACT_FINITE_COMPANIONS"
+      }
+    },
+    "counts": {
+      "open_premises_frozen_layer": 13,
+      "open_lemmas": 1,
+      "open_obligations_packet": 2,
+      "open_prizes": 3,
+      "claims_total": 26,
+      "open_questions": 16
+    }
+  },
+  "live_shape": "HAS_PACKET",
+  "live_counts": {
+    "open_premises_frozen_layer": 13,
+    "open_lemmas": 1,
+    "open_obligations_packet": 2,
+    "open_prizes": 3,
+    "claims_total": 26,
+    "open_questions": 16
+  },
+  "packet": {
+    "path": "docs/math_status/PACKET.json",
+    "disposition": "OPEN_HOLD",
+    "lemma_closed": false,
+    "prizes_solved": false,
+    "original_prize_closed": false,
+    "independence_credit": 0,
+    "bridge": "PROPOSED_NOT_DEPLOYED",
+    "freeze": false,
+    "authority": "NONE",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "base_commit": "a89f9a703739aed9d290c94d68f80bf4e8bd9d62",
+    "as_of": "2026-09-23 ~14:19 CT"
+  },
+  "open_premises": [
+    {
+      "id": "OBL-D1-PROMOTE",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2.md \u00a73/\u00a75; ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75,\u00a77"
+    },
+    {
+      "id": "OBL-H5-JETMOD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73; H5_PROMOTE_UPDATE_2026-09-15.md \u00a75"
+    },
+    {
+      "id": "OBL-H5-ZBAND",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75; H5_ZBAND_CONSUMPTION_2026-09-15.md"
+    },
+    {
+      "id": "OBL-H5-REMOTE-THRESHOLD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73"
+    },
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NOT_CLOSED",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "LANE_RN_UNIF.md; D1_ASSEMBLY_v2_2.md \u00a73"
+    },
+    {
+      "id": "PERC-DECAY",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "RESTATED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md; ADDENDUM-2 B4LOC_PERC_DECAY"
+    },
+    {
+      "id": "PD-CONN",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md"
+    },
+    {
+      "id": "OBL-B1-BRANCH(loop|B1)",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "REFINEMENT",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2_REGISTER_NOTE.md \u00a75"
+    },
+    {
+      "id": "B4.loc-damline",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "CLOSED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "B4LOC_DAMLINE.md; ADDENDUM-2"
+    },
+    {
+      "id": "H5-RIM",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H5-AXIS",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H-B3",
+      "track": "LOWER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "W8 v3 Lambda record"
+    },
+    {
+      "id": "LM013-JOINT-STACK",
+      "track": "P02_ADJACENCY",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "registers/json/easy_closure_queue.json row P02-LM-013 (Queue state, Remaining decisive work, Owner / next actor); registers/json/review_queue.json row RV-LM013-BOREL-GLOBALIZATION (Prior review / exposure)"
+    }
+  ],
+  "open_lemmas": [
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "piece2_annulus_driver": "UNWRITTEN",
+      "discharges_lemma": false,
+      "source": "docs/math_status/PACKET.json"
+    }
+  ],
+  "open_obligations_packet": [
+    {
+      "id": "OBL-H5-JETMOD",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "freeze": false,
+      "extra": {
+        "grade": "display_only",
+        "discharges_OBL_H5_JETMOD": false
+      }
+    },
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "freeze": false,
+      "extra": {
+        "discharges_lemma": false,
+        "piece2_annulus_driver": "UNWRITTEN"
+      }
+    }
+  ],
+  "open_prizes": [
+    {
+      "id": "PR-TAL-003..008",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_PROOF_PRESENT",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": "CLAIM_REGISTRY_VERIFIED_INTAKE.json, Drive 1RTZ7rjQUzQdLtiPKatAUJs6qfZeTXv0a (15,814 B, sha256 fbea000df219921aa8ab915fc4f2f5136a25e9e588aa7446686120bc9707db94; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/CLAIM_REGISTRY_VERIFIED_INTAKE.json): PR-TAL-003..008 each 'declared_proof_grade': 'AUTHOR_SIDE_PROOF_PRESENT', 'verification_this_turn': 'proof derivation and exact finite companions'. Carrier Prize_Research_Phase05_Overlap_2026-09-16.zip sha e976271ba1a3822bddf6247d72b5d6131bfeabdcbc610982e816d812dd2e5a90, 98,175 B, 122 members (two byte-identical Drive copies: 1XB6HnA5YArrfN7QRYtLDIN0sTHF9fRXt, 1Z4RvtapE1NDsUCKmSQprneqP-z2IrvSK)",
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    },
+    {
+      "id": "P14-A..E",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "registry": "P14_CLAIM_REGISTRY.json, Drive 1iMJsX4j1DRsBy6CnPun4e65w2u1xK2qx (1,258 B, sha256 da7403a743933dc77369d876393a68298e059f9bf175ff338e85a677b608d3a4); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CLAIM_REGISTRY.json",
+        "current_state": "P14_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1Gc1ep25x1y3IS_9GDtQMQ1iZQsXELqfx (1,966 B, sha256 8bb20fe14a15d7558fb5e5d86080c1f99549abc068bef88a9a03ee0b455181f7); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "proof_bodies": "inside Prize_Research_P14_Fractional_20260917.zip (191 members; not opened here): proofs/01_SCALAR_SANDWICH_THEOREM.md b3c7ea04\u2026, 02_FRACTIONAL_RESOURCE_COVER.md a4a23b1e\u2026, 03_MANY_NECESSARY_ROWS_EXAMPLE.md b0dc6a4a\u2026, 04_LIMITATIONS_AND_HIERARCHY.md a9083363\u2026 (digests as the registry declares them)"
+      },
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    },
+    {
+      "id": "P15-A..D",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE_ARGUMENTS_WITH_EXACT_FINITE_COMPANIONS",
+      "depends_on": [
+        "P14-A..E"
+      ],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "current_state": "P15_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1r8weyHObFfHAp-_PfI8mlSXPZQC8Zoh1 (2,820 B, sha256 db873e57c760d5b16a32778ec9ce47cd7e00880dfa2f9fe7b49b03d4540f726c); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "registry": "P15_CLAIM_REGISTRY.json, Drive 1Ss_chTR4TF1NsAqZ2idkV4xKT8q7uldZ (2,164 B, sha256 1eae5148e90ede237a23896a35aafb29065470313c3fc8712b4a74342c45d191): 'automatic_scientific_promotion': false, 'external_independence_credit': 0, 'q0_changes': 0; each claim 'grade': 'AUTHOR_SIDE_COMPLETE', 'external_reviews': 0, 'prize_closed': false; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CLAIM_REGISTRY.json",
+        "proof_bodies": "inside Prize_Research_P15_Palette_20260917.zip (149 members; not opened here): proofs/01_CRITICAL_THRESHOLD_CROSSWALK.md 93e2ead4\u2026, 02_PALETTE_SEPARATED_LOCALIZATION.md 9b18b6e9\u2026, 03_CONNECTED_UNBOUNDED_WIDTH_FAMILY.md 357dd573\u2026, 04_COMPLETE_TRANSVERSAL_GRAPH_COMPOSITION.md ad2c55b8\u2026 (digests as the registry declares them)"
+      },
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    }
+  ]
+}

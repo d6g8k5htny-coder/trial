@@ -62,6 +62,61 @@ jobs:
           fi
           exit 0
 
+  # Batch 86: no-status-promotion guard against live hardening tip.
+  # Fetches main hardening shallow (needs network; uses GITHUB_TOKEN for rate limits).
+  # continue-on-error: clone/API flakes must not red the whole trial CI; artifact retained.
+  # Scientific effect: NONE. Never flips lemma_closed / research status.
+  research-stack-status-guard:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: trial
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Shallow-clone main hardening tip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Prefer tokenized HTTPS so public-rate-limit ceilings do not flake the job.
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
+              "https://x-access-token:${GITHUB_TOKEN}@github.com/d6g8k5htny-coder/main.git" \
+              main-hardening
+          else
+            git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
+              https://github.com/d6g8k5htny-coder/main.git main-hardening
+          fi
+          echo "TIP=$(git -C main-hardening rev-parse HEAD)"
+      - name: Run no-status-promotion guard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TIP="$(git -C main-hardening rev-parse HEAD)"
+          # Baseline: last STATUS_GUARD_SNAPSHOT if present, else BATCH70 audit.
+          # Force BATCH70 on first CI run so we do not compare against a stale
+          # committed snapshot from a prior tip without explicit promotion check.
+          python trial/scripts/guard_no_status_promotion.py main-hardening \
+            --trial-root trial \
+            --baseline trial/portable/BATCH70_RESEARCH_STACK_AUDIT.json \
+            --snapshot-out trial/portable/STATUS_GUARD_SNAPSHOT.json \
+            --tip-sha "$TIP" \
+            --json-stdout | tee status-guard.json
+          echo "guard_ok tip=$TIP"
+      - name: Upload status-guard artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: status-guard-snapshot
+          path: |
+            trial/portable/STATUS_GUARD_SNAPSHOT.json
+            status-guard.json
+          if-no-files-found: warn
+
   # Prove portable engineering patches still apply on the live working tip.
   # Scientific effect: NONE. Does not push to main.
   portable-patches-on-main:
