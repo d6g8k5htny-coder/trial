@@ -38,7 +38,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 
 
-**Land note:** `gh pr create` → **403**. Direct push to trial `main`: (pending). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `6342195..f0c5c19` (`cursor/batch71-tip-verify-defect-hunt-b790`). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
 
 ### Batch 70 — 2026-09-24 ~01:08 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `5f352a2`; research-stack OPEN audit; no status flips)
 
