@@ -1,0 +1,21 @@
+{
+  "batch": "117",
+  "generated_at_utc": "2026-09-24T05:14:06Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "device_auth": "renewed",
+  "device_code": "08AF-717C",
+  "prior_device_code": "46E7-69A0",
+  "seconds_left": 899,
+  "gh_config_dir": "/tmp/gh-dylan-auth",
+  "install_has_main": false,
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "path_c_landed": false,
+  "land_trial": "direct push cursor/batch117-auth-renew-4ad3 → trial main",
+  "timer_rearm_s": 300,
+  "flipped_anything": false,
+  "note": "auth renewed 46E7-69A0→08AF-717C; seconds_left<90; Path C blocked; research untouched"
+}
