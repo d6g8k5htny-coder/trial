@@ -38,6 +38,9 @@ Path C dry-run ready on hardening; permanent window recorded.
 - `goal_complete=false` (permanent window open; keep iterating).
 
 
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `db918e5..7fd4673f01866be0ca2508d7bc86d5b6d60b801c` (`cursor/batch70-research-stack-audit-e2f5`). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 69 — 2026-09-24 ~00:58 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `74c082e` unchanged; Path C Actions land workflow; no 0017)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
