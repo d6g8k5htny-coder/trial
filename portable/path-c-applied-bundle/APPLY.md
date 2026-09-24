@@ -2,7 +2,9 @@
 
 **Effect:** engineering hygiene only on `chatgpt/drive-github-hardening-20260919`. Scientific effect: **NONE**. Does not flip `lemma_closed`.
 
-**Batch 169:** tip still **`8ea3b5f`** (no tip move). Ships fetchable **`path-c-on-hardening.bundle`** (`BASE_TIP..HEAD`) plus legacy `.patch`. Release tag `batch169-path-c-bundle` on `d6g8k5htny-coder/trial`. Owner scripts prefer `.bundle` when present.
+**Batch 179:** tip still **`8ea3b5f`**. Release **`batch179-path-c-bundle`** packs oneshot + `.bundle` + `refresh_path_c_bundle.sh` (supersedes `batch169-path-c-bundle`).
+
+**Batch 169:** tip still **`8ea3b5f`** (no tip move). Ships fetchable **`path-c-on-hardening.bundle`** (`BASE_TIP..HEAD`) plus legacy `.patch`. Release tag `batch169-path-c-bundle` on `d6g8k5htny-coder/trial` (superseded by Batch 179). Owner scripts prefer `.bundle` when present.
 
 **Batch 168:** tip **`8ea3b5f`**. Pack included `scripts/owner_path_c_oneshot.sh`. Prior release `batch168-path-c-bundle`.
 
@@ -11,7 +13,7 @@
 ## ONE-SHOT (owner / write token) — preferred
 
 ```bash
-gh release download batch169-path-c-bundle -R d6g8k5htny-coder/trial \
+gh release download batch179-path-c-bundle -R d6g8k5htny-coder/trial \
   -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle' -p 'path-c-on-hardening.patch'
 mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land
 /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle

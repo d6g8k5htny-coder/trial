@@ -5,6 +5,7 @@
 # Batch 168: PATH_C_RELEASE_TAG defaults to batch168-path-c-bundle (pack includes
 # this script); unblock menu prefers oneshot --from-bundle from that release.
 # Batch 169: PATH_C_RELEASE_TAG defaults to batch169-path-c-bundle; --from-bundle
+# Batch 179: PATH_C_RELEASE_TAG defaults to batch179-path-c-bundle (pack+oneshot+refresh)
 # prefers path-c-on-hardening.bundle (git fetch) when present.
 #
 # Tries in order:
@@ -33,7 +34,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
 # Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
-PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch169-path-c-bundle}"
+PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch179-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0
 MENU_ONLY=0
