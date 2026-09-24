@@ -25,7 +25,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (`PATH_C_BLOCKED=NO_TOKEN`).
 - Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild** / **no hunt**. `lemma_closed=false`.
-- Device auth `2513-3A16` → **pending** (`slow_down`); `seconds_left≈552`; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
+- Device auth `2513-3A16` → **pending** (`slow_down`); `seconds_left≈505`; **no renew** (≥90s). No dylan token / MAIN_PUSH_TOKEN. Daemon `when-writable-land` up; poller `gh-device-login` up.
 - No code change this batch → skipped `pytest` / `assert_path_c_ready`; **no trial main land**.
 - Tiny JSON: `portable/BATCH159_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
 
