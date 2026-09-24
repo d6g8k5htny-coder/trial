@@ -19,7 +19,17 @@
   "write": "WRITABLE",
   "write_durable": true,
   "merged_prs": [],
-  "research_hold_prs_skipped": [73, 47, 46, 38, 36, 21, 12, 8, 7],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
   "defect_shipped": true,
   "defect_id": "ci_yml_col0_python_workflow_file_flake",
   "patch_0020": false,
@@ -41,7 +51,7 @@
     "36067917470"
   ],
   "next_focus": "tip_sync_drift_watch; inventable tip-observe only if eng-shaped; keep Path C idle until tip moves or 0020 signal; watch workspace-landing ~20m stuck runs on main",
-  "note": "Batch 247: hardening tip 542e6ec tip_moved=false; default tip ALIGNED f3a41a75; ALIGNED+WRITABLE; research HOLD drafts skipped; fixed Batch 246 ci.yml workflow-file flake (col-0 multiline python -c broke YAML run block → Actions 0s failures); lemma_closed=false; flipped nothing. Never printed tokens. Did NOT ship Path A/B ALIGNED no-op, sibling AGENTS, living-tag pack, assert idle, empty RW hunts, or OWNER face-only refresh.",
+  "note": "Batch 247: hardening tip 542e6ec tip_moved=false; default tip ALIGNED f3a41a75; ALIGNED+WRITABLE; research HOLD drafts skipped; fixed Batch 246 ci.yml workflow-file flake (col-0 multiline python -c broke YAML run block \u2192 Actions 0s failures); lemma_closed=false; flipped nothing. Never printed tokens. Did NOT ship Path A/B ALIGNED no-op, sibling AGENTS, living-tag pack, assert idle, empty RW hunts, or OWNER face-only refresh. PR create 403 \u2192 direct land on trial main @ 7afdf08.",
   "artifacts": [
     "portable/BATCH247_BRIEF.json",
     "portable/BATCH247_HUNT.json",
@@ -55,8 +65,12 @@
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
   "shipped": true,
-  "where": ["trial"],
+  "where": [
+    "trial"
+  ],
   "trial_pr": null,
   "trial_pr_merged": false,
-  "trial_direct_land": true
+  "trial_direct_land": true,
+  "trial_land_sha": "7afdf08",
+  "trial_land_branch": "cursor/batch247-ci-yaml-flake-73a3"
 }
