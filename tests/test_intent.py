@@ -4940,6 +4940,7 @@ def test_batch199_path_c_bundle_pack_release() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch218-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 
@@ -5061,6 +5062,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch218-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 
@@ -5187,6 +5189,7 @@ def test_batch207_path_c_0017_bundle_refresh() -> None:
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch207-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch223-path-c-bundle}"' in oneshot
         or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch236-path-c-bundle}"' in oneshot
+        or 'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"' in oneshot
         or _living_release(oneshot)
     )
 

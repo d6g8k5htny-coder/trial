@@ -26,7 +26,7 @@ echo "Path C ONE-SHOT (Batch 165+): $ROOT/scripts/owner_path_c_oneshot.sh --dry-
 echo "  token → owner_open_path_c_pr.sh (else owner_land_path_c.sh); no token → unblock menu"
 echo "  live: $ROOT/scripts/owner_path_c_oneshot.sh"
 echo "  from-bundle: $ROOT/scripts/owner_path_c_oneshot.sh --from-bundle  # prefers .bundle fetch+merge"
-echo "  release: batch241-path-c-bundle (prior batch239-path-c-bundle / batch236-path-c-bundle) (.bundle + .patch + oneshot+refresh+PATH_C_STATUS+watch/readme link-only; PATH_C_RELEASE_TAG override ok; prior batch218-path-c-bundle / batch199-path-c-bundle)"
+echo "  release: batch241-path-c-bundle (prior batch239-path-c-bundle / batch236-path-c-bundle) (.bundle + .patch + oneshot+refresh+PATH_C_STATUS+watch/readme link-only; PATH_C_RELEASE_TAG override ok; prior batch223-path-c-bundle / batch218-path-c-bundle / batch199-path-c-bundle / batch180-path-c-bundle / batch179-path-c-bundle / batch169-path-c-bundle / batch168-path-c-bundle)"
 echo "Tip refresh helper (Batch 173/176): $ROOT/scripts/refresh_path_c_bundle.sh  # tip fetch → BASE_TIP → apply_all → .patch+.bundle → VERIFY.json"
 echo "  dry-run: $ROOT/scripts/refresh_path_c_bundle.sh --dry-run  # exit 0 tip-stable / 1 TIP_DRIFT (+ fix-path); CI tip-drift dry-sim"
 echo "  force rebuild: $ROOT/scripts/refresh_path_c_bundle.sh --force"
