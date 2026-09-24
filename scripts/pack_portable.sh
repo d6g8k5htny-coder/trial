@@ -18,11 +18,13 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/RESTORE_PLAN_60.json \
   portable/RESTORE_PLAN_61.json \
   portable/RESTORE_PLAN_62.json \
+  portable/RESTORE_PLAN_63.json \
   portable/BATCH58_TOKEN_SEARCH.json \
   portable/BATCH59_TOKEN_SEARCH.json \
   portable/BATCH60_TOKEN_SEARCH.json \
   portable/BATCH61_TOKEN_SEARCH.json \
   portable/BATCH62_TOKEN_SEARCH.json \
+  portable/BATCH63_TOKEN_SEARCH.json \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \

@@ -1,11 +1,22 @@
 # Portable patch compatibility matrix
 
-Checked 2026-09-23 ~23:45 UTC (batch 62: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C dry-run + BASE_TIP b3da668; no 0017; watch embeds window).
+Checked 2026-09-23 ~23:55 UTC (batch 63: PERMANENT window; ALIGNED @ 1c6e74b via PR #41; Path C BASE_TIP → `6f0f061` after #43; no 0017; apply_all post-#41 topology guard).
 **Scientific effect: NONE.** `lemma_closed` stayed false on every tip.
+
+## Post-#41 tip topology (Path C)
+
+| Tip | Role | Path-C shaped? | apply_all |
+|-----|------|----------------|-----------|
+| default `main` @ `1c6e74b` (PR #41) | ALIGNED research **landing** (README + `AGENTS.md` + `.github`; `body` under `history/`) | **No** — missing `PACKET.json` / `carriers_verify` | **Refuse** (`PATH_C_BASE=main` blocked) |
+| hardening `chatgpt/drive-github-hardening-20260919` @ BASE_TIP | Engineering working tip | **Yes** | **0001–0004 + 0008–0016** |
+| rebase hardening → `main` | Integration attempt | — | Usually **CONFLICTING** after #41 (`ci.yml` / bridge / history relocation) |
+
+Keep Path C on hardening. Certainty: `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`.
 
 | Tip | SHA | apply stack | `math_status_check` | Focused tests* |
 |-----|-----|-------------|---------------------|----------------|
-| hardening (post-#34) | `b3da668` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 60** |
+| hardening (post-#43) | `6f0f061` | **0001–0004 + 0008–0016** | problems=0 | **BASE_TIP batch 63** |
+| hardening (post-#34) | `b3da668` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 60–62) |
 | hardening (post-#35) | `036a6bc` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 59) |
 | hardening (post-governance) | `9a56c30` | **0001–0004 + 0008–0016** | problems=0 | (BASE_TIP batch 54–58) |
 | hardening (post-#31) | `580864c` | **0001–0004 + 0008–0016** | `--check` OK | (BASE_TIP batch 53b) |
@@ -67,6 +78,8 @@ Batch 53: `test_receipts` + `test_bridge` bare opens → cleared by **0016**.
 
 Notes:
 
+- Batch **63** (PERMANENT; ALIGNED @ 1c6e74b; tip move + post-#41 topology docs): hardening **`b3da668` → `6f0f061`** ([PR #43](https://github.com/d6g8k5htny-coder/main/pull/43) inventable REFUSED/EMPTY/ABSENT honesty walls); BASE_TIP refreshed; `apply_all --check`/apply OK @ 3.11; residual RW hunt focused+receipts/bridge/collision/frozen/registers/mirrors/ops/lean/RN/drive **~1600**/0 → **no 0017** / **IDLE**. Meaningful: `apply_all.sh` post-#41 topology fail-closed message + BASE_TIP currency note; `print_owner_unblock.sh` reads `BASE_TIP.txt` (no hardcoded SHA). Restore plan: `portable/RESTORE_PLAN_63.json`.
+- Batch **62** (PERMANENT; ALIGNED; Path C dry-run; watch embeds window): BASE_TIP still **`b3da668`**; residual RW **0** → **no 0017**; `watch_main_alignment.py` embeds window+route. Restore plan: `portable/RESTORE_PLAN_62.json`.
 - Batch **60** (ALIGNED @ 1c6e74b; Path C post-ALIGNED landing): hardening **`036a6bc` → `b3da668`** ([PR #34](https://github.com/d6g8k5htny-coder/main/pull/34) inventable probe index tip provenance); BASE_TIP refreshed; `apply_all --check`/apply OK; residual RW hunt **922**/0 → **no 0017**. Shipped `scripts/path_c_dry_run.py` + `owner_land_path_c.sh --dry-run`: default tip ALIGNED but not Path-C shaped; rebase onto main **CONFLICTING**; keep Path C on hardening. Restore plan: `portable/RESTORE_PLAN_60.json`.
 - Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): default tip **`c2b0620` → `1c6e74b`** **ALIGNED**; Option-B classic patch AM_FAILED on renewed tip; `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; hardening **`9a56c30` → `036a6bc`** ([PR #35](https://github.com/d6g8k5htny-coder/main/pull/35)); BASE_TIP refreshed; residual RW hunt **0** → **no 0017** / **IDLE**. Shipped restore ALIGNED short-circuit + write preflight + `--batch`. Restore plan: `portable/RESTORE_PLAN_59.json`.
 - Batch **58** (MISALIGNED; stronger Option-B + restore_main_face): default tip still **`c2b0620`** **MISALIGNED**; Option-B stronger `git am` OK / would-align; **all Path-B-capable write vectors DENIED**; hardening tip then `9a56c30` (live later moved to `036a6bc`); residual RW **0** → **no 0017**. Restore plan: `portable/RESTORE_PLAN_58.json`.

@@ -144,11 +144,13 @@ def test_portable_patches_exist() -> None:
     assert (ROOT / "portable" / "patches" / "apply_all.sh").is_file()
     assert (ROOT / "portable" / "patches" / "BASE_TIP.txt").is_file()
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text()
-    assert "b3da668" in base_tip
+    assert "6f0f061" in base_tip
     assert "chatgpt/drive-github-hardening-20260919" in base_tip
     assert "PACKET.json" in (ROOT / "portable" / "patches" / "0002-math-console-path-honesty.patch").read_text()
     assert (ROOT / "portable" / "patches" / "0003-gaussian-moments-parametrize-list.patch").is_file()
     apply_all_txt = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "post-#41" in apply_all_txt or "PATH_C_BASE=main" in apply_all_txt
+    assert "BASE_TIP" in apply_all_txt
     # Historical tip-cut 0005/0006/0007 kept on disk; dropped from apply_all after PR #27
     p5 = (ROOT / "portable" / "patches" / "0005-inventable-probes-restore-receipts-after-test.patch").read_text(
         encoding="utf-8"
@@ -372,8 +374,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "0015" in patches_readme
     assert "0016" in patches_readme
     assert "apply_all.sh" in patches_readme
-    assert "b3da668" in patches_readme or "PR #34" in patches_readme
-    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme
+    assert "6f0f061" in patches_readme or "PR #43" in patches_readme
+    assert "post-#41" in patches_readme.lower() or "PR #41" in patches_readme
+    assert "fbb4360" in patches_readme or "PR #30" in patches_readme or "PR #28" in patches_readme or "PR #29" in patches_readme or "PR #27" in patches_readme or "PR #34" in patches_readme or "PR #43" in patches_readme or "#43" in patches_readme
     probe = ROOT / "scripts" / "probe_main_write.py"
     assert probe.is_file()
     result = subprocess.run(
@@ -432,6 +435,18 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert restore62_data.get("autonomous_window", {}).get("window_mode") == (
         "PERMANENT_UNTIL_OWNER_INTERVENES"
     )
+    restore63 = ROOT / "portable" / "RESTORE_PLAN_63.json"
+    assert restore63.is_file()
+    restore63_data = __import__("json").loads(restore63.read_text())
+    assert restore63_data["scientific_effect"] == "NONE"
+    assert restore63_data["aligned"] is True
+    assert restore63_data.get("goal_complete") is False
+    assert restore63_data.get("lemma_closed") is False
+    assert restore63_data.get("autonomous_window", {}).get("window_mode") == (
+        "PERMANENT_UNTIL_OWNER_INTERVENES"
+    )
+    assert "6f0f061" in restore63_data["path_c"].get("base_tip", "")
+    assert (ROOT / "portable" / "BATCH63_TOKEN_SEARCH.json").is_file()
     assert (ROOT / "scripts" / "check_autonomous_window.py").is_file()
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in pack
@@ -443,23 +458,32 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "RESTORE_PLAN_60.json" in pack
     assert "RESTORE_PLAN_61.json" in pack
     assert "RESTORE_PLAN_62.json" in pack
+    assert "RESTORE_PLAN_63.json" in pack
     assert "restore_main_face.sh" in pack
     assert "BATCH58_TOKEN_SEARCH.json" in pack
     assert "BATCH59_TOKEN_SEARCH.json" in pack
     assert "BATCH60_TOKEN_SEARCH.json" in pack
     assert "BATCH61_TOKEN_SEARCH.json" in pack
     assert "BATCH62_TOKEN_SEARCH.json" in pack
+    assert "BATCH63_TOKEN_SEARCH.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "probe_main_write_vectors.py" in unblock
     assert "restore_main_face.sh" in unblock
     assert "path_c_dry_run.py" in unblock or "owner_land_path_c.sh --dry-run" in unblock
     assert "auto-approve" in unblock or "unrestricted" in unblock
-    assert "Batch 62" in unblock or "Batch 61" in unblock or "PERMANENT" in unblock or "1c6e74b" in unblock
+    assert "BASE_TIP.txt" in unblock
+    assert (
+        "Batch 63" in unblock
+        or "Batch 62" in unblock
+        or "PERMANENT" in unblock
+        or "1c6e74b" in unblock
+    )
     assert "check_autonomous_window.py" in unblock
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 63" in log
     assert "Batch 62" in log
     assert "Batch 61" in log
     assert "PERMANENT_UNTIL_OWNER_INTERVENES" in log
@@ -473,8 +497,9 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
+    assert "6f0f061" in log or "PR #43" in log
     assert "watch_main_alignment" in log and (
-        "autonomous_window" in log or "route" in log or "Batch 62" in log
+        "autonomous_window" in log or "route" in log or "Batch 62" in log or "Batch 63" in log
     )
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()

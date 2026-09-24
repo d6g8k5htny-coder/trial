@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply all portable engineering patches onto a writable checkout of
 # d6g8k5htny-coder/main (working tip chatgpt/drive-github-hardening-20260919).
-# See BASE_TIP.txt for the currently verified tip SHA (batch 59: 036a6bc after #35).
+# See BASE_TIP.txt for the currently verified tip SHA (batch 63: 6f0f061 after #43).
 #
 # Scientific effect: NONE. Does not flip lemma_closed / discharge obligations.
 # Usage (from a clean main checkout at the base tip, or a descendant):
@@ -11,9 +11,15 @@
 # Patches are checked/applied in order. After main PR #27 merged (batch 48),
 # tip-cut 0005/0006/0007 are obsolete (isolation supersedes dirty-receipt
 # restore + pre-isolation open shape). Stack is 0001–0004 + 0008–0016.
-# Apply against chatgpt/drive-github-hardening-20260919 (BASE_TIP), NOT the
-# default main tip after #32 (pre-q0 face; lacks docs/math_status/PACKET.json).
-# --check uses a disposable worktree.
+#
+# Post-#41 tip topology (Path C):
+#   - default main @ 1c6e74b (PR #41) is ALIGNED research *landing* but NOT
+#     Path-C shaped (no docs/math_status/PACKET.json; body under history/;
+#     tools/ are stubs). Never apply_all there; do not PATH_C_BASE=main.
+#   - Path C stays on chatgpt/drive-github-hardening-20260919 (BASE_TIP).
+#   - PATH_C_REBASE_ONTO_MAIN usually CONFLICTS after #41 (ci.yml / bridge).
+# Apply against hardening BASE_TIP (or a descendant), NOT post-#41 default main
+# and NOT the post-#32 pre-q0 face. --check uses a disposable worktree.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -26,13 +32,38 @@ elif [[ $# -gt 0 ]]; then
 fi
 
 BASE_FILE="$ROOT/BASE_TIP.txt"
+BASE_SHA=""
 if [[ -f "$BASE_FILE" ]]; then
-  echo "Patches cut against: $(cat "$BASE_FILE")"
+  BASE_LINE="$(tr -d '\r' <"$BASE_FILE" | head -n1)"
+  echo "Patches cut against: $BASE_LINE"
+  # Last whitespace-separated field is the verified SHA.
+  BASE_SHA="${BASE_LINE##* }"
 fi
 
+# Fail closed on post-#41 / post-#32 default-main trees (ALIGNED landing ≠ hardening).
 if [[ ! -f tools/carriers_verify.py || ! -f docs/math_status/PACKET.json ]]; then
-  echo "error: run from a d6g8k5htny-coder/main checkout root" >&2
+  echo "error: run from a d6g8k5htny-coder/main hardening checkout root" >&2
+  echo "error: need tools/carriers_verify.py + docs/math_status/PACKET.json" >&2
+  if [[ -f AGENTS.md || -f README.md ]]; then
+    echo "error: this tree looks like post-#41 default main (ALIGNED landing) or another non-hardening tip" >&2
+    echo "error: Path C apply_all targets chatgpt/drive-github-hardening-20260919 (see BASE_TIP.txt)" >&2
+    echo "error: do not set PATH_C_BASE=main; PATH_C_REBASE_ONTO_MAIN usually CONFLICTS after #41" >&2
+  fi
   exit 2
+fi
+
+# Currency note: warn when HEAD is not the recorded BASE_TIP (descendant OK).
+if [[ -n "$BASE_SHA" ]] && git rev-parse --verify "${BASE_SHA}^{commit}" >/dev/null 2>&1; then
+  HEAD_SHA="$(git rev-parse HEAD)"
+  if [[ "$HEAD_SHA" != "$BASE_SHA" ]]; then
+    if git merge-base --is-ancestor "$BASE_SHA" HEAD 2>/dev/null; then
+      echo "note: HEAD $(git rev-parse --short HEAD) is ahead of BASE_TIP ${BASE_SHA:0:7} (descendant OK; refresh BASE_TIP.txt when tip moves)"
+    elif git merge-base --is-ancestor HEAD "$BASE_SHA" 2>/dev/null; then
+      echo "warning: HEAD $(git rev-parse --short HEAD) is behind BASE_TIP ${BASE_SHA:0:7}" >&2
+    else
+      echo "warning: HEAD $(git rev-parse --short HEAD) and BASE_TIP ${BASE_SHA:0:7} have diverged — refresh BASE_TIP / re-cut patches" >&2
+    fi
+  fi
 fi
 
 PATCHES=(

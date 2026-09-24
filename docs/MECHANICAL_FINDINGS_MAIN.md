@@ -2,6 +2,20 @@
 
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 
+## After portable patches 0001–0004 + 0008–0016 on `6f0f061` (batch 63)
+
+| Check | Result |
+|-------|--------|
+| `apply_all.sh --check` | OK on tip `6f0f061` (PR #43; BASE_TIP refreshed from `b3da668`) |
+| `apply_all` on default `main` @ `1c6e74b` | **exit 2** — post-#41 topology refuse (no PACKET.json) |
+| `math_status_check` | problems=0 / lemma_closed=false |
+| focused+receipts/bridge/collision/frozen/registers/mirrors/ops/lean/RN/drive | **~1600 passed** / **0 ResourceWarning** |
+| tools `--help` | **0 ResourceWarning** |
+| new portable **0017** | **none** (IDLE) |
+| Path C dry-run | `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase **CONFLICTING** |
+
+Default `main` @ `1c6e74b` **ALIGNED** (PR #41); Path C stays on hardening. `print_owner_unblock.sh` reads `BASE_TIP.txt`.
+
 ## After portable patches 0001–0004 + 0008–0016 on `b3da668` (batch 60)
 
 | Check | Result |

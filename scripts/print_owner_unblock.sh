@@ -2,15 +2,23 @@
 # Print Path B (preferred for ALIGNED) + Path A/C + live probe/audit.
 # Scientific effect: NONE. Read-only against d6g8k5htny-coder/main.
 #
-# Batch 56: unrestricted / auto-approve. HOLD VOID. Path A OR Path B OK. Path C IDLE.
-# Prefer Path B (notice-only). Default tip MISALIGNED @ 4fc1d7c after CoS #32.
-# Path C = engineering on hardening (BASE_TIP). No approval waits in docs.
+# Reads portable/patches/BASE_TIP.txt for Path C currency (no hardcoded SHA).
+# Post-#41: default main ALIGNED landing ≠ hardening Path-C tree.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "=== Batch 62 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C dry-run @ b3da668; unrestricted/auto-approve; HOLD VOID ==="
+BASE_TIP_FILE="$ROOT/portable/patches/BASE_TIP.txt"
+BASE_TIP_LINE="(missing BASE_TIP.txt)"
+BASE_TIP_SHORT="unknown"
+if [[ -f "$BASE_TIP_FILE" ]]; then
+  BASE_TIP_LINE="$(tr -d '\r' <"$BASE_TIP_FILE" | head -n1)"
+  BASE_TIP_SHORT="${BASE_TIP_LINE##* }"
+  BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
+fi
+
+echo "=== Batch 63 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#43); unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -18,8 +26,10 @@ echo "Watch (embeds window+route): $ROOT/scripts/watch_main_alignment.py"
 echo "PR #41 renewed default tip to 1c6e74b (ALIGNED). Keep iterating."
 echo "Path A OR Path B OK when MISALIGNED. Prefer Path B (Option-B README+AGENTS)."
 echo "One-command: $ROOT/scripts/restore_main_face.sh  # short-circuits when already ALIGNED"
-echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP b3da668"
+echo "Path C BASE_TIP file: $BASE_TIP_LINE"
+echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT}"
 echo "Path C stays on chatgpt/drive-github-hardening-20260919 (has PACKET.json; rebase onto main CONFLICTS)."
+echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
 echo "Scientific effect: NONE"
 echo
 
@@ -68,9 +78,9 @@ echo "$ROOT/scripts/owner_land_path_b.sh"
 echo "$ROOT/scripts/owner_land_path_b.sh --after-merge"
 echo "$ROOT/scripts/path_b_dry_run.py"
 echo "$ROOT/scripts/path_c_dry_run.py"
-echo "$ROOT/scripts/refresh_restore_plan.py --batch 62"
+echo "$ROOT/scripts/refresh_restore_plan.py --batch 63"
 echo "$ROOT/scripts/check_autonomous_window.py"
-echo "$ROOT/scripts/watch_main_alignment.py  # embeds autonomous_window + route (Batch 62)"
+echo "$ROOT/scripts/watch_main_alignment.py  # embeds autonomous_window + route (Batch 62+)"
 echo "$ROOT/scripts/alignment_status.py"
 echo "# Path C — engineering: apply_all 0001–0004 + 0008–0016 on hardening tip:"
 echo "$ROOT/scripts/owner_land_path_c.sh --dry-run"

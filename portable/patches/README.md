@@ -1,7 +1,7 @@
 # Portable patches for `d6g8k5htny-coder/main`
 
 Base tip (see `BASE_TIP.txt`):
-`chatgpt/drive-github-hardening-20260919` @ `b3da6688a55d34681bb27f17ba6c6c5e16ad534c`
+`chatgpt/drive-github-hardening-20260919` @ `6f0f061588bfd10d1d7b9228d858e1df5d0c3290`
 (includes merged inventable PR #15, docs #16, math_status PARTIAL/REFUSED #18,
 fail-closed JETMOD shortcut refusals #17, instrumentation STATUS vocab #20,
 AUTHOR_SIDE honesty banners #19, docs STATUS honesty cross-links #22,
@@ -11,8 +11,13 @@ probes honesty pointer #26, probe-test isolation #27, register R1
 exact-byte custody #29, STATUS_JETMOD inventable merge+promote REFUSED
 honesty #28, STATUS_RN_UNIF inventable ABSENT/EMPTY honesty #30,
 register source preflight #31, agent-decided governance delegation,
-AGENTS.md bridge / CLAUDE.md mirror-quote fix #35, and inventable probe
-index tip provenance fail-closed #34).
+AGENTS.md bridge / CLAUDE.md mirror-quote fix #35, inventable probe
+index tip provenance fail-closed #34, and inventable REFUSED/EMPTY/ABSENT
+honesty walls tip provenance #43).
+
+**Post-#41 tip topology:** default `main` @ `1c6e74b` is ALIGNED landing
+(not Path-C shaped). Apply these patches only on hardening BASE_TIP.
+Do not `PATH_C_BASE=main`. See [`COMPATIBILITY.md`](COMPATIBILITY.md).
 
 **Scientific effect: NONE.** No claim/premise/lemma status moves.
 

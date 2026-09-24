@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 62) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C dry-run @ `b3da668`
+> ## STATUS (Batch 63) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `6f0f061` (post-#43)
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -15,9 +15,9 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `b3da668` (post-#34); RW **0** → **no 0017**;
+> (`restore_main_face` short-circuits). Path C: BASE_TIP `6f0f061` (post-#43); RW **0** → **no 0017**;
 > `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_62.json` + `BATCH62_TOKEN_SEARCH.json`.
+> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_63.json` + `BATCH63_TOKEN_SEARCH.json`.
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
 
@@ -73,7 +73,7 @@ on hardening. Certainty without write:
 # expect: APPLY_READY_POST_ALIGNED_KEEP_HARDENING; rebase_onto_main_state=CONFLICTING
 ```
 
-Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `b3da668` after #34 tip provenance — `apply_all --check` OK).
+Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `6f0f061` after #43 inventable honesty walls — `apply_all --check` OK).
 **Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
 `PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` usually **CONFLICTS** after #41.
 
