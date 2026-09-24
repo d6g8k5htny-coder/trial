@@ -241,6 +241,10 @@ def main() -> int:
             "hardening_path_c_shape": path_c_dry.get("hardening_path_c_shape"),
             "rebase_onto_main_state": path_c_dry.get("rebase_onto_main_state"),
             "rebase_onto_main_advised": path_c_dry.get("rebase_onto_main_advised"),
+            "rebase_conflict_path_count": path_c_dry.get("rebase_conflict_path_count"),
+            "rebase_conflict_paths": path_c_dry.get("rebase_conflict_paths"),
+            "rebase_conflict_categories": path_c_dry.get("rebase_conflict_categories"),
+            "conflict_aware_report": f"portable/PATH_C_REBASE_CONFLICT_REPORT_{args.batch}.json",
             "recommended_base": path_c_dry.get("recommended_base") or HARDENING,
             "do_not_set_path_c_base_main": path_c_dry.get("do_not_set_path_c_base_main"),
             "post_aligned_keep_hardening": bool(

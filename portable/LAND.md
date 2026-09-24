@@ -4,7 +4,7 @@
 Requires a credential that can push to `d6g8k5htny-coder/main`.
 This `trial` cloud agent cannot (git push and Git Data API both return 403).
 
-> ## STATUS (Batch 66) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `74c082e` (post-#45)
+> ## STATUS (Batch 67) — PERMANENT window; ALIGNED @ `1c6e74b`; Path C BASE_TIP `74c082e`; conflict-aware rebase report; no 0017
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -17,10 +17,13 @@ This `trial` cloud agent cannot (git push and Git Data API both return 403).
 > Default tip **`1c6e74b`**: renew main research landing ([PR #41](https://github.com/d6g8k5htny-coder/main/pull/41)).
 > Root: README + `AGENTS.md` + `.github`; `body` under history/. Keep iterating.
 > Scientific effect: **NONE**. **HOLD on PR #2 is VOID.** Path B land not needed
-> (`restore_main_face` short-circuits). Path C: BASE_TIP `74c082e` (tip refresh `3d47d1b`→`74c082e` via #45); **no 0017**;
-> `./scripts/owner_land_path_c.sh --dry-run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`
-> (rebase onto main **CONFLICTING**). See `portable/RESTORE_PLAN_66.json` + `BATCH66_TOKEN_SEARCH.json`.
-> `pack_portable.sh` auto-globs restore/token artifacts (Batch 64+).
+> (`restore_main_face` short-circuits). Path C: BASE_TIP still `74c082e` (no tip move);
+> serious RW/path/pytest/closes hunt → **IDLE / no 0017**; shipped
+> `portable/PATH_C_REBASE_CONFLICT_REPORT_67.json` (rebase conflicts:
+> `ci.yml`, `research.yml`, `engine/bridge/README.md`); `path_c_dry_run` now
+> enumerates conflict paths. Dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`.
+> See `portable/RESTORE_PLAN_67.json` + `BATCH67_TOKEN_SEARCH.json`.
+> `pack_portable.sh` auto-globs restore/token/rebase-report artifacts (Batch 64+/67+).
 
 ## Path B — honest redirect (PREFERRED when MISALIGNED)
 
@@ -78,7 +81,9 @@ on hardening. Certainty without write:
 
 Against `chatgpt/drive-github-hardening-20260919` (BASE_TIP `74c082e` after #45 cover-accounting RN replay — `apply_all --check` OK).
 **Do not** apply onto a tip that lacks `docs/math_status/PACKET.json`. **Do not** set
-`PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` usually **CONFLICTS** after #41.
+`PATH_C_BASE=main` on post-#41 tip. `PATH_C_REBASE_ONTO_MAIN=1` **CONFLICTS** after #41
+(first-stop paths: `.github/workflows/ci.yml`, `research.yml`, `engine/bridge/README.md` —
+see `portable/PATH_C_REBASE_CONFLICT_REPORT_67.json`).
 
 
 ```bash
@@ -168,7 +173,8 @@ Owner (or a write-enabled `main` agent) must run Path C for portable engineering
 
 ## Patch regeneration watch
 
-Working tip is **`74c082e`** (#45 cover-accounting on hardening; batch 66 — was `3d47d1b`). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Working tip is **`74c082e`** (#45 cover-accounting on hardening; batch 66–67). Default `main` **ALIGNED** @ `1c6e74b` (Batch 59 owner PR #41).
+Batch **67** (ALIGNED; Path C IDLE; conflict-aware rebase report): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **unchanged** `74c082e`; serious residual RW/path/pytest/closes hunt **0** → **no 0017**; shipped `PATH_C_REBASE_CONFLICT_REPORT_67.json` + `path_c_dry_run` conflict-path enum; restore plan `portable/RESTORE_PLAN_67.json`.
 Batch **66** (ALIGNED; Path C IDLE; tip refresh): tip still **`1c6e74b`**; audit **ALIGNED**; Path B N/A; write vectors **DENIED**; BASE_TIP **`3d47d1b` → `74c082e`** (#45); residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_66.json`.
 Batch **59** (ALIGNED via owner PR #41; Path B N/A; Path C IDLE): tip **`c2b0620` → `1c6e74b`**; audit **ALIGNED**; Option-B classic AM_FAILED / `path_b_dry_run` **ALREADY_ALIGNED**; write vectors **DENIED**; BASE_TIP **`9a56c30` → `036a6bc`**; residual RW hunt **0** → **no 0017**; restore plan `portable/RESTORE_PLAN_59.json`.
 Batch **57** (MISALIGNED; tip move + Option-B RECUT; Path B DENIED; Path C IDLE): tip **`4fc1d7c` → `c2b0620`**; audit **MISALIGNED**; Option-B recut `git am` OK / would-align (`path_b_dry_run`); all Path-B-capable write vectors **DENIED**; hardening tip **unchanged** `9a56c30`; residual RW hunt **0** → **no 0017**; open stack #34/#35/#36 (#36 MERGEABLE/CLEAN); restore plan `portable/RESTORE_PLAN_57.json`.

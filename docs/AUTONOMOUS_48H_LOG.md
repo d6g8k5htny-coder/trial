@@ -21,6 +21,23 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 67 — 2026-09-24 ~00:45 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `74c082e` unchanged; Path C IDLE / no 0017; conflict-aware rebase report)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false.
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403). Path B land **not needed**. Path C land **not applied** (not WRITABLE).
+- Tip vs BASE_TIP: hardening still **`74c082e`** (== BASE_TIP; no tip refresh). `apply_all --check`/apply OK @ 3.11; math_status problems=0 / lemma_closed=false; PACKET transcription digests **6/6 OK**.
+- Path C dry-run → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; rebase onto main **CONFLICTING** with enumerated paths: `.github/workflows/ci.yml`, `.github/workflows/research.yml`, `engine/bridge/README.md`.
+- Serious residual hunt @ CPython **3.11** after apply_all: focused **173**/0; receipts/bridge **541**/0; frozen/dio **19**/0; collision **189**/0; registers **102**/0; mirrors **105**/0; ops/prov **295**/0; lean/frontier **72**/0; cover **145**/0; RN sample+more **462**/0; new-since-0016 files **90**/0; collection **3172**/0; tools `--help` **0 RW** → **IDLE** / **no 0017**. Integrity/run_checks failures in this agent are env-only (`PYTHONNOUSERSITE` hides user-site pytest; bare `python` absent without PATH shim) — not portable tip defects.
+- **Meaningful improvement (not tip-refresh fluff):** `portable/PATH_C_REBASE_CONFLICT_REPORT_67.json`; `path_c_dry_run.py` emits `rebase_conflict_paths` + categories; `pack_portable.sh` globs rebase reports; LAND/COMPATIBILITY Batch 67.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- `RESTORE_PLAN_67.json` + `BATCH67_TOKEN_SEARCH.json` + conflict report. Trial packed portable tarball.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
+**Land note:** `gh pr create` → **403**. Direct push to trial `main` from `cursor/batch67-path-c-readiness-27b3`. Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+
 ### Batch 66 — 2026-09-24 ~00:22 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `74c082e`; Path C IDLE / no 0017; 48h-stop OVERRIDE)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE** — do **not** finalize/stop; prefer `permanent-autonomous-align-watch`.

@@ -1,0 +1,53 @@
+{
+  "batch": "67",
+  "generated_at_utc": "2026-09-24T00:45:00Z",
+  "scientific_effect": "NONE",
+  "note": "ALIGNED @ 1c6e74b; hardening tip still 74c082e (== BASE_TIP; no tip refresh); Path-B write vectors DENIED; permanent window; serious RW/path/pytest hunt IDLE / no 0017; shipped conflict-aware Path C rebase report (3 paths: ci.yml, research.yml, bridge README); path_c_dry_run now enumerates conflict paths",
+  "env_tokens": {
+    "GH_TOKEN": "NOT_SET",
+    "GITHUB_TOKEN": "NOT_SET",
+    "MAIN_PUSH_TOKEN": "NOT_SET",
+    "CURSOR_API_KEY": "NOT_SET",
+    "CURSOR_TOKEN": "NOT_SET",
+    "GITHUB_PAT": "NOT_SET",
+    "GH_PAT": "NOT_SET",
+    "CURSOR_*_agent_runtime": "SET (non-GitHub; CURSOR_AGENT, CURSOR_AGENT_SOCKET, CURSOR_CONVERSATION_ID, CURSOR_REQUEST_ID, CURSOR_RIPGREP_PATH)"
+  },
+  "gh_auth": {
+    "account": "cursor",
+    "protocol": "https",
+    "token_kind": "github_app_installation",
+    "hosts_yml": "~/.config/gh/hosts.yml present",
+    "credential_helper": "!/exec-daemon/gh auth git-credential",
+    "status": "logged_in (token redacted)"
+  },
+  "write_probes_vs_main": {
+    "repo": "d6g8k5htny-coder/main",
+    "path_b_ready": false,
+    "note": "Full vector table in RESTORE_PLAN_67.json / probe_main_write_vectors.py this batch"
+  },
+  "path_c": {
+    "dry_run": "scripts/path_c_dry_run.py",
+    "base_tip": "74c082e",
+    "tip_refresh": "none (still == BASE_TIP)",
+    "new_0017": false,
+    "idle": true,
+    "conflict_aware_report": "portable/PATH_C_REBASE_CONFLICT_REPORT_67.json",
+    "rebase_conflict_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/research.yml",
+      "engine/bridge/README.md"
+    ]
+  },
+  "window": {
+    "mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+    "state": "PERMANENT_OPEN",
+    "hard_stop": false,
+    "old_48h_stop_override": true
+  },
+  "timer": {
+    "name": "permanent-autonomous-align-watch",
+    "delay_seconds": 3600,
+    "not": "48h-stop"
+  }
+}

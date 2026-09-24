@@ -304,8 +304,11 @@ def main() -> int:
             _run(["git", "worktree", "remove", "--force", str(apply_wt)], cwd=clone_dir)
 
         # Rebase probe: PATH_C_REBASE_ONTO_MAIN after #41 typically CONFLICTS.
+        # Batch 67+: also enumerate conflict paths / categories (conflict-aware readiness).
         rebase_state = "SKIPPED"
         rebase_tail = ""
+        conflict_paths: list[str] = []
+        conflict_categories: dict[str, list[str]] = {}
         if not probe_rebase:
             rebase_state = "NOT_PROBED"
         elif main_shape["accepts"]:
@@ -331,13 +334,62 @@ def main() -> int:
             else:
                 rebase_state = "CONFLICTING"
                 report["rebase_onto_main_advised"] = False
+                unmerged = _run(
+                    ["git", "diff", "--name-only", "--diff-filter=U"], cwd=rebase_wt
+                )
+                conflict_paths = sorted(
+                    {
+                        line.strip()
+                        for line in (unmerged.stdout or "").splitlines()
+                        if line.strip()
+                    }
+                )
+                if not conflict_paths:
+                    porcelain = _run(["git", "status", "--porcelain"], cwd=rebase_wt)
+                    for line in (porcelain.stdout or "").splitlines():
+                        if len(line) >= 4 and line[:2] in {
+                            "UU",
+                            "AA",
+                            "DU",
+                            "UD",
+                            "AU",
+                            "UA",
+                        }:
+                            conflict_paths.append(line[3:].strip())
+                    conflict_paths = sorted(set(conflict_paths))
+                for path in conflict_paths:
+                    if path.startswith(".github/") or path.endswith(
+                        ("ci.yml", "research.yml")
+                    ):
+                        cat = "ci_workflows"
+                    elif path in {"AGENTS.md", "CLAUDE.md"} or "bridge" in path.lower():
+                        cat = "bridge_agents"
+                    elif path.startswith("history/") or path == "body" or path.startswith(
+                        "body/"
+                    ):
+                        cat = "history_relocation"
+                    elif path.startswith("tools/"):
+                        cat = "tools_stubs_vs_full"
+                    elif path in {"README.md"} or (
+                        path.startswith("docs/") and "math_status" not in path
+                    ):
+                        cat = "docs_landing"
+                    else:
+                        cat = "other"
+                    conflict_categories.setdefault(cat, []).append(path)
                 _run(["git", "rebase", "--abort"], cwd=rebase_wt)
             _run(["git", "worktree", "remove", "--force", str(rebase_wt)], cwd=clone_dir)
 
         report["rebase_onto_main_state"] = rebase_state
         report["rebase_onto_main_tail"] = rebase_tail
+        report["rebase_conflict_path_count"] = len(conflict_paths)
+        report["rebase_conflict_paths"] = conflict_paths
+        report["rebase_conflict_categories"] = conflict_categories
         report["path_c_base_main_ok"] = bool(main_shape["accepts"])
         report["do_not_set_path_c_base_main"] = not main_shape["accepts"]
+        report["conflict_aware_report"] = (
+            "portable/PATH_C_REBASE_CONFLICT_REPORT_<batch>.json"
+        )
 
         apply_ok = args.skip_apply_check or apply_exit == 0
         report["apply_ready"] = bool(apply_ok and hard_shape["accepts"])

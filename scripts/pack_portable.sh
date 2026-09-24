@@ -9,6 +9,8 @@ OUT="${1:-$ROOT/../trial-portable-main-fixes.tgz}"
 
 mapfile -t RESTORE_PLANS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'RESTORE_PLAN_*.json' | sort)
 mapfile -t TOKEN_SEARCHES < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'BATCH*_TOKEN_SEARCH.json' | sort)
+# Batch 67+: conflict-aware Path C rebase reports (concrete readiness, not RESTORE fluff).
+mapfile -t REBASE_REPORTS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'PATH_C_REBASE_CONFLICT_REPORT_*.json' | sort)
 
 if [[ ${#RESTORE_PLANS[@]} -eq 0 ]]; then
   echo "pack_portable: ERROR: no portable/RESTORE_PLAN_*.json found" >&2
@@ -28,6 +30,10 @@ rel_tokens=()
 for p in "${TOKEN_SEARCHES[@]}"; do
   rel_tokens+=("${p#"$ROOT"/}")
 done
+rel_rebase=()
+for p in "${REBASE_REPORTS[@]}"; do
+  rel_rebase+=("${p#"$ROOT"/}")
+done
 
 tar -czf "$OUT" -C "$ROOT" \
   portable/LAND.md \
@@ -36,6 +42,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/EXPECTED_POST_ALIGNMENT.json \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
+  ${rel_rebase[@]+"${rel_rebase[@]}"} \
   portable/main-default-branch \
   portable/pr2-landing \
   portable/patches \
@@ -56,4 +63,4 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
-echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs)"
+echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports)"

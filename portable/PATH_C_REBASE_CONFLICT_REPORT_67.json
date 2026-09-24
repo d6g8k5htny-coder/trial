@@ -1,0 +1,136 @@
+{
+  "artifact": "PATH_C_CONFLICT_AWARE_REBASE_REPORT",
+  "batch": "67",
+  "generated_at_utc": "2026-09-24T00:43:34Z",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "goal_complete": false,
+  "repo": "d6g8k5htny-coder/main",
+  "purpose": "Concrete Path C readiness: enumerate rebase-onto-main conflicts so owners do not set PATH_C_BASE=main / PATH_C_REBASE_ONTO_MAIN after #41",
+  "tips": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "hardening_sha": "74c082e799d8d338da9adb24a968c1231842851a",
+    "hardening_short": "74c082e",
+    "default_main_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+    "default_main_short": "1c6e74b",
+    "merge_base": "210882019de2f206b9883efddd3566dd773c7567",
+    "hardening_commits_ahead_of_merge_base": 53,
+    "main_commits_ahead_of_merge_base": 14,
+    "base_tip_file_sha": "74c082e799d8d338da9adb24a968c1231842851a",
+    "tip_matches_base_tip": true
+  },
+  "path_c_shape": {
+    "hardening": {
+      "tip_ref": "origin/chatgpt/drive-github-hardening-20260919",
+      "accepts": true,
+      "missing": []
+    },
+    "default_main": {
+      "tip_ref": "origin/main",
+      "accepts": false,
+      "missing": [
+        "docs/math_status/PACKET.json",
+        "tools/carriers_verify.py",
+        "tools/math_status_check.py"
+      ]
+    }
+  },
+  "rebase_onto_main": {
+    "command": "git rebase origin/main  # from clean hardening tip worktree",
+    "state": "CONFLICTING",
+    "advised": false,
+    "exit_nonzero": true,
+    "conflict_path_count": 3,
+    "conflict_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/research.yml",
+      "engine/bridge/README.md"
+    ],
+    "categories": {
+      "ci_workflows": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/research.yml"
+      ],
+      "bridge_agents": [
+        "engine/bridge/README.md"
+      ]
+    },
+    "conflict_details": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "category": "ci_workflows",
+        "conflict_marker_blocks": 3,
+        "sample_markers": [
+          "4:<<<<<<< HEAD",
+          "11:=======",
+          "19:>>>>>>> 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridg",
+          "24:<<<<<<< HEAD",
+          "26:=======",
+          "28:>>>>>>> 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridg"
+        ],
+        "bytes": 4022
+      },
+      {
+        "path": ".github/workflows/research.yml",
+        "category": "ci_workflows",
+        "conflict_marker_blocks": 0,
+        "sample_markers": [],
+        "bytes": 5280
+      },
+      {
+        "path": "engine/bridge/README.md",
+        "category": "bridge_agents",
+        "conflict_marker_blocks": 0,
+        "sample_markers": [],
+        "bytes": 13132
+      }
+    ],
+    "stderr_tail": "Rebasing (1/41)\nerror: could not apply 8b7e2a8... Harden required CI, pin manifest coverage, and add manual bridge pilot\nhint: Resolve all conflicts manually, mark them as resolved with\nhint: \"git add/rm <conflicted_files>\", then run \"git rebase --continue\".\nhint: You can instead skip this commit: run \"git rebase --skip\".\nhint: To abort and get back to the state before \"git rebase\", run \"git rebase --abort\".\nCould not apply 8b7e2a8... Harden required CI, pin manifest coverage, and add manual bridge pilot\n",
+    "stdout_tail": "Auto-merging .github/workflows/ci.yml\nCONFLICT (content): Merge conflict in .github/workflows/ci.yml\nCONFLICT (modify/delete): .github/workflows/research.yml deleted in HEAD and modified in 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridge pilot).  Version 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridge pilot) of .github/workflows/research.yml left in tree.\nCONFLICT (modify/delete): engine/bridge/README.md deleted in HEAD and modified in 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridge pilot).  Version 8b7e2a8 (Harden required CI, pin manifest coverage, and add manual bridge pilot) of engine/bridge/README.md left in tree.\n"
+  },
+  "recommendation": {
+    "path_c_base": "chatgpt/drive-github-hardening-20260919",
+    "do_not_set_path_c_base_main": true,
+    "do_not_set_path_c_rebase_onto_main": true,
+    "reason": "Post-#41 default main is ALIGNED landing (no PACKET/carriers_verify); rebase relocates history/bridge/ci and CONFLICTS. Keep Path C on hardening; land apply_all 0001-0004+0008-0016 there when write is available.",
+    "owner_land": "./scripts/owner_land_path_c.sh --dry-run && ./scripts/owner_land_path_c.sh",
+    "certainty_script": "scripts/path_c_dry_run.py"
+  },
+  "batch67_engineering_hunt": {
+    "cwd": "/tmp/batch67/main-hardening @ 74c082e + apply_all",
+    "python": "3.11.16",
+    "apply_all_check": "OK",
+    "apply_all_apply": "OK",
+    "math_status_check": "problems=0 lemma_closed=false",
+    "packet_transcription_digests": "OK (6/6 match after 0002)",
+    "packet_base_commit": "a89f9a703739aed9d290c94d68f80bf4e8bd9d62 (ancestor of tip; tip-align #23 pin)",
+    "new_files_since_post_0016_era": [
+      "tests/test_cover_audit.py",
+      "tests/test_register_preflight.py",
+      "tests/test_register_source_selection.py",
+      "tools/registers_import.py",
+      "tools/registers_preflight.py",
+      "tools/rn_side24_spatial_check.py",
+      "research/cover/audit.py"
+    ],
+    "new_files_missing_closes": false,
+    "pytest_collection": "3172 collected / exit 0",
+    "resourcewarning_suites": {
+      "focused": "173/0",
+      "receipts_bridge": "541/0",
+      "frozen_dio": "19/0",
+      "collision": "189/0",
+      "registers": "102/0",
+      "mirrors": "105/0",
+      "ops_prov": "295/0",
+      "lean_frontier": "72/0",
+      "cover": "145/0",
+      "rn_sample": "169/0",
+      "rn_more": "293/0",
+      "new_files": "90/0",
+      "tools_help": "0 RW"
+    },
+    "new_0017": false,
+    "idle_reason": "No residual ResourceWarning / bare-open / PACKET digest drift / collection error suitable for portable 0017; integrity failures are agent-env (PYTHONNOUSERSITE hides user-site pytest; bare `python` absent without PATH shim) not tip defects"
+  }
+}

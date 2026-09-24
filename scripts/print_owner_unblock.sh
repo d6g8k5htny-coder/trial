@@ -18,7 +18,7 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 66 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT} (post-#45); unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 67 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
@@ -30,8 +30,9 @@ echo "One-command: $ROOT/scripts/restore_main_face.sh  # short-circuits when alr
 echo "Path C BASE_TIP file: $BASE_TIP_LINE"
 echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT}"
 echo "Path C stays on chatgpt/drive-github-hardening-20260919 (has PACKET.json; rebase onto main CONFLICTS)."
+echo "Rebase conflict paths: portable/PATH_C_REBASE_CONFLICT_REPORT_67.json (ci.yml, research.yml, bridge README)."
 echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
-echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH (Batch 64+)."
+echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_CONFLICT_REPORT_* (Batch 64+/67+)."
 echo "Scientific effect: NONE"
 echo
 
