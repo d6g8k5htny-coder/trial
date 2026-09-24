@@ -7,6 +7,10 @@ Owner sandbox for Dylan Roy. **Not** the research repository.
 | [`d6g8k5htny-coder/main`](https://github.com/d6g8k5htny-coder/main) | q0 / SIDE24 research program (Drive → git). Governing intent lives there. |
 | **this repo** | Empty-by-design testing / agent landing pad. CC0. No scientific authority. |
 
+## #1 unblock — add `main` to Cursor App repo access
+
+Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Path C cannot land until you add `d6g8k5htny-coder/main` with **Read and write** under GitHub → Settings → Applications → Cursor → Repository access. Steps: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
+
 ## Intent (this repository)
 
 - Hold lightweight probes, agent smoke checks, and notes that must not touch research registers.

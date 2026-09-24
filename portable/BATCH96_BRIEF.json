@@ -1,0 +1,14 @@
+{
+  "batch": "96",
+  "generated_at_utc": "2026-09-24T03:40:05Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "install_has_main": false,
+  "installation_names": ["d6g8k5htny-coder/trial"],
+  "path_c_landed": false,
+  "route_now": "LAND_TRIAL",
+  "change": "README.md #1 unblock section (add main to Cursor App repo access); cite trial-only install",
+  "flipped_anything": false,
+  "note": "install_has_main=false; Path C not landed; research status untouched"
+}
