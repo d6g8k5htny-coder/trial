@@ -1,6 +1,6 @@
 {
   "batch": "192",
-  "generated_at_utc": "2026-09-24T12:47:46Z",
+  "generated_at_utc": "2026-09-24T12:50:31Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -31,7 +31,7 @@
   "prior_device_code": "1C7F-22B5",
   "auth_renewed": true,
   "auth_renew_reason": "seconds_left<90",
-  "seconds_left": 899,
+  "seconds_left": 705,
   "has_token": false,
   "has_main_push_token": false,
   "secrets_list_http": 403,
@@ -79,6 +79,6 @@
   "auth_timer_note": "ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
   "issue_title": "Path C unblock \u2014 Batch 192 canonical (CC72-DB3D; README face)",
   "auth_renew_threshold_note": "renew if expired or seconds_left<90; Batch 192 end: 1C7F-22B5 <90s \u2192 renewed CC72-DB3D",
-  "trial_main_sha": "6863dc046fa32318c2289d4018f73ce93a04f81c",
+  "trial_main_sha": "f10dc4403d546bdd5e6abb813d293b258ba82a91",
   "trial_landed": true
 }
