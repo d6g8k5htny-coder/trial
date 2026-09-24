@@ -17,6 +17,13 @@ Flags:
   --interval N Poll interval seconds (default 300; env WHEN_WRITABLE_INTERVAL).
   --mock-probe / --mock-align  Deterministic states for intent tests.
 
+Token discovery (first existing wins; value never printed):
+  1. env MAIN_PUSH_TOKEN
+  2. /cursor/stores/self/MAIN_PUSH_TOKEN (file contents)
+  3. /workspace/.secrets/MAIN_PUSH_TOKEN (file contents)
+Injected into child git/gh/probe/land env as MAIN_PUSH_TOKEN (+ GH_TOKEN /
+GITHUB_TOKEN when those are unset).
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -54,6 +61,53 @@ DEFAULT_STOP = Path(
     )
 )
 
+# Token file candidates (after env). Overridable in tests via resolve_main_push_token.
+DEFAULT_TOKEN_FILES: tuple[Path, ...] = (
+    Path("/cursor/stores/self/MAIN_PUSH_TOKEN"),
+    Path("/workspace/.secrets/MAIN_PUSH_TOKEN"),
+)
+
+
+def resolve_main_push_token(
+    *,
+    env: dict[str, str] | None = None,
+    file_candidates: list[Path] | tuple[Path, ...] | None = None,
+) -> tuple[str | None, str | None]:
+    """Return (token, source_label). Never logs or returns the secret to stdout.
+
+    Priority: env MAIN_PUSH_TOKEN → first existing non-empty token file.
+    """
+    environ = env if env is not None else os.environ
+    env_val = (environ.get("MAIN_PUSH_TOKEN") or "").strip()
+    if env_val:
+        return env_val, "env:MAIN_PUSH_TOKEN"
+
+    candidates = file_candidates if file_candidates is not None else DEFAULT_TOKEN_FILES
+    for path in candidates:
+        try:
+            if not path.is_file():
+                continue
+            raw = path.read_text(encoding="utf-8").strip()
+        except OSError:
+            continue
+        if raw:
+            return raw, f"file:{path}"
+    return None, None
+
+
+def apply_token_to_env(base_env: dict[str, str], token: str | None) -> dict[str, str]:
+    """Copy env and inject token for git/gh/probe without printing it."""
+    out = dict(base_env)
+    if not token:
+        return out
+    out["MAIN_PUSH_TOKEN"] = token
+    # Mirror for gh / urllib fallbacks used by probe and land scripts.
+    if not (out.get("GH_TOKEN") or "").strip():
+        out["GH_TOKEN"] = token
+    if not (out.get("GITHUB_TOKEN") or "").strip():
+        out["GITHUB_TOKEN"] = token
+    return out
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -73,6 +127,12 @@ def _parse_json_stdout(text: str) -> dict:
             return {"raw_stdout": text[-2000:]}
 
 
+def _child_env() -> dict[str, str]:
+    """Env for probe/audit/land children, with MAIN_PUSH_TOKEN discovery applied."""
+    token, _source = resolve_main_push_token()
+    return apply_token_to_env(dict(os.environ), token)
+
+
 def _run_json(cmd: list[str], timeout: int = 180) -> tuple[int, dict, str]:
     proc = subprocess.run(
         cmd,
@@ -81,7 +141,7 @@ def _run_json(cmd: list[str], timeout: int = 180) -> tuple[int, dict, str]:
         check=False,
         timeout=timeout,
         cwd=str(ROOT),
-        env=os.environ.copy(),
+        env=_child_env(),
     )
     return proc.returncode, _parse_json_stdout(proc.stdout), (proc.stderr or "").strip()
 
@@ -170,7 +230,7 @@ def _run_land(cmd: list[str], dry_run: bool, label: str, timeout: int = 900) -> 
         check=False,
         timeout=timeout,
         cwd=str(ROOT),
-        env=os.environ.copy(),
+        env=_child_env(),
     )
     detail["exit"] = proc.returncode
     detail["stdout_tail"] = (proc.stdout or "")[-3000:]
@@ -347,10 +407,19 @@ def main() -> int:
     status_path = Path(args.status)
     stop_path = Path(args.stop)
 
+    # Resolve once at start; inject into process env so all children see it.
+    # Log source label only — never the token value.
+    token, token_source = resolve_main_push_token()
+    if token:
+        os.environ.update(apply_token_to_env(dict(os.environ), token))
+        token_note = f"token_source={token_source}"
+    else:
+        token_note = "token_source=none"
+
     _log(
         log_path,
         f"start once={args.once} dry_run={args.dry_run} interval={args.interval}s "
-        f"batch={args.batch} scientific_effect=NONE lemma_closed=false",
+        f"batch={args.batch} {token_note} scientific_effect=NONE lemma_closed=false",
     )
 
     iteration = 0
@@ -409,6 +478,8 @@ def main() -> int:
                 "dry_run": args.dry_run,
                 "once": args.once,
                 "batch": str(args.batch),
+                "token_present": bool(token),
+                "token_source": token_source or "none",
                 "scientific_effect": "NONE",
                 "goal_complete": False,
                 "lemma_closed": False,

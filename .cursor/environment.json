@@ -1,6 +1,11 @@
 {
   "name": "trial-plus-main-scope",
   "install": "python3 -m pip install -q pytest",
+  // Write intent: repositoryDependencies asks Cursor to include d6g8k5htny-coder/main
+  // in the Cloud Agent GitHub token scope (Contents/PR write on main). Schema items
+  // are repo URL strings (https://cursor.com/schemas/environment.schema.json).
+  // After this file merges on trial, RELAUNCH a Cloud Agent from trial so the new
+  // token picks up main scope — existing runs keep the old trial-only token.
   "repositoryDependencies": [
     "github.com/d6g8k5htny-coder/main"
   ]

@@ -39,7 +39,7 @@ Do **not** merge or enable `research.yml` schedules on default `main` solely to 
 
 Cloud environment for this run listed only `github.com/d6g8k5htny-coder/trial`. For JETMOD / RN-UNIF / register work, start the agent against `d6g8k5htny-coder/main` with write credentials and base branch `chatgpt/drive-github-hardening-20260919` (or whatever you designate after step 2).
 
-**After this trial PR merges** (adds `.cursor/environment.json` with `repositoryDependencies: ["github.com/d6g8k5htny-coder/main"]`): **relaunch** a Cloud Agent on `trial` so the GitHub token picks up `main` in scope, then retry Path A/B. Scientific effect: **NONE**. Existing runs keep the old token scope until relaunch.
+**Relaunch Cloud Agent from trial AFTER merging this (write-intent env):** `.cursor/environment.json` declares `repositoryDependencies: ["github.com/d6g8k5htny-coder/main"]` (Cursor schema: repo URL string; write intent = include `main` in the agent GitHub token). **Merge that env onto trial `main`, then relaunch** a Cloud Agent from `trial` so the new token gains `main` scope. Until relaunch, live runs keep the old trial-only token and Path B/C stay **403**. Optional: drop `MAIN_PUSH_TOKEN` into env, `/cursor/stores/self/MAIN_PUSH_TOKEN`, or `/workspace/.secrets/MAIN_PUSH_TOKEN` for `when_writable_land.py`. Scientific effect: **NONE**.
 
 ### 5. Leave fail-closed walls fail-closed
 

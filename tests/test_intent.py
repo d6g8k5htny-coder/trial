@@ -6,6 +6,7 @@ from d6g8k5htny-coder/main and must never be cited as scientific evidence.
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -599,8 +600,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
     assert "74c082e" in log or "PR #45" in log or "5f352a2" in log or "ac33581" in log or "PR #48" in log or "Batch 74" in log
     assert "Batch 74" in log
-    assert "Batch 81" in log or "Batch 82" in log
-    assert "when_writable_land" in log or "Batch 82" in log
+    assert "Batch 81" in log or "Batch 82" in log or "Batch 84" in log
+    assert "when_writable_land" in log or "Batch 82" in log or "Batch 84" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
     assert "land-path-c-on-main" in log
@@ -1508,6 +1509,121 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["stopped"] is True
         assert status["stop_reason"] == "stop_file"
         assert status["goal_complete"] is False
+
+
+def test_when_writable_land_token_file_discovery() -> None:
+    """Batch 84: MAIN_PUSH_TOKEN from env → store file → .secrets (tempfile only)."""
+    import importlib.util
+    import tempfile
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    spec = importlib.util.spec_from_file_location("when_writable_land", script)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    fake = "ghp_TEST_FAKE_TOKEN_DO_NOT_USE_batch84"
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        store = td_path / "store_MAIN_PUSH_TOKEN"
+        secrets = td_path / "secrets_MAIN_PUSH_TOKEN"
+        candidates = (store, secrets)
+
+        # None when empty
+        tok, src = mod.resolve_main_push_token(env={}, file_candidates=candidates)
+        assert tok is None and src is None
+
+        # Second file used when first missing
+        secrets.write_text(fake + "\n", encoding="utf-8")
+        tok, src = mod.resolve_main_push_token(env={}, file_candidates=candidates)
+        assert tok == fake
+        assert src == f"file:{secrets}"
+
+        # First file wins over second
+        store.write_text(fake + "_STORE\n", encoding="utf-8")
+        tok, src = mod.resolve_main_push_token(env={}, file_candidates=candidates)
+        assert tok == fake + "_STORE"
+        assert src == f"file:{store}"
+
+        # Env wins over both files
+        tok, src = mod.resolve_main_push_token(
+            env={"MAIN_PUSH_TOKEN": fake + "_ENV"},
+            file_candidates=candidates,
+        )
+        assert tok == fake + "_ENV"
+        assert src == "env:MAIN_PUSH_TOKEN"
+
+        # apply_token_to_env injects for git/gh without altering when empty
+        plain = {"PATH": "/usr/bin"}
+        assert mod.apply_token_to_env(plain, None) == plain
+        injected = mod.apply_token_to_env(plain, fake)
+        assert injected["MAIN_PUSH_TOKEN"] == fake
+        assert injected["GH_TOKEN"] == fake
+        assert injected["GITHUB_TOKEN"] == fake
+        # Does not overwrite existing GH_TOKEN
+        injected2 = mod.apply_token_to_env({"GH_TOKEN": "keep_me"}, fake)
+        assert injected2["GH_TOKEN"] == "keep_me"
+        assert injected2["MAIN_PUSH_TOKEN"] == fake
+
+    # Default candidate paths documented in source
+    src = script.read_text(encoding="utf-8")
+    assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in src
+    assert "/workspace/.secrets/MAIN_PUSH_TOKEN" in src
+    assert "resolve_main_push_token" in src
+    assert "token_source" in src
+
+    # Env hardening: repositoryDependencies for main (write intent)
+    env_text = (ROOT / ".cursor" / "environment.json").read_text(encoding="utf-8")
+    assert "repositoryDependencies" in env_text
+    assert "github.com/d6g8k5htny-coder/main" in env_text
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "RELAUNCH" in owner.upper() or "relaunch" in owner
+    assert "repositoryDependencies" in owner
+    assert "AFTER merging" in owner or "after merging" in owner.lower()
+
+    # --once run must never echo the fake secret when file-discovered
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        store = td_path / "MAIN_PUSH_TOKEN"
+        store.write_text(fake, encoding="utf-8")
+        log_path = td_path / "log.txt"
+        status_path = td_path / "status.json"
+        stop_path = td_path / "stop"
+        # Monkey via env override of candidates is unit-tested above; here verify
+        # CLI logging never prints a planted env token value.
+        env = {**os.environ, "MAIN_PUSH_TOKEN": fake}
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--once",
+                "--dry-run",
+                "--mock-probe",
+                "DENIED",
+                "--log",
+                str(log_path),
+                "--status",
+                str(status_path),
+                "--stop",
+                str(stop_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+            cwd=str(ROOT),
+            env=env,
+        )
+        assert proc.returncode == 0, proc.stderr + proc.stdout
+        combined = (proc.stdout or "") + (proc.stderr or "") + log_path.read_text(
+            encoding="utf-8"
+        )
+        assert fake not in combined
+        status = __import__("json").loads(status_path.read_text(encoding="utf-8"))
+        assert status["token_present"] is True
+        assert status["token_source"] == "env:MAIN_PUSH_TOKEN"
+        assert fake not in status_path.read_text(encoding="utf-8")
 
 
 def test_objective_evidence_83() -> None:
