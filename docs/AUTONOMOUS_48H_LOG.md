@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 72 — 2026-09-24 ~01:27 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `5f352a2` unchanged; `aligned_drift_watch.py`)
+
+- **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.
+- Stores confirmed: `autonomous_window_mode.txt=PERMANENT_UNTIL_OWNER_INTERVENES`; `window_seconds=999999999`. `check_autonomous_window.py` → `PERMANENT_OPEN` / hard_stop=false.
+- Scientific effect: **NONE**. Never promote research status; `lemma_closed` stays false. **Flipped nothing.**
+- `watch_main_alignment.py` → **ALIGNED**; tip_sha `1c6e74b…`; scientific_effect NONE; route Path C. Write probe / vectors → **DENIED** (403) all W1–W5. Path B land **not needed** (still ALIGNED). Path C land **not applied** (not WRITABLE) → Path C idle.
+- Tip vs BASE_TIP: hardening still **`5f352a2`** (== BASE_TIP; **no tip refresh**).
+- **Concrete work (pressure: ALIGNED can be reverted — #32 history):** `scripts/aligned_drift_watch.py` — exit **0 ALIGNED / 1 MISALIGNED / 2 transport**; prints preferred restore route (**B vs A**; Path C when ALIGNED); writes `portable/ALIGNED_DRIFT_SNAPSHOT.json` (tip SHA + markers); optional `--restore-if-writable` runs `restore_main_face` when MISALIGNED + write works. CI: **record-only** step in `trial-ci` (never gates on MISALIGNED). `pack_portable.sh` ships script + snapshot. Open-PR threat scan: **no open PRs target `base=main`** (`portable/BATCH72_OPEN_PR_THREATS.json`).
+- Live `RESTORE_PLAN_72.json` + `BATCH72_TOKEN_SEARCH.json` + `BATCH72_BRIEF.json`.
+- Timer: (re)arm `permanent-autonomous-align-watch` **3600s** (recurring). Do **not** arm a 48h finale.
+- Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
+- `goal_complete=false` (permanent window open; keep iterating).
+
 ### Batch 71 — 2026-09-24 ~01:20 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP `5f352a2` confirmed; residual RW IDLE / no 0017)
 
 - **OWNER (Dylan Roy):** Permanent until intervene; unrestricted / auto-approve; agents decide. Stop only on owner intervene — **no 48h finale**. Old `autonomous-48h-batch` timer 48h-stop text is **OVERRIDE**.

@@ -52,6 +52,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/OWNER_ONE_LINERS.md \
   portable/CONFLICTING_PR_NOTES.md \
   portable/EXPECTED_POST_ALIGNMENT.json \
+  portable/ALIGNED_DRIFT_SNAPSHOT.json \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
@@ -65,6 +66,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/audit_research_stack_open.py \
   scripts/alignment_status.py \
   scripts/watch_main_alignment.py \
+  scripts/aligned_drift_watch.py \
   scripts/check_autonomous_window.py \
   scripts/probe_main_write.py \
   scripts/probe_main_write_vectors.py \

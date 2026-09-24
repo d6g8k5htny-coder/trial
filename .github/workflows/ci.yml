@@ -38,6 +38,24 @@ jobs:
         run: |
           python scripts/watch_main_alignment.py | tee alignment-watch.json
           # Do not fail the job on MISALIGNED; that is the known upstream state.
+      - name: ALIGNED drift watch (record-only)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Batch 72: record tip SHA + markers + preferred restore route (B vs A).
+          # Never fail the job on ALIGNED(0) or MISALIGNED(1) of remote main.
+          # Transport(2) is also non-fatal here (record-only); audit step above
+          # still fails the job on transport when the primary audit cannot run.
+          set +e
+          python scripts/aligned_drift_watch.py --no-probe | tee aligned-drift-watch.json
+          code=$?
+          set -e
+          echo "aligned_drift_watch_exit=$code (record-only; not gating)"
+          if [ -f portable/ALIGNED_DRIFT_SNAPSHOT.json ]; then
+            echo "snapshot:"
+            cat portable/ALIGNED_DRIFT_SNAPSHOT.json
+          fi
+          exit 0
 
   # Prove portable engineering patches still apply on the live working tip.
   # Scientific effect: NONE. Does not push to main.

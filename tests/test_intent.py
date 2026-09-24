@@ -534,6 +534,8 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "auto-approved" in agents or "auto-approve" in agents
     assert "Do not ask Dylan for approval" in agents or "approval" in agents.lower()
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 72" in log
+    assert "Batch 71" in log
     assert "Batch 69" in log
     assert "Batch 68" in log
     assert "Batch 66" in log
@@ -553,10 +555,11 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert "ALIGNED" in log and "1c6e74b" in log
     assert "path_c_dry_run" in log or "Path C dry-run" in log or "APPLY_READY_POST_ALIGNED" in log
     assert "check_autonomous_window" in log or "no 48h finale" in log.lower()
-    assert "74c082e" in log or "PR #45" in log
+    assert "74c082e" in log or "PR #45" in log or "5f352a2" in log
     assert "pack_portable" in log and ("auto-glob" in log or "glob" in log)
     assert "3600" in log
     assert "land-path-c-on-main" in log
+    assert "aligned_drift_watch" in log
     assert "watch_main_alignment" in log and (
         "autonomous_window" in log
         or "route" in log
@@ -566,6 +569,7 @@ def test_owner_one_liners_and_probe_main_write() -> None:
         or "Batch 65" in log
         or "Batch 66" in log
         or "Batch 69" in log
+        or "Batch 72" in log
     )
     restore_one = ROOT / "scripts" / "restore_main_face.sh"
     assert restore_one.is_file()
@@ -986,8 +990,14 @@ def test_audit_research_stack_open_read_only() -> None:
     assert "audit_research_stack_open.py" in pack
     assert "BATCH*_RESEARCH_STACK_AUDIT.json" in pack
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "Batch 70" in unblock or "Batch 71" in unblock
+    assert (
+        "Batch 72" in unblock
+        or "Batch 71" in unblock
+        or "Batch 70" in unblock
+        or "aligned_drift_watch" in unblock
+    )
     assert "audit_research_stack_open.py" in unblock
+    assert "aligned_drift_watch.py" in unblock
     assert (ROOT / "portable" / "BATCH71_BRIEF.json").is_file()
     brief71 = json.loads(
         (ROOT / "portable" / "BATCH71_BRIEF.json").read_text(encoding="utf-8")
@@ -1004,6 +1014,129 @@ def test_audit_research_stack_open_read_only() -> None:
     assert restore71["goal_complete"] is False
     assert restore71["lemma_closed"] is False
     assert "5f352a2" in str(restore71.get("path_c", {}).get("base_tip", ""))
+    assert (ROOT / "portable" / "BATCH72_BRIEF.json").is_file()
+    brief72 = json.loads(
+        (ROOT / "portable" / "BATCH72_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief72["scientific_effect"] == "NONE"
+    assert brief72["goal_complete"] is False
+    assert brief72["lemma_closed"] is False
+    assert brief72["aligned"] is True
+    assert brief72["hardening_tip"].startswith("5f352a2")
+    assert brief72["preferred_restore_if_drift"] == "Path_B"
+    assert (ROOT / "portable" / "RESTORE_PLAN_72.json").is_file()
+    restore72 = json.loads(
+        (ROOT / "portable" / "RESTORE_PLAN_72.json").read_text(encoding="utf-8")
+    )
+    assert restore72["goal_complete"] is False
+    assert restore72["lemma_closed"] is False
+    assert "5f352a2" in str(restore72.get("path_c", {}).get("base_tip", ""))
+
+
+def test_aligned_drift_watch_script_and_ci_record_only() -> None:
+    """Batch 72: drift watch exits 0/1/2, snapshots tip+markers, CI is record-only."""
+    import json
+    import tempfile
+
+    script = ROOT / "scripts" / "aligned_drift_watch.py"
+    assert script.is_file()
+    src = script.read_text(encoding="utf-8")
+    assert "preferred_restore_route" in src
+    assert "Path_B" in src and "Path_A" in src
+    assert "--restore-if-writable" in src
+    assert "ALIGNED_DRIFT_SNAPSHOT" in src
+    assert "restore_main_face" in src
+    assert "lemma_closed" in src
+    assert "scientific_effect" in src.lower() or "Scientific effect" in src
+
+    snap_path = ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json"
+    assert snap_path.is_file()
+    snap = json.loads(snap_path.read_text(encoding="utf-8"))
+    assert snap["scientific_effect"] == "NONE"
+    assert snap["goal_complete"] is False
+    assert snap["lemma_closed"] is False
+    assert snap["state"] in {"ALIGNED", "MISALIGNED", "TRANSPORT_ERROR"}
+    assert "default_tip_sha" in snap
+    assert "preferred_restore_route" in snap
+    assert "q0_or_notice_markers_present" in snap or "complexity_markers_present" in snap
+
+    threats = ROOT / "portable" / "BATCH72_OPEN_PR_THREATS.json"
+    assert threats.is_file()
+    threat_data = json.loads(threats.read_text(encoding="utf-8"))
+    assert threat_data["scientific_effect"] == "NONE"
+    assert threat_data["goal_complete"] is False
+    assert isinstance(threat_data["open_prs_targeting_default_main"], list)
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "aligned_drift_watch.py" in ci
+    assert "record-only" in ci
+    # Must not gate the job on MISALIGNED of remote main
+    assert "aligned-drift-watch.json" in ci or "ALIGNED drift watch" in ci
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "aligned_drift_watch.py" in pack
+    assert "ALIGNED_DRIFT_SNAPSHOT.json" in pack
+
+    with tempfile.TemporaryDirectory() as td:
+        out_snap = Path(td) / "snap.json"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--no-probe",
+                "--snapshot",
+                str(out_snap),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=90,
+            check=False,
+            cwd=str(ROOT),
+        )
+        assert result.returncode in (0, 1, 2), result.stderr + result.stdout
+        data = json.loads(result.stdout)
+        assert data["scientific_effect"] == "NONE"
+        assert data["goal_complete"] is False
+        assert data["lemma_closed"] is False
+        assert data["flipped_anything"] is False
+        assert data["state"] in {"ALIGNED", "MISALIGNED", "TRANSPORT_ERROR"}
+        route = data["preferred_restore_route"]
+        assert "prefer" in route
+        if data["state"] == "ALIGNED":
+            assert route["prefer"] == "Path_C_on_hardening"
+            assert route.get("restore_if_drift") == "Path_B"
+            assert route.get("alternate_restore") == "Path_A"
+        elif data["state"] == "MISALIGNED":
+            assert route["prefer"] == "Path_B"
+            assert route.get("alternate_restore") == "Path_A"
+        assert out_snap.is_file()
+        written = json.loads(out_snap.read_text(encoding="utf-8"))
+        assert written["scientific_effect"] == "NONE"
+        assert written["state"] == data["state"]
+        assert "default_tip_sha" in written
+
+    # --restore-if-writable must not land when ALIGNED or when write DENIED
+    skip = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--no-probe",
+            "--no-snapshot",
+            "--restore-if-writable",
+            "--batch",
+            "72",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert skip.returncode in (0, 1, 2), skip.stderr + skip.stdout
+    skip_data = json.loads(skip.stdout)
+    if "restore" in skip_data:
+        # Without probe, write state is None → skipped not_writable or not_misaligned
+        assert skip_data["restore"].get("attempted") is False
 
 
 def test_owner_land_scripts_exist_and_fail_closed() -> None:

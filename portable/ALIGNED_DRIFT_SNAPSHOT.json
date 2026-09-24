@@ -1,0 +1,27 @@
+{
+  "complexity_markers_present": [],
+  "default_branch": "main",
+  "default_tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+  "generated_at_utc": "2026-09-24T01:30:13Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "path_b_ready": null,
+  "preferred_restore_route": {
+    "action": "path_c_hardening_if_writable_else_dry_run",
+    "alternate_restore": "Path_A",
+    "note": "Default tip ALIGNED. Prefer Path C on hardening when writable. If tip drifts (e.g. another #32-style revert), restore via Path B first; Path A remains alternate. Never flip lemma_closed.",
+    "prefer": "Path_C_on_hardening",
+    "restore_if_drift": "Path_B"
+  },
+  "q0_or_notice_markers_present": [
+    "SIDE24",
+    "chatgpt/drive-github-hardening-20260919"
+  ],
+  "root_has_AGENTS_md": true,
+  "root_has_body": false,
+  "root_has_dot_github": true,
+  "scientific_effect": "NONE",
+  "state": "ALIGNED",
+  "threat_note": "ALIGNED can be reverted (PR #32 history). Keep Path B restore ready.",
+  "write_state": null
+}

@@ -45,6 +45,8 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`scripts/audit_research_stack_open.py`](scripts/audit_research_stack_open.py) — read-only OPEN premises/lemmas/prizes/claims inventory (never flips status)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON (window + Path C tip + post-#41 critical_path)
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher (embeds permanent window + route)
+- [`scripts/aligned_drift_watch.py`](scripts/aligned_drift_watch.py) — drift watch (exit 0/1/2; preferred restore B vs A; snapshot; `--restore-if-writable`)
+- [`portable/ALIGNED_DRIFT_SNAPSHOT.json`](portable/ALIGNED_DRIFT_SNAPSHOT.json) — tip SHA + markers snapshot from drift watch
 - [`scripts/check_autonomous_window.py`](scripts/check_autonomous_window.py) — permanent/finite autonomous window gate
 - [`scripts/probe_main_write.py`](scripts/probe_main_write.py) — write probe (exit 0=writable, 1=denied, 2=transport)
 - [`scripts/probe_main_write_vectors.py`](scripts/probe_main_write_vectors.py) — multi-vector Path B probe dashboard

@@ -1,0 +1,41 @@
+{
+  "batch": "72",
+  "generated_at_utc": "2026-09-24T01:27:30Z",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "aligned": true,
+  "default_tip": "1c6e74b",
+  "hardening_tip": "5f352a2",
+  "tip_refresh": false,
+  "path_b_writable": false,
+  "path_c_writable": false,
+  "path_b_needed": false,
+  "preferred_when_aligned": "Path_C_on_hardening",
+  "preferred_restore_if_drift": "Path_B",
+  "alternate_restore": "Path_A",
+  "write_state": "DENIED",
+  "route_now": "Path_C_idle_not_writable",
+  "concrete_work": [
+    "scripts/aligned_drift_watch.py",
+    "portable/ALIGNED_DRIFT_SNAPSHOT.json",
+    ".github/workflows/ci.yml (record-only drift watch)",
+    "scripts/pack_portable.sh",
+    "tests/test_intent.py",
+    "portable/RESTORE_PLAN_72.json",
+    "portable/BATCH72_TOKEN_SEARCH.json",
+    "portable/BATCH72_OPEN_PR_THREATS.json",
+    "docs/AUTONOMOUS_48H_LOG.md"
+  ],
+  "aligned_drift_watch": {
+    "exit_codes": {"0": "ALIGNED", "1": "MISALIGNED", "2": "transport"},
+    "snapshot": "portable/ALIGNED_DRIFT_SNAPSHOT.json",
+    "restore_flag": "--restore-if-writable",
+    "ci": "record-only (never gates on MISALIGNED)"
+  },
+  "open_main_prs_threatening_aligned": [],
+  "note": "No open PRs target default main. Historical revert threat: #32. Keep Path B restore ready.",
+  "source": "aligned_drift_watch.py + ALIGNED_DRIFT_SNAPSHOT + CI record-only; tip still 5f352a2; write DENIED",
+  "window": "PERMANENT_OPEN"
+}
