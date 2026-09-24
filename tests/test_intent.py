@@ -2379,7 +2379,12 @@ def test_batch147_tip_drift_gate_and_auth_renew() -> None:
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
     assert "A450-C91F" in gh
-    assert "A9D3-16CD" in gh  # prior
+    assert "A9D3-16CD" in gh  # prior chain retained in GH_DEVICE_LOGIN.md
+
+    # Batch 155: CI tip-drift BASE_SHA must use word-boundary \b (not \\b) in
+    # single-quoted python -c — \\b emptied BASE_SHA on Actions runners.
+    assert r'r"(?i)\b([0-9a-f]{40})\b"' in ci
+    assert r'r"(?i)\\b([0-9a-f]{40})\\b"' not in ci
 
     brief = ROOT / "portable" / "BATCH147_BRIEF.json"
     assert brief.is_file()
@@ -2650,3 +2655,59 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 153" in log
     assert "1FC8-3D96" in log
+
+
+def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
+    """Batch 155: assert_path_c_ready.sh; CI BASE_SHA \\b fix; lemma_closed=false."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "assert_path_c_ready.sh"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "lemma_closed=false" in text
+    assert "apply_all" in text
+    assert "BASE_TIP" in text
+    assert r"(?i)\b([0-9a-f]{40})\b" in text
+    assert "scientific_effect" in text.lower() or "Scientific effect" in text
+
+    help_p = subprocess.run(
+        ["bash", str(script), "--help"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert help_p.returncode == 0, help_p.stderr + help_p.stdout
+    assert "lemma_closed" in (help_p.stdout + help_p.stderr)
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "assert_path_c_ready" in ci
+    assert r'r"(?i)\b([0-9a-f]{40})\b"' in ci
+    assert r'r"(?i)\\b([0-9a-f]{40})\\b"' not in ci
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "assert_path_c_ready.sh" in pack
+    assert "owner_open_path_c_pr.sh" in pack
+
+    brief = ROOT / "portable" / "BATCH155_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "155"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["tip"] == "10c077e"
+    assert data["device_code"] == "1FC8-3D96"
+    assert data.get("assert_path_c_ready") is True
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "1FC8-3D96" in gh
+    assert "A9D3-16CD" in gh
+    assert "assert_path_c_ready" in gh
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 155" in log
+    assert "assert_path_c_ready" in log

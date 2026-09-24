@@ -120,6 +120,9 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_land_path_a.sh \
   scripts/owner_land_path_b.sh \
   scripts/owner_land_path_c.sh \
+  scripts/owner_open_path_c_pr.sh \
+  scripts/assert_path_c_ready.sh \
+  scripts/dispatch_land_path_c.sh \
   scripts/pack_portable.sh \
   scripts/wait_until_aligned.sh
 echo "wrote $OUT ($(wc -c <"$OUT") bytes; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence; ${#rel_batch_briefs[@]} briefs; ${#rel_batch_hunts[@]} hunts)"

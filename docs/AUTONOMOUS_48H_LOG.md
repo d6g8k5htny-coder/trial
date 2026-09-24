@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 155 — 2026-09-24 ~08:41 UTC (PERMANENT window; CI BASE_SHA fix; assert_path_c_ready; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
+
+- `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).
+- Hardening tip **`10c077e` == BASE_TIP** → **no tip refresh** / **no path-c-applied-bundle rebuild**. `lemma_closed=false`.
+- Device auth `1FC8-3D96` still **pending** (`slow_down`); seconds_left≈400+; **no renew** (not expired). Poller `gh-device-login` up; daemon `when-writable-land` up.
+- **CI failures on trial main @ 8bccd91 (Batch 153):**
+  - `path-c-applied-bundle-dry-apply`: tip-drift `BASE_SHA` empty — Batch 153 `\\b` over-escape in single-quoted `python -c` matched literal `\b`. **Fixed** to `\b` word-boundary (also portable-patches tip-drift).
+  - `sanity` Intent: `test_batch147` required stale prior `A9D3-16CD` in `GH_DEVICE_LOGIN.md` — **retained** in prior chain + assert against `\\b` regression.
+- **Engineering (write blocked + tip stable):** `scripts/assert_path_c_ready.sh` exits 0 only when BASE_TIP matches live tip AND `apply_all --check` OK AND `lemma_closed=false`. Wired into `land-workflows-dry-run`. Packed via `pack_portable.sh` (+ `owner_open_path_c_pr.sh`, `dispatch_land_path_c.sh`).
+- Release: publish/refresh **`batch155-path-c-bundle`** (current pack @ tip `10c077e`). Tiny JSON: `portable/BATCH155_BRIEF.json`. `goal_complete=false`. Research untouched (`lemma_closed=false`). Timers: auth **900s**, permanent **10800s**.
+
+**Land note:** Path C blocked (auth pending + trial-only env). Waiting on Dylan device code `1FC8-3D96` **or** MAIN_PUSH_TOKEN file drop / trial secret **or** local `./scripts/owner_open_path_c_pr.sh` / `--from-bundle` / `assert_path_c_ready.sh` preflight.
+
 ### Batch 153 — 2026-09-24 ~08:34 UTC (PERMANENT window; auth renew 1FC8-3D96; Path C dry-run fixes; tip stable @ 10c077e; scientific effect NONE; flipped nothing)
 
 - `alignment_status` → **ALIGNED** @ `1c6e74b`; `probe_main_write` → **DENIED** (403; `install_has_main=false`). Env repos **trial ONLY**. Path B not needed; Path C blocked (auth pending + no write).

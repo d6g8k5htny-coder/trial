@@ -141,7 +141,9 @@ jobs:
           # Batch 147: fail loudly when portable patches BASE_TIP lags the live tip.
           TIP="$(git -C main-work rev-parse HEAD)"
           BASE_LINE="$(tr -d '\r' < trial/portable/patches/BASE_TIP.txt | head -n1)"
-          BASE_SHA="${BASE_LINE##* }"
+          # Batch 155: hex SHA extract (single-quoted python -c: \b is word-boundary).
+          # Do NOT use \\b here — that matches a literal backslash+b and empties BASE_SHA.
+          BASE_SHA="$(printf '%s' "$BASE_LINE" | python3 -c 'import re,sys; t=sys.stdin.read(); m=re.search(r"(?i)\b([0-9a-f]{40})\b", t); print(m.group(1).lower() if m else "")')"
           echo "TIP=$TIP BASE_TIP=$BASE_SHA"
           if [[ -z "$BASE_SHA" ]]; then
             echo "::error::tip-drift: empty BASE_TIP.txt"
@@ -220,8 +222,10 @@ jobs:
           test -f "$BASE_FILE"
           test -f "$VERIFY_FILE"
           BASE_LINE="$(tr -d '\r' <"$BASE_FILE" | head -n1)"
-          # Batch 153: hex SHA extract (not last whitespace field / ##* ).
-          BASE_SHA="$(printf '%s' "$BASE_LINE" | python3 -c 'import re,sys; t=sys.stdin.read(); m=re.search(r"(?i)\\b([0-9a-f]{40})\\b", t); print(m.group(1).lower() if m else "")')"
+          # Batch 155: hex SHA extract (not last whitespace field / ##* ).
+          # Single-quoted python -c: use \b (word boundary). \\b was a Batch 153
+          # over-escape that matched literal '\b' and emptied BASE_SHA in CI.
+          BASE_SHA="$(printf '%s' "$BASE_LINE" | python3 -c 'import re,sys; t=sys.stdin.read(); m=re.search(r"(?i)\b([0-9a-f]{40})\b", t); print(m.group(1).lower() if m else "")')"
           VERIFY_SHA="$(python3 -c "import json; print(json.load(open('$VERIFY_FILE'))['base_tip_sha'])")"
           echo "BASE_TIP=$BASE_SHA VERIFY.base_tip_sha=$VERIFY_SHA"
           if [[ -z "$BASE_SHA" || -z "$VERIFY_SHA" ]]; then
@@ -276,9 +280,23 @@ jobs:
           python scripts/validate_land_workflows.py
       - name: Owner land scripts --help (no token)
         run: |
-          chmod +x scripts/owner_land_path_b.sh scripts/owner_land_path_c.sh
+          chmod +x scripts/owner_land_path_b.sh scripts/owner_land_path_c.sh \
+            scripts/owner_open_path_c_pr.sh scripts/assert_path_c_ready.sh
           ./scripts/owner_land_path_b.sh --help
           ./scripts/owner_land_path_c.sh --help
+          ./scripts/owner_open_path_c_pr.sh --help
+          ./scripts/assert_path_c_ready.sh --help | grep -q lemma_closed
+      # Batch 155: light Path C readiness gate (BASE_TIP==live + apply_all --check + lemma_closed=false).
+      # Complements path-c-applied-bundle-dry-apply (git am bundle) with the patch-stack path.
+      - name: assert_path_c_ready (tip + apply_all --check + lemma_closed)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/assert_path_c_ready.sh
+          ./scripts/assert_path_c_ready.sh | tee assert-path-c-ready.out
+          grep -q 'lemma_closed=false' assert-path-c-ready.out
+          grep -q 'assert_path_c_ready: OK' assert-path-c-ready.out
       - name: actionlint land workflows (syntax; no secrets)
         run: |
           set -euo pipefail
