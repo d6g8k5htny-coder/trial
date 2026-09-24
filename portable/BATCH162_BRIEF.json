@@ -1,6 +1,6 @@
 {
   "batch": "162",
-  "generated_at_utc": "2026-09-24T09:35:19Z",
+  "generated_at_utc": "2026-09-24T09:35:36Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -21,11 +21,11 @@
   "path_c_landed": false,
   "dry_run_ok": true,
   "device_auth": "pending",
-  "device_auth_error": null,
+  "device_auth_error": "authorization_pending",
   "device_code": "C8FC-A08F",
   "prior_device_code": "E818-2EE5",
   "auth_renewed": true,
-  "seconds_left": 789,
+  "seconds_left": 772,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -81,5 +81,5 @@
   "release_url": "https://github.com/d6g8k5htny-coder/trial/releases/tag/batch162-path-c-bundle",
   "prior_issue_number": 26,
   "prior_issue_note": "App cannot edit/comment #26 (expired E818); created #27 with current C8FC-A08F",
-  "trial_main_sha": "7f636f5"
+  "trial_main_sha": "12b13fa"
 }
