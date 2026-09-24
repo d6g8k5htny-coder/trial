@@ -694,6 +694,35 @@ def test_land_path_c_workflow_dry_run_default() -> None:
     assert "W3d_dispatch_path_c_trial" in vectors
 
 
+def test_watch_main_alignment_workflow_exists() -> None:
+    """Batch 98: hourly trial workflow watches remote main; upserts drift issue; never writes main."""
+    path = ROOT / ".github" / "workflows" / "watch-main-alignment.yml"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    assert "name: watch-main-alignment" in text
+    assert "workflow_dispatch" in text
+    assert "schedule:" in text
+    assert 'cron: "0 * * * *"' in text or "cron: '0 * * * *'" in text
+    assert "aligned_drift_watch.py" in text or "audit_main_alignment.py" in text
+    assert "GITHUB_TOKEN" in text
+    assert "main ALIGNED drift" in text
+    assert "issues: write" in text
+    assert "gh issue" in text
+    assert "MISALIGNED" in text
+    assert "ALIGNED" in text
+    # Must not flip research status; must not push to main repo
+    assert "lemma_closed" in text
+    assert "Scientific effect" in text or "scientific effect" in text.lower()
+    assert "NONE" in text
+    assert "never writes to" in text.lower() or "never touch main" in text.lower()
+    assert "git push" not in text
+    assert "d6g8k5htny-coder/main" in text
+    # Checkout is trial only (no main clone step)
+    assert "actions/checkout@v4" in text
+    assert "Clone hardening" not in text
+    assert "clone.*d6g8k5htny-coder/main" not in text.replace("\n", " ")
+
+
 def test_validate_land_workflows_no_token() -> None:
     """Batch 73: land workflows validate without MAIN_PUSH_TOKEN (CI dry-run contract)."""
     script = ROOT / "scripts" / "validate_land_workflows.py"

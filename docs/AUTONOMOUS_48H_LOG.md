@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 98 — 2026-09-24 ~03:45 UTC (PERMANENT window; watch-main-alignment workflow; scientific effect NONE; flipped nothing)
+
+- Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.
+- Tips stable: default `1c6e74b`; hardening `ac33581` (== BASE_TIP; **no tip refresh**).
+- **Shipped:** `.github/workflows/watch-main-alignment.yml` on trial — cron `0 * * * *` + `workflow_dispatch`; checks out trial; runs `aligned_drift_watch.py --no-probe` against remote main (`GITHUB_TOKEN`); MISALIGNED → create/update trial Issue titled `main ALIGNED drift` (tip SHA); ALIGNED → close that issue if open; never touches main repo; never flips research status.
+- Intent test: `test_watch_main_alignment_workflow_exists`.
+- Tiny JSON: `portable/BATCH98_BRIEF.json`. `goal_complete=false`.
+
+**Land note:** Path C still blocked (`install_has_main=false`). Direct push to trial `main` (`cursor/watch-main-alignment-wf-873b`). Timer `permanent-autonomous-align-watch` @ **3600s**.
+
 ### Batch 97 — 2026-09-24 ~03:42 UTC (PERMANENT window; IDLE; scientific effect NONE; flipped nothing)
 
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` → Path C **not** landed.

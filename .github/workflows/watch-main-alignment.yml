@@ -1,0 +1,133 @@
+# Hourly watch: does d6g8k5htny-coder/main default tip still look ALIGNED?
+#
+# Runs on trial only. Never pushes to main. Never flips lemma_closed /
+# prizes / premises / research status. Scientific effect: NONE.
+#
+# On MISALIGNED: create or update a trial Issue titled "main ALIGNED drift"
+# (body includes tip SHA). On ALIGNED: close that issue if open.
+# Transport failures leave issues untouched.
+
+name: watch-main-alignment
+
+on:
+  schedule:
+    # Every hour (UTC). Actions schedule is best-effort.
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trial
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run aligned drift watch (remote main; read-only)
+        id: drift
+        env:
+          # Tokenized API avoids unauthenticated rate limits on tip/README reads.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          python scripts/aligned_drift_watch.py --no-probe --no-snapshot \
+            | tee aligned-drift-watch.json
+          code=$?
+          set -e
+          echo "exit_code=${code}" >> "$GITHUB_OUTPUT"
+          state="$(python -c 'import json; d=json.load(open("aligned-drift-watch.json")); print(d.get("state") or "")' 2>/dev/null || true)"
+          if [ -z "${state}" ]; then
+            case "${code}" in
+              0) state=ALIGNED ;;
+              1) state=MISALIGNED ;;
+              *) state=TRANSPORT_ERROR ;;
+            esac
+          fi
+          tip="$(python -c 'import json; d=json.load(open("aligned-drift-watch.json")); print(d.get("default_tip_sha") or (d.get("audit") or {}).get("default_tip_sha") or "")' 2>/dev/null || true)"
+          echo "state=${state}" >> "$GITHUB_OUTPUT"
+          echo "tip_sha=${tip}" >> "$GITHUB_OUTPUT"
+          echo "drift_state=${state} tip=${tip} exit=${code}"
+
+      - name: Upsert or close trial Issue (never touch main repo)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATE: ${{ steps.drift.outputs.state }}
+          TIP_SHA: ${{ steps.drift.outputs.tip_sha }}
+        run: |
+          set -euo pipefail
+          TITLE="main ALIGNED drift"
+          ISSUE_NUM="$(
+            gh issue list --repo "${GITHUB_REPOSITORY}" --state all --limit 50 \
+              --json number,title,state \
+              --jq ".[] | select(.title == \"${TITLE}\") | .number" \
+              | head -n1
+          )"
+          SHORT_TIP="${TIP_SHA:0:12}"
+          NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          if [ "${STATE}" = "TRANSPORT_ERROR" ] || [ -z "${STATE}" ]; then
+            echo "Transport/unknown state — leaving issues untouched."
+            exit 0
+          fi
+
+          if [ "${STATE}" = "MISALIGNED" ]; then
+            BODY_FILE="$(mktemp)"
+            {
+              echo "## main ALIGNED drift"
+              echo
+              echo "Remote \`d6g8k5htny-coder/main\` default tip looks **MISALIGNED**."
+              echo
+              echo "| field | value |"
+              echo "| --- | --- |"
+              echo "| tip_sha | \`${TIP_SHA}\` |"
+              echo "| tip_short | \`${SHORT_TIP}\` |"
+              echo "| watched_at_utc | ${NOW} |"
+              echo "| preferred_restore | Path B (\`restore_main_face.sh\`) |"
+              echo "| alternate | Path A (PR #2 / revert-of-revert) |"
+              echo
+              echo "Scientific effect: **NONE**. Never flip \`lemma_closed\` / prizes / premises / research status."
+              echo "This issue lives on **trial** only — the watch never writes to \`main\`."
+              echo
+              echo "Re-run: Actions → \`watch-main-alignment\` → Run workflow."
+            } >"${BODY_FILE}"
+            if [ -n "${ISSUE_NUM}" ]; then
+              echo "Updating existing issue #${ISSUE_NUM}"
+              gh issue reopen "${ISSUE_NUM}" --repo "${GITHUB_REPOSITORY}" 2>/dev/null || true
+              gh issue edit "${ISSUE_NUM}" --repo "${GITHUB_REPOSITORY}" --body-file "${BODY_FILE}"
+              gh issue comment "${ISSUE_NUM}" --repo "${GITHUB_REPOSITORY}" \
+                --body "Still MISALIGNED @ \`${SHORT_TIP}\` (${NOW}). Scientific effect: NONE."
+            else
+              echo "Creating issue titled '${TITLE}'"
+              gh issue create --repo "${GITHUB_REPOSITORY}" --title "${TITLE}" --body-file "${BODY_FILE}"
+            fi
+            rm -f "${BODY_FILE}"
+            exit 0
+          fi
+
+          # ALIGNED: carefully close only the exact-title drift issue if open.
+          if [ "${STATE}" = "ALIGNED" ]; then
+            if [ -z "${ISSUE_NUM}" ]; then
+              echo "ALIGNED @ ${SHORT_TIP}; no '${TITLE}' issue to close."
+              exit 0
+            fi
+            OPEN_STATE="$(
+              gh issue view "${ISSUE_NUM}" --repo "${GITHUB_REPOSITORY}" --json state -q .state
+            )"
+            if [ "${OPEN_STATE}" != "OPEN" ]; then
+              echo "ALIGNED @ ${SHORT_TIP}; issue #${ISSUE_NUM} already ${OPEN_STATE}."
+              exit 0
+            fi
+            echo "ALIGNED @ ${SHORT_TIP}; closing issue #${ISSUE_NUM}"
+            gh issue close "${ISSUE_NUM}" --repo "${GITHUB_REPOSITORY}" \
+              --comment "Default tip ALIGNED again @ \`${SHORT_TIP}\` (${NOW}). Closing drift issue. Scientific effect: NONE. Never flipped research status."
+            exit 0
+          fi
+
+          echo "Unhandled state=${STATE}; leaving issues untouched."
