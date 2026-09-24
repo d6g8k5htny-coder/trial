@@ -1,5 +1,7 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
+**Batch 230 (LANDED):** Path C **merged** on main hardening via [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64). Tip **`93a4ecd`** (merge of applied `fb3ffe6` from `.bundle` on prior BASE `cbaa056`). Patches **0001–0004+0008–0017** are **already on tip** — do not re-`apply_all` / re-`git am` the historical `.bundle` onto `93a4ecd`. `lemma_closed=false` / OPEN_HOLD verified. Scientific effect: **NONE**.
+
 **Batch 218:** tip **`1d0dceb`** (refreshed from `b89448d`). Release **`batch218-path-c-bundle`** includes tip-refreshed `.bundle`+`.patch` (0001–0004+0008–0017; applied `873c901`).
 
 **Batch 207:** tip still **`b89448d`**. Release **`batch207-path-c-bundle`** includes **0017** (pinned_sources RW) + force-refreshed `.bundle` (applied `71d50b1`; supersedes `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch169-path-c-bundle`).

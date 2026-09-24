@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Living Path C tip/release may supersede across tip-refresh / pack batches.
 # Batch 180 tip 8bd1f03 → Batch 202 tip b89448d; release batch180 → batch199 → batch202.
-_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb", "cbaa056")
+_LIVING_TIPS = ("8bd1f03", "b89448d", "1d0dceb", "cbaa056", "93a4ecd")
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
     "batch199-path-c-bundle",
@@ -4531,7 +4531,8 @@ def test_batch192_readme_path_c_face() -> None:
     )
     assert _living_release(status.get("release_tag"))
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -4621,7 +4622,8 @@ def test_batch194_readme_link_only_device_code() -> None:
     )
     assert _living_release(status.get("release_tag"))
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -4719,7 +4721,8 @@ def test_batch195_path_c_status_watch_wire() -> None:
         "batch199-path-c-bundle",
     ) or str(status.get("release_tag", "")).endswith("-path-c-bundle")
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -4835,7 +4838,8 @@ def test_batch199_path_c_bundle_pack_release() -> None:
     )
     assert _living_release(status.get("release_tag"))
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -4953,7 +4957,8 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     )
     assert _living_release(status.get("release_tag"))
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -5166,7 +5171,8 @@ def test_batch219_repos_connect_all() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("tip_match") is True
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert status.get("path_c_blocked") == "NO_TOKEN"
+    # Batch 230+: Path C landed → path_c_blocked may be NONE.
+    assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
     assert "-" in str(status.get("device_code", ""))
 
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
@@ -5260,7 +5266,10 @@ def test_batch223_multi_agent_access() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("tip_match") is True
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
-    assert "NO_TOKEN" in str(status.get("path_c_blocked", ""))
+    # Batch 230+: Path C landed → path_c_blocked may be NONE (was NO_TOKEN).
+    assert str(status.get("path_c_blocked", "")) in ("NO_TOKEN", "NONE") or "NO_TOKEN" in str(
+        status.get("path_c_blocked", "")
+    ) or status.get("path_c_landed") is True
     assert "-" in str(status.get("device_code", ""))
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -5359,7 +5368,10 @@ def test_batch224_sandbox_eight_repos() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert status.get("tip_match") is True
-    assert "NO_TOKEN" in str(status.get("path_c_blocked", ""))
+    # Batch 230+: Path C landed → path_c_blocked may be NONE (was NO_TOKEN).
+    assert str(status.get("path_c_blocked", "")) in ("NO_TOKEN", "NONE") or "NO_TOKEN" in str(
+        status.get("path_c_blocked", "")
+    ) or status.get("path_c_landed") is True
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "sandbox" in readme
@@ -5416,3 +5428,54 @@ def test_batch227_path_b_transport_retry() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 227" in log
     assert "transport" in log.lower()
+
+
+def test_batch230_path_c_landed() -> None:
+    """Batch 230: device auth SUCCESS; Path C landed on hardening PR #64; lemma_closed=false."""
+    import json
+
+    brief = ROOT / "portable" / "BATCH230_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "230"
+    assert data["goal_complete"] is True
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is True
+    assert data["write"] == "WRITABLE"
+    assert "pull/64" in data["path_c_pr_url"]
+    assert _living_tip(data.get("tip"))
+    assert "OPEN_HOLD" in data.get("math_status", "")
+    assert "lemma_closed=false" in data.get("math_status", "")
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert status.get("path_c_landed") is True
+    assert status.get("goal_complete") is True
+    assert status.get("write_state") == "WRITABLE"
+    assert status.get("tip_match") is True
+    assert _living_tip(status.get("tip"))
+    assert _living_tip(status.get("base_tip"))
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8")
+    )
+    assert verify["lemma_closed"] is False
+    assert verify.get("path_c_landed") is True
+    assert verify.get("goal_complete") is False  # VERIFY contract stays false
+    assert _living_tip(verify["base_tip_sha"])
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    assert_sh = (ROOT / "scripts" / "assert_path_c_ready.sh").read_text(encoding="utf-8")
+    assert "path_c_landed" in assert_sh
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "path_c_landed" in ci
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 230" in log
+    assert "PR #64" in log or "pull/64" in log
+    assert "lemma_closed" in log.lower()
+

@@ -146,37 +146,65 @@ if [[ "$TIP_OK" -ne 1 ]]; then
 fi
 echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
 
-echo "assert_path_c_ready: apply_all --check"
-if ! (cd "$WORKDIR" && bash "$APPLY_ALL" --check); then
-  echo "assert_path_c_ready: FAIL apply_all --check" >&2
-  exit 1
-fi
-echo "assert_path_c_ready: apply_all --check OK"
-
-if [[ "$SKIP_APPLY" -eq 1 ]]; then
-  echo "assert_path_c_ready: --skip-apply set; skipping math_status lemma gate"
-  echo "assert_path_c_ready: OK (tip match + apply_all --check); lemma_closed gate skipped"
-  exit 0
+# Batch 230: Path C already merged on hardening — patches are on tip; do not re-apply.
+VERIFY_FILE="${ROOT}/portable/path-c-applied-bundle/VERIFY.json"
+PATH_C_LANDED=0
+if [[ -f "$VERIFY_FILE" ]]; then
+  if python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); sys.exit(0 if d.get("path_c_landed") is True else 1)' "$VERIFY_FILE" 2>/dev/null; then
+    PATH_C_LANDED=1
+  fi
 fi
 
-echo "assert_path_c_ready: apply_all + math_status_check (lemma_closed=false)"
-(cd "$WORKDIR" && bash "$APPLY_ALL")
-STATUS_OUT="$(cd "$WORKDIR" && python3 tools/math_status_check.py 2>&1)" || {
-  echo "assert_path_c_ready: FAIL math_status_check exited non-zero" >&2
-  echo "$STATUS_OUT" >&2
-  exit 1
-}
-echo "$STATUS_OUT"
-if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
-  echo "assert_path_c_ready: FAIL lemma_closed is not false after apply_all" >&2
-  exit 1
-fi
-if echo "$STATUS_OUT" | grep -Eq 'problems[=:][[:space:]]*[1-9]'; then
-  echo "assert_path_c_ready: FAIL math_status_check reported problems>0" >&2
-  exit 1
-fi
+if [[ "$PATH_C_LANDED" -eq 1 ]]; then
+  echo "assert_path_c_ready: path_c_landed=true — skip apply_all; verify math_status on tip"
+  STATUS_OUT="$(cd "$WORKDIR" && python3 tools/math_status_check.py 2>&1)" || {
+    echo "assert_path_c_ready: FAIL math_status_check exited non-zero (landed tip)" >&2
+    echo "$STATUS_OUT" >&2
+    exit 1
+  }
+  echo "$STATUS_OUT"
+  if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
+    echo "assert_path_c_ready: FAIL lemma_closed is not false on landed tip" >&2
+    exit 1
+  fi
+  if echo "$STATUS_OUT" | grep -Eq 'problems[=:][[:space:]]*[1-9]'; then
+    echo "assert_path_c_ready: FAIL math_status_check reported problems>0 on landed tip" >&2
+    exit 1
+  fi
+  echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} path_c_landed=true lemma_closed=false scientific_effect=NONE"
+else
+  echo "assert_path_c_ready: apply_all --check"
+  if ! (cd "$WORKDIR" && bash "$APPLY_ALL" --check); then
+    echo "assert_path_c_ready: FAIL apply_all --check" >&2
+    exit 1
+  fi
+  echo "assert_path_c_ready: apply_all --check OK"
 
-echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} apply_all=check+apply lemma_closed=false scientific_effect=NONE"
+  if [[ "$SKIP_APPLY" -eq 1 ]]; then
+    echo "assert_path_c_ready: --skip-apply set; skipping math_status lemma gate"
+    echo "assert_path_c_ready: OK (tip match + apply_all --check); lemma_closed gate skipped"
+    exit 0
+  fi
+
+  echo "assert_path_c_ready: apply_all + math_status_check (lemma_closed=false)"
+  (cd "$WORKDIR" && bash "$APPLY_ALL")
+  STATUS_OUT="$(cd "$WORKDIR" && python3 tools/math_status_check.py 2>&1)" || {
+    echo "assert_path_c_ready: FAIL math_status_check exited non-zero" >&2
+    echo "$STATUS_OUT" >&2
+    exit 1
+  }
+  echo "$STATUS_OUT"
+  if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
+    echo "assert_path_c_ready: FAIL lemma_closed is not false after apply_all" >&2
+    exit 1
+  fi
+  if echo "$STATUS_OUT" | grep -Eq 'problems[=:][[:space:]]*[1-9]'; then
+    echo "assert_path_c_ready: FAIL math_status_check reported problems>0" >&2
+    exit 1
+  fi
+
+  echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} apply_all=check+apply lemma_closed=false scientific_effect=NONE"
+fi
 
 # Batch 180: emit portable/PATH_C_STATUS.json (no secrets; lemma_closed stays false).
 STATUS_PY="${ROOT}/scripts/write_path_c_status.py"
