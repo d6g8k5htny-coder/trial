@@ -21,14 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 125 — 2026-09-24 ~05:53 UTC (PERMANENT window; tip refresh; scientific effect NONE; flipped nothing)
+### Batch 125 — 2026-09-24 ~05:56 UTC (PERMANENT window; tip refresh + bundle rebuild; scientific effect NONE; flipped nothing)
 
-- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈689`; no Path C land (no user token yet).
+- Device auth `GH_CONFIG_DIR=/tmp/gh-dylan-auth` → **slow_down** (code `FCD3-6B41`); `seconds_left≈528`; no Path C land (no user token yet).
 - Pulse `/installation/repositories` → **200**, names=`[d6g8k5htny-coder/trial]` → `install_has_main=false` (ignored for Path C gate; user token only).
 - `aligned_drift_watch` → **ALIGNED** @ `1c6e74b`; hardening **`ac33581` → `c82c9357`** ([PR #50](https://github.com/d6g8k5htny-coder/main/pull/50)); BASE_TIP refreshed; `path_c_dry_run` → `APPLY_READY_POST_ALIGNED_KEEP_HARDENING`; write **DENIED**.
+- **Concrete work (bundle refresh @ c82c9357):** disposable hardening worktree; `apply_all` 0001–0004+0008–0016; `math_status_check` problems=0 / OPEN_HOLD / lemma_closed=false; focused **90**/0 RW; claims+recovery **83**/0; `git format-patch` → `portable/path-c-applied-bundle/path-c-on-hardening.patch` + `APPLY.md` + `VERIFY.json`; sanity `git am` OK. Repack `docs/trial-portable-main-fixes.tgz`. GitHub Release **`batch125-path-c-bundle`** on trial.
 - Tiny JSON: `portable/BATCH125_BRIEF.json`. `goal_complete=false`. Re-armed once timer **300s** (`gh-dylan-device-auth-check`).
 
-**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `FCD3-6B41`. On auth success → Path C with user token (ignore `install_has_main`). Trial branch `cursor/batch125-tip-refresh-ea53`.
+**Land note:** Path C blocked (auth pending). Waiting on Dylan device code `FCD3-6B41`. On auth success → Path C with user token (ignore `install_has_main`). Release: https://github.com/d6g8k5htny-coder/trial/releases/tag/batch125-path-c-bundle. Trial branch `cursor/batch125-tip-refresh-ea53`.
 
 ### Batch 124 — 2026-09-24 ~05:49 UTC (PERMANENT window; auth renew; scientific effect NONE; flipped nothing)
 

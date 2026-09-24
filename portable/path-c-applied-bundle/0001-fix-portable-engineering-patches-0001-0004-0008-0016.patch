@@ -1,8 +1,8 @@
-From 7848ab8ae51e7deda0b41c804593d209ad296986 Mon Sep 17 00:00:00 2001
-From: path-c-applied-bundle <path-c-bundle@users.noreply.github.com>
-Date: Thu, 24 Sep 2026 01:54:15 +0000
-Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016 (Path
- C)
+From c5c6912080782f0518525abda3d1d2a044da1dee Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Thu, 24 Sep 2026 05:54:50 +0000
+Subject: [PATCH] fix: portable engineering patches 0001-0004+0008-0016 (Path C
+ batch 125)
 
 carriers pycache ignore, math_console paths, gaussian parametrize,
 git fixture timeout, close-file-handles through receipts/bridge tests.
@@ -1044,10 +1044,10 @@ index 5e06d99..302b6bc 100644
          )
      return problems
 diff --git a/tools/quarantine_check.py b/tools/quarantine_check.py
-index d602cbc..9c91222 100644
+index 4ce33ab..745c84e 100644
 --- a/tools/quarantine_check.py
 +++ b/tools/quarantine_check.py
-@@ -59,21 +59,23 @@ def manifest_digests(root: str) -> dict[str, str]:
+@@ -135,21 +135,23 @@ def manifest_digests(root: str) -> dict[str, str]:
          for fn in filenames:
              p = os.path.join(dirpath, fn)
              if fn.endswith("_MANIFEST.jsonl") or fn == "MANIFEST.jsonl":

@@ -1,6 +1,6 @@
 {
   "batch": "125",
-  "generated_at_utc": "2026-09-24T05:52:43Z",
+  "generated_at_utc": "2026-09-24T05:55:17Z",
   "owner_mandate": "Dylan Roy \u2014 NO restrictions; everything auto-approved; agents decide; HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false; permanent window until owner intervenes; never flip research status",
   "scientific_effect": "NONE",
   "goal_complete": false,
@@ -26,11 +26,11 @@
   "audit_stderr": "audit: OK \u2014 default tip carries q0 program or redirect notice.",
   "preferred_restore": "Path_B",
   "path_b": {
-    "valid_against_tip": "unknown_skipped",
+    "valid_against_tip": true,
     "patch": "portable/main-default-branch/0001-option-b-default-branch-notice.patch",
-    "git_am_exit": null,
-    "local_auditor": null,
-    "would_align": null,
+    "git_am_exit": 0,
+    "local_auditor": "ALIGNED",
+    "would_align": true,
     "dry_run_certainty": "scripts/path_b_dry_run.py",
     "owner_script": "scripts/owner_land_path_b.sh",
     "write_probe": "DENIED",
@@ -41,8 +41,8 @@
     "option_b_stronger": true,
     "option_b_includes_AGENTS_md": true,
     "option_b_tip_current_against": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
-    "dry_run_state": null,
-    "already_aligned_skip": false,
+    "dry_run_state": "ALREADY_ALIGNED",
+    "already_aligned_skip": true,
     "one_command_restore": "scripts/restore_main_face.sh",
     "write_preflight_in_restore_main_face": true,
     "aligned_short_circuit_in_restore_main_face": true
@@ -66,23 +66,47 @@
     "new_0017": false,
     "dry_run_certainty": "scripts/path_c_dry_run.py",
     "owner_script": "scripts/owner_land_path_c.sh",
-    "dry_run_state": null,
-    "apply_ready": null,
-    "dry_run_exit": null,
-    "default_path_c_shape": null,
-    "hardening_path_c_shape": null,
-    "rebase_onto_main_state": null,
-    "rebase_onto_main_advised": null,
-    "rebase_conflict_path_count": null,
-    "rebase_conflict_paths": null,
-    "rebase_conflict_categories": null,
+    "dry_run_state": "APPLY_READY_POST_ALIGNED_KEEP_HARDENING",
+    "apply_ready": true,
+    "dry_run_exit": 0,
+    "default_path_c_shape": {
+      "accepts": false,
+      "missing": [
+        "docs/math_status/PACKET.json",
+        "tools/carriers_verify.py",
+        "tools/math_status_check.py"
+      ],
+      "tip_ref": "origin/main"
+    },
+    "hardening_path_c_shape": {
+      "accepts": true,
+      "missing": [],
+      "tip_ref": "origin/chatgpt/drive-github-hardening-20260919"
+    },
+    "rebase_onto_main_state": "CONFLICTING",
+    "rebase_onto_main_advised": false,
+    "rebase_conflict_path_count": 3,
+    "rebase_conflict_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/research.yml",
+      "engine/bridge/README.md"
+    ],
+    "rebase_conflict_categories": {
+      "bridge_agents": [
+        "engine/bridge/README.md"
+      ],
+      "ci_workflows": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/research.yml"
+      ]
+    },
     "conflict_aware_report": "portable/PATH_C_REBASE_CONFLICT_REPORT_125.json",
     "rebase_helper": "scripts/path_c_rebase_helper.sh",
     "rebase_resolution_notes": "portable/PATH_C_REBASE_RESOLUTION_NOTES_125.json",
     "recommended_base": "chatgpt/drive-github-hardening-20260919",
-    "do_not_set_path_c_base_main": null,
+    "do_not_set_path_c_base_main": true,
     "do_not_set_path_c_rebase_onto_main": true,
-    "post_aligned_keep_hardening": false
+    "post_aligned_keep_hardening": true
   },
   "write_vectors": {
     "state": "DENIED",
@@ -106,7 +130,7 @@
         "state": "DENIED"
       },
       "W2_contents_put": {
-        "branch": "cursor-wvec-contents-1790229159",
+        "branch": "cursor-wvec-contents-1790229299",
         "http_status": 403,
         "msg": "Resource not accessible by integration",
         "state": "DENIED"
