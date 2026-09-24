@@ -89,6 +89,17 @@ truth for A1/A5 unless a review says otherwise; reconcile OPEN_PROBLEMS and
 Closing or rebasing these drafts does not discharge OBL-H5-JETMOD or
 D3-LEMMA-RN-UNIF.
 
+## Batch 216 pinned_sources vehicle scan (2026-09-24) — read-only
+
+Tip stable **`b89448d`** == BASE_TIP; Path C blocked `NO_TOKEN` (write DENIED;
+`install_has_main=false`). Open main PRs scanned for a merge vehicle that already
+touches **`pinned_sources` / `tests/test_pinned_sources.py`** (portable **0017**
+target): **#62, #60, #55, #21, #12, #8, #7** — **no** `pinned_hits` on any file
+list. PR **#62** title mentions “pinned” but files are
+`research/campaigns/math_push_20260924/*` only (no `pinned_sources` overlap).
+**Merge overlap for 0017: none.** Keep Path C via device auth / `--from-bundle`
+onto hardening @ `b89448d` (apply_all **0001–0004 + 0008–0017**).
+
 ## Batch 160 open-stack note (2026-09-24) — read-only
 
 `gh pr list --repo d6g8k5htny-coder/main --state open` → **11** PRs (PR #54

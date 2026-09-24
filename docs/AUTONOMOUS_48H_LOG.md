@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 216 — 2026-09-24 ~14:39–14:42 UTC (PERMANENT window; tip stable b89448d; auth 5AEC pending; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- WRITE+ALIGN: main write **DENIED** (403; `install_has_main=false`); default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
+- Tip **`b89448d` == BASE_TIP** → no tip SHA refresh / no bundle rebuild. `apply_all` includes **0017**; COMPATIBILITY notes tip `b89448d`; `PATH_C_STATUS` refreshed.
+- AUTH: poll `5AEC-4784` → **pending** (`authorization_pending`; seconds_left≈304). Never print tokens. No renew (not expired; &gt;90s).
+- Open main PRs (#62/#60/#55/#21/#12/#8/#7): **no** files touch `pinned_sources` / `test_pinned_sources` → **no 0017 merge vehicle** (noted in `CONFLICTING_PR_NOTES`).
+- RESEARCH: untouched; **lemma_closed=false**; **flipped nothing**.
+- Release still **`batch207-path-c-bundle`**. Timers: auth **1800s**, permanent **10800s**. `goal_complete=false`.
+
 ### Batch 212 — 2026-09-24 ~14:29–14:32 UTC (PERMANENT window; tip stable b89448d; auth B064→5AEC; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
