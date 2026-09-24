@@ -3,6 +3,25 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 188 — tip stable 8bd1f03; auth renew C949; write DENIED; idle align-watch; no research flips @ tips `1c6e74b` / `8bd1f03`
+
+Mechanical inventory unchanged from Batch 185. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no hunt / no 0017.
+
+| Tip | SHA | Shape | Result |
+|-----|-----|-------|--------|
+| default `main` | `1c6e74bbc212198d51502ae3f6088ce1bc8cdb76` | **NO_PACKET** (post-#41 face) | **ALIGNED**; Path B not needed |
+| hardening | `8bd1f03cc2bb10c59b08b852ca2775dac27e28e9` | **HAS_PACKET** (== BASE_TIP; no tip refresh) | OPEN inventory (Batch 165/185 counts) |
+
+| Check | Result |
+|-------|--------|
+| `assert_path_c_ready` | **OK**; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false** |
+| write / Path C | **DENIED** (403); device auth renewed `C949-0100` (prior `46EC-0B00`) |
+| pack / release | still **`batch180-path-c-bundle`** |
+| preferred auth timer | **`preferred_auth_interval_s=1800`** |
+| new portable **0017** | **none** (tip stable) |
+
+Artifacts: `portable/BATCH188_BRIEF.json`. Scientific effect: **NONE**.
+
 ## Batch 185 — tip stable 8bd1f03; auth renew 46EC; research AUDIT counts refresh; bundle E2E OK; no research flips @ tips `1c6e74b` / `8bd1f03`
 
 Mechanical inventory **refreshed** (audit only) on tip `8bd1f03`. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Obsolescence on tip WITHOUT patches: **0** of 0001–0004/0008–0016 already present (no drops).
