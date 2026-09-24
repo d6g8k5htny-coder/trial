@@ -1,6 +1,6 @@
 {
   "batch": "170",
-  "generated_at_utc": "2026-09-24T10:27:37Z",
+  "generated_at_utc": "2026-09-24T10:32:59Z",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -31,10 +31,10 @@
   "dry_run_ok": true,
   "device_auth": "pending",
   "device_auth_error": "slow_down",
-  "device_code": "EC83-CFC2",
-  "prior_device_code": "831C-CB1C",
-  "auth_renewed": false,
-  "seconds_left": 299,
+  "device_code": "7BCB-0057",
+  "prior_device_code": "EC83-CFC2",
+  "auth_renewed": true,
+  "seconds_left": 899,
   "has_token": false,
   "daemon": "up",
   "daemon_path_c": "owner_open_path_c_pr.sh",
@@ -46,8 +46,8 @@
   "path_c_blocked_now": "NO_TOKEN",
   "flipped_anything": false,
   "trial_branch": "cursor/batch170-ci-bundle-verify-0ac7",
-  "issue_url": "https://github.com/d6g8k5htny-coder/trial/issues/31",
-  "issue_number": 31,
+  "issue_url": "https://github.com/d6g8k5htny-coder/trial/issues/32",
+  "issue_number": 32,
   "assert_path_c_ready": true,
   "hunt": "clean_no_0017",
   "patch_0017": false,
@@ -62,7 +62,7 @@
     "disposition": "OPEN_HOLD",
     "lemma_closed": false
   },
-  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth pending EC83; E2E .bundle verify OK; CI intent supersession fix (137/149/162); preferred_auth_interval_s=1800",
+  "readiness_change": "tip stable 8ea3b5f; write DENIED; auth renewed 7BCB; E2E .bundle verify OK; CI intent supersession + batch162 history restore; preferred_auth_interval_s=1800",
   "artifacts_updated": [
     "portable/path-c-applied-bundle/APPLY.md",
     "portable/path-c-applied-bundle/VERIFY.json",
@@ -74,7 +74,7 @@
     "docs/MECHANICAL_FINDINGS_MAIN.md",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth pending EC83-CFC2; bundle_verify_ok true; CI intent fix; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
+  "note": "ALIGNED@1c6e74b; tip stable 8ea3b5f; write DENIED; auth renewed EC83\u21927BCB; bundle_verify_ok true; CI intent fix; preferred_auth_interval_s=1800; lemma_closed=false; flipped nothing",
   "lemma_closed_verify": false,
   "preferred_auth_interval_s": 1800,
   "auth_timers_created": true,
@@ -85,5 +85,7 @@
   "code_changed": true,
   "trial_main_landed": true,
   "trial_main_sha": "afa62ef3ac0c8e9c56df42d4120061e01b53fe6d",
-  "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800"
+  "auth_timer_note": "created/ensured gh-dylan-device-auth-check@1800s + permanent-autonomous-align-watch@10800s; preferred_auth_interval_s=1800",
+  "auth_renew_reason": "seconds_left<90 near expiry",
+  "issue_title": "Path C unblock refresh \u2014 Batch 170 (7BCB-0057)"
 }

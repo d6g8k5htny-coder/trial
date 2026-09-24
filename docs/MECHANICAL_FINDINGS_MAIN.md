@@ -16,7 +16,7 @@ Mechanical inventory unchanged from Batch 165 refresh. Flipped nothing. `lemma_c
 |-------|--------|
 | `math_status_check` @ hardening (post `.bundle` merge) | problems=0 / disposition=`OPEN_HOLD` / **lemma_closed=false** |
 | E2E `.bundle` | shallow clone → fetch → ff-merge → `81c09d6`; focused **90**/0; claims+recovery **83**/0 |
-| write / Path C | **DENIED** (403); device auth pending `EC83-CFC2` |
+| write / Path C | **DENIED** (403); device auth renewed `7BCB-0057` (prior `EC83-CFC2`) |
 | pack / release | still **`batch169-path-c-bundle`** (tip/bundle unchanged) |
 | preferred auth timer | **`preferred_auth_interval_s=1800`** (no duplicate) |
 | new portable **0017** | **none** (hunt clean after patches) |

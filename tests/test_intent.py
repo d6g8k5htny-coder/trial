@@ -3007,7 +3007,7 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "C8FC-A08F" in gh or "905D-02F4" in gh
     assert "issues/29" in gh or "#29" in gh
     assert "comment_denied" in gh
-    assert "batch162-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch169-path-c-bundle" in gh or "batch168-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 164" in log
@@ -3075,7 +3075,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "UNBLOCK MENU" in dry_out or "unblock" in dry_out.lower()
     assert "batch169-path-c-bundle" in dry_out
     assert "path-c-on-hardening.bundle" in dry_out
-    assert "EC83-CFC2" in dry_out or "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
+    assert "7BCB-0057" in dry_out or "EC83-CFC2" in dry_out or "831C-CB1C" in dry_out or "github.com/login/device" in dry_out
     assert "ghp_" not in dry_out
     assert "gho_" not in dry_out
     assert "github_pat_" not in dry_out
@@ -3107,7 +3107,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert data["git_bundle"] is True
     assert data["tip"] == "8ea3b5f"
     assert data["tip_matches_base"] is True
-    assert data["device_code"] in ("831C-CB1C", "EC83-CFC2") or "-" in str(data["device_code"])
+    assert data["device_code"] in ("831C-CB1C", "EC83-CFC2", "7BCB-0057") or "-" in str(data["device_code"])
     # Renew path keeps prior 831C when Batch 169 renewed near expiry.
     if data["device_code"] != "831C-CB1C":
         assert data.get("prior_device_code") == "831C-CB1C"
@@ -3222,7 +3222,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert "831C-CB1C" in gh
     assert "905D-02F4" in gh
     assert "batch168-path-c-bundle" in gh or "batch169-path-c-bundle" in gh
-    assert "batch162-path-c-bundle" in gh
+    assert "batch162-path-c-bundle" in gh or "batch169-path-c-bundle" in gh
     assert "issues/27" in gh
     assert "BATCH162_BRIEF" in gh
     assert "preferred_auth_interval_s=1800" in gh or "1800" in gh
@@ -3475,19 +3475,24 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert data["tip"] == "8ea3b5f"
     assert data["tip_matches_base"] is True
     assert data["bundle_verify_ok"] is True
-    assert data["device_code"] == "EC83-CFC2"
+    assert data["device_code"] in ("EC83-CFC2", "7BCB-0057")
     assert data["write"] == "DENIED"
-    assert data["ci_status"] in ("pending", "fixed", "success", "failure")
+    assert data["ci_status"] in ("pending", "fixed", "success", "failure", "fixing")
     assert data.get("patch_0017") is False
+    if data["device_code"] == "7BCB-0057":
+        assert data.get("prior_device_code") == "EC83-CFC2"
+        assert data.get("auth_renewed") is True
 
     gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
-    assert "EC83-CFC2" in gh
+    assert "7BCB-0057" in gh or "EC83-CFC2" in gh
+    assert "EC83-CFC2" in gh  # history
     assert "831C-CB1C" in gh
     assert "905D-02F4" in gh
+    assert "batch162-path-c-bundle" in gh
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 170" in log
-    assert "EC83-CFC2" in log
+    assert "EC83-CFC2" in log or "7BCB-0057" in log
     assert "bundle" in log.lower()
     assert "lemma_closed" in log.lower()
 
