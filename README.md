@@ -17,7 +17,7 @@ Engineering only — `lemma_closed` stays **false**. This README does **not** em
 
 ## #1 unblock — multi-agent App access (all owner repos)
 
-Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Batch 219/223: `.cursor/environment.json` lists **all** visible owner repos (`google-drive`, `governance-`, `main`, `Math-`, `meta-framework`, `query-`, `trial`) under `repositoryDependencies`. Batch 223 one-shot: `./scripts/owner_grant_ai_agent_access.sh` prints official install URLs for **Cursor**, **ChatGPT Codex Connector**, and **Claude**, plus Grok PAT fallback (no verified xAI GitHub App). Path C needs at least `d6g8k5htny-coder/main` **Read and write**. Full guide: [`docs/MULTI_AGENT_ACCESS.md`](docs/MULTI_AGENT_ACCESS.md). Steps also: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
+Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Batch 224: `.cursor/environment.json` lists **all 8** visible owner repos (`google-drive`, `governance-`, `main`, `Math-`, `meta-framework`, `query-`, **`sandbox`**, `trial`) under `repositoryDependencies`. One-shot: `./scripts/owner_grant_ai_agent_access.sh` prints official install URLs for **Cursor**, **ChatGPT Codex Connector**, and **Claude** with clear **select ALL repositories including sandbox**, plus Grok PAT fallback (no verified xAI GitHub App). Current App token cannot read `sandbox` (404) until install adds it. Path C needs at least `d6g8k5htny-coder/main` **Read and write**. Full guide: [`docs/MULTI_AGENT_ACCESS.md`](docs/MULTI_AGENT_ACCESS.md). Steps also: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
 
 ## Intent (this repository)
 

@@ -4,6 +4,20 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 224 — add `sandbox` (8 repos); multi-agent access; write DENIED; auth pending `BE27-A62D`; sandbox 404 to App token**:
+>
+> ```bash
+> ./scripts/owner_grant_ai_agent_access.sh          # dry-run: App install URLs; lists all 8 incl. sandbox
+> ./scripts/owner_grant_ai_agent_access.sh --check  # probe all 8; prints "select ALL repositories including sandbox"
+> # Docs: docs/MULTI_AGENT_ACCESS.md | Inventory: portable/AI_AGENT_ACCESS_INVENTORY.json
+> # On each App UI: select ALL repositories including sandbox
+> # Then: authorize https://github.com/login/device (code in portable/GH_DEVICE_LOGIN.md)
+> #   or: ./scripts/owner_path_c_oneshot.sh --from-bundle after MAIN_PUSH_TOKEN / App R/W
+> ```
+>
+> Official installs: Cursor `github.com/apps/cursor`, Codex `github.com/apps/chatgpt-codex-connector`,
+> Claude `github.com/apps/claude`. Grok: no verified xAI App → fine-grained PAT on all 8. `lemma_closed=false`.
+
 > **Batch 223 — multi-agent access (Cursor + ChatGPT/Codex + Claude + Grok); write DENIED; auth pending `89AF-6638`**:
 >
 > ```bash

@@ -6,7 +6,7 @@ research status. `lemma_closed` stays **false**.
 Dylan’s request: **every** AI agent he uses — ChatGPT/Codex, Claude, Grok Bot,
 and Cursor (this agent) — should reach **all** `d6g8k5htny-coder` repos listed
 in [`.cursor/environment.json`](../.cursor/environment.json)
-`repositoryDependencies`.
+`repositoryDependencies` (Batch 224: **8** repos including **`sandbox`**).
 
 Owner one-shot (prints exact UI URLs + `gh` commands; default dry-run):
 
@@ -21,12 +21,13 @@ Access snapshot: [`portable/AI_AGENT_ACCESS_INVENTORY.json`](../portable/AI_AGEN
 
 ## Repos in scope
 
-From `.cursor/environment.json` `repositoryDependencies` (Batch 219+; keep **all**):
+From `.cursor/environment.json` `repositoryDependencies` (Batch 224; keep **all 8**):
 
 | Repo | Role |
 |------|------|
 | `d6g8k5htny-coder/main` | Research home (Path C target; Contents:Write required) |
 | `d6g8k5htny-coder/trial` | Sandbox / this repo (Cloud Agent usually has push) |
+| `d6g8k5htny-coder/sandbox` | New owner sandbox (Batch 224; add to App installs) |
 | `d6g8k5htny-coder/google-drive` | Owner tooling |
 | `d6g8k5htny-coder/governance-` | Owner tooling |
 | `d6g8k5htny-coder/Math-` | Owner tooling |
@@ -35,6 +36,9 @@ From `.cursor/environment.json` `repositoryDependencies` (Batch 219+; keep **all
 
 Grant **Read and write** (Contents + Metadata at minimum; Pull requests +
 Workflows when agents open PRs or run Actions) on **every** row above.
+
+When configuring each GitHub App: **select ALL repositories including sandbox**
+(or “All repositories”).
 
 ---
 
@@ -52,7 +56,8 @@ Workflows when agents open PRs or run Actions) on **every** row above.
 **Owner steps**
 
 1. Open the install/configure link → account `d6g8k5htny-coder`.
-2. **Repository access** → add **all** seven repos (or “All repositories”).
+2. **Repository access** → add **all** eight repos (or “All repositories”) —
+   **including `sandbox`**.
 3. Permissions: **Read and write** on Contents (and PRs / Workflows as prompted).
 4. Save. Confirm Cloud env `.cursor/environment.json` still lists all
    `repositoryDependencies`, then **RELAUNCH** a Cloud Agent from `trial`
@@ -60,7 +65,8 @@ Workflows when agents open PRs or run Actions) on **every** row above.
    [`portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 Live install today is often **trial-only** (`GET /installation/repositories`
-→ `d6g8k5htny-coder/trial` only; `install_has_main=false`).
+→ `d6g8k5htny-coder/trial` only; `install_has_main=false`). `sandbox` is not
+yet in install scope (current token gets 404 / not found on ls-remote).
 
 ### 2) ChatGPT / OpenAI Codex — official GitHub App
 
@@ -73,7 +79,7 @@ Live install today is often **trial-only** (`GET /installation/repositories`
 **Owner steps**
 
 1. Install **ChatGPT Codex Connector** on the personal account.
-2. Select **all** seven `d6g8k5htny-coder/*` repos (or all repositories).
+2. Select **all** eight `d6g8k5htny-coder/*` repos **including sandbox** (or all repositories).
 3. In ChatGPT / Codex, connect GitHub (Apps/Plugins → GitHub) and finish OAuth.
 4. Prefer **Codex** for push/edit; ChatGPT’s connector alone may be read-oriented.
 
@@ -89,12 +95,13 @@ Do **not** invent bot collaborator usernames. The App install is the supported p
 
 **Owner steps**
 
-1. Install **Claude** on the personal account with **all** seven repos R/W.
+1. Install **Claude** on the personal account with **all** eight repos R/W
+   (**including sandbox**).
 2. Optional local: in a clone, `claude` → `/install-github-app` (admin on the repo).
 3. For Claude Code GitHub Action: add `ANTHROPIC_API_KEY` or
    `CLAUDE_CODE_OAUTH_TOKEN` as a repo secret (never paste into chat logs here).
 
-### 4) Grok / xAI — **no verified official GitHub App** (as of Batch 223)
+### 4) Grok / xAI — **no verified official GitHub App** (as of Batch 224)
 
 Checked and **not** used as official installs:
 
@@ -108,8 +115,8 @@ Grok Bot may use plugins/connectors that ask for a PAT — prefer a
 
 **Fallback (owner)**
 
-1. Create a fine-grained PAT with Contents + Pull requests on **all** seven repos
-   (or classic `repo` + `workflow` if you accept broader scope).
+1. Create a fine-grained PAT with Contents + Pull requests on **all** eight repos
+   including **sandbox** (or classic `repo` + `workflow` if you accept broader scope).
 2. Store it only in the agent/tool secret store (Grok Bot secret card, local env,
    Actions secret) — never in `trial` git history.
 3. Optional collaborator invite **only** if Dylan sets documented bot usernames
@@ -143,12 +150,14 @@ export AI_COLLAB_USERNAMES='login1,login2'   # owner-supplied only
 |------------|--------|
 | Push `trial` | yes |
 | Push `main` / other owner repos | **no** (403; install trial-only) |
+| Read / clone `sandbox` | **no** (404 with current App token; not in install) |
 | Topics / collaborators admin APIs | **no** (403 integration) |
 | Device-flow user token | pending — see `portable/GH_DEVICE_LOGIN.md` |
 
 Agents **cannot** finish App installs for you. The durable unblock is: run
-`./scripts/owner_grant_ai_agent_access.sh`, complete each App UI, then relaunch
-Cursor and reconnect ChatGPT/Claude/Grok.
+`./scripts/owner_grant_ai_agent_access.sh`, complete each App UI selecting
+**ALL repositories including sandbox**, then relaunch Cursor and reconnect
+ChatGPT/Claude/Grok.
 
 ---
 

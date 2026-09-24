@@ -1,0 +1,126 @@
+{
+  "batch": "224",
+  "generated_at_utc": "2026-09-24T16:03:16Z",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "write_unlocked": false,
+  "write": "DENIED",
+  "main_writable": false,
+  "path_c_landed": false,
+  "sandbox_added": true,
+  "repos_count": 8,
+  "device_code": "BE27-A62D",
+  "prior_device_code": "89AF-6638",
+  "auth_renewed": false,
+  "device_auth": "pending",
+  "has_token": false,
+  "install_has_main": false,
+  "install_has_sandbox": false,
+  "install_repos": [
+    "d6g8k5htny-coder/trial"
+  ],
+  "sandbox": {
+    "readable": false,
+    "ls_remote": "not_found_or_denied",
+    "read_http": "404",
+    "note": "Owner screenshot NEW; App token 404 until install adds sandbox"
+  },
+  "apps_documented": [
+    "cursor",
+    "chatgpt-codex-connector",
+    "claude",
+    "grok-pat-fallback"
+  ],
+  "apps": [
+    {
+      "slug": "cursor",
+      "install_url": "https://github.com/apps/cursor/installations/new",
+      "http_status": 200
+    },
+    {
+      "slug": "chatgpt-codex-connector",
+      "install_url": "https://github.com/apps/chatgpt-codex-connector/installations/new",
+      "http_status": 200
+    },
+    {
+      "slug": "claude",
+      "install_url": "https://github.com/apps/claude/installations/new",
+      "http_status": 200
+    },
+    {
+      "slug": "grok",
+      "install_url": null,
+      "http_status": 404,
+      "fallback": "fine-grained PAT"
+    }
+  ],
+  "repos": [
+    "d6g8k5htny-coder/google-drive",
+    "d6g8k5htny-coder/governance-",
+    "d6g8k5htny-coder/main",
+    "d6g8k5htny-coder/Math-",
+    "d6g8k5htny-coder/meta-framework",
+    "d6g8k5htny-coder/query-",
+    "d6g8k5htny-coder/sandbox",
+    "d6g8k5htny-coder/trial"
+  ],
+  "repositoryDependencies_kept_all": true,
+  "multi_agent_docs": "docs/MULTI_AGENT_ACCESS.md",
+  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "inventory": "portable/AI_AGENT_ACCESS_INVENTORY.json",
+  "api_grants": {
+    "trial_push": true,
+    "main_create_ref": "DENIED",
+    "other_repos_create_ref": "DENIED",
+    "sandbox_ls_remote": "not_found_or_denied",
+    "collaborator_invite": "skipped_no_usernames"
+  },
+  "tip": "cbaa056",
+  "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+  "tip_refresh": false,
+  "prior_tip": "cbaa056",
+  "tip_matches_base": true,
+  "assert_path_c_ready": "OK",
+  "path_c_blocked_now": "NO_TOKEN",
+  "release": "batch223-path-c-bundle",
+  "apply_stack": "0001-0004+0008-0017",
+  "disposition": "OPEN_HOLD",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "preferred_auth_interval_s": 1800,
+  "readme_link_only": true,
+  "owner_next_action": "Run ./scripts/owner_grant_ai_agent_access.sh \u2192 on Cursor+Codex+Claude App UIs select ALL repositories including sandbox; Grok PAT on all 8; authorize device BE27-A62D OR MAIN_PUSH_TOKEN; RELAUNCH",
+  "alt_actions": [
+    "device authorize BE27-A62D at https://github.com/login/device",
+    "https://github.com/apps/cursor/installations/new (select ALL including sandbox)",
+    "https://github.com/apps/chatgpt-codex-connector/installations/new (select ALL including sandbox)",
+    "https://github.com/apps/claude/installations/new (select ALL including sandbox)",
+    "MAIN_PUSH_TOKEN=<PAT> ./scripts/owner_set_main_push_token.sh --dispatch"
+  ],
+  "trial_branch": "cursor/batch224-sandbox-multi-agent-324e",
+  "note": "Batch 224 adds sandbox to repositoryDependencies (8 total). Grant --check strengthened. Live install trial-only; sandbox 404; main write DENIED; Path C not landed. Auth BE27-A62D pending (no renew). Research untouched lemma_closed=false.",
+  "seconds_left": 401.1,
+  "trial_main_sha": null,
+  "trial_main_landed": false,
+  "status_snapshot": {
+    "base_tip": "cbaa056",
+    "base_tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+    "device_auth": "pending",
+    "device_code": "BE27-A62D",
+    "generated_at": "2026-09-24T16:03:16Z",
+    "goal_complete": false,
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "has_token": false,
+    "lemma_closed": false,
+    "path_c_blocked": "NO_TOKEN",
+    "path_c_blocked_reason": "NO_TOKEN",
+    "release_tag": "batch223-path-c-bundle",
+    "scientific_effect": "NONE",
+    "seconds_left": 401.1,
+    "tip": "cbaa056",
+    "tip_full": "cbaa05690bf3997abe909276af1636b417677ebd",
+    "tip_match": true,
+    "write_state": "DENIED"
+  }
+}

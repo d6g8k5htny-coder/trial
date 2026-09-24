@@ -6,10 +6,11 @@
   // are repo URL strings (https://cursor.com/schemas/environment.schema.json).
   // After this file merges on trial, RELAUNCH a Cloud Agent from trial so the
   // new token picks up full scope — existing runs keep the old trial-only token.
-  // Batch 219/223: KEEP ALL owner repos (install currently trial-only; public
-  // pull on all). Multi-agent grant: docs/MULTI_AGENT_ACCESS.md +
-  // scripts/owner_grant_ai_agent_access.sh (Cursor + Codex + Claude + Grok PAT).
-  // google-drive, governance-, main, Math-, meta-framework, query-, trial.
+  // Batch 219/223/224: KEEP ALL owner repos (install currently trial-only; public
+  // pull on all except sandbox which is private/out-of-install). Multi-agent grant:
+  // docs/MULTI_AGENT_ACCESS.md + scripts/owner_grant_ai_agent_access.sh
+  // (Cursor + Codex + Claude + Grok PAT). Batch 224 adds sandbox (8th repo).
+  // google-drive, governance-, main, Math-, meta-framework, query-, sandbox, trial.
   "repositoryDependencies": [
     "github.com/d6g8k5htny-coder/google-drive",
     "github.com/d6g8k5htny-coder/governance-",
@@ -17,6 +18,7 @@
     "github.com/d6g8k5htny-coder/Math-",
     "github.com/d6g8k5htny-coder/meta-framework",
     "github.com/d6g8k5htny-coder/query-",
+    "github.com/d6g8k5htny-coder/sandbox",
     "github.com/d6g8k5htny-coder/trial"
   ]
 }

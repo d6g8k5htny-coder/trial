@@ -22,6 +22,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 
+### Batch 224 — 2026-09-24 ~16:00 UTC (add sandbox → 8 repos; strengthen grant --check; write DENIED; scientific effect NONE; flipped nothing)
+
+- Dylan (repeat): ALL AI agents R/W; screenshot shows **8** repos including NEW **`sandbox`** not yet in deps.
+- `.cursor/environment.json` `repositoryDependencies` now **all 8** (adds `github.com/d6g8k5htny-coder/sandbox`). Kept prior seven.
+- Docs/script/inventory/one-liners/README/RELAUNCH/OWNER_ACTIONS/AGENTS refreshed for sandbox. `owner_grant_ai_agent_access.sh --check` lists all 8 and prints App install URLs with **select ALL repositories including sandbox**.
+- Live: install trial-only (`install_has_main=false`; `install_has_sandbox=false`). Main write **DENIED**. sandbox API/ls-remote **404** (private / not in install). Path C **not** landed.
+- Auth: device `BE27-A62D` still pending (~400s left; no renew). Never print tokens.
+- Tip stable **`cbaa056`**. `lemma_closed=false`. Research untouched.
+
 ### Batch 223 — 2026-09-24 ~15:45 UTC (multi-agent access: Cursor+Codex+Claude+Grok; owner oneshot; write DENIED; scientific effect NONE; flipped nothing)
 
 - Dylan: **ALL** AI agents need R/W on all owner repos. Shipped `docs/MULTI_AGENT_ACCESS.md`, `scripts/owner_grant_ai_agent_access.sh` (`--dry-run` default / `--check` / optional `--invite-collaborators` only if `AI_COLLAB_USERNAMES` set), `portable/AI_AGENT_ACCESS_INVENTORY.json`.

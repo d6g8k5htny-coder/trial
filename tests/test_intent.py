@@ -5264,3 +5264,101 @@ def test_batch223_multi_agent_access() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 223" in log
     assert "MULTI_AGENT" in log.upper() or "multi-agent" in log.lower()
+
+
+def test_batch224_sandbox_eight_repos() -> None:
+    """Batch 224: add sandbox → 8 repos; grant --check; auth pending; lemma_closed=false."""
+    import json
+    import subprocess
+
+    brief = ROOT / "portable" / "BATCH224_BRIEF.json"
+    assert brief.is_file()
+    data = json.loads(brief.read_text(encoding="utf-8"))
+    assert data["batch"] == "224"
+    assert data["goal_complete"] is False
+    assert data["lemma_closed"] is False
+    assert data["flipped_anything"] is False
+    assert data["path_c_landed"] is False
+    assert data["main_writable"] is False
+    assert data["write"] == "DENIED"
+    assert data["install_has_main"] is False
+    assert data["sandbox_added"] is True
+    assert data["repos_count"] == 8
+    assert data["device_auth"] == "pending"
+    assert "-" in str(data["device_code"])
+    assert _living_tip(data.get("tip"))
+    apps = data.get("apps_documented") or []
+    assert "cursor" in apps
+    assert "chatgpt-codex-connector" in apps
+    assert "claude" in apps
+    assert "grok-pat-fallback" in apps
+    repos = data.get("repos") or []
+    assert "d6g8k5htny-coder/sandbox" in repos
+    assert len(repos) == 8
+
+    env = (ROOT / ".cursor" / "environment.json").read_text(encoding="utf-8")
+    for repo in (
+        "google-drive",
+        "governance-",
+        "main",
+        "Math-",
+        "meta-framework",
+        "query-",
+        "sandbox",
+        "trial",
+    ):
+        assert f"github.com/d6g8k5htny-coder/{repo}" in env
+
+    doc = (ROOT / "docs" / "MULTI_AGENT_ACCESS.md").read_text(encoding="utf-8")
+    assert "sandbox" in doc
+    assert "select ALL repositories including sandbox" in doc
+    assert "lemma_closed" in doc
+
+    script = ROOT / "scripts" / "owner_grant_ai_agent_access.sh"
+    assert script.is_file()
+    assert script.stat().st_mode & 0o111
+    help_out = subprocess.check_output([str(script), "--help"], cwd=ROOT, text=True)
+    assert "select ALL repositories including sandbox" in help_out
+    dry = subprocess.check_output([str(script)], cwd=ROOT, text=True)
+    assert "Batch 224" in dry
+    assert "d6g8k5htny-coder/sandbox" in dry
+    assert "select ALL repositories including sandbox" in dry
+    assert dry.count("d6g8k5htny-coder/") >= 8
+
+    inv = ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json"
+    assert inv.is_file()
+    inv_data = json.loads(inv.read_text(encoding="utf-8"))
+    assert inv_data["lemma_closed"] is False
+    assert inv_data["sandbox_added"] is True
+    assert inv_data["repos_count"] == 8
+    assert inv_data["install_has_main"] is False
+    assert inv_data.get("sandbox", {}).get("readable") is False
+    names = {r["name"] for r in inv_data.get("repos_connected") or []}
+    assert "d6g8k5htny-coder/sandbox" in names
+    assert len(names) == 8
+
+    status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
+    assert status["lemma_closed"] is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("tip_match") is True
+    assert "NO_TOKEN" in str(status.get("path_c_blocked", ""))
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "sandbox" in readme
+    assert "owner_grant_ai_agent_access" in readme
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 224" in ones
+    assert "sandbox" in ones
+    relaunch = (ROOT / "portable" / "RELAUNCH_WITH_MAIN_SCOPE.md").read_text(encoding="utf-8")
+    assert "Batch 224" in relaunch
+    assert "sandbox" in relaunch
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert "sandbox" in agents
+
+    login = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert data["device_code"] in login
+    assert "Batch 224" in login
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 224" in log
+    assert "sandbox" in log

@@ -1,6 +1,23 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 224 — add `sandbox` (8 repos; ALL AI agents)
+
+**Scientific effect: NONE.** Dylan screenshot shows NEW **`sandbox`**. Keep **all 8**
+in `.cursor/environment.json` `repositoryDependencies`. Grant Cursor + ChatGPT/Codex +
+Claude + Grok Read/write on every repo **including sandbox**.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh          # dry-run; App URLs
+./scripts/owner_grant_ai_agent_access.sh --check  # lists all 8; "select ALL repositories including sandbox"
+```
+
+On each App install UI: **select ALL repositories including sandbox**.
+Guide: [`MULTI_AGENT_ACCESS.md`](MULTI_AGENT_ACCESS.md). Snapshot:
+[`../portable/AI_AGENT_ACCESS_INVENTORY.json`](../portable/AI_AGENT_ACCESS_INVENTORY.json).
+Current App token: `sandbox` **404** (not in install). `lemma_closed` stays **false**.
+
+
 ## Batch 223 — multi-agent access (ALL AI agents)
 
 **Scientific effect: NONE.** Grant Cursor + ChatGPT/Codex + Claude + Grok Read/write
@@ -32,11 +49,12 @@ Public `d6g8k5htny-coder/*` repos are **readable** (contents list + `git ls-remo
 | `d6g8k5htny-coder/Math-` | pull | no | `636b983` |
 | `d6g8k5htny-coder/meta-framework` | pull | no | `ed31d63` |
 | `d6g8k5htny-coder/query-` | pull | no | `e3595de` |
+| `d6g8k5htny-coder/sandbox` | none (404 to App token) | no | n/a — add on App install |
 | `d6g8k5htny-coder/trial` | push | yes | live trial tip |
 
-`.cursor/environment.json` `repositoryDependencies` now lists **all seven**
-`github.com/d6g8k5htny-coder/...` URLs so a **RELAUNCH** can request full scope.
-Until Cursor App adds each repo (or device/`MAIN_PUSH_TOKEN` unlocks write), Path C stays blocked `NO_TOKEN`. `lemma_closed` stays **false** — never flip research.
+`.cursor/environment.json` `repositoryDependencies` now lists **all eight**
+`github.com/d6g8k5htny-coder/...` URLs (Batch 224 adds **`sandbox`**) so a **RELAUNCH** can request full scope.
+Until Cursor App adds each repo including sandbox (or device/`MAIN_PUSH_TOKEN` unlocks write), Path C stays blocked `NO_TOKEN`. `lemma_closed` stays **false** — never flip research.
 
 
 # Owner actions for `d6g8k5htny-coder/main`

@@ -4,7 +4,8 @@
 **Current run cannot gain `main` write mid-flight** — env repos stay trial-only until relaunch.
 
 Committed `.cursor/environment.json` already declares
-`repositoryDependencies` → all seven `d6g8k5htny-coder/*` URLs (Batch 219; was main-only), but a **personal**
+`repositoryDependencies` → all **eight** `d6g8k5htny-coder/*` URLs (Batch 224 adds
+`sandbox`; Batch 219 had seven), but a **personal**
 Cloud Agent environment that booted before that merge (or without picking up the
 repo-file env) still issues a **trial-only** token (`install_has_main=false`).
 
@@ -16,15 +17,17 @@ Pick **one** of (a)/(b)/(c), then do (d).
    (https://github.com/settings/installations)  
    or install: https://github.com/apps/cursor/installations/new
 2. Under **Repository access** → **Only select repositories** (or All)
-3. **Add** `d6g8k5htny-coder/main` with **Read and write** (prefer **all** seven owner repos)
+3. **Add** `d6g8k5htny-coder/main` with **Read and write** (prefer **all eight** owner repos
+   **including sandbox**)
 4. Save
 
-**Batch 223 — all AI agents:** also install ChatGPT Codex Connector + Claude Apps
-(and Grok via PAT) on the same repo set. One-shot:
+**Batch 224 — all AI agents + sandbox:** also install ChatGPT Codex Connector + Claude Apps
+(and Grok via PAT) on the same **8-repo** set. On each App UI:
+**select ALL repositories including sandbox**. One-shot:
 
 ```bash
 ./scripts/owner_grant_ai_agent_access.sh          # dry-run URLs + gh
-./scripts/owner_grant_ai_agent_access.sh --check  # after installs
+./scripts/owner_grant_ai_agent_access.sh --check  # after installs (lists all 8)
 ```
 
 Guide: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md).
@@ -94,10 +97,18 @@ token, or `MAIN_PUSH_TOKEN`). Scientific effect: **NONE**. `lemma_closed=false`.
 
 ## Batch 223 — multi-agent access (Cursor + Codex + Claude + Grok)
 
-Same seven `repositoryDependencies`. Owner grants **every** agent Read/write via
+Same seven `repositoryDependencies` (pre-sandbox). Owner grants **every** agent Read/write via
 official Apps (Cursor / ChatGPT Codex Connector / Claude) plus Grok PAT fallback
 (no verified xAI GitHub App). See `docs/MULTI_AGENT_ACCESS.md` and
 `scripts/owner_grant_ai_agent_access.sh`. After App installs: **RELAUNCH**.
+
+## Batch 224 — add `sandbox` (8 repos)
+
+`.cursor/environment.json` now includes `github.com/d6g8k5htny-coder/sandbox`
+(owner screenshot NEW). Keep **all 8**. Live App install still trial-only;
+`sandbox` returns 404 to this token until App repository access adds it.
+On Cursor / Codex / Claude install UIs: **select ALL repositories including sandbox**.
+Then **RELAUNCH**.
 
 
 **This running agent cannot pick up `main` mid-flight.** Repositories in the

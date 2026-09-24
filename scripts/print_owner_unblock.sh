@@ -46,9 +46,10 @@ if [[ -f "$ROOT/portable/GH_DEVICE_LOGIN.md" ]]; then
   echo "  $(grep -E '^\\| User code|^\\| Status|^\\| Verification' "$ROOT/portable/GH_DEVICE_LOGIN.md" | tr '\n' ' ')"
 fi
 echo "App install (Cursor): GitHub → Settings → Applications → Cursor → add ALL owner repos Read+write"
-echo "  Multi-agent oneshot (Batch 223): $ROOT/scripts/owner_grant_ai_agent_access.sh  # Cursor+Codex+Claude+Grok PAT"
+echo "  Multi-agent oneshot (Batch 224): $ROOT/scripts/owner_grant_ai_agent_access.sh  # Cursor+Codex+Claude+Grok PAT; 8 repos incl. sandbox"
 echo "  Docs: $ROOT/docs/MULTI_AGENT_ACCESS.md  |  Inventory: $ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
-echo "  (until then install_has_main=false; device user token still can Path C — ignore install_has_main)"
+echo "  On App UIs: select ALL repositories including sandbox"
+echo "  (until then install_has_main=false; sandbox 404; device user token still can Path C — ignore install_has_main)"
 echo "Relaunch / scope: $ROOT/portable/RELAUNCH_WITH_MAIN_SCOPE.md  # (a) App (b) device (c) MAIN_PUSH_TOKEN (d) RELAUNCH — mid-flight cannot gain main"
 echo "Status guard (Batch 86; fail on OPEN→closed/promoted): $ROOT/scripts/guard_no_status_promotion.py <hardening-checkout>"
 echo "  baseline: portable/BATCH70_RESEARCH_STACK_AUDIT.json or portable/STATUS_GUARD_SNAPSHOT.json"

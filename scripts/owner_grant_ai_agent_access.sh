@@ -33,7 +33,9 @@ Usage: owner_grant_ai_agent_access.sh [--dry-run] [--check] [--invite-collaborat
 
   --check
       Probe current token: /installation/repositories, contents read, and
-      create-ref write (probe refs deleted). Never prints tokens.
+      create-ref write (probe refs deleted). Lists ALL repositoryDependencies
+      (expect 8 including sandbox). Prints App install URLs with clear
+      "select ALL repositories including sandbox". Never prints tokens.
 
   --invite-collaborators
       Invite collaborators ONLY when AI_COLLAB_USERNAMES is set to a
@@ -49,6 +51,8 @@ Official App install URLs (do not invent alternatives):
   Codex:     https://github.com/apps/chatgpt-codex-connector/installations/new
   Claude:    https://github.com/apps/claude/installations/new
   Grok/xAI:  no verified official GitHub App → fine-grained PAT / optional collab
+
+  On each install UI: select ALL repositories including sandbox.
 
 Docs: docs/MULTI_AGENT_ACCESS.md
 EOF
@@ -109,11 +113,54 @@ while IFS= read -r line; do
 done < <(list_repos)
 [[ ${#REPOS[@]} -gt 0 ]] || die "no repositoryDependencies in $ENV_JSON"
 
-echo "=== Multi-agent GitHub access (Batch 223) ==="
+HAS_SANDBOX=0
+for r in "${REPOS[@]}"; do
+  [[ "$r" == "$OWNER/sandbox" ]] && HAS_SANDBOX=1
+done
+
+echo "=== Multi-agent GitHub access (Batch 224) ==="
 echo "Scientific effect: NONE. lemma_closed stays false. Never print tokens."
 echo "Owner: $OWNER"
-echo "Repos (${#REPOS[@]}):"
-for r in "${REPOS[@]}"; do echo "  - $r"; done
+echo "Repos (${#REPOS[@]}; expect 8 including sandbox):"
+for r in "${REPOS[@]}"; do
+  if [[ "$r" == "$OWNER/sandbox" ]]; then
+    echo "  - $r   ← NEW (Batch 224); must be on every App install"
+  else
+    echo "  - $r"
+  fi
+done
+if [[ "$HAS_SANDBOX" -ne 1 ]]; then
+  echo "WARNING: sandbox missing from repositoryDependencies — add github.com/$OWNER/sandbox"
+fi
+if [[ ${#REPOS[@]} -lt 8 ]]; then
+  echo "WARNING: expected 8 repos, got ${#REPOS[@]}"
+fi
+echo
+
+echo "=== App install URLs — select ALL repositories including sandbox ==="
+echo "  CRITICAL: On each install UI below, choose Repository access →"
+echo "            All repositories  OR  select every row listed above"
+echo "            (must include $OWNER/sandbox)."
+echo
+echo "  1) Cursor"
+echo "       App:     https://github.com/apps/cursor"
+echo "       Install: https://github.com/apps/cursor/installations/new"
+echo "       Config:  https://github.com/settings/installations"
+echo "       → select ALL repositories including sandbox"
+echo
+echo "  2) ChatGPT / Codex (ChatGPT Codex Connector)"
+echo "       App:     https://github.com/apps/chatgpt-codex-connector"
+echo "       Install: https://github.com/apps/chatgpt-codex-connector/installations/new"
+echo "       → select ALL repositories including sandbox"
+echo
+echo "  3) Claude"
+echo "       App:     https://github.com/apps/claude"
+echo "       Install: https://github.com/apps/claude/installations/new"
+echo "       → select ALL repositories including sandbox"
+echo
+echo "  4) Grok / xAI — no verified official GitHub App (PAT fallback)"
+echo "       Fine-grained PAT: https://github.com/settings/personal-access-tokens"
+echo "       → grant Contents + Pull requests on ALL ${#REPOS[@]} repos including sandbox"
 echo
 
 echo "=== 1) Cursor GitHub App — add ALL repos Read/write ==="
@@ -123,7 +170,7 @@ echo "  Configure:    https://github.com/settings/installations"
 echo "  Docs:         https://cursor.com/docs/integrations/github"
 echo "  Steps:"
 echo "    1. Open Install/new → select account $OWNER"
-echo "    2. Repository access → All repositories OR select:"
+echo "    2. Repository access → All repositories OR select ALL including sandbox:"
 for r in "${REPOS[@]}"; do echo "         • $r"; done
 echo "    3. Permissions: Contents Read/write (+ PRs / Workflows as prompted)"
 echo "    4. Save → RELAUNCH Cloud Agent from trial (see portable/RELAUNCH_WITH_MAIN_SCOPE.md)"
@@ -136,7 +183,7 @@ echo "  App page:     https://github.com/apps/chatgpt-codex-connector"
 echo "  Install/new:  https://github.com/apps/chatgpt-codex-connector/installations/new"
 echo "  Help:         https://help.openai.com/en/articles/11145903-connecting-github-to-chatgpt"
 echo "  Steps:"
-echo "    1. Install App on $OWNER with ALL repos above (Read/write for Codex push)"
+echo "    1. Install App on $OWNER — select ALL repositories including sandbox (R/W for Codex push)"
 echo "    2. In ChatGPT/Codex: Apps/Plugins → GitHub → connect + authorize"
 echo "    3. Prefer Codex for generate/edit/push; ChatGPT connector may be read-oriented"
 echo "  Do not invent OpenAI bot collaborator usernames — use the App."
@@ -147,7 +194,7 @@ echo "  App page:     https://github.com/apps/claude"
 echo "  Install/new:  https://github.com/apps/claude/installations/new"
 echo "  Docs:         https://code.claude.com/docs/en/github-actions"
 echo "  Steps:"
-echo "    1. Install App on $OWNER with ALL repos above (Contents/Issues/PRs R/W)"
+echo "    1. Install App on $OWNER — select ALL repositories including sandbox (Contents/Issues/PRs R/W)"
 echo "    2. Optional: in a local clone run claude → /install-github-app"
 echo "    3. Optional Actions: add ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN secret"
 echo "  Do not invent Claude bot collaborator usernames — use the App."
@@ -155,7 +202,7 @@ echo
 
 echo "=== 4) Grok / xAI — no verified official GitHub App ==="
 echo "  Checked (not official installs): /apps/grok /apps/xai /apps/xai-grok → 404"
-echo "  Fallback: fine-grained PAT with Contents + Pull requests on ALL repos above"
+echo "  Fallback: fine-grained PAT with Contents + Pull requests on ALL repos including sandbox"
 echo "    https://github.com/settings/personal-access-tokens"
 echo "  Store PAT only in the tool secret store / env — never paste into chat."
 echo "  Grok Build CLI (local clone): https://docs.x.ai/build/overview"
@@ -171,22 +218,58 @@ echo
 if [[ "$DO_CHECK" -eq 1 ]]; then
   need_cmd gh
   echo "=== --check probe (current gh token; no secrets printed) ==="
+  echo "Expected repos (${#REPOS[@]}):"
+  n=0
+  for r in "${REPOS[@]}"; do
+    n=$((n + 1))
+    mark=""
+    [[ "$r" == "$OWNER/sandbox" ]] && mark=" [sandbox — must appear on App installs]"
+    echo "  $n. $r$mark"
+  done
+  echo
+  echo "App install URLs (re-print for owner):"
+  echo "  Cursor → https://github.com/apps/cursor/installations/new"
+  echo "           select ALL repositories including sandbox"
+  echo "  Codex  → https://github.com/apps/chatgpt-codex-connector/installations/new"
+  echo "           select ALL repositories including sandbox"
+  echo "  Claude → https://github.com/apps/claude/installations/new"
+  echo "           select ALL repositories including sandbox"
+  echo
   install_json="$(gh api /installation/repositories 2>/dev/null || true)"
   if [[ -n "$install_json" ]]; then
     echo "$install_json" | python3 -c 'import json,sys
 d=json.load(sys.stdin)
-print("installation:", json.dumps({"total_count":d.get("total_count"),"repository_selection":d.get("repository_selection"),"names":[r.get("full_name") for r in d.get("repositories") or []]}, indent=2))
-print("install_has_main:", any(r.get("full_name")=="'"$OWNER"'/main" for r in d.get("repositories") or []))'
+names=[r.get("full_name") for r in d.get("repositories") or []]
+print("installation:", json.dumps({"total_count":d.get("total_count"),"repository_selection":d.get("repository_selection"),"names":names}, indent=2))
+print("install_has_main:", any(n=="'"$OWNER"'/main" for n in names))
+print("install_has_sandbox:", any(n=="'"$OWNER"'/sandbox" for n in names))
+missing=[r for r in """'"$(printf '%s\n' "${REPOS[@]}")"'""".strip().splitlines() if r and r not in names]
+print("install_missing_from_deps:", missing)'
   else
     echo "installation: unavailable (not an App installation token, or 403)"
   fi
   TS="$(date +%s)"
+  echo
+  echo "Per-repo probe (all ${#REPOS[@]} deps):"
   for r in "${REPOS[@]}"; do
-    read_http="$(gh api -i "/repos/$r/contents/README.md" 2>/dev/null | head -n1 | awk '{print $2}')"
+    # Avoid SIGPIPE under pipefail: do not pipe gh into head.
+    read_http="$(gh api -i "/repos/$r/contents/README.md" 2>/dev/null | awk 'NR==1{print $2; exit}' || true)"
     tip="$(gh api "/repos/$r/git/ref/heads/main" --jq .object.sha 2>/dev/null || true)"
+    # Reject non-SHA junk (e.g. JSON error bodies when repo is 404)
+    if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
+      tip=""
+    fi
     if [[ -z "$tip" ]]; then
       def="$(gh api "/repos/$r" --jq .default_branch 2>/dev/null || echo main)"
       tip="$(gh api "/repos/$r/git/ref/heads/$def" --jq .object.sha 2>/dev/null || true)"
+      if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
+        tip=""
+      fi
+    fi
+    # Also try ls-remote readability for private/out-of-scope (no token printed)
+    ls_remote="ok"
+    if ! git ls-remote "https://github.com/$r.git" HEAD >/dev/null 2>&1; then
+      ls_remote="not_found_or_denied"
     fi
     write="DENIED"
     if [[ -n "$tip" ]]; then
@@ -195,11 +278,13 @@ print("install_has_main:", any(r.get("full_name")=="'"$OWNER"'/main" for r in d.
         gh api -X DELETE "/repos/$r/git/refs/heads/cursor-grant-probe-$TS" >/dev/null 2>&1 || true
       fi
     fi
-    echo "repo=$r read_http=${read_http:-?} write=$write tip=${tip:0:7}"
+    tip_short="${tip:0:7}"
+    [[ -z "$tip_short" ]] && tip_short="?"
+    echo "repo=$r read_http=${read_http:-?} write=$write tip=$tip_short ls_remote=$ls_remote"
   done
   echo
   echo "Apps are not enumerable from a ghs installation token without owner OAuth."
-  echo "After installing each App, re-run --check from an owner laptop gh session."
+  echo "After installing each App (ALL repos including sandbox), re-run --check from an owner laptop gh session."
   echo
 fi
 
@@ -237,7 +322,8 @@ fi
 
 if [[ "$DRY_RUN" -eq 1 && "$DO_CHECK" -eq 0 && "$DO_INVITE" -eq 0 ]]; then
   echo "=== dry-run complete (default) ==="
-  echo "No mutations. Owner: open the three App install URLs, add ALL repos R/W,"
+  echo "No mutations. Owner: open the three App install URLs,"
+  echo "select ALL repositories including sandbox (R/W),"
   echo "then PAT/device for Grok + Path C. Re-run with --check after installs."
 fi
 
