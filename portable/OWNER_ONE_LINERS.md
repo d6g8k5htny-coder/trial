@@ -4,6 +4,9 @@ Copy-paste from a machine or Actions runner that **can write** to
 `d6g8k5htny-coder/main`. This trial cloud token cannot (git push + Git Data API
 + `gh pr ready/merge` all return **403**).
 
+> **Batch 212 — tip stable `b89448d`; auth renew `5AEC-4784` (from `B064-C458` &lt;90s); write DENIED**:
+> Authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md` (or `./scripts/owner_path_c_oneshot.sh --from-bundle` after `gh release download batch207-path-c-bundle`).
+
 > **Batch 210 — tip stable `b89448d`; auth renew `B064-C458` (from `E577-EEF9` &lt;90s); has_0017 verified; hunt clean no 0018; write DENIED**:
 > `gh release download batch207-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'` then `./scripts/owner_path_c_oneshot.sh --from-bundle` (or authorize https://github.com/login/device with code in `portable/GH_DEVICE_LOGIN.md`).
 

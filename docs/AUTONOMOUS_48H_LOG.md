@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 212 — 2026-09-24 ~14:29–14:32 UTC (PERMANENT window; tip stable b89448d; auth B064→5AEC; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
+
+- WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.
+- Tip **`b89448d` == BASE_TIP** → no tip SHA refresh / no bundle rebuild.
+- AUTH: poll `B064-C458` pending/slow_down → renew `5AEC-4784` (seconds_left&lt;90). Never print tokens.
+- RESEARCH: untouched; **lemma_closed=false**; **flipped nothing**.
+- Release still **`batch207-path-c-bundle`**. Timers: auth **1800s**, permanent **10800s**. `goal_complete=false`.
+
 ### Batch 210 — 2026-09-24 ~14:13–14:25 UTC (PERMANENT window; tip stable b89448d; auth E577→B064; has_0017 verified; hunt clean no 0018; write DENIED; preferred_auth_interval_s=1800; scientific effect NONE; flipped nothing)
 
 - WRITE+ALIGN: main write **DENIED**; default tip **ALIGNED** @ `1c6e74b` (PR #41). Path C blocked `NO_TOKEN`.

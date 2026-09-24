@@ -3,6 +3,19 @@
 Scientific effect: **NONE**. These are engineering / ResourceWarning hygiene notes only.
 **Never** promote / close / discharge research status. `lemma_closed=false` stays false.
 
+## Batch 212 — tip stable b89448d; auth renew 5AEC (B064 &lt;90s); no research flips @ tips `1c6e74b` / `b89448d`
+
+Mechanical inventory unchanged from Batch 210. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip SHA refresh / no bundle rebuild.
+
+| Face | Tip | Shape | Notes |
+|------|-----|-------|-------|
+| default main | `1c6e74b` | ALIGNED (PR #41) | Path C not shaped here |
+| hardening | `b89448da439d963a404212ae024534169aa22297` | **HAS_PACKET** (== BASE_TIP) | OPEN inventory (Batch 165/185/207/210 counts) |
+| write | DENIED (403) | `install_has_main=false` | Path C blocked `NO_TOKEN` |
+| write / Path C | **DENIED** (403); device auth renewed `5AEC-4784` (prior `B064-C458` &lt;90s) |
+| pack / release | still **`batch207-path-c-bundle`** |
+| research flips | **none**; `lemma_closed=false` |
+
 ## Batch 210 — tip stable b89448d; auth renew B064 (E577 &lt;90s); has_0017 verified; hunt clean no 0018; no research flips @ tips `1c6e74b` / `b89448d`
 
 Mechanical inventory unchanged from Batch 207. Flipped nothing. `lemma_closed=false`. Disposition **OPEN_HOLD**. Tip == BASE_TIP → no tip SHA refresh / no bundle rebuild.

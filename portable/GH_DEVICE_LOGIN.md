@@ -4,17 +4,17 @@
 
 | Field | Value |
 |-------|-------|
-| Started (UTC) | 2026-09-24T14:15:22Z |
-| Checked (UTC) | 2026-09-24T14:15:22Z |
+| Started (UTC) | 2026-09-24T14:31:29Z |
+| Checked (UTC) | 2026-09-24T14:31:29Z |
 | Verification URL | https://github.com/login/device |
-| User code | `B064-C458` |
-| Prior code | `E577-EEF9` (Batch 210 renew; seconds_left&lt;90; prior `1DAB-B7F7` Batch 207) |
+| User code | `5AEC-4784` |
+| Prior code | `B064-C458` (Batch 212 renew; seconds_left&lt;90; prior `E577-EEF9` Batch 210) |
 | Prior prior | `5160-F839` (Batch 202); older: `50DB-FD4D` (Batch 199); `CC72-DB3D` (Batch 195); `1C7F-22B5` (Batch 192); `C949-0100` (expired Batch 190); `46EC-0B00` (Batch 188); `DF9C-5DF9` (Batch 185); `5216-7C1B` (Batch 183); `AD78-6206` (Batch 180); `5E05-EA04` (Batch 178); `9671-4918` (Batch 176); `7BCB-0057` (Batch 173); `EC83-CFC2` (Batch 170); `831C-CB1C` (Batch 169); `905D-02F4` (Batch 168) |
 | Older priors | `C8FC-A08F` → `E818-2EE5` → `2513-3A16` → `E136-5AE7` → `1FC8-3D96` → `1DAC-111C` → `A450-C91F` → `A9D3-16CD` → `16F5-39F5` (expired chain; history only) |
-| Status | pending (authorization_pending; Batch 210 renew after E577 &lt;90s; Batch 194: README link-only — no embedded user code; seconds_left in BATCH210_BRIEF / PATH_C_STATUS) |
-| Expires | see `seconds_left` in BATCH210_BRIEF / PATH_C_STATUS (history: BATCH207_BRIEF / BATCH202_BRIEF / BATCH199_BRIEF / BATCH195_BRIEF) |
+| Status | pending (authorization_pending; Batch 212 renew after B064 &lt;90s; Batch 194: README link-only — no embedded user code; seconds_left in BATCH212_BRIEF / PATH_C_STATUS) |
+| Expires | see `seconds_left` in BATCH212_BRIEF / PATH_C_STATUS (history: BATCH210_BRIEF / BATCH207_BRIEF / BATCH202_BRIEF / BATCH199_BRIEF / BATCH195_BRIEF) |
 | Hardening tip | `b89448d` (PR #51); prior `8bd1f03` (PR #52); path-c-applied-bundle includes **`path-c-on-hardening.bundle`** + `.patch`; release `batch207-path-c-bundle` (priors `batch202-path-c-bundle` / `batch199-path-c-bundle` / `batch180-path-c-bundle` / `batch179-path-c-bundle` / `batch169-path-c-bundle` / `batch168-path-c-bundle` / `batch162-path-c-bundle`) |
-| History briefs | `BATCH210_BRIEF` / `BATCH207_BRIEF` / `BATCH202_BRIEF` / `BATCH199_BRIEF` / `BATCH195_BRIEF` / `BATCH194_BRIEF` / `BATCH192_BRIEF` / `BATCH190_BRIEF` / `BATCH188_BRIEF` / `BATCH185_BRIEF` / `BATCH183_BRIEF` / `BATCH162_BRIEF` / `BATCH168_BRIEF` / `BATCH169_BRIEF` / `BATCH178_BRIEF` / `BATCH179_BRIEF` / `BATCH180_BRIEF` (issue hygiene create-only) |
+| History briefs | `BATCH212_BRIEF` / `BATCH210_BRIEF` / `BATCH207_BRIEF` / `BATCH202_BRIEF` / `BATCH199_BRIEF` / `BATCH195_BRIEF` / `BATCH194_BRIEF` / `BATCH192_BRIEF` / `BATCH190_BRIEF` / `BATCH188_BRIEF` / `BATCH185_BRIEF` / `BATCH183_BRIEF` / `BATCH162_BRIEF` / `BATCH168_BRIEF` / `BATCH169_BRIEF` / `BATCH178_BRIEF` / `BATCH179_BRIEF` / `BATCH180_BRIEF` (issue hygiene create-only) |
 | Repo face | Trial `README.md` top section **Path C — land engineering fixes on main** (Batch 194: **link-only** → this file for live user code; no perishable `XXXX-XXXX` on README; release bundle / oneshot / App add-main; `lemma_closed` stays false) |
 | Tip refresh helper | `scripts/refresh_path_c_bundle.sh` (Batch 173+; Batch 180: `git bundle verify` uses WORKDIR so trial ROOT does not false-fail prerequisites; Batch 202: tip `8bd1f03`→`b89448d`) |
 | Path C status JSON | `scripts/write_path_c_status.py` → `portable/PATH_C_STATUS.json` (tip/base_tip/tip_match/write_state/lemma_closed/path_c_blocked/device_code/release_tag/generated_at; no secrets); Batch 199+: included in pack tarball |
@@ -39,6 +39,8 @@ The agent keeps a device-flow poller alive in tmux session `gh-device-login`. Wh
  Batch 207+: tip still **`b89448d`** (no tip move); auth poll `1DAB-B7F7` pending then **renewed** `E577-EEF9` (seconds_left&lt;90); hunt found `tests/test_pinned_sources.py` ResourceWarning → shipped **0017**; force bundle refresh + pack+release **`batch207-path-c-bundle`**; write DENIED; `lemma_closed=false`.
 
  Batch 210+: tip still **`b89448d`** (no tip move); auth poll `E577-EEF9` pending then **renewed** `B064-C458` (seconds_left&lt;90); verified **0017** in apply_all/MANIFEST/path-c-applied-bundle; hunt beyond 0017 **clean** (no 0018); write DENIED; `lemma_closed=false`.
+
+ Batch 212+: tip still **`b89448d`** (no tip move); auth poll `B064-C458` pending/slow_down then **renewed** `5AEC-4784` (seconds_left&lt;90); write DENIED; `lemma_closed=false`; research untouched.
 
 ## W3f false positive (Batch 141)
 
