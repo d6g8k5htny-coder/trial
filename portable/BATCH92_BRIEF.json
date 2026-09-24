@@ -1,13 +1,15 @@
 {
   "batch": "92",
-  "generated_at_utc": "2026-09-24T03:20:00Z",
+  "generated_at_utc": "2026-09-24T03:20:34Z",
   "aligned": true,
   "default_tip": "1c6e74b",
   "hardening_tip": "ac33581",
   "tip_refresh": false,
   "write_state": "DENIED",
   "install_has_main": false,
-  "installation_names": ["d6g8k5htny-coder/trial"],
+  "installation_names": [
+    "d6g8k5htny-coder/trial"
+  ],
   "path_c_landed": false,
   "path_c_now": false,
   "shipped": [
@@ -15,13 +17,14 @@
     "scripts/when_writable_land.py",
     "docs/OWNER_ACTIONS_MAIN.md"
   ],
-  "owner_fix": "GitHub → Settings → Applications → Cursor → Repository access → add d6g8k5htny-coder/main Read and write",
+  "owner_fix": "GitHub \u2192 Settings \u2192 Applications \u2192 Cursor \u2192 Repository access \u2192 add d6g8k5htny-coder/main Read and write",
   "cite": "portable/CURSOR_BOT_ACCESS_91.json",
-  "daemon": "when-writable-land restarted",
+  "daemon": "when-writable-land restarted; install_has_main=false",
   "route_now": "IDLE",
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
   "window": "PERMANENT_OPEN",
-  "note": "Install still trial-only; lander polls install_has_main each cycle; Path C on flip"
+  "note": "Install still trial-only; lander polls install_has_main each cycle; Path C on flip",
+  "land_trial": "direct push cursor/install-repos-poll-4bd6 \u2192 trial main"
 }
