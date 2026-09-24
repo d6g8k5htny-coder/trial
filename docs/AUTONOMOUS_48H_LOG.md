@@ -34,7 +34,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Draft/ready PR create via `gh` → expect **403**. **Land on trial `main`** via direct push.
 - `goal_complete=false` (permanent window open; keep iterating).
 
-**Land note:** `gh pr create` → **403**. Direct push to trial `main` from `cursor/batch76-path-c-applied-bundle-9f3c`. Timer `permanent-autonomous-align-watch` @ **3600s** armed.
+**Land note:** `gh pr create` → **403**. Direct push to trial `main`: `edb24b7..323f7f6` (`cursor/batch76-path-c-applied-bundle-9f3c`). Timer `permanent-autonomous-align-watch` @ **3600s** armed.
 
 ### Batch 74 — 2026-09-24 ~01:42 UTC (PERMANENT window; ALIGNED @ `1c6e74b`; BASE_TIP → `ac33581`; Batch 73 CI fix)
 
