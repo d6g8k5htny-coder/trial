@@ -7,8 +7,10 @@
   "install_has_main": false,
   "installation_names": ["d6g8k5htny-coder/trial"],
   "path_c_landed": false,
-  "route_now": "LAND_TRIAL",
+  "route_now": "LANDED_TRIAL",
   "change": "README.md #1 unblock section (add main to Cursor App repo access); cite trial-only install",
+  "land_trial": "direct push cursor/readme-add-main-unblock-875c → trial main @8998b26",
+  "timer": "permanent-autonomous-align-watch@3600s",
   "flipped_anything": false,
   "note": "install_has_main=false; Path C not landed; research status untouched"
 }
