@@ -30,7 +30,7 @@ FORCE=0
 DRY_RUN=0
 KEEP_WORKDIR=0
 SKIP_PYTEST=0
-BATCH_TAG="${REFRESH_BATCH_TAG:-176}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-250}"
 
 usage() {
   cat <<'EOF'
@@ -45,7 +45,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   recorded in VERIFY.json (default 176)
+  REFRESH_BATCH_TAG   recorded in VERIFY.json (default 250)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional clone auth (never printed)
 
 Exit:
@@ -297,11 +297,29 @@ git -C "$WORKDIR" bundle verify "$BUNDLE_OUT" >/dev/null
 else
   echo "refresh_path_c_bundle: skipped bundle recreate (kept prior assets)"
 fi
+# Batch 250: when keeping prior .bundle, VERIFY must name the *kept* bundle head —
+# not the local allow-empty commit (unpublished; HTTP 422 on GitHub).
+KEEP_PRIOR_BUNDLE="${KEEP_PRIOR_BUNDLE:-0}"
+LOCAL_ALLOW_EMPTY_SHA="$APPLIED_SHA"
+BUNDLE_HEAD_SHA=""
+if [[ -s "$BUNDLE_OUT" ]]; then
+  BUNDLE_HEAD_SHA="$(git bundle list-heads "$BUNDLE_OUT" 2>/dev/null | awk '{print $1; exit}')"
+fi
+BUNDLE_REQUIRES_SHA=""
+if [[ -s "$BUNDLE_OUT" ]]; then
+  BUNDLE_REQUIRES_SHA="$(git bundle verify "$BUNDLE_OUT" 2>&1 | awk '/requires this ref:/{getline; gsub(/^[[:space:]]+/,"",$0); print; exit}')"
+fi
+if [[ "$KEEP_PRIOR_BUNDLE" -eq 1 && -n "$BUNDLE_HEAD_SHA" ]]; then
+  APPLIED_SHA="$BUNDLE_HEAD_SHA"
+  APPLIED_SHORT="${APPLIED_SHA:0:7}"
+  echo "refresh_path_c_bundle: VERIFY honesty — applied_commit_sha=${APPLIED_SHORT} (kept bundle head; local allow-empty ${LOCAL_ALLOW_EMPTY_SHA:0:7} not published)"
+fi
 GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 python3 - <<PY
 import json
 from pathlib import Path
 # Batch 232: preserve Path C land evidence across tip-refresh rewrites.
+# Batch 250: keep_prior_bundle ⇒ VERIFY tracks kept .bundle head (not allow-empty).
 prior = {}
 prior_path = Path("$VERIFY_OUT")
 if prior_path.is_file():
@@ -309,21 +327,44 @@ if prior_path.is_file():
         prior = json.loads(prior_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         prior = {}
+keep_prior = int("$KEEP_PRIOR_BUNDLE") == 1
+applied_sha = "$APPLIED_SHA"
+bundle_range = f"$LIVE_SHA..$APPLIED_SHA"
+bundle_requires = "$LIVE_SHA"
+if keep_prior:
+    # Prefer actual kept-bundle metadata over the unpublished allow-empty SHA.
+    requires = "$BUNDLE_REQUIRES_SHA".strip()
+    if requires:
+        bundle_requires = requires
+    elif prior.get("bundle_requires_ref"):
+        bundle_requires = prior["bundle_requires_ref"]
+    prior_range = str(prior.get("bundle_range") or "")
+    # Keep prior range only when it still ends at the kept bundle head.
+    if prior_range.endswith(applied_sha) or prior_range.endswith(applied_sha[:7]):
+        bundle_range = prior_range
+    else:
+        bundle_range = f"{bundle_requires}..{applied_sha}"
+note = (
+    f"Batch $BATCH_TAG: refresh_path_c_bundle.sh @ ${LIVE_SHORT}; "
+    f"{'kept prior .patch+.bundle (already-on-tip); ' if keep_prior else 'rebuilt; '}"
+    f"lemma_closed=false; problems=$PROBLEMS"
+)
 verify = {
   "batch": str("$BATCH_TAG"),
   "generated_at_utc": "$GENERATED_AT",
   "base_tip_sha": "$LIVE_SHA",
-  "applied_commit_sha": "$APPLIED_SHA",
+  "applied_commit_sha": applied_sha,
   "hardening_ref": "$HARDENING_REF",
   "prior_base_tip_sha": "$PRIOR_SHA" if "$TIP_MATCH" == "0" else "$LIVE_SHA",
   "tip_refresh": bool(int("$TIP_MATCH") == 0),
   "tip_refresh_via": "refresh_path_c_bundle.sh",
-  "bundle_refresh": True,
+  "bundle_refresh": (not keep_prior),
+  "keep_prior_bundle": keep_prior,
   "git_bundle": True,
   "bundle_file": "path-c-on-hardening.bundle",
   "bundle_branch": "$BRANCH",
-  "bundle_range": "${LIVE_SHA}..${APPLIED_SHA}",
-  "bundle_requires_ref": "$LIVE_SHA",
+  "bundle_range": bundle_range,
+  "bundle_requires_ref": bundle_requires,
   "owner_apply": "git fetch path-c-on-hardening.bundle $BRANCH && git merge --ff-only FETCH_HEAD  (or git pull …)",
   "problems": int("$PROBLEMS"),
   "disposition": "$DISPOSITION",
@@ -344,9 +385,11 @@ verify = {
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": False,
-  "note": f"Batch $BATCH_TAG: refresh_path_c_bundle.sh rebuilt @ ${LIVE_SHORT}; apply_all OK; lemma_closed=false; problems=$PROBLEMS",
+  "note": note,
   "force": bool(int("$FORCE")),
 }
+if keep_prior:
+    verify["local_allow_empty_sha"] = "$LOCAL_ALLOW_EMPTY_SHA"
 # Preserve land evidence (PR #64 @ 93a4ecd) when tip moves past Path C land.
 for key in (
     "path_c_landed",
@@ -356,12 +399,27 @@ for key in (
     "path_c_applied_sha",
     "release",
     "release_tag",
+    # Batch 250: keep follow-on landed markers across keep-prior / tip-refresh.
+    "path_c_0018_landed",
+    "path_c_0018_via",
+    "path_c_0019_landed",
+    "path_c_0019_via",
+    "path_c_0019_pr_url",
+    "path_c_0019_merge_commit_sha",
+    "flipped_anything",
 ):
     if key in verify and verify[key] not in (None, "", False):
         continue
     val = prior.get(key)
     if val not in (None, "", False):
         verify[key] = val
+# Explicit false must also survive (flipped_anything=false).
+if "flipped_anything" not in verify and "flipped_anything" in prior:
+    verify["flipped_anything"] = prior["flipped_anything"]
+if prior.get("path_c_0018_landed") is True:
+    verify["path_c_0018_landed"] = True
+if prior.get("path_c_0019_landed") is True:
+    verify["path_c_0019_landed"] = True
 # If prior said Path C landed and this tip is a descendant of that land, keep true.
 if prior.get("path_c_landed") is True:
     verify["path_c_landed"] = True

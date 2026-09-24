@@ -1,0 +1,45 @@
+{
+  "batch": "250",
+  "generated_at_utc": "2026-09-24T23:39:40Z",
+  "hunt": "tip_stable_eng_defect_verify_bundle_honesty_or_path_c_noop",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "base_tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "verify_keep_prior_bundle_sha_dishonesty_and_path_c_already_on_tip_noop",
+  "patch_0020": false,
+  "signals": {
+    "hardening_tip_vs_base": "match tip_moved=false @ fa32d11",
+    "open_main_prs": "all draft research HOLD (#73,#47,#46,#38,#36,#21,#12,#8,#7) \u2014 skipped",
+    "verify_pre": "applied_commit_sha=954661f (HTTP 422 unpublished allow-empty) while bundle head=b4fdbdc; bundle_refresh=true lied",
+    "verify_post": "applied_commit_sha=b4fdbdc keep_prior_bundle=true bundle_refresh=false matches git bundle list-heads",
+    "open_pr_dry": "already_on_tip idle \u2014 would NOT push/PR",
+    "land_path_c": "workflow short-circuits push when HEAD==tip after apply_all",
+    "markers": "path_c_0018/0019_landed preserved across keep-prior refresh"
+  },
+  "avoided_repeats": [
+    "inventable tip-observe (tip stable)",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag pack",
+    "assert idle",
+    "empty RW hunts",
+    "OWNER face-only",
+    "ci.yml YAML",
+    "#78 port"
+  ],
+  "shipped_paths": [
+    "trial:scripts/refresh_path_c_bundle.sh",
+    "trial:scripts/owner_open_path_c_pr.sh",
+    "trial:.github/workflows/land-path-c-on-main.yml",
+    "trial:portable/path-c-applied-bundle/VERIFY.json"
+  ],
+  "note": "NEW signal: keep-prior tip-refresh wrote VERIFY.applied_commit_sha to local allow-empty SHA not in the kept .bundle (and not on GitHub). Fixed honesty + Path C already-on-tip no-op land. Never printed tokens."
+}

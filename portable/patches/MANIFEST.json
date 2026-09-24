@@ -1,6 +1,6 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-24T23:25:00Z",
+  "generated_at_utc": "2026-09-24T23:39:08Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
@@ -251,7 +251,7 @@
       "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
     }
   ],
-  "verified_batch": "249",
+  "verified_batch": "250",
   "tip_refresh_via": "refresh_path_c_bundle.sh",
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",

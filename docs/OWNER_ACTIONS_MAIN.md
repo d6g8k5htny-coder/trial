@@ -1,6 +1,26 @@
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
+## Batch 250 — write WRITABLE; VERIFY keep-prior honesty + Path C already-on-tip no-op
+
+**Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is
+**WRITABLE** on `main` + siblings (never print tokens). Cursor App install can still
+be trial-only (`install_has_main=false` → App token **403** on `main`). Hardening tip
+**`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`.
+Research HOLD drafts skipped. `refresh_path_c_bundle` keep-prior was writing
+`VERIFY.applied_commit_sha` to an unpublished allow-empty SHA while retaining the
+older `.bundle` head — fixed (VERIFY names kept bundle head; `bundle_refresh=false`;
+0018/0019 markers preserved). `owner_open_path_c_pr` + `land-path-c-on-main` now
+idle (no push/PR) when Path C is already on tip. `lemma_closed` stays **false**.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run                   # tip match @ fa32d11
+python3 -c 'import json; v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); print(v["applied_commit_sha"][:7], v.get("keep_prior_bundle"), v.get("bundle_refresh"))'
+./scripts/owner_open_path_c_pr.sh --dry-run                    # already_on_tip idle
+./scripts/assert_path_c_ready.sh                               # IDLE_PATH_C_DONE
+./scripts/when_writable_land.py --once --dry-run               # idle_path_c_done
+```
+
 ## Batch 249 — write WRITABLE; inventable tip-observe (#79); tip `fa32d11`
 
 **Scientific effect: NONE.** Live write probe (device-auth / `MAIN_PUSH_TOKEN`) is

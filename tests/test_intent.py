@@ -7078,3 +7078,105 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     )
     assert snap.get("state") == "ALIGNED"
     assert snap.get("lemma_closed") is False
+
+
+def test_batch250_verify_keep_prior_honesty_and_path_c_noop() -> None:
+    """Batch 250: VERIFY keep-prior names bundle head; Path C already-on-tip no-op."""
+    import json
+    import re
+    import subprocess
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH250_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "250"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == (
+        "verify_keep_prior_bundle_sha_dishonesty_and_path_c_already_on_tip_noop"
+    )
+    assert brief.get("tip_moved") is False
+    assert _living_tip(brief.get("tip"))
+    assert str(brief.get("tip")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("patch_0020") is False
+    assert brief.get("verify_keep_prior_honesty") is True
+    assert brief.get("path_c_already_on_tip_noop") is True
+    assert brief.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert "tip_observe" not in (brief.get("defect_id") or "")
+    assert "aligned_noop" not in (brief.get("defect_id") or "")
+    assert "living_tag" not in (brief.get("defect_id") or "")
+    assert "sibling" not in (brief.get("defect_id") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH250_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "250"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("lemma_closed") is False
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("bundle_refresh") is False
+    assert verify.get("path_c_0018_landed") is True
+    assert verify.get("path_c_0019_landed") is True
+    assert verify.get("flipped_anything") is False
+    applied = str(verify.get("applied_commit_sha") or "")
+    assert re.fullmatch(r"[0-9a-f]{40}", applied)
+    bundle = ROOT / "portable" / "path-c-applied-bundle" / "path-c-on-hardening.bundle"
+    assert bundle.is_file()
+    heads = subprocess.check_output(
+        ["git", "bundle", "list-heads", str(bundle)], text=True
+    )
+    bundle_head = heads.split()[0]
+    assert applied == bundle_head
+    assert str(verify.get("bundle_range") or "").endswith(applied)
+    # Unpublished allow-empty SHA must not be advertised as applied_commit_sha.
+    local_empty = verify.get("local_allow_empty_sha")
+    if local_empty:
+        assert local_empty != applied
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "VERIFY honesty" in refresh
+    assert "keep_prior_bundle" in refresh
+    assert "path_c_0019_landed" in refresh
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert "already_on_tip" in open_pr
+    assert "no push/PR" in open_pr or "NOT push" in open_pr
+
+    land_c = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "already_on_tip=true" in land_c
+    assert "not pushing / not opening PR" in land_c
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert status.get("tip_match") is True
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH250_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 250" in log
+    assert "keep-prior" in log.lower() or "VERIFY" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "Batch 250" in owner

@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 250 (VERIFY keep-prior honesty + Path C already-on-tip no-op) — 2026-09-24 ~23:35– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**. No green eng merge candidates.
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 port):** `refresh_path_c_bundle` keep-prior wrote `VERIFY.applied_commit_sha=954661f` (local allow-empty; GitHub HTTP 422) while kept `.bundle` head was `b4fdbdc`; `bundle_refresh=true` lied. Fixed VERIFY honesty + preserve 0018/0019 markers; `owner_open_path_c_pr` + `land-path-c-on-main` short-circuit push/PR when already-on-tip.
+- Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 249 (inventable tip-observe eng probe) — 2026-09-24 ~23:00– UTC (PERMANENT window; eng tip-observe ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`542e6ec` → `fa32d11`** after eng merge (tip_moved=true). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

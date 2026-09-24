@@ -216,6 +216,25 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
   fi
   echo "--- dry-run summary ---"
+  # Batch 250: when Path C already on tip (VERIFY.path_c_landed / idle), do not
+  # advertise a no-op push/PR — same class as Path B ALIGNED short-circuit.
+  PATH_C_LANDED="$(python3 -c '
+import json,sys
+from pathlib import Path
+p=Path(sys.argv[1])
+try:
+  d=json.loads(p.read_text(encoding="utf-8"))
+except Exception:
+  d={}
+print("true" if d.get("path_c_landed") is True else "false")
+' "$VERIFY_JSON" 2>/dev/null || echo false)"
+  if [[ "$PATH_C_LANDED" == "true" && -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    echo "already_on_tip=true path_c_landed=true"
+    echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
+    echo "owner_open_path_c_pr: dry-run OK — already-on-tip idle (no no-op land)."
+    echo "Scientific effect: NONE"
+    exit 0
+  fi
   echo "would: clone $REPO; checkout $BRANCH from $HARDENING_REF @ $BASE_TIP_SHA"
   echo "would: git am $BUNDLE_PATCH (local patch; PR body also links release .bundle)"
   echo "would: assert math_status lemma_closed=false problems=0"
@@ -371,6 +390,19 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
 
 Engineering hygiene only via path-c-on-hardening.patch.
 Scientific effect: NONE. lemma_closed stays false. No research promotion."
+fi
+
+# Batch 250: 0 commits ahead of hardening ⇒ already-on-tip idle (no empty PR).
+BASE_FOR_AHEAD="origin/${PR_BASE}"
+if ! git rev-parse --verify "$BASE_FOR_AHEAD" >/dev/null 2>&1; then
+  BASE_FOR_AHEAD="$TIP_REF"
+fi
+AHEAD_COUNT="$(git rev-list --count "${BASE_FOR_AHEAD}..HEAD" 2>/dev/null || echo 0)"
+if [[ "${AHEAD_COUNT:-0}" -eq 0 ]]; then
+  echo "already_on_tip=true ahead_of_${PR_BASE}=0"
+  echo "owner_open_path_c_pr: already-on-tip Path C stack — no push/PR (idle)."
+  echo "Scientific effect: NONE"
+  exit 0
 fi
 
 echo
