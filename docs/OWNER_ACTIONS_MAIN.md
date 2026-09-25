@@ -1,3 +1,12 @@
+## STATUS (Batch 355 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch_no_promotion: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd355 --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch355_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 354 soften-inv-base-tip)
 
 Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1; peer idle+living republish already landed. Eng: soften `test_batch354_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.

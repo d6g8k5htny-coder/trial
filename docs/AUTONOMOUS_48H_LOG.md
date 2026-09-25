@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 355 — research_stack_audit_watch_no_promotion @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Audit: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; guard pass; script_stale=0.
+- Artifacts: `BATCH355_RESEARCH_STACK_AUDIT.json`, `BATCH355_RESEARCH_STACK_AUDIT_BRIEF.json`. action=`research_stack_audit_watch`. Inventable skipped. Goal OPEN. NEVER flip research.
+
 ### Batch 354 — soften INV tip-pin Intent live BASE_TIP pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
