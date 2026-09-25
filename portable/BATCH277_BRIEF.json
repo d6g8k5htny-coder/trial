@@ -41,7 +41,7 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "owner_path_c_oneshot + owner_open_path_c_pr: derive PATH_C_RELEASE_TAG VERIFY.release → VERIFY.batch → living pin (Batch 276 leftover)",
+  "automation_improvement": "owner_path_c_oneshot + owner_open_path_c_pr: derive PATH_C_RELEASE_TAG VERIFY.release \u2192 VERIFY.batch \u2192 living pin (Batch 276 leftover)",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "main_pr_or_null": null,
   "when_writable_idle": "idle_path_c_done",
@@ -50,10 +50,10 @@
   "green_eng_prs_merged": [],
   "evidence": {
     "repro_dirty_pin": "batch250-path-c-bundle",
-    "pre277_oneshot_open_pr_release_tag": "batch250-path-c-bundle (WRONG — living pin over VERIFY)",
+    "pre277_oneshot_open_pr_release_tag": "batch250-path-c-bundle (WRONG \u2014 living pin over VERIFY)",
     "post277_oneshot_open_pr_release_tag": "batch241-path-c-bundle (VERIFY.release-first)",
     "env_override_still_wins": "PATH_C_RELEASE_TAG=batch999-path-c-bundle honored",
-    "pack_vs_release_bytes": "479388 vs 386608 — asset republish deferred",
+    "pack_vs_release_bytes": "479388 vs 386608 \u2014 asset republish deferred",
     "apply_all_check": "already-applied @ bfb7c38 IDLE_PATH_C_DONE",
     "inventable_tip_observe": "HEAD bfb7c38 IS observe-of-8e359e5; skipped",
     "republish_276": "already_fixed_skipped",
@@ -61,7 +61,7 @@
     "apply_verify_273": "already_fixed_skipped"
   },
   "next_focus": "tip_sync_drift_watch @bfb7c38; keep Path C idle; skip research HOLD drafts; deferred pack-vs-release asset upload",
-  "note": "Batch 277 permanent-watch: tip match @bfb7c38 Path C idle; all open main PRs DRAFT skipped. NEW eng: owner_path_c_oneshot/owner_open_path_c_pr preferred dirty LIVING_PATH_C_RELEASE_TAG over VERIFY.release after Batch 276 closed the same class for republish/write_path_c_status. Fixed VERIFY.release-first derive. lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 277 permanent-watch: tip match @bfb7c38 Path C idle; all open main PRs DRAFT skipped. NEW eng: owner_path_c_oneshot/owner_open_path_c_pr preferred dirty LIVING_PATH_C_RELEASE_TAG over VERIFY.release after Batch 276 closed the same class for republish/write_path_c_status. Fixed VERIFY.release-first derive. lemma_closed=false; flipped nothing. Never printed tokens. Direct-landed trial main @ 77e0a52 (gh pr create 403).",
   "artifacts": [
     "scripts/owner_path_c_oneshot.sh",
     "scripts/owner_open_path_c_pr.sh",
@@ -78,5 +78,8 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "77e0a52",
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "trial_main_land_full": "77e0a52be4c8a61820f7ba4cf59d41dac11348f0"
 }
