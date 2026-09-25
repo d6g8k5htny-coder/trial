@@ -5,6 +5,12 @@ Hardening tip **stable** @ `fcad723`. Assignment `grant_check_dual_vector_8of8`:
 ```bash
 ./scripts/owner_grant_ai_agent_access.sh --check
 # INV_BATCH=345 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+## STATUS (Batch 345 tip-sync)
+
+Hardening tip **synced** @ `e3cd7d4` (tip_match=true after #105 mid-cycle). Tip-sync keep-prior; REFRESH default 345; `_LIVING_TIPS += e3cd7d4`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
 ```
 
 ## STATUS (Batch 343 audit-timeout)

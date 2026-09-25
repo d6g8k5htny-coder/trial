@@ -1,6 +1,9 @@
 ## STATUS (Batch 345 grant)
 
 tip `fcad723` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→a1cb550; coverage 8/8_WRITABLE; BATCH345_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
+## STATUS (Batch 345 tip-sync)
+
+tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; #105 MERGED → refresh keep-prior; inventable NOT promoted; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 343 audit-timeout)
 

@@ -26,6 +26,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
 - Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`2364c36` (living HEAD); INV_BATCH→345; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH345_GRANT.json`. NEVER flip research.
+### Batch 345 — tip-sync after main #105 (2026-09-25)
+
+- Hardening LIVE moved `fcad723`→`e3cd7d4` (PR #105 docs MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=345 ./scripts/refresh_path_c_bundle.sh` keep-prior; living tip_stale republish; REFRESH default 345; `_LIVING_TIPS += e3cd7d4`.
+- Inventable/research NOT promoted; `lemma_closed=false`. Evidence: `portable/BATCH345_TIP_SYNC.json`.
 
 ### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
 
