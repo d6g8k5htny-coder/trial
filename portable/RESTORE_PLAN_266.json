@@ -1,0 +1,226 @@
+{
+  "batch": "266",
+  "generated_at_utc": "2026-09-25T02:53:30Z",
+  "owner_mandate": "Dylan Roy \u2014 NO restrictions; everything auto-approved; agents decide; HOLD VOID; Path A OR Path B OK; prefer Path B; lemma_closed stays false; permanent window until owner intervenes; never flip research status",
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "lemma_closed": false,
+  "autonomous_window": {
+    "state": "PERMANENT_OPEN",
+    "window_mode": "PERMANENT_UNTIL_OWNER_INTERVENES",
+    "hard_stop": false,
+    "within_window": true,
+    "stop_condition": "owner_intervene_only",
+    "finale": false,
+    "window_seconds": 999999999,
+    "window_exit": 0,
+    "check_script": "scripts/check_autonomous_window.py",
+    "watch_embeds_window": "scripts/watch_main_alignment.py (Batch 62+)"
+  },
+  "aligned": true,
+  "default_tip_sha": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "root_has_AGENTS_md": true,
+  "root_has_README_md": true,
+  "root_has_body": false,
+  "root_has_dot_github": true,
+  "audit_stderr": "audit: OK \u2014 default tip carries q0 program or redirect notice.",
+  "preferred_restore": "Path_B",
+  "path_b": {
+    "valid_against_tip": true,
+    "patch": "portable/main-default-branch/0001-option-b-default-branch-notice.patch",
+    "git_am_exit": 0,
+    "local_auditor": "ALIGNED",
+    "would_align": true,
+    "dry_run_certainty": "scripts/path_b_dry_run.py",
+    "owner_script": "scripts/owner_land_path_b.sh",
+    "write_probe": "WRITABLE",
+    "multi_vector_probe": "scripts/probe_main_write_vectors.py",
+    "path_b_ready": true,
+    "applied_this_session": false,
+    "reason_not_applied": "already ALIGNED on default tip \u2014 Path B land not needed",
+    "option_b_stronger": true,
+    "option_b_includes_AGENTS_md": true,
+    "option_b_tip_current_against": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+    "dry_run_state": "ALREADY_ALIGNED",
+    "already_aligned_skip": true,
+    "one_command_restore": "scripts/restore_main_face.sh",
+    "write_preflight_in_restore_main_face": true,
+    "aligned_short_circuit_in_restore_main_face": true
+  },
+  "path_a": {
+    "hold": "VOID",
+    "status": "REVERTED_by_PR_32_agents_may_retry",
+    "preferred_over_full_stack": false,
+    "note": "HOLD VOID. Prefer Path B. Path A tactics: PATH_A_MODE=revert32 (default) or fresh Drive port. PR #2 is closed \u2014 ready/merge 2 will not work.",
+    "owner_script": "scripts/owner_land_path_a.sh"
+  },
+  "path_c": {
+    "role": "engineering_only",
+    "base_tip": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "live_hardening_sha": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+    "tip_refresh": "unchanged (== BASE_TIP fa32d11)",
+    "apply_all": "0001-0004 + 0008-0019",
+    "idle": true,
+    "idle_reason": "hardening tip unchanged vs BASE_TIP; no new 0020 unless residual RW hunt finds one",
+    "new_0017": false,
+    "new_0020": false,
+    "dry_run_certainty": "scripts/path_c_dry_run.py",
+    "owner_script": "scripts/owner_land_path_c.sh",
+    "dry_run_state": "IDLE_PATH_C_DONE",
+    "apply_ready": false,
+    "dry_run_exit": 0,
+    "default_path_c_shape": {
+      "accepts": false,
+      "missing": [
+        "docs/math_status/PACKET.json",
+        "tools/carriers_verify.py",
+        "tools/math_status_check.py"
+      ],
+      "tip_ref": "origin/main"
+    },
+    "hardening_path_c_shape": {
+      "accepts": true,
+      "missing": [],
+      "tip_ref": "origin/chatgpt/drive-github-hardening-20260919"
+    },
+    "rebase_onto_main_state": "CONFLICTING",
+    "rebase_onto_main_advised": false,
+    "rebase_conflict_path_count": 3,
+    "rebase_conflict_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/research.yml",
+      "engine/bridge/README.md"
+    ],
+    "rebase_conflict_categories": {
+      "bridge_agents": [
+        "engine/bridge/README.md"
+      ],
+      "ci_workflows": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/research.yml"
+      ]
+    },
+    "conflict_aware_report": "portable/PATH_C_REBASE_CONFLICT_REPORT_266.json",
+    "rebase_helper": "scripts/path_c_rebase_helper.sh",
+    "rebase_resolution_notes": "portable/PATH_C_REBASE_RESOLUTION_NOTES_266.json",
+    "recommended_base": "chatgpt/drive-github-hardening-20260919",
+    "do_not_set_path_c_base_main": true,
+    "do_not_set_path_c_rebase_onto_main": true,
+    "post_aligned_keep_hardening": true,
+    "already_on_tip": true,
+    "idle_status": "IDLE_PATH_C_DONE",
+    "apply_check_ok": true
+  },
+  "write_vectors": {
+    "state": "WRITABLE",
+    "path_b_writable_vectors": [
+      "W1_git_refs",
+      "W3a_dispatch_trial",
+      "W3c_api_dispatch_trial",
+      "W3d_dispatch_path_c_trial",
+      "W3e_api_dispatch_path_c_trial"
+    ],
+    "tokens": {
+      "GH_TOKEN": "SET",
+      "GITHUB_TOKEN": "NOT_SET",
+      "MAIN_PUSH_TOKEN": "SET"
+    },
+    "permissions": {
+      "admin": true,
+      "maintain": true,
+      "pull": true,
+      "push": true,
+      "triage": true
+    },
+    "vectors": {
+      "W1_git_refs": {
+        "create_http_status": 201,
+        "create_msg": "{\"node_id\": \"REF_kwDOQpeC2toAJnJlZnMvaGVhZHMvY3Vyc29yLXd2ZWMtcmVmcy0xNzkwMzA0Nzg0\", \"object\": {\"sha\": \"72558a5b7ac90375264d5e4a538c3cd2ebb7c363\", \"type\": \"commit\", \"url\": \"https://api.github.com/repos/d6g8k5htny-coder/main/git/commits/72558",
+        "delete_http_status": 204,
+        "delete_msg": "{}",
+        "state": "WRITABLE"
+      },
+      "W2_contents_put": {
+        "branch": "cursor-wvec-contents-1790304784",
+        "http_status": 404,
+        "msg": "Branch cursor-wvec-contents-1790304784 not found",
+        "state": "DENIED"
+      },
+      "W3a_dispatch_trial": {
+        "exit": 0,
+        "msg": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36088077015 ",
+        "state": "WRITABLE"
+      },
+      "W3b_dispatch_main": {
+        "exit": 1,
+        "http_status": 404,
+        "msg": "HTTP 404: workflow land-option-b-on-main.yml not found on the default branch (https://api.github.com/repos/d6g8k5htny-coder/main/actions/workflows/land-option-b-on-main.yml) ",
+        "state": "DENIED"
+      },
+      "W3c_api_dispatch_trial": {
+        "http_status": 204,
+        "msg": "{}",
+        "state": "WRITABLE"
+      },
+      "W3d_dispatch_path_c_trial": {
+        "exit": 0,
+        "msg": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36088081351 ",
+        "state": "WRITABLE"
+      },
+      "W3e_api_dispatch_path_c_trial": {
+        "http_status": 204,
+        "msg": "{}",
+        "state": "WRITABLE"
+      },
+      "W3f_repository_dispatch_path_c": {
+        "client_payload_dry_run": true,
+        "false_positive_for_main_write": true,
+        "http_status": 204,
+        "main_write": false,
+        "msg": "{}",
+        "note": "Batch 141: dry_run repository_dispatch on trial is NOT a write path to d6g8k5htny-coder/main. Apply needs dispatch_land_path_c.sh --apply + trial secret MAIN_PUSH_TOKEN (or device-flow / App install main).",
+        "path_b_capable": false,
+        "state": "DISPATCH_OK_DRY_RUN",
+        "target_repo": "d6g8k5htny-coder/trial"
+      },
+      "W4a_fork": {
+        "http_status": 202,
+        "msg": "{\"allow_forking\": true, \"archive_url\": \"https://api.github.com/repos/d6g8k5htny-coder/main/{archive_format}{/ref}\", \"archived\": false, \"assignees_url\": \"https://api.github.com/repos/d6g8k5htny-coder/main/assignees{/user}\", \"blobs_url\": \"htt",
+        "state": "HTTP_202"
+      },
+      "W4b_graphql_createCommitOnBranch": {
+        "http_status": 200,
+        "msg": "{\"data\": {\"createCommitOnBranch\": null}, \"errors\": [{\"locations\": [{\"column\": 49, \"line\": 1}], \"message\": \"Repository rule violations found\\n\\nChanges must be made through a pull request.\\n\\nRequired status check \\\"verify\\\" is expected.\\n\\n",
+        "state": "DENIED"
+      },
+      "W4c_pulls_create": {
+        "http_status": 422,
+        "msg": "Validation Failed",
+        "state": "REACHED_422"
+      },
+      "W5_path_a_revert32": {
+        "http_status": 404,
+        "msg": "Not Found",
+        "path_b_capable": false,
+        "state": "DENIED"
+      }
+    },
+    "probe_exit": 0
+  },
+  "owner_next": [
+    "./scripts/owner_land_path_c.sh --dry-run   # Path C certainty (post-ALIGNED keep hardening)",
+    "./scripts/owner_land_path_c.sh             # land patches on hardening (needs write)",
+    "./scripts/path_c_dry_run.py",
+    "./scripts/path_c_rebase_helper.sh --dry-run  # owner-safe ours/theirs; prefer abort",
+    "./scripts/restore_main_face.sh --dry-run   # Path B certainty / ALIGNED short-circuit",
+    "./scripts/restore_main_face.sh",
+    "./scripts/restore_main_face.sh --plan --batch 266",
+    "./scripts/owner_land_path_b.sh --dry-run",
+    "OR PATH_A_MODE=revert32 ./scripts/owner_land_path_a.sh if tip regresses"
+  ],
+  "one_command_restore": "scripts/restore_main_face.sh",
+  "refresh_tool": "scripts/refresh_restore_plan.py",
+  "path_c_dry_run": "scripts/path_c_dry_run.py",
+  "path_c_rebase_helper": "scripts/path_c_rebase_helper.sh"
+}

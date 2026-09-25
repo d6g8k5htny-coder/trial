@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 266)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `path_c_dry_run` idle still advertised `write_required_to_land=true` after Batch 261 `apply_ready=false`. Fixed: `write_required_to_land=false` on already_on_tip; print_owner_unblock / restore-plan living stack **0008–0019** / `new_0020`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/path_c_dry_run.py --skip-rebase-probe             # IDLE write_required_to_land=false
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run                  # idle_path_c_done
+```
+
 ## STATUS (Batch 265)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. Batch 262 live-ignore Intent still inherited Actions `GITHUB_TOKEN` after Batch 263 unit-only scrub → `token_source=env:GITHUB_TOKEN` under `PATH_C_IGNORE_FILE_TOKENS` DENIED → trial-ci Intent reds (36086754869+). Fixed: scrub `GH_TOKEN`/`GITHUB_TOKEN` in live-ignore subprocess (no probe redesign). `lemma_closed=false`. Scientific effect: NONE.

@@ -16,6 +16,9 @@ APPLY_READY / apply_ready=true (that lied after Path C landed on tip). Report
 IDLE_PATH_C_DONE with already_on_tip=true and apply_ready=false; apply_check_ok
 still reflects apply_all --check.
 
+Batch 266: write_required_to_land must be false on already_on_tip / IDLE_PATH_C_DONE
+(Batch 261 left the hardcoded True). Idle means no land → no write required.
+
 Scientific effect: NONE.
 """
 
@@ -438,13 +441,17 @@ def main() -> int:
             report["state"] = "IDLE_PATH_C_DONE"
             report["idle_status"] = "IDLE_PATH_C_DONE"
             report["apply_ready"] = False
+            # Batch 266: idle ⇒ no land ⇒ write not required (was hardcoded True).
+            report["write_required_to_land"] = False
         elif apply_check_ok:
             report["apply_ready"] = True
+            report["write_required_to_land"] = True
             report["state"] = "APPLY_READY"
             if not main_shape["accepts"] and report.get("default_aligned"):
                 report["state"] = "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
         else:
             report["apply_ready"] = False
+            report["write_required_to_land"] = True
             report["state"] = "APPLY_CHECK_FAILED"
             report["error"] = apply_out or "apply_all --check failed"
 
