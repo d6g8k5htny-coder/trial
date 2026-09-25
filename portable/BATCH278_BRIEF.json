@@ -77,5 +77,8 @@
     "trial"
   ],
   "trial_main_land_prior": "6d48999",
-  "trial_main_land_method_prior": "direct_push_main_pr_create_403"
+  "trial_main_land_method_prior": "direct_push_main_pr_create_403",
+  "ci_tip_sync_run": "36107390597",
+  "ci_tip_sync_conclusion": "failure",
+  "ci_fix": "verify_focused_passed_living_92"
 }
