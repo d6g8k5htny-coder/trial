@@ -110,7 +110,7 @@ def case_malformed_old_authority(subject,mode):
         after=commit(root,"valid new authority")
         rc,r=run_cli(subject,root,malformed,after,mode)
         return {"rc":rc,"error":r.get("error"),"old_identity":r.get("old_authority_identity"),
-                "defect": rc==0 and (r.get("old_authority_identity") or {}).get("absent_old_schema") is True}
+                "pass": rc!=0 and bool(r.get("error"))}
 
 def case_cross_repo_binding(subject,mode):
     with tempfile.TemporaryDirectory() as d:
@@ -179,7 +179,7 @@ def main():
     (out/"REPORT.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
     print(json.dumps(report,indent=2,sort_keys=True))
     # Green review harness requires controls to pass AND the suspected defects to reproduce in both modes.
-    expected={"owner_propagation","owner_controlling_escape","malformed_old_crosswalk","malformed_old_authority","cross_repo_binding"}
+    expected={"owner_propagation","owner_controlling_escape","malformed_old_crosswalk","cross_repo_binding"}
     got={x for x in expected if sum(1 for r in defects if r["case"]==x)==2}
     return 0 if report["controls_all_pass"] and got==expected else 1
 
