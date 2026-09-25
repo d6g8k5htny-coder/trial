@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 354 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 354: soften Batch 352 unfreeze Intent frozen return \"352\" (≥352 living; CI fa9b870c)"
 echo " Batch 354: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 353: inventory tip re-pin→HEAD after eng living republish (preserve_durable)"
 echo " Batch 353: eng living script_stale republish after research-audit merge (batch241; script_stale 1→0)"

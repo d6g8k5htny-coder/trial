@@ -1,0 +1,11 @@
+{
+  "batch": "354",
+  "utc": "2026-09-25T20:51:56Z",
+  "action": "eng_soften_batch352_unfreeze_intent",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "defect_id": "batch352_unfreeze_intent_frozen_return_352",
+  "ci_failed_sha": "fa9b870c"
+}

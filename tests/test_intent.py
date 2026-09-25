@@ -16896,9 +16896,13 @@ def test_batch351_idle_tip_sync_or_eng() -> None:
 
 
 def test_batch352_unfreeze_last_resort() -> None:
-    """Batch 352: last-resort batch defaults unfrozen 351→352; tip stable."""
+    """Batch 352: last-resort batch defaults unfrozen 351→352+; tip stable.
+
+    Batch 354: living ultimate fallback may advance past 352; assert >=352.
+    """
     import importlib.util
     import json
+    import re
     import tempfile
     from pathlib import Path as P
 
@@ -16909,13 +16913,16 @@ def test_batch352_unfreeze_last_resort() -> None:
         encoding="utf-8"
     )
     assert 'return "351"' not in helper
-    assert 'return "352"' in helper
+    # Batch 354: living ultimate fallback may advance past 352 (353+).
+    m_inv = re.search(r'return "(\d+)"', helper)
+    assert m_inv is not None and int(m_inv.group(1)) >= 352
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert 'return "352"' in poster
+    m_post = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m_post is not None and int(m_post.group(1)) >= 352
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -16931,7 +16938,7 @@ def test_batch352_unfreeze_last_resort() -> None:
     spec.loader.exec_module(mod)
     td = tempfile.mkdtemp()
     (P(td) / "scripts").mkdir()
-    assert mod._living_inventory_batch(td) == "352"
+    assert int(mod._living_inventory_batch(td)) >= 352
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH352_BRIEF.json").read_text(encoding="utf-8")
@@ -17516,3 +17523,48 @@ def test_batch354_idle_tip_sync_or_eng() -> None:
     assert "STATUS (Batch 354 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 354" in log_md and "idle_no_commit" in log_md
+
+
+def test_batch354_soften_unfreeze_intent() -> None:
+    """Batch 354: soften Batch 352 unfreeze Intent frozen return 352; CI remediate."""
+    import json
+    import re
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH354_SOFTEN_UNFREEZE_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "354"
+    assert brief.get("action") == "eng_soften_batch352_unfreeze_intent"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_id") == "batch352_unfreeze_intent_frozen_return_352"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH354_SOFTEN_UNFREEZE_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch352_unfreeze_last_resort")
+    end = intent.index("\ndef test_", start + 1)
+    body = intent[start:end]
+    assert 'assert \'return "352"\' in helper' not in body
+    assert ">= 352" in body
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_inv = re.search(r'return "(\d+)"', helper)
+    assert m_inv is not None and int(m_inv.group(1)) >= 354
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 354)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 354 soften-unfreeze-intent)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 354 soften-unfreeze-intent)" in owner
+

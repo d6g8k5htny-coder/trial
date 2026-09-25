@@ -1,0 +1,10 @@
+{
+  "batch": "354",
+  "utc": "2026-09-25T20:51:56Z",
+  "action": "multi_agent_wake_and_assign",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "woken": 4
+}

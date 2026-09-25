@@ -1,3 +1,11 @@
+## STATUS (Batch 354 soften-unfreeze-intent)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: CI Intent `test_batch352_unfreeze_last_resort` froze `return "352"` after Batch 353 bump → soften `>=352`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch352_unfreeze_last_resort tests/test_intent.py::test_batch354_soften_unfreeze_intent -q
+```
+
 ## STATUS (Batch 354 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; peers already shipped 353 research_audit + living republish + inv re-pin; living tip/script current. Paper-trail living tgz. Evidence: `portable/BATCH354_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

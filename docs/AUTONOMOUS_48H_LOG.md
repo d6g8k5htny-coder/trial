@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 354 — soften Batch 352 unfreeze Intent + wake peers (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: CI red on `fa9b870c` — `test_batch352_unfreeze_last_resort` hard-pinned `return "352"` → soften `>=352`; fallbacks→354.
+- Woke Path C peers. Inventable skipped. Goal OPEN. NEVER flip research.
+
 ### Batch 354 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
