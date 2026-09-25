@@ -13694,3 +13694,38 @@ def test_batch336_wake_intent_living_base_tip() -> None:
     assert "wake INTENT" in log_md or "post_batch322_wake_comments" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 336)" in owner
+
+def test_batch337_living_script_stale_republish() -> None:
+    """Batch 337: tip stable; living script_stale republish."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH337_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "337"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_moved") is False
+    assert brief.get("action") == "living_script_stale_republish"
+    assert brief.get("defect_id") == "living_release_script_stale_after_336"
+    assert str(brief.get("tip", "")).startswith("eeebb28")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH337_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("tip_moved") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 337)
+    assert "Batch 337" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 337)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 337)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 337" in log_md
+
+    assert _living_tip("eeebb28")
+

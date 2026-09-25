@@ -1,3 +1,7 @@
+## STATUS (Batch 337)
+
+tip `eeebb28` tip_match=true; tip_sync_watch — living release script_stale republish (tip_stale=0); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 336)
 
 tip `eeebb28` tip_match=true; eng: wake poster INTENT tip derives from BASE_TIP (was frozen @077464e); preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

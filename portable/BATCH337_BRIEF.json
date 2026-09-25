@@ -1,0 +1,32 @@
+{
+  "batch": "337",
+  "generated_at_utc": "2026-09-25T18:04:35Z",
+  "status": "living_script_stale_republish",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "eeebb28",
+  "tip_full": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "tip_moved": false,
+  "tip_match": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "living_release_script_stale_after_336",
+  "bugs_fixed": [
+    "living batch241-path-c-bundle republish cleared script_stale=1 (tip_stale=0)"
+  ],
+  "action": "living_script_stale_republish",
+  "route_now": "ENG_FIX",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_eeebb28",
+  "evidence": {
+    "tip": "TIP_OK @eeebb28 BASE==LIVE match=1",
+    "assert": "IDLE_PATH_C_DONE stack_end=0019",
+    "living_before": "tip_stale=0 script_stale=1 need_upload=1",
+    "living_after": "script_stale cleared via republish",
+    "research": "all main open PRs draft \u2014 skipped"
+  },
+  "note": "Batch 337 tip_sync_watch: tip stable; living script_stale republish; lemma_closed=false."
+}

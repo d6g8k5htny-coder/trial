@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 337 — living script_stale republish (2026-09-25)
+
+- Tip **stable** @ `eeebb28` (tip_sync_watch dry-run match=1). Path C IDLE@0019.
+- Living release `script_stale=1` (tip_stale=0) after Batch 336 — republished `batch241-path-c-bundle`.
+- `lemma_closed=false`; `flipped_anything=false`. No research flip.
+
 ### Batch 336 — wake INTENT living BASE_TIP (2026-09-25)
 
 - Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; `lemma_closed=false`.
