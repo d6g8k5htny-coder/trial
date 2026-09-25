@@ -1,13 +1,109 @@
 {
   "batch": 336,
+  "action": "multi_agent_wake_and_assign",
+  "requested_by": "Dylan Roy",
+  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "utc": "2026-09-25T17:52:00Z",
   "tip": "eeebb28",
+  "tip_full": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
   "wake336_on_main": true,
-  "action": "multi_agent_wake_batch336_verify_land",
+  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH329.json",
   "lemma_closed": false,
   "flipped_anything": false,
-  "path_c": "IDLE@0019",
-  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH329.json",
   "scientific_effect": "NONE",
-  "utc": "2026-09-25T17:47:00Z",
-  "agent_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3"
+  "path_c": "IDLE@0019",
+  "intent": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "base_tip_expected": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+    "path_c": "IDLE@0019",
+    "lemma_closed": false,
+    "scientific_effect": "NONE",
+    "durable_write_target": "8/8",
+    "never_flip_research": true
+  },
+  "coordinator_defect": {
+    "id": "inventory_batch_fallback_living_plus_soften_335_pins",
+    "detail": "Batch 336: _living_inventory_batch ultimate fallback reads REFRESH_BATCH_TAG (was frozen 331); Batch 335 live BASE_TIP/VERIFY tip Intent pins softened to _living_tip"
+  },
+  "woken_idle_agents": [
+    {
+      "bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e",
+      "name": "Batch336 tip-sync watch",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_eeebb28_or_one_eng"
+    },
+    {
+      "bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20",
+      "name": "Batch336 eng defect hunt",
+      "assignment": "eng_defect_hunt_no_claim_promotion"
+    },
+    {
+      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+      "name": "Batch336 grant audit wake",
+      "assignment": "grant_check_dual_vector_8of8_inventory"
+    },
+    {
+      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
+      "name": "Batch336 CI remediation wake",
+      "assignment": "CI_green_on_batch335_336_tip_eng"
+    },
+    {
+      "bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302",
+      "name": "Batch336 tip or eng wake",
+      "assignment": "tip_or_eng_defect"
+    },
+    {
+      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+      "name": "Batch336 eng hunter wake",
+      "assignment": "eng_defect_hunt_or_tip_sync"
+    },
+    {
+      "bcId": "bc-8e9d6a47-8c5f-590e-98de-267f8c926b6f",
+      "name": "Batch336 pack grant audit",
+      "assignment": "pack_portable_and_grant_script_audit"
+    },
+    {
+      "bcId": "bc-8cf6e1f9-eb21-5d4d-9203-26626ace93bc",
+      "name": "Batch336 sibling grant wake",
+      "assignment": "sibling_PR_and_grant_check"
+    },
+    {
+      "bcId": "bc-9ab34e89-6e39-5c09-a4b7-0a09fd44fe4f",
+      "name": "Batch336 tip watch idle",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_eeebb28"
+    },
+    {
+      "bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+      "name": "Batch336 wake land verify",
+      "assignment": "land_or_verify_wake_artifacts_on_trial_main"
+    },
+    {
+      "bcId": "bc-0035fc13-fa1a-5dfe-9c2f-e2bca4401596",
+      "name": "Batch336 grant open PRs",
+      "assignment": "grant_check_and_open_PRs"
+    }
+  ],
+  "spawned_cloud_peers": [
+    {
+      "bcId": "bc-dfd45dde-ca70-5895-8796-c35435b073eb",
+      "assignment": "tip_sync_or_eng_on_healthy_VM"
+    },
+    {
+      "bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
+      "assignment": "grant_check_and_inventory_refresh"
+    },
+    {
+      "bcId": "bc-c881778a-e3f3-59bd-b6de-d3956779790f",
+      "assignment": "CI_Intent_remediation_batch335_336"
+    }
+  ],
+  "eng_pr_wake_targets": {
+    "repo": "d6g8k5htny-coder/main",
+    "skip_research_drafts": true,
+    "note": "All open main PRs inventable/math_status drafts — skip; no eng wake comments this pulse"
+  },
+  "messaging_limits": {
+    "cursor_cloud_mcp": "list/inspect only — no peer Create Run API",
+    "mechanism_used": "Task resume (IDLE) + Task environment=cloud + durable grant 8/8"
+  }
 }

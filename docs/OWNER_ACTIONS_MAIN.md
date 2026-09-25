@@ -4,7 +4,7 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 336)
 
-Hardening tip **stable** @ `eeebb28`. Pack/grant: `_living_inventory_batch` fallback no longer freezes at 331 — reads REFRESH_BATCH_TAG. action=`inventory_batch_fallback_living`. `lemma_closed=false`.
+Hardening tip **stable** @ `eeebb28`. MULTI_AGENT wake assign (stopped agents messaged + Path C tasks). Pack/grant: `_living_inventory_batch` fallback reads REFRESH_BATCH_TAG (was 331). Soften Batch 335 live tip Intent pins. action=`multi_agent_wake_and_assign`. `lemma_closed=false`.
 
 Hardening tip **stable** @ `eeebb28` (tip_match=true; Path C idle). Soften Batch 335 live BASE_TIP/VERIFY tip Intent pins to `_living_tip` so next tip-sync does not re-red CI. `lemma_closed=false`; `flipped_anything=false`. action=`eng_fix_landed`. Scientific effect: NONE.
 

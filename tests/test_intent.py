@@ -13458,12 +13458,19 @@ def test_batch336_multi_agent_wake_verify_land() -> None:
     path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH336.json"
     assert path.is_file()
     data = json.loads(path.read_text(encoding="utf-8"))
-    assert data.get("action") == "multi_agent_wake_batch336_verify_land"
     assert data.get("wake336_on_main") is True
     assert data.get("lemma_closed") is False
     assert data.get("flipped_anything") is False
     assert _living_tip(str(data.get("tip") or ""))
-    assert str(data.get("tip") or "").startswith("eeebb28")
+    assert data.get("action") in (
+        "multi_agent_wake_batch336_verify_land",
+        "multi_agent_wake_and_assign",
+    )
+    woken = data.get("woken_idle_agents") or []
+    peers = data.get("spawned_cloud_peers") or []
+    assert len(woken) + len(peers) >= 1
+    if woken:
+        assert all(a.get("bcId") and a.get("assignment") for a in woken)
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md

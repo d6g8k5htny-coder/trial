@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 336 — MULTI_AGENT wake assign (coordinator pulse) (2026-09-25)
+
+- Dylan asked: message stopped agents + assign Path C tasks.
+- Woke 11 IDLE Task peers + spawned 3 cloud peers (tip/eng/grant/CI/pack).
+- Expanded `portable/MULTI_AGENT_WAKE_BATCH336.json` with assignments; tip `@eeebb28`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- action=`multi_agent_wake_and_assign`; NEVER flip research.
+
 ### Batch 336 — inventory batch fallback living (2026-09-25)
 
 - Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
