@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- New CI class after tip-sync: Intent `audit_main_alignment` / watch probes `TimeoutExpired` at 60s while Batch 340 backoff honored `x-ratelimit-reset` up to SLEEP_CAP=60 (runs 36176016910 / 36176143525) — raw fallback never reached inside budget.
+- Eng: `AUDIT_TRANSPORT_EARLY_FALLBACK=1` escalates to `RateLimitExhausted` → raw/ls-remote immediately; CI Intent + Alignment audit steps enable it. Misalignment predicate unchanged.
+- NEVER flip research; inventable skipped. Goal OPEN.
+
 ### Batch 344 — soften tip_sync_watch live BASE_TIP Intent pin (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

@@ -13,6 +13,10 @@ Batch 340: exponential backoff + x-ratelimit-reset (peer land 066994c).
 Batch 340b: after API rate-limit exhaustion, fall back to git ls-remote +
 raw.githubusercontent.com (retries alone still exit 2 when reset window is long);
 CI soft-continues residual transport exit 2.
+Batch 343: Intent suite calls this with timeout=60s. Honoring x-ratelimit-reset
+up to SLEEP_CAP=60 burns the whole budget before raw fallback (CI runs
+36176016910 / 36176143525 TimeoutExpired). AUDIT_TRANSPORT_EARLY_FALLBACK=1
+escalates to RateLimitExhausted immediately so raw/ls-remote runs inside budget.
 """
 
 from __future__ import annotations
@@ -47,6 +51,10 @@ Q0_MARKERS = (
 _TRANSPORT_RETRIES = int(os.environ.get("AUDIT_TRANSPORT_RETRIES", "6"))
 _TRANSPORT_SLEEP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_S", "3"))
 _TRANSPORT_SLEEP_CAP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_CAP_S", "60"))
+# Batch 343: Intent timeout class — skip long reset sleeps; raw fallback instead.
+_TRANSPORT_EARLY_FALLBACK = os.environ.get(
+    "AUDIT_TRANSPORT_EARLY_FALLBACK", "0"
+).strip().lower() in ("1", "true", "yes", "on")
 
 
 class RateLimitExhausted(urllib.error.URLError):
@@ -133,34 +141,52 @@ def get_json(url: str) -> dict | list:
                 return json.load(resp)
         except urllib.error.HTTPError as exc:
             last_exc = exc
-            if _is_rate_limited(exc) and attempt < attempts:
-                rate_limited_any = True
-                delay = _retry_after_seconds(exc, attempt)
-                print(
-                    f"audit: rate-limit retry {attempt}/{attempts} "
-                    f"sleep={delay:.1f}s code={getattr(exc, 'code', '?')}",
-                    file=sys.stderr,
-                )
-                time.sleep(delay)
-                # Rebuild request — prior HTTPError may have consumed the body.
-                req = urllib.request.Request(url, headers=headers)
-                continue
             if _is_rate_limited(exc):
                 rate_limited_any = True
+                # Batch 343: escalate immediately under EARLY_FALLBACK so Intent
+                # timeout=60 is not consumed by x-ratelimit-reset sleeps.
+                if _TRANSPORT_EARLY_FALLBACK:
+                    print(
+                        f"audit: rate-limit early-fallback "
+                        f"code={getattr(exc, 'code', '?')} "
+                        f"(skip reset sleep → raw)",
+                        file=sys.stderr,
+                    )
+                    raise RateLimitExhausted(str(exc)) from exc
+                if attempt < attempts:
+                    delay = _retry_after_seconds(exc, attempt)
+                    print(
+                        f"audit: rate-limit retry {attempt}/{attempts} "
+                        f"sleep={delay:.1f}s code={getattr(exc, 'code', '?')}",
+                        file=sys.stderr,
+                    )
+                    time.sleep(delay)
+                    # Rebuild request — prior HTTPError may have consumed the body.
+                    req = urllib.request.Request(url, headers=headers)
+                    continue
                 raise RateLimitExhausted(str(exc)) from exc
             raise
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last_exc = exc
-            if _is_rate_limited(exc) and attempt < attempts:
+            if _is_rate_limited(exc):
                 rate_limited_any = True
-                delay = _retry_after_seconds(exc, attempt)
-                print(
-                    f"audit: rate-limit retry {attempt}/{attempts} "
-                    f"sleep={delay:.1f}s transport={type(exc).__name__}",
-                    file=sys.stderr,
-                )
-                time.sleep(delay)
-                continue
+                if _TRANSPORT_EARLY_FALLBACK:
+                    print(
+                        f"audit: rate-limit early-fallback "
+                        f"transport={type(exc).__name__} "
+                        f"(skip reset sleep → raw)",
+                        file=sys.stderr,
+                    )
+                    raise RateLimitExhausted(str(exc)) from exc
+                if attempt < attempts:
+                    delay = _retry_after_seconds(exc, attempt)
+                    print(
+                        f"audit: rate-limit retry {attempt}/{attempts} "
+                        f"sleep={delay:.1f}s transport={type(exc).__name__}",
+                        file=sys.stderr,
+                    )
+                    time.sleep(delay)
+                    continue
             raise
     assert last_exc is not None
     if rate_limited_any:
