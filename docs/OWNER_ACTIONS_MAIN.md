@@ -1,3 +1,7 @@
+## STATUS (Batch 367 research-audit-watch)
+
+Research stack audit without status promotion. Open premises/lemmas/prizes unchanged vs Batch 365 (13/1/3). Evidence: `portable/BATCH367_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 366 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged 2 commits after Batch 366 idle; last-resort + VERIFY.refresh_batch frozen at 365 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→366 + VERIFY→366 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 367 — research_stack_audit_watch no-promotion @e3cd7d4 (2026-09-25)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8; open stack 13 premises / 1 lemma / 3 prizes; delta vs Batch 365 = 0.
+- No status/lemma/prize promotion. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 366 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 365→366 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
