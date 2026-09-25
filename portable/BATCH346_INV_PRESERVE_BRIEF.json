@@ -10,7 +10,7 @@
   "goal": "OPEN",
   "coverage": "8/8_WRITABLE",
   "ultimate_fallback": "346",
-  "trial_tip_sha": "4ab2b7625d833701c2b6e934a2a7c57c8adcdc8c",
+  "trial_tip_sha": "3240e1a5e6d42f0e8c84546a52feb65a5c400bc0",
   "inventable_promoted": false,
   "defect_id": "inv_ultimate_fallback_lag_345_after_print_owner_346",
   "note": "preserve_durable tip pin + ultimate fallback 346; never demote 8/8"

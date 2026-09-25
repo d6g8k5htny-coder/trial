@@ -16,9 +16,9 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "inventory_batch": "346",
-  "trial_tip_sha": "4ab2b7625d833701c2b6e934a2a7c57c8adcdc8c",
+  "trial_tip_sha": "3240e1a5e6d42f0e8c84546a52feb65a5c400bc0",
   "trial_tip_matches_live_head": true,
-  "live_trial_head": "4ab2b7625d833701c2b6e934a2a7c57c8adcdc8c",
+  "live_trial_head": "3240e1a5e6d42f0e8c84546a52feb65a5c400bc0",
   "preserve_durable_writable0_denied": true,
   "ultimate_fallback": "346",
   "print_owner_header_batch": 346,
@@ -30,7 +30,7 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "4ab2b76"
+    "trial": "3240e1a"
   },
   "coordinator_bcId": "bc-01a0cf1e",
   "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
