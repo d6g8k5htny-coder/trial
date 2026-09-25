@@ -22,6 +22,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 ## Batches
 
 ### Batch 343 — tip-sync after main #109 (2026-09-25)
+### Batch 343 — grant inventory tip refresh (2026-09-25)
+
+- Tip stable @ `f244312` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Assignment `grant_inventory_refresh_batch343`: dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; tip-refresh with `preserve_durable` stamps INV_BATCH →343 + tip pins; coverage 8/8_WRITABLE.
+- Artifact `portable/BATCH343_GRANT.json`. Goal OPEN. NEVER flip research.
+
+### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
 
 - Hardening LIVE moved `f244312`→`fcad723` (#109 inventable RN_SIDE24_CELL pointer MERGED into chatgpt/drive-github-hardening-20260919).
 - Tip-sync: `REFRESH_BATCH_TAG=343` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; `_LIVING_TIPS += fcad723`.

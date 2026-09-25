@@ -7,6 +7,9 @@ tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard
 tip `fcad723` tip_match=true TIP_OK after tip-sync; #109 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; prior script_stale pulse superseded; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 343 script_stale)
+tip `f244312` tip_match=true; grant_inventory_refresh batch 343 tip pins (preserve durable 8/8 on writable=0); lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 343 prior)
 
 tip `f244312` tip_match=true; tip watch — living release script_stale republish (print_owner drift after 341/342; tip_stale=0; WAKE340 already living); lemma_closed=false; scientific effect NONE.
 

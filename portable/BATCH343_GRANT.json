@@ -1,0 +1,34 @@
+{
+  "batch": "343",
+  "generated_at_utc": "2026-09-25T18:57:50Z",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "coverage": "8/8_WRITABLE",
+  "write_durable": "8/8_WRITABLE",
+  "sibling_write_count": 8,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "grant_inventory_refresh_batch343",
+  "path_c": "IDLE@0019",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "vm_check": {
+    "active_writable": "1/8",
+    "durable_token_source": "none",
+    "inventory_refresh": "skip durable_token_source=none",
+    "preserve_durable_tip_refresh": "INV_BATCH=343 durable_writable=0 tip_updates trial\u219265d453f"
+  },
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "baca69c",
+    "meta-framework": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "e7898f5"
+  },
+  "coordinator_bcId": "bc-01a0cf1e",
+  "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4"
+}

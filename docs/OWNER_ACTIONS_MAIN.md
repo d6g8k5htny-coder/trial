@@ -25,6 +25,14 @@ python3 -m pytest tests/test_intent.py::test_batch341_soften_inv_batch_hard_pins
 
 ## STATUS (Batch 343)
 
+Hardening tip **stable** @ `f244312`. Grant inventory tip refresh → batch 343 pins (preserve durable 8/8; `--check` skip when `durable_token_source=none`). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
+## STATUS (Batch 343 continued)
+
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move; WAKE340 tip pins already living @ `f244312` (Batch 342). Eng: living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` drift after Batch 341/342) — republish cleared. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
