@@ -1,3 +1,12 @@
+## STATUS (Batch 353 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 353 research_stack_audit_watch merge — republish batch241-path-c-bundle `--force`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch353_living_script_stale_republish -q
+```
+
 ## STATUS (Batch 353 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

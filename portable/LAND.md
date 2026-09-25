@@ -1,3 +1,7 @@
+## STATUS (Batch 353 republish)
+
+tip `e3cd7d4` tip_match=true; eng: living script_stale republish after research-audit merge; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 353 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.

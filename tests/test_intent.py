@@ -17419,3 +17419,57 @@ def test_batch353_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 353 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "research_stack_audit_watch" in log_md and "Batch 353" in log_md
+
+def test_batch353_living_script_stale_republish() -> None:
+    """Batch 353: living script_stale republish after research-audit merge; lemma open."""
+    import json
+    import re
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH353_REPUBLISH_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "353"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("action") == "living_script_stale_republish"
+    assert brief.get("defect_id") == "living_script_stale_after_batch353_research_audit_merge"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    assert (brief.get("after") or {}).get("script_stale") == 0
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH353_REPUBLISH_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_id") == "living_script_stale_after_batch353_research_audit_merge"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH353_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("script_stale_after") == 0
+    assert evidence.get("tip_stale") == 0
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("action") == "living_script_stale_republish"
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 353)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 353 and len(headers) == 1
+    assert "living script_stale republish" in unblock and "research-audit" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 republish)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 republish)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "living script_stale" in log_md and "research-audit" in log_md
+

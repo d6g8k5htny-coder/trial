@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 353 — eng living script_stale republish after research-audit merge (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living release `script_stale=1` (print_owner drift) after research_stack_audit_watch merge; republish `--force` → script_stale=0. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
 ### Batch 353 — research_stack_audit_watch @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
