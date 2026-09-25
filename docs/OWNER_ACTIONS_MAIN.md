@@ -1,3 +1,11 @@
+## STATUS (Batch 350 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; no new eng beyond peers (349 idle/CI + 350 inv tip pin). Paper-trail living tgz. Evidence: `portable/BATCH350_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 350 inv-tip-pin)
 
 Inventory trial tip pinned after Batch 349 CI-green remediate. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.

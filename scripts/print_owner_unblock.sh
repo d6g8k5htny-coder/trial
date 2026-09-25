@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 350 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 350: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 350: inventory tip pin after Batch 349 lands (preserve_durable; trial→HEAD)"
 echo " Batch 349: eng_defect_hunt idle_no_commit @e3cd7d4 (tip_match; no concrete eng; lemma_closed=false)"
 echo " Batch 349: CI Intent EARLY_FALLBACK isolate in rate-limit unit tests + soften GRANT345 action pin"
