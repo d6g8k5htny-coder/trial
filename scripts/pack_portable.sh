@@ -8,6 +8,11 @@
 # portable/LIVING_PATH_C_RELEASE_TAG from path-c-applied-bundle/VERIFY.json
 # "release", fail closed if owner oneshot/open_pr :-defaults drift, and pack
 # the living-tag file so downstream ONE-SHOT consumers share one tip pin.
+#
+# Batch 268: validate oneshot/open_pr :-defaults BEFORE writing the living pin.
+# Pre-268 order wrote LIVING_PATH_C_RELEASE_TAG then fail-closed — a VERIFY.batch
+# without matching release left the pin dirty (e.g. batch250) on exit 2, racing
+# oneshot / write_path_c_status / republish readers. Never republish here.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 # Batch 251: default OUT must land somewhere writable. Local clones often use
@@ -26,9 +31,10 @@ else
 fi
 mkdir -p "$(dirname "$OUT")"
 
-# --- living release tag (Batch 245) -----------------------------------------
+# --- living release tag (Batch 245 + Batch 268 validate-before-write) --------
 VERIFY_JSON="$ROOT/portable/path-c-applied-bundle/VERIFY.json"
 LIVING_TAG_FILE="$ROOT/portable/LIVING_PATH_C_RELEASE_TAG"
+# Derive only — do not mutate the pin yet (Batch 268).
 LIVING_TAG="$(
   VERIFY_JSON="$VERIFY_JSON" LIVING_TAG_FILE="$LIVING_TAG_FILE" python3 - <<'PY'
 import json, os, sys
@@ -60,8 +66,6 @@ if not tag:
         "from VERIFY.json (release|batch) or LIVING_PATH_C_RELEASE_TAG\n"
     )
     raise SystemExit(2)
-living.parent.mkdir(parents=True, exist_ok=True)
-living.write_text(tag + "\n", encoding="utf-8")
 print(tag)
 PY
 )" || exit $?
@@ -74,10 +78,24 @@ do
     if ! grep -q "PATH_C_RELEASE_TAG=\"\${PATH_C_RELEASE_TAG:-${LIVING_TAG}}\"" "$_script"; then
       echo "pack_portable: ERROR: $_script :-default != living tag ${LIVING_TAG}" >&2
       echo "pack_portable: bump PATH_C_RELEASE_TAG fallback (and VERIFY.release) together" >&2
+      echo "pack_portable: living pin NOT written (Batch 268 validate-before-write)" >&2
       exit 2
     fi
   fi
 done
+
+# Stamp living pin only after fail-closed defaults match (atomic replace).
+LIVING_TAG="$LIVING_TAG" LIVING_TAG_FILE="$LIVING_TAG_FILE" python3 - <<'PY' || exit $?
+import os
+from pathlib import Path
+
+tag = os.environ["LIVING_TAG"]
+living = Path(os.environ["LIVING_TAG_FILE"])
+living.parent.mkdir(parents=True, exist_ok=True)
+tmp = living.with_name(living.name + ".tmp")
+tmp.write_text(tag + "\n", encoding="utf-8")
+tmp.replace(living)
+PY
 # ---------------------------------------------------------------------------
 
 mapfile -t RESTORE_PLANS < <(find "$ROOT/portable" -maxdepth 1 -type f -name 'RESTORE_PLAN_*.json' | sort)
