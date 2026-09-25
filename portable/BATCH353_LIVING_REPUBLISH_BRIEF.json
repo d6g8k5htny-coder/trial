@@ -1,0 +1,11 @@
+{
+  "batch": "353",
+  "utc": "2026-09-25T20:40:52Z",
+  "action": "living_script_stale_republish",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_stale": 0,
+  "script_stale": 0
+}

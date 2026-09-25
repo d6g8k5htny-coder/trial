@@ -1,3 +1,12 @@
+## STATUS (Batch 353 living-republish + inv-tip-pin)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale republish + inventory tip pin→HEAD after Batch 352/353 tip-sync idle. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch353_living_republish_inv_tip_pin -q
+```
+
 ## STATUS (Batch 353 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch_vs_BASE_TIP: no tip move; living tip_stale=0 script_stale=0; paper-trail living tgz. Evidence: `portable/BATCH353_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
@@ -14,10 +23,6 @@ INV_BATCH=352 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_invento
 ./scripts/republish_living_path_c_release.sh --dry-run
 ./scripts/refresh_path_c_bundle.sh --dry-run
 ```
-
-## Batch 353 — inventory_preserve_durable_tip_pin
-
-Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD; never demote 8/8. Goal OPEN. `lemma_closed=false`.
 
 ## STATUS (Batch 352 wake)
 
