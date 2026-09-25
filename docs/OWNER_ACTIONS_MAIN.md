@@ -1,3 +1,11 @@
+## STATUS (Batch 359 wake-republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale after WAKE359 print_owner drift — republish batch241 (1→0). `lemma_closed=false`. Goal OPEN. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 359 wake)
 
 tip `e3cd7d4` tip_match=true; MULTI_AGENT_WAKE_BATCH359; woken IDLE Path C peers + cloud spawn; lemma_closed=false; scientific effect NONE.

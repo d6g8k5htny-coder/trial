@@ -21,12 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — eng living script_stale republish after WAKE359 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` after MULTI_AGENT wake+assign print_owner drift. Republish → script_stale=0.
+- NEVER flip research; skip inventable. Goal OPEN.
+
 ### Batch 359 — soften Batch 357 tip_or_eng Intent action allowlist (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Conflict markers already stripped (`80168df9`). Remaining Intent red: `test_batch357_tip_or_eng_continue` hard-pinned `action==research_stack_audit_watch` while living brief is tip-repin.
 - Eng: living action allowlist; rewrite merged test debris. Goal OPEN. NEVER flip research.
-
 
 ### Batch 359 — eng living script_stale republish after tip_or_eng (2026-09-25)
 

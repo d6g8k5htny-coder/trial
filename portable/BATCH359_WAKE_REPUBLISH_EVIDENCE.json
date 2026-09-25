@@ -1,0 +1,13 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "action": "eng_living_script_stale_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "script_stale_before": 1,
+  "script_stale_after": 0,
+  "tip_stale": 0,
+  "batch": "359",
+  "defect_id": "living_script_stale_after_batch359_wake",
+  "generated_at_utc": "2026-09-25T21:51:50Z"
+}

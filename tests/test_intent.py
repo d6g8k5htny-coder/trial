@@ -19119,3 +19119,58 @@ def test_batch359_multi_agent_wake_assign() -> None:
     assert int(m_inv.group(1)) >= 359
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 359)
+
+
+def test_batch359_living_script_stale_republish_after_wake() -> None:
+    """Batch 359: living script_stale republish after WAKE359 print_owner drift."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH359_WAKE_REPUBLISH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "359"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "living_script_stale_after_batch359_wake"
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    living = brief.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH359_WAKE_REPUBLISH_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == "living_script_stale_after_batch359_wake"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("defect_shipped") is True
+
+    ev = json.loads(
+        (ROOT / "portable" / "BATCH359_WAKE_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert ev.get("script_stale_before") == 1
+    assert ev.get("script_stale_after") == 0
+    assert ev.get("lemma_closed") is False
+    assert ev.get("action") == "eng_living_script_stale_republish"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 359)
+    assert "script_stale" in unblock and "WAKE359" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 wake-republish)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 wake-republish)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "WAKE359" in log_md and "script_stale" in log_md
