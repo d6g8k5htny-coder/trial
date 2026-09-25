@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Post Path-C eng wake comments on eng PRs in d6g8k5htny-coder/main.
 
-Skips research drafts. Skips only when a wake comment already advertises the
-*living* BASE_TIP (not a frozen batch marker). Uses GH_TOKEN / MAIN_PUSH_TOKEN
-(App ghs lacks Issues:write). Triggered via trial workflow
+Skips inventable/research drafts. Skips only when a wake comment already
+advertises the *living* BASE_TIP (not a frozen batch marker). Uses GH_TOKEN /
+MAIN_PUSH_TOKEN (App ghs lacks Issues:write). Triggered via trial workflow
 wake-batch322-pr-comments (repository_dispatch).
 
 Batch 336: INTENT tip is derived from portable/patches/BASE_TIP.txt (living),
@@ -13,6 +13,11 @@ Batch 338: BATCH_MARKER was frozen at \"Batch 329 wake\" so tip-sync never
 re-posted — eng PRs #92/#93/#87/#36/#21/#12 still carried Intent @077464e while
 BASE_TIP lived at 848aea2. Marker + skip gate now key off living tip.
 TRIAL link is the trial repo (not merged PR #112).
+
+Batch 340: eng targets narrowed to #36 ladder pin / #21 architectural
+admission / #12 fail-closed OPEN/HOLD. Skip inventable/research drafts
+(#110,#109,#108,#106,#105,#103,#98,#46,#38,#8,#7). Wake marker Batch 340;
+resume tasks: no lemma_closed flip; tip-align if base drifted; additive-only.
 
 Scientific effect: NONE. lemma_closed stays false.
 """
@@ -28,25 +33,23 @@ from pathlib import Path
 
 REPO = "d6g8k5htny-coder/main"
 COORD = "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
-# Batch 338: do not freeze a merged trial PR number (#112).
 TRIAL_REPO = "https://github.com/d6g8k5htny-coder/trial"
 _ROOT = Path(__file__).resolve().parents[1]
 _BASE_TIP_FILE = _ROOT / "portable" / "patches" / "BASE_TIP.txt"
 _HARDENING_REF = "chatgpt/drive-github-hardening-20260919"
-_PRINT_OWNER = _ROOT / "scripts" / "print_owner_unblock.sh"
+# Batch 340 coordinator wake — explicit marker (print_owner may lag at 339).
+_WAKE_BATCH = "340"
 
 
 def _living_tip_short() -> str:
-    """Batch 336: wake INTENT tip follows BASE_TIP (not a frozen SHA)."""
+    """Wake INTENT tip follows BASE_TIP (not a frozen SHA)."""
     try:
         line = _BASE_TIP_FILE.read_text(encoding="utf-8").splitlines()[0]
     except (OSError, IndexError):
         return "unknown"
-    # Prefer full 40-char SHA so ref dates like 20260919 are not mistaken for tips.
     m = re.search(r"(?i)\b([0-9a-f]{40})\b", line)
     if m:
         return m.group(1)[:7].lower()
-    # Fallback: last whitespace token that looks like a short SHA.
     for tok in reversed(line.split()):
         if re.fullmatch(r"(?i)[0-9a-f]{7,40}", tok):
             return tok[:7].lower()
@@ -54,25 +57,15 @@ def _living_tip_short() -> str:
 
 
 def _living_batch_n() -> str:
-    """Batch 338: automation batch from print_owner header (no freeze at 329)."""
-    try:
-        text = _PRINT_OWNER.read_text(encoding="utf-8")
-    except OSError:
-        text = ""
-    m = re.search(r"=== Batch (\d+)\b", text)
-    if m:
-        return m.group(1)
-    return "338"
+    return _WAKE_BATCH
 
 
 def batch_marker() -> str:
-    """Living wake marker — tip move unlocks re-post (Batch 338)."""
+    """Living wake marker — tip move unlocks re-post."""
     return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"
 
 
-# Back-compat alias for Intent / importers that still read BATCH_MARKER.
-# Must not be a frozen \"Batch 329 wake\" string.
-BATCH_MARKER = batch_marker  # callable; see also batch_marker()
+BATCH_MARKER = batch_marker  # callable; back-compat alias
 
 
 def intent_line() -> str:
@@ -91,16 +84,15 @@ def _wake_body_has_living_tip(body: str, tip: str | None = None) -> bool:
     b = body or ""
     if "wake" not in b.lower():
         return False
-    # Match Intent line tip pin produced by intent_line().
     if f"@ {tip}" in b:
         return True
-    # Marker form: Batch N wake @<tip>
     if f"wake @{tip}" in b.lower():
         return True
     return False
 
 
 TASKS: dict[int, str] = {
+    # Retained for Batch 338 test wake_body(92) + historical crosswalk context.
     92: (
         "Crosswalk eng — keep RN downstream crosswalk outside the closed "
         "`docs/math_status/` packet (`EXPECTED_NAMES`); land nav/RESEARCH_INDEX/"
@@ -122,28 +114,29 @@ TASKS: dict[int, str] = {
         "Boolean edits."
     ),
     36: (
-        "@claude — resume eng: keep `research/bands/ladder.py` at the exact bytes "
-        "hardening-lane certificates pin (twelve_project_check source identity). "
-        "Give way / reconcile on migration base — do not re-pin certificates or "
-        "promote claims; leave research status untouched."
+        "@claude — resume eng (Batch 340): keep `research/bands/ladder.py` at the "
+        "exact bytes hardening-lane certificates pin (twelve_project_check source "
+        "identity). Tip-align if base drifted; additive-only; give way / reconcile "
+        "on migration base — do not re-pin certificates; no lemma_closed flip; no "
+        "claim promotion."
     ),
     21: (
-        "@claude — resume eng: architectural admission attestations + salvaged H3 "
-        "review artifacts on a live tip (not orphaned stack). Keep DRAFT until "
-        "reviewed; additive-only; no obligation/claim discharge; tip-align if "
-        "base drifted."
+        "@claude — resume eng (Batch 340): architectural admission attestations + "
+        "salvaged H3 review artifacts on a live tip (not orphaned stack). Tip-align "
+        "if base drifted; additive-only; keep DRAFT until reviewed; no obligation/"
+        "claim discharge; no lemma_closed flip."
     ),
     12: (
-        "Fail-closed OPEN/HOLD eng — keep JETMOD/RN-UNIF `math_status` + "
-        "math_console mirrors fail-closed (tools refuse flag moves). "
-        "HOLD/NEVER-MERGE per owner order; green CI ≠ discharge; do not close "
-        "OPEN obligations or flip lemma_closed; prefer close-as-superseded "
-        "hygiene only if still conflicting with tip receipts — no status promotion."
+        "Fail-closed OPEN/HOLD eng (Batch 340): keep JETMOD/RN-UNIF `math_status` + "
+        "math_console mirrors fail-closed (tools refuse flag moves). HOLD/NEVER-MERGE "
+        "per owner order; tip-align if base drifted; additive-only; green CI ≠ "
+        "discharge; no lemma_closed flip; no status promotion."
     ),
 }
 
-ENG = (92, 93, 87, 36, 21, 12)
-SKIP_DRAFTS = (47, 46, 38, 8, 7)
+# Batch 340: ladder / admission / fail-closed OPEN/HOLD only.
+ENG = (36, 21, 12)
+SKIP_DRAFTS = (110, 109, 108, 106, 105, 103, 98, 46, 38, 8, 7)
 
 
 def token() -> str:
@@ -162,7 +155,7 @@ def api(method: str, path: str, body: dict | None = None) -> object:
         headers={
             "Authorization": f"Bearer {token()}",
             "Accept": "application/vnd.github+json",
-            "User-Agent": "trial-batch338-wake",
+            "User-Agent": "trial-batch340-wake",
             "X-GitHub-Api-Version": "2022-11-28",
         },
     )
@@ -204,8 +197,8 @@ def wake_body(n: int) -> str:
         "\n"
         f"**Eng resume task:** {TASKS[n]}\n"
         "\n"
-        "Path C intent advance only. Keep DRAFT discipline where applicable; "
-        "never promote claims/premises/prizes/lemmas. "
+        "Path C intent advance only. Tip-align if base drifted; additive-only; "
+        "never promote claims/premises/prizes/lemmas; no lemma_closed flip. "
         f"Trial wake path: [{TRIAL_REPO}]({TRIAL_REPO}) / workflow "
         "`wake-batch322-pr-comments`.\n"
     )
@@ -218,7 +211,7 @@ def main() -> int:
     marker = batch_marker()
 
     for n in SKIP_DRAFTS:
-        skipped.append({"pr": n, "reason": "research_draft"})
+        skipped.append({"pr": n, "reason": "research_or_inventable_draft"})
 
     urls: list[str] = []
     for n in ENG:
