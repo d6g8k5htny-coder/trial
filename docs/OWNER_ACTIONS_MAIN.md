@@ -1,3 +1,11 @@
+## STATUS (Batch 347 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Living tip_stale=0 script_stale=0; paper-trail tgz republish. Evidence: `portable/BATCH347_IDLE.json`. Guard+research: `lemma_closed=false`. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 347 inv-tip-pin)
 
 Inventory trial tip pinned after Batch 346 lands @`a136c2d`. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.

@@ -16284,3 +16284,35 @@ def test_batch347_inventory_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "inventory tip pin" in log_md and "Batch 347" in log_md
 
+def test_batch347_idle_tip_sync_watch() -> None:
+    """Batch 347: tip stable @e3cd7d4; idle_no_commit tip_sync_watch evidence."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH347_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "347"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal") == "OPEN"
+    assert str(tiny.get("hardening_tip") or "").startswith("e3cd7d4")
+    assert tiny.get("inventable_promoted") is False
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 347)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 347 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 347 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "BATCH347_IDLE" in log_md or "Batch 347" in log_md
+

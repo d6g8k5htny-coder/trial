@@ -1,0 +1,25 @@
+{
+  "batch": "347",
+  "generated_at_utc": "2026-09-25T19:42:22Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "paper_trail_tgz_republish": true
+  },
+  "refresh_dry_run": "BASE_TIP=e3cd7d4 live=e3cd7d4 match=1",
+  "note": "Batch347 tip_sync_watch_vs_BASE_TIP_e3cd7d4: tip stable; living tip/script current; paper-trail tgz; inventable skipped"
+}

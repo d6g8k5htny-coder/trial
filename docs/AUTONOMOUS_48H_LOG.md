@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 347 — tip_sync_watch idle @e3cd7d4 (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0.
+- Paper-trail tgz republish (tgz_newer). Evidence: `portable/BATCH347_IDLE.json`.
+- Inventable skipped; `lemma_closed=false`; goal OPEN. action=`idle_no_commit`.
+
 ### Batch 347 — inventory tip pin after Batch 346 lands (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8.

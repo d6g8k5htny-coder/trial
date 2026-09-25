@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 347 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 347: tip_sync_watch idle @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 347: inventory tip pin after Batch 346 lands (preserve_durable; trial→HEAD a136c2d)"
 echo " Batch 346: living script_stale republish after tip-stable @e3cd7d4 (batch241; script_stale 1→0)"
 echo " Batch 346: ci_audit_watch idle — early-fallback intact @e3cd7d4; no new CI eng class"
