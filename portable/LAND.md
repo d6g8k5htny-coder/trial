@@ -1,12 +1,14 @@
-<<<<<<< HEAD
+## STATUS (Batch 359 research-audit-watch)
+
+tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 359 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
-=======
+
 ## STATUS (Batch 359 inv-preserve-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 359; lemma_closed=false; goal OPEN; scientific effect NONE.
->>>>>>> cursor/batch359-inv-preserve-tip-pin-68a4
 
 ## STATUS (Batch 358 republish)
 

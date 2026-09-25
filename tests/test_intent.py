@@ -15742,33 +15742,6 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     assert "STATUS (Batch 345 wake-fallback)" in owner
 
 
-def test_batch345_tip_sync_e3cd7d4() -> None:
-    """Batch 345: tip-sync fcad723→e3cd7d4; inventable not promoted."""
-    import json
-
-    brief = json.loads(
-        (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
-    )
-    assert brief.get("action") == "tip_sync_landed"
-    assert brief.get("lemma_closed") is False
-    assert brief.get("flipped_anything") is False
-    assert brief.get("tip_match") is True
-    assert _living_tip(str(brief.get("hardening_tip") or brief.get("tip") or ""))
-    assert "e3cd7d4" in _LIVING_TIPS
-    assert "fcad723" in _LIVING_TIPS
-    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base)
-    status = json.loads(
-        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
-    )
-    assert _living_tip(str(status.get("base_tip") or ""))
-    assert status.get("lemma_closed") is False
-    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "e3cd7d4" in unblock or "tip-sync" in unblock.lower() or "Batch 345" in unblock
-    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "e3cd7d4" in land or "STATUS (Batch 345 tip-sync)" in land
-
-
 def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
     """Batch 345 WAKE: tip_sync_watch confirm @e3cd7d4; valid tip-sync evidence JSON."""
     import json
@@ -18796,7 +18769,6 @@ def test_batch358_living_script_stale_republish() -> None:
 
 
 
-<<<<<<< HEAD
 def test_batch359_idle_tip_sync_watch() -> None:
     """Batch 359: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -18847,7 +18819,6 @@ def test_batch359_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 359 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "idle_no_commit" in log_md
-=======
 def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     """Batch 359: preserve_durable tip pin after lands; tip e3cd7d4."""
     import json
@@ -18904,4 +18875,95 @@ def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     assert "STATUS (Batch 359 inv-preserve-tip-pin)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "inventory_preserve_durable_tip_pin" in log_md
->>>>>>> cursor/batch359-inv-preserve-tip-pin-68a4
+
+
+def test_batch359_research_stack_audit_watch() -> None:
+    """Batch 359: research_stack_audit_watch_no_promotion; no audit delta vs 357."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH359_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "359"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    living = watch.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    delta = watch.get("delta_vs_batch357") or {}
+    assert int(delta.get("open_premises") or 0) == 0
+    assert int(delta.get("open_lemmas") or 0) == 0
+    assert int(delta.get("open_prizes") or 0) == 0
+
+    # No full BATCH359_RESEARCH_STACK_AUDIT — prior artifact still open 13/1/3.
+    assert not (ROOT / "portable" / "BATCH359_RESEARCH_STACK_AUDIT.json").exists()
+    prior = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert prior.get("lemma_closed") is False
+    assert prior.get("flipped_anything") is False
+    counts = prior.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(prior.get("tip_sha") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH359_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "359"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "research_stack_audit_watch"
+    assert brief.get("audit_delta_needed") is False
+    assert int(brief.get("open_premises") or 0) >= 13
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH359_RESEARCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("batch") == "359"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "research_stack_audit_watch"
+    assert evidence.get("audit_delta_needed") is False
+    assert evidence.get("goal") == "OPEN"
+    assert int(evidence.get("open_premises") or 0) >= 13
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 359)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 359" in log_md and "research_stack_audit_watch" in log_md

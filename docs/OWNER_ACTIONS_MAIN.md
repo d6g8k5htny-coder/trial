@@ -1,9 +1,27 @@
+## STATUS (Batch 359 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH357; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH359_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch359_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 359 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH359_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
 
 ```bash
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
+## STATUS (Batch 359 inv-preserve-tip-pin)
+
+Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD; fallbacks≥359; never demote 8/8. Goal OPEN. `lemma_closed=false`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=359 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch359_inventory_preserve_durable_tip_pin -q
 ```
 
 ## STATUS (Batch 358 republish)
@@ -15,9 +33,6 @@ Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 358
 python3 -m pytest tests/test_intent.py::test_batch358_living_script_stale_republish -q
 ```
 
-## Batch 359 — inventory_preserve_durable_tip_pin
-
-Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD; fallbacks≥359; never demote 8/8. Goal OPEN. `lemma_closed=false`.
 
 ## STATUS (Batch 358 tip-eng)
 
