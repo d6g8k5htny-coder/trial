@@ -1,6 +1,6 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-25T15:45:12Z",
+  "generated_at_utc": "2026-09-25T16:55:17Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
@@ -256,5 +256,5 @@
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",
   "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false.",
-  "refresh_batch": "317"
+  "refresh_batch": "327"
 }

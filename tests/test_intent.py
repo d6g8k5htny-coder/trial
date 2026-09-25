@@ -12950,3 +12950,37 @@ def test_batch326_research_audit_no_promotion() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 326" in log_md
 
+
+def test_batch327_verify_refresh_and_wake_pack() -> None:
+    """Batch 327: VERIFY.refresh_batch after keep-prior force; wake poster in pack."""
+    import json
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(verify.get("refresh_batch") or 0) >= 327
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 327)
+    assert "Batch 325: verify against WORKDIR" in refresh
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "post_batch322_wake_comments.py" in pack
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "post_batch322_wake_comments.py" in republish
+    assert (ROOT / "scripts" / "post_batch322_wake_comments.py").is_file()
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 327)
+    assert "Batch 327" in unblock
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 327" in log_md
+

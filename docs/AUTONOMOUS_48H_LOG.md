@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 327 — VERIFY refresh_batch 327 + pack wake poster (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: `REFRESH_BATCH_TAG=327 ./scripts/refresh_path_c_bundle.sh --force` keep-prior OK (WORKDIR verify); VERIFY.refresh_batch `317`→`327`.
+- Pack completeness: include `scripts/post_batch322_wake_comments.py` in `pack_portable` + living republish CRITICAL (workflow peer was on disk but omitted from tarball).
+- NEVER flip research.
+
+
 ### Batch 326 — keep-prior land + research open-list audit (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; durable write 8/8; `lemma_closed=false`.

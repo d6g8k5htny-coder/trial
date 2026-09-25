@@ -263,6 +263,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_set_main_push_token.sh \
   scripts/owner_grant_ai_agent_access.sh \
   scripts/refresh_ai_agent_access_inventory.py \
+  scripts/post_batch322_wake_comments.py \
   scripts/assert_path_c_ready.sh \
   scripts/write_path_c_status.py \
   scripts/refresh_path_c_bundle.sh \
