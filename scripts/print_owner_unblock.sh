@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 346 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 346: grant_check_dual_vector_8of8 tip refresh @e3cd7d4 (BATCH346_GRANT; preserve_durable)"
 echo " Batch 346: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin (e3cd7d4); tip stable @e3cd7d4"
 echo " Batch 345: tip-sync fcad723→e3cd7d4 after main #105 CONTRIBUTION_PLAN retire (keep-prior; NOT promoted); REFRESH default 345"
 echo " Batch 345: tip-sync fcad723→e3cd7d4 (keep-prior; inventable NOT promoted)"

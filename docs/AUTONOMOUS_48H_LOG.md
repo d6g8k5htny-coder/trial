@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 346 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
+
+- Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`40d6f27` (living HEAD); INV_BATCH→346; coverage 8/8_WRITABLE.
+- Artifact `portable/BATCH346_GRANT.json`. NEVER flip research.
+
 ### Batch 346 — soften tip_sync_watch live BASE_TIP Intent pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
