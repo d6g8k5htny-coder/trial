@@ -1,0 +1,9 @@
+{
+  "batch": "348",
+  "defect_id": "living_script_stale_print_owner_after_348_idle",
+  "hunt_0020": "NEGATIVE",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "living_script_stale_republish",
+  "status_guard_tip_lag": false
+}

@@ -1,3 +1,12 @@
+## STATUS (Batch 348 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: lemma_closed=false; STATUS_GUARD tip==LIVE no lag; eng: living `batch241` script_stale republish after idle print_owner drift + inventory tip pin→HEAD. action=`living_script_stale_republish`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+python3 -m pytest tests/test_intent.py::test_batch348_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 348 inv-tip-pin + research-audit)
 
 Inventory tip pin @`f00459d`; research audit @`e3cd7d4` open_premises=13 open_lemmas=1 open_prizes=3; guard pass; `lemma_closed=false`. Goal OPEN.

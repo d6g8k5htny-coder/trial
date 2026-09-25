@@ -16443,6 +16443,58 @@ def test_batch348_research_stack_audit_no_promotion() -> None:
 
 
 
+def test_batch348_research_stack_audit_watch() -> None:
+    """Batch 348: research_stack_audit_watch; STATUS_GUARD no lag; eng living republish."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH348_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "348"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("watch") == "research_stack_audit_watch"
+    assert watch.get("action") == "living_script_stale_republish"
+    assert watch.get("goal_complete") is False
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    living = watch.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH348_RESEARCH_AUDIT_WATCH_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("status_guard_tip_lag") is False
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 348)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 348 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 348 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "research_stack_audit_watch" in log_md
+
+
 def test_batch348_idle_tip_sync_or_eng() -> None:
     """Batch 348: tip stable @e3cd7d4; idle_no_commit evidence."""
     import json

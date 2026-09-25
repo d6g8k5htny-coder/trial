@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 348 — research_stack_audit_watch + living script_stale (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Watch: research audit open_premises=13; STATUS_GUARD tip==LIVE no lag; no promotion.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` (print_owner drift after idle lands) → republish `script_stale=0`; inventory tip pin e683e3a→HEAD.
+- Artifact: `portable/BATCH348_RESEARCH_AUDIT_WATCH.json`. action=`living_script_stale_republish`. Goal OPEN. NEVER flip research.
+
 ### Batch 348 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
