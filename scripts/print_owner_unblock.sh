@@ -47,7 +47,8 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 359 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 360 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 360: tip_or_eng inv tip re-pin + last-resort 359→360 + living republish @e3cd7d4"
 echo " Batch 359: eng living script_stale republish after WAKE359 (batch241; script_stale 1→0)"
 echo " Batch 359: soften Batch 357 tip_or_eng Intent action allowlist (ci_audit_watch)"
 echo " Batch 359: MULTI_AGENT wake+assign stopped agents @e3cd7d4 (WAKE359; Dylan message-stopped-agents)"

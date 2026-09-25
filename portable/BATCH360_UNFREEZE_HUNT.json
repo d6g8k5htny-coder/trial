@@ -1,0 +1,18 @@
+{
+  "batch": "360",
+  "generated_at_utc": "2026-09-25T21:55:26Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "action": "eng_unfreeze_last_resort_359_to_360",
+  "defect_id": "last_resort_frozen_359_vs_living_360",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e",
+  "hunt": "unfreeze_last_resort",
+  "defect_found": true,
+  "defect_shipped": true
+}

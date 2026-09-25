@@ -1,3 +1,12 @@
+## STATUS (Batch 360 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after Batch 359 lands — preserve_durable re-pin→HEAD; REFRESH/last-resort 359→360. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=360 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch360_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 359 wake-republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale after WAKE359 print_owner drift — republish batch241 (1→0). `lemma_closed=false`. Goal OPEN. Scientific effect: NONE.
