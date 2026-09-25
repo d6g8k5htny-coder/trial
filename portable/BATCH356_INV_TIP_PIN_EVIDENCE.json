@@ -1,6 +1,6 @@
 {
   "batch": "356",
-  "generated_at_utc": "2026-09-25T21:14:10Z",
+  "generated_at_utc": "2026-09-25T21:14:41Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -14,8 +14,8 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "inventory_batch": "356",
-  "trial_tip_sha": "f52232ac99f9bdbd899947eab9c352cb7a9d3f22",
-  "live_trial_head": "f52232ac99f9bdbd899947eab9c352cb7a9d3f22",
+  "trial_tip_sha": "b6eb658a3d6d71e7aa2bd9eefa807ffb474927f9",
+  "live_trial_head": "b6eb658a3d6d71e7aa2bd9eefa807ffb474927f9",
   "trial_tip_matches_live_head": true,
   "prior_trial_tip_sha": "3eba995c8221",
   "tip_pins": {
@@ -26,7 +26,7 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "f52232a"
+    "trial": "b6eb658"
   },
   "preserve_durable_writable0_denied": true,
   "coordinator_bcId": "bc-01a0cf1e",
