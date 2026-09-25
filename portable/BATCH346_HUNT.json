@@ -1,0 +1,20 @@
+{
+  "batch": "346",
+  "hunt": "tip_sync_or_eng_on_healthy_VM",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "defect_shipped": true,
+  "defect_id": "intent_batch345_tip_sync_watch_frozen_live_base_tip_e3cd7d4",
+  "tip": "e3cd7d4",
+  "tip_moved": false,
+  "tip_match": true,
+  "action": "eng_soften_345_tip_sync_watch_live_tip_pin",
+  "hunt_0020": "NEGATIVE",
+  "avoided": [
+    "duplicate tip-sync",
+    "promote inventable",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "generated_at_utc": "2026-09-25T19:30:00Z"
+}

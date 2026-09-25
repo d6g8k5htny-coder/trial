@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 346 — soften tip_sync_watch live BASE_TIP Intent pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `test_batch345_tip_sync_watch_confirm_e3cd7d4` hard-pinned live BASE_TIP — softened to `_living_tip` (Batch 341/344 class).
+- NEVER flip research; inventable skipped. Goal OPEN.
+
 ### Batch 345 — inventory tip pin after tip-sync e3cd7d4 (2026-09-25)
 
 - Grant peer landed BATCH345_GRANT; tip then moved → tip-sync @`e3cd7d4`. Inventory trial tip lagged @`0cec02be`.

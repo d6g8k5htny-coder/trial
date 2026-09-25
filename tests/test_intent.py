@@ -15786,7 +15786,8 @@ def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
     assert watch.get("action") == "tip_sync_watch_confirm"
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "e3cd7d4" in base
+    # Live BASE_TIP supersedes across tip-sync; Batch 345 watch shipped e3cd7d4.
+    # Do not hard-pin the live tip SHA in BASE_TIP (Batch 341/344/346 class).
     assert _living_tip(base)
 
 
@@ -15818,3 +15819,62 @@ def test_batch345_grant_inventory_tip_pin() -> None:
     assert brief.get("batch") == "345"
     assert brief.get("action") == "grant_inventory_tip_pin_after_tip_sync"
     assert brief.get("lemma_closed") is False
+
+
+def test_batch346_soften_tip_sync_watch_live_tip_pin() -> None:
+    """Batch 346: tip_sync_watch Intent must not freeze live BASE_TIP to e3cd7d4."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch345_tip_sync_watch_confirm_e3cd7d4")
+    end = intent.index("def test_batch345_grant_inventory_tip_pin")
+    body = intent[start:end]
+    assert "Live BASE_TIP supersedes across tip-sync; Batch 345 watch shipped e3cd7d4" in body
+    assert 'assert "e3cd7d4" in base' not in body
+    assert "e3cd7d4" in _LIVING_TIPS
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "346"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "intent_batch345_tip_sync_watch_frozen_live_base_tip_e3cd7d4"
+    )
+    assert brief.get("action") == "eng_soften_345_tip_sync_watch_live_tip_pin"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH346_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == (
+        "intent_batch345_tip_sync_watch_frozen_live_base_tip_e3cd7d4"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH346_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("aligned") is True
+    assert evidence.get("action") == "eng_soften_345_tip_sync_watch_live_tip_pin"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert str(evidence.get("write", "")).upper() == "WRITABLE"
+    assert evidence.get("goal_complete") is False
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 346" in log_md and "soften" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346)" in owner

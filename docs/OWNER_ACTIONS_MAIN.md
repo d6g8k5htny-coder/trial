@@ -43,6 +43,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 346)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin (`"e3cd7d4" in base`); next tip-sync would re-red CI (Batch 341/344 class). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch346_soften_tip_sync_watch_live_tip_pin -q
+```
+
+
 ## STATUS (Batch 345 tip-sync)
 
 Hardening tip **synced** @ `e3cd7d4` after main #105 CONTRIBUTION_PLAN retire. Tip-sync keep-prior; inventable/docs drafts NOT promoted; `_LIVING_TIPS += e3cd7d4`; REFRESH default 345. Path C IDLE@0019; durable 8/8. `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE. Goal OPEN.
