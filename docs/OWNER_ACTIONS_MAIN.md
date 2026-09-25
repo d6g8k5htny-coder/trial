@@ -10,6 +10,14 @@ Hardening tip **stable** @ `848aea2`. Eng: wake poster resolves durable `MAIN_PU
 WAKE_TOKEN_SOURCE_LOG=1 python3 scripts/post_batch322_wake_comments.py --help 2>/dev/null || true
 ```
 
+## STATUS (Batch 340 tip-sync)
+
+Hardening tip **synced** @ `f244312` after main #108 inventable tip-observe. Tip-sync keep-prior; inventable NOT promoted; `_LIVING_TIPS += f244312`. Path C IDLE@0019; durable 8/8. `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
+```
+
 ## STATUS (Batch 340)
 
 Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.

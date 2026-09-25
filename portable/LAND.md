@@ -2,6 +2,10 @@
 
 tip `848aea2` tip_match=true; eng: wake poster MAIN_PUSH_TOKEN-first + durable file drops (parity grant/when_writable); lemma_closed=false; scientific effect NONE.
 
+## STATUS (Batch 340 tip-sync)
+
+tip `f244312` tip_match=true TIP_OK after tip-sync; #108 MERGED into hardening → refresh keep-prior; inventable tip-observe NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 340)
 
 tip `848aea2` tip_match=true; eng: republish CRITICAL += `audit_main_alignment.py` (was pack-only); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

@@ -38,6 +38,7 @@ _LIVING_TIPS = (
     "388a22c",
     "eeebb28",
     "848aea2",
+    "f244312",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -14380,3 +14381,53 @@ def test_batch340_wake_durable_token() -> None:
     assert "wake durable MAIN_PUSH_TOKEN" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340 wake-token)" in owner
+
+
+def test_batch340_tip_sync_f244312() -> None:
+    """Batch 340: tip-sync 848aea2→f244312 after main #108; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("defect_id") == "tip_sync_848aea2_to_f244312_main_108"
+    assert brief.get("inventable_promoted") is False
+    assert 108 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("f244312")
+    assert str(brief.get("prior_tip", "")).startswith("848aea2")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH340_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_848aea2_to_f244312_main_108"
+    assert hunt.get("lemma_closed") is False
+    assert any("108" in a or "inventable" in a for a in (hunt.get("avoided") or []))
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+    assert "f244312" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 340
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    assert "f244312" in _LIVING_TIPS
+    assert "848aea2" in _LIVING_TIPS
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "f244312" in unblock or "tip-sync" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "f244312" in land
+    assert "tip-sync" in land.lower() or "TIP_OK" in land
+

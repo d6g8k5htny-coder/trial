@@ -1,0 +1,33 @@
+{
+  "batch": "340",
+  "generated_at_utc": "2026-09-25T18:36:00Z",
+  "status": "tip_sync_after_main_108",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "prior_tip": "848aea2",
+  "tip_match": true,
+  "tip_moved": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "merged_prs": [108],
+  "note_main_pr_108": "inventable tip-observe MERGED mid-cycle → tip f244312; tip-sync Path C only (NOT promoted)",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_848aea2_to_f244312_main_108",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST 848aea2→f244312 after main #108",
+    "keep-prior Path C; REFRESH 340; _LIVING_TIPS+=f244312"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "tip_sync_landed",
+  "route_now": "TIP_SYNC",
+  "inventable_promoted": false,
+  "note": "Batch 340 tip-sync after inventable #108 tip-observe; durable-token eng already on main (ba6a9aa); lemma_closed=false."
+}

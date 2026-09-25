@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 tip-sync 848aea2→f244312 after main #108 (2026-09-25)
+
+- Tip **moved** mid-cycle: inventable tip-observe #108 → `f244312`.
+- Tip-sync keep-prior Path C; REFRESH 340; `_LIVING_TIPS += f244312`.
+- Inventable NOT promoted; `lemma_closed=false`; scientific effect NONE.
+
 ### Batch 340 — wake durable MAIN_PUSH_TOKEN file load (2026-09-25)
 
 - Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
