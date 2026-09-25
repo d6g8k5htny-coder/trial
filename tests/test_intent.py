@@ -39,6 +39,7 @@ _LIVING_TIPS = (
     "eeebb28",
     "848aea2",
     "f244312",
+    "fcad723",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -14560,7 +14561,7 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     end = intent.index("def test_batch340_grant_inventory_refresh")
     body = intent[start:end]
     assert "Live BASE_TIP supersedes across tip-sync; Batch 340 shipped f244312" in body
-    assert 'assert "f244312" in base_tip' not in body
+    assert 'assert _living_tip(base_tip)  # Batch 343: live tip supersedes' not in body
     assert 'verify.get("base_tip_sha", "")).startswith("f244312")' not in body
     assert "f244312" in _LIVING_TIPS
     assert "848aea2" in _LIVING_TIPS
@@ -14883,6 +14884,47 @@ def test_batch341_soften_inv_batch_hard_pins_after_342() -> None:
     assert "STATUS (Batch 341 inv-batch-pin)" in owner or "inv_batch" in owner.lower()
 
 
+def test_batch343_tip_sync_fcad723() -> None:
+    """Batch 343: tip-sync f244312→fcad723 after main #109; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "343"
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert 109 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("fcad723")
+    assert str(brief.get("prior_tip", "")).startswith("f244312")
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 343 shipped fcad723.
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 343
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    assert "fcad723" in _LIVING_TIPS
+    assert "f244312" in _LIVING_TIPS
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "fcad723" in land
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 343)
+    assert "fcad723" in unblock or "tip-sync" in unblock.lower()
+
+
 def test_batch343_wake_land_verify() -> None:
     """Batch 343: GRANT341 + WAKE340 tip living @f244312; lemma_closed false."""
     import json
@@ -14904,7 +14946,8 @@ def test_batch343_wake_land_verify() -> None:
     assert wake340.get("lemma_closed") is False
     assert wake340.get("tip_match") is True
     assert _living_tip(str(wake340.get("tip") or ""))
-    assert str(wake340.get("tip") or "").startswith("f244312")
+    # Soft: tip may have advanced past f244312 (Batch 343 tip-sync → fcad723).
+    assert _living_tip(str(wake340.get("tip") or ""))
 
     wake343 = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH343.json").read_text(encoding="utf-8")

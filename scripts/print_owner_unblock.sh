@@ -125,6 +125,7 @@ echo " Batch 341: research stack audit WITHOUT promotion @f244312 (open_premises
 echo " Batch 342: WAKE340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved)"
 echo " Batch 342: inventory tip refresh batch 342 + soften wake-token Intent live tip pin"
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312 (print_owner drift after 341/342)"
+echo " Batch 343: tip-sync f244312→fcad723 after main #109 inventable (keep-prior; NOT promoted)"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"
