@@ -1,0 +1,42 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:32:36Z",
+  "assignment": "inventory_preserve_durable_tip_pin",
+  "action": "inventory_preserve_durable_tip_pin",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "coverage": "8/8_WRITABLE",
+  "write_durable": "8/8_WRITABLE",
+  "sibling_write_count": 8,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "inventory_batch": "346",
+  "trial_tip_sha": "4ab2b7625d833701c2b6e934a2a7c57c8adcdc8c",
+  "trial_tip_matches_live_head": true,
+  "live_trial_head": "4ab2b7625d833701c2b6e934a2a7c57c8adcdc8c",
+  "preserve_durable_writable0_denied": true,
+  "ultimate_fallback": "346",
+  "print_owner_header_batch": 346,
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "baca69c",
+    "meta-framework": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "4ab2b76"
+  },
+  "coordinator_bcId": "bc-01a0cf1e",
+  "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
+  "eng": [
+    "inventory ultimate fallback 345\u2192346",
+    "wake ultimate fallback 345\u2192346",
+    "preserve_durable tip pin trial\u2192living HEAD; never demote 8/8 on writable=0 DENIED"
+  ]
+}

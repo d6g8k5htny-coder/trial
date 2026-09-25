@@ -1,3 +1,7 @@
+## STATUS (Batch 346 inv-preserve-tip-pin)
+
+Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin; ultimate fallback 346; never demote 8/8. Goal OPEN. `lemma_closed=false`.
+
 ## STATUS (Batch 346 status-guard)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: `STATUS_GUARD_SNAPSHOT` tip_sha lagged at `fcad723` after tip-sync — refreshed to `e3cd7d4` (baseline→`fcad723`; `guard_no_status_promotion` pass violations=0; no claim flip). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
