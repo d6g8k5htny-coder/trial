@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 336 — wake INTENT living BASE_TIP (2026-09-25)
+
+- Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: `post_batch322_wake_comments.py` INTENT tip was frozen `@077464e` while BASE_TIP/live moved `388a22c`→`eeebb28` (Batch 335 tip-sync). Wake comments would mis-instruct peers on tip currency. Now derives tip from `portable/patches/BASE_TIP.txt` (prefer 40-char SHA so ref dates like 20260919 are not tips).
+- NEVER flip research.
+
 ### Batch 336 — MULTI_AGENT wake assign (coordinator pulse) (2026-09-25)
 
 - Dylan asked: message stopped agents + assign Path C tasks.

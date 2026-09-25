@@ -5,24 +5,53 @@ Skips research drafts. Skips if an identical Batch 329 wake comment already
 exists. Uses GH_TOKEN / MAIN_PUSH_TOKEN (App ghs lacks Issues:write).
 Triggered via trial workflow wake-batch322-pr-comments (repository_dispatch).
 
+Batch 336: INTENT tip is derived from portable/patches/BASE_TIP.txt (living),
+not a frozen SHA (Batch 329 left @077464e while tip moved 388a22c→eeebb28).
+
 Scientific effect: NONE. lemma_closed stays false.
 """
 from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 REPO = "d6g8k5htny-coder/main"
 BATCH_MARKER = "Batch 329 wake"
 COORD = "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
-INTENT = (
-    "Intent: tip chatgpt/drive-github-hardening-20260919 @ 077464e; "
-    "Path C IDLE@0019; lemma_closed=false; scientific effect NONE; no claim promotion"
-)
 TRIAL_PR = "https://github.com/d6g8k5htny-coder/trial/pull/112"
+_ROOT = Path(__file__).resolve().parents[1]
+_BASE_TIP_FILE = _ROOT / "portable" / "patches" / "BASE_TIP.txt"
+_HARDENING_REF = "chatgpt/drive-github-hardening-20260919"
+
+
+def _living_tip_short() -> str:
+    """Batch 336: wake INTENT tip follows BASE_TIP (not a frozen SHA)."""
+    try:
+        line = _BASE_TIP_FILE.read_text(encoding="utf-8").splitlines()[0]
+    except (OSError, IndexError):
+        return "unknown"
+    # Prefer full 40-char SHA so ref dates like 20260919 are not mistaken for tips.
+    m = re.search(r"(?i)\b([0-9a-f]{40})\b", line)
+    if m:
+        return m.group(1)[:7].lower()
+    # Fallback: last whitespace token that looks like a short SHA.
+    for tok in reversed(line.split()):
+        if re.fullmatch(r"(?i)[0-9a-f]{7,40}", tok):
+            return tok[:7].lower()
+    return "unknown"
+
+
+def intent_line() -> str:
+    return (
+        f"Intent: tip {_HARDENING_REF} @ {_living_tip_short()}; "
+        "Path C IDLE@0019; lemma_closed=false; scientific effect NONE; "
+        "no claim promotion"
+    )
 
 TASKS: dict[int, str] = {
     92: (
@@ -123,7 +152,7 @@ def wake_body(n: int) -> str:
         "\n"
         f"Coordinator: {COORD}\n"
         "\n"
-        f"{INTENT}\n"
+        f"{intent_line()}\n"
         "\n"
         f"**Eng resume task:** {TASKS[n]}\n"
         "\n"

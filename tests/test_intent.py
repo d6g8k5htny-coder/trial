@@ -13445,6 +13445,7 @@ def test_batch335_tip_sync_after_main_99_100() -> None:
     assert "Batch 335" in log_md
 
 
+
 def test_batch336_multi_agent_wake_verify_land() -> None:
     """Batch 336: wake336 on main; Batch 329 prior wake present; lemma_closed false."""
     import json
@@ -13475,6 +13476,7 @@ def test_batch336_multi_agent_wake_verify_land() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
 
+
 def test_batch336_soften_batch335_live_tip_pins() -> None:
     """Batch 336: Batch 335 live tip Intent pins softened to _living_tip."""
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
@@ -13494,6 +13496,7 @@ def test_batch336_soften_batch335_live_tip_pins() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
     assert "eeebb28" in _LIVING_TIPS
+
 
 def test_batch336_inventory_batch_fallback_living() -> None:
     """Batch 336: _living_inventory_batch ultimate fallback uses REFRESH_BATCH_TAG."""
@@ -13532,3 +13535,69 @@ def test_batch336_inventory_batch_fallback_living() -> None:
     assert "Batch 336" in log_md
     assert "331" in log_md or "REFRESH_BATCH_TAG" in log_md
 
+
+def test_batch336_wake_intent_living_base_tip() -> None:
+    """Batch 336: wake poster INTENT tip derives from BASE_TIP (not frozen 077464e)."""
+    import json
+    import re
+    import sys
+
+    poster_path = ROOT / "scripts" / "post_batch322_wake_comments.py"
+    poster = poster_path.read_text(encoding="utf-8")
+    assert "Batch 336" in poster
+    assert "BASE_TIP.txt" in poster
+    assert "_living_tip_short" in poster
+    assert "intent_line" in poster
+    # Frozen tip pin must not remain in INTENT construction.
+    assert "@ 077464e" not in poster
+    assert "INTENT = (" not in poster
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import post_batch322_wake_comments as wake  # type: ignore
+
+    tip = wake._living_tip_short()
+    assert _living_tip(tip)
+    line = wake.intent_line()
+    assert tip in line
+    assert "IDLE@0019" in line
+    assert "lemma_closed=false" in line
+    assert "scientific effect NONE" in line
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    m = re.search(r"(?i)\b([0-9a-f]{40})\b", base_tip)
+    assert m is not None
+    assert tip == m.group(1)[:7].lower()
+    # Date fragment from hardening ref must not be mistaken for tip.
+    assert tip != "2026091"
+    assert "20260919" not in tip
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH336_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "336"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "wake_intent_tip_frozen_077464e_vs_living_base_tip"
+    assert brief.get("action") == "eng_wake_living_tip"
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH336_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("defect_id") == "wake_intent_tip_frozen_077464e_vs_living_base_tip"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 336)
+    assert "Batch 336" in unblock
+    assert "wake poster INTENT" in unblock or "077464e" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 336" in log_md
+    assert "wake INTENT" in log_md or "post_batch322_wake_comments" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in owner

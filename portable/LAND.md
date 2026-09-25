@@ -1,8 +1,6 @@
 ## STATUS (Batch 336)
 
-tip `eeebb28`; MULTI_AGENT wake assign (11 IDLE + 3 cloud); inventory batch fallback REFRESH_BATCH_TAG; soften 335 live tip pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; action=multi_agent_wake_and_assign; scientific effect NONE.
-
-tip `eeebb28` tip_match=true; soften Batch 335 live tip Intent pins to `_living_tip`; Path C IDLE@0019; lemma_closed=false; action=eng_fix_landed; scientific effect NONE.
+tip `eeebb28` tip_match=true; eng: wake poster INTENT tip derives from BASE_TIP (was frozen @077464e); MULTI_AGENT wake assign; inventory batch fallback REFRESH_BATCH_TAG; soften 335 live tip pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 335)
 
