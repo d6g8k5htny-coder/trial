@@ -1,3 +1,11 @@
+## STATUS (Batch 365 unfreeze-verify)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: header Batch 365 while wake/inv/REFRESH last-resort + VERIFY.refresh_batch frozen at 364 — unfreeze→365 + force refresh VERIFY 364→365 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN.
+
+```bash
+REFRESH_BATCH_TAG=365 ./scripts/refresh_path_c_bundle.sh --force --skip-pytest
+python3 -m pytest tests/test_intent.py::test_batch365_unfreeze_verify_refresh_batch -q
+```
 ## STATUS (Batch 365 post-research-inv-pin)
 
 PRESERVE_DURABLE inv tip pin after Batch 365 research audit merge (`1d8528b`). Evidence: `portable/BATCH365_POST_RESEARCH_INV_PIN_BRIEF.json`. Goal OPEN.

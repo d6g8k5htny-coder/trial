@@ -1,3 +1,6 @@
+## STATUS (Batch 365 unfreeze-verify)
+
+tip `e3cd7d4` tip_match=true; eng: last-resort + VERIFY.refresh_batch 364→365; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
 ## STATUS (Batch 365 post-research-inv-pin)
 
 inv tip re-pin beyond parent after research_stack_audit_watch land; tip `e3cd7d4`; durable 8/8; lemma_closed=false; no status promotion.

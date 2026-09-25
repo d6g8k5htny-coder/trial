@@ -19902,3 +19902,39 @@ def test_batch365_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 365 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 365" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch365_unfreeze_verify_refresh_batch() -> None:
+    """Batch 365: unfreeze last-resort 364→365 + VERIFY refresh_batch 364→365."""
+    import json
+    import re
+    brief = json.loads((ROOT / "portable" / "BATCH365_VERIFY_LAG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "365"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_living_verify_refresh_batch_bump"
+    assert brief.get("defect_id") == "living_verify_refresh_batch_lag_364_vs_365"
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH365_VERIFY_LAG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH365_VERIFY_LAG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_living_verify_refresh_batch_bump"
+    assert str(evidence.get("verify_refresh_batch") or "") == "365"
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(str(verify.get("refresh_batch") or "0")) >= 365
+    assert verify.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH365_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("action") == "eng_unfreeze_last_resort_364_to_365"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 365)
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 365
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', poster.split("def batch_marker")[0])]
+    assert _wake_rets and max(_wake_rets) >= 365
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 365)
+    assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+

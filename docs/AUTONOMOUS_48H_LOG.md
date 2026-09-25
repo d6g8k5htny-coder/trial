@@ -21,6 +21,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 365 — eng unfreeze last-resort + VERIFY refresh_batch 364→365 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: after peer VERIFY 363→364 + inv tip-pin, wake/inv/REFRESH last-resort still frozen at 364 vs header 365; VERIFY.refresh_batch lagged at 364. Unfreeze→365; force refresh VERIFY→365; living republish. Intent living >=N. Inventable skipped. NEVER flip research.
 ### Batch 365 — post-research inv tip re-pin after research audit (2026-09-25)
 
 - Research audit landed no-promotion (13/1/3 open); trial tip lagged beyond parent; PRESERVE_DURABLE re-pin. Tip @ `e3cd7d4`; `lemma_closed=false`. Goal OPEN.
