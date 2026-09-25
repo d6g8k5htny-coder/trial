@@ -49,6 +49,9 @@ fi
 
 echo "=== Batch 355 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 355: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4"
+echo " Batch 355: eng living script_stale republish after Batch 355 lands (batch241; script_stale 1→0)"
+echo " Batch 355: MULTI_AGENT wake+assign stopped agents @e3cd7d4 (WAKE355; Dylan message-stopped-agents)"
+
 echo " Batch 355: soften INV tip-pin Intent live BASE_TIP pin (e3cd7d4→_living_tip)"
 echo " Batch 355: grant_check_dual_vector_8of8 tip refresh @e3cd7d4 (BATCH355_GRANT; preserve_durable)"
 echo " Batch 355: MULTI_AGENT wake+assign stopped agents @e3cd7d4 (WAKE355; Dylan message-stopped-agents)"

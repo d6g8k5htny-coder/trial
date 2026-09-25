@@ -26,6 +26,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Audit: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; guard pass; script_stale=0.
 - Artifacts: `BATCH355_RESEARCH_STACK_AUDIT.json`, `BATCH355_RESEARCH_STACK_AUDIT_BRIEF.json`. action=`research_stack_audit_watch`. Inventable skipped. Goal OPEN. NEVER flip research.
+### Batch 355 — eng living script_stale republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` (print_owner/inventory drift after Batch 355 inv pin/wake lands). Republish → script_stale=0.
+- NEVER flip research; skip inventable. Goal OPEN.
+
+### Batch 355 — MULTI_AGENT wake+assign stopped Path C agents (2026-09-25)
 
 ### Batch 355 — soften INV tip-pin Intent live BASE_TIP pin (2026-09-25)
 

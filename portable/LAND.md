@@ -1,6 +1,13 @@
 ## STATUS (Batch 355 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+## STATUS (Batch 355 republish)
+
+tip `e3cd7d4` tip_match=true; eng: living script_stale republish after Batch 355 lands; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 355 wake)
+
+## STATUS (Batch 355 grant)
 
 ## STATUS (Batch 355 soften-inv-base-tip)
 

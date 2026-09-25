@@ -1,0 +1,29 @@
+{
+  "batch": "355",
+  "generated_at_utc": "2026-09-25T21:02:03Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "tip_moved": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "living_script_stale_after_batch355_lands",
+  "bugs_fixed": [
+    "living batch241-path-c-bundle script_stale=1 (print_owner/inventory drift) \u2192 republish script_stale=0"
+  ],
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "action": "eng_living_script_stale_republish",
+  "coordinator_bc": "bc-01a0cf1e",
+  "note": "tip stable @e3cd7d4; tip_sync_or_eng pulse; skip inventable"
+}

@@ -17861,6 +17861,47 @@ def test_batch355_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 355" in log_md and "inventory_preserve_durable_tip_pin" in log_md
 
+def test_batch355_living_script_stale_republish() -> None:
+    """Batch 355: living script_stale republish after tip-stable lands."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH355_REPUBLISH_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "355"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "living_script_stale_after_batch355_lands"
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH355_REPUBLISH_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "living_script_stale_after_batch355_lands"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_moved") is False
+
+    ev = json.loads(
+        (ROOT / "portable" / "BATCH355_REPUBLISH_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert ev.get("script_stale_before") == 1
+    assert ev.get("script_stale_after") == 0
+    assert ev.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 355)
+    assert "script_stale" in unblock and "Batch 355" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 republish)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "script_stale" in log_md and "Batch 355" in log_md
+
 def test_batch355_grant_inventory_refresh() -> None:
     """Batch 355: inventory batch >=355 + durable 8/8; grant skip source=none."""
     import json

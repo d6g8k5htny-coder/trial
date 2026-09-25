@@ -7,6 +7,18 @@ python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd355 --tip-sha e3
 python3 -m pytest tests/test_intent.py::test_batch355_research_stack_audit_watch -q
 ```
 
+## STATUS (Batch 355 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale republish (1→0). Guard+research: `lemma_closed=false`. Goal OPEN. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
+## STATUS (Batch 355 wake)
+
+## STATUS (Batch 355 grant)
+
 ## STATUS (Batch 355 soften-inv-base-tip)
 
 Hardening tip **stable** @ `e3cd7d4`. tip_sync_or_eng: tip match=1; peer idle+inv tip pin already landed. Eng: soften `test_batch355_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.
