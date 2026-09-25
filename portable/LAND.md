@@ -1,3 +1,11 @@
+## STATUS (Batch 343 tip_sync_watch)
+
+tip `fcad723` tip_match=true; tip_sync_watch confirm after peer tip-sync #109; evidence hardening_tip+aligned; living tip_stale=0 script_stale=0; inventable NOT promoted; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 343 wake)
+
+tip `fcad723` tip_match=true; MULTI_AGENT wake+assign; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 341 inv-batch-pin)
 
 tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard pin (`== "340"` → `>= 340`) after Batch 342 tip-refresh; lemma_closed=false; scientific effect NONE.
