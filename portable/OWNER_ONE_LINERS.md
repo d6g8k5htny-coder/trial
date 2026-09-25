@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 275 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; MANIFEST.verified_batch release-align; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ bfb7c38
+> python3 -c 'import json; m=json.load(open("portable/patches/MANIFEST.json")); v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); print(m["verified_batch"], m.get("refresh_batch"), v["batch"], v.get("refresh_batch"))'
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: MANIFEST.verified_batch still stamped from REFRESH_BATCH_TAG after Batch 269 VERIFY.batch release-align. Fixed. No republish. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 273 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; APPLY/VERIFY honesty; release `batch241-path-c-bundle`**:
 >
 > ```bash

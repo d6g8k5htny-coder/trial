@@ -1,0 +1,58 @@
+{
+  "batch": "275",
+  "hunt": "manifest_verified_batch_stamped_from_automation_tag",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "manifest_verified_batch_stamped_from_automation_tag",
+  "bugs_fixed": [
+    "refresh_path_c_bundle MANIFEST.verified_batch = BATCH_TAG (automation) after Batch 269 VERIFY.batch release-align — next tip-refresh/--force regresses 241→269/275",
+    "MANIFEST.refresh_batch stuck at 269 while VERIFY.refresh_batch advanced (273+); script never wrote refresh_batch"
+  ],
+  "avoided": [
+    "inventable tip-observe of bfb7c38 (HEAD is already #80 observe-of-8e359e5; no post-observe tip move)",
+    "main draft #81 inventable README unmix (research-adjacent)",
+    "research HOLD drafts",
+    "APPLY/VERIFY living-tip+pytest (just shipped 273)",
+    "land-workflows Path C idle (272)",
+    "probe_main_write_vectors dry_run DISPATCH_OK (271)",
+    "when_writable once pid-liveness (270)",
+    "VERIFY.batch release-align itself (269 — this is the MANIFEST leftover)",
+    "pack living-tag validate-before-write",
+    "when_writable flock",
+    "path_c/path_b dry-run idle",
+    "release republish",
+    "grant dual-vector",
+    "long hygiene list"
+  ],
+  "candidates_checked": {
+    "tip_vs_bfb7c38": "stable tip_match=true refresh_dry_run_ok",
+    "patch_0020": "NEGATIVE_pending_empty_apply_all_already_on_tip",
+    "inventable_tip_observe": "HEAD_is_observe_of_8e359e5_no_post_observe_drift_skipped",
+    "main_pr_81": "research_adjacent_docs_unmix_skipped",
+    "main_ci_36098032016": "success",
+    "apply_verify_honesty": "already_fixed_273_living_tip_and_pytest_ok",
+    "manifest_verified_batch_write": "reproduced_BATCH_TAG_stamp_fixed",
+    "when_writable_noop": "idle_path_c_done_ok",
+    "path_c_dry_run": "IDLE_write_required_to_land_false",
+    "path_b_dry_run": "ALREADY_ALIGNED",
+    "w3_dry_run_fp": "already_fixed_271"
+  },
+  "tip": "bfb7c38",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "resource_warnings": true,
+    "bare_open_actionable": true,
+    "tip_observe_post_merge_drift": true,
+    "note": "deep tip hunt clean; eng defect was MANIFEST.verified_batch automation-stamp leftover after Batch 269 VERIFY.batch release-align"
+  }
+}

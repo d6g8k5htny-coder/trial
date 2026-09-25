@@ -256,5 +256,5 @@
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",
   "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false.",
-  "refresh_batch": "269"
+  "refresh_batch": "275"
 }

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 275 (MANIFEST.verified_batch release-align leftover) — 2026-09-25 ~06:15 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Main CI tip run 36098032016 success. Draft main #81 inventable README unmix skipped. Inventable tip-observe of `bfb7c38` skipped (HEAD **is** #80 observe-of-`8e359e5`; no post-observe tip move). Deep 0020 hunt: **NEGATIVE**.
+- **Evidence:** Batch 269 aligned `VERIFY.batch`→release `241` + `refresh_batch` automation stamp, but `refresh_path_c_bundle` still wrote `MANIFEST.verified_batch=str(BATCH_TAG)` (default was 269). Next tip-refresh/`--force` would regress healed `241`→automation and re-open pack `release|batch` fallback landmine. `MANIFEST.refresh_batch` also stuck at 269 while VERIFY advanced.
+- **Defect shipped (avoid tip-observe / research HOLDs / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch itself 269 / pack living-tag / path_c idle / republish):** MANIFEST `verified_batch` from aligned `VERIFY.batch` (never BATCH_TAG); `refresh_batch`=automation stamp; default `REFRESH_BATCH_TAG` 275.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial eng pending land. Scientific effect NONE.
+
 ### Batch 273 (APPLY/VERIFY honesty after keep-prior tip-refresh) — 2026-09-25 ~05:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Main CI tip run 36098032016 success. Draft main #81 = inventable README unmix (research-adjacent DRAFT; not tip-observe HOLD noise; skipped). Deep 0020 hunt: **NEGATIVE**.

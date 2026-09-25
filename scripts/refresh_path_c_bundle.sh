@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-269}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-275}"
 
 usage() {
   cat <<'EOF'
@@ -49,7 +49,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 269)
+  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 275)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional tip-fetch + clone auth (never printed)
   REFRESH_TIP_FETCH_RETRIES   API retries on 429 / rate-limit 403 (default 3)
   REFRESH_TIP_FETCH_SLEEP_S   base sleep between tip-fetch retries (default 2)
@@ -625,12 +625,16 @@ PY
 fi
 
 # Soft-update MANIFEST verified_on_tip when present.
+# Batch 275: MANIFEST.verified_batch must stay release-aligned (same contract as
+# VERIFY.batch after Batch 269). Stamping verified_batch=$BATCH_TAG (automation)
+# would regress 241→269/275 on the next tip-refresh/--force and re-open the
+# pack fallback landmine Batch 269 closed for VERIFY.
 MANIFEST="$ROOT/portable/patches/MANIFEST.json"
 if [[ -f "$MANIFEST" ]]; then
   python3 - <<PY
 import json
+import re
 from pathlib import Path
-from datetime import datetime, timezone
 p = Path("$MANIFEST")
 data = json.loads(p.read_text(encoding="utf-8"))
 data["base_tip_ref"] = "$HARDENING_REF $LIVE_SHA"
@@ -639,13 +643,40 @@ data["generated_at_utc"] = "$GENERATED_AT"
 data["lemma_closed"] = False
 data["scientific_effect"] = "NONE"
 data["goal_complete"] = False
-data["verified_batch"] = str("$BATCH_TAG")
+# Automation stamp (mirrors VERIFY.refresh_batch).
+data["refresh_batch"] = str("$BATCH_TAG")
+# Release-aligned verified_batch: prefer VERIFY.batch after Batch 269 align.
+aligned = None
+verify_path = Path("$VERIFY_OUT")
+if verify_path.is_file():
+    try:
+        v = json.loads(verify_path.read_text(encoding="utf-8"))
+        if v.get("batch") not in (None, ""):
+            aligned = str(v["batch"])
+        if not aligned:
+            rel = v.get("release") or ""
+            m = re.fullmatch(r"batch(\d+)-path-c-bundle", str(rel).strip())
+            if m:
+                aligned = m.group(1)
+    except (OSError, json.JSONDecodeError, TypeError):
+        aligned = None
+if not aligned:
+    # Fall back to prior MANIFEST / living release pin — never plant BATCH_TAG.
+    prior_vb = data.get("verified_batch")
+    if prior_vb not in (None, "") and str(prior_vb) != str("$BATCH_TAG"):
+        aligned = str(prior_vb)
+    else:
+        aligned = "241"
+data["verified_batch"] = aligned
 data["tip_refresh_via"] = "refresh_path_c_bundle.sh"
 for item in data.get("patches", []):
     if item.get("in_apply_all"):
         item["verified_on_tip"] = "$LIVE_SHA"
 p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-print("refresh_path_c_bundle: updated MANIFEST.json verified_on_tip")
+print(
+    "refresh_path_c_bundle: updated MANIFEST.json verified_on_tip "
+    f"verified_batch={aligned} refresh_batch={data.get('refresh_batch')}"
+)
 PY
 fi
 

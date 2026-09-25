@@ -1,3 +1,7 @@
+## STATUS (Batch 275)
+
+tip `bfb7c38` tip_match=true; MANIFEST.verified_batch release-align leftover after Batch 269 VERIFY.batch align (was stamped from REFRESH_BATCH_TAG); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 273)
 
 tip `bfb7c38` tip_match=true; APPLY living-tip (== BASE_TIP) + VERIFY pytest keep-prior honesty after Batch 272 tip-refresh wipe; lemma_closed=false; scientific effect NONE.

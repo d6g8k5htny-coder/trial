@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 275)
+
+Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 269 aligned `VERIFY.batch` to release `241` but `MANIFEST.verified_batch` still stamped from `REFRESH_BATCH_TAG` (would regress on next tip-refresh). Fixed: release-align MANIFEST from VERIFY + stamp `refresh_batch`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c 'import json; m=json.load(open("portable/patches/MANIFEST.json")); v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); assert m["verified_batch"]==v["batch"]=="241"; print(m["verified_batch"], m.get("refresh_batch"), v.get("refresh_batch"))'
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ bfb7c38
+```
+
 ## STATUS (Batch 273)
 
 Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 272 keep-prior tip-refresh left APPLY living tip at `542e6ec (== BASE_TIP)` and wiped VERIFY pytest 90/83→0. Fixed: living-tip soft-update + keep-prior pytest preserve. `lemma_closed=false`. Scientific effect: NONE.
