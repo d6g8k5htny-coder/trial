@@ -1,3 +1,7 @@
+## STATUS (Batch 285)
+
+tip `7d13a88` tip_match=true; grant --check user-token 403 JSON on /installation/repositories treated as empty listing (false install_missing=all8 while 8/8 WRITABLE); require repositories array; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 283)
 
 tip `7d13a88` tip_match=true; republish byte-growth-only missed tip-stale living release (BASE_TIP 3b3860d, no grant) after 282 tip-sync; tip_stale gate + living republish; lemma_closed=false; scientific effect NONE.

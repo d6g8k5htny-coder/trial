@@ -1,0 +1,62 @@
+{
+  "batch": "285",
+  "hunt": "grant_check_install_403_json_false_missing",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "grant_check_install_403_json_false_missing",
+  "bugs_fixed": [
+    "grant --check treated user/PAT/device-token HTTP 403 JSON body from /installation/repositories as empty install listing",
+    "install_has_main/sandbox=False + install_missing_from_deps=all 8 while dual-vector write was 8/8 WRITABLE (false App-scope alarm)",
+    "Batch 284 idle_deep; App_install_add_sandbox remains owner UI (not this code path)"
+  ],
+  "avoided": [
+    "research HOLD drafts (83/47/46/38/36/21/12/8/7)",
+    "tip-observe inventable content",
+    "App_install_add_sandbox owner UI (deferred; not code)",
+    "pack-vs-release byte thrash on PATH_C_STATUS timestamps (no critical script missing)",
+    "republish tip_stale (283)",
+    "pack omit grant (282)",
+    "grant ls-remote auth (281)",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)",
+    "watch_alignment_issue_hygiene not in pack (CI-local only; not owner-referenced)"
+  ],
+  "candidates_checked": {
+    "tip_vs_7d13a88": "TIP_OK",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "trial_open_prs": "none",
+    "main_tip_ci": "success",
+    "trial_tip_ci": "success_75c7cd7",
+    "pack_vs_release": "tip_match_grant_present_brief_postupload_drift_only",
+    "republish_tip_stale": "already_fixed_283",
+    "grant_durable_ls_remote": "already_fixed_281",
+    "grant_install_403_json": "reproduced_false_missing_all8",
+    "App_install_add_sandbox": "owner_UI_not_code",
+    "siblings_writable": "8_of_8_durable_WRITABLE",
+    "tests_skip_xfail": "none_found",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "7d13a88",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was grant --check install 403 JSON false-missing"
+  }
+}

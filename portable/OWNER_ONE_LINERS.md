@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 285 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant install 403 FP fixed; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/owner_grant_ai_agent_access.sh --check  # installation: unavailable (…403) — NOT install_missing=all8
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: user/PAT/device token `gh api /installation/repositories` returns 403 JSON; pre-285 treated non-empty body as empty listing → `install_missing_from_deps=all 8` while dual-vector write 8/8 WRITABLE. Fixed require `repositories` array. No research flip. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 283 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; republish tip_stale + living pack current; release `batch241-path-c-bundle`**:
 >
 > ```bash

@@ -11047,7 +11047,7 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     # Batch 282 introduced stamp default; Batch 283+ may bump TAG.
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("282", "283")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("282", "283", "284", "285")
     )
 
     brief = json.loads(
@@ -11120,7 +11120,9 @@ def test_batch283_republish_tip_stale_living_release() -> None:
     assert 'TIP_STALE" -eq 1' in script or "TIP_STALE" in script
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-283" in refresh
+    # Batch 283 introduced stamp default; Batch 285+ may bump TAG.
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("283", "284", "285"))
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 283" in unblock
@@ -11190,6 +11192,136 @@ def test_batch283_republish_tip_stale_living_release() -> None:
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 283" in ones
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch285_grant_install_403_json_false_missing() -> None:
+    """Batch 285: grant --check must not treat 403 JSON as empty install list."""
+    import json
+    import subprocess
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 285" in grant
+    assert "installation_note" in grant
+    # Fail-closed: require repositories key before listing missing deps.
+    assert '"repositories" not in d' in grant
+    assert "install_missing_from_deps" in grant
+
+    # Synthetic 403 body must not produce install_missing_from_deps.
+    snippet = r'''
+import json, sys
+raw = sys.stdin.read()
+try:
+    d = json.loads(raw)
+except json.JSONDecodeError:
+    print("installation: unavailable (not an App installation token, or 403)")
+    raise SystemExit(0)
+if not isinstance(d, dict) or "repositories" not in d:
+    print("installation: unavailable (not an App installation token, or 403)")
+    msg = d.get("message") if isinstance(d, dict) else None
+    if isinstance(msg, str) and msg.strip():
+        print("installation_note:", msg.strip()[:240])
+    raise SystemExit(0)
+names=[r.get("full_name") for r in (d.get("repositories") or []) if isinstance(r, dict)]
+print("install_missing_from_deps:", ["x"] if not names else [])
+'''
+    fake_403 = json.dumps(
+        {
+            "message": "You must authenticate with an installation access token",
+            "status": "403",
+        }
+    )
+    proc = subprocess.run(
+        ["python3", "-c", snippet],
+        input=fake_403,
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=15,
+    )
+    out = proc.stdout
+    assert "installation: unavailable" in out
+    assert "installation_note:" in out
+    assert "install_missing_from_deps" not in out
+
+    # Real listing still parses when repositories present.
+    listing = json.dumps(
+        {
+            "total_count": 1,
+            "repository_selection": "selected",
+            "repositories": [{"full_name": "d6g8k5htny-coder/trial"}],
+        }
+    )
+    proc2 = subprocess.run(
+        [
+            "python3",
+            "-c",
+            "import json,sys; d=json.load(sys.stdin); assert 'repositories' in d; print('ok', len(d['repositories']))",
+        ],
+        input=listing,
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=15,
+    )
+    assert "ok 1" in proc2.stdout
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-285" in refresh
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 285" in unblock
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH285_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "285"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "grant_check_install_403_json_false_missing"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH285_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "grant_check_install_403_json_false_missing"
+    assert any("283" in a or "tip_stale" in a for a in (hunt.get("avoided") or []))
+    assert any("281" in a or "ls-remote" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH285_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 285" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 285)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 285)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 285" in ones
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
