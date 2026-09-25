@@ -4,9 +4,10 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: `audit_main_alignment` 403 rate-limit exponential backoff + **raw/ls-remote fallback** after API exhaustion; CI soft-continues residual transport exit 2. **Misalignment exit 1 unchanged.** Guard+research: `lemma_closed=false`. action=`audit_rate_limit_raw_fallback`. Scientific effect: NONE.
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: republish CRITICAL += `audit_main_alignment.py` (pack-only left living `script_stale=0` on audit-only drift). Soften wake340 tip hard pin. Also: `audit_main_alignment` 403 rate-limit backoff + raw/ls-remote fallback; CI soft-continues residual transport exit 2. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # CRITICAL includes audit
 AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
 ```

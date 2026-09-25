@@ -1,0 +1,26 @@
+{
+  "batch": "340",
+  "generated_at_utc": "2026-09-25T18:30:00Z",
+  "status": "republish_critical_include_audit",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "republish_critical_missing_audit_main_alignment",
+  "bugs_fixed": [
+    "audit_main_alignment.py pack-included but absent from republish CRITICAL — audit-only drift left living script_stale=0"
+  ],
+  "also": [
+    "soften test_batch340_wake_land_verify tip startswith 848aea2 hard pin to _living_tip only"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_critical_include_audit",
+  "inventable_promoted": false,
+  "complements": "d8c4c27 audit raw fallback; 066994c audit backoff"
+}
