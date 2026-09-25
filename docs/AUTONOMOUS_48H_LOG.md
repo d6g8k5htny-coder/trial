@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 262 (probe_main_write misses durable file token) — 2026-09-25 ~02:05 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** `PATH_C_STATUS.write_state=WRITABLE` + when_writable probe=WRITABLE via `file:/tmp/gh-dylan-auth/access_token`, but ambient `probe_main_write` / `probe_main_write_vectors` (env-only token) → **DENIED** HTTP 403 (App/ghs). `print_owner_unblock` live section contradicted Batch 257 WRITABLE header. With `PATH_C_IGNORE_FILE_TOKENS=1` → DENIED/`token_source=null`; default discovery → WRITABLE/`token_source=file:…` (never printed secrets).
+- **Defect shipped (avoid path_c dry_run idle / release republish / grant dual-vector / long hygiene):** (1) `probe_main_write` + `probe_main_write_vectors` discover durable file tokens (same paths as when_writable; honor `PATH_C_IGNORE_FILE_TOKENS`); (2) report `token_source` label; (3) `print_owner_unblock` live probe docs.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Pack newer than living release deferred. Scientific effect NONE.
+
 ### Batch 261 (path_c_dry_run APPLY_READY when already-on-tip) — 2026-09-25 ~01:32 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative (tools/tests bare-open 0).

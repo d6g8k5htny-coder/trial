@@ -8538,3 +8538,140 @@ def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch262_probe_file_token_discovery() -> None:
+    """Batch 262: probe_main_write(+vectors) discover durable file tokens; no flip."""
+    import json
+    import subprocess
+    import tempfile
+    from pathlib import Path as P
+
+    probe = ROOT / "scripts" / "probe_main_write.py"
+    vectors = ROOT / "scripts" / "probe_main_write_vectors.py"
+    probe_txt = probe.read_text(encoding="utf-8")
+    vec_txt = vectors.read_text(encoding="utf-8")
+    assert "Batch 262" in probe_txt
+    assert "/tmp/gh-dylan-auth/access_token" in probe_txt
+    assert "PATH_C_IGNORE_FILE_TOKENS" in probe_txt
+    assert "token_source" in probe_txt
+    assert "/tmp/gh-dylan-auth/access_token" in vec_txt
+    assert "token_source" in vec_txt
+    assert "PATH_C_IGNORE_FILE_TOKENS" in vec_txt
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 262" in unblock
+    assert "durable file-token discovery" in unblock or "file tokens" in unblock
+
+    # Unit: planted file token is discovered; value never appears in stdout.
+    with tempfile.TemporaryDirectory() as td:
+        tok_path = P(td) / "MAIN_PUSH_TOKEN"
+        secret = "ghp_batch262_probe_file_token_unit_never_print"
+        tok_path.write_text(secret + "\n", encoding="utf-8")
+        env = {
+            k: v
+            for k, v in os.environ.items()
+            if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+        }
+        env["PATH_C_IGNORE_FILE_TOKENS"] = "0"
+        # Monkey via rewriting DEFAULT paths is hard; call helpers via import.
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location("probe_main_write_b262", probe)
+        assert spec and spec.loader
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        # Patch default files for this process.
+        mod._DEFAULT_TOKEN_FILES = (str(tok_path),)
+        mod._TOKEN_SOURCE = None
+        got = mod._token()
+        assert got == secret
+        assert mod._token_source() == f"file:{tok_path}"
+        # Ignore-file path skips discovery.
+        env_ignore = dict(os.environ)
+        env_ignore["PATH_C_IGNORE_FILE_TOKENS"] = "1"
+        # Re-exec helper with env — _ignore_file_tokens reads os.environ
+        old = os.environ.get("PATH_C_IGNORE_FILE_TOKENS")
+        try:
+            os.environ["PATH_C_IGNORE_FILE_TOKENS"] = "1"
+            mod._TOKEN_SOURCE = None
+            assert mod._token() is None
+        finally:
+            if old is None:
+                os.environ.pop("PATH_C_IGNORE_FILE_TOKENS", None)
+            else:
+                os.environ["PATH_C_IGNORE_FILE_TOKENS"] = old
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH262_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "262"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "probe_main_write_misses_durable_file_token"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH262_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "262"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "path_c dry_run IDLE_PATH_C_DONE" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH262_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 262" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 262)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 262)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+    # Live ignore → DENIED (App); never assert token material in stdout.
+    ignore = subprocess.run(
+        [sys.executable, str(probe)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+        env={
+            **{
+                k: v
+                for k, v in os.environ.items()
+                if k not in ("MAIN_PUSH_TOKEN",)
+            },
+            "PATH_C_IGNORE_FILE_TOKENS": "1",
+        },
+    )
+    assert ignore.returncode in (0, 1, 2)
+    assert "ghp_" not in ignore.stdout
+    assert "gho_" not in ignore.stdout
+    if ignore.returncode == 1:
+        data = json.loads(ignore.stdout[ignore.stdout.find("{") :])
+        assert data.get("state") == "DENIED"
+        assert data.get("token_source") in (None, "")
