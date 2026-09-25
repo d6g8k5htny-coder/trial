@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 — living script_stale republish (2026-09-25)
+
+- Tip **stable** @ `f244312` (tip_sync_watch dry-run match=1). Path C IDLE@0019.
+- WAKE340 tip pins already living @ `f244312` (Batch 342); `wake_tip_at_assign` preserved.
+- **Defect:** living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` local≠release after Batch 341/342).
+- **Fix:** `./scripts/republish_living_path_c_release.sh` → `script_stale=0 tip_stale=0`.
+- `lemma_closed=false`; inventable drafts skipped; no research flip.
+
 ### Batch 342 — inventory tip refresh + soften wake-token tip pin (2026-09-25)
 
 - Tip stable @ `f244312`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

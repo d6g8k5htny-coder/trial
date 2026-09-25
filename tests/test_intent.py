@@ -14642,6 +14642,55 @@ def test_batch342_wake340_living_tip_pins() -> None:
 
     assert _living_tip("f244312")
 
+
+def test_batch343_living_script_stale_republish() -> None:
+    """Batch 343: tip stable @f244312; living script_stale republish; WAKE340 already living."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH343_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "343"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_moved") is False
+    assert brief.get("action") == "living_script_stale_republish"
+    assert brief.get("defect_id") == "living_release_script_stale_after_342"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert brief.get("scientific_effect") == "NONE"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH343_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("lemma_closed") is False
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert str(wake.get("tip") or "").startswith("f244312")
+    assert str((wake.get("intent") or {}).get("base_tip_expected") or "").startswith(
+        "f244312"
+    )
+    living = wake.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 343)
+    assert "Batch 343" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 343" in log_md
+
+    assert _living_tip("f244312")
+
+
 def test_batch341_research_stack_audit() -> None:
     """Batch 341: research audit WITHOUT promotion; lemma stays open."""
     import json

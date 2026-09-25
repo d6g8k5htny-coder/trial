@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 343)
+
+Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move; WAKE340 tip pins already living @ `f244312` (Batch 342). Eng: living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` drift after Batch 341/342) — republish cleared. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 341)
 
 Hardening tip **stable** @ `f244312`. Eng: wake `_living_batch_n` from print_owner (was frozen `_WAKE_BATCH="340"`); soften Batch 340 tip-sync Intent live BASE_TIP pin; STATUS_GUARD tip→`f244312`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
@@ -9,7 +18,6 @@ Hardening tip **stable** @ `f244312`. Eng: wake `_living_batch_n` from print_own
 ```bash
 python3 -c "from scripts.post_batch322_wake_comments import batch_marker; print(batch_marker())"
 ```
-
 
 ## STATUS (Batch 342)
 

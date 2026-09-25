@@ -104,6 +104,7 @@
     "Batch 338 align-watch CI 36172207352 failed audit_main_alignment HTTP 403 \u2014 fixed on main",
     "living batch241-path-c-bundle script_stale=0 tip_stale=0 after Batch 339",
     "living tip advanced 848aea2\u2192f244312 after main #108 tip-observe; wake tip pins refreshed Batch 342",
+    "living script_stale republish Batch 343 (print_owner drift after 341/342)",
     "tip stable @f244312 tip_match=1; Path C IDLE@0019; durable 8/8"
   ],
   "messaging_limits": {
