@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 357 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 357: tip_or_eng inv tip re-pin after Batch 356/357 lands @e3cd7d4"
 echo " Batch 357: research_stack_audit_watch — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no promotion"
 
 echo " Batch 357: unfreeze inventory/wake/REFRESH last-resort 356→357 (coordinator wake; tip stable @e3cd7d4)"

@@ -1,3 +1,11 @@
+## STATUS (Batch 357 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged @`a7f4fce` after Batch 356/357 lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=357 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch357_tip_or_eng_continue -q
+```
 ## STATUS (Batch 357 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. `research_stack_audit_watch`: open stack 13/1/3 without promotion; STATUS_GUARD living. `lemma_closed=false`. Goal OPEN.
