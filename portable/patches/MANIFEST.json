@@ -1,12 +1,12 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-25T18:32:45Z",
+  "generated_at_utc": "2026-09-25T18:54:49Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"
   ],
-  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 f244312db901cf6ede88e46af663398d496eb989",
-  "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989",
+  "base_tip_ref": "chatgpt/drive-github-hardening-20260919 fcad72366743f5244eb26a0164e106419de78137",
+  "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137",
   "apply_all_count": 16,
   "scientific_effect": "NONE",
   "lemma_closed": false,
@@ -22,7 +22,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0002",
@@ -34,7 +34,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0003",
@@ -45,7 +45,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0004",
@@ -57,7 +57,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0008",
@@ -70,7 +70,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0009",
@@ -81,7 +81,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0010",
@@ -93,7 +93,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0011",
@@ -104,7 +104,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0012",
@@ -116,7 +116,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0013",
@@ -128,7 +128,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0014",
@@ -140,7 +140,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0015",
@@ -152,7 +152,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0016",
@@ -164,7 +164,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0017",
@@ -175,7 +175,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989"
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137"
     },
     {
       "id": "0018",
@@ -187,7 +187,7 @@
       "obsolete-if": null,
       "requires": "top-level attestations/ directory (main PR #70)",
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989",
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137",
       "note": "apply_all skips when attestations/ absent; lands with main PR #70"
     },
     {
@@ -200,7 +200,7 @@
       ],
       "obsolete-if": null,
       "in_apply_all": true,
-      "verified_on_tip": "f244312db901cf6ede88e46af663398d496eb989",
+      "verified_on_tip": "fcad72366743f5244eb26a0164e106419de78137",
       "note": "Batch 239: tip RW hunt beyond 0018; 1+8 ResourceWarnings closed"
     }
   ],
@@ -256,5 +256,5 @@
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",
   "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false.",
-  "refresh_batch": "340"
+  "refresh_batch": "343"
 }

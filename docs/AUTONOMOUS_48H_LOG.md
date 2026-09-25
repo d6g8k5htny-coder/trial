@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
+
+- Tip **moved** mid-cycle: inventable #109 → `fcad723`.
+- Tip-sync keep-prior; living tip_stale republish; inventable NOT promoted.
+- `lemma_closed=false`; scientific effect NONE.
+
 ### Batch 341 CONTINUE — soften INV_BATCH hard pin (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
