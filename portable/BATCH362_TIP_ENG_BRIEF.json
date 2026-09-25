@@ -1,6 +1,6 @@
 {
   "batch": "362",
-  "generated_at_utc": "2026-09-25T22:21:13Z",
+  "generated_at_utc": "2026-09-25T22:22:01Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -13,8 +13,8 @@
   "peer_bcId": "bc-0521f95c-2069-5eaf-9b1c-8f1a4613b877",
   "defect_id": "inv_tip_lag_and_living_script_stale_after_362_soften",
   "action": "eng_inv_tip_repin_and_living_republish",
-  "trial_tip_sha": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
-  "live_trial_head": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
+  "trial_tip_sha": "e1bec3e8e6bd5af58ec5cef86cb4b3ce2337460b",
+  "live_trial_head": "e1bec3e8e6bd5af58ec5cef86cb4b3ce2337460b",
   "trial_tip_matches_live_head": true,
   "lag_beyond_parent": true,
   "lag_before": 1,
@@ -29,10 +29,10 @@
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
     "main": "29db294",
-    "Math-": "8fef315",
+    "Math-": "0f09d4a",
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "6f225f7"
+    "trial": "e1bec3e"
   }
 }
