@@ -1,3 +1,15 @@
+## STATUS (Batch 352 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch_vs_BASE_TIP: no tip move; living tip_stale=0 script_stale=0; paper-trail living tgz. Evidence: `portable/BATCH352_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
+## STATUS (Batch 352 inv-preserve-tip-pin)
+
+Inventory preserve_durable tip pin after Batch 351. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 351 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE; NOT stale `077464e`). tip_sync_or_eng: no tip move; peers already shipped 351 inv pin/preserve + research_audit living republish. Paper-trail living tgz. Evidence: `portable/BATCH351_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
