@@ -17252,3 +17252,48 @@ def test_batch352_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
+
+
+def test_batch353_inventory_tip_pin() -> None:
+    """Batch 353: inventory trial tip pinned after Batch 352 lands; durable 8/8."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 353
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip
+    assert not tip.startswith("382f153")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH353_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "353"
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_id") == (
+        "inventory_trial_tip_lag_382f153_after_batch352_ci_audit_idle"
+    )
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH353_INV_TIP_PIN_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("preserve_durable") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 353)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 inv-tip-pin)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 inv-tip-pin)" in owner
+

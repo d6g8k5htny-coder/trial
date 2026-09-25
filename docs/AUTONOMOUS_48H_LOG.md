@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 353 — inventory tip pin after Batch 352 ci_audit idle (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: inventory trial tip lagged @`382f153b` after Batch 352 ci_audit idle land → HEAD `d9004720`. `PRESERVE_DURABLE` tip pin; INV_BATCH→353.
+- Artifacts: `BATCH353_INV_TIP_PIN_{BRIEF,HUNT,EVIDENCE}.json`. Inventable skipped. Goal OPEN.
+
 ### Batch 352 — ci_audit_watch idle (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

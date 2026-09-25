@@ -1,3 +1,12 @@
+## STATUS (Batch 353 inv-tip-pin)
+
+Inventory trial tip pinned after Batch 352 ci_audit idle @`d900472`. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+INV_BATCH=353 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 352 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lag + living print_owner `script_stale` after Batch 352 merge re-pin — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.

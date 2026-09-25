@@ -1,0 +1,20 @@
+{
+  "batch": "353",
+  "generated_at_utc": "2026-09-25T20:39:16Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "durable": "8/8_WRITABLE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "defect_id": "inventory_trial_tip_lag_382f153_after_batch352_ci_audit_idle",
+  "trial_tip_before": "382f153b150e",
+  "trial_tip_sha": "d9004720437b95992b37e90eb45cd3643a6a931b",
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "note": "After Batch 352 ci_audit idle land, inventory trial tip lagged @382f153b while HEAD@d9004720. PRESERVE_DURABLE tip pin; INV_BATCH\u2192353."
+}
