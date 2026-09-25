@@ -19416,3 +19416,49 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_batch362_idle_tip_sync_watch() -> None:
+    """Batch 362: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH362_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "362"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH362_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH362_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("assignment") == "tip_sync_watch_vs_BASE_TIP_e3cd7d4"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 362)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 362" in log_md and "idle_no_commit" in log_md

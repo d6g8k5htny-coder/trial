@@ -1,0 +1,13 @@
+{
+  "batch": "362",
+  "utc": "2026-09-25T22:13:27Z",
+  "assignment": "tip_sync_watch_vs_BASE_TIP_e3cd7d4",
+  "action": "idle_no_commit",
+  "lemma_closed": false,
+  "tip_match": true,
+  "living_tip_stale": 0,
+  "living_script_stale": 0,
+  "hardening_tip": "e3cd7d4",
+  "pulse": "goal_continue",
+  "woken_peers": 3
+}
