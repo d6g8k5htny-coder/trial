@@ -81,6 +81,27 @@ def _assert_refresh_batch_tag_default_at_least(refresh_text: str, min_batch: int
     assert got >= min_batch, f"REFRESH_BATCH_TAG default {got} < {min_batch}"
 
 
+def _print_owner_header_batch(unblock_text: str) -> int | None:
+    """Parse `=== Batch N —` header from print_owner_unblock.sh (Batch 317+).
+
+    Tip-sync bumps the header every cycle; allowlisting 289|297|305|317 churned
+    Intent reds. Contract: header exists and N >= the batch that introduced the
+    assert (callers pass min_batch). History lines like `Batch 289:` remain.
+    Header is emitted via `echo "=== Batch N — …"` so match inside the file text.
+    """
+    import re
+
+    m = re.search(r'=== Batch (\d+)\b', unblock_text)
+    if m is None:
+        return None
+    return int(m.group(1))
+
+
+def _assert_print_owner_header_batch_at_least(unblock_text: str, min_batch: int) -> None:
+    got = _print_owner_header_batch(unblock_text)
+    assert got is not None, "print_owner_unblock missing === Batch N header"
+    assert got >= min_batch, f"print_owner header Batch {got} < {min_batch}"
+
 
 def test_readme_states_sandbox_boundary() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -11750,13 +11771,8 @@ def test_batch289_tip_sync_after_main_83() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 289" in unblock
-    # Header line bumps on later tip-sync batches (297/305/317+); keep 289 history line.
-    assert (
-        "=== Batch 289" in unblock
-        or "=== Batch 297" in unblock
-        or "=== Batch 305" in unblock
-        or "=== Batch 317" in unblock
-    )
+    # Header bumps on later tip-sync; >= 289 (no allowlist churn).
+    _assert_print_owner_header_batch_at_least(unblock, 289)
     assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
 
     assert "3a29f52" in _LIVING_TIPS
@@ -12622,8 +12638,8 @@ def test_batch305_tip_sync_after_main_85() -> None:
     assert int(pytest_counts.get("claims_recovery_passed") or 0) >= 83
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    # Header line bumps on later tip-sync batches (317+); keep 305 history line.
-    assert "=== Batch 305" in unblock or "=== Batch 317" in unblock
+    # Header bumps on later tip-sync; >= 305 (no allowlist churn).
+    _assert_print_owner_header_batch_at_least(unblock, 305)
     assert "0adeb65" in unblock or "Batch 305" in unblock
 
     status = json.loads(
@@ -12736,7 +12752,8 @@ def test_batch317_tip_sync_after_main_89() -> None:
     assert int(pytest_counts.get("claims_recovery_passed") or 0) >= 83
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "=== Batch 317" in unblock
+    # Header bumps on later tip-sync; >= 317 (no allowlist churn).
+    _assert_print_owner_header_batch_at_least(unblock, 317)
     assert "077464e" in unblock or "Batch 317" in unblock
 
     status = json.loads(
