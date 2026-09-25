@@ -5,6 +5,10 @@ Batch 323: owner_grant --check used to only *print* a pointer to the inventory
 while tip_sha drifted (and sandbox.tip disagreed with details tip_sha). This
 writer updates tips from live gh API under the caller's token env.
 
+Batch 328: INV_BATCH default no longer freezes at \"323\" — derive from
+print_owner_unblock.sh header (=== Batch N ===) so tip refreshes stamp the
+living automation batch. Env INV_BATCH still overrides.
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 """
@@ -13,9 +17,31 @@ from __future__ import annotations
 import datetime
 import json
 import os
+import re
 import subprocess
 import sys
 from typing import Any
+
+
+def _living_inventory_batch(root: str) -> str:
+    """Prefer print_owner header Batch N; else prior inventory batch; else 328."""
+    unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
+    try:
+        text = open(unblock, encoding="utf-8").read()
+    except OSError:
+        text = ""
+    m = re.search(r"=== Batch (\d+)\s", text)
+    if m:
+        return m.group(1)
+    inv_path = os.path.join(root, "portable", "AI_AGENT_ACCESS_INVENTORY.json")
+    try:
+        prev = json.load(open(inv_path, encoding="utf-8"))
+        b = str(prev.get("batch") or "").strip()
+        if b.isdigit():
+            return b
+    except (OSError, json.JSONDecodeError):
+        pass
+    return "328"
 
 
 def _gh_json(args: list[str]) -> Any:
@@ -63,7 +89,7 @@ def refresh(
     durable_sandbox_read: str = "?",
     durable_sandbox_write: str = "DENIED",
     active_sandbox_read: str = "?",
-    batch: str = "323",
+    batch: str | None = None,
 ) -> dict[str, Any]:
     with open(inv_path, encoding="utf-8") as f:
         inv = json.load(f)
@@ -74,6 +100,8 @@ def refresh(
     inv["generated_at_utc"] = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ"
     )
+    if batch is None:
+        batch = "328"
     inv["batch"] = str(batch)
     inv["token_printed"] = False
     inv["multi_agent_script"] = "scripts/owner_grant_ai_agent_access.sh"
@@ -165,8 +193,6 @@ def main(argv: list[str] | None = None) -> int:
         # Fall back to environment.json repositoryDependencies (JSONC).
         env_path = os.path.join(root, ".cursor", "environment.json")
         try:
-            import re
-
             raw = open(env_path, encoding="utf-8").read()
             lines = [
                 ln for ln in raw.splitlines() if not ln.lstrip().startswith("//")
@@ -196,7 +222,7 @@ def main(argv: list[str] | None = None) -> int:
             durable_sandbox_read=os.environ.get("DURABLE_SANDBOX_READ") or "?",
             durable_sandbox_write=os.environ.get("DURABLE_SANDBOX_WRITE") or "DENIED",
             active_sandbox_read=os.environ.get("ACTIVE_SANDBOX_READ") or "?",
-            batch=os.environ.get("INV_BATCH", "323"),
+            batch=os.environ.get("INV_BATCH") or _living_inventory_batch(root),
         )
     except (OSError, json.JSONDecodeError) as e:
         print(f"inventory_refresh=skip err={e}", file=sys.stderr)

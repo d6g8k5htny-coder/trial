@@ -12984,3 +12984,42 @@ def test_batch327_verify_refresh_and_wake_pack() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 327" in log_md
 
+
+def test_batch328_inventory_batch_living() -> None:
+    """Batch 328: inventory refresh batch stamp follows print_owner header."""
+    import json
+    import re
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "_living_inventory_batch" in helper
+    assert 'INV_BATCH", "323"' not in helper and "INV_BATCH', '323'" not in helper
+    assert 'os.environ.get("INV_BATCH") or _living_inventory_batch' in helper
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "INV_BATCH=323" not in grant
+    assert "refresh_ai_agent_access_inventory.py" in grant
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    header_batch = int(m.group(1))
+    assert header_batch >= 328
+    _assert_print_owner_header_batch_at_least(unblock, 328)
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(str(inv.get("batch") or "0")) >= 328
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 328)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 328)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 328" in log_md
+

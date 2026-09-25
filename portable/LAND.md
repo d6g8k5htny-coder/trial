@@ -1,3 +1,11 @@
+## STATUS (Batch 328)
+
+tip `077464e` tip_match=true; eng: inventory refresh INV_BATCH no longer frozen at 323 — derives from print_owner header Batch N; VERIFY.refresh_batch 327 after keep-prior WORKDIR force; wake poster in pack+CRITICAL; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 327)
+
+tip `077464e` tip_match=true; VERIFY.refresh_batch 317→327 via keep-prior WORKDIR force; pack+CRITICAL include post_batch322_wake_comments.py; living batch241 republished; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 324)
 
 tip `077464e` tip_match=true after peer tip-sync; eng: print_owner_unblock no longer advertises APPLY_READY on PATH_C_LANDED_TIP_DRIFT — points to `refresh_path_c_bundle.sh` (Batch 261 IDLE-only leftover); lemma_closed=false; scientific effect NONE.

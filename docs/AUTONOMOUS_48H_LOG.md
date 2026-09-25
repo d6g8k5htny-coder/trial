@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 328 — inventory INV_BATCH living stamp (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: `refresh_ai_agent_access_inventory.py` hardcoded `INV_BATCH` default **323** so every grant `--check` tip refresh rewound the inventory batch stamp. Now derives from `print_owner_unblock.sh` header Batch N (env override kept).
+- Docs: LAND + OWNER STATUS 327/328. NEVER flip research.
+
+
 ### Batch 327 — VERIFY refresh_batch 327 + pack wake poster (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

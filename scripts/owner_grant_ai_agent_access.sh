@@ -486,11 +486,12 @@ print("install_missing_from_deps:", missing)'
       export GH_TOKEN="$_INV_TOKEN"
       export GITHUB_TOKEN="$_INV_TOKEN"
     fi
+    # Batch 328: do not freeze INV_BATCH at 323 — omit so the writer derives
+    # living Batch N from print_owner_unblock.sh (or INV_BATCH env override).
     INV_REFRESH_OUT="$(
       INV_PATH="$INV_PATH" OWNER="$OWNER" REPOS_CSV="$(IFS=,; echo "${REPOS[*]}")" \
       DURABLE_WRITABLE="$DURABLE_WRITABLE" DURABLE_SANDBOX_READ="$DURABLE_SANDBOX_READ" \
       DURABLE_SANDBOX_WRITE="$DURABLE_SANDBOX_WRITE" ACTIVE_SANDBOX_READ="$ACTIVE_SANDBOX_READ" \
-      INV_BATCH=323 \
       python3 "$ROOT/scripts/refresh_ai_agent_access_inventory.py" 2>/dev/null \
         || echo "inventory_refresh=fail"
     )"

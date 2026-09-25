@@ -2,6 +2,24 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 328)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `refresh_ai_agent_access_inventory.py` INV_BATCH default was frozen at **323** after every `--check` tip refresh — now derives from `print_owner_unblock.sh` `=== Batch N ===` (env `INV_BATCH` overrides). Batch 327 VERIFY.refresh_batch=327 + wake poster pack already on tip. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`inventory_batch_stamp_living`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check  # inventory batch stamps living print_owner header
+./scripts/refresh_path_c_bundle.sh --dry-run      # tip stable @ 077464e; VERIFY.refresh_batch>=327
+```
+
+## STATUS (Batch 327)
+
+Hardening tip **stable** @ `077464e`. Eng: keep-prior WORKDIR force refresh stamped VERIFY.refresh_batch **327**; `post_batch322_wake_comments.py` in pack_portable + living CRITICAL; living `batch241-path-c-bundle` republished. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c 'import json; v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); print(v["refresh_batch"], v.get("keep_prior_bundle"))'
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 324)
 
 Hardening tip **synced** @ `077464e` (peer tip-sync 305/317). Eng shipped: `print_owner_unblock.sh` Path C line on `PATH_C_LANDED_TIP_DRIFT` → `refresh_path_c_bundle.sh` (pre-324 fell through to APPLY_READY land lie; Batch 261 IDLE-only leftover). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
