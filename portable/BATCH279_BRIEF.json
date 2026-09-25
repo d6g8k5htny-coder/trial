@@ -1,8 +1,8 @@
 {
   "batch": "279",
-  "generated_at_utc": "2026-09-25T07:50:30Z",
+  "generated_at_utc": "2026-09-25T08:05:36Z",
   "status": "republish_canonical_basename_and_living_pack_shipped",
-  "waiting_ci": true,
+  "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -81,5 +81,11 @@
   "path_c": true,
   "trial_main_land": "2a4edca",
   "trial_main_land_full": "2a4edca93f4a0ec31b7d64ad44cbdd64f9d20b3e",
-  "trial_main_land_method": "direct_push_main_pr_create_403"
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "ci_defect_run": "36110023372",
+  "ci_defect_conclusion": "success",
+  "ci_land_record_run": "36110027562",
+  "ci_land_record_branch_run": "36110025451",
+  "ci_land_record_branch_conclusion": "success",
+  "main_ci_tip_conclusion": "success"
 }
