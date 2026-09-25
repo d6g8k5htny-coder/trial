@@ -171,6 +171,11 @@ write loss — Actions/device durable remains **8/8 WRITABLE**. Inventory tip
 refresh preserves prior durable push/admin/`sandbox.readable` and must not open
 a false no_token grant-audit branch.
 
+Batch 334/336: grant `--check` skips inventory refresh **only** when
+`durable_token_source=none`. When a durable token is present but the probe is
+transiently `0/8` (`sandbox_write=DENIED`), the writer still tip-refreshes with
+`preserve_durable=true` so living 8/8 is not demoted to App pull-only.
+
 Agents **cannot** finish App installs for you. Owner path: run
 `./scripts/owner_grant_ai_agent_access.sh`, complete each App UI selecting
 **ALL repositories including sandbox**, keep durable secret via

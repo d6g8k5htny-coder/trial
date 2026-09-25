@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 336 — preserve durable inventory on writable=0 DENIED (2026-09-25)
+
+- Tip stable @ `eeebb28`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng (cloud peer bc-d9358658): `_no_durable_probe` now treats any `durable_writable==0` as preserve (incl. `sandbox_write=DENIED`), not only `n/a`. Grant skip still `durable_token_source=none` only.
+- NEVER flip research.
+
 ### Batch 336 — MULTI_AGENT wake assign (coordinator pulse) (2026-09-25)
 
 - Dylan asked: message stopped agents + assign Path C tasks.

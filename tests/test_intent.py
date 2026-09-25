@@ -13532,3 +13532,95 @@ def test_batch336_inventory_batch_fallback_living() -> None:
     assert "Batch 336" in log_md
     assert "331" in log_md or "REFRESH_BATCH_TAG" in log_md
 
+
+
+def test_batch336_inv_preserve_durable_writable0_denied() -> None:
+    """Batch 336: preserve_durable on durable_writable=0 with sandbox_write=DENIED."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 336" in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+    assert "sandbox_write=DENIED" in grant or "durable_writable=0" in grant
+
+    helper_path = ROOT / "scripts" / "refresh_ai_agent_access_inventory.py"
+    helper = helper_path.read_text(encoding="utf-8")
+    assert "Batch 336" in helper
+    assert "durable_writable == 0" in helper
+    assert "preserve_durable" in helper
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH336_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "336"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("defect_id") == "inv_preserve_durable_writable0_denied"
+    assert tiny.get("action") == "inv_preserve_durable_on_writable0_denied"
+    assert _living_tip(str(tiny.get("tip", "")))
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert (tiny.get("contracts") or {}).get("grant_skip_only_when") == (
+        "durable_token_source=none"
+    )
+
+    spec = importlib.util.spec_from_file_location("refresh_inv_336", helper_path)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+
+    with tempfile.TemporaryDirectory() as td:
+        path = Path(td) / "AI_AGENT_ACCESS_INVENTORY.json"
+        path.write_text(json.dumps(inv, indent=2) + "\n", encoding="utf-8")
+        repos = [d["name"] for d in inv["details"]]
+        result = mod.refresh(
+            str(path),
+            repos,
+            durable_writable=0,
+            durable_sandbox_read="404",
+            durable_sandbox_write="DENIED",
+            active_sandbox_read="404",
+            batch="336",
+        )
+        assert result.get("preserve_durable") is True
+        out = json.loads(path.read_text(encoding="utf-8"))
+        assert out.get("durable_sibling_coverage") == "8/8_WRITABLE"
+        assert out.get("lemma_closed") is False
+        assert out.get("flipped_anything") is False
+        assert out.get("main_writable") is True
+        assert out.get("sandbox", {}).get("readable") is True
+        assert out.get("sandbox", {}).get("write") == "WRITABLE"
+        for d in out.get("details") or []:
+            assert d.get("push") is True, d
+            assert d.get("write") == "WRITABLE", d
+        for c in out.get("repos_connected") or []:
+            assert c.get("perm") == "push", c
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 336)
+
+    docs = (ROOT / "docs" / "MULTI_AGENT_ACCESS.md").read_text(encoding="utf-8")
+    assert "Batch 334/336" in docs or "Batch 336" in docs
+    assert "preserve_durable" in docs or "durable_writable" in docs
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 336" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in owner

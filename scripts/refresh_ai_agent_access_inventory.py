@@ -18,6 +18,12 @@ Batch 331: when durable_writable == len(repos), force push/WRITABLE so App
 permissions:{push:false} cannot rewrite connected→pull. Grant --check skips
 inventory refresh entirely when durable_token_source=none (belt with preserve).
 
+Batch 336: Batch 334 opened tip-refresh when a durable token is present even if
+the probe is transiently 0/8, relying on preserve_durable. Pre-336 only treated
+DURABLE_SANDBOX_WRITE=n/a (no_token skip) as preserve — a real probe that
+returned DENIED/404 with writable=0 demoted sandbox.readable and connected→pull.
+Now durable_writable==0 always tip-refreshes with preserve (token present or not).
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 
@@ -76,12 +82,19 @@ def _no_durable_probe(
     durable_sandbox_read: str,
     durable_sandbox_write: str,
 ) -> bool:
-    """True when --check skipped durable vector (no MAIN_PUSH_TOKEN in pod)."""
+    """True when durable vector is absent or probe found 0 writable (tip-only).
+
+    Batch 329/330: no_token skip sets sandbox_write=n/a → preserve.
+    Batch 336: token-present transient probe 0/8 sets sandbox_write=DENIED with
+    durable_writable=0 — still preserve; do not demote living 8/8.
+    """
     if os.environ.get("PRESERVE_DURABLE", "").strip() in ("1", "true", "yes"):
         return True
     if str(durable_sandbox_write) in ("n/a",):
         return True
-    if durable_writable == 0 and str(durable_sandbox_read) in ("n/a", "?", ""):
+    # Batch 336: any durable_writable==0 tip-refresh preserves attribution
+    # (covers n/a/?/"" read *and* DENIED/404 from a failed probe).
+    if durable_writable == 0:
         return True
     return False
 

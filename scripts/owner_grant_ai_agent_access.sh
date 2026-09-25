@@ -485,6 +485,9 @@ print("install_missing_from_deps:", missing)'
   # Batch 334: do NOT also skip on DURABLE_WRITABLE=0 when a durable token is
   # present — transient probe 0/8 would freeze tip_sha while token exists;
   # writer preserve_durable + durable GH_TOKEN still refresh tips safely.
+  # Batch 336: writer preserve_durable now triggers on durable_writable=0 even
+  # when sandbox_write=DENIED (pre-336 only n/a) so token-present 0/8 tip-refresh
+  # cannot demote living 8/8 sandbox.readable / connected→pull.
   # Writer: scripts/refresh_ai_agent_access_inventory.py (pack + CRITICAL).
   # Never flips lemma_closed / scientific_effect / flipped_anything.
   INV_PATH="$ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
