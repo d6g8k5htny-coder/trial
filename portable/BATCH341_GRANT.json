@@ -1,0 +1,38 @@
+{
+  "batch": "341",
+  "generated_at_utc": "2026-09-25T18:45:41Z",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "write_durable": "8/8_WRITABLE",
+  "coverage": "8/8_WRITABLE",
+  "durable_writable": "8/8",
+  "sibling_write_count": 8,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "grant_inventory_refresh_batch341",
+  "defect_id": "inventory_tip_pins_batch341",
+  "defect_shipped": true,
+  "path_c": "IDLE@0019",
+  "vm_check": {
+    "active_writable": "1/8",
+    "durable_token_source": "none",
+    "durable_writable": "0/8",
+    "inventory_refresh": "skip durable_token_source=none (retain living 8/8)",
+    "preserve_durable_tip_refresh": "INV_BATCH=341 durable_writable=0 \u2192 tip_updates; coverage 8/8 preserved"
+  },
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "baca69c",
+    "meta-framework": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "2137eec"
+  },
+  "trial_tip_sha": "2137eec0d4499065e3abf9e12f7934a10d101635",
+  "coordinator_bcId": "bc-01a0cf1e",
+  "inventable_promoted": false,
+  "note": "Tip stable @f244312; inventory batch 340 tips lagged HEAD after Batch 341 soften land \u2014 refreshed to 341."
+}

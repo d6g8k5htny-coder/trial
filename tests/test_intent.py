@@ -14494,7 +14494,8 @@ def test_batch340_grant_inventory_refresh() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "340"
+    # Living inventory batch supersedes (Batch 341+ tip refresh).
+    assert int(str(inv.get("batch") or "0")) >= 340
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     assert inv.get("sibling_write_count") == 8
     assert inv.get("lemma_closed") is False
@@ -14507,6 +14508,48 @@ def test_batch340_grant_inventory_refresh() -> None:
     assert "STATUS (Batch 340)" in owner
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340)" in land
+
+
+def test_batch341_grant_inventory_refresh() -> None:
+    """Batch 341: grant inventory tip refresh after tip-sync soften land."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH341_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "341"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert tiny.get("write_durable") == "8/8_WRITABLE"
+    assert tiny.get("action") == "grant_inventory_refresh_batch341"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("tip", "")))
+    assert str(tiny.get("tip", "")).startswith("f244312")
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("batch") == "341"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("sibling_write_count") == 8
+    assert inv.get("lemma_closed") is False
+    assert (inv.get("repos_connected") or [{}])[0].get("perm") == "push"
+    assert (inv.get("sandbox") or {}).get("readable") is True
+    details = {d["name"].split("/")[-1]: d for d in (inv.get("details") or [])}
+    trial_tip = str(details.get("trial", {}).get("tip_sha", ""))
+    assert len(trial_tip) == 40
+    assert details.get("trial", {}).get("write") == "WRITABLE"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 341)
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 341" in log_md
+    assert "grant inventory tip refresh" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341 grant" in owner or "grant inventory tip refresh" in owner.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341" in land
 
 
 def test_batch341_soften_batch340_live_tip_pins() -> None:

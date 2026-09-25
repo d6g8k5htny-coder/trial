@@ -11,6 +11,16 @@ Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync wat
 python3 -c 'import json;d=json.load(open("portable/MULTI_AGENT_WAKE_BATCH340.json"));print(d["tip"], d["intent"]["base_tip_expected"][:7])'
 ```
 
+## STATUS (Batch 341 grant-inventory)
+
+Hardening tip **stable** @ `f244312`. Dual-vector `--check` skipped refresh (`durable_token_source=none`). Tip-refresh with `preserve_durable` (`writable=0`) pins `AI_AGENT_ACCESS_INVENTORY` to batch **341** (trial/query tips); durable **8/8** retained. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+INV_BATCH=341 DURABLE_WRITABLE=0 DURABLE_SANDBOX_WRITE=n/a python3 scripts/refresh_ai_agent_access_inventory.py
+```
+
+
 ## STATUS (Batch 340 wake-token)
 
 Hardening tip **stable** @ `848aea2`. Eng: wake poster resolves durable `MAIN_PUSH_TOKEN` file drops (grant/`when_writable` order; MAIN before GH). Guard+research: `lemma_closed=false`. Scientific effect: NONE.

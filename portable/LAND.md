@@ -2,6 +2,11 @@
 
 tip `f244312` tip_match=true; eng: MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); lemma_closed=false; scientific effect NONE.
 
+
+## STATUS (Batch 341 grant-inventory)
+
+tip `f244312` tip_match=true; grant inventory tip refresh batch 341 (trial/query tips; preserve_durable writable=0); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 341 research audit)
 
 tip `f244312` tip_match=true; research stack audit WITHOUT promotion — open_premises=13 open_lemmas=1 open_prizes=3; inventable drafts skipped; eng-only #36/#21/#12 noted; lemma_closed=false; flipped_anything=false; scientific effect NONE.
