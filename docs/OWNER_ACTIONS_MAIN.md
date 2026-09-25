@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 272)
+
+Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. `land-workflows-dry-run` union grep only Path B `ALREADY_ALIGNED` could satisfy while Path C idle (`IDLE_PATH_C_DONE` / `already_on_tip`) never matched alone. Fixed: per-path greps + `validate_land_workflows` guard. No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_land_path_c.sh --dry-run | tee /tmp/path-c-dry-run.out
+grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY' /tmp/path-c-dry-run.out
+python3 scripts/validate_land_workflows.py
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ 8e359e5
+```
+
 ## STATUS (Batch 271)
 
 Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. `probe_main_write_vectors` counted W3a–W3e `dry_run=true` workflow_dispatch as Path-B WRITABLE (Batch 141 only fixed W3f) → `path_b_ready` true while W1 DENIED. Fixed: `DISPATCH_OK_DRY_RUN` + exclude from `path_b_keys` (W1/W2/W4* only). No republish. `lemma_closed=false`. Scientific effect: NONE.

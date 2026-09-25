@@ -4,6 +4,9 @@
 Batch 73: CI dry-run contract for owner Actions land workflows.
 Batch 247: also fail-closed if `.github/workflows/ci.yml` is unparseable
 (column-0 multiline python inside `run: |` → Actions \"workflow file issue\").
+Batch 272: land-workflows-dry-run must grep Path C idle (IDLE_PATH_C_DONE /
+already_on_tip) on path-c-dry-run.out alone — union grep with Path B's
+ALREADY_ALIGNED falsely greenlit Path C after Batch 261 idle.
 Scientific effect: NONE. Never flips lemma_closed / research status.
 
 Checks (all local; no push, no secrets required):
@@ -14,6 +17,7 @@ Checks (all local; no push, no secrets required):
   5. Path C references hardening tip + apply_all + lemma_closed=false gate
   6. Owner scripts expose --help / --dry-run
   7. ci.yml has IDLE_PATH_C_DONE + path_c_followon_pending; no col-0 imports
+  8. ci.yml land-workflows-dry-run asserts Path C idle on its own outfile
 
 Exit 0 on OK; exit 1 on contract failure; exit 2 on missing files / bad YAML.
 """
@@ -61,6 +65,28 @@ def _check_ci_yml_parses(path: Path = PATH_CI) -> list[str]:
     text = path.read_text(encoding="utf-8")
     if "IDLE_PATH_C_DONE" not in text:
         errs.append("ci.yml: expected IDLE_PATH_C_DONE idle skip (Batch 246+)")
+    # Batch 272: land-workflows-dry-run must assert Path C idle on its own file
+    # (not a union grep that only Path B can satisfy via ALREADY_ALIGNED).
+    if "path-c-dry-run.out" in text:
+        if not (
+            "IDLE_PATH_C_DONE" in text
+            and "path-c-dry-run.out" in text
+            and (
+                "grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY' path-c-dry-run.out"
+                in text
+                or "grep -E \"IDLE_PATH_C_DONE|already_on_tip|APPLY_READY\" path-c-dry-run.out"
+                in text
+            )
+        ):
+            errs.append(
+                "ci.yml: land-workflows-dry-run must grep IDLE_PATH_C_DONE|"
+                "already_on_tip|APPLY_READY on path-c-dry-run.out alone (Batch 272)"
+            )
+        if "grep -E 'ALREADY_ALIGNED|would-align|APPLY_READY' path-b-dry-run.out path-c-dry-run.out" in text:
+            errs.append(
+                "ci.yml: land-workflows-dry-run still uses union grep that "
+                "ignores Path C idle (Batch 272 leftover)"
+            )
     if "path_c_followon_pending" not in text:
         errs.append("ci.yml: expected path_c_followon_pending catch-0020 probe")
     # Heuristic without PyYAML: a line that is exactly a top-level Python import

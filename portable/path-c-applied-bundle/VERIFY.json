@@ -1,10 +1,11 @@
 {
   "batch": "241",
-  "generated_at_utc": "2026-09-25T03:50:18Z",
-  "base_tip_sha": "8e359e5bf879f524e11cbeece9b36bd9996d2587",
+  "refresh_batch": "272",
+  "generated_at_utc": "2026-09-25T05:22:38Z",
+  "base_tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
   "applied_commit_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-  "prior_base_tip_sha": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "prior_base_tip_sha": "8e359e5bf879f524e11cbeece9b36bd9996d2587",
   "tip_refresh": true,
   "tip_refresh_via": "refresh_path_c_bundle.sh",
   "bundle_refresh": false,
@@ -19,9 +20,9 @@
   "disposition": "OPEN_HOLD",
   "lemma_closed": false,
   "pytest": {
-    "focused_passed": 90,
+    "focused_passed": 0,
     "focused_resource_warnings": 0,
-    "claims_recovery_passed": 83,
+    "claims_recovery_passed": 0,
     "claims_recovery_resource_warnings": 0,
     "focused_files": [
       "tests/test_carriers.py",
@@ -34,9 +35,9 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 269: VERIFY.batch aligned to release batch241-path-c-bundle (was automation stamp 250); refresh_batch=269; tip @ 8e359e5; lemma_closed=false; problems=0",
+  "note": "Batch 272: refresh_path_c_bundle.sh @ bfb7c38; kept prior .patch+.bundle (already-on-tip); lemma_closed=false; problems=0",
   "force": false,
-  "local_allow_empty_sha": "af088f61ae6c5655fdea477fe4ee7b7cf471f6fa",
+  "local_allow_empty_sha": "ad740359cac4e7917ae554f25c69f903ccfc1924",
   "path_c_landed": true,
   "path_c_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/64",
   "merge_commit_sha": "93a4ecd7e09884c7272c912412db0a7559116e1f",
@@ -50,6 +51,5 @@
   "path_c_0019_pr_url": "https://github.com/d6g8k5htny-coder/main/pull/71",
   "path_c_0019_merge_commit_sha": "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c",
   "flipped_anything": false,
-  "refresh_batch": "269",
   "release_batch_aligned": true
 }
