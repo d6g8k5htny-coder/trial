@@ -12,6 +12,10 @@ tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard
 
 ## STATUS (Batch 343)
 
+tip `f244312` tip_match=true; grant_inventory_refresh batch 343 tip pins (preserve durable 8/8 on writable=0); lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 343 prior)
+
 tip `f244312` tip_match=true; tip watch — living release script_stale republish (print_owner drift after 341/342; tip_stale=0; WAKE340 already living); lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 342)
