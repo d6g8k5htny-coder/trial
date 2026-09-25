@@ -1,0 +1,44 @@
+name: PR98 combined successor adversarial review
+on:
+  pull_request:
+    paths:
+      - 'reviews/pr98_combined_20260925/**'
+      - '.github/workflows/pr98-combined-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: reviewer
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: d6g8k5htny-coder/main
+          ref: 6e3f774f7ccfb5b760730698b1211dbff55ead13
+          path: subject
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute actual combined CLI against synthetic git transitions
+        run: python -B -S reviewer/reviews/pr98_combined_20260925/probe.py --subject-root subject --output "$RUNNER_TEMP/review-evidence"
+      - name: Bind identities
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/review-evidence"
+          git -C reviewer rev-parse HEAD > "$RUNNER_TEMP/review-evidence/reviewer_commit.txt"
+          git -C subject rev-parse HEAD > "$RUNNER_TEMP/review-evidence/subject_commit.txt"
+          sha256sum subject/tools/claims_gate_adapter.py > "$RUNNER_TEMP/review-evidence/adapter.sha256"
+          cp reviewer/reviews/pr98_combined_20260925/probe.py "$RUNNER_TEMP/review-evidence/probe.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr98-combined-review-evidence
+          path: ${{ runner.temp }}/review-evidence
+          if-no-files-found: error
