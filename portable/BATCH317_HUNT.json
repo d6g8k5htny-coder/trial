@@ -1,0 +1,38 @@
+{
+  "batch": "317",
+  "hunt": "tip_sync_after_main_89",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_0adeb65_to_077464e_main_89",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C 0adeb65→077464e",
+    "living tip_stale republish + REFRESH default 317 + _LIVING_TIPS+=077464e"
+  ],
+  "avoided": [
+    "promote inventable #89 tip-observe claim status",
+    "flip lemma_closed / research OPEN holds",
+    "research HOLD draft #87",
+    "invent 0020",
+    "re-land Path C eng stack (already on tip; keep-prior)"
+  ],
+  "candidates_checked": {
+    "tip_start_0adeb65": "TIP_OK_then_DRIFT_after_89",
+    "main_pr_89": "MERGED_to_hardening_tip_077464e",
+    "main_pr_87": "OPEN_DRAFT_research_skip",
+    "tip_sync": "keep_prior_refresh_batch_317",
+    "living_release": "tip_stale_1_cleared_by_republish",
+    "refresh_dry_run_after": "match=1_tip_stable_077464e",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "guard_research": "pass_lemma_closed_false_flipped_false"
+  },
+  "tip_moved": true,
+  "hunt_0020": "NEGATIVE",
+  "HUNT_NEGATIVE": {
+    "new_eng_beyond_tip_sync": true,
+    "note": "Only tip-sync Path C currency after #89; no eng beyond that"
+  },
+  "generated_at_utc": "2026-09-25T15:45:51Z"
+}

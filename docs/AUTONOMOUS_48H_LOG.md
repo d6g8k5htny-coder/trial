@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 317 — tip-sync after main #89 (2026-09-25)
+
+- Hardening LIVE moved `0adeb65`→`077464e` (PR #89 MERGED tip-observe into `chatgpt/drive-github-hardening-20260919`; mergeCommit=077464e). Default main still `72558a5`.
+- Tip-sync: `REFRESH_BATCH_TAG=317 ./scripts/refresh_path_c_bundle.sh` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; REFRESH default 317; `_LIVING_TIPS += 077464e`. assert IDLE_PATH_C_DONE @ `077464e`.
+- **NEVER flip research:** inventable tip-observe #89 not promoted; `lemma_closed=false`; `flipped_anything=false`.
+- #87 OPEN DRAFT research skipped. Path C idle; no 0020.
+
 ### Batch 305 — tip-sync after main #85 (2026-09-25)
 
 - Hardening LIVE moved `02cfbfd`→`0adeb65` (PR #85 MERGED into `chatgpt/drive-github-hardening-20260919`; mergeCommit=0adeb65). Default main still `72558a5` (no tip-sync trigger from default alone).

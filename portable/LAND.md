@@ -1,3 +1,7 @@
+## STATUS (Batch 317)
+
+tip `077464e` tip_match=true TIP_OK after tip-sync; #89 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable tip-observe NOT promoted; #87 DRAFT skipped; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 305)
 
 tip `0adeb65` tip_match=true TIP_OK after tip-sync; #85 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; #87 DRAFT skipped; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.

@@ -34,6 +34,7 @@ _LIVING_TIPS = (
     "3a29f52",
     "02cfbfd",
     "0adeb65",
+    "077464e",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -12597,14 +12598,17 @@ def test_batch305_tip_sync_after_main_85() -> None:
     assert "02cfbfd" in _LIVING_TIPS
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "0adeb65" in base
+    # Live BASE_TIP supersedes across tip-sync; Batch 305 shipped 0adeb65.
+    assert _living_tip(base)
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
         )
     )
-    assert str(verify.get("base_tip_sha", "")).startswith("0adeb65")
-    assert str(verify.get("prior_base_tip_sha", "")).startswith("02cfbfd")
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
+        verify.get("prior_base_tip_sha", "")
+    ).startswith("02cfbfd")
     assert int(verify.get("refresh_batch") or 0) >= 305
     assert verify.get("keep_prior_bundle") is True
     assert verify.get("lemma_closed") is False
@@ -12613,14 +12617,129 @@ def test_batch305_tip_sync_after_main_85() -> None:
     assert int(pytest_counts.get("claims_recovery_passed") or 0) >= 83
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "=== Batch 305" in unblock
+    # Header line bumps on later tip-sync batches (317+); keep 305 history line.
+    assert "=== Batch 305" in unblock or "=== Batch 317" in unblock
     assert "0adeb65" in unblock or "Batch 305" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("0adeb65")
+    # Live tip supersedes across tip-sync; historical brief keeps 0adeb65.
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
+
+def test_batch317_tip_sync_after_main_89() -> None:
+    """Batch 317: tip-sync after main #89 tip-observe; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH317_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "317"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_found") is True
+    assert brief.get("defect_id") == "tip_sync_0adeb65_to_077464e_main_89"
+    assert brief.get("route_now") == "TIP_SYNC"
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is True
+    assert brief.get("hardening_tip_moved") is True
+    assert brief.get("default_tip_moved") is False
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("aligned") is True
+    assert 89 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("077464e")
+    assert str(brief.get("prior_tip", "")).startswith("0adeb65")
+    pr89 = brief.get("main_pr_89") or {}
+    assert pr89.get("state") == "MERGED"
+    assert pr89.get("mergedAt")
+    assert "hardening" in str(pr89.get("baseRefName") or "")
+    pr87 = brief.get("main_pr_87") or {}
+    assert pr87.get("state") == "OPEN"
+    evidence = brief.get("evidence") or {}
+    assert "077464e" in (evidence.get("tip_mid") or "")
+    assert "tip_stale" in (evidence.get("living_release") or "")
+    assert "NOT promoted" in (evidence.get("guard_research") or "") or "not promoted" in (
+        brief.get("note") or ""
+    ).lower()
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH317_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_found") is True
+    assert hunt.get("defect_id") == "tip_sync_0adeb65_to_077464e_main_89"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is True
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_beyond_tip_sync") is True
+    checked = hunt.get("candidates_checked") or {}
+    assert "MERGED" in (checked.get("main_pr_89") or "")
+    assert any(
+        "89" in a or "tip-sync" in a.lower() or "077464e" in a
+        for a in (hunt.get("bugs_fixed") or [])
+    )
+    assert any("inventable" in a.lower() or "lemma" in a.lower() for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH317_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("batch") == "317"
+    assert str(audit.get("tip_sha", "")).startswith("077464e")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 317" in log_md
+    assert "tip-sync" in log_md.lower() or "tip_sync" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 317)" in land
+    assert "077464e" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 317)" in owner
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 317)
+    assert "077464e" in _LIVING_TIPS
+    assert "0adeb65" in _LIVING_TIPS
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "077464e" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify.get("base_tip_sha", "")).startswith("077464e")
+    assert str(verify.get("prior_base_tip_sha", "")).startswith("0adeb65")
+    assert int(verify.get("refresh_batch") or 0) >= 317
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    pytest_counts = verify.get("pytest") or {}
+    assert int(pytest_counts.get("focused_passed") or 0) >= 92
+    assert int(pytest_counts.get("claims_recovery_passed") or 0) >= 83
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "=== Batch 317" in unblock
+    assert "077464e" in unblock or "Batch 317" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert str(status.get("tip", "")).startswith("077464e")
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+    assert status.get("write_state") == "WRITABLE"
+
