@@ -43,7 +43,7 @@ jobs:
         run: python -B -S reviewer/reviews/pr98_f1_repair_20260925/run_validation.py --subject-root subject --output "$RUNNER_TEMP/f1-evidence"
       - name: Install exact upstream test dependencies
         working-directory: subject
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-ci.lock
+        run: "python -m pip install --require-hashes --only-binary=:all: -r requirements-ci.lock"
       - name: Existing adapter and schema suites
         working-directory: subject
         run: |
