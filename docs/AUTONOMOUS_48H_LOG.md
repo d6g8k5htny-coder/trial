@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 291 (DEEP idle — tip stable, no new eng beyond 273–290) — 2026-09-25 ~12:02 UTC (PERMANENT window; idle_deep paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
+- Hunt: `rg repositories or []` → comments/docs/asserts only; main tip CI green; no non-draft eng PRs (any owner repo); inventable tip-observe #84 / #85 skipped; inventable CRITICAL expand skipped (living sha match).
+- Living release: tip_stale=0 script_stale=0; tgz_newer=1 from BATCH290 briefs + PATH_C/STATUS_GUARD `generated_at` only (not eng). Guard+research: `lemma_closed=false`; `flipped_anything=false`.
+- next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+
 ### Batch 290 (permanent-watch IDLE — tip stable, no new eng) — 2026-09-25 ~11:45 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `3a29f52` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan).

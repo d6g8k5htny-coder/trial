@@ -1,3 +1,7 @@
+## STATUS (Batch 291)
+
+tip `3a29f52` tip_match=true TIP_OK; DEEP idle — no new eng beyond 273–290; living tip_stale=0 script_stale=0; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 290)
 
 tip `3a29f52` tip_match=true TIP_OK; permanent-watch IDLE — no new eng beyond 273–289; living tip_stale=0 script_stale=0; lemma_closed=false; scientific effect NONE.

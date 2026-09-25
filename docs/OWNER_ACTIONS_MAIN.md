@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 291)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer from BATCH290 briefs + PATH_C/STATUS_GUARD `generated_at` — not eng). `rg repositories or []` only comments/asserts. Inventable CRITICAL expand (write_path_c_status/assert/print_owner) skipped — living sha match. DEEP hunt beyond 273–290 **NEGATIVE**. No tip-sync. No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/assert_path_c_ready.sh
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 290)
 
 Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer timestamp-only PATH_C/STATUS_GUARD churn — not eng). Deep hunt beyond 273–289 **NEGATIVE**. No tip-sync. No republish. `lemma_closed=false`. Scientific effect: NONE.

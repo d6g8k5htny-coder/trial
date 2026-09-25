@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 291 — tip `3a29f52` tip_match; default ALIGNED `72558a5`; write WRITABLE; DEEP idle (no new eng beyond 273–290); release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run  # tip stable @ 3a29f52
+> ./scripts/assert_path_c_ready.sh
+> ./scripts/republish_living_path_c_release.sh --dry-run  # tip_stale=0 script_stale=0
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Idle_deep; research HOLD / tip-observe skipped. No research flip. No 0020.
+
 > **Batch 289 — tip `3a29f52` tip_match (synced from `7d13a88` after main #83); default ALIGNED `72558a5`; write WRITABLE; tip-sync + living tip_stale republish; release `batch241-path-c-bundle`**:
 >
 > ```bash
