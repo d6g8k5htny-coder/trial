@@ -1,0 +1,17 @@
+{
+  "batch": "342",
+  "generated_at_utc": "2026-09-25T18:48:11Z",
+  "status": "inventory_tip_refresh_batch342",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip_match": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "inventory_batch_stale_340_after_342_header",
+  "action": "grant_inventory_refresh_batch342",
+  "inventable_promoted": false,
+  "note": "Grant --check refreshed AI_AGENT_ACCESS_INVENTORY batch 340\u2192342; soften wake-token Intent live tip pin."
+}

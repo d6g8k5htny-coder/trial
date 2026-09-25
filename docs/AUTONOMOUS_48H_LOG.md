@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 342 — inventory tip refresh + soften wake-token tip pin (2026-09-25)
+
+- Tip stable @ `f244312`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Grant `--check` refreshed inventory batch 340→342; softened wake-token Intent live tip `startswith("848aea2")` pin.
+- NEVER flip research.
+
 ### Batch 342 — WAKE340 living tip pins (2026-09-25)
 
 - Tip **stable** @ `f244312` (tip_sync_watch dry-run match=1). Path C IDLE@0019.

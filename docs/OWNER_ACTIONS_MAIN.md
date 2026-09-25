@@ -13,6 +13,14 @@ python3 -c "from scripts.post_batch322_wake_comments import batch_marker; print(
 
 ## STATUS (Batch 342)
 
+Hardening tip **stable** @ `f244312`. Eng: inventory tip refresh batch 342; soften wake-token Intent live tip pin. `lemma_closed=false`.
+
+```bash
+python3 -c "import json; print(json.load(open('portable/AI_AGENT_ACCESS_INVENTORY.json'))['batch'])"
+```
+
+## STATUS (Batch 342 wake)
+
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Eng: `MULTI_AGENT_WAKE_BATCH340.json` tip/`intent.base_tip_expected` still frozen @ `848aea2` after tip-sync — refreshed to living `f244312` (historical `wake_tip_at_assign` preserved). `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash

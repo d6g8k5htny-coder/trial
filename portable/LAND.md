@@ -1,6 +1,6 @@
 ## STATUS (Batch 342)
 
-tip `f244312` tip_match=true; eng: MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); lemma_closed=false; scientific effect NONE.
+tip `f244312` tip_match=true; eng: inventory tip refresh batch 342; soften wake-token Intent live tip pin; tip `f244312` tip_match=true; eng: MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 341 research audit)
 
