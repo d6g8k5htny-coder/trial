@@ -1,0 +1,10 @@
+{
+  "batch": "351",
+  "defect_id": "living_script_stale_after_351_inv_pin",
+  "hunt_0020": "NEGATIVE",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "living_script_stale_republish",
+  "status_guard_tip_living": true,
+  "status_guard_tip_lag": false
+}

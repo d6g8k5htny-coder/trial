@@ -1,3 +1,7 @@
+## STATUS (Batch 351 research-audit-watch)
+
+tip `e3cd7d4` tip_match=true; research_stack_audit_watch: open stack 13/1/3 without promotion; STATUS_GUARD tip living; eng: living script_stale republish + inv tip pin; action=living_script_stale_republish; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 351 inv-preserve-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

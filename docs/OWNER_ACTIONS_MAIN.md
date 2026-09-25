@@ -1,3 +1,12 @@
+## STATUS (Batch 351 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: open stack 13/1/3 without promotion; STATUS_GUARD tip living; eng: living `batch241` script_stale republish + inventory tip pin→HEAD. action=`living_script_stale_republish`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+python3 -m pytest tests/test_intent.py::test_batch351_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 350 soften-inv-tip-pin)
 
 Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1 (peer idle already). One eng: soften `BATCH350_INV_TIP_PIN` Intent action allowlist (`inventory_preserve_durable_tip_pin` living). `lemma_closed=false`. action=`eng_soften_inv_tip_pin_action_allowlist`. Goal OPEN.
