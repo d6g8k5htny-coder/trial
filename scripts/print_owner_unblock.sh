@@ -51,6 +51,7 @@ echo "=== Batch 359 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; wri
 echo " Batch 359: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no delta vs 357"
 echo " Batch 359: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current)"
 echo " Batch 359: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
+
 echo " Batch 358: eng living script_stale republish after tip_sync idle (batch241; script_stale 1→0; Intent allowlist living)"
 echo " Batch 358: tip_or_eng inv tip re-pin after lands @e3cd7d4"
 echo " Batch 358: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"

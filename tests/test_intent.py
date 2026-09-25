@@ -18819,6 +18819,7 @@ def test_batch359_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 359 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "idle_no_commit" in log_md
+
 def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     """Batch 359: preserve_durable tip pin after lands; tip e3cd7d4."""
     import json
