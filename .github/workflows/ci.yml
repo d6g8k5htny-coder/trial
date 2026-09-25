@@ -377,4 +377,10 @@ jobs:
           unset MAIN_PUSH_TOKEN || true
           ./scripts/owner_land_path_b.sh --dry-run | tee path-b-dry-run.out
           ./scripts/owner_land_path_c.sh --dry-run | tee path-c-dry-run.out
-          grep -E 'ALREADY_ALIGNED|would-align|APPLY_READY' path-b-dry-run.out path-c-dry-run.out
+          # Batch 272: assert each path's own success signal. Pre-fix union grep
+          # ALREADY_ALIGNED|would-align|APPLY_READY passed solely via Path B while
+          # Path C idle (IDLE_PATH_C_DONE / already_on_tip after Batch 261) never
+          # matched — path-c-dry-run.out alone exited 1. Do not require APPLY_READY
+          # when Path C is already on tip.
+          grep -E 'ALREADY_ALIGNED|would-align' path-b-dry-run.out
+          grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY' path-c-dry-run.out

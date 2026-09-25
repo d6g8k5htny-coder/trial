@@ -9945,3 +9945,110 @@ def test_batch271_probe_w3_dryrun_path_b_false_positive() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch272_ci_land_workflows_path_c_idle_contract() -> None:
+    """Batch 272: land-workflows-dry-run asserts Path C idle on its own outfile."""
+    import json
+    import subprocess
+    import sys
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "path-c-dry-run.out" in ci
+    assert "path-b-dry-run.out" in ci
+    # Must NOT use the Batch 73–271 union grep that Path C idle never matched.
+    assert (
+        "grep -E 'ALREADY_ALIGNED|would-align|APPLY_READY' path-b-dry-run.out path-c-dry-run.out"
+        not in ci
+    )
+    assert "IDLE_PATH_C_DONE|already_on_tip|APPLY_READY" in ci
+    assert "grep -E 'ALREADY_ALIGNED|would-align' path-b-dry-run.out" in ci
+    assert (
+        "grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY' path-c-dry-run.out" in ci
+    )
+
+    validate = (ROOT / "scripts" / "validate_land_workflows.py").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 272" in validate
+    assert "path-c-dry-run.out alone" in validate or "Path C idle" in validate
+
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "validate_land_workflows.py")],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr or proc.stdout
+
+    # Evidence: path-c dry-run alone fails the old union pattern.
+    path_c_sample = (
+        '{"state": "IDLE_PATH_C_DONE", "already_on_tip": true, '
+        '"idle_status": "IDLE_PATH_C_DONE", "apply_ready": false}\n'
+        "already_on_tip=true path_c_landed=true\n"
+        "owner_land_path_c: dry-run OK — already-on-tip idle (no no-op land).\n"
+    )
+    old = subprocess.run(
+        ["bash", "-c", "grep -E 'ALREADY_ALIGNED|would-align|APPLY_READY'"],
+        input=path_c_sample,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert old.returncode == 1, old.stdout
+    new = subprocess.run(
+        ["bash", "-c", "grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY'"],
+        input=path_c_sample,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert new.returncode == 0, new.stdout
+    assert "IDLE_PATH_C_DONE" in new.stdout
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH272_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "272"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_moved") is False
+    assert brief.get("defect_id") == "ci_land_workflows_path_c_idle_ungrepped"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH272_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert "probe_main_write_vectors dry_run DISPATCH_OK" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH272_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 272" in log_md
+    assert "path-c-dry-run" in log_md or "IDLE_PATH_C_DONE" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 272)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 272)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 272" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 272" in unblock
+    assert "path-c-dry-run" in unblock or "IDLE_PATH_C" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))

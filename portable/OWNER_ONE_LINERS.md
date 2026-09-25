@@ -5,6 +5,18 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 272 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; CI Path C idle ungrepped; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ 8e359e5
+> ./scripts/owner_land_path_c.sh --dry-run | tee /tmp/path-c-dry-run.out
+> grep -E 'IDLE_PATH_C_DONE|already_on_tip|APPLY_READY' /tmp/path-c-dry-run.out
+> python3 scripts/validate_land_workflows.py
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: land-workflows-dry-run union grep only Path B ALREADY_ALIGNED; Path C idle never asserted alone. No republish. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 271 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; W3a–W3e dry_run path_b false_positive; release `batch241-path-c-bundle`**:
 >
 > ```bash

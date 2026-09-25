@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 272 (CI land-workflows Path C idle ungrepped leftover) — 2026-09-25 ~05:12 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `8e359e5`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Deep 0020 hunt: **NEGATIVE** (classic assign-open 0; apply_all already-on-tip). Open main PRs: draft tip-observe #80/#81 + research-hold drafts — **skipped**.
+- **Evidence:** `land-workflows-dry-run` union grep `ALREADY_ALIGNED|would-align|APPLY_READY` matched **only** `path-b-dry-run.out`. `path-c-dry-run.out` alone (IDLE_PATH_C_DONE / already_on_tip after Batch 261) → **exit 1**. Path C idle never asserted.
+- **Defect shipped (avoid probe_main_write_vectors dry_run DISPATCH_OK / when_writable once pid-liveness / VERIFY.batch release-align / pack living-tag / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** separate greps — Path B `ALREADY_ALIGNED|would-align`; Path C `IDLE_PATH_C_DONE|already_on_tip|APPLY_READY`; `validate_land_workflows` guards the contract.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial eng PR pending land. Scientific effect NONE.
+
 ### Batch 271 (probe W3a–W3e dry_run path_b false-positive leftover) — 2026-09-25 ~04:55 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `8e359e5`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Deep 0020 hunt: **NEGATIVE** (classic assign-open 0; apply_all already-on-tip). Open main PRs: draft tip-observe #80/#81 + research-hold drafts — **skipped**.
