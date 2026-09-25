@@ -1,0 +1,46 @@
+{
+  "batch": "254",
+  "hunt": "refresh_0020_and_probe_ref_collision_transport",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_id": "probe_main_write_ref_collision_422_false_transport",
+  "bugs_fixed": [
+    "probe_main_write used cursor-write-probe-{int(time.time())}; concurrent same-second creates returned 422 Reference already exists → false TRANSPORT_ERROR while write was WRITABLE"
+  ],
+  "avoided": [
+    "tip-observe",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag",
+    "assert idle",
+    "empty RW",
+    "OWNER faces",
+    "ci.yml YAML",
+    "#78",
+    "VERIFY honesty",
+    "pack_portable TMPDIR",
+    "issue hygiene GraphQL",
+    "when_writable install_has_main"
+  ],
+  "candidates_checked": {
+    "green_eng_main_prs": "none_all_research_hold_drafts",
+    "repository_dispatch_lander": "recent_runs_success_no_new_defect",
+    "guard_no_status_promotion": "stable_no_new_defect",
+    "audit_main_alignment_transport": "exit2_handlers_present_public_ok",
+    "release_asset_publish": "batch241_assets_present_no_stale_required",
+    "real_ci_failure": "batch253_intermediate_LAND_STATUS_already_fixed_green_on_main"
+  },
+  "tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "actionable_classic_count": 0,
+  "resourcewarning_focused": "skipped_empty_rw_avoid",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "path_c": "IDLE_PATH_C_DONE",
+  "green_eng_prs_merged": []
+}

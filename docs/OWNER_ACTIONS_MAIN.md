@@ -2,6 +2,10 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 254)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped `probe_main_write` unique probe-ref (`time_ns`+pid+uuid) + retry on HTTP 422 "Reference already exists" so concurrent probes do not false-report TRANSPORT_ERROR. `lemma_closed=false`. Scientific effect: NONE.
+
 ## STATUS (Batch 253)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped when_writable user-token `/installation/repositories` fallback (install_has_main no longer None) + `owner_land_path_c --dry-run` already-on-tip idle. `lemma_closed=false`. Scientific effect: NONE.
