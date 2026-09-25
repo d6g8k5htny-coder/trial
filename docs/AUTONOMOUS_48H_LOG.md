@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 254 (probe_main_write ref collision → false TRANSPORT_ERROR) — 2026-09-25 ~00:18 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- `refresh_path_c_bundle --dry-run` tip stable @ fa32d11. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** live `probe_main_write` returned `create_http_status=422` / `Reference already exists` / `state=TRANSPORT_ERROR` for `cursor-write-probe-{int(time.time())}` while a same-window follow-up probe was **WRITABLE** (concurrent same-second collision).
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene / not when_writable install_has_main):** `scripts/probe_main_write.py` now names refs with `time_ns`+pid+uuid and retries up to 5× on 422 already-exists before TRANSPORT_ERROR.
+- Candidates checked without new defect: repository_dispatch lander (recent success), guard_no_status_promotion, audit_main_alignment transport handlers, release `batch241-path-c-bundle` assets present, prior CI LAND STATUS failure already green on tip.
+- Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 253 (when_writable token-load install + land-path-c dry-run idle) — 2026-09-25 ~00:06 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

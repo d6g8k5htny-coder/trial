@@ -21,6 +21,7 @@ import json
 import os
 import sys
 import time
+import uuid
 import urllib.error
 import urllib.request
 
@@ -110,6 +111,28 @@ def _request(method: str, url: str, body: dict | None = None) -> tuple[int, dict
         return _request_urllib(method, url, body)
     except Exception as exc:  # noqa: BLE001 — surface as transport
         raise RuntimeError(f"transport: {exc}") from exc
+
+
+def _probe_ref_name() -> str:
+    """Unique throwaway ref — never reuse second-granularity timestamps alone.
+
+    Batch 254: concurrent probes (sibling agents / when_writable + manual) that
+    both used second-granularity ``cursor-write-probe-<unix_seconds>`` names
+    collided in the same second → HTTP 422 "Reference already exists" was
+    misreported as TRANSPORT_ERROR while write was actually WRITABLE. Use
+    time_ns + pid + short uuid so names do not collide under concurrency.
+    """
+    return (
+        f"refs/heads/cursor-write-probe-"
+        f"{time.time_ns()}-{os.getpid()}-{uuid.uuid4().hex[:8]}"
+    )
+
+
+def _create_body_already_exists(body: dict | str | None) -> bool:
+    if not isinstance(body, dict):
+        return False
+    msg = str(body.get("message") or "").lower()
+    return "already exists" in msg
 
 
 def _parse_installation_repos_body(
@@ -239,15 +262,38 @@ def main() -> int:
             print("probe_main_write: transport failure reading main tip", file=sys.stderr)
             return 2
         sha = tip["object"]["sha"]
-        name = f"refs/heads/cursor-write-probe-{int(time.time())}"
         report["tip_sha"] = sha
-        report["probe_ref"] = name
 
-        create_status, create_body = _request(
-            "POST", f"{API}/git/refs", {"ref": name, "sha": sha}
-        )
+        # Batch 254: unique name + retry on 422 already-exists (collision residue).
+        create_status: int | None = None
+        create_body: dict | str | None = None
+        name = ""
+        attempts: list[dict] = []
+        max_attempts = 5
+        for attempt in range(1, max_attempts + 1):
+            name = _probe_ref_name()
+            create_status, create_body = _request(
+                "POST", f"{API}/git/refs", {"ref": name, "sha": sha}
+            )
+            attempts.append(
+                {
+                    "attempt": attempt,
+                    "ref": name,
+                    "create_http_status": create_status,
+                    "already_exists": _create_body_already_exists(create_body),
+                }
+            )
+            if create_status in (200, 201):
+                break
+            if create_status == 422 and _create_body_already_exists(create_body):
+                # Another probe won the race on this exact name — retry unique.
+                continue
+            break
+        report["probe_ref"] = name
         report["create_http_status"] = create_status
         report["create_body"] = create_body
+        if len(attempts) > 1:
+            report["create_attempts"] = attempts
 
         if create_status in (401, 403):
             report["state"] = "DENIED"

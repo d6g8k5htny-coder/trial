@@ -1,6 +1,11 @@
-## STATUS (Batch 253)
+## STATUS (Batch 254)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; when_writable user-token install fallback + land-path-c dry-run already-on-tip idle shipped; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; probe_main_write unique ref + 422 already-exists retry (false TRANSPORT_ERROR under concurrent probes) shipped; lemma_closed=false; scientific effect NONE.
+
+> ## STATUS (Batch 253) — PERMANENT window; ALIGNED @ `72558a5`; Path C BASE_TIP `fa32d11`; release `batch241-path-c-bundle`; write **WRITABLE**; when_writable install fallback
+>
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; when_writable user-token install fallback + land-path-c dry-run already-on-tip idle shipped; lemma_closed=false; scientific effect NONE.
+>
 
 # One-command land paths for `d6g8k5htny-coder/main`
 

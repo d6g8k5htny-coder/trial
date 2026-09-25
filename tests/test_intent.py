@@ -7330,11 +7330,12 @@ def test_batch251_pack_portable_default_out_writable_fallback() -> None:
     assert "Batch 251" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    # Living STATUS supersession (Batch 252–253+): tip line advances; keep 251 history OK.
+    # Living STATUS supersession (Batch 252–254+): tip line advances; keep 251 history OK.
     assert (
         "STATUS (Batch 251)" in land
         or "STATUS (Batch 252)" in land
         or "STATUS (Batch 253)" in land
+        or "STATUS (Batch 254)" in land
         or "STATUS (Batch" in land
     )
 
@@ -7460,10 +7461,11 @@ def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
     assert "Batch 252" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    # Living STATUS supersession (Batch 253+).
+    # Living STATUS supersession (Batch 253–254+).
     assert (
         "STATUS (Batch 252)" in land
         or "STATUS (Batch 253)" in land
+        or "STATUS (Batch 254)" in land
         or "STATUS (Batch" in land
     )
 
@@ -7590,3 +7592,105 @@ def test_batch253_when_writable_token_install_and_land_dry_run_idle() -> None:
         p = Path(td) / "t"
         p.write_text("x", encoding="utf-8")
         assert p.read_text(encoding="utf-8") == "x"
+
+
+def test_batch254_probe_ref_collision_422_false_transport() -> None:
+    """Batch 254: unique probe refs + 422 already-exists retry (no false TRANSPORT)."""
+    import importlib.util
+    import json
+    from unittest import mock
+
+    probe_path = ROOT / "scripts" / "probe_main_write.py"
+    probe_src = probe_path.read_text(encoding="utf-8")
+    assert "time_ns" in probe_src
+    assert "_probe_ref_name" in probe_src
+    assert "_create_body_already_exists" in probe_src
+    assert "already exists" in probe_src
+    assert "create_attempts" in probe_src
+    # Second-granularity-only naming must be gone (collision source).
+    assert "int(time.time())" not in probe_src
+    assert "time.time_ns()" in probe_src
+    assert "uuid.uuid4()" in probe_src or "uuid4().hex" in probe_src
+
+    spec = importlib.util.spec_from_file_location("probe_main_write_b254", probe_path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    names = [mod._probe_ref_name() for _ in range(20)]
+    assert len(set(names)) == 20
+    assert all(n.startswith("refs/heads/cursor-write-probe-") for n in names)
+    assert mod._create_body_already_exists({"message": "Reference already exists"})
+    assert not mod._create_body_already_exists({"message": "Validation Failed"})
+    assert not mod._create_body_already_exists("raw")
+
+    # Simulate: first create 422 already-exists, second 201, delete 204 → WRITABLE.
+    calls: list[tuple] = []
+
+    def fake_request(method: str, url: str, body=None):  # noqa: ANN001
+        calls.append((method, url, body))
+        if method == "GET" and "git/ref/heads/main" in url:
+            return 200, {"object": {"sha": "abc123deadbeef"}}
+        if method == "POST" and url.endswith("/git/refs"):
+            if sum(1 for c in calls if c[0] == "POST") == 1:
+                return 422, {"message": "Reference already exists", "status": "422"}
+            return 201, {"ref": body["ref"] if body else "ok"}
+        if method == "DELETE":
+            return 204, {}
+        return 500, {"message": f"unexpected {method} {url}"}
+
+    with mock.patch.object(mod, "check_installation_repositories", return_value={
+        "install_has_main": False,
+        "names": ["d6g8k5htny-coder/trial"],
+        "install_query_mode": "gh_app_fallback_after_user_token_403",
+    }):
+        with mock.patch.object(mod, "_request", side_effect=fake_request):
+            with mock.patch("builtins.print"):
+                rc = mod.main()
+    assert rc == 0
+    post_calls = [c for c in calls if c[0] == "POST"]
+    assert len(post_calls) == 2
+    assert post_calls[0][2]["ref"] != post_calls[1][2]["ref"]
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH254_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "254"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert "probe_main_write_ref_collision" in (brief.get("defect_id") or "")
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH254_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "254"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH254_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 254" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 254)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 254)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
