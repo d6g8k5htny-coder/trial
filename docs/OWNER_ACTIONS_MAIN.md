@@ -1,3 +1,7 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + living script_stale — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
 ## STATUS (Batch 359 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`77f6b8c`; INV_BATCH→359; coverage 8/8_WRITABLE; `BATCH359_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
