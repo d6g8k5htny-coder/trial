@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings). assert+align+probe+guard: `lemma_closed=false`. Tip CI green (ci/nav/withdrawal @ `02cfbfd`).
+- Main **#85** OPEN undrafted CI-SUCCESS inventable — **skipped** (NEVER flip research). **#87** OPEN DRAFT CI-FAILURE — skipped. **#88** tip-observe draft CI-SUCCESS — skipped. HOLDs 47/46/38/36/21/12/8/7 skipped.
+- Eng hunt NEW beyond 273–303: federation replay pass; validate_land OK; grant durable 8/8 / App trial-only; living tip_stale=0 script_stale=0 (tgz_newer brief/status timestamps only — no republish); apply_all already-applied 0001–0019; 0020 NEGATIVE. No ready non-draft eng.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`idle_no_commit`. next_focus=`tip_sync_drift_watch @02cfbfd`; keep Path C idle; skip inventable #85 / drafts #87/#88.
+
 ### Batch 303 (ALIGN REPOS — MULTI_AGENT dual-vector docs fix; tip stable @02cfbfd) — 2026-09-25 ~14:02 UTC (PERMANENT window; eng align fix; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; no tip-sync). Default ALIGNED @ `72558a5` (workspace-landing success). Path C `IDLE_PATH_C_DONE`. WRITE durable dylan **8/8**; App ambient **1/8** trial-only (`install_has_main=false`, sandbox App 404).

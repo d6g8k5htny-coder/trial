@@ -12093,6 +12093,98 @@ def test_batch296_permanent_watch_idle() -> None:
     assert status.get("write_state") == "WRITABLE"
 
 
+def test_batch304_permanent_watch_idle() -> None:
+    """Batch 304: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH304_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "304"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is False
+    assert brief.get("defect_found") is False
+    assert brief.get("defect_id") is None
+    assert brief.get("route_now") == "IDLE"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("aligned") is True
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("02cfbfd")
+    assert 85 in (brief.get("research_hold_prs_skipped") or [])
+    assert 87 in (brief.get("research_hold_prs_skipped") or [])
+    assert 88 in (brief.get("research_hold_prs_skipped") or [])
+    pr85 = brief.get("main_pr_85") or {}
+    assert pr85.get("state") == "OPEN"
+    assert pr85.get("isDraft") is False
+    assert pr85.get("ci_verify") == "SUCCESS"
+    pr87 = brief.get("main_pr_87") or {}
+    assert pr87.get("state") == "OPEN"
+    assert pr87.get("isDraft") is True
+    pr88 = brief.get("main_pr_88") or {}
+    assert pr88.get("state") == "OPEN"
+    assert pr88.get("isDraft") is True
+    evidence = brief.get("evidence") or {}
+    assert "assert" in str(evidence.get("path_c", "")).lower() or "IDLE" in str(
+        evidence.get("path_c", "")
+    )
+    assert "NEVER flip" in str(evidence.get("main_85", ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH304_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is False
+    assert hunt.get("defect_found") is False
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_not_273_303") is True
+    assert (hunt.get("candidates_checked") or {}).get("ready_non_draft_eng") == "none"
+    assert (hunt.get("candidates_checked") or {}).get("main_pr_85")
+    assert any(
+        "85" in a or "87" in a or "0020" in a or "tip-observe" in a
+        for a in (hunt.get("avoided") or [])
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH304_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("batch") == "304"
+    assert str(audit.get("tip_sha", "")).startswith("02cfbfd")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 304" in log_md
+    assert "idle_no_commit" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 304)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 304)" in owner
+
+    # Keep living REFRESH default from last eng tip-sync (297); idle does not bump.
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 297)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert str(status.get("tip", "")).startswith("02cfbfd")
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+    assert status.get("write_state") == "WRITABLE"
+
+
 def test_batch299_permanent_watch_idle() -> None:
     """Batch 299: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
     import json

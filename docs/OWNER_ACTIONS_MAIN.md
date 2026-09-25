@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 304)
+
+Hardening tip **stable** @ `02cfbfd` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Main **#85 OPEN undrafted** CI-SUCCESS inventable — skipped (NEVER flip). **#87 OPEN DRAFT** CI-FAILURE — skipped. **#88** tip-observe draft CI-SUCCESS — skipped. Tip CI green @ tip. Living tip_stale=0 script_stale=0 (tgz_newer brief/status timestamps only — no republish). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE** beyond 273–303. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 02cfbfd
+./scripts/assert_path_c_ready.sh
+gh pr view 85 87 88 --repo d6g8k5htny-coder/main --json number,isDraft,state,mergedAt,statusCheckRollup
+gh run list --repo d6g8k5htny-coder/main --branch chatgpt/drive-github-hardening-20260919 --limit 5
+```
+
 ## STATUS (Batch 303)
 
 Hardening tip **stable** @ `02cfbfd` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan **8/8**; App ambient trial-only). ALIGN REPOS: sibling gh API 8/8 via durable; tooling repos missing CI ruled_out (docs-only); Math/meta tip CI branch-scoped by design. Shipped docs fix: `MULTI_AGENT_ACCESS.md` capability table now dual-vector (was stale App-only `push main=no` / `device=pending` while grant `--check` durable 8/8 + device SUCCESS). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`docs_multi_agent_capability_dual_vector`. Scientific effect: NONE.
