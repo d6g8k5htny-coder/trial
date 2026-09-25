@@ -1,10 +1,10 @@
-## STATUS (Batch 258)
+## STATUS (Batch 259)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; wait_until_aligned transport max-wait lied as MISALIGNED (exit 1) → exit 2 + honest status=TRANSPORT_ERROR shipped via direct main @`751cce5`; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; grant `--check` dual-vector (App/ghs sandbox 404 vs durable MAIN_PUSH_TOKEN 8/8 WRITABLE) + `owner_set_main_push_token` discovered-token auth + `--also-sandbox` shipped; lemma_closed=false; scientific effect NONE.
 
-> ## STATUS (Batch 257)
+> ## STATUS (Batch 258)
 >
-> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; refresh tip-fetch rate-limit retry + gh_api/git_ls_remote fallbacks + print_owner_unblock live PATH_C_STATUS WRITABLE + owner_open_path_c_pr VERIFY-idle edge + land-path-c dispatch payload comment shipped via direct main @`6dbe728`; lemma_closed=false; scientific effect NONE.
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; wait_until_aligned transport max-wait lied as MISALIGNED (exit 1) → exit 2 + honest status=TRANSPORT_ERROR shipped via direct main @`751cce5`; lemma_closed=false; scientific effect NONE.
 >
 
 > ## STATUS (Batch 256)

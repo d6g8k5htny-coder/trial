@@ -13,6 +13,10 @@ Owner one-shot (prints exact UI URLs + `gh` commands; default dry-run):
 ```bash
 ./scripts/owner_grant_ai_agent_access.sh          # dry-run (default)
 ./scripts/owner_grant_ai_agent_access.sh --check  # probe which apps/tokens see which repos
+# Batch 259: --check is dual-vector (active App/ghs AND durable MAIN_PUSH_TOKEN).
+# App/ghs often 404s private sandbox while device/MAIN_PUSH_TOKEN is 8/8 WRITABLE —
+# do not treat App sandbox 404 as durable-write failure.
+# Set durable Actions secret on trial (+ sandbox): ./scripts/owner_set_main_push_token.sh --also-sandbox
 ```
 
 Access snapshot: [`portable/AI_AGENT_ACCESS_INVENTORY.json`](../portable/AI_AGENT_ACCESS_INVENTORY.json).

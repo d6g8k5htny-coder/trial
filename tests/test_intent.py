@@ -8222,3 +8222,103 @@ def test_batch258_wait_until_aligned_transport_timeout_flake() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch259_grant_check_dual_vector_sandbox_durable() -> None:
+    """Batch 259: grant --check dual-vector + set-token auth/--also-sandbox; no flip."""
+    import json
+    import stat
+    import subprocess
+
+    grant = ROOT / "scripts" / "owner_grant_ai_agent_access.sh"
+    assert grant.is_file()
+    assert grant.stat().st_mode & stat.S_IXUSR
+    text = grant.read_text(encoding="utf-8")
+    assert "dual-vector" in text or "Batch 259" in text
+    assert "discover_durable_main_push_token" in text
+    assert "probe_repos_vector" in text
+    assert "durable_MAIN_PUSH_TOKEN" in text
+    assert "App/ghs sandbox 404 while durable MAIN_PUSH_TOKEN sandbox WRITABLE" in text
+    assert "/tmp/gh-dylan-auth/access_token" in text
+
+    help_out = subprocess.check_output([str(grant), "--help"], cwd=ROOT, text=True)
+    assert "dual-vector" in help_out or "MAIN_PUSH_TOKEN" in help_out
+    assert "sandbox" in help_out
+
+    set_tok = ROOT / "scripts" / "owner_set_main_push_token.sh"
+    assert set_tok.is_file()
+    assert set_tok.stat().st_mode & stat.S_IXUSR
+    set_text = set_tok.read_text(encoding="utf-8")
+    assert "--also-sandbox" in set_text
+    assert "--also-main" in set_text
+    assert "auth=discovered_token" in set_text
+    assert "Batch 259" in set_text
+    # Must not leave gh secret set on App-only auth when a durable token exists.
+    assert 'export GH_TOKEN="$TOKEN"' in set_text
+
+    dry = subprocess.check_output(
+        [str(set_tok), "--dry-run", "--also-sandbox"], cwd=ROOT, text=True
+    )
+    assert "also_sandbox=yes" in dry
+    assert "d6g8k5htny-coder/sandbox" in dry
+    assert "dry-run: OK" in dry
+    # Never leak token material
+    assert "gho_" not in dry
+    assert "ghs_" not in dry
+    assert "github_pat_" not in dry
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH259_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "259"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "grant_check_app_sandbox_404_hides_durable_writable"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+    assert brief.get("sandbox_secret_set") is True
+    assert brief.get("durable_sibling_coverage") == "8/8_WRITABLE"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH259_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "259"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "wait_until_aligned transport honesty" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+
+    audit_json = json.loads(
+        (ROOT / "portable" / "BATCH259_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit_json.get("lemma_closed") is False
+    assert audit_json.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 259" in log
+    assert "dual-vector" in log or "durable" in log.lower()
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 259)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 259)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 259" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    repos = status.get("main_push_token_set_repos") or []
+    assert "d6g8k5htny-coder/sandbox" in repos
