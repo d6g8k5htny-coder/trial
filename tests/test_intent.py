@@ -15072,6 +15072,8 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
+    assert 'return "345"' in helper or 'return "343"' in helper
+    assert 'return "340"' not in helper
     assert 'return "336"' not in helper
     assert 'return "340"' not in helper
     # Living ultimate fallback supersedes; Batch 343 shipped "343".
@@ -15102,6 +15104,7 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     td = tempfile.mkdtemp()
     (Path(td) / "scripts").mkdir()
     assert mod._living_inventory_batch(td) == m_fb.group(1)
+    assert int(mod._living_inventory_batch(td)) >= 343
 
     (Path(td) / "scripts" / "refresh_path_c_bundle.sh").write_text(
         'BATCH_TAG="${REFRESH_BATCH_TAG:-344}"\n', encoding="utf-8"
@@ -15677,61 +15680,44 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
     assert m is not None
     assert int(m.group(1)) >= 345
-
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 345)
     # Single living === header (no dual 344-first trap).
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers, "missing print_owner Batch header"
     assert int(headers[0]) >= 345
-
     sys.path.insert(0, str(ROOT / "scripts"))
     import post_batch322_wake_comments as wake  # type: ignore
-
     n = wake._living_batch_n()
     assert n.isdigit()
     assert int(n) >= 345
-
     brief = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_BRIEF.json").read_text(
             encoding="utf-8"
         )
-    )
     assert brief.get("batch") == "345"
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
     assert brief.get("defect_id") == (
         "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
-    )
     assert brief.get("action") == "eng_wake_ultimate_fallback_unfreeze"
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip", "")))
     assert brief.get("tip_match") is True
-
     hunt = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_HUNT.json").read_text(
-            encoding="utf-8"
-        )
-    )
     assert hunt.get("defect_id") == (
-        "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
-    )
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
     assert hunt.get("defect_shipped") is True
-
     evidence = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_EVIDENCE.json").read_text(
-            encoding="utf-8"
-        )
-    )
     assert evidence.get("lemma_closed") is False
     assert evidence.get("path_c") == "IDLE@0019"
     assert evidence.get("action") == "eng_wake_ultimate_fallback_unfreeze"
     assert _living_tip(str(evidence.get("hardening_tip", "")))
-
     assert "ultimate fallback" in unblock and "345" in unblock
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake-fallback)" in land
@@ -15739,4 +15725,20 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     assert "wake ultimate fallback" in log_md.lower() or "341→345" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake-fallback)" in owner
-
+def test_batch345_tip_sync_e3cd7d4() -> None:
+    """Batch 345: tip-sync fcad723→e3cd7d4; inventable not promoted."""
+        (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4"
+    assert brief.get("keep_prior") is True
+    assert str(brief.get("prior_tip", "")).startswith("fcad723")
+    assert "e3cd7d4" in _LIVING_TIPS
+    assert "fcad723" in _LIVING_TIPS
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    assert _living_tip(str(status.get("base_tip") or ""))
+    assert status.get("lemma_closed") is False
+    assert "e3cd7d4" in unblock or "tip-sync" in unblock.lower()
+    assert "e3cd7d4" in land or "STATUS (Batch 345 tip-sync)" in land

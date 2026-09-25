@@ -4,6 +4,7 @@ tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; #105 MERGED into hardening â
 ## STATUS (Batch 345 wake-fallback)
 
 tip `fcad723` tip_match=true; eng: wake ultimate fallback return `"345"` (was frozen `"341"`); print_owner single living header @345 (was dual 344+345); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; keep-prior; inventable NOT promoted; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 345 grant)
 

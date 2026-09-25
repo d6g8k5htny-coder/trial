@@ -49,6 +49,8 @@ fi
 
 echo "=== Batch 345 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 345: tip-sync fcad723→e3cd7d4 after main #105 CONTRIBUTION_PLAN retire (keep-prior; NOT promoted); REFRESH default 345"
+echo " Batch 345: tip-sync fcad723→e3cd7d4 (keep-prior; inventable NOT promoted)"
+echo " Batch 345: inventory ultimate fallback return \"345\" (was 343 after tip-sync REFRESH 345)"
 echo " Batch 343: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910)"
 echo " Batch 345: wake ultimate fallback return \"345\" (was frozen 341); single living print_owner header (was dual 344+345)"
 echo " Batch 345: MULTI_AGENT wake+assign stopped agents (WAKE345; batch329 timer)"
