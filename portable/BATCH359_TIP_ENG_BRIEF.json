@@ -1,23 +1,19 @@
 {
-  "batch": "359",
-  "generated_at_utc": "2026-09-25T21:44:46Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
-  "durable": "8/8_WRITABLE",
-  "coverage": "8/8_WRITABLE",
   "lemma_closed": false,
   "flipped_anything": false,
+  "action": "conflict_cleanup_and_inv_tip_repin",
+  "batch": "359",
   "scientific_effect": "NONE",
-  "action": "inventory_preserve_durable_tip_pin",
-  "path_c": "IDLE@0019",
   "goal": "OPEN",
-  "inventable_promoted": false,
-  "inventory_batch": "359",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip": "930415da0bb0",
   "trial_tip_sha": "7e36b18d5c70576f66e6542f36ffce9da5673ea8",
   "live_trial_head": "7e36b18d5c70576f66e6542f36ffce9da5673ea8",
   "trial_tip_matches_live_head": true,
-  "prior_trial_tip_sha": "930415da0bb0",
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
@@ -28,7 +24,8 @@
     "sandbox": "49ae345",
     "trial": "7e36b18"
   },
-  "preserve_durable_writable0_denied": true,
-  "coordinator_bcId": "bc-01a0cf1e",
-  "defect_id": "inventory_trial_tip_lag_after_lands"
+  "generated_at_utc": "2026-09-25T21:44:46Z",
+  "defect_id": "conflict_markers_and_inventory_tip_lag_on_main",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e"
 }

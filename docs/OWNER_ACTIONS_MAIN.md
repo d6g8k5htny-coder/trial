@@ -1,3 +1,22 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: conflict-marker cleanup on main + inventory tip re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`conflict_cleanup_and_inv_tip_repin`.
+
+```bash
+rg -n '<<<<<<<' docs/AUTONOMOUS_48H_LOG.md docs/OWNER_ACTIONS_MAIN.md portable/LAND.md scripts/print_owner_unblock.sh tests/test_intent.py || true
+PRESERVE_DURABLE=1 INV_BATCH=359 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch359_tip_or_eng_continue -q
+```
+
+## STATUS (Batch 359 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 359 lands — republish batch241-path-c-bundle `--force`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch359_living_script_stale_republish -q
+```
+
 ## STATUS (Batch 359 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH359_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

@@ -1,0 +1,31 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:44:46Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "durable": "8/8",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_living_script_stale_republish",
+  "defect_id": "living_script_stale_after_batch359_conflict_fix",
+  "before": {
+    "script_stale": 1,
+    "drift": [
+      "print_owner_unblock.sh",
+      "refresh_ai_agent_access_inventory.py",
+      "post_batch322_wake_comments.py",
+      "refresh_path_c_bundle.sh"
+    ]
+  },
+  "after": {
+    "script_stale": 0,
+    "tip_stale": 0,
+    "upload": "batch241-path-c-bundle --clobber --force"
+  },
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "path_c": "IDLE@0019"
+}

@@ -7,7 +7,21 @@
   "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
   "goal": "OPEN",
-  "trial_tip_sha": "930415da0bb0c2b53f9298d093593b72e6edfe9c",
+  "trial_tip_sha": "7e36b18d5c70576f66e6542f36ffce9da5673ea8",
   "scientific_effect": "NONE",
-  "defect_id": "inventory_trial_tip_lag_after_lands"
+  "defect_id": "inventory_trial_tip_lag_after_lands",
+  "live_trial_head": "7e36b18d5c70576f66e6542f36ffce9da5673ea8",
+  "trial_tip_matches_live_head": true,
+  "prior_trial_tip_sha": "930415da0bb0",
+  "generated_at_utc": "2026-09-25T21:44:46Z",
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "8fef315",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "7e36b18"
+  }
 }
