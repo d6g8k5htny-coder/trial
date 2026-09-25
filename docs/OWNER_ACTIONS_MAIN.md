@@ -1,3 +1,7 @@
+## STATUS (Batch 366 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true). tip_sync_watch idle; living current; inv parent-pinned. Evidence: `portable/BATCH366_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 365 unfreeze-verify)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: header Batch 365 while wake/inv/REFRESH last-resort + VERIFY.refresh_batch frozen at 364 — unfreeze→365 + force refresh VERIFY 364→365 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN.
