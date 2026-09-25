@@ -28,6 +28,10 @@
 #       # (and sandbox.tip) via refresh_ai_agent_access_inventory.py. Pre-323
 #       # --check only printed a pointer while tip_sha drifted. Never flips
 #       # lemma_closed / never prints tokens.
+#       # Batch 329: when durable token is absent in-pod (coverage=no_token),
+#       # tip-refresh preserves prior durable 8/8 push/admin/sandbox.readable
+#       # — ambient App pull-only must not clobber the inventory. Do not open
+#       # a false no_token grant-audit eng branch for that case.
 #   ./scripts/owner_grant_ai_agent_access.sh --invite-collaborators
 #       # only if AI_COLLAB_USERNAMES env lists real logins (comma-separated)
 #   ./scripts/owner_grant_ai_agent_access.sh --help
@@ -473,6 +477,8 @@ print("install_missing_from_deps:", missing)'
   # Batch 323: refresh living inventory tip_sha/pushed_at/write so agents do
   # not read a stale pointer file. Prefer durable token; fall back to ambient.
   # Writer: scripts/refresh_ai_agent_access_inventory.py (pack + CRITICAL).
+  # Batch 329: ambient/no_token tip-refresh must preserve durable 8/8 push/
+  # admin/sandbox.readable — do not open a false no_token grant-audit branch.
   # Never flips lemma_closed / scientific_effect / flipped_anything.
   INV_PATH="$ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
   if [[ -f "$INV_PATH" ]]; then

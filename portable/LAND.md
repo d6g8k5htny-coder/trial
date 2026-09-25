@@ -1,6 +1,6 @@
 ## STATUS (Batch 329)
 
-tip `077464e` tip_match=true; eng: Batch 289 Intent no longer freezes VERIFY.tip_refresh=True (non-tip refresh_batch bumps set false); MULTI_AGENT_WAKE_BATCH329 wake+assign; lemma_closed=false; scientific effect NONE.
+tip `077464e` tip_match=true; Path C IDLE@0019; durable 8/8; eng: (1) Batch 289 Intent tip_refresh assert softened; MULTI_AGENT_WAKE_BATCH329; (2) grant --check no_token tip-refresh preserves durable push/admin (no false grant-audit branch); lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 328)
 

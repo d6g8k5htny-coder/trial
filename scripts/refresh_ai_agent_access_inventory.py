@@ -9,6 +9,11 @@ Batch 328: INV_BATCH default no longer freezes at \"323\" — derive from
 print_owner_unblock.sh header (=== Batch N ===) so tip refreshes stamp the
 living automation batch. Env INV_BATCH still overrides.
 
+Batch 329: when durable probe is skipped (no_token / DURABLE_SANDBOX_WRITE=n/a),
+tip-refresh only — do **not** clobber durable push/admin/perm, sandbox.readable,
+or durable_sibling_coverage 8/8 with ambient App/ghs pull-only permissions.
+False no_token grant-audit branches are not an eng fix. lemma_closed stays false.
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 """
@@ -42,6 +47,21 @@ def _living_inventory_batch(root: str) -> str:
     except (OSError, json.JSONDecodeError):
         pass
     return "328"
+
+
+def _no_durable_probe(
+    durable_writable: int,
+    durable_sandbox_read: str,
+    durable_sandbox_write: str,
+) -> bool:
+    """True when --check skipped durable vector (no MAIN_PUSH_TOKEN in pod)."""
+    if os.environ.get("PRESERVE_DURABLE", "").strip() in ("1", "true", "yes"):
+        return True
+    if str(durable_sandbox_write) in ("n/a",):
+        return True
+    if durable_writable == 0 and str(durable_sandbox_read) in ("n/a", "?", ""):
+        return True
+    return False
 
 
 def _gh_json(args: list[str]) -> Any:
@@ -107,12 +127,26 @@ def refresh(
     inv["multi_agent_script"] = "scripts/owner_grant_ai_agent_access.sh"
     inv["script"] = "scripts/owner_grant_ai_agent_access.sh"
 
-    if repos and durable_writable == len(repos):
-        inv["durable_sibling_coverage"] = "8/8_WRITABLE"
-        inv["sibling_write_count"] = durable_writable
-    elif repos and durable_writable:
-        inv["durable_sibling_coverage"] = f"{durable_writable}/{len(repos)}"
-        inv["sibling_write_count"] = durable_writable
+    preserve_durable = _no_durable_probe(
+        durable_writable, durable_sandbox_read, durable_sandbox_write
+    )
+
+    if not preserve_durable:
+        if repos and durable_writable == len(repos):
+            inv["durable_sibling_coverage"] = "8/8_WRITABLE"
+            inv["sibling_write_count"] = durable_writable
+            inv["durable_writable"] = f"{durable_writable}/{len(repos)}"
+        elif repos and durable_writable:
+            inv["durable_sibling_coverage"] = f"{durable_writable}/{len(repos)}"
+            inv["sibling_write_count"] = durable_writable
+            inv["durable_writable"] = f"{durable_writable}/{len(repos)}"
+    else:
+        # Keep prior durable 8/8 attribution; ambient App token ≠ durable loss.
+        if inv.get("durable_sibling_coverage") in (None, "", "no_token"):
+            if int(inv.get("sibling_write_count") or 0) == 8 or inv.get(
+                "durable_writable"
+            ) in ("8/8", "8/8_WRITABLE"):
+                inv["durable_sibling_coverage"] = "8/8_WRITABLE"
 
     by_name = {
         d.get("name"): d for d in (inv.get("details") or []) if isinstance(d, dict)
@@ -126,16 +160,24 @@ def refresh(
         tip = _tip_sha(repo)
         prev = by_name.get(repo) or {}
         write = prev.get("write", "DENIED")
-        if tip and durable_writable == len(repos):
-            write = "WRITABLE"
-        elif tip and repo.endswith("/sandbox"):
-            if durable_sandbox_write in ("WRITABLE", "DENIED"):
-                write = durable_sandbox_write
+        if not preserve_durable:
+            if tip and durable_writable == len(repos):
+                write = "WRITABLE"
+            elif tip and repo.endswith("/sandbox"):
+                if durable_sandbox_write in ("WRITABLE", "DENIED"):
+                    write = durable_sandbox_write
         perms = meta.get("permissions") if isinstance(meta.get("permissions"), dict) else {}
+        if preserve_durable:
+            # Ambient ghs is often pull-only on siblings; do not demote durable.
+            push = bool(prev.get("push", True))
+            admin = bool(prev.get("admin", True))
+        else:
+            push = bool(perms.get("push", prev.get("push", True)))
+            admin = bool(perms.get("admin", prev.get("admin", True)))
         row = {
             "name": repo,
-            "push": bool(perms.get("push", prev.get("push", True))),
-            "admin": bool(perms.get("admin", prev.get("admin", True))),
+            "push": push,
+            "admin": admin,
             "default_branch": meta.get("default_branch")
             or prev.get("default_branch")
             or "main",
@@ -151,23 +193,43 @@ def refresh(
 
         if repo == f"{owner}/sandbox":
             prev_sb = inv.get("sandbox") if isinstance(inv.get("sandbox"), dict) else {}
-            inv["sandbox"] = {
-                "readable": str(durable_sandbox_read) not in ("404", "n/a", "?", ""),
-                "write": durable_sandbox_write
-                if durable_sandbox_write in ("WRITABLE", "DENIED")
-                else row["write"],
-                "has_agents": True,
-                "tip": (tip or row["tip_sha"] or "")[:7],
-                "app_read_http": int(active_sandbox_read)
-                if str(active_sandbox_read).isdigit()
-                else prev_sb.get("app_read_http", 404),
-                "durable_read_http": int(durable_sandbox_read)
-                if str(durable_sandbox_read).isdigit()
-                else prev_sb.get("durable_read_http", 200),
-                "main_push_token_secret": True,
-            }
+            if preserve_durable:
+                inv["sandbox"] = {
+                    "readable": bool(prev_sb.get("readable", True)),
+                    "write": prev_sb.get("write")
+                    if prev_sb.get("write") in ("WRITABLE", "DENIED")
+                    else row["write"],
+                    "has_agents": True,
+                    "tip": (tip or row["tip_sha"] or "")[:7],
+                    "app_read_http": int(active_sandbox_read)
+                    if str(active_sandbox_read).isdigit()
+                    else prev_sb.get("app_read_http", 404),
+                    "durable_read_http": prev_sb.get("durable_read_http", 200),
+                    "main_push_token_secret": True,
+                }
+            else:
+                inv["sandbox"] = {
+                    "readable": str(durable_sandbox_read) not in ("404", "n/a", "?", ""),
+                    "write": durable_sandbox_write
+                    if durable_sandbox_write in ("WRITABLE", "DENIED")
+                    else row["write"],
+                    "has_agents": True,
+                    "tip": (tip or row["tip_sha"] or "")[:7],
+                    "app_read_http": int(active_sandbox_read)
+                    if str(active_sandbox_read).isdigit()
+                    else prev_sb.get("app_read_http", 404),
+                    "durable_read_http": int(durable_sandbox_read)
+                    if str(durable_sandbox_read).isdigit()
+                    else prev_sb.get("durable_read_http", 200),
+                    "main_push_token_secret": True,
+                }
         if repo == f"{owner}/main":
-            inv["main_writable"] = row["write"] == "WRITABLE"
+            if preserve_durable:
+                inv["main_writable"] = bool(
+                    inv.get("main_writable", row["write"] == "WRITABLE")
+                )
+            else:
+                inv["main_writable"] = row["write"] == "WRITABLE"
 
     inv["details"] = details_out
     inv["repos_connected"] = connected
@@ -177,7 +239,12 @@ def refresh(
         json.dump(inv, f, indent=2)
         f.write("\n")
 
-    return {"tip_updates": updated, "lemma_closed": False, "path": inv_path}
+    return {
+        "tip_updates": updated,
+        "lemma_closed": False,
+        "path": inv_path,
+        "preserve_durable": preserve_durable,
+    }
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -230,7 +297,9 @@ def main(argv: list[str] | None = None) -> int:
     print(
         "inventory_refresh=ok "
         f"path=portable/AI_AGENT_ACCESS_INVENTORY.json "
-        f"tip_updates={result['tip_updates']} lemma_closed=false"
+        f"tip_updates={result['tip_updates']} "
+        f"preserve_durable={str(result.get('preserve_durable', False)).lower()} "
+        f"lemma_closed=false"
     )
     return 0
 

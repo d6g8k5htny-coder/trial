@@ -4,11 +4,11 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 329)
 
-Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — Batch 327 non-tip `refresh_batch` bump correctly sets `tip_refresh=False` while tip stays living → assert softened to `(True, False)`. Dylan wake: `portable/MULTI_AGENT_WAKE_BATCH329.json` (resume IDLE + cloud peers). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`living_tip_refresh_assert_and_wake`. Scientific effect: NONE.
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: (1) `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — softened to `(True, False)`; Dylan wake `portable/MULTI_AGENT_WAKE_BATCH329.json`. (2) grant `--check` without in-pod token printed `no_token` then tip-refresh **clobbered** durable push/admin/`sandbox.readable` with App pull-only — `refresh_ai_agent_access_inventory.py` now preserves durable 8/8 on `DURABLE_SANDBOX_WRITE=n/a`; do **not** open a false no_token grant-audit branch. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`inv_no_token_preserve_durable`. Scientific effect: NONE.
 
 ```bash
-./scripts/refresh_path_c_bundle.sh --dry-run
-python3 -c 'import json; print(json.load(open("portable/MULTI_AGENT_WAKE_BATCH329.json"))["action"])'
+./scripts/owner_grant_ai_agent_access.sh --check
+python3 -c 'import json; d=json.load(open("portable/AI_AGENT_ACCESS_INVENTORY.json")); print(d["durable_sibling_coverage"], d["lemma_closed"])'
 ```
 
 ## STATUS (Batch 328)

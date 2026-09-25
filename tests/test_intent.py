@@ -13071,3 +13071,67 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
+
+def test_batch329_inv_no_token_preserve_durable() -> None:
+    """Batch 329: no_token tip-refresh must not clobber durable 8/8 attribution."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path
+
+    helper = ROOT / "scripts" / "refresh_ai_agent_access_inventory.py"
+    text = helper.read_text(encoding="utf-8")
+    assert "Batch 329" in text
+    assert "_no_durable_probe" in text
+    assert "preserve_durable" in text
+    assert "False no_token grant-audit" in text or "false no_token grant-audit" in text
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "Batch 329" in grant
+    assert "false no_token grant-audit" in grant
+
+    docs = (ROOT / "docs" / "MULTI_AGENT_ACCESS.md").read_text(encoding="utf-8")
+    assert "Batch 329" in docs
+    assert "no_token" in docs
+    assert "8/8 WRITABLE" in docs
+
+    spec = importlib.util.spec_from_file_location("refresh_inv_329", helper)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+
+    with tempfile.TemporaryDirectory() as td:
+        path = Path(td) / "AI_AGENT_ACCESS_INVENTORY.json"
+        path.write_text(json.dumps(inv, indent=2) + "\n", encoding="utf-8")
+        repos = [d["name"] for d in inv["details"]]
+        # Simulate ambient App --check with no durable token (n/a).
+        result = mod.refresh(
+            str(path),
+            repos,
+            durable_writable=0,
+            durable_sandbox_read="n/a",
+            durable_sandbox_write="n/a",
+            active_sandbox_read="404",
+            batch="329",
+        )
+        assert result.get("preserve_durable") is True
+        out = json.loads(path.read_text(encoding="utf-8"))
+        assert out.get("durable_sibling_coverage") == "8/8_WRITABLE"
+        assert out.get("lemma_closed") is False
+        assert out.get("flipped_anything") is False
+        assert out.get("main_writable") is True
+        assert out.get("sandbox", {}).get("readable") is True
+        assert out.get("sandbox", {}).get("write") == "WRITABLE"
+        for d in out.get("details") or []:
+            assert d.get("push") is True, d
+            assert d.get("write") == "WRITABLE", d
+        for c in out.get("repos_connected") or []:
+            assert c.get("perm") == "push", c
+
