@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-09-25T19:28:34Z",
+  "generated_at_utc": "2026-09-25T19:46:07Z",
   "guard": "no_status_promotion",
   "scientific_effect": "NONE",
   "goal_complete": false,
   "lemma_closed": false,
   "flipped_anything": false,
   "tip_sha": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
-  "baseline_path": "/workspace/portable/STATUS_GUARD_SNAPSHOT.json",
-  "baseline_tip_sha": "fcad72366743f5244eb26a0164e106419de78137",
+  "baseline_path": "/tmp/batch348-wt/portable/STATUS_GUARD_SNAPSHOT.json",
+  "baseline_tip_sha": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "pass": true,
   "violations": [],
   "new_open_only": {

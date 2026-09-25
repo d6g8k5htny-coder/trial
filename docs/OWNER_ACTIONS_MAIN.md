@@ -1,3 +1,7 @@
+## STATUS (Batch 348 inv-tip-pin + research-audit)
+
+Inventory tip pin @`f00459d`; research audit @`e3cd7d4` open_premises=13 open_lemmas=1 open_prizes=3; guard pass; `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 347 soften-wake-pin)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: soften `test_batch346_multi_agent_wake_assign` live wake tip `startswith("e3cd7d4")` → `_living_tip` (Batch 341/344/346 class). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

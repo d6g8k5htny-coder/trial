@@ -16370,3 +16370,74 @@ def test_batch347_soften_wake346_live_tip_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 347 soften-wake-pin)" in owner
 
+
+def test_batch348_inventory_tip_pin() -> None:
+    """Batch 348: inventory trial tip pinned after Batch 347 lands; durable 8/8."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 348
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("a136c2d")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH348_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "348"
+    assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 348)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 348 and len(headers) == 1
+
+
+def test_batch348_research_stack_audit_no_promotion() -> None:
+    """Batch 348: research stack audit without status promotion @e3cd7d4."""
+    import json
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH348_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    counts = audit.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(audit.get("tip_sha") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH348_RESEARCH_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "348"
+    assert brief.get("action") == "research_stack_audit_no_promotion"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("guard_pass") is True
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert snap.get("violations") == []
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "Batch 348" in land and "research" in land.lower()
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 348" in log_md and "research stack audit" in log_md.lower()
+

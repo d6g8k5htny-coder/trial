@@ -1,0 +1,16 @@
+{
+  "batch": "348",
+  "utc": "2026-09-25T19:47:08Z",
+  "tip": "e3cd7d4",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "research_stack_audit_no_promotion",
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "open_questions": 16,
+  "guard_pass": true,
+  "goal": "OPEN",
+  "artifact": "portable/BATCH348_RESEARCH_STACK_AUDIT.json"
+}

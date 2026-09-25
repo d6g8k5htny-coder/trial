@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 348 — inventory tip pin + research stack audit @e3cd7d4 (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8.
+- Eng: inventory trial tip lagged @`a136c2d` after Batch 347 soften → preserve_durable pin→HEAD `f00459d`; INV/wake fallback + REFRESH→348.
+- Research: `audit_research_stack_open` @ hardening tip — open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD pass; **no promotion**; `lemma_closed=false`.
+- Artifacts: `BATCH348_INV_TIP_PIN_*`, `BATCH348_RESEARCH_STACK_AUDIT.json`. Goal OPEN.
+
 ### Batch 347 — soften WAKE346 Intent live tip pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

@@ -1,3 +1,7 @@
+## STATUS (Batch 348 inv-tip-pin + research-audit)
+
+tip `e3cd7d4` tip_match=true; inventory trial tip pin→`f00459d`; research stack audit open_premises=13 WITHOUT promotion; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 347 soften-wake-pin)
 
 tip `e3cd7d4` tip_match=true; eng: soften Batch 346 wake Intent live tip pin (`startswith("e3cd7d4")` → `_living_tip`); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
