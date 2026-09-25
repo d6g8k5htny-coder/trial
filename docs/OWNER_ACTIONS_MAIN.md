@@ -7,6 +7,10 @@ INV_BATCH=352 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_invento
 ./scripts/refresh_path_c_bundle.sh --dry-run
 ```
 
+## Batch 353 — inventory_preserve_durable_tip_pin
+
+Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD; never demote 8/8. Goal OPEN. `lemma_closed=false`.
+
 ## STATUS (Batch 352 wake)
 
 Hardening tip **stable** @ `e3cd7d4`. Dylan: message stopped agents — Task-resume 7 IDLE Path C peers (tip watch, eng hunt, grant, CI audit, inventory, tip/eng rewake, tip cloud). Evidence: `portable/MULTI_AGENT_WAKE_BATCH352.json`. `lemma_closed=false`. action=`multi_agent_wake_and_assign`. Goal OPEN.

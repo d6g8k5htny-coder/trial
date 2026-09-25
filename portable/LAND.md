@@ -1,3 +1,7 @@
+## STATUS (Batch 353 inv-preserve-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 353; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 352 ci-audit-watch)
 
 tip `e3cd7d4` tip_match=true; CI green after INV_TIP soften + EARLY_FALLBACK isolate; idle_no_commit; lemma_closed=false; scientific effect NONE.
