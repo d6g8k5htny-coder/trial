@@ -36,7 +36,7 @@ jobs:
           echo '00a5af6734f6c89dc96253b75e7e0760cd4122eae76568655fed22adfd1281fa  subject/tools/claims_gate_adapter.py' | sha256sum -c -
           git -C subject apply --check "$GITHUB_WORKSPACE/reviewer/reviews/pr98_f1_repair_20260925/adapter.patch"
           git -C subject apply "$GITHUB_WORKSPACE/reviewer/reviews/pr98_f1_repair_20260925/adapter.patch"
-          cp reviewer/reviews/pr98_f1_repair_20260925/test_claims_gate_enforcement.py subject/tests/test_claims_gate_enforcement.py
+          cp reviewer/reviews/pr98_f1_repair_20260925/enforcement_suite.py subject/tests/test_claims_gate_enforcement.py
           echo '053128abfc91cd787963d4b9de95f833c5c0ac84a5d2b2c7ba9db70f3a2c540f  subject/tools/claims_gate_adapter.py' | sha256sum -c -
           echo '32038a994536087a6c60861e4287495adcef4401bc2c61bed296b8dee494d178  subject/tests/test_claims_gate_enforcement.py' | sha256sum -c -
       - name: F1 normal and optimized regressions plus semantic mutations
