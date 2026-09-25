@@ -9,9 +9,9 @@
   "goal": "OPEN",
   "path_c": "IDLE@0019",
   "durable": "8/8_WRITABLE",
-  "prior_trial_tip": "b6eb658a3d6d",
-  "trial_tip_sha": "ccdec0d0649b72954a6b3459925503bfec43be61",
-  "live_trial_head": "ccdec0d0649b72954a6b3459925503bfec43be61",
+  "prior_trial_tip": "ccdec0d0649b",
+  "trial_tip_sha": "a7f4fce39499ce922cd0087b0817c35d7b0b8309",
+  "live_trial_head": "a7f4fce39499ce922cd0087b0817c35d7b0b8309",
   "trial_tip_matches_live_head": true,
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -21,9 +21,9 @@
     "meta-framewo": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "513367e"
+    "trial": "a7f4fce"
   },
-  "generated_at_utc": "2026-09-25T21:17:10Z",
+  "generated_at_utc": "2026-09-25T21:19:52Z",
   "tip": "e3cd7d4",
   "defect_id": "landed_rebase_conflict_markers_and_tip_lag",
   "inventable_promoted": false,

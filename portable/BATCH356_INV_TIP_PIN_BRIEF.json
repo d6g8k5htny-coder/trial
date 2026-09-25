@@ -7,10 +7,22 @@
   "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
   "goal": "OPEN",
-  "trial_tip_sha": "ccdec0d0649b72954a6b3459925503bfec43be61",
+  "trial_tip_sha": "a7f4fce39499ce922cd0087b0817c35d7b0b8309",
   "scientific_effect": "NONE",
   "defect_id": "inventory_trial_tip_lag_after_lands",
-  "live_trial_head": "ccdec0d0649b72954a6b3459925503bfec43be61",
+  "live_trial_head": "a7f4fce39499ce922cd0087b0817c35d7b0b8309",
   "trial_tip_matches_live_head": true,
-  "generated_at_utc": "2026-09-25T21:17:10Z"
+  "generated_at_utc": "2026-09-25T21:19:52Z",
+  "tip": "e3cd7d4",
+  "prior_trial_tip_sha": "ccdec0d0649b",
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "ac868b2",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "a7f4fce"
+  }
 }
