@@ -29,6 +29,8 @@ Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). 
 AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
 ```
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Dylan ask: message stopped agents → `portable/MULTI_AGENT_WAKE_BATCH340.json`. Eng: `audit_main_alignment` 403 rate-limit backoff + grant inventory tip refresh batch 340 (preserve durable 8/8; `--check` skip when `durable_token_source=none`). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
+python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
 ```
 
 ## STATUS (Batch 339)

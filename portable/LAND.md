@@ -8,7 +8,8 @@ tip `f244312` tip_match=true TIP_OK after tip-sync; #108 MERGED into hardening â
 
 ## STATUS (Batch 340)
 
-tip `848aea2` tip_match=true; eng: republish CRITICAL += `audit_main_alignment.py` (was pack-only); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+tip `848aea2` tip_match=true; MULTI_AGENT wake+assign; grant inventory tip refresh batch 340 (preserve_durable 8/8); audit 403 backoff; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 
 ## STATUS (Batch 339)
 

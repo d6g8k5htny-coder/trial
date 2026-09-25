@@ -40,32 +40,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 - NEVER flip research.
 
 
+### Batch 340 — grant inventory tip refresh (2026-09-25)
+- Artifact `portable/BATCH340_GRANT.json`. NEVER flip research.
 
 ### Batch 340 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
 
 - Dylan ask: message stopped agents + assign Path C intent tasks.
 - Tip **stable** @ `848aea2` (tip_match=1). Path C IDLE@0019; durable 8/8; living `script_stale=0 tip_stale=0`.
-- Woke 10 IDLE agents via Task resume + spawned 1 cloud peer (`bc-232cbb8d`).
+- Woke 10 IDLE agents via Task resume + spawned 1 cloud peer; action=`multi_agent_wake_and_assign`.
 - Artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`; `lemma_closed=false`; NEVER flip research.
 
-### Batch 340 — inventory ultimate fallback unfreeze (2026-09-25)
-
-- Tip stable @ `848aea2` (match=1); Path C IDLE@0019; `lemma_closed=false`.
-- Defect: `_living_inventory_batch` last-resort `return "336"` froze empty-tree fallback while living header was Batch 340 and `REFRESH_BATCH_TAG` default lagged at 337.
-- Fix: bump ultimate return + `REFRESH_BATCH_TAG` default to 340.
-- NEVER flip research.
-
-### Batch 340 — audit raw/ls-remote fallback after rate-limit (2026-09-25)
-
-- Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; `lemma_closed=false`.
-- Eng: peer Batch 340 backoff still exits 2 when installation rate-limit reset window is long. Added `git ls-remote` + `raw.githubusercontent.com` fallback after API exhaustion; CI soft-continues residual transport exit 2.
-- NEVER flip research.
-
-### Batch 340 (MULTI_AGENT wake land+verify; tip @848aea2) — 2026-09-25 ~18:23 UTC
-- Coordinator `bc-01a0cf1e`: Dylan permanent Path C autonomy wake.
-- Confirmed tip_match @ `848aea2`; Path C IDLE@0019; living `tip_stale=0` `script_stale=0`; durable inventory 8/8; `lemma_closed=false`.
-- Landed `portable/MULTI_AGENT_WAKE_BATCH340.json` (was missing on trial main).
-- action=`wake_land_verify_batch340`; NEVER flip research; scientific effect NONE.
 
 ### Batch 340 — audit_main_alignment rate-limit backoff (2026-09-25)
 
