@@ -1,3 +1,7 @@
+## STATUS (Batch 348 idle)
+
+tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 348 inv-tip-pin + research-audit)
 
 tip `e3cd7d4` tip_match=true; inventory trial tip pin→`f00459d`; research stack audit open_premises=13 WITHOUT promotion; lemma_closed=false; scientific effect NONE.
