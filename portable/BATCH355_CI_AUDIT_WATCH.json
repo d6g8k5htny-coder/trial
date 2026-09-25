@@ -1,0 +1,42 @@
+{
+  "batch": "355",
+  "generated_at_utc": "2026-09-25T21:08:11Z",
+  "action": "idle_no_commit",
+  "assignment": "ci_audit_watch_and_remediate",
+  "hardening_tip": "e3cd7d4",
+  "hardening_tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "ci_status": "green",
+  "ci_green_runs": [
+    {
+      "id": 36188494853,
+      "sha": "bf70fdb7",
+      "title": "Batch 354: tip_sync_or_eng idle_no_commit + wake peers @e3cd7d4"
+    },
+    {
+      "id": 36188446106,
+      "sha": "c723e591",
+      "title": "Batch 354: living script_stale republish after inv tip-pin @e3cd7d4"
+    },
+    {
+      "id": 36188265439,
+      "sha": "6397117f",
+      "title": "Batch 354: inventory tip pin sync after merge @e3cd7d4"
+    }
+  ],
+  "verified": {
+    "test_batch352_unfreeze_last_resort": "living >=352 allowlist includes 355; empty_tree_batch=355 PASSED",
+    "last_resort_return": "355",
+    "older_red_class": "hard-pin return \"352\" on Batch 353/354 pre-soften SHAs"
+  },
+  "note": "Older Batch 353 reds were frozen return \"352\"; HEAD allowlist living 352\u2013355. Tip stable. No new eng.",
+  "coordinator_bcId": "bc-01a0cf1e"
+}
