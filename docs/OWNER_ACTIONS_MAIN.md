@@ -1,3 +1,11 @@
+## STATUS (Batch 359 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH359_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 358 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 358 tip_sync idle; Intent return allowlist re-frozen 352–358 — republish + living `>=352`. `lemma_closed=false`. Goal OPEN.
