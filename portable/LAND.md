@@ -1,3 +1,6 @@
+## STATUS (Batch 346 republish)
+
+tip `e3cd7d4` tip_match=true; eng: living batch241 script_stale republish after fallback 346 (script_stale 1→0); Path C IDLE@0019; durable 8/8; goal OPEN; lemma_closed=false; scientific effect NONE.
 ## STATUS (Batch 346 ci-audit-watch)
 
 tip `e3cd7d4` tip_match=true; early-fallback+backoff intact; CI watch idle_no_commit; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

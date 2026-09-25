@@ -16182,3 +16182,58 @@ def test_batch346_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
+
+
+def test_batch346_living_script_stale_republish() -> None:
+    """Batch 346: living release script_stale cleared after tip-stable @e3cd7d4."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_REPUBLISH_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "346"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "living_release_script_stale_after_fallback_346"
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("tip_match") is True
+    assert brief.get("script_stale_pre") == 1
+    assert brief.get("script_stale_post") == 0
+    assert brief.get("tip_stale_post") == 0
+    assert brief.get("goal") == "OPEN"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH346_REPUBLISH_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("defect_id") == "living_release_script_stale_after_fallback_346"
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH346_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "eng_living_script_stale_republish"
+    assert evidence.get("script_stale_post") == 0
+    assert evidence.get("goal") == "OPEN"
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    assert "script_stale republish" in unblock and "e3cd7d4" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 republish)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "script_stale" in log_md and "republish" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 republish)" in owner

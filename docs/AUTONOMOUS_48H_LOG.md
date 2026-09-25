@@ -21,13 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 346 — living script_stale republish after tip-stable @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` after peer fallback unfreeze 345→346 (CRITICAL drift: inventory/print_owner/wake). Republish `--clobber` → tip_stale=0 script_stale=0 need_upload=0.
+- Artifacts: `BATCH346_REPUBLISH_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+
 ### Batch 346 — ci_audit_watch idle (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Confirmed `AUDIT_TRANSPORT_EARLY_FALLBACK` + rate-limit backoff still on main (no regression). Local audit Intent green.
 - Completed CI reds remain pre-tip-sync / pre-early-fallback class; tip-synced HEAD CI still queued. No new eng defect this pulse.
 - action=`idle_no_commit`. NEVER flip research. Goal OPEN.
-
 
 ### Batch 346 — inventory_preserve_durable_tip_pin @e3cd7d4 (2026-09-25)
 

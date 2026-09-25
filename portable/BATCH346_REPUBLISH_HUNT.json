@@ -1,0 +1,30 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:40:00Z",
+  "hunt": "living_script_stale_republish",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "tip_moved": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_living_script_stale_republish",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "living_release_script_stale_after_fallback_346",
+  "hunt_0020": "NEGATIVE",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @e3cd7d4)",
+    "claim/lemma promotion",
+    "fallback already 346 on main"
+  ],
+  "evidence": {
+    "script_stale_pre": 1,
+    "script_stale_post": 0,
+    "tip_stale": 0,
+    "living_tag": "batch241-path-c-bundle"
+  },
+  "goal": "OPEN"
+}

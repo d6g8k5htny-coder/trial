@@ -1,3 +1,15 @@
+## STATUS (Batch 346 republish)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: living `batch241-path-c-bundle` lagged CRITICAL scripts after Batch 346 fallback unfreeze — `republish_living_path_c_release.sh` `--clobber` cleared `script_stale` (1→0). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
+## STATUS (Batch 346 ci-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. ci_audit_watch idle_no_commit; early-fallback+backoff intact. Goal OPEN. `lemma_closed=false`.
+
 ## STATUS (Batch 346 inv-preserve-tip-pin)
 
 Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin; ultimate fallback 346; never demote 8/8. Goal OPEN. `lemma_closed=false`.
