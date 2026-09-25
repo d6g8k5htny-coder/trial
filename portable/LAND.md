@@ -1,3 +1,7 @@
+## STATUS (Batch 363 ci-intent)
+
+CI Intent Batch 286 allowlist red fixed via living >=N helpers; VERIFY refresh_batch=363; inv tip re-pin; tip `e3cd7d4`; lemma_closed=false.
+
 ## STATUS (Batch 363 tip-eng-sync-living)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip sync→HEAD after post-eng land + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

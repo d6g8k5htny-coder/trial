@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 363 — CI Intent living >=N soften + VERIFY 363 + inv tip pin (2026-09-25)
+
+- Main Intent red: Batch 286 REFRESH any() allowlists from peer tip-eng softens; also VERIFY refresh_batch lag.
+- Landed living >=N helpers + VERIFY refresh_batch=363 + PRESERVE_DURABLE inv tip pin. Tip @ `e3cd7d4`; `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 363 — tip_or_eng: inv tip sync + living republish after post-eng (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

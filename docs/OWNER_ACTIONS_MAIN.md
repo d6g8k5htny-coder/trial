@@ -1,3 +1,7 @@
+## STATUS (Batch 363 ci-intent)
+
+Landed CI Intent soften from peer branch `e0eadda` onto main + VERIFY refresh_batch 363 + inv tip pin. Evidence: `portable/BATCH363_CI_INTENT_FIX_BRIEF.json`. Goal OPEN.
+
 ## STATUS (Batch 363 tip-eng-sync-living)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory tip lagged after post-living re-pin land + living `script_stale=1` — PRESERVE_DURABLE sync→HEAD + batch241 `--force`. `lemma_closed=false`. Goal OPEN.

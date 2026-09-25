@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 363 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 363: CI Intent living >=N soften + VERIFY refresh_batch 363 + inv tip pin @e3cd7d4"
 echo " Batch 363: tip_or_eng inv tip sync after post-eng land + living script_stale republish @e3cd7d4"
 echo " Batch 363: tip_or_eng post-living inv tip re-pin beyond parent + last-resort 362→363 @e3cd7d4"
 echo " Batch 363: living script_stale republish VERIFY refresh_batch 345→362 @e3cd7d4 (tip_match; inv parent-pinned)"

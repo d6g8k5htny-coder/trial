@@ -1,0 +1,12 @@
+{
+  "batch": "363",
+  "utc": "2026-09-25T22:33:39Z",
+  "action": "eng_ci_intent_living_soften_and_verify_363",
+  "defect_id": "intent_batch286_refresh_allowlist_plus_verify_lag",
+  "lemma_closed": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "goal": "OPEN",
+  "landed_sha": "108c91ad",
+  "prior_ci_intent_branch": "e0eadda"
+}
