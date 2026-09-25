@@ -17952,3 +17952,56 @@ def test_batch355_grant_inventory_refresh() -> None:
     assert "BATCH355_GRANT" in log_md or "grant_inventory_refresh_batch355" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 355 grant)" in owner
+
+
+def test_batch355_tip_or_eng_continue() -> None:
+    """Batch 355: tip_or_eng — inv tip re-pin + living script_stale republish."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 355
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("d1d8788")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH355_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "355"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("script_stale_post") == 0
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH355_TIP_ENG_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH355_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert evidence.get("script_stale_post") == 0
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 355)
+    assert "tip_or_eng" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 tip-eng)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 tip-eng)" in owner
