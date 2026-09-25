@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 263)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `guard_no_status_promotion` on NO_PACKET checkout vs shape-stripped HAS_PACKET baseline falsely reported ~19 OPEN→ABSENT promotions (exit 1). Fixed: recover baseline shape (`live_shape` / nested / OPEN rows) → exit 2 usage. Batch 262 Intent unit now env-scrubs App tokens for file-discovery assert. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/guard_no_status_promotion.py /tmp/empty --baseline portable/STATUS_GUARD_SNAPSHOT.json   # after shape strip → exit 2
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run                  # idle_path_c_done
+```
+
 ## STATUS (Batch 262)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `probe_main_write` / `probe_main_write_vectors` only read env tokens → ambient App/ghs DENIED while `PATH_C_STATUS.write_state=WRITABLE` via `/tmp/gh-dylan-auth/access_token`. Fixed: durable file-token discovery (parity with `when_writable_land`) + `token_source` label (never prints secrets); `PATH_C_IGNORE_FILE_TOKENS=1` skips files. `lemma_closed=false`. Scientific effect: NONE.
