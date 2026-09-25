@@ -199,11 +199,20 @@ def refresh(
         if repo == f"{owner}/sandbox":
             prev_sb = inv.get("sandbox") if isinstance(inv.get("sandbox"), dict) else {}
             if preserve_durable:
+                # Prefer prior durable sandbox; if a stale no_token refresh already
+                # demoted readable/write, recover from 8/8 coverage + row write.
+                cov8 = inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+                readable = bool(prev_sb.get("readable", True)) or cov8
+                prev_write = prev_sb.get("write")
+                if prev_write not in ("WRITABLE", "DENIED") or (
+                    prev_write == "DENIED" and cov8
+                ):
+                    prev_write = (
+                        row["write"] if row.get("write") in ("WRITABLE", "DENIED") else "WRITABLE"
+                    )
                 inv["sandbox"] = {
-                    "readable": bool(prev_sb.get("readable", True)),
-                    "write": prev_sb.get("write")
-                    if prev_sb.get("write") in ("WRITABLE", "DENIED")
-                    else row["write"],
+                    "readable": readable,
+                    "write": prev_write,
                     "has_agents": True,
                     "tip": (tip or row["tip_sha"] or "")[:7],
                     "app_read_http": int(active_sandbox_read)

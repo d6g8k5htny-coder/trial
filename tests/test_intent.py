@@ -13186,3 +13186,28 @@ def test_batch329_inv_no_token_preserve_durable() -> None:
         for c in out.get("repos_connected") or []:
             assert c.get("perm") == "push", c
 
+
+def test_batch330_inv_no_token_preserve_durable() -> None:
+    """Batch 330: land no_token durable preserve; header >= 330."""
+    import re
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "_no_durable_probe" in helper
+    assert "preserve_durable" in helper
+    assert "cov8" in helper or "8/8_WRITABLE" in helper
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 330
+    _assert_print_owner_header_batch_at_least(unblock, 330)
+    assert "no_token" in unblock.lower() or "DURABLE_SANDBOX_WRITE=n/a" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 330)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 330" in log_md
+
+

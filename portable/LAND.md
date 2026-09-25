@@ -1,3 +1,7 @@
+## STATUS (Batch 330)
+
+tip `077464e` tip_match=true; eng: no_token tip-refresh preserves durable 8/8 push/admin/sandbox.readable (DURABLE_SANDBOX_WRITE=n/a); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 329)
 
 tip `077464e` tip_match=true; Path C IDLE@0019; durable 8/8; eng: living tip_refresh + MULTI_AGENT_WAKE_BATCH329; CRITICAL print_owner; refresh() None-batch living; no_token tip-refresh preserves durable 8/8; lemma_closed=false; scientific effect NONE.

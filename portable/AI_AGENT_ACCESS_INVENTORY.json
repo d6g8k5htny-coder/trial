@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-25T17:14:03Z",
+  "generated_at_utc": "2026-09-25T17:17:37Z",
   "batch": "329",
   "install_has_main": false,
   "install_repos": [
@@ -8,27 +8,27 @@
   "repos_connected": [
     {
       "name": "d6g8k5htny-coder/google-drive",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/governance-",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/main",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/Math-",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/meta-framework",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/query-",
-      "perm": "pull"
+      "perm": "push"
     },
     {
       "name": "d6g8k5htny-coder/sandbox",
@@ -36,66 +36,66 @@
     },
     {
       "name": "d6g8k5htny-coder/trial",
-      "perm": "pull"
+      "perm": "push"
     }
   ],
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:15Z",
+      "pushed_at": "2026-09-25T17:17:25Z",
       "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/governance-",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:16Z",
+      "pushed_at": "2026-09-25T17:17:26Z",
       "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/main",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:40Z",
+      "pushed_at": "2026-09-25T17:17:28Z",
       "tip_sha": "29db294db136fffe95d93b21d4e34f547f6b4bd0",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/Math-",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:20Z",
+      "pushed_at": "2026-09-25T17:17:29Z",
       "tip_sha": "b47af3a52c6ab14426348a06787a5f0c5cb721c7",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/meta-framework",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:21Z",
+      "pushed_at": "2026-09-25T17:17:31Z",
       "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/query-",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:13:23Z",
+      "pushed_at": "2026-09-25T17:17:33Z",
       "tip_sha": "02f741450a2b0bd7312aa50cae6d4aca0d8d88fc",
       "has_agents": true,
       "write": "WRITABLE"
@@ -105,18 +105,18 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:12:41Z",
+      "pushed_at": "2026-09-25T17:17:35Z",
       "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/trial",
-      "push": false,
-      "admin": false,
+      "push": true,
+      "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T17:14:03Z",
-      "tip_sha": "7a37def7805842d055b78d9fd475121c8adf1b16",
+      "pushed_at": "2026-09-25T17:17:37Z",
+      "tip_sha": "2c3782105028856e6d075df7bc5d22024289fc11",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -131,8 +131,8 @@
   "main_writable": true,
   "sandbox_added": true,
   "sandbox": {
-    "readable": false,
-    "write": "DENIED",
+    "readable": true,
+    "write": "WRITABLE",
     "has_agents": true,
     "tip": "49ae345",
     "app_read_http": 404,

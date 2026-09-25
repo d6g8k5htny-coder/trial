@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 329 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 330 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -95,6 +95,7 @@ echo " Batch 327: VERIFY refresh_batch after keep-prior WORKDIR force; pack+CRIT
 echo "  Batch 329: republish CRITICAL includes print_owner_unblock.sh (Batch 324 tip-drift Path C line was pack-only; living release could stay APPLY_READY-stale with tip_stale=0)"
 echo "  Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 329: living tip_refresh assert (Batch 289 CI red after non-tip refresh_batch); MULTI_AGENT_WAKE_BATCH329"
+echo " Batch 330: no_token tip-refresh preserves durable 8/8 (DURABLE_SANDBOX_WRITE=n/a)"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"

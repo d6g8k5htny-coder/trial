@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 330)
+
+Hardening tip **stable** @ `077464e`. Eng: inventory tip-refresh on ambient/no_token `--check` preserves durable 8/8 (no false grant-audit branch). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
 ## STATUS (Batch 329)
 
 Hardening tip **stable** @ `077464e` (tip_match=true; Path C IDLE@0019). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: (1) living tip_refresh asserts + Dylan wake `MULTI_AGENT_WAKE_BATCH329.json`; (2) republish CRITICAL += `print_owner_unblock.sh`; inventory `refresh()` None-batch living derive; REFRESH default 329; (3) no_token/`DURABLE_SANDBOX_WRITE=n/a` tip-refresh **preserves** durable push/admin/`sandbox.readable` 8/8 — do **not** open a false no_token grant-audit branch. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 330 — no_token durable preserve (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng (from cloud peer grant check): rebase+land `refresh_ai_agent_access_inventory.py` preserve durable 8/8 on no_token/`DURABLE_SANDBOX_WRITE=n/a` tip-refresh; recover demoted sandbox.readable when coverage still 8/8. Do not open false no_token grant-audit branch.
+- Batch 330 peer `refresh(batch=None)` living stamp already on main as Batch 329 None-batch land — no re-land.
+- NEVER flip research.
+
+
 ### Batch 329 — living tip_refresh assert + multi-agent wake (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
