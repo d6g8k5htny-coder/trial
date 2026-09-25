@@ -21,6 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 336 — inventory batch fallback living (2026-09-25)
+
+- Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Pack/grant audit: `_living_inventory_batch` ultimate fallback froze at **331** — now derives from `refresh_path_c_bundle.sh` `REFRESH_BATCH_TAG:-N` (same class as INV_BATCH 323/328 freezes). Pack+CRITICAL already include grant/refresh/print_owner.
+- NEVER flip research.
+
+### Batch 336 — soften Batch 335 live tip Intent pins (2026-09-25)
+
+- Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: Batch 335 Intent still required `"eeebb28" in BASE_TIP` / `VERIFY.base_tip_sha startswith eeebb28` — next tip-sync would re-red CI. Softened to `_living_tip` only.
+- NEVER flip research; inventable skipped.
+
 ### Batch 336 (MULTI_AGENT wake verify+land; tip @eeebb28) — 2026-09-25 ~17:47 UTC
 - Confirmed `portable/MULTI_AGENT_WAKE_BATCH329.json` already on trial `main` (`wake329_on_main=true`; `lemma_closed=false`).
 - Landed `portable/MULTI_AGENT_WAKE_BATCH336.json` (tip=`eeebb28`, wake336_on_main=true, action, lemma_closed=false).

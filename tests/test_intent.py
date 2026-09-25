@@ -13414,8 +13414,8 @@ def test_batch335_tip_sync_after_main_99_100() -> None:
     assert hunt.get("flipped_anything") is False
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 335 shipped eeebb28.
     assert _living_tip(base_tip)
-    assert "eeebb28" in base_tip
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -13423,7 +13423,7 @@ def test_batch335_tip_sync_after_main_99_100() -> None:
         )
     )
     assert int(str(verify.get("refresh_batch") or "0")) >= 335
-    assert str(verify.get("base_tip_sha", "")).startswith("eeebb28")
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
@@ -13467,4 +13467,61 @@ def test_batch336_multi_agent_wake_verify_land() -> None:
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
+
+def test_batch336_soften_batch335_live_tip_pins() -> None:
+    """Batch 336: Batch 335 live tip Intent pins softened to _living_tip."""
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch335_tip_sync_after_main_99_100")
+    end = intent.index("def test_batch336_soften_batch335_live_tip_pins")
+    body = intent[start:end]
+    assert "Live BASE_TIP supersedes across tip-sync; Batch 335 shipped eeebb28" in body
+    assert 'assert "eeebb28" in base_tip' not in body
+    assert 'verify.get("base_tip_sha", "")).startswith("eeebb28")' not in body
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 336)
+    assert "Batch 336" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 336" in log_md
+    assert "eeebb28" in _LIVING_TIPS
+
+def test_batch336_inventory_batch_fallback_living() -> None:
+    """Batch 336: _living_inventory_batch ultimate fallback uses REFRESH_BATCH_TAG."""
+    import importlib.util
+    import tempfile
+    from pathlib import Path
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'return "331"' not in helper
+    assert "REFRESH_BATCH_TAG:-" in helper
+    assert "_living_inventory_batch" in helper
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_ai_agent_access_inventory",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+
+    td = tempfile.mkdtemp()
+    scripts = Path(td) / "scripts"
+    scripts.mkdir()
+    (scripts / "refresh_path_c_bundle.sh").write_text(
+        'BATCH_TAG="${REFRESH_BATCH_TAG:-342}"\n', encoding="utf-8"
+    )
+    assert mod._living_inventory_batch(td) == "342"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 336)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 336)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 336" in log_md
+    assert "331" in log_md or "REFRESH_BATCH_TAG" in log_md
 

@@ -2,6 +2,12 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 336)
+
+Hardening tip **stable** @ `eeebb28`. Pack/grant: `_living_inventory_batch` fallback no longer freezes at 331 — reads REFRESH_BATCH_TAG. action=`inventory_batch_fallback_living`. `lemma_closed=false`.
+
+Hardening tip **stable** @ `eeebb28` (tip_match=true; Path C idle). Soften Batch 335 live BASE_TIP/VERIFY tip Intent pins to `_living_tip` so next tip-sync does not re-red CI. `lemma_closed=false`; `flipped_anything=false`. action=`eng_fix_landed`. Scientific effect: NONE.
+
 ## STATUS (Batch 335)
 
 Hardening tip **synced** @ `eeebb28` after #99/#100 mid-cycle. Tip-sync keep-prior; REFRESH default 335; `_LIVING_TIPS += eeebb28`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.

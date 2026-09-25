@@ -22,6 +22,8 @@ Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 
 Batch 329: refresh() None-batch fallback also derives living header (no freeze at 328).
+Batch 336: ultimate `_living_inventory_batch` fallback reads refresh_path_c_bundle
+REFRESH_BATCH_TAG:-N (no freeze at 331).
 """
 from __future__ import annotations
 
@@ -36,7 +38,12 @@ from typing import Any
 
 
 def _living_inventory_batch(root: str) -> str:
-    """Prefer print_owner header Batch N; else prior inventory batch; else 328."""
+    """Prefer print_owner header Batch N; else prior inventory; else refresh default.
+
+    Batch 336: ultimate fallback reads ``REFRESH_BATCH_TAG:-N`` from
+    refresh_path_c_bundle.sh — do not freeze at 331 (same class as INV_BATCH
+    323/328 freezes).
+    """
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
         text = open(unblock, encoding="utf-8").read()
@@ -53,7 +60,15 @@ def _living_inventory_batch(root: str) -> str:
             return b
     except (OSError, json.JSONDecodeError):
         pass
-    return "331"
+    refresh = os.path.join(root, "scripts", "refresh_path_c_bundle.sh")
+    try:
+        rtext = open(refresh, encoding="utf-8").read()
+    except OSError:
+        rtext = ""
+    m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
+    if m:
+        return m.group(1)
+    return "336"
 
 
 def _no_durable_probe(

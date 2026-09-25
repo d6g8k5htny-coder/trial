@@ -1,3 +1,9 @@
+## STATUS (Batch 336)
+
+tip `eeebb28`; inventory batch fallback reads REFRESH_BATCH_TAG (was frozen 331); lemma_closed=false; action=inventory_batch_fallback_living; scientific effect NONE.
+
+tip `eeebb28` tip_match=true; soften Batch 335 live tip Intent pins to `_living_tip`; Path C IDLE@0019; lemma_closed=false; action=eng_fix_landed; scientific effect NONE.
+
 ## STATUS (Batch 335)
 
 tip `eeebb28` tip_match=true TIP_OK after tip-sync; #99/#100 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
