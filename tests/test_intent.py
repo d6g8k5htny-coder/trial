@@ -17252,3 +17252,48 @@ def test_batch352_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
+
+
+def test_batch353_idle_tip_sync_watch() -> None:
+    """Batch 353: tip stable @e3cd7d4; idle_no_commit tip_sync_watch evidence."""
+    import json
+    import re
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH353_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "353"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH353_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 353)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 353 and len(headers) == 1
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 353" in log_md and "tip_sync_watch idle_no_commit" in log_md

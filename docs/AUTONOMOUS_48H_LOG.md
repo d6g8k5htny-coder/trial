@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 353 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0 + paper-trail tgz; `lemma_closed=false`.
+- tip_sync_watch_vs_BASE_TIP: refresh --dry-run match=1 (no tip-sync); inventable skipped → `idle_no_commit`.
+- Artifacts: `BATCH353_IDLE.json`, `BATCH353_EVIDENCE.json`. Goal OPEN. NEVER flip research.
+
 ### Batch 352 — ci_audit_watch idle (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
