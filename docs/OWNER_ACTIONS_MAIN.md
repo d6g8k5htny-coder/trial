@@ -1,3 +1,7 @@
+## STATUS (Batch 360 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + last-resort frozen 359 — preserve_durable re-pin→HEAD; REFRESH/last-resort→360; living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
 ## STATUS (Batch 360 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH360_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

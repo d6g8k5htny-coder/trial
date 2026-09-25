@@ -1,0 +1,29 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_inv_tip_repin_and_living_republish",
+  "batch": "360",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip": "4146b8e99f0f0f2242e30fe1479e4cfeb569c30a",
+  "trial_tip_sha": "8ccdca833033828ad70e7f25e02ea237590959ee",
+  "live_trial_head": "8ccdca833033828ad70e7f25e02ea237590959ee",
+  "trial_tip_matches_live_head": true,
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "8fef315",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "8ccdca8"
+  },
+  "generated_at_utc": "2026-09-25T21:57:02Z",
+  "defect_id": "inventory_tip_lag_and_last_resort_frozen_359",
+  "coordinator_bcId": "bc-01a0cf1e"
+}
