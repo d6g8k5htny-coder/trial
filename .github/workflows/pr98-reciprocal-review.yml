@@ -1,0 +1,42 @@
+name: PR98 reciprocal boundary review
+on:
+  pull_request:
+    paths:
+      - 'reviews/pr98_reciprocal_20260925/**'
+      - '.github/workflows/pr98-reciprocal-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: reviewer
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: d6g8k5htny-coder/main
+          ref: 776fdb75eb718293e296937c33eb77c228616a86
+          path: subject
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute real CLI on synthetic two-commit fixtures
+        run: python -B -S reviewer/reviews/pr98_reciprocal_20260925/probe.py --subject-root subject --output "$RUNNER_TEMP/pr98-evidence"
+      - name: Bind reviewer and subject checkout identities
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/pr98-evidence"
+          git -C reviewer rev-parse HEAD > "$RUNNER_TEMP/pr98-evidence/reviewer_commit.txt"
+          git -C subject rev-parse HEAD > "$RUNNER_TEMP/pr98-evidence/subject_commit.txt"
+          cp reviewer/reviews/pr98_reciprocal_20260925/probe.py "$RUNNER_TEMP/pr98-evidence/probe.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr98-reciprocal-evidence
+          path: ${{ runner.temp }}/pr98-evidence
+          if-no-files-found: error
