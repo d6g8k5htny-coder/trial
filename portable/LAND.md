@@ -8,7 +8,11 @@ tip `f244312` tip_match=true; tip watch — living release script_stale republis
 
 ## STATUS (Batch 342)
 
-tip `f244312` tip_match=true; eng: inventory tip refresh batch 342; soften wake-token Intent live tip pin; MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); lemma_closed=false; scientific effect NONE.
+tip `f244312` tip_match=true; eng: inventory tip refresh batch 342; soften wake-token Intent live tip pin; MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); also lands `portable/BATCH341_GRANT.json`; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 341 grant-inventory)
+
+tip `f244312` tip_match=true; grant inventory tip refresh batch 341 (trial/query tips; preserve_durable writable=0); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 341 research audit)
 

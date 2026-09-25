@@ -61,12 +61,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Eng: `post_batch322_wake_comments.py` froze `_WAKE_BATCH="340"` (Batch 340 lag workaround) while print_owner header is Batch 341 — wake markers stuck at Batch 340. Restored `_living_batch_n` from print_owner / REFRESH default. STATUS_GUARD tip refreshed `848aea2`→`f244312`.
 - Prior Batch 341 soften @`7beeef7` kept. NEVER flip research.
+### Batch 341 — grant inventory tip refresh @f244312 (2026-09-25)
+- Artifact: `portable/BATCH341_GRANT.json`. NEVER flip research.
 ### Batch 341 — research stack audit WITHOUT promotion (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8.
 - Mechanical OPEN inventory: premises **13** / lemmas **1** / prizes **3** / packet obligations **2** / claims **26** / open questions **16**; disposition=`OPEN_HOLD`.
 - Inventable/research drafts skipped (#111/#110/#109/#106/#105/#103/#98/#46/#38/#8/#7). Eng-only noted: #36/#21/#12.
 - Guard: pass=True violations=0; `lemma_closed=false`; flipped_anything=false; scientific effect NONE.
+
 
 ### Batch 341 — soften Batch 340 tip-sync live BASE_TIP Intent pin (2026-09-25)
 
