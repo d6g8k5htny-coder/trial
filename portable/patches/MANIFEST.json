@@ -251,9 +251,10 @@
       "verified_on_tip": "ac335815b277ac0c076082ac6af2344261c2093a"
     }
   ],
-  "verified_batch": "250",
+  "verified_batch": "241",
   "tip_refresh_via": "refresh_path_c_bundle.sh",
   "path_c_landed": true,
   "ready_to_apply": "superseded_already_on_tip",
-  "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false."
+  "note": "Batch 239: cut 0019 attestations close-handles @ tip 62f955a; when_writable future-delta gate; lemma_closed=false.",
+  "refresh_batch": "269"
 }
