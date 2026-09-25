@@ -15930,3 +15930,130 @@ def test_batch346_grant_inventory_refresh() -> None:
     assert "BATCH346_GRANT" in log_md or "grant_inventory_refresh_batch346" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346 grant)" in owner
+
+
+def test_batch346_status_guard_tip_refresh_e3cd7d4() -> None:
+    """Batch 346: STATUS_GUARD tip living @e3cd7d4 after tip-sync; no promotion."""
+    import json
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("flipped_anything") is False
+    assert snap.get("pass") is True
+    assert snap.get("scientific_effect") == "NONE"
+    assert snap.get("violations") == []
+    # Live STATUS_GUARD tip supersedes across tip-sync; Batch 346 shipped e3cd7d4.
+    assert _living_tip(str(snap.get("tip_sha", "")))
+    assert _living_tip(str(snap.get("baseline_tip_sha", "")))
+    inv = snap.get("inventory") or {}
+    assert _living_tip(str(inv.get("tip_sha", "")))
+    assert inv.get("packet_lemma_closed") is False
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_STATUS_GUARD_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "346"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "status_guard_tip_lag_fcad723_after_tip_sync_e3cd7d4"
+    )
+    assert brief.get("action") == "eng_status_guard_tip_refresh"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    # Historical brief keeps e3cd7d4; live snapshot tip may move.
+    assert str(brief.get("tip", "")).startswith("e3cd7d4")
+    assert str(brief.get("prior_tip", "")).startswith("fcad723")
+    assert brief.get("tip_match") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH346_STATUS_GUARD_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == (
+        "status_guard_tip_lag_fcad723_after_tip_sync_e3cd7d4"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH346_STATUS_GUARD_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("guard_pass") is True
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert evidence.get("action") == "eng_status_guard_tip_refresh"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    assert "STATUS_GUARD tip refresh" in unblock and "e3cd7d4" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 status-guard)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "STATUS_GUARD tip refresh" in log_md and "e3cd7d4" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 status-guard)" in owner
+
+
+
+def test_batch346_multi_agent_wake_assign() -> None:
+    """Batch 346: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
+    import json
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH346.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 346
+    assert wake.get("wake346_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert len(wake.get("woken_idle_agents") or []) >= 3
+    living = wake.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert str(wake.get("tip") or "").startswith("e3cd7d4")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "346"
+    assert brief.get("action") == "multi_agent_wake_and_assign"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    assert "WAKE346" in unblock or "MULTI_AGENT wake" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 wake)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_WAKE_BATCH346" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "stopped agents" in log_md and "Batch 346" in log_md
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    import re
+
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 346
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_inv = re.search(r'return "(\d+)"', helper)
+    assert m_inv is not None
+    assert int(m_inv.group(1)) >= 346

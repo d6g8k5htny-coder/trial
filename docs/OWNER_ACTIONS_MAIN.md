@@ -1,3 +1,10 @@
+## STATUS (Batch 346 status-guard)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: `STATUS_GUARD_SNAPSHOT` tip_sha lagged at `fcad723` after tip-sync — refreshed to `e3cd7d4` (baseline→`fcad723`; `guard_no_status_promotion` pass violations=0; no claim flip). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+python3 scripts/guard_no_status_promotion.py --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11 <hardening-checkout>
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
 ## STATUS (Batch 346 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`40d6f27`; INV_BATCH→346; coverage 8/8_WRITABLE; `BATCH346_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
