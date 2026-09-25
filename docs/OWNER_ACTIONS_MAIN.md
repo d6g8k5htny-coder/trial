@@ -6,6 +6,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 344)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Tip-sync watch: no tip move. Living tip_stale=0 script_stale=0; paper-trail tgz republish. Evidence: `portable/BATCH344_IDLE.json`. Guard+research: `lemma_closed=false`. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 343 inv-fallback)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: inventory `_living_inventory_batch` last-resort return `"340"` lagged tip-sync REFRESH default 343 — bumped to `"343"`; softened Batch 340 Intent hard pin on `return "340"`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.

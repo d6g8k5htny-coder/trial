@@ -1,3 +1,7 @@
+## STATUS (Batch 344)
+
+tip `fcad723` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 wake-tip)
 
 tip `fcad723` tip_match=true; WAKE343/340 living tip pins refreshed after tip-sync; wake_tip_at_assign preserved; lemma_closed=false; scientific effect NONE.

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 344 WAKE — tip_sync_watch idle @fcad723 (2026-09-25)
+
+- Tip **stable** @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Living `tip_stale=0 script_stale=0`; paper-trail tgz republish (tgz_newer). Evidence: `portable/BATCH344_IDLE.json`.
+- Inventable skipped; NEVER flip research. action=`idle_no_commit`.
+
 ### Batch 343 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
