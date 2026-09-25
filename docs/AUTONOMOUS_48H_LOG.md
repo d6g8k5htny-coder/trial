@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 — wake ultimate fallback unfreeze 341→345 + print_owner header (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `post_batch322_wake_comments._living_batch_n` last-resort `return "341"` lagged living Batch 345 (same class as inventory ultimate fallback). Print_owner dual `=== Batch` headers left first-match stuck at 344 after WAKE345 — collapsed to single living header @345. Also repaired Intent syntax broken by peer WAKE345 land (audit/wake345 tests).
+- Artifacts: `BATCH345_WAKE_FALLBACK_{BRIEF,HUNT,EVIDENCE}.json`. Goal OPEN. NEVER flip research.
+
 ### Batch 345 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

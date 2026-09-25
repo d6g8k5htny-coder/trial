@@ -80,7 +80,11 @@ def _living_batch_n() -> str:
     Batch 340 froze `_WAKE_BATCH = "340"` because print_owner lagged at 339 —
     after Batch 341 header bump that freeze left wake markers at Batch 340 forever
     (same class as Batch 338 Batch 329 marker freeze). Prefer print_owner header,
-    else REFRESH_BATCH_TAG default, else "341".
+    else REFRESH_BATCH_TAG default, else last-resort hardcoded.
+
+    Batch 345: last-resort hardcoded return bumped off frozen "341" so empty-tree
+    fallback cannot lag living Batch 345 / print_owner header (same class as
+    inventory ultimate fallback 336→340→343).
     """
     try:
         text = _PRINT_OWNER.read_text(encoding="utf-8")
@@ -96,7 +100,7 @@ def _living_batch_n() -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "341"
+    return "345"
 
 
 def batch_marker() -> str:

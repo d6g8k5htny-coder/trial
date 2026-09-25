@@ -15590,3 +15590,81 @@ def test_batch345_grant_inventory_refresh() -> None:
     assert "BATCH345_GRANT" in log_md or "grant_inventory_refresh_batch345" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 grant)" in owner
+
+def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
+    """Batch 345: wake empty-tree batch fallback no longer freezes at 341; print_owner header living."""
+    import json
+    import re
+    import sys
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'return "341"' not in poster
+    # Living ultimate fallback supersedes; Batch 345 shipped 345.
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 345
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 345)
+    # Single living === header (no dual 344-first trap).
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers, "missing print_owner Batch header"
+    assert int(headers[0]) >= 345
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import post_batch322_wake_comments as wake  # type: ignore
+
+    n = wake._living_batch_n()
+    assert n.isdigit()
+    assert int(n) >= 345
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "345"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
+    )
+    assert brief.get("action") == "eng_wake_ultimate_fallback_unfreeze"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert brief.get("tip_match") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == (
+        "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert evidence.get("action") == "eng_wake_ultimate_fallback_unfreeze"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    assert "ultimate fallback" in unblock and "345" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 wake-fallback)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "wake ultimate fallback" in log_md.lower() or "341→345" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 wake-fallback)" in owner
+

@@ -1,0 +1,18 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:16:00Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "action": "eng_wake_ultimate_fallback_unfreeze",
+  "defect_id": "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344",
+  "before": {"wake_fallback": "341", "print_owner_first_header": "344"},
+  "after": {"wake_fallback": "345", "print_owner_first_header": "345"},
+  "goal": "OPEN"
+}

@@ -1,3 +1,12 @@
+## STATUS (Batch 345 wake-fallback)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: wake `_living_batch_n` last-resort return `"341"` lagged living Batch 345; print_owner dual `===` headers left first-match at 344 after WAKE345 — single header @345 + fallback `"345"`. Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+python3 -c "import sys; sys.path.insert(0,'scripts'); import post_batch322_wake_comments as w; print(w._living_batch_n())"
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 ## STATUS (Batch 345 grant)
 
 Hardening tip **stable** @ `fcad723`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`2364c36`; INV_BATCH→345; coverage 8/8_WRITABLE; `BATCH345_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
