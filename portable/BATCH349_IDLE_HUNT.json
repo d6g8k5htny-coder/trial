@@ -1,0 +1,25 @@
+{
+  "batch": "349",
+  "generated_at_utc": "2026-09-25T19:57:51Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "defect_shipped": false,
+  "defect_found": false,
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "action": "idle_no_commit",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @e3cd7d4)",
+    "STATUS_GUARD already @e3cd7d4",
+    "living tip_stale=0 script_stale=0",
+    "CI EARLY_FALLBACK isolate already @98eb04c8"
+  ],
+  "goal": "OPEN"
+}

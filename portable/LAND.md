@@ -1,3 +1,7 @@
+## STATUS (Batch 349 idle-eng-hunt)
+
+tip `e3cd7d4` tip_match=true; eng_defect_hunt negative — no concrete eng; action=idle_no_commit; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 349 ci-remediate)
 
 tip `e3cd7d4` tip_match=true; eng: CI Intent EARLY_FALLBACK isolate in rate-limit unit tests + soften GRANT345 action allowlist; inventory tip pin; lemma_closed=false; scientific effect NONE.

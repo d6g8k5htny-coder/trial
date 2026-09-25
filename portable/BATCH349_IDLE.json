@@ -1,0 +1,40 @@
+{
+  "batch": "349",
+  "generated_at_utc": "2026-09-25T19:57:51Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "refresh_dry_run": "BASE_TIP=e3cd7d4 live=e3cd7d4 match=1",
+  "hunt": {
+    "checked": [
+      "tip_match BASE==LIVE @e3cd7d4",
+      "STATUS_GUARD tip @e3cd7d4",
+      "Intent syntax OK",
+      "no live wake/BASE tip hard pins remaining",
+      "wake/inv ultimate fallback @349",
+      "single print_owner header @349",
+      "living tip_stale=0 script_stale=0",
+      "grant skip source=none (no writable=0 OR)",
+      "peer Batch349 CI EARLY_FALLBACK isolate already landed"
+    ],
+    "defect_found": false,
+    "hunt_0020": "NEGATIVE"
+  },
+  "note": "Batch349 eng_defect_hunt_no_claim_promotion: tip stable; no concrete eng; inventable skipped; lemma_closed=false"
+}

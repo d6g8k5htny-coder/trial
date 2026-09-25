@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 349 — eng_defect_hunt idle_no_commit @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- Hunt: STATUS_GUARD living; Intent syntax OK; no live wake/BASE tip hard pins; wake/inv fallback @349; single print_owner header; peer CI EARLY_FALLBACK isolate already landed. No concrete eng → `idle_no_commit`.
+- Artifacts: `BATCH349_IDLE{,_HUNT,_BRIEF}.json`. Inventable skipped. Goal OPEN.
+
 ### Batch 349 — CI Intent EARLY_FALLBACK unit-test isolate + GRANT345 soften (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

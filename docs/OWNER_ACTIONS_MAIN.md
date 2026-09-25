@@ -1,3 +1,11 @@
+## STATUS (Batch 349 idle-eng-hunt)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng hunt negative — no frozen tip pins / fallback lag / Intent syntax / living stale. action=`idle_no_commit`. Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 349 ci-remediate)
 
 CI Intent red: `AUDIT_TRANSPORT_EARLY_FALLBACK=1` broke Batch 256/340 rate-limit unit backoff; force `_TRANSPORT_EARLY_FALLBACK=False` in those unit tests. Soften `BATCH345_GRANT` action allowlist. `lemma_closed=false`. Goal OPEN.

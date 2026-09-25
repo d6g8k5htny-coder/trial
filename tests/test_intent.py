@@ -16588,3 +16588,51 @@ def test_batch349_ci_intent_early_fallback_unit_isolate() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 349 ci-remediate)" in land
 
+
+def test_batch349_idle_eng_hunt() -> None:
+    """Batch 349: eng hunt negative @e3cd7d4; idle_no_commit evidence."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH349_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "349"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal") == "OPEN"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH349_IDLE_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH349_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "349"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 349)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 349 idle-eng-hunt)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 349 idle-eng-hunt)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "eng_defect_hunt idle_no_commit" in log_md or "Batch 349" in log_md
+
