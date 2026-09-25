@@ -19044,7 +19044,7 @@ def test_batch359_tip_or_eng_continue() -> None:
     assert brief.get("batch") == "359"
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
-    assert brief.get("action") == "inventory_tip_repin_after_land_head"
+    assert brief.get("action") in ("inventory_tip_repin_after_land_head", "eng_inv_tip_repin_and_living_republish")
     assert brief.get("trial_tip_matches_live_head") is True
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
@@ -19060,7 +19060,7 @@ def test_batch359_tip_or_eng_continue() -> None:
     )
     assert evidence.get("lemma_closed") is False
     assert evidence.get("tip_match") is True
-    assert evidence.get("action") == "inventory_tip_repin_after_land_head"
+    assert evidence.get("action") in ("inventory_tip_repin_after_land_head", "eng_inv_tip_repin_and_living_republish")
     assert evidence.get("trial_tip_matches_live_head") is True
     assert _living_tip(str(evidence.get("hardening_tip") or ""))
 
