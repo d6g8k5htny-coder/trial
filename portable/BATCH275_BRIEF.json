@@ -49,19 +49,19 @@
   "refresh_dry_run": "tip_stable_bfb7c38",
   "green_eng_prs_merged": [],
   "evidence": {
-    "manifest_verified_batch_before_script": "str(BATCH_TAG) — would regress 241→269/275 on next tip-refresh/--force",
+    "manifest_verified_batch_before_script": "str(BATCH_TAG) \u2014 would regress 241\u2192269/275 on next tip-refresh/--force",
     "manifest_verified_batch_after": "aligned from VERIFY.batch / release (241)",
     "manifest_refresh_batch_before": "269",
     "manifest_refresh_batch_after": "275",
     "verify_batch": "241",
     "verify_refresh_batch": "273+",
-    "apply_all_check": "already-applied 0001–0004+0008–0019 @ bfb7c38",
+    "apply_all_check": "already-applied 0001\u20130004+0008\u20130019 @ bfb7c38",
     "ci_tip_drift": "stable_live_eq_base",
     "inventable_tip_observe": "HEAD bfb7c38 IS observe-of-8e359e5; no post-observe tip drift; skipped",
     "pack_vs_release": "deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch @bfb7c38; keep Path C idle until next tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish)",
-  "note": "Batch 275: tip match @bfb7c38 Path C idle; main CI green; draft #81 skipped. NEW eng: Batch 269 aligned VERIFY.batch to release but MANIFEST.verified_batch still stamped from REFRESH_BATCH_TAG (default 269) — next tip-refresh/--force would regress 241→automation and re-open pack fallback landmine. Fixed release-align MANIFEST.verified_batch + stamp refresh_batch. lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 275: tip match @bfb7c38 Path C idle; main CI green; draft #81 skipped. NEW eng: Batch 269 aligned VERIFY.batch to release but MANIFEST.verified_batch still stamped from REFRESH_BATCH_TAG (default 269) \u2014 next tip-refresh/--force would regress 241\u2192automation and re-open pack fallback landmine. Fixed release-align MANIFEST.verified_batch + stamp refresh_batch. lemma_closed=false; flipped nothing. Never printed tokens. Direct-landed trial main @ ba35bb9 (gh pr create 403).",
   "artifacts": [
     "scripts/refresh_path_c_bundle.sh",
     "portable/patches/MANIFEST.json",
@@ -78,5 +78,8 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "ba35bb9",
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "trial_main_land_full": "ba35bb96c066e30233db4903093b823ba2c9aa9f"
 }

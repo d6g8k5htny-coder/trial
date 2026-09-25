@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** Batch 269 aligned `VERIFY.batch`→release `241` + `refresh_batch` automation stamp, but `refresh_path_c_bundle` still wrote `MANIFEST.verified_batch=str(BATCH_TAG)` (default was 269). Next tip-refresh/`--force` would regress healed `241`→automation and re-open pack `release|batch` fallback landmine. `MANIFEST.refresh_batch` also stuck at 269 while VERIFY advanced.
 - **Defect shipped (avoid tip-observe / research HOLDs / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch itself 269 / pack living-tag / path_c idle / republish):** MANIFEST `verified_batch` from aligned `VERIFY.batch` (never BATCH_TAG); `refresh_batch`=automation stamp; default `REFRESH_BATCH_TAG` 275.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- Trial eng pending land. Scientific effect NONE.
+- Trial eng **direct-landed main** @ `ba35bb9` (`gh pr create` 403). Scientific effect NONE.
 
 ### Batch 273 (APPLY/VERIFY honesty after keep-prior tip-refresh) — 2026-09-25 ~05:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
