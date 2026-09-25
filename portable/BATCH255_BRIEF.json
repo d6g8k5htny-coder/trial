@@ -1,6 +1,6 @@
 {
   "batch": "255",
-  "generated_at_utc": "2026-09-25T00:29:48Z",
+  "generated_at_utc": "2026-09-25T00:33:26Z",
   "status": "living_path_c_release_assets_republished",
   "waiting_ci": false,
   "goal_complete": true,
@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "republish_living_path_c_release.sh packs + compares sha/size to living release and gh release upload --clobber when pack newer",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 73,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -68,11 +68,14 @@
     "portable/BATCH255_HUNT.json",
     "portable/BATCH255_RESEARCH_STACK_AUDIT.json",
     "portable/BATCH255_REPUBLISH_EVIDENCE.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/73"
   ],
   "release_tgz_bytes_after": 351458,
   "release_tgz_sha256_after": "a4f23da7d0d2eed9017ee8a1cae442e8ec5c6301f0d0ae23d75a0f651ae79951",
   "uploaded_at_utc": "2026-09-25T00:30:55Z",
   "upload_ok": true,
-  "trial_main_land_method": null
+  "trial_main_land_method": "pr_73_squash_merge",
+  "trial_main_land": "6f16c04",
+  "trial_main_land_full": "6f16c049fa5b4a1d43d353c17d22d4818358e0ce"
 }
