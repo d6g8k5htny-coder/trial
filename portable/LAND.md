@@ -1,3 +1,7 @@
+## STATUS (Batch 345 grant)
+
+tip `fcad723` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→2364c36; coverage 8/8_WRITABLE; BATCH345_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 audit-timeout)
 
 tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

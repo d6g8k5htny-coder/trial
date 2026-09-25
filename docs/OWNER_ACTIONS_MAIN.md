@@ -1,3 +1,12 @@
+## STATUS (Batch 345 grant)
+
+Hardening tip **stable** @ `fcad723`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`2364c36`; INV_BATCH→345; coverage 8/8_WRITABLE; `BATCH345_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+# INV_BATCH=345 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+```
+
 ## STATUS (Batch 343 audit-timeout)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: Intent audit timeout under rate-limit reset sleep — `AUDIT_TRANSPORT_EARLY_FALLBACK=1` → raw/ls-remote inside 60s budget (CI 36176016910). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
