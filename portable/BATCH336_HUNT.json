@@ -1,0 +1,20 @@
+{
+  "batch": "336",
+  "hunt": "wake_intent_living_base_tip",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_intent_tip_frozen_077464e_vs_living_base_tip",
+  "avoided": [
+    "tip-sync (BASE==LIVE @eeebb28)",
+    "promote inventable/math_status drafts",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "batch335_ci": "success",
+  "generated_at_utc": "2026-09-25T17:52:00Z"
+}

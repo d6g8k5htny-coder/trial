@@ -4,9 +4,15 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 336)
 
-Hardening tip **stable** @ `eeebb28`. Eng: preserve durable inventory when `durable_writable==0` (incl. DENIED). MULTI_AGENT wake assign; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins. action=`inv_preserve_durable_on_writable0_denied`. `lemma_closed=false`.
+Hardening tip **stable** @ `eeebb28`. Eng: wake poster INTENT tip derives from `BASE_TIP.txt` (was frozen `@077464e`); preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins. `lemma_closed=false`. Scientific effect: NONE.
 
-Hardening tip **stable** @ `eeebb28` (tip_match=true; Path C idle). Soften Batch 335 live BASE_TIP/VERIFY tip Intent pins to `_living_tip` so next tip-sync does not re-red CI. `lemma_closed=false`; `flipped_anything=false`. action=`eng_fix_landed`. Scientific effect: NONE.
+```bash
+python3 -c "from scripts.post_batch322_wake_comments import intent_line; print(intent_line())"
+```
+
+```bash
+python3 -c "from scripts.post_batch322_wake_comments import intent_line; print(intent_line())"
+```
 
 ## STATUS (Batch 335)
 

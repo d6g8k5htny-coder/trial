@@ -1,8 +1,6 @@
 ## STATUS (Batch 336)
 
-tip `eeebb28`; preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; action=inv_preserve_durable_on_writable0_denied; scientific effect NONE.
-
-tip `eeebb28` tip_match=true; soften Batch 335 live tip Intent pins to `_living_tip`; Path C IDLE@0019; lemma_closed=false; action=eng_fix_landed; scientific effect NONE.
+tip `eeebb28` tip_match=true; eng: wake poster INTENT tip derives from BASE_TIP (was frozen @077464e); preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 335)
 
