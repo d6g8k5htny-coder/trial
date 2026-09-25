@@ -20,6 +20,9 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout comment bodies
+        uses: actions/checkout@v4
+
       - name: Post Batch 322 wake comments on eng PRs
         env:
           GH_TOKEN: ${{ secrets.MAIN_PUSH_TOKEN }}
@@ -29,53 +32,4 @@ jobs:
             echo "MAIN_PUSH_TOKEN secret missing — cannot comment on main eng PRs"
             exit 1
           fi
-
-          COORD="https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
-          INTENT="Intent: tip chatgpt/drive-github-hardening-20260919 @ 077464e; Path C IDLE@0019; lemma_closed=false; scientific effect NONE; no claim promotion"
-          TRIAL_PR="https://github.com/d6g8k5htny-coder/trial/pull/112"
-
-          declare -A TASKS
-          TASKS[92]='Crosswalk eng — keep RN downstream crosswalk outside the closed `docs/math_status/` packet (`EXPECTED_NAMES`); land nav/RESEARCH_INDEX/NAVIGATION pointers + packet-placement regression; green `math_status_check`/`navigation_check`; coordinate with #87/#93; do not edit byte-pinned OPEN_PROBLEMS or discharge obligations.'
-          TASKS[93]='Crosswalk eng — surface the hardening-lane RN downstream crosswalk + Math- #7 mesoscopic draft from default home once #92 path resolves; run navigation/workspace landing checks only; do not retarget research tree into default `main` or discharge OBL-H5-JETMOD / D3-LEMMA-RN-UNIF.'
-          TASKS[87]='Crosswalk eng — resume downstream RN crosswalk honesty (historical ABSENT carriers vs current blockers). Prefer #92 placement fix (file outside closed math_status packet) over re-landing inside the packet; keep lemma_closed=false / certified_C_H false; no frozen proof/register/Boolean edits.'
-          TASKS[36]='@claude — resume eng: keep `research/bands/ladder.py` at the exact bytes hardening-lane certificates pin (twelve_project_check source identity). Give way / reconcile on migration base — do not re-pin certificates or promote claims; leave research status untouched.'
-          TASKS[21]='@claude — resume eng: architectural admission attestations + salvaged H3 review artifacts on a live tip (not orphaned stack). Keep DRAFT until reviewed; additive-only; no obligation/claim discharge; tip-align if base drifted.'
-          TASKS[12]='Fail-closed OPEN/HOLD eng — keep JETMOD/RN-UNIF `math_status` + math_console mirrors fail-closed (tools refuse flag moves). HOLD/NEVER-MERGE per owner order; green CI ≠ discharge; do not close OPEN obligations or flip lemma_closed; prefer close-as-superseded hygiene only if still conflicting with tip receipts — no status promotion.'
-
-          urls_file="${RUNNER_TEMP}/comment_urls.txt"
-          : > "$urls_file"
-
-          for n in 92 93 87 36 21 12; do
-            existing="$(gh api "repos/d6g8k5htny-coder/main/issues/${n}/comments" --paginate \
-              --jq '[.[] | select(.body | test("Batch 322 wake"))] | length')"
-            if [ "${existing}" != "0" ]; then
-              echo "SKIP #${n}: identical Batch 322 wake already present"
-              gh api "repos/d6g8k5htny-coder/main/issues/${n}/comments" --paginate \
-                --jq '.[] | select(.body | test("Batch 322 wake")) | .html_url' | tee -a "$urls_file"
-              continue
-            fi
-
-            body="$(cat <<EOF
-**Batch 322 wake** — project-intent eng resume (not research flip)
-
-Coordinator: ${COORD}
-
-${INTENT}
-
-**Eng resume task:** ${TASKS[$n]}
-
-Artifact: trial \`portable/MULTI_AGENT_WAKE_BATCH322.json\` / [trial PR #112](${TRIAL_PR}). Keep DRAFT discipline where applicable; never promote claims/premises/prizes/lemmas.
-EOF
-)"
-            echo "POST #${n}..."
-            url="$(gh pr comment "${n}" --repo d6g8k5htny-coder/main --body "${body}")"
-            echo "${url}" | tee -a "$urls_file"
-          done
-
-          echo "## Batch 322 wake comment URLs" >> "$GITHUB_STEP_SUMMARY"
-          cat "$urls_file" >> "$GITHUB_STEP_SUMMARY"
-          echo "COMMENT_URLS<<EOF" >> "$GITHUB_OUTPUT"
-          cat "$urls_file" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-          echo "=== COMMENT URLS ==="
-          cat "$urls_file"
+          python3 scripts/post_batch322_wake_comments.py
