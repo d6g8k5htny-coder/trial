@@ -13090,3 +13090,35 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
+def test_batch329_print_owner_critical_script_stale() -> None:
+    """Batch 329: print_owner_unblock in republish CRITICAL; no APPLY_READY-stale miss."""
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert '    "scripts/print_owner_unblock.sh",' in republish
+    # Must sit inside the CRITICAL tuple (Batch 329), not only pack_portable.
+    crit_at = republish.index("CRITICAL = (")
+    end_at = republish.index("\n)", crit_at)
+    crit_block = republish[crit_at:end_at]
+    assert "print_owner_unblock.sh" in crit_block
+    assert crit_block.count("print_owner_unblock.sh") == 1
+    assert "Batch 329" in crit_block
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 329" in unblock
+    assert "PATH_C_LANDED_TIP_DRIFT" in unblock
+    _assert_print_owner_header_batch_at_least(unblock, 329)
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 329)
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'batch = "328"' not in helper
+    assert "_living_inventory_batch(root)" in helper
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 329" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 329)" in land

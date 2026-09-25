@@ -28,6 +28,9 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Dylan ask: message stopped agents + assign Path C intent tasks → `portable/MULTI_AGENT_WAKE_BATCH329.json` (Task resume IDLE + cloud peers).
 - NEVER flip research.
 
+- **Also shipped (this agent):** republish CRITICAL += `print_owner_unblock.sh` (Batch 324 tip-drift fix was pack-only); `refresh()` None-batch living derive; REFRESH default/header 329. Avoided duplicating tip_refresh assert soften.
+- NEVER flip research.
+
 
 ### Batch 328 — inventory INV_BATCH living stamp (2026-09-25)
 

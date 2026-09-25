@@ -1,0 +1,8 @@
+{
+  "hardening_tip": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "ship_inventory_refresh_none_batch_living_plus_refresh_default_329",
+  "flipped_anything": false,
+  "note": "peer already landed CRITICAL print_owner; this ships refresh() None-batch living derive + REFRESH 329 + dedupe CRITICAL comment"
+}

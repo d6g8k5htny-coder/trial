@@ -11,6 +11,8 @@ living automation batch. Env INV_BATCH still overrides.
 
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
+
+Batch 329: refresh() None-batch fallback also derives living header (no freeze at 328).
 """
 from __future__ import annotations
 
@@ -20,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any
 
 
@@ -101,7 +104,9 @@ def refresh(
         "%Y-%m-%dT%H:%M:%SZ"
     )
     if batch is None:
-        batch = "328"
+        # Batch 329: do not freeze at 328 — derive like main() / INV_BATCH path.
+        root = str(Path(inv_path).resolve().parents[1])
+        batch = _living_inventory_batch(root)
     inv["batch"] = str(batch)
     inv["token_printed"] = False
     inv["multi_agent_script"] = "scripts/owner_grant_ai_agent_access.sh"

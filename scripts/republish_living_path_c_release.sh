@@ -260,10 +260,10 @@ CRITICAL = (
     "scripts/owner_grant_ai_agent_access.sh",
     # Batch 323: grant --check inventory tip refresh helper (pack+CRITICAL).
     "scripts/refresh_ai_agent_access_inventory.py",
-    # Batch 329: INV_BATCH living stamp reads print_owner === Batch N === header
-    # (Batch 328). Pack already included print_owner; CRITICAL omitted it — a
-    # print_owner-only fix would leave living script_stale=0 while inventory
-    # batch stamps froze on a stale header (same class as when_writable 288).
+    # Batch 329: print_owner was pack-included but absent from CRITICAL.
+    # Needed for (a) INV_BATCH living header stamp (Batch 328) and (b) Batch 324
+    # tip-drift≠APPLY_READY Path C line — else living script_stale=0 while those
+    # fixes stay off the release (same class as when_writable 288).
     "scripts/print_owner_unblock.sh",
     # Batch 327: wake-comment poster paired with wake-batch322 workflow.
     "scripts/post_batch322_wake_comments.py",
