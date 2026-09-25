@@ -1,3 +1,11 @@
+## STATUS (Batch 355 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; peer idle+soften+republish already — no tip-pin treadmill. Evidence: `portable/BATCH355_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 354 soften-inv-base-tip)
 
 Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1; peer idle+living republish already landed. Eng: soften `test_batch354_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.
