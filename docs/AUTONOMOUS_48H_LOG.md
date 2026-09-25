@@ -29,6 +29,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene / not when_writable install_has_main):** `scripts/probe_main_write.py` now names refs with `time_ns`+pid+uuid and retries up to 5× on 422 already-exists before TRANSPORT_ERROR.
 - Candidates checked without new defect: repository_dispatch lander (recent success), guard_no_status_promotion, audit_main_alignment transport handlers, release `batch241-path-c-bundle` assets present, prior CI LAND STATUS failure already green on tip.
 - Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+- Trial main land via green PR **#72** squash merge @ `e8caa68`. Scientific effect NONE.
 
 ### Batch 253 (when_writable token-load install + land-path-c dry-run idle) — 2026-09-25 ~00:06 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 

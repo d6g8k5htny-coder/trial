@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "probe_main_write unique ref (time_ns+pid+uuid) + retry on 422 Reference already exists so concurrent probes do not false TRANSPORT_ERROR",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 72,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -60,6 +60,10 @@
     "portable/BATCH254_BRIEF.json",
     "portable/BATCH254_HUNT.json",
     "portable/BATCH254_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/72"
+  ],
+  "trial_main_land_method": "pr_72_squash_merge",
+  "trial_main_land": "e8caa68",
+  "trial_main_land_full": "e8caa68148b44153087a204a1f173a3f9a9ec67d"
 }
