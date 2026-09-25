@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 351 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1 (NOT stale `077464e`); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- tip_sync_or_eng: no tip move; peers already shipped 351 inv pin/preserve + research_audit living republish. Paper-trail living tgz. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 351 — research_stack_audit_watch + living script_stale (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

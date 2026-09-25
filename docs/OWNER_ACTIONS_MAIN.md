@@ -1,3 +1,11 @@
+## STATUS (Batch 351 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE; NOT stale `077464e`). tip_sync_or_eng: no tip move; peers already shipped 351 inv pin/preserve + research_audit living republish. Paper-trail living tgz. Evidence: `portable/BATCH351_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 351 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: open stack 13/1/3 without promotion; STATUS_GUARD tip living; eng: living `batch241` script_stale republish + inventory tip pin→HEAD. action=`living_script_stale_republish`. Goal OPEN.
