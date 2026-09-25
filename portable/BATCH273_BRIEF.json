@@ -51,14 +51,20 @@
   "evidence": {
     "apply_living_tip_before": "542e6ec (== BASE_TIP) while BASE_TIP=bfb7c38",
     "apply_living_tip_after": "bfb7c38 (== BASE_TIP)",
-    "verify_pytest_before": {"focused_passed": 0, "claims_recovery_passed": 0},
-    "verify_pytest_after": {"focused_passed": 90, "claims_recovery_passed": 83},
-    "apply_all_check": "already-applied 0001–0004+0008–0019 @ bfb7c38",
+    "verify_pytest_before": {
+      "focused_passed": 0,
+      "claims_recovery_passed": 0
+    },
+    "verify_pytest_after": {
+      "focused_passed": 90,
+      "claims_recovery_passed": 83
+    },
+    "apply_all_check": "already-applied 0001\u20130004+0008\u20130019 @ bfb7c38",
     "ci_tip_drift": "stable_live_eq_base_eq_verify",
     "pack_vs_release": "deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch @bfb7c38; keep Path C idle until next tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish)",
-  "note": "Batch 273: tip match @bfb7c38 Path C idle; main CI 36098032016 success; draft #81 real inventable docs unmix (not tip-observe HOLD) skipped. NEW eng: keep-prior tip-refresh APPLY living tip still 542e6ec==(BASE_TIP) after BASE_TIP moved + VERIFY pytest wiped 90/83→0. Fixed living-tip soft-update + pytest preserve. lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 273: tip match @bfb7c38 Path C idle; main CI 36098032016 success; draft #81 real inventable docs unmix (not tip-observe HOLD) skipped. NEW eng: keep-prior tip-refresh APPLY living tip still 542e6ec==(BASE_TIP) after BASE_TIP moved + VERIFY pytest wiped 90/83\u21920. Fixed living-tip soft-update + pytest preserve. lemma_closed=false; flipped nothing. Never printed tokens. Direct-landed trial main @ 9c3b87c (gh pr create 403).",
   "artifacts": [
     "scripts/refresh_path_c_bundle.sh",
     "portable/path-c-applied-bundle/APPLY.md",
@@ -75,5 +81,8 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "9c3b87c",
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "trial_main_land_full": "9c3b87ccbcc035090ba881b38f3a7ea747e1c043"
 }

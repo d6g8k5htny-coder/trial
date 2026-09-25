@@ -26,7 +26,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Main CI tip run 36098032016 success. Draft main #81 = inventable README unmix (research-adjacent DRAFT; not tip-observe HOLD noise; skipped). Deep 0020 hunt: **NEGATIVE**.
 - **Evidence:** Batch 272 keep-prior tip-refresh soft-updated only `BASE_TIP`/`git checkout` SHAs; living tip header still claimed `542e6ec (== BASE_TIP)` while BASE_TIP=`bfb7c38`. Same refresh wiped `VERIFY.pytest` 90/83 → 0/0 (`--skip-pytest` / parse-0) so APPLY "focused 90" contradicted VERIFY.
 - **Defect shipped (avoid tip-observe #81 / research HOLDs / pack republish / when_writable / path_c idle / land-workflows / probe W3 / VERIFY.batch / pack living-tag):** `refresh_path_c_bundle` living-tip soft-update + keep-prior pytest preserve; repaired APPLY.md + VERIFY.json.
-- Research: `lemma_closed=false`; flipped nothing. Never printed tokens. Scientific effect NONE.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial eng **direct-landed main** @ `9c3b87c` (`gh pr create` 403). Scientific effect NONE.
 
 ### Batch 272 (CI land-workflows Path C idle ungrepped leftover) — 2026-09-25 ~05:12 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
