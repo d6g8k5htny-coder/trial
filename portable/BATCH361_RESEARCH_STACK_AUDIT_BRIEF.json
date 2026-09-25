@@ -1,0 +1,14 @@
+{
+  "batch": "361",
+  "utc": "2026-09-25T22:04:33Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "research_stack_audit_watch",
+  "audit_delta_needed": false,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_match": true
+}
