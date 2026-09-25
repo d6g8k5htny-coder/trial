@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 (MULTI_AGENT wake_land_verify; tip @f244312) — 2026-09-25 ~18:53 UTC
+- Coordinator `bc-01a0cf1e`: IDLE agent resumed — `wake_land_verify_batch343`.
+- Verified WAKE340 tip pins living @ `f244312` tip_match=1; Path C IDLE@0019; goal OPEN; `lemma_closed=false`.
+- Missing eng: landed `portable/BATCH341_GRANT.json` (tiny grant verify; durable 8/8).
+- Living: republish after Batch 341 CONTINUE print_owner drift → `tip_stale=0 script_stale=0`.
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`. NEVER flip research.
+
 ### Batch 341 CONTINUE — soften INV_BATCH hard pin (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

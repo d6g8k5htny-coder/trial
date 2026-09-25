@@ -14839,3 +14839,43 @@ def test_batch341_soften_inv_batch_hard_pins_after_342() -> None:
     assert "inv_batch" in log_md.lower() or "INV_BATCH hard pin" in log_md or "inventory batch hard pin" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341 inv-batch-pin)" in owner or "inv_batch" in owner.lower()
+
+
+def test_batch343_wake_land_verify() -> None:
+    """Batch 343: GRANT341 + WAKE340 tip living @f244312; lemma_closed false."""
+    import json
+
+    grant = json.loads(
+        (ROOT / "portable" / "BATCH341_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert grant.get("batch") == "341"
+    assert grant.get("lemma_closed") is False
+    assert grant.get("flipped_anything") is False
+    assert grant.get("scientific_effect") == "NONE"
+    assert grant.get("coverage") == "8/8_WRITABLE"
+    assert grant.get("goal") == "OPEN"
+    assert _living_tip(str(grant.get("tip") or ""))
+
+    wake340 = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert wake340.get("lemma_closed") is False
+    assert wake340.get("tip_match") is True
+    assert _living_tip(str(wake340.get("tip") or ""))
+    assert str(wake340.get("tip") or "").startswith("f244312")
+
+    wake343 = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH343.json").read_text(encoding="utf-8")
+    )
+    assert wake343.get("action") == "wake_land_verify_batch343"
+    assert wake343.get("wake343_on_main") is True
+    assert wake343.get("lemma_closed") is False
+    assert wake343.get("goal") == "OPEN"
+    assert _living_tip(str(wake343.get("tip") or ""))
+    verified = wake343.get("verified") or {}
+    assert verified.get("BATCH341_GRANT") is True
+    assert verified.get("tip_stale") == 0
+    assert verified.get("script_stale") == 0
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "wake_land_verify_batch343" in log_md or "Batch 343" in log_md

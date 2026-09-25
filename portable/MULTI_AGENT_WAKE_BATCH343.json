@@ -1,0 +1,20 @@
+{
+  "batch": 343,
+  "action": "wake_land_verify_batch343",
+  "tip": "f244312",
+  "tip_match": true,
+  "wake343_on_main": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "goal": "OPEN",
+  "verified": {
+    "BATCH341_GRANT": true,
+    "WAKE340_tip": "f244312",
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "coordinator_bcId": "bc-01a0cf1e",
+  "agent_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3"
+}

@@ -1,0 +1,16 @@
+{
+  "batch": "341",
+  "tip": "f244312",
+  "tip_match": true,
+  "coverage": "8/8_WRITABLE",
+  "action": "grant_check_verify_batch341",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "goal": "OPEN",
+  "wake340_tip_living": "f244312",
+  "coordinator_bcId": "bc-01a0cf1e",
+  "peer_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+  "note": "Batch 343 wake_land_verify: BATCH341_GRANT was missing on main; durable inventory 8/8 retained; NEVER flip research."
+}
