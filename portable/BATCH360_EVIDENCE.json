@@ -1,0 +1,18 @@
+{
+  "batch": "360",
+  "utc": "2026-09-25T21:55:14Z",
+  "action": "idle_no_commit",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "aligned": true,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "batch": "360",
+  "utc": "2026-09-25T21:55:14Z",
+  "action": "idle_no_commit",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "assignment": "tip_sync_or_eng_pulse",
+  "living_tip_stale": 0,
+  "living_script_stale": 0
+}

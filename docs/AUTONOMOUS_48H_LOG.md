@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 360 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- batch347-tip-eng-watch pulse: no tip move; Batch 359 wake/soften/republish/tip-pin already on main. Woke tip/eng peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 359 — eng living script_stale republish after WAKE359 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
