@@ -1,0 +1,10 @@
+{
+  "batch": "335",
+  "audit_kind": "research_stack_mechanical_open_list",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_sha": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "note": "tip-sync only after #99/#100; no status promotion",
+  "generated_at_utc": "2026-09-25T17:42:08Z"
+}

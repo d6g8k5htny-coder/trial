@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 335 — tip-sync after main #99/#100 (2026-09-25)
+
+- Hardening LIVE moved `388a22c`→`eeebb28` (#100 conditional-importers sidecar + #99 ENV-RESCOV walk-down MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=335` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; `_LIVING_TIPS += eeebb28`.
+- **NEVER flip research:** inventable/math_status docs NOT promoted; `lemma_closed=false`.
+- Batch 332 CI green @388a22c tip-sync. Path C idle; no 0020.
+
+
 ### Batch 334 — grant skip only when durable_token_source=none (2026-09-25)
 
 - Tip stable @ `388a22c` (match=1); Path C IDLE@0019; `lemma_closed=false`.

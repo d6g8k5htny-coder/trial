@@ -1,0 +1,29 @@
+{
+  "batch": "335",
+  "generated_at_utc": "2026-09-25T17:42:08Z",
+  "status": "tip_sync_after_main_99_100",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "eeebb28",
+  "tip_full": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "prior_tip": "388a22c",
+  "aligned": true,
+  "tip_moved": true,
+  "hardening_tip_moved": true,
+  "default_tip_moved": false,
+  "write": "WRITABLE",
+  "merged_prs": [
+    99,
+    100
+  ],
+  "note": "math_status/inventable docs MERGED to hardening; tip-sync Path C only \u2014 NOT promoted",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_388a22c_to_eeebb28_main_99_100",
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "tip_sync_landed",
+  "route_now": "TIP_SYNC",
+  "idle_status": "IDLE_PATH_C_DONE"
+}

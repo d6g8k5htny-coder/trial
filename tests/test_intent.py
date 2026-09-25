@@ -36,6 +36,7 @@ _LIVING_TIPS = (
     "0adeb65",
     "077464e",
     "388a22c",
+    "eeebb28",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -13294,8 +13295,8 @@ def test_batch332_tip_sync_after_main_97() -> None:
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
         encoding="utf-8"
     )
+    # Live BASE_TIP supersedes across tip-sync; Batch 332 shipped 388a22c.
     assert _living_tip(base_tip)
-    assert "388a22c" in base_tip
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -13304,7 +13305,7 @@ def test_batch332_tip_sync_after_main_97() -> None:
     )
     assert int(str(verify.get("refresh_batch") or "0")) >= 332
     assert _living_tip(str(verify.get("base_tip_sha", "")))
-    assert str(verify.get("base_tip_sha", "")).startswith("388a22c")
+    # Live tip supersedes; historical prior may be 077464e or later living SHA.
     assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
         verify.get("prior_base_tip_sha", "")
     ).startswith("077464e")
@@ -13316,7 +13317,7 @@ def test_batch332_tip_sync_after_main_97() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 332)
-    assert "388a22c" in unblock or "Batch 332" in unblock
+    assert "388a22c" in unblock or "Batch 332" in unblock or "tip-sync" in unblock.lower()
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
@@ -13386,5 +13387,61 @@ def test_batch334_grant_skip_only_when_token_none() -> None:
     assert "STATUS (Batch 334)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 334" in log_md
+
+def test_batch335_tip_sync_after_main_99_100() -> None:
+    """Batch 335: tip-sync after main #99/#100; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH335_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "335"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("defect_id") == "tip_sync_388a22c_to_eeebb28_main_99_100"
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("patch_0020") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("eeebb28")
+    assert str(brief.get("prior_tip", "")).startswith("388a22c")
+    assert 99 in (brief.get("merged_prs") or [])
+    assert 100 in (brief.get("merged_prs") or [])
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH335_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+    assert "eeebb28" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 335
+    assert str(verify.get("base_tip_sha", "")).startswith("eeebb28")
+    assert verify.get("lemma_closed") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 335)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 335)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert "eeebb28" in _LIVING_TIPS
+    assert "388a22c" in _LIVING_TIPS
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 335)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 335" in log_md
 
 

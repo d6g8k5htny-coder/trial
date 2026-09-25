@@ -1,0 +1,18 @@
+{
+  "batch": "335",
+  "hunt": "tip_sync_after_main_99_100",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_388a22c_to_eeebb28_main_99_100",
+  "avoided": [
+    "promote #99/#100 claim status",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "tip_moved": true,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T17:42:08Z"
+}
