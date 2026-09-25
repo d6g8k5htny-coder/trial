@@ -1,3 +1,7 @@
+## STATUS (Batch 340)
+
+tip `848aea2` tip_match=true; tip_sync_watch — living release script_stale republish after Batch 338 wake land (tip_stale=0); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 339)
 
 tip `848aea2` tip_match=true; tip watch — living release script_stale republish (tip_stale=0); lemma_closed=false; scientific effect NONE.
