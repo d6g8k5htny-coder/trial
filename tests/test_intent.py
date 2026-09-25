@@ -16137,3 +16137,48 @@ def test_batch346_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "inventory_preserve_durable_tip_pin" in log_md
 
+
+
+def test_batch346_ci_audit_watch_idle() -> None:
+    """Batch 346: ci_audit_watch idle; early-fallback intact; lemma_closed false."""
+    import json
+
+    art = json.loads(
+        (ROOT / "portable" / "BATCH346_CI_AUDIT_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert art.get("batch") == "346"
+    assert art.get("action") == "idle_no_commit"
+    assert art.get("lemma_closed") is False
+    assert art.get("flipped_anything") is False
+    assert art.get("scientific_effect") == "NONE"
+    assert art.get("goal") == "OPEN"
+    assert art.get("tip_match") is True
+    assert art.get("audit_early_fallback_present") is True
+    assert art.get("audit_rate_limit_backoff_present") is True
+    assert _living_tip(str(art.get("hardening_tip") or art.get("tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_CI_AUDIT_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+
+    audit_src = (ROOT / "scripts" / "audit_main_alignment.py").read_text(encoding="utf-8")
+    assert "AUDIT_TRANSPORT_EARLY_FALLBACK" in audit_src
+    assert "rate-limit early-fallback" in audit_src
+    assert "AUDIT_TRANSPORT_RETRIES" in audit_src
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert 'AUDIT_TRANSPORT_EARLY_FALLBACK: "1"' in ci
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    assert "ci_audit_watch" in unblock.lower() or "early-fallback" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 ci-audit-watch)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "ci_audit_watch" in log_md.lower() or "Batch 346" in log_md
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
