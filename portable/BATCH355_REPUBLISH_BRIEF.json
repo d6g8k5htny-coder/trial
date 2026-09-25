@@ -9,7 +9,7 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
-  "action": "living_script_stale_republish",
+  "action": "eng_living_script_stale_republish",
   "defect_id": "living_script_stale_after_batch355_lands",
   "before": {
     "script_stale": 1,
@@ -26,5 +26,6 @@
   "inventable_promoted": false,
   "goal": "OPEN",
   "path_c": "IDLE@0019",
-  "note": "After MULTI_AGENT wake+assign bumped scripts, living release script_stale=1. Republish --force cleared drift. tip_match=1."
+  "note": "After MULTI_AGENT wake+assign bumped scripts, living release script_stale=1. Republish --force cleared drift. tip_match=1.",
+  "goal_complete": false
 }

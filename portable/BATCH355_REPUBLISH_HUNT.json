@@ -13,7 +13,7 @@
   "defect_found": true,
   "defect_id": "living_script_stale_after_batch355_lands",
   "hunt_0020": "NEGATIVE",
-  "action": "living_script_stale_republish",
+  "action": "eng_living_script_stale_republish",
   "skip": [
     "inventable",
     "tip-sync (match=1)",
@@ -21,5 +21,6 @@
     "inventory tip lag=2 deferred (prefer living script_stale)",
     "Intent allowlist already includes 355"
   ],
-  "goal": "OPEN"
+  "goal": "OPEN",
+  "tip_moved": false
 }
