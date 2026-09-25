@@ -21,13 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 297 (permanent-watch IDLE — tip stable, #84/#85/#87 DRAFT, eng hunt NEGATIVE, idle_no_commit) — 2026-09-25 ~13:09 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+### Batch 297 (tip-sync after main #84 — 3a29f52→02cfbfd; living tip_stale republish) — 2026-09-25 ~13:22 UTC (PERMANENT window; tip-sync ship; scientific effect NONE; flipped nothing)
 
-- Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`; no tip-sync; tip CI green — BLOCK CI N/A). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
-- Main **#84/#85/#87**: all still OPEN+DRAFT; none undrafted; none merged. #87 verify FAILURE (research skip).
-- Eng hunt (concrete repro only): `federation/replay.py` → `passed=true` (pin freeze @f314717 intentional; local `test_federation` 5192 from 3aeea01 — no failure). `MULTI_AGENT_ACCESS.md` 8-repo list matches `owner_grant --check` + environment.json; dual-vector App trial-only / durable 8/8 already documented. Living tip_stale=0 script_stale=0; tgz_newer=1 BATCH296 briefs only — no republish. `validate_land_workflows` OK.
-- assert+align+probe+guard: `lemma_closed=false`; `flipped_anything=false`; violations=0.
-- action=`idle_no_commit`. next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+- Cycle start: tip stable @ `3a29f52`; early idle paper trail landed @ `cb948e9` (idle_no_commit). Eng hunt federation/MULTI_AGENT/grant/living/VALIDATE — no concrete repro beyond tip watch.
+- Mid-cycle: main **#84** tip-observe inventable **undrafted+MERGED** @13:14Z → LIVE tip `02cfbfd`. Trial-ci Intent `_living_tip` + refresh dry-run TIP_DRIFT. **#85** OPEN undrafted (research skip). **#87** still DRAFT CI-fail (skip).
+- Tip-sync: `REFRESH_BATCH_TAG=297 ./scripts/refresh_path_c_bundle.sh` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; REFRESH default 297; `_LIVING_TIPS += 02cfbfd`. assert IDLE_PATH_C_DONE @ `02cfbfd`.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync`. next_focus=`tip_sync_drift_watch @02cfbfd`; BLOCK tip CI; skip inventable #85 / draft #87.
 
 ### Batch 296 (permanent-watch IDLE — tip stable, MAIN eng while WRITABLE, idle_no_commit) — 2026-09-25 ~12:53 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 

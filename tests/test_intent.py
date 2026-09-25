@@ -32,6 +32,7 @@ _LIVING_TIPS = (
     "3b3860d",
     "7d13a88",
     "3a29f52",
+    "02cfbfd",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -12089,7 +12090,7 @@ def test_batch296_permanent_watch_idle() -> None:
 
 
 def test_batch297_permanent_watch_idle() -> None:
-    """Batch 297: permanent-watch IDLE — #84/#85/#87 DRAFT; eng hunt NEGATIVE."""
+    """Batch 297: tip-sync after main #84; early idle superseded."""
     import json
 
     brief = json.loads(
@@ -12099,52 +12100,49 @@ def test_batch297_permanent_watch_idle() -> None:
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
-    assert brief.get("defect_shipped") is False
-    assert brief.get("defect_found") is False
-    assert brief.get("defect_id") is None
-    assert brief.get("route_now") == "IDLE"
-    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_found") is True
+    assert brief.get("defect_id") == "tip_sync_3a29f52_to_02cfbfd_main_84"
+    assert brief.get("route_now") == "TIP_SYNC"
+    assert brief.get("action") == "tip_sync"
     assert brief.get("patch_0020") is False
     assert brief.get("hunt_0020") == "NEGATIVE"
-    assert brief.get("tip_moved") is False
+    assert brief.get("tip_moved") is True
     assert brief.get("write") == "WRITABLE"
     assert brief.get("aligned") is True
-    assert brief.get("any_undrafted_or_merged_84_85_87") is False
+    assert brief.get("any_undrafted_or_merged_84_85_87") is True
+    assert 84 in (brief.get("merged_prs") or [])
     assert _living_tip(str(brief.get("tip", "")))
-    assert str(brief.get("tip", "")).startswith("3a29f52")
-    assert 87 in (brief.get("research_hold_prs_skipped") or [])
-    assert 84 in (brief.get("research_hold_prs_skipped") or [])
-    assert 85 in (brief.get("research_hold_prs_skipped") or [])
-    for key in ("main_pr_84", "main_pr_85", "main_pr_87"):
-        pr = brief.get(key) or {}
-        assert pr.get("state") == "OPEN"
-        assert pr.get("isDraft") is True
-        assert pr.get("mergedAt") is None
+    assert str(brief.get("tip", "")).startswith("02cfbfd")
+    assert str(brief.get("prior_tip", "")).startswith("3a29f52")
+    pr84 = brief.get("main_pr_84") or {}
+    assert pr84.get("state") == "MERGED"
+    assert pr84.get("mergedAt")
+    pr85 = brief.get("main_pr_85") or {}
+    assert pr85.get("state") == "OPEN"
+    assert pr85.get("isDraft") is False
+    pr87 = brief.get("main_pr_87") or {}
+    assert pr87.get("state") == "OPEN"
+    assert pr87.get("isDraft") is True
     evidence = brief.get("evidence") or {}
-    assert "federation" in (evidence.get("eng_federation") or "")
-    assert "validate_land" in evidence
-    assert "tip_stale=0" in (evidence.get("living_release") or "")
+    assert "02cfbfd" in (evidence.get("tip_mid") or "")
+    assert "tip_stale" in (evidence.get("living_release") or "")
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH297_HUNT.json").read_text(encoding="utf-8")
     )
-    assert hunt.get("defect_shipped") is False
-    assert hunt.get("defect_found") is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_found") is True
+    assert hunt.get("defect_id") == "tip_sync_3a29f52_to_02cfbfd_main_84"
     assert hunt.get("lemma_closed") is False
     assert hunt.get("flipped_anything") is False
-    assert hunt.get("tip_moved") is False
+    assert hunt.get("tip_moved") is True
     assert hunt.get("hunt_0020") == "NEGATIVE"
-    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_not_273_296") is True
-    assert (hunt.get("HUNT_NEGATIVE") or {}).get(
-        "federation_multi_agent_living_validate"
-    ) is True
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_beyond_tip_sync") is True
     checked = hunt.get("candidates_checked") or {}
-    assert checked.get("ready_non_draft_eng") == "none"
-    assert checked.get("validate_land_workflows") == "OK_dry_run_defaults_ci_yml_parse"
-    assert "passed" in (checked.get("federation_replay") or "")
-    assert any(
-        "84" in a or "87" in a or "federation" in a for a in (hunt.get("avoided") or [])
-    )
+    assert "MERGED" in (checked.get("main_pr_84") or "")
+    assert "undrafted" in (checked.get("main_pr_85") or "")
+    assert any("84" in a or "tip-sync" in a.lower() or "02cfbfd" in a for a in (hunt.get("bugs_fixed") or []))
 
     audit = json.loads(
         (ROOT / "portable" / "BATCH297_RESEARCH_STACK_AUDIT.json").read_text(
@@ -12155,23 +12153,36 @@ def test_batch297_permanent_watch_idle() -> None:
     assert audit.get("flipped_anything") is False
     assert audit.get("shape") == "HAS_PACKET"
     assert audit.get("batch") == "297"
+    assert str(audit.get("tip_sha", "")).startswith("02cfbfd")
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 297" in log_md
-    assert "idle_no_commit" in log_md
+    assert "tip-sync" in log_md.lower() or "tip_sync" in log_md
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 297)" in land
+    assert "02cfbfd" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 297)" in owner
 
-    # Keep living REFRESH default from last eng ship (289); idle does not bump.
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    _assert_refresh_batch_tag_default_at_least(refresh, 289)
+    _assert_refresh_batch_tag_default_at_least(refresh, 297)
+    assert "02cfbfd" in _LIVING_TIPS
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "02cfbfd" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify.get("base_tip_sha", "")).startswith("02cfbfd")
+    assert int(verify.get("refresh_batch") or 0) >= 297
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
+    assert str(status.get("tip", "")).startswith("02cfbfd")
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"

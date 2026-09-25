@@ -757,6 +757,6 @@
     "registers/json/open_questions.json"
   ],
   "batch": "297",
-  "tip_sha": "3a29f526da5108df173edc390a8ca2d1f3d887c9",
-  "audit_note": "Batch 297 mechanical OPEN inventory; no promotion; lemma_closed=false"
+  "tip_sha": "02cfbfdf3ddc3120ddde6b67b0ff927115de6c4c",
+  "audit_note": "Batch 297 mechanical OPEN inventory after tip-sync @02cfbfd; no promotion; lemma_closed=false"
 }

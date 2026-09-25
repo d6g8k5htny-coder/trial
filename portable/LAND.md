@@ -1,6 +1,6 @@
 ## STATUS (Batch 297)
 
-tip `3a29f52` tip_match=true TIP_OK; permanent-watch IDLE — #84/#85/#87 still DRAFT unmerged; eng hunt federation/MULTI_AGENT/grant/living/VALIDATE no concrete repro; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+tip `02cfbfd` tip_match=true TIP_OK (synced from `3a29f52` after main #84 mid-cycle); refresh keep-prior; living tip_stale republish; REFRESH default 297; #85 OPEN undrafted skipped; #87 DRAFT skipped; action=tip_sync; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 296)
 

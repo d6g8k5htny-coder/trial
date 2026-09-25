@@ -4,14 +4,14 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 297)
 
-Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE; no tip-sync; BLOCK CI N/A). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Main **#84/#85/#87** all still **OPEN+DRAFT** — none undrafted, none merged (#87 verify FAILURE). Eng hunt: `federation/replay.py` passed; MULTI_AGENT 8-repo list matches `owner_grant --check`; living tip_stale=0 script_stale=0 (tgz_newer BATCH296 briefs only — no republish); `validate_land_workflows` OK. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.
+Hardening tip **synced** `3a29f52`→`02cfbfd` after main **#84** tip-observe merge mid-cycle (tip_match=true; Path C idle; BASE==LIVE after sync). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). **#84 MERGED**; **#85 OPEN undrafted** (research inventable — skipped); **#87 OPEN DRAFT** CI-fail (skipped). Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 297 + `_LIVING_TIPS+=02cfbfd`. Early idle paper trail superseded. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync`. Scientific effect: NONE.
 
 ```bash
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 02cfbfd
 ./scripts/assert_path_c_ready.sh
-python3 scripts/validate_land_workflows.py
-./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 after 297 republish
 gh pr view 84 85 87 --repo d6g8k5htny-coder/main --json number,isDraft,state,mergedAt
+gh run list --repo d6g8k5htny-coder/main --branch chatgpt/drive-github-hardening-20260919 --limit 5
 ```
 
 ## STATUS (Batch 296)
