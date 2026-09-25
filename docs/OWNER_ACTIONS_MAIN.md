@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 299)
+
+Hardening tip **stable** @ `02cfbfd` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Main **#85 OPEN undrafted** CI-SUCCESS inventable — skipped (NEVER flip). **#87 OPEN DRAFT** CI-FAILURE — skipped. **#88** tip-observe draft CI-SUCCESS — skipped. Tip CI green @ tip. Living tip_stale=0 script_stale=0 (tgz_newer BATCH298 briefs only — no republish). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 02cfbfd
+./scripts/assert_path_c_ready.sh
+gh pr view 85 87 88 --repo d6g8k5htny-coder/main --json number,isDraft,state,mergedAt,statusCheckRollup
+gh run list --repo d6g8k5htny-coder/main --branch chatgpt/drive-github-hardening-20260919 --limit 5
+```
+
 ## STATUS (Batch 298)
 
 Hardening tip **stable** @ `02cfbfd` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Main **#85 OPEN undrafted** CI-SUCCESS inventable — skipped (NEVER flip). **#87 OPEN DRAFT** CI-FAILURE — skipped. NEW **#88** tip-observe draft — skipped. Tip CI green @ tip. Living tip_stale=0 script_stale=0 (tgz_newer BATCH297 briefs only — no republish). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.
