@@ -1,3 +1,11 @@
+## STATUS (Batch 368 tip-sync-watch-confirm)
+
+tip `1ae02b9` tip_match=true; tip_sync_watch confirm after tip-sync; Intent soft-pin living tip; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 368 soften-tip-sync-watch)
+
+tip `1ae02b9` tip_match=true; eng: soften Intent tip_sync_watch frozen assignment e3cd7d4→living; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 368 tip-sync)
 
 tip `1ae02b9` tip_match=true; tip-sync keep-prior e3cd7d4→1ae02b9 after main #115; durable 8/8; lemma_closed=false; inventable not promoted; scientific effect NONE.

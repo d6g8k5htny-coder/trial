@@ -1,24 +1,28 @@
 {
   "batch": "368",
-  "utc": "2026-09-25T23:24:47Z",
-  "hardening_tip": "e3cd7d4",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
   "tip_match": true,
   "aligned": true,
   "lemma_closed": false,
-  "flipped_anything": false,
-  "action": "idle_no_commit",
-  "goal_complete": false,
-  "inventable_promoted": false,
-  "scientific_effect": "NONE",
+  "write": "WRITABLE",
   "path_c": "IDLE@0019",
-  "write": "8/8",
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
   "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
   "living": {
     "tip_stale": 0,
     "script_stale": 0,
-    "need_upload": 0,
-    "refresh_batch": "367"
+    "living_tag": "batch241-path-c-bundle",
+    "need_upload": 0
   },
-  "pulse": "timer_batch357_tip_eng_watch",
-  "woken_peers": 4
+  "refresh_dry_run": "BASE_TIP=1ae02b9 live=1ae02b9 match=1",
+  "assignment": "tip_sync_watch_vs_BASE_TIP_1ae02b9",
+  "bc_id": "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
+  "coordinator_bc": "bc-01a0cf1e",
+  "generated_at_utc": "2026-09-25T23:32:30Z",
+  "note": "tip_sync_watch confirm after tip-sync e3cd7d4\u21921ae02b9; tip stable; living current; Intent assignment soft-pin; skip inventable"
 }

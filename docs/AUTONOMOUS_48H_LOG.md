@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 368 — tip_sync_watch confirm @1ae02b9 + Intent soft-pin (2026-09-25)
+
+- Tip stable @ `1ae02b9` tip_match=1 (post tip-sync e3cd7d4→1ae02b9); Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; eng soften Intent frozen assignment `tip_sync_watch_vs_BASE_TIP_e3cd7d4` → living `1ae02b9`. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 368 tip-sync e3cd7d4→1ae02b9 after main #115 (2026-09-25)
 
 - Tip **moved** @ hardening `1ae02b9` (main #115 fail-closed claim audit repairs). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

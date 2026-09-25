@@ -20197,7 +20197,7 @@ def test_batch367_tip_or_eng_continue() -> None:
 
 
 def test_batch368_idle_tip_sync_watch() -> None:
-    """Batch 368: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
+    """Batch 368: tip_sync_watch idle after tip-sync; tip_match; living current."""
     import json
 
     tiny = json.loads(
@@ -20228,16 +20228,19 @@ def test_batch368_idle_tip_sync_watch() -> None:
     brief = json.loads(
         (ROOT / "portable" / "BATCH368_BRIEF.json").read_text(encoding="utf-8")
     )
-    assert brief.get("assignment") == "tip_sync_watch_vs_BASE_TIP_e3cd7d4"
+    # Live BASE_TIP supersedes across tip-sync; do not freeze assignment tip SHA.
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
     assert brief.get("action") == "idle_no_commit"
     assert brief.get("lemma_closed") is False
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 368)
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 368 idle)" in land
+    assert "STATUS (Batch 368 idle)" in land or "STATUS (Batch 368 tip-sync-watch-confirm)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 368 idle)" in owner
+    assert "STATUS (Batch 368 idle)" in owner or "STATUS (Batch 368 tip-sync-watch-confirm)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 368" in log_md and "idle_no_commit" in log_md
 
@@ -20344,3 +20347,60 @@ def test_batch368_tip_sync_1ae02b9() -> None:
     assert "Batch 368 tip-sync" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 tip-sync)" in owner
+
+
+def test_batch368_soften_tip_sync_watch_live_tip_pin() -> None:
+    """Batch 368: tip_sync_watch Intent must not freeze live BASE_TIP to e3cd7d4."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch368_idle_tip_sync_watch")
+    end = intent.index("def test_batch368_tip_or_eng_continue")
+    body = intent[start:end]
+    assert "Live BASE_TIP supersedes across tip-sync" in body
+    assert 'assert brief.get("assignment") == "tip_sync_watch_vs_BASE_TIP_e3cd7d4"' not in body
+    assert "1ae02b9" in _LIVING_TIPS
+    assert "e3cd7d4" in _LIVING_TIPS
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH368_SOFTEN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "368"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "intent_batch368_tip_sync_watch_frozen_live_base_tip_e3cd7d4"
+    )
+    assert brief.get("action") == "eng_soften_368_tip_sync_watch_live_tip_pin"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH368_SOFTEN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == (
+        "intent_batch368_tip_sync_watch_frozen_live_base_tip_e3cd7d4"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH368_SOFTEN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("action") == "eng_soften_368_tip_sync_watch_live_tip_pin"
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 368)
+    assert "soften Intent" in unblock or "1ae02b9" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 soften-tip-sync-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 tip-sync-watch-confirm)" in owner or "soften" in owner.lower()
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "soften" in log_md.lower() and "1ae02b9" in log_md

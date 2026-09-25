@@ -1,19 +1,17 @@
 {
   "batch": "368",
-  "assignment": "tip_sync_watch_vs_BASE_TIP_1ae02b9",
+  "generated_at_utc": "2026-09-25T23:32:30Z",
   "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
   "tip_match": true,
   "aligned": true,
   "lemma_closed": false,
-  "action": "idle_no_commit",
+  "action": "eng_soften_368_tip_sync_watch_live_tip_pin",
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "goal": "OPEN",
   "path_c": "IDLE@0019",
   "durable": "8/8",
-  "living_tip_stale": 0,
-  "living_script_stale": 0,
+  "defect_id": "intent_batch368_tip_sync_watch_frozen_live_base_tip_e3cd7d4",
   "inventable_promoted": false,
-  "generated_at_utc": "2026-09-25T23:32:30Z",
-  "note": "post tip-sync confirm @1ae02b9; softened frozen assignment tip_sync_watch_vs_BASE_TIP_e3cd7d4"
+  "note": "soften Intent tip_sync_watch assignment pin e3cd7d4\u2192living tip after tip-sync to 1ae02b9"
 }

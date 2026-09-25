@@ -1,3 +1,11 @@
+## STATUS (Batch 368 tip-sync-watch-confirm)
+
+Hardening tip **stable** @ `1ae02b9` (tip_match=true after tip-sync e3cd7d4→1ae02b9). tip_sync_watch: no further tip move; living tip/script current. Softened Intent frozen assignment `tip_sync_watch_vs_BASE_TIP_e3cd7d4` → living. Evidence: `portable/BATCH368_IDLE.json` + `BATCH368_SOFTEN_*.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 1ae02b9
+```
+
 ## STATUS (Batch 368 tip-sync)
 
 Hardening tip **moved** e3cd7d4→`1ae02b9` (main #115). Tip-sync keep-prior Path C refresh; `_LIVING_TIPS+=1ae02b9`. Inventable NOT promoted. `lemma_closed=false`. Goal OPEN. action=`tip_sync_landed`.
