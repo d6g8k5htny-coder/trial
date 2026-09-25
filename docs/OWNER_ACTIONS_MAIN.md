@@ -1,3 +1,12 @@
+## STATUS (Batch 354 soften-inv-base-tip)
+
+Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1; peer idle+living republish already landed. Eng: soften `test_batch354_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch354_inventory_preserve_durable_tip_pin -q
+```
+
 ## STATUS (Batch 354 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 354 inventory tip-pin — republish batch241-path-c-bundle `--force`. `lemma_closed=false`. Goal OPEN.

@@ -1,0 +1,19 @@
+{
+  "batch": "354",
+  "generated_at_utc": "2026-09-25T20:54:30Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_soften_inv_tip_pin_live_base_tip",
+  "defect_id": "intent_batch354_inv_tip_pin_frozen_live_base_tip_e3cd7d4",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "bc_id": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b",
+  "coordinator_bc": "bc-01a0cf1e",
+  "assignment": "tip_sync_watch_vs_BASE_TIP",
+  "note": "tip_match=1; peer idle+living republish already landed; soften INV tip-pin Intent live BASE_TIP hard pin to _living_tip; paper-trail tgz"
+}

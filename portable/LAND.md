@@ -1,3 +1,7 @@
+## STATUS (Batch 354 soften-inv-base-tip)
+
+tip `e3cd7d4` tip_match=true; eng: soften INV tip-pin Intent live BASE_TIP pin to `_living_tip`; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 354 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living script_stale republish after inv tip-pin; durable 8/8; lemma_closed=false; scientific effect NONE.

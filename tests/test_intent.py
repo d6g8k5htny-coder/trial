@@ -17560,12 +17560,21 @@ def test_batch354_inventory_preserve_durable_tip_pin() -> None:
     assert "inventory_preserve_durable_tip_pin" in unblock
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "e3cd7d4" in base_tip
+    # Live BASE_TIP supersedes across tip-sync; Batch 354 inv pin shipped e3cd7d4.
+    assert _living_tip(base_tip)
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 354 inv-preserve-tip-pin)" in land
+    assert "STATUS (Batch 354 soften-inv-base-tip)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 354" in log_md and "inventory_preserve_durable_tip_pin" in log_md
+    soften = json.loads(
+        (ROOT / "portable" / "BATCH354_SOFTEN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert soften.get("action") == "eng_soften_inv_tip_pin_live_base_tip"
+    assert soften.get("lemma_closed") is False
+    assert soften.get("flipped_anything") is False
+    assert soften.get("tip_match") is True
 
 
 def test_batch354_living_script_stale_republish() -> None:

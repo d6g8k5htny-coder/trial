@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 354 — soften INV tip-pin Intent live BASE_TIP pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- tip_sync_watch: peer idle + living republish already on main; eng soften frozen `assert "e3cd7d4" in base_tip` → `_living_tip`; paper-trail tgz.
+- Artifact: `BATCH354_SOFTEN_EVIDENCE.json`. Goal OPEN. NEVER flip research.
+
 ### Batch 354 — idle_no_commit tip-stable + wake peers (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
