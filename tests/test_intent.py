@@ -15416,7 +15416,6 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert "36176016910" in audit_src or "TimeoutExpired" in audit_src
     # Misalignment predicate unchanged.
     assert "misaligned = bool(complexity_hits)" in audit_src
-
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "AUDIT_TRANSPORT_EARLY_FALLBACK" in ci
     # Intent suite must enable early-fallback (timeout class).
@@ -15424,19 +15423,16 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     audit_idx = ci.index("Alignment audit", intent_idx)
     intent_block = ci[intent_idx:audit_idx]
     assert 'AUDIT_TRANSPORT_EARLY_FALLBACK: "1"' in intent_block
-
     spec = importlib.util.spec_from_file_location("audit343early", audit_path)
     assert spec is not None and spec.loader is not None
     audit = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(audit)
-
     audit._TRANSPORT_EARLY_FALLBACK = True
     audit._TRANSPORT_SLEEP_S = 0.0
     audit._TRANSPORT_RETRIES = 6
     audit._TRANSPORT_SLEEP_CAP_S = 60.0
     calls = {"n": 0}
     slept = {"s": 0.0}
-
     def fake_urlopen(req, timeout=60):
         calls["n"] += 1
         raise urllib.error.HTTPError(
@@ -15448,10 +15444,8 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
                 b'{"message":"API rate limit exceeded for installation."}'
             ),
         )
-
     def fake_sleep(sec):
         slept["s"] += float(sec)
-
     with mock.patch("urllib.request.urlopen", fake_urlopen), mock.patch(
         "time.sleep", fake_sleep
     ):
@@ -15463,11 +15457,9 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert isinstance(raised, audit.RateLimitExhausted)
     assert calls["n"] == 1
     assert slept["s"] == 0.0
-
     brief = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_BRIEF.json").read_text(
             encoding="utf-8"
-        )
     )
     assert brief.get("batch") == "343"
     assert brief.get("lemma_closed") is False
@@ -15475,23 +15467,15 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert brief.get("scientific_effect") == "NONE"
     assert brief.get("defect_id") == (
         "audit_intent_timeout_under_ratelimit_reset_sleep"
-    )
     assert brief.get("action") == "eng_audit_early_fallback_intent_timeout"
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal_complete") is False
     assert _living_tip(str(brief.get("tip", "")))
-
     hunt = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_HUNT.json").read_text(
-            encoding="utf-8"
-        )
-    )
     assert hunt.get("defect_id") == (
-        "audit_intent_timeout_under_ratelimit_reset_sleep"
-    )
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
-
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 343)
     assert "early-fallback" in unblock.lower() or "Intent timeout" in unblock
@@ -15503,5 +15487,26 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert "STATUS (Batch 343 audit-timeout)" in owner or "early-fallback" in owner
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
-    )
     assert status.get("lemma_closed") is False
+def test_batch345_multi_agent_wake_assign() -> None:
+    """Batch 345: Dylan/timer wake stopped agents + assign Path C intent tasks."""
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH345.json").read_text(encoding="utf-8")
+    assert wake.get("batch") == 345
+    assert wake.get("wake345_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert len(wake.get("woken_idle_agents") or []) >= 3
+    living = wake.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert _living_tip(str(wake.get("tip") or ""))
+        (ROOT / "portable" / "BATCH345_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    assert brief.get("batch") == "345"
+    assert brief.get("action") == "multi_agent_wake_and_assign"
+    _assert_print_owner_header_batch_at_least(unblock, 345)
+    assert "WAKE345" in unblock or "MULTI_AGENT wake" in unblock
+    assert "STATUS (Batch 345 wake)" in land
+    assert "MULTI_AGENT_WAKE_BATCH345" in owner
+    assert "stopped agents" in log_md and "Batch 345" in log_md

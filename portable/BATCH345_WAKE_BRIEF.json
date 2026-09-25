@@ -1,0 +1,13 @@
+{
+  "batch": "345",
+  "utc": "2026-09-25T19:14:06Z",
+  "status": "multi_agent_wake_and_assign",
+  "tip": "fcad723",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "multi_agent_wake_and_assign",
+  "woken": 5,
+  "pulse": "batch329-tip-eng-watch-timer",
+  "artifact": "portable/MULTI_AGENT_WAKE_BATCH345.json"
+}

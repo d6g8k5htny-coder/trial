@@ -27,6 +27,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 - New CI class after tip-sync: Intent `audit_main_alignment` / watch probes `TimeoutExpired` at 60s while Batch 340 backoff honored `x-ratelimit-reset` up to SLEEP_CAP=60 (runs 36176016910 / 36176143525) — raw fallback never reached inside budget.
 - Eng: `AUDIT_TRANSPORT_EARLY_FALLBACK=1` escalates to `RateLimitExhausted` → raw/ls-remote immediately; CI Intent + Alignment audit steps enable it. Misalignment predicate unchanged.
 - NEVER flip research; inventable skipped. Goal OPEN.
+### Batch 345 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
+- Timer pulse (batch329-tip-eng-watch). Tip **stable** @ `fcad723` tip_match=1. Path C IDLE@0019; durable 8/8; living clean.
+- Woke 5 IDLE agents via Task resume; action=`multi_agent_wake_and_assign`.
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH345.json`; `lemma_closed=false`; NEVER flip research.
 
 ### Batch 344 — soften tip_sync_watch live BASE_TIP Intent pin (2026-09-25)
 

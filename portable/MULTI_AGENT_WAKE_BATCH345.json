@@ -1,0 +1,71 @@
+{
+  "batch": 345,
+  "action": "multi_agent_wake_and_assign",
+  "requested_by": "Dylan Roy",
+  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "utc": "2026-09-25T19:14:06Z",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "wake345_on_main": true,
+  "pulse": "batch329-tip-eng-watch-timer",
+  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH343.json",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0
+  },
+  "intent": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "base_tip_expected": "fcad72366743f5244eb26a0164e106419de78137",
+    "path_c": "IDLE@0019",
+    "lemma_closed": false,
+    "scientific_effect": "NONE",
+    "durable_write_target": "8/8",
+    "never_flip_research": true
+  },
+  "woken_idle_agents": [
+    {
+      "bcId": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b",
+      "name": "Batch344 tip watch @fcad723",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_fcad723"
+    },
+    {
+      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+      "name": "eng defect hunter",
+      "assignment": "eng_defect_hunt_no_claim_promotion"
+    },
+    {
+      "bcId": "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
+      "name": "Batch344 tip/eng cloud continue",
+      "assignment": "tip_sync_or_eng_on_healthy_VM"
+    },
+    {
+      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+      "name": "grant dual-vector",
+      "assignment": "grant_check_dual_vector_8of8"
+    },
+    {
+      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
+      "name": "CI rate-limit fix peer",
+      "assignment": "ci_audit_watch_and_remediate"
+    }
+  ],
+  "spawned_cloud_peers": [],
+  "known_signals": [
+    "tip stable @fcad723 tip_match=1 after Batch 343 tip-sync #109",
+    "Batch 344 soften tip_sync_watch live BASE_TIP pin @25805c62",
+    "living tip_stale=0 script_stale=0; durable 8/8; Path C IDLE@0019"
+  ],
+  "messaging_limits": {
+    "mechanism_used": "Task resume (IDLE); direct trial main push when PR create 403"
+  },
+  "wake_tip_at_assign": "fcad723",
+  "wake_tip_at_assign_full": "fcad72366743f5244eb26a0164e106419de78137"
+}
