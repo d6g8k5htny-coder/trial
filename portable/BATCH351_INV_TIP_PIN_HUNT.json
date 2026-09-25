@@ -1,0 +1,8 @@
+{
+  "batch": "351",
+  "defect_id": "inventory_trial_tip_lag_642aded_after_350_idle",
+  "hunt_0020": "NEGATIVE",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "grant_inventory_tip_pin_after_main_lands"
+}

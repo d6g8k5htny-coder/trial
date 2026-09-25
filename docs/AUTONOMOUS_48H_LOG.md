@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 351 — inventory tip pin (batch322-soon timer) @e3cd7d4 (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4` (match=1; timer prompt still said `077464e` — re-checked LIVE).
+- Eng: inventory trial tip lagged @`642aded` after Batch 350 idle → preserve_durable pin→HEAD; fallbacks→351.
+- `lemma_closed=false`. Goal OPEN.
+
 ### Batch 350 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

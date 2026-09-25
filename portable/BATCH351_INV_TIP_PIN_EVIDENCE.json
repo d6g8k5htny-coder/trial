@@ -1,0 +1,18 @@
+{
+  "batch": "351",
+  "utc": "2026-09-25T20:21:26Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "coverage": "8/8_WRITABLE",
+  "action": "grant_inventory_tip_pin_after_main_lands",
+  "prior_trial_tip": "642adeda1b03",
+  "trial_tip": "4c1b58ed5847f72a7a3a73de4e56cac5401cb068",
+  "goal": "OPEN",
+  "note": "batch322-soon timer; live tip e3cd7d4 (not stale 077464e in timer text)"
+}

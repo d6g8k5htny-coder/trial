@@ -1,3 +1,7 @@
+## STATUS (Batch 351 inv-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory tip pin after Batch 350 idle (batch322-soon timer); preserve_durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 350 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

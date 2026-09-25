@@ -1,3 +1,7 @@
+## STATUS (Batch 351 inv-tip-pin)
+
+Inventory tip pin after Batch 350. Live tip `e3cd7d4` (timer text `077464e` was stale). `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 350 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; no new eng beyond peers (349 idle/CI + 350 inv tip pin). Paper-trail living tgz. Evidence: `portable/BATCH350_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
