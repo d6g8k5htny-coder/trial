@@ -48,11 +48,9 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 356 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
-<<<<<<< HEAD
-echo " Batch 356: soften INV tip-pin Intent merge dedupe (duplicate def + frozen defect_id)"
-=======
+echo " Batch 356: tip_or_eng conflict-marker cleanup + inv tip re-pin @e3cd7d4"
 echo " Batch 356: tip_or_eng inv tip re-pin after Intent-fix land @e3cd7d4"
->>>>>>> 8ddc00f (Batch 356: tip_or_eng inv tip re-pin after Intent-fix land)
+echo " Batch 356: soften INV tip-pin Intent merge dedupe (duplicate def + frozen defect_id)"
 echo " Batch 356: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
 echo " Batch 356: idle_no_commit tip-stable align watch @e3cd7d4 (post-path-c-align-watch; living tip/script current)"
 echo " Batch 355: ci_audit_watch idle — CI green @e3cd7d4 (unfreeze living ≥352 incl 355)"

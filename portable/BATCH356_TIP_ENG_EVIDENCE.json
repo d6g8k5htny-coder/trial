@@ -3,15 +3,15 @@
   "tip_match": true,
   "lemma_closed": false,
   "flipped_anything": false,
-  "action": "inventory_tip_repin_after_land_head",
+  "action": "eng_conflict_marker_fix_and_inv_tip_repin",
   "batch": "356",
   "scientific_effect": "NONE",
   "goal": "OPEN",
   "path_c": "IDLE@0019",
   "durable": "8/8_WRITABLE",
   "prior_trial_tip": "b6eb658a3d6d",
-  "trial_tip_sha": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
-  "live_trial_head": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
+  "trial_tip_sha": "ccdec0d0649b72954a6b3459925503bfec43be61",
+  "live_trial_head": "ccdec0d0649b72954a6b3459925503bfec43be61",
   "trial_tip_matches_live_head": true,
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -23,5 +23,5 @@
     "sandbox": "49ae345",
     "trial": "513367e"
   },
-  "generated_at_utc": "2026-09-25T21:16:19Z"
+  "generated_at_utc": "2026-09-25T21:17:10Z"
 }

@@ -1,6 +1,6 @@
 {
   "batch": "356",
-  "generated_at_utc": "2026-09-25T21:16:19Z",
+  "generated_at_utc": "2026-09-25T21:17:10Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -14,8 +14,8 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "inventory_batch": "356",
-  "trial_tip_sha": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
-  "live_trial_head": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
+  "trial_tip_sha": "ccdec0d0649b72954a6b3459925503bfec43be61",
+  "live_trial_head": "ccdec0d0649b72954a6b3459925503bfec43be61",
   "trial_tip_matches_live_head": true,
   "prior_trial_tip_sha": "3eba995c8221",
   "tip_pins": {
