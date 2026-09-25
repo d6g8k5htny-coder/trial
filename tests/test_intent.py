@@ -33,6 +33,7 @@ _LIVING_TIPS = (
     "7d13a88",
     "3a29f52",
     "02cfbfd",
+    "077464e",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -11749,7 +11750,7 @@ def test_batch289_tip_sync_after_main_83() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 289" in unblock
     # Header line bumps on later tip-sync batches (297+); keep 289 history line.
-    assert "=== Batch 289" in unblock or "=== Batch 297" in unblock
+    assert "=== Batch 289" in unblock or "=== Batch 297" in unblock or "=== Batch 305" in unblock
     assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
 
     assert "3a29f52" in _LIVING_TIPS
@@ -12179,7 +12180,6 @@ def test_batch304_permanent_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("02cfbfd")
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
@@ -12265,7 +12265,6 @@ def test_batch299_permanent_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("02cfbfd")
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
@@ -12404,7 +12403,6 @@ def test_batch298_permanent_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("02cfbfd")
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
@@ -12490,20 +12488,136 @@ def test_batch297_permanent_watch_idle() -> None:
     assert "02cfbfd" in _LIVING_TIPS
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "02cfbfd" in base
+    # Live BASE_TIP supersedes across tip-sync; Batch 297 shipped 02cfbfd.
+    assert _living_tip(base)
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
         )
     )
-    assert str(verify.get("base_tip_sha", "")).startswith("02cfbfd")
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert int(verify.get("refresh_batch") or 0) >= 297
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("02cfbfd")
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
+
+def test_batch305_tip_sync_after_main_85_89() -> None:
+    """Batch 305: tip-sync 02cfbfd→077464e after main #85+#89; keep-prior abort fix."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH305_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "305"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_found") is True
+    assert brief.get("defect_id") == "tip_sync_02cfbfd_to_077464e_main_85_89_keep_prior_abort"
+    assert brief.get("route_now") == "TIP_SYNC"
+    assert brief.get("action") == "tip_sync"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("aligned") is True
+    assert brief.get("any_undrafted_or_merged_85_89") is True
+    assert 85 in (brief.get("merged_prs") or [])
+    assert 89 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("077464e")
+    assert str(brief.get("prior_tip", "")).startswith("02cfbfd")
+    pr85 = brief.get("main_pr_85") or {}
+    assert pr85.get("state") == "MERGED"
+    assert pr85.get("mergedAt")
+    pr89 = brief.get("main_pr_89") or {}
+    assert pr89.get("state") == "MERGED"
+    assert pr89.get("mergedAt")
+    pr87 = brief.get("main_pr_87") or {}
+    assert pr87.get("state") == "OPEN"
+    assert pr87.get("isDraft") is True
+    evidence = brief.get("evidence") or {}
+    assert "077464e" in (evidence.get("tip_start") or "") or "TIP_DRIFT" in (
+        evidence.get("tip_start") or ""
+    )
+    assert "pipefail" in (evidence.get("tip_mid") or "") or "abort" in (
+        evidence.get("tip_mid") or ""
+    )
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH305_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_found") is True
+    assert hunt.get("defect_id") == "tip_sync_02cfbfd_to_077464e_main_85_89_keep_prior_abort"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is True
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_beyond_tip_sync") is True
+    checked = hunt.get("candidates_checked") or {}
+    assert "MERGED" in (checked.get("main_pr_85") or "")
+    assert "MERGED" in (checked.get("main_pr_89") or "")
+    assert any(
+        "85" in a or "89" in a or "tip-sync" in a.lower() or "pipefail" in a.lower() or "077464e" in a
+        for a in (hunt.get("bugs_fixed") or [])
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH305_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("batch") == "305"
+    assert str(audit.get("tip_sha", "")).startswith("077464e")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 305" in log_md
+    assert "tip-sync" in log_md.lower() or "tip_sync" in log_md
+    assert "pipefail" in log_md.lower() or "keep-prior abort" in log_md.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 305)" in land
+    assert "077464e" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 305)" in owner
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 305)
+    assert "Batch 305: verify against WORKDIR" in refresh
+    assert "077464e" in _LIVING_TIPS
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "077464e" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify.get("base_tip_sha", "")).startswith("077464e")
+    assert str(verify.get("prior_base_tip_sha", "")).startswith("02cfbfd")
+    assert int(verify.get("refresh_batch") or 0) >= 305
+    assert verify.get("tip_refresh") is True
+    assert verify.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 305" in unblock
+    assert "=== Batch 305" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert str(status.get("tip", "")).startswith("077464e")
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+    assert status.get("write_state") == "WRITABLE"
+

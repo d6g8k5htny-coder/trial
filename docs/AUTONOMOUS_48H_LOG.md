@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 305 (tip-sync 02cfbfd→077464e after main #85+#89 + keep-prior abort fix) — 2026-09-25 ~16:30 UTC (PERMANENT window; tip-sync + eng fix; scientific effect NONE; flipped nothing)
+
+- Tip **moved** `02cfbfd`→`077464e` after main **#85** (inventable merge → `0adeb651`) + **#89** (tip-observe → `077464e`). Default ALIGNED @ `72558a5`. Path C `IDLE_PATH_C_DONE` after sync. WRITE WRITABLE (durable dylan 8/8; App trial-only).
+- **Defect shipped:** `refresh_path_c_bundle.sh` keep-prior path ran `git bundle verify` on trial ROOT (missing bundle prerequisite commits → exit 1). Under `set -euo pipefail` that aborted after BASE_TIP write and skipped VERIFY/APPLY/MANIFEST. Fixed: verify via WORKDIR (or tolerate fail) before honesty extract.
+- Tip-sync: BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C → `077464e`; REFRESH default 305; `_LIVING_TIPS+=077464e`. Focused 92 + claims/recovery 83; `lemma_closed=false`.
+- Research: #85/#89 merge observation only (no flip). #87/#92/#93 DRAFT skipped. Tip CI green @ `077464e`.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync`. next_focus=`tip_sync_drift_watch @077464e`.
+
 ### Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings). assert+align+probe+guard: `lemma_closed=false`. Tip CI green (ci/nav/withdrawal @ `02cfbfd`).

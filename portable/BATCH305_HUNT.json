@@ -1,0 +1,55 @@
+{
+  "batch": "305",
+  "hunt": "tip_sync_after_main_85_89",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_02cfbfd_to_077464e_main_85_89_keep_prior_abort",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C 02cfbfd→077464e after main #85+#89",
+    "refresh keep-prior: git bundle verify on trial ROOT under set -euo pipefail aborted before VERIFY/APPLY/MANIFEST write",
+    "REFRESH default 305; _LIVING_TIPS+=077464e"
+  ],
+  "avoided": [
+    "research inventable #85 MERGED — tip-sync only (NEVER flip / never re-land research)",
+    "research tip-observe #89 MERGED — tip-sync only",
+    "research HOLD draft #87 CI-fail",
+    "research HOLD drafts #92/#93 NEW",
+    "research HOLD drafts (#47/#46/#38/#36/#21/#12/#8/#7)",
+    "invent 0020",
+    "promote lemma_closed / prizes / premises"
+  ],
+  "candidates_checked": {
+    "tip_vs_02cfbfd": "TIP_DRIFT_live_077464e",
+    "main_pr_85": "MERGED_tip_0adeb651",
+    "main_pr_89": "MERGED_tip_observe_077464e",
+    "main_pr_87": "OPEN_DRAFT_CI_FAILURE_research_skip",
+    "main_pr_92_93": "OPEN_DRAFT_research_skip",
+    "ready_non_draft_eng": "none_beyond_tip_sync",
+    "main_tip_ci": "success_ci_nav_withdrawal @077464e",
+    "refresh_first_pass": "keep_prior_abort_after_BASE_TIP_only",
+    "refresh_after_fix": "VERIFY_APPLY_MANIFEST_written_refresh_batch_305",
+    "refresh_dry_run_after": "match=1_tip_stable_077464e",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "apply_all_check": "OK_already_applied_0001-0019",
+    "grant_dual_vector": "durable_8of8_WRITABLE_App_trial_only",
+    "guard_research": "pass_lemma_closed_false_flipped_false",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "077464e",
+  "tip_moved": true,
+  "prior_tip": "02cfbfd",
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 1,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "new_eng_beyond_tip_sync": true,
+    "note": "tip-sync + keep-prior abort fix only; research #85/#89 merge observation only; no 0020; lemma_closed=false"
+  }
+}

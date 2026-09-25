@@ -1,3 +1,7 @@
+## STATUS (Batch 305)
+
+tip `077464e` tip_match=true TIP_OK (synced from `02cfbfd` after main #85+#89); refresh keep-prior + keep-prior abort fix (bundle verify on trial ROOT under pipefail); REFRESH default 305; #87/#92/#93 DRAFT research skipped; action=tip_sync; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 304)
 
 tip `02cfbfd` tip_match=true TIP_OK; permanent-watch IDLE — BASE==LIVE; assert+align+probe+guard lemma_closed=false; #85 OPEN undrafted CI-green inventable skipped; #87 DRAFT CI-fail skipped; #88 tip-observe draft skipped; 0020 NEGATIVE; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
