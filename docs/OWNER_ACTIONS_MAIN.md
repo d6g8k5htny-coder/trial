@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 294)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer from BATCH290/291/293 briefs only — not eng). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Permanent-watch hunt beyond 273–293 **NEGATIVE**. No tip-sync. No republish. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/assert_path_c_ready.sh
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 293)
 
 Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Research audit WITHOUT promotion: HAS_PACKET `lemma_closed=false` prizes open; guard pass; `flipped_anything=false`. Sibling skim: dylan durable 8/8 WRITABLE (ambient sandbox 404 / App install trial-only); write+align feasible; no invent 0020. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable — skipped. Living tip_stale=0 script_stale=0. No NEW eng. No tip-sync. No republish. Scientific effect: NONE.
