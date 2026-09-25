@@ -27,6 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** grant `--check` App/ghs → sandbox `read_http=404` write=DENIED writable=1/8; durable `file:/tmp/gh-dylan-auth/access_token` → sandbox tip `49ae345` write=WRITABLE **8/8**. `owner_set_main_push_token` under App auth → HTTP 403 on secrets public-key; with discovered-token auth → trial+sandbox `MAIN_PUSH_TOKEN` set.
 - **Defect shipped (avoid wait_until_aligned transport honesty / tip-observe / Path A/B / living-tag republish / …):** (1) `owner_grant_ai_agent_access --check` dual-vector active+durable with NOTE when App sandbox 404 but durable WRITABLE; (2) `owner_set_main_push_token` authenticates `gh secret set` as discovered token + `--also-sandbox` / `--also-main`.
 - Pack newer than release (373392 vs 351458) deferred. Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial main **PR #78 squash merge** @ `f51f7b4`. Scientific effect NONE.
 
 ### Batch 258 (wait_until_aligned transport timeout MISALIGNED lie) — 2026-09-25 ~01:00 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 

@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "owner_grant_ai_agent_access --check dual-vector (active App/ghs + durable MAIN_PUSH_TOKEN); owner_set_main_push_token auth=discovered_token + --also-sandbox; sandbox Actions secret set",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 78,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -48,21 +48,26 @@
     "durable_MAIN_PUSH_TOKEN_sandbox": "read_http=200 write=WRITABLE tip=49ae345 writable_count=8/8",
     "durable_token_source": "file:/tmp/gh-dylan-auth/access_token",
     "note_emitted": "App/ghs sandbox 404 while durable MAIN_PUSH_TOKEN sandbox WRITABLE",
-    "secret_set_before_auth_fix": "App ghs → HTTP 403 Resource not accessible by integration on trial public-key",
-    "secret_set_after_auth_fix": "discovered_token auth → trial ok + sandbox MAIN_PUSH_TOKEN set 2026-09-25T01:07:18Z",
-    "pack_newer_vs_release": "local pack 373392 vs release tgz 351458 — deferred (living-tag republish optional next)",
+    "secret_set_before_auth_fix": "App ghs \u2192 HTTP 403 Resource not accessible by integration on trial public-key",
+    "secret_set_after_auth_fix": "discovered_token auth \u2192 trial ok + sandbox MAIN_PUSH_TOKEN set 2026-09-25T01:07:18Z",
+    "pack_newer_vs_release": "local pack 373392 vs release tgz 351458 \u2014 deferred (living-tag republish optional next)",
     "main_ci_recent_failures": 0
   },
   "next_focus": "tip_sync_drift_watch; pack/release republish if still stale; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 259: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; grant --check lied by App-only sandbox 404 while durable token 8/8 WRITABLE — dual-vector + --also-sandbox + secret-set uses discovered token auth; lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 259: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; grant --check lied by App-only sandbox 404 while durable token 8/8 WRITABLE \u2014 dual-vector + --also-sandbox + secret-set uses discovered token auth; lemma_closed=false; flipped nothing. Never printed tokens.",
   "artifacts": [
     "scripts/owner_grant_ai_agent_access.sh",
     "scripts/owner_set_main_push_token.sh",
     "portable/BATCH259_BRIEF.json",
     "portable/BATCH259_HUNT.json",
     "portable/BATCH259_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/78",
+    "https://github.com/d6g8k5htny-coder/trial/commit/f51f7b40f9a6ffd35699b6e97dc1c9c2cce463c0"
   ],
   "sandbox_secret_set": true,
-  "durable_sibling_coverage": "8/8_WRITABLE"
+  "durable_sibling_coverage": "8/8_WRITABLE",
+  "trial_main_land": "f51f7b4",
+  "trial_main_land_full": "f51f7b40f9a6ffd35699b6e97dc1c9c2cce463c0",
+  "trial_main_land_method": "pr_78_squash_merge"
 }
