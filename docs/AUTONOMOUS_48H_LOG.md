@@ -21,13 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 268 (pack living-tag write-before-validate race) — 2026-09-25 ~03:15 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+### Batch 268 (pack living-tag race + tip refresh 8e359e5) — 2026-09-25 ~03:22 UTC (PERMANENT window; eng defect ship + tip refresh; scientific effect NONE; flipped nothing)
 
-- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
-- **Evidence:** `pack_portable.sh` wrote `portable/LIVING_PATH_C_RELEASE_TAG` **before** fail-closed oneshot/open_pr `:-default` check. Strip `VERIFY.release` (batch=250) → pack exit 2 left pin dirty as `batch250-path-c-bundle` while defaults stay `batch241` — raced oneshot / `write_path_c_status` / republish readers. Pack tgz newer than living release deferred (**no republish**).
-- **Defect shipped (avoid when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** derive living tag → validate oneshot/open_pr defaults → **then** atomic write pin; mismatch exit 2 leaves prior pin intact (`living pin NOT written`).
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=true** → live `8e359e5` (main inventable tip-observe **#73** merged during batch). `refresh_path_c_bundle` updated BASE_TIP/VERIFY/APPLY/MANIFEST (keep-prior bundle; apply_all already-on-tip; focused 90 + claims/recovery 83). **No 0020.** Open remaining main PRs: research-hold drafts — **skipped**.
+- **Evidence (eng):** `pack_portable.sh` wrote `LIVING_PATH_C_RELEASE_TAG` **before** fail-closed oneshot/open_pr `:-default` check. Strip `VERIFY.release` (batch=250) → pack exit 2 left pin dirty as `batch250-path-c-bundle`. Pack vs living release newer deferred (**no republish**).
+- **Defect shipped (avoid when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** derive → validate → atomic write pin; mismatch exit 2 leaves prior pin intact. Plus tip refresh after CI tip-drift caught `8e359e5`.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- CI tip-drift / watch / sibling checked OK or deferred. Trial main **PR #96 squash merge** @ `20241af`. Scientific effect NONE.
+- Trial eng **PR #96 squash merge** @ `20241af`; tip-refresh follow-on. Scientific effect NONE.
 
 ### Batch 267 (when_writable dual-daemon status race leftover) — 2026-09-25 ~03:01 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 

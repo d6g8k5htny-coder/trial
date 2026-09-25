@@ -4,12 +4,12 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 268)
 
-Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `pack_portable` wrote `LIVING_PATH_C_RELEASE_TAG` before oneshot/open_pr `:-default` check — VERIFY.batch-without-release left pin dirty (`batch250`) on exit 2. Fixed: validate-before-write + atomic stamp (no republish). `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **moved** `fa32d11`→`8e359e5` (main tip-observe #73). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. `refresh_path_c_bundle` rebuilt BASE_TIP/VERIFY (keep-prior; no 0020). Also: `pack_portable` living-tag validate-before-write (no dirty pin on exit 2). No republish. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ 8e359e5
 ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz   # living_tag=batch241; pin stamped after defaults match
-./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ fa32d11
-# mismatch VERIFY.release vs oneshot :-default → exit 2; living pin unchanged
+./scripts/when_writable_land.py --once --dry-run                  # idle_path_c_done
 ```
 
 ## STATUS (Batch 267)

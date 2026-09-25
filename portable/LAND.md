@@ -1,6 +1,6 @@
 ## STATUS (Batch 268)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; pack_portable wrote living-tag pin before oneshot/open_pr fail-closed check → dirty pin on exit 2; validate-before-write + atomic stamp; lemma_closed=false; scientific effect NONE.
+tip `8e359e5` tip_moved=true (fa32d11→8e359e5 via main #73); refresh keep-prior; no 0020; pack_portable living-tag validate-before-write; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 267)
 

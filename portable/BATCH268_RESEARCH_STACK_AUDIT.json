@@ -757,5 +757,5 @@
     "registers/json/open_questions.json"
   ],
   "batch": "268",
-  "audit_note": "Batch 268: mechanical re-confirm OPEN_HOLD; lemma_closed=false; flipped nothing"
+  "audit_note": "Batch 268 post tip-refresh 8e359e5: mechanical re-confirm OPEN_HOLD; lemma_closed=false; flipped nothing"
 }
