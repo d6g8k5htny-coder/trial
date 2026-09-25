@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — eng living script_stale republish after tip_or_eng (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: living script_stale=1 after tip_or_eng tip-pin land — republish batch241. NEVER flip research.
+
 ### Batch 359 — tip_or_eng: inv tip re-pin after grant/sync lands (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

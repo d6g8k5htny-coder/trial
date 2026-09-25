@@ -1,3 +1,11 @@
+## STATUS (Batch 359 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale after tip_or_eng tip-pin — republish batch241. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 359 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after grant/sync land — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.

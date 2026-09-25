@@ -4,7 +4,7 @@
   "tip_match": true,
   "lemma_closed": false,
   "flipped_anything": false,
-  "action": "inventory_tip_repin_after_land_head",
+  "action": "eng_inv_tip_repin_and_living_republish",
   "batch": "359",
   "scientific_effect": "NONE",
   "goal": "OPEN",
@@ -25,8 +25,9 @@
     "sandbox": "49ae345",
     "trial": "6b0d351"
   },
-  "generated_at_utc": "2026-09-25T21:48:38Z",
+  "generated_at_utc": "2026-09-25T21:49:39Z",
   "defect_id": "inventory_trial_tip_lag_after_lands",
   "inventable_promoted": false,
-  "coordinator_bcId": "bc-01a0cf1e"
+  "coordinator_bcId": "bc-01a0cf1e",
+  "living_script_stale_cleared": true
 }

@@ -2,7 +2,7 @@
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip_match": true,
   "lemma_closed": false,
-  "action": "inventory_tip_repin_after_land_head",
+  "action": "eng_inv_tip_repin_and_living_republish",
   "flipped_anything": false,
   "batch": "359",
   "scientific_effect": "NONE",
@@ -18,5 +18,5 @@
   "bc_id": "bc-dede741b-713b-51bd-914f-b3f95156bbf8",
   "coordinator_bc": "bc-01a0cf1e",
   "assignment": "tip_sync_or_eng_cloud_peer",
-  "generated_at_utc": "2026-09-25T21:48:38Z"
+  "generated_at_utc": "2026-09-25T21:49:39Z"
 }
