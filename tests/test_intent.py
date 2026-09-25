@@ -15016,3 +15016,30 @@ def test_batch343_grant_inventory_refresh() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 343)" in owner
 
+def test_batch343_tip_sync_watch_confirm() -> None:
+    """Batch 343 WAKE: tip_sync_watch confirm @fcad723; required evidence fields."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert str(tiny.get("hardening_tip") or "").startswith("fcad723")
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("aligned") is True
+    assert str(watch.get("hardening_tip") or "").startswith("fcad723")
+    assert watch.get("action") == "tip_sync_watch_confirm"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "fcad723" in base
+    assert _living_tip(base)
+

@@ -1,13 +1,15 @@
 {
   "batch": "343",
-  "generated_at_utc": "2026-09-25T18:55:00Z",
+  "generated_at_utc": "2026-09-25T19:00:49Z",
   "action": "tip_sync_landed",
   "tip": "fcad723",
   "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
   "prior_tip": "f244312",
   "tip_match": true,
   "tip_moved": true,
-  "merged_prs": [109],
+  "merged_prs": [
+    109
+  ],
   "inventable_promoted": false,
   "path_c": "IDLE@0019",
   "lemma_closed": false,
@@ -17,5 +19,8 @@
   "keep_prior": true,
   "refresh_batch": "343",
   "defect_id": "tip_sync_f244312_to_fcad723_main_109",
-  "note": "inventable #109 MERGED mid-cycle; tip-sync Path C only — NOT promoted"
+  "note": "inventable #109 MERGED mid-cycle; tip-sync Path C only \u2014 NOT promoted",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "hardening_tip_short": "fcad723",
+  "aligned": true
 }

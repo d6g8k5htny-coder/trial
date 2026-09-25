@@ -1,0 +1,16 @@
+{
+  "batch": "343",
+  "generated_at_utc": "2026-09-25T19:00:49Z",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_watch_confirm",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "note": "WAKE tip_sync_watch vs BASE_TIP f244312: LIVE moved then peer tip-synced to fcad723; confirm tip_match=1; inventable #109 NOT promoted"
+}

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 WAKE — tip_sync_watch confirm @fcad723 (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; living tip_stale=0 script_stale=0.
+- Evidence: `BATCH343_TIP_SYNC` + `BATCH343_TIP_WATCH` (`hardening_tip`, `aligned`, `lemma_closed=false`).
+- Inventable #109 NOT promoted. Goal OPEN.
+
 ### Batch 343 — idle_no_commit after peer tip-sync @fcad723 (2026-09-25)
 
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
