@@ -10873,7 +10873,8 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     assert refs_idx >= 0 and put_idx > refs_idx
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-280" in refresh
+    # Batch 281 advances default tag; 280 stamp may be historical only.
+    assert "REFRESH_BATCH_TAG:-280" in refresh or "REFRESH_BATCH_TAG:-281" in refresh
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH280_BRIEF.json").read_text(encoding="utf-8")
@@ -10918,6 +10919,75 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 280" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch281_grant_durable_ls_remote_auth() -> None:
+    """Batch 281: grant --check authenticates ls-remote when token env set."""
+    import json
+
+    grant = ROOT / "scripts" / "owner_grant_ai_agent_access.sh"
+    text = grant.read_text(encoding="utf-8")
+    assert "Batch 281" in text
+    assert "x-access-token" in text
+    assert "ls_url" in text
+    # Authenticated URL must be preferred when token present (pre-281 bare https).
+    assert 'ls_url="https://x-access-token:${_ls_tok}@github.com/$r.git"' in text
+    assert 'ls_url="https://github.com/$r.git"' in text
+    assert "_ls_tok" in text
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-281" in refresh
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH281_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "281"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "grant_check_durable_ls_remote_unauthenticated"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("3b3860d")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH281_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "grant_check_durable_ls_remote_unauthenticated"
+    assert any("280" in a or "contents-ref" in a for a in (hunt.get("avoided") or []))
+    assert any("basename" in a or "279" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH281_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 281" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 281)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 281)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 281" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 281" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

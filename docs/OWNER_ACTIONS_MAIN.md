@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 281)
+
+Hardening tip **stable** @ `3b3860d` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `owner_grant_ai_agent_access --check` durable vector reported private sandbox `ls_remote=not_found_or_denied` while `read_http=200` + `write=WRITABLE` — `git ls-remote` used bare HTTPS without the durable token. Fixed: authenticate ls-remote when token env is set. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+# durable sandbox line: ls_remote=ok when write=WRITABLE
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 280)
 
 Hardening tip **stable** @ `3b3860d` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `probe_main_write_vectors` W2 contents PUT used a throwaway branch name without creating the git ref first → GitHub Contents API 404 "Branch … not found" (false DENIED) while W1 refs stayed WRITABLE. Fixed: create throwaway ref at tip sha, then PUT, then cleanup. `lemma_closed=false`. Scientific effect: NONE.

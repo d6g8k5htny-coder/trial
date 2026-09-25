@@ -5,6 +5,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 281 — tip `3b3860d` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant durable ls-remote auth; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/owner_grant_ai_agent_access.sh --check
+> # durable sandbox: ls_remote=ok when write=WRITABLE (token-auth ls-remote)
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: grant --check used bare `git ls-remote https://github.com/…` → private sandbox false `not_found_or_denied` beside durable write WRITABLE. No research flip. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 280 — tip `3b3860d` tip_match; default ALIGNED `72558a5`; write WRITABLE; probe W2 contents ref-first; release `batch241-path-c-bundle`**:
 >
 > ```bash

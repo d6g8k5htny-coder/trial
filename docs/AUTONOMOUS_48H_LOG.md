@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 281 (grant --check durable ls-remote unauthenticated → false not_found on private sandbox) — 2026-09-25 ~08:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable token **WRITABLE**.
+- **Evidence:** `owner_grant_ai_agent_access.sh --check` durable vector: sandbox `read_http=200` `write=WRITABLE` but `ls_remote=not_found_or_denied`. Probe used bare `git ls-remote https://github.com/…/sandbox.git` (no token) while `gh api` used exported `GH_TOKEN`.
+- **Defect shipped (avoid tip-observe / research HOLDs / W2 contents-ref 280 / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** when `GH_TOKEN`/`GITHUB_TOKEN`/`MAIN_PUSH_TOKEN` set, authenticate `git ls-remote` via `x-access-token` (never print token); durable sandbox `ls_remote=ok` when write WRITABLE.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 280 (probe W2 contents PUT missing git-ref create → false DENIED) — 2026-09-25 ~08:25 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable token **WRITABLE** (known).

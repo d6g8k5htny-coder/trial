@@ -1,0 +1,54 @@
+{
+  "batch": "281",
+  "hunt": "grant_check_durable_ls_remote_unauthenticated",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "grant_check_durable_ls_remote_unauthenticated",
+  "bugs_fixed": [
+    "grant --check durable ls-remote bare HTTPS → private sandbox false not_found_or_denied while write WRITABLE"
+  ],
+  "avoided": [
+    "tip-observe inventable README LOCK advance",
+    "research HOLD drafts",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_3b3860d": "TIP_OK",
+    "probe_w2_ref_first": "already_fixed_280",
+    "republish_basename": "already_fixed_279",
+    "pack_portable_help": "already_fixed_278",
+    "owner_verify_release_first": "already_fixed_277",
+    "when_writable_once": "already_fixed_270",
+    "land_workflows_idle": "already_fixed_272",
+    "living_pack_stale": "republish_operational_after_land",
+    "patch_0020": "NEGATIVE",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE",
+    "grant_durable_ls_remote_bare": "reproduced_not_found_while_writable",
+    "grant_durable_ls_remote_authed": "reproduced_ok"
+  },
+  "tip": "3b3860d",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was grant --check durable ls-remote unauthenticated"
+  }
+}

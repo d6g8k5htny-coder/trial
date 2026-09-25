@@ -13,6 +13,9 @@
 #       # sandbox). App/ghs often 404s private sandbox while device /
 #       # MAIN_PUSH_TOKEN is 8/8 WRITABLE; report both so App 404 is not
 #       # mistaken for durable-write failure. Never prints tokens.
+#       # Batch 281: ls-remote must use the same token as gh api when set —
+#       # unauthenticated HTTPS always 404s private sandbox while durable
+#       # write=WRITABLE (false ls_remote=not_found_or_denied).
 #   ./scripts/owner_grant_ai_agent_access.sh --invite-collaborators
 #       # only if AI_COLLAB_USERNAMES env lists real logins (comma-separated)
 #   ./scripts/owner_grant_ai_agent_access.sh --help
@@ -236,7 +239,7 @@ echo
 probe_repos_vector() {
   local vector_label="$1"
   local ref_suffix="$2"
-  local r read_http tip tip_short def ls_remote write
+  local r read_http tip tip_short def ls_remote write ls_url _ls_tok
   _PROBE_WRITABLE_COUNT=0
   _PROBE_SANDBOX_READ="?"
   _PROBE_SANDBOX_WRITE="DENIED"
@@ -256,11 +259,21 @@ probe_repos_vector() {
         tip=""
       fi
     fi
-    # Also try ls-remote readability for private/out-of-scope (no token printed)
+    # Also try ls-remote readability for private/out-of-scope (no token printed).
+    # Batch 281: authenticate when GH_TOKEN / GITHUB_TOKEN / MAIN_PUSH_TOKEN is
+    # set (durable vector exports these). Pre-281 always used bare
+    # https://github.com/$r.git → private sandbox always
+    # ls_remote=not_found_or_denied while gh api read=200 + write=WRITABLE.
     ls_remote="ok"
-    if ! git ls-remote "https://github.com/$r.git" HEAD >/dev/null 2>&1; then
+    ls_url="https://github.com/$r.git"
+    _ls_tok="${GH_TOKEN:-${GITHUB_TOKEN:-${MAIN_PUSH_TOKEN:-}}}"
+    if [[ -n "$_ls_tok" ]]; then
+      ls_url="https://x-access-token:${_ls_tok}@github.com/$r.git"
+    fi
+    if ! git ls-remote "$ls_url" HEAD >/dev/null 2>&1; then
       ls_remote="not_found_or_denied"
     fi
+    unset _ls_tok
     write="DENIED"
     if [[ -n "$tip" ]]; then
       # Unique per-repo probe ref (Batch 259) — avoids cross-repo reuse collisions

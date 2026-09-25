@@ -1,3 +1,7 @@
+## STATUS (Batch 281)
+
+tip `3b3860d` tip_match=true; grant --check durable ls-remote bare HTTPS → private sandbox false not_found while write WRITABLE; authenticate ls-remote when token set; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 280)
 
 tip `3b3860d` tip_match=true; probe W2 contents PUT lacked git-ref create (false DENIED 404 while W1 WRITABLE); create throwaway ref before PUT; lemma_closed=false; scientific effect NONE.
