@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 287)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 286 required `isinstance(repositories, list)` in **grant --check** only; `probe_main_write._parse_installation_repos_body` and `when_writable_land` fallback still used `(repositories or [])` → `null` / non-list looked like an empty App install (`names=[]`, `install_has_main=false`). Fixed: require a real list; else `install_query_mode=repositories_unavailable`. Also bumped `REFRESH_BATCH_TAG` default to 287 and unblocked header. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c "from importlib.util import *; s=spec_from_file_location('p','scripts/probe_main_write.py'); m=module_from_spec(s); s.loader.exec_module(m); print(m._parse_installation_repos_body({'repositories': None}))"
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 286)
 
 Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 285 required a `repositories` **key** but `"repositories": null` / non-list still used `(repos or [])` → false `install_missing_from_deps=all8`. Living release still lacked the 285 grant fix while `tip_stale=0`. Fixed: require `isinstance(repositories, list)`; republish `script_stale` (critical-script sha256 vs living pack); Intent `REFRESH_BATCH_TAG` uses `>=` not allowlists. `lemma_closed=false`. Scientific effect: NONE.

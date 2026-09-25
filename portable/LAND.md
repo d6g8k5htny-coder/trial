@@ -1,3 +1,7 @@
+## STATUS (Batch 287)
+
+tip `7d13a88` tip_match=true; probe/when_writable repositories null/non-list false-empty (286 grant-only leftover); isinstance(list) + repositories_unavailable; REFRESH default 287; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 286)
 
 tip `7d13a88` tip_match=true; grant repositories null/non-list false-missing; living release tip_match lacked 285 grant fix; script_stale + isinstance(list) + durable REFRESH Intent; lemma_closed=false; scientific effect NONE.

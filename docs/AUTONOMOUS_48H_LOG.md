@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 287 (probe/when_writable repositories list — 286 grant leftover) — 2026-09-25 ~10:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `7d13a88` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan).
+- Open main PRs: all **DRAFT** research HOLD / tip-observe — skipped (no green eng merge).
+- **Defect:** Batch 286 required `isinstance(repositories, list)` in grant `--check` only. `probe_main_write._parse_installation_repos_body` and `when_writable_land` fallback still used `(repositories or [])` → `null`/non-list looked like empty App install (`names=[]`, `install_has_main=false`). Fixed: require list; else `repositories_unavailable`. Bumped `REFRESH_BATCH_TAG` default → 287; unblocked header Batch 287.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. No 0020. Living release tip_stale=0 / script_stale=0.
+- next_focus=`tip_sync_drift_watch @7d13a88`; skip research HOLD drafts.
+
 ### Batch 286 (grant list + living script_stale + REFRESH Intent durable) — 2026-09-25 ~10:35 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Trial open PRs: none. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient install trial-only; dylan durable **8/8 WRITABLE**.
