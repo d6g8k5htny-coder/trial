@@ -1,3 +1,12 @@
+## STATUS (Batch 365 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH362; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH365_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch365_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 364 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged 2 commits after Batch 364 idle; last-resort frozen 363 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→364 + living republish; Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.

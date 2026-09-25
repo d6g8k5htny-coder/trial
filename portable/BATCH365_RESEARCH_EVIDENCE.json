@@ -1,0 +1,22 @@
+{
+  "batch": "365",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "audit_delta_needed": false,
+  "delta_vs_batch362": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "status_guard_tip_living": true,
+  "coord_bc": "bc-01a0cf1e",
+  "generated_at_utc": "2026-09-25T22:49:14Z"
+}
