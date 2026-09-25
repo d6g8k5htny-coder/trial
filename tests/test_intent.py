@@ -10475,3 +10475,126 @@ def test_batch276_republish_living_tag_post_pack() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch277_owner_verify_release_first() -> None:
+    """Batch 277: oneshot/open_pr prefer VERIFY.release over dirty living pin."""
+    import json
+    import os
+    import subprocess
+
+    oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
+    open_pr = ROOT / "scripts" / "owner_open_path_c_pr.sh"
+    oneshot_txt = oneshot.read_text(encoding="utf-8")
+    open_pr_txt = open_pr.read_text(encoding="utf-8")
+    assert "Batch 277" in oneshot_txt
+    assert "Batch 277" in open_pr_txt
+    assert "VERIFY.release" in oneshot_txt
+    assert "VERIFY.release" in open_pr_txt
+    # VERIFY derive must appear before living-pin fallback / :-default.
+    for label, text in (("oneshot", oneshot_txt), ("open_pr", open_pr_txt)):
+        verify_idx = text.find('data.get("release")')
+        living_idx = text.find("living.is_file()")
+        default_idx = text.find(
+            'PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"'
+        )
+        assert 0 <= verify_idx < living_idx < default_idx, label
+
+    living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
+    prior = living.read_text(encoding="utf-8")
+    assert prior.strip() == "batch241-path-c-bundle"
+    try:
+        living.write_text("batch250-path-c-bundle\n", encoding="utf-8")
+        for script in (oneshot, open_pr):
+            env = dict(os.environ)
+            env.pop("PATH_C_RELEASE_TAG", None)
+            dry = subprocess.run(
+                ["bash", str(script), "--dry-run"],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                check=False,
+                env=env,
+            )
+            assert dry.returncode == 0, dry.stderr + dry.stdout
+            combined = (dry.stdout or "") + (dry.stderr or "")
+            assert "release_tag=batch241-path-c-bundle" in combined, script.name
+            assert "release_tag=batch250-path-c-bundle" not in combined, script.name
+        # Explicit env override still wins.
+        env = dict(os.environ)
+        env["PATH_C_RELEASE_TAG"] = "batch999-path-c-bundle"
+        dry = subprocess.run(
+            ["bash", str(open_pr), "--dry-run"],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+            env=env,
+        )
+        assert dry.returncode == 0, dry.stderr + dry.stdout
+        assert "release_tag=batch999-path-c-bundle" in (
+            (dry.stdout or "") + (dry.stderr or "")
+        )
+    finally:
+        living.write_text(
+            prior if prior.endswith("\n") else prior + "\n", encoding="utf-8"
+        )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH277_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "277"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert (
+        brief.get("defect_id")
+        == "owner_oneshot_open_pr_dirty_living_pin_over_verify"
+    )
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("bfb7c38")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH277_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert (
+        hunt.get("defect_id")
+        == "owner_oneshot_open_pr_dirty_living_pin_over_verify"
+    )
+    assert any(
+        "republish living-tag post-pack" in a for a in (hunt.get("avoided") or [])
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH277_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 277" in log_md
+    assert "VERIFY.release" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 277)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 277)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 277" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 277" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"

@@ -38,14 +38,46 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TRIAL_ROOT="${TRIAL_ROOT:-$ROOT}"
-# Batch 245: living-tag automation — prefer portable/LIVING_PATH_C_RELEASE_TAG
-# when PATH_C_RELEASE_TAG is unset; keep :-batch241 fallback for older packs.
+# Batch 245 + Batch 277: living-tag automation when PATH_C_RELEASE_TAG unset.
+# Pre-277 preferred LIVING_PATH_C_RELEASE_TAG over VERIFY — same dirty-pin class
+# Batch 276 closed for republish/write_path_c_status (stale batch250 while
+# VERIFY.release=batch241). Derive like pack/write_path_c_status: VERIFY.release
+# → VERIFY.batch → living pin → :-batch241 fallback.
+_VERIFY_JSON="${TRIAL_ROOT}/portable/path-c-applied-bundle/VERIFY.json"
 _LIVING_TAG_FILE="${TRIAL_ROOT}/portable/LIVING_PATH_C_RELEASE_TAG"
-if [[ -z "${PATH_C_RELEASE_TAG:-}" && -f "$_LIVING_TAG_FILE" ]]; then
-  PATH_C_RELEASE_TAG="$(tr -d '[:space:]' < "$_LIVING_TAG_FILE")"
+if [[ -z "${PATH_C_RELEASE_TAG:-}" ]]; then
+  PATH_C_RELEASE_TAG="$(
+    VERIFY_JSON="$_VERIFY_JSON" LIVING_TAG_FILE="$_LIVING_TAG_FILE" python3 - <<'PY'
+import json, os
+from pathlib import Path
+
+verify = Path(os.environ["VERIFY_JSON"])
+living = Path(os.environ["LIVING_TAG_FILE"])
+tag = None
+if verify.is_file():
+    try:
+        data = json.loads(verify.read_text(encoding="utf-8"))
+        rel = data.get("release")
+        if isinstance(rel, str) and rel.strip().endswith("-path-c-bundle"):
+            tag = rel.strip()
+        elif data.get("batch") is not None:
+            tag = f"batch{data['batch']}-path-c-bundle"
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        tag = None
+if not tag and living.is_file():
+    try:
+        cand = living.read_text(encoding="utf-8").strip()
+        if cand.endswith("-path-c-bundle"):
+            tag = cand
+    except OSError:
+        tag = None
+if tag:
+    print(tag)
+PY
+  )" || true
 fi
 # Release tag for local --from-bundle ONE-SHOT (Batch 169: .bundle preferred).
-# Batch 241/245: default batch241-path-c-bundle (tip 542e6ec; Path C 0001–0019).
+# Batch 241/245/277: default batch241-path-c-bundle (tip Path C 0001–0019).
 PATH_C_RELEASE_TAG="${PATH_C_RELEASE_TAG:-batch241-path-c-bundle}"
 DRY_RUN=0
 FROM_BUNDLE=0

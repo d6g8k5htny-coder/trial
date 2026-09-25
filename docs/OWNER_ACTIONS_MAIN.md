@@ -2,6 +2,18 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 277)
+
+Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 276 closed dirty living-pin for republish/`write_path_c_status`, but `owner_path_c_oneshot` / `owner_open_path_c_pr` still preferred `LIVING_PATH_C_RELEASE_TAG` over `VERIFY.release` (stale `batch250` → wrong PR release URL). Fixed: VERIFY.release-first derive (parity with pack/write_path_c_status). `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+echo batch250-path-c-bundle > portable/LIVING_PATH_C_RELEASE_TAG
+./scripts/owner_open_path_c_pr.sh --dry-run   # release_tag=batch241 (VERIFY-first)
+./scripts/owner_path_c_oneshot.sh --dry-run   # same
+# restore living pin via pack if needed:
+./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
+```
+
 ## STATUS (Batch 276)
 
 Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `republish_living_path_c_release` captured living-tag **before** pack (stale `batch250` → wrong upload target while pack rewrote pin to `batch241`). Fixed: post-pack TAG + `write_path_c_status` VERIFY.release-first. `lemma_closed=false`. Scientific effect: NONE.

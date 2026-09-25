@@ -5,6 +5,18 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 277 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; owner VERIFY.release-first; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> echo batch250-path-c-bundle > portable/LIVING_PATH_C_RELEASE_TAG
+> ./scripts/owner_open_path_c_pr.sh --dry-run   # release_tag=batch241 (VERIFY-first)
+> ./scripts/owner_path_c_oneshot.sh --dry-run   # same
+> ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz   # restore living pin
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: oneshot/open_pr preferred dirty living pin after Batch 276 closed republish/write_path_c_status. Fixed VERIFY.release-first. Asset --clobber deferred. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 276 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; republish post-pack living-tag; release `batch241-path-c-bundle`**:
 >
 > ```bash

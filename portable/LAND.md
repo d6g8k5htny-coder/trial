@@ -1,3 +1,7 @@
+## STATUS (Batch 277)
+
+tip `bfb7c38` tip_match=true; owner oneshot/open_pr preferred dirty living pin over VERIFY.release (Batch 276 leftover); VERIFY.release-first derive; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 276)
 
 tip `bfb7c38` tip_match=true; republish living-tag captured before pack (stale pin → wrong release upload); post-pack TAG + write_path_c_status VERIFY-first; lemma_closed=false; scientific effect NONE.

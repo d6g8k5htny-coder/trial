@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 277 (owner oneshot/open_pr VERIFY.release-first leftover) — 2026-09-25 ~06:51 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 276 already on trial main @ `35e88f9`. Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
+- **Evidence:** Batch 276 closed dirty living-pin for `republish` + `write_path_c_status`, but `owner_path_c_oneshot` / `owner_open_path_c_pr` still preferred `LIVING_PATH_C_RELEASE_TAG` over `VERIFY.release`. Plant stale pin `batch250-path-c-bundle` → dry-run printed `release_tag=batch250-path-c-bundle` while VERIFY.release=`batch241-path-c-bundle` (PR body / release download URL wrong).
+- **Defect shipped (avoid tip-observe / research HOLDs / republish 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch 269 / pack validate-before-write 268 / asset --clobber churn):** oneshot + open_pr derive PATH_C_RELEASE_TAG like pack/write_path_c_status (VERIFY.release → VERIFY.batch → living pin → :-batch241). Env override still wins. Pack-vs-release newer deferred.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 276 (republish living-tag pre-pack race leftover) — 2026-09-25 ~06:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 275 already on trial main @ `fac2df6` (timer wake → cycle as 276). Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
