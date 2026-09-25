@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 329)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — Batch 327 non-tip `refresh_batch` bump correctly sets `tip_refresh=False` while tip stays living → assert softened to `(True, False)`. Dylan wake: `portable/MULTI_AGENT_WAKE_BATCH329.json` (resume IDLE + cloud peers). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`living_tip_refresh_assert_and_wake`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -c 'import json; print(json.load(open("portable/MULTI_AGENT_WAKE_BATCH329.json"))["action"])'
+```
+
 ## STATUS (Batch 328)
 
 Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `refresh_ai_agent_access_inventory.py` INV_BATCH default was frozen at **323** after every `--check` tip refresh — now derives from `print_owner_unblock.sh` `=== Batch N ===` (env `INV_BATCH` overrides). Batch 327 VERIFY.refresh_batch=327 + wake poster pack already on tip. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`inventory_batch_stamp_living`. Scientific effect: NONE.

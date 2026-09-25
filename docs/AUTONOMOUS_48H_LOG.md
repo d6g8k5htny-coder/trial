@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 329 — living tip_refresh assert + multi-agent wake (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: Batch 289 Intent asserted `VERIFY.tip_refresh is True` → CI red on tip after Batch 327 non-tip refresh_batch bump (`tip_refresh=False`, tip still living). Softened to `(True, False)`.
+- Dylan ask: message stopped agents + assign Path C intent tasks → `portable/MULTI_AGENT_WAKE_BATCH329.json` (Task resume IDLE + cloud peers).
+- NEVER flip research.
+
+
 ### Batch 328 — inventory INV_BATCH living stamp (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

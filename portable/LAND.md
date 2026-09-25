@@ -1,3 +1,7 @@
+## STATUS (Batch 329)
+
+tip `077464e` tip_match=true; eng: Batch 289 Intent no longer freezes VERIFY.tip_refresh=True (non-tip refresh_batch bumps set false); MULTI_AGENT_WAKE_BATCH329 wake+assign; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 328)
 
 tip `077464e` tip_match=true; eng: inventory refresh INV_BATCH no longer frozen at 323 — derives from print_owner header Batch N; VERIFY.refresh_batch 327 after keep-prior WORKDIR force; wake poster in pack+CRITICAL; lemma_closed=false; scientific effect NONE.
