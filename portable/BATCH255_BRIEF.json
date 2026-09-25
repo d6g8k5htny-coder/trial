@@ -55,8 +55,8 @@
       "scripts/when_writable_land.py (Batch253 install fallback missing)",
       "scripts/pack_portable.sh (Batch245/251 living-tag+TMPDIR missing)"
     ],
-    "release_tgz_bytes_after": 351286,
-    "release_tgz_sha256_after": "ad46ea9d3328899a9bbe51928dcded9f387057e1b8de472a829e6a3b0d94496f",
+    "release_tgz_bytes_after": 351458,
+    "release_tgz_sha256_after": "a4f23da7d0d2eed9017ee8a1cae442e8ec5c6301f0d0ae23d75a0f651ae79951",
     "upload_ok": true
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts",
@@ -70,9 +70,9 @@
     "portable/BATCH255_REPUBLISH_EVIDENCE.json",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "release_tgz_bytes_after": 351286,
-  "release_tgz_sha256_after": "ad46ea9d3328899a9bbe51928dcded9f387057e1b8de472a829e6a3b0d94496f",
-  "uploaded_at_utc": "2026-09-25T00:30:25Z",
+  "release_tgz_bytes_after": 351458,
+  "release_tgz_sha256_after": "a4f23da7d0d2eed9017ee8a1cae442e8ec5c6301f0d0ae23d75a0f651ae79951",
+  "uploaded_at_utc": "2026-09-25T00:30:55Z",
   "upload_ok": true,
   "trial_main_land_method": null
 }
