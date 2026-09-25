@@ -1,3 +1,7 @@
+## STATUS (Batch 352 inv-preserve-tip-pin re-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 352; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 352 wake)
 
 tip `e3cd7d4` tip_match=true; MULTI_AGENT wake+assign 7 IDLE Path C peers (Dylan message-stopped-agents); durable 8/8; lemma_closed=false; scientific effect NONE.

@@ -7,6 +7,6 @@
   "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
   "goal": "OPEN",
-  "trial_tip_sha": "09f8c045cc0c29a7928e09a0ff17976a9a6b7e96",
+  "trial_tip_sha": "4aeb190f703a3be42b9acee7e702a22d95a271ab",
   "scientific_effect": "NONE"
 }
