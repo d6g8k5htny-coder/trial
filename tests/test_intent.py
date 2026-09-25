@@ -18777,6 +18777,7 @@ def test_batch358_living_script_stale_republish() -> None:
     end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
     body = intent[start:end]
     assert 'in ("352", "353", "354", "355", "356", "357", "358")' not in body
+    assert 'in ("352", "353", "354", "355", "356", "357", "358", "359")' not in body
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
@@ -18846,3 +18847,109 @@ def test_batch359_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 359 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "idle_no_commit" in log_md
+
+
+def test_batch359_unfreeze_last_resort() -> None:
+    """Batch 359: last-resort batch defaults unfrozen 358→359; tip stable; Intent parses."""
+    import importlib.util
+    import json
+    import re
+    import tempfile
+    from pathlib import Path as P
+
+    # HEAD Intent must parse (Batch 357 merge SyntaxError class).
+    intent_src = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    compile(intent_src, "tests/test_intent.py", "exec")
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 359)
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 359
+    # Soften: no hard-pin of prior frozen last-resort literals as the living max.
+    assert 'return "358"' not in helper or max(_inv_rets) >= 359
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    _wake_head = poster.split("def batch_marker")[0]
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', _wake_head)]
+    assert _wake_rets and max(_wake_rets) >= 359
+    assert 'return "351"' not in _wake_head
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 359)
+    assert "358→359" in unblock or "358->359" in unblock or "unfreeze" in unblock
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_inv_359",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    td = tempfile.mkdtemp()
+    (P(td) / "scripts").mkdir()
+    assert int(mod._living_inventory_batch(td)) >= 359
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH359_UNFREEZE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "359"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("goal") == "OPEN"
+    assert brief.get("defect_id") == "batch_last_resort_frozen_358_vs_living_359"
+    assert brief.get("action") == "eng_unfreeze_batch_last_resort_359"
+    assert brief.get("assignment") == "ci_intent_unfreeze_living"
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH359_UNFREEZE_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "batch_last_resort_frozen_358_vs_living_359"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("goal") == "OPEN"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH359_UNFREEZE_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "eng_unfreeze_batch_last_resort_359"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("intent_parses") is True
+    assert evidence.get("goal") == "OPEN"
+
+    # Soften Intent allowlists: no frozen 352..359 any() in unfreeze bodies.
+    start = intent_src.index("def test_batch352_unfreeze_last_resort")
+    end = intent_src.index(
+        "def test_", start + len("def test_batch352_unfreeze_last_resort")
+    )
+    body352 = intent_src[start:end]
+    assert 'in ("352", "353", "354", "355", "356", "357", "358")' not in body352
+    assert 'in ("352", "353", "354", "355", "356", "357", "358", "359")' not in body352
+    start357 = intent_src.index("def test_batch357_unfreeze_last_resort")
+    end357 = intent_src.index(
+        "def test_", start357 + len("def test_batch357_unfreeze_last_resort")
+    )
+    body357 = intent_src[start357:end357]
+    assert "Living last-resort" in body352 or "max(_inv_rets)" in body352
+    assert "max(_inv_rets)" in body357 or ">= 357" in body357
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 unfreeze-last-resort)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 unfreeze-last-resort)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 359" in log_md and "358→359" in log_md

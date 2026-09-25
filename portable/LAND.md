@@ -1,3 +1,7 @@
+## STATUS (Batch 359 unfreeze-last-resort)
+
+tip `e3cd7d4` tip_match=true; eng: unfreeze wake/inv/REFRESH last-resort 358→359; Intent living >=359; HEAD Intent parses; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 359 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

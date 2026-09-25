@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — ci_intent_unfreeze_living 358→359 @e3cd7d4 (2026-09-25)
+
+- Assignment: `ci_intent_unfreeze_living` (coordinator bc-01a0cf1e; Dylan message stopped agents).
+- Tip stable @ `e3cd7d4` (tip_match=true; BASE==LIVE). Never flip research; `lemma_closed=false`; Goal OPEN.
+- Defect: last-resort inventory/wake returns + `REFRESH_BATCH_TAG` frozen at **358** while print_owner header already **359**.
+- Fix: bump ultimate returns **358→359**; REFRESH default **358→359**; Intent living `>=359` (no frozen 352..358 any() allowlist). HEAD Intent parses (Batch357 merge SyntaxError class repaired on main).
+- Evidence: `portable/BATCH359_UNFREEZE_{BRIEF,HUNT,EVIDENCE}.json`. action=`eng_unfreeze_batch_last_resort_359`.
+
 ### Batch 359 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

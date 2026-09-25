@@ -1,3 +1,11 @@
+## STATUS (Batch 359 unfreeze-last-resort)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: unfreeze inventory/wake/REFRESH last-resort **358→359**; Intent living `>=359` (no frozen 352..358 any()); HEAD Intent parses (Batch357 merge SyntaxError class). `lemma_closed=false`. Goal OPEN. action=`eng_unfreeze_batch_last_resort_359`.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch359_unfreeze_last_resort -q
+```
+
 ## STATUS (Batch 359 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH359_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
