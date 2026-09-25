@@ -1,3 +1,7 @@
+## STATUS (Batch 345 tip_sync_watch)
+
+tip `e3cd7d4` tip_match=true; tip_sync_watch confirm; fixed BATCH345_TIP_SYNC JSON; living paper-trail; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 tip-sync)
 
 tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; #105 MERGED into hardening → refresh keep-prior; CONTRIBUTION_PLAN retire docs NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.

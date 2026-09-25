@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 WAKE — tip_sync_watch confirm @e3cd7d4 (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4` (match=1 after peer tip-sync #105). Path C IDLE@0019; durable 8/8.
+- Fixed broken `BATCH345_TIP_SYNC.json` (duplicate keys / invalid JSON from peer merge). Living paper-trail tgz. Evidence: `BATCH345_TIP_WATCH.json`.
+- Inventable skipped; `lemma_closed=false`; goal OPEN.
+
 ### Batch 345 tip-sync fcad723→e3cd7d4 after main #105 (2026-09-25)
 
 - Tip **moved** mid-cycle: main #105 CONTRIBUTION_PLAN retire docs → `e3cd7d4`.

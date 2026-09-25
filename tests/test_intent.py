@@ -15742,3 +15742,31 @@ def test_batch345_tip_sync_e3cd7d4() -> None:
     assert status.get("lemma_closed") is False
     assert "e3cd7d4" in unblock or "tip-sync" in unblock.lower()
     assert "e3cd7d4" in land or "STATUS (Batch 345 tip-sync)" in land
+
+def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
+    """Batch 345 WAKE: tip_sync_watch confirm @e3cd7d4; valid tip-sync evidence JSON."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "tip_sync_landed"
+    assert str(tiny.get("hardening_tip") or "").startswith("e3cd7d4")
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("lemma_closed") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("aligned") is True
+    assert str(watch.get("hardening_tip") or "").startswith("e3cd7d4")
+    assert watch.get("action") == "tip_sync_watch_confirm"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "e3cd7d4" in base
+    assert _living_tip(base)
+

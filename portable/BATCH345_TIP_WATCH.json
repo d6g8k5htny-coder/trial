@@ -1,0 +1,17 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:20:48Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_watch_confirm",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "note": "WAKE tip_sync_watch: tip @e3cd7d4 after #105 tip-sync; living script_stale republish; inventable skipped"
+}
