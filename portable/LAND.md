@@ -1,3 +1,7 @@
+## STATUS (Batch 367 inv-tip-pin)
+
+inv tip re-pin beyond parent after research_stack_audit_watch; tip `e3cd7d4`; durable 8/8; lemma_closed=false.
+
 ## STATUS (Batch 367 research-audit-watch)
 
 research_stack_audit_watch no-promotion; tip `e3cd7d4` tip_match; open 13/1/3; delta vs 365 = 0; lemma_closed=false; scientific effect NONE.

@@ -1,3 +1,7 @@
+## STATUS (Batch 367 inv-tip-pin)
+
+PRESERVE_DURABLE inv tip pin after Batch 367 research audit. Goal OPEN.
+
 ## STATUS (Batch 367 research-audit-watch)
 
 Research stack audit without status promotion. Open premises/lemmas/prizes unchanged vs Batch 365 (13/1/3). Evidence: `portable/BATCH367_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.

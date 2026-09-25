@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 367 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 367: research_stack_audit_watch no-promotion @e3cd7d4 (13/1/3 open; delta=0 vs 365)"
+echo " Batch 367: inv tip re-pin beyond parent after research audit @e3cd7d4"
 echo " Batch 366: tip_or_eng inv tip re-pin beyond parent + last-resort 365→366 + VERIFY 365→366 @e3cd7d4"
 echo " Batch 366: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; inv parent-pinned)"
 echo " Batch 365: eng unfreeze last-resort 364→365 + VERIFY refresh_batch 364→365 @e3cd7d4"
