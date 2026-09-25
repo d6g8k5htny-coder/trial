@@ -1,8 +1,8 @@
 {
   "batch": "343",
   "generated_at_utc": "2026-09-25T18:57:50Z",
-  "tip": "f244312",
-  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
   "coverage": "8/8_WRITABLE",
   "write_durable": "8/8_WRITABLE",
   "sibling_write_count": 8,
@@ -27,7 +27,7 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "65d453f"
+    "trial": "e7898f5"
   },
   "coordinator_bcId": "bc-01a0cf1e",
   "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4"

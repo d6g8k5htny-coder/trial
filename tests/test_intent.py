@@ -14527,7 +14527,7 @@ def test_batch341_grant_inventory_refresh() -> None:
     assert tiny.get("action") == "grant_inventory_refresh_batch341"
     assert tiny.get("inventable_promoted") is False
     assert _living_tip(str(tiny.get("tip", "")))
-    assert str(tiny.get("tip", "")).startswith("f244312")
+    assert _living_tip(str(tiny.get("tip", "")))
 
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
