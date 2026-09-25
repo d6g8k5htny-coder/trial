@@ -108,6 +108,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 348 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; no new eng beyond peers (soften/inv pin/research audit). Paper-trail living tgz. Evidence: `portable/BATCH348_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
+
 ## STATUS (Batch 346)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin (`"e3cd7d4" in base`); next tip-sync would re-red CI (Batch 341/344 class). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

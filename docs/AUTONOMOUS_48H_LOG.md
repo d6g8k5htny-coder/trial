@@ -21,6 +21,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 348 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- tip_sync_or_eng: no tip move; Intent softens / inv tip pin / research audit already on main. Paper-trail living tgz. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 ### Batch 348 — inventory_preserve_durable_tip_pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4`; durable 8/8; trial tip lagged after lands → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
