@@ -1,0 +1,31 @@
+{
+  "batch": "348",
+  "generated_at_utc": "2026-09-25T19:51:36Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "living_script_stale_republish",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "status_guard_tip_lag": false,
+  "status_guard_tip": "e3cd7d4",
+  "watch": "research_stack_audit_watch",
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "inventory_trial_tip": "0635a73da5e109421bfa3e68b1369d81d3e1af25",
+  "inventory_pinned_to_head": true,
+  "prior_inventory_trial_tip": "e683e3a2879bc4f01e0669c66e0bc281aa38bc9c",
+  "coord_bc": "bc-01a0cf1e",
+  "defect_id": "living_script_stale_print_owner_after_348_idle",
+  "note": "research watch: lemma_closed=false; STATUS_GUARD tip==LIVE e3cd7d4 no lag; eng: living script_stale republish + inventory tip pin after idle land"
+}
