@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 267 (when_writable dual-daemon status race leftover) — 2026-09-25 ~03:01 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** two `when_writable_land` loops shared one status JSON for hours — live `--interval 300` (tmux) + leftover `--dry-run` (no `--once`, started Sep 24 18:26). Log showed interleaved iters `85/103 … 102/119`; `--once` probes clobbered within seconds; status often showed `dry_run=true` while a live daemon also ran.
+- **Defect shipped (avoid path_c dry-run write_required/stack prose / Intent token scrub / path_b dry-run / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** (1) loop-mode exclusive non-blocking flock on `<status>.daemon.lock` — second loop exits 2 `daemon_lock_held`; (2) `--once` against default status redirects to `when_writable_land.once.status.json` when daemon lock held.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 266 (path_c_dry_run write_required_to_land when IDLE) — 2026-09-25 ~02:52 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

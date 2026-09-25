@@ -1,0 +1,82 @@
+{
+  "batch": "267",
+  "generated_at_utc": "2026-09-25T03:01:30Z",
+  "status": "when_writable_dual_daemon_status_race_fixed",
+  "waiting_ci": false,
+  "goal_complete": true,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "base_tip": "fa32d11",
+  "default_tip": "72558a5b",
+  "default_tip_full": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "aligned": true,
+  "tip_moved": false,
+  "hardening_tip_moved": false,
+  "default_tip_moved": false,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "merged_prs": [],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
+  "defect_shipped": true,
+  "defect_id": "when_writable_dual_daemon_status_race",
+  "patch_0020": false,
+  "path_c_0019_landed": true,
+  "path_c_landed": true,
+  "pack_release": "batch241-path-c-bundle",
+  "automation_improvement": "when_writable_land loop-mode exclusive flock on <status>.daemon.lock (second loop exits 2 daemon_lock_held); --once against default status redirects to when_writable_land.once.status.json when daemon lock held — stops leftover --dry-run loop racing live status (iters 85/103…102/119)",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "main_pr_or_null": null,
+  "when_writable_idle": "idle_path_c_done",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "green_eng_prs_merged": [],
+  "evidence": {
+    "before": {
+      "processes": [
+        "python3 scripts/when_writable_land.py --interval 300",
+        "python3 scripts/when_writable_land.py --dry-run"
+      ],
+      "status_iters_interleaved": "85/103 … 102/119",
+      "once_clobber_seconds": true,
+      "daemon_lock": false
+    },
+    "after": {
+      "second_loop_exit": 2,
+      "second_loop_reason": "daemon_lock_held",
+      "once_redirect_when_lock_held": "when_writable_land.once.status.json",
+      "daemon_lock_file": "<status>.daemon.lock"
+    },
+    "main_ci_recent_failures": 0,
+    "actionable_classic_tools_tests": 0,
+    "pack_vs_release": "newer_deferred_avoid_republish"
+  },
+  "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches; ensure single when-writable daemon holds lock",
+  "note": "Batch 267: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; when_writable dual-daemon status race leftover fixed (flock + once sidecar); lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_c dry-run write_required/stack prose / Intent token scrub / path_b dry-run / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "artifacts": [
+    "scripts/when_writable_land.py",
+    "scripts/print_owner_unblock.sh",
+    "portable/BATCH267_BRIEF.json",
+    "portable/BATCH267_HUNT.json",
+    "portable/BATCH267_RESEARCH_STACK_AUDIT.json",
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "docs/OWNER_ACTIONS_MAIN.md",
+    "portable/LAND.md"
+  ],
+  "shipped": true,
+  "where": [
+    "trial"
+  ]
+}

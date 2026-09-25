@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 267)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. Live `--interval 300` daemon + leftover `--dry-run` loop raced `when_writable_land.status.json` (interleaved iters; `--once` clobbered). Fixed: loop-mode `<status>.daemon.lock` flock (second loop exits 2); `--once` → `when_writable_land.once.status.json` when lock held. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/when_writable_land.py --once --dry-run            # idle; sidecar if daemon lock held
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ fa32d11
+# second loop without --once → exit 2 daemon_lock_held
+```
+
 ## STATUS (Batch 266)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `path_c_dry_run` idle still advertised `write_required_to_land=true` after Batch 261 `apply_ready=false`. Fixed: `write_required_to_land=false` on already_on_tip; print_owner_unblock / restore-plan living stack **0008–0019** / `new_0020`. `lemma_closed=false`. Scientific effect: NONE.

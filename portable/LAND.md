@@ -1,3 +1,7 @@
+## STATUS (Batch 267)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; when_writable live+leftover --dry-run loop raced status JSON → daemon.lock flock + --once sidecar; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 266)
 
 tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; path_c_dry_run IDLE still advertised write_required_to_land=true → false; living stack prose 0017→0019 / new_0020; lemma_closed=false; scientific effect NONE.
