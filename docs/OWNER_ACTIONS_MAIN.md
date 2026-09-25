@@ -1,3 +1,12 @@
+## STATUS (Batch 354 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 354 inventory tip-pin — republish batch241-path-c-bundle `--force`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch354_living_script_stale_republish -q
+```
+
 ## STATUS (Batch 354 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; peers already shipped 353 research_audit + living republish + inv re-pin; living tip/script current. Paper-trail living tgz. Evidence: `portable/BATCH354_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

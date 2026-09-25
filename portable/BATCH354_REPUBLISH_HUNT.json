@@ -1,0 +1,26 @@
+{
+  "batch": "354",
+  "generated_at_utc": "2026-09-25T20:52:55Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "living_script_stale_after_batch354_inv_tip_pin",
+  "hunt_0020": "NEGATIVE",
+  "action": "living_script_stale_republish",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1)",
+    "STATUS_GUARD @e3cd7d4",
+    "inventory tip lag=1 perpetual",
+    "fallbacks already @354",
+    "Intent pins soft"
+  ],
+  "goal": "OPEN"
+}
