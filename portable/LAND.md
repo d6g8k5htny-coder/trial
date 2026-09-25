@@ -1,3 +1,7 @@
+## STATUS (Batch 343 audit-timeout)
+
+tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 344)
 
 tip `fcad723` tip_match=true; eng: soften Batch 343 tip_sync_watch Intent live BASE_TIP pin (`fcad723` in base would re-red next tip-sync); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

@@ -1,0 +1,11 @@
+{
+  "batch": "343",
+  "generated_at_utc": "2026-09-25T19:13:29Z",
+  "defect_id": "audit_intent_timeout_under_ratelimit_reset_sleep",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hunt_0020": "NEGATIVE",
+  "inventable_promoted": false,
+  "note": "New class after tip-sync: audit Intent TimeoutExpired under rate-limit reset sleep"
+}

@@ -1,3 +1,12 @@
+## STATUS (Batch 343 audit-timeout)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: Intent audit timeout under rate-limit reset sleep — `AUDIT_TRANSPORT_EARLY_FALLBACK=1` → raw/ls-remote inside 60s budget (CI 36176016910). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+AUDIT_TRANSPORT_EARLY_FALLBACK=1 python3 -m pytest tests/test_intent.py::test_batch343_audit_intent_timeout_early_fallback -q
+```
+
 ## STATUS (Batch 344 idle)
 
 Hardening tip **stable** @ `fcad723`. idle_no_commit. `lemma_closed=false`.

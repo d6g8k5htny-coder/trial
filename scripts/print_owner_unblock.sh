@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 344 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 343: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910)"
 echo " Batch 344: soften Batch 343 tip_sync_watch Intent live BASE_TIP pin (fcad723); tip stable @fcad723"
 echo " Batch 344: tip_sync_watch idle @fcad723 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 343: STATUS_GUARD tip refresh f244312→fcad723 after tip-sync (guard pass; no promotion)"

@@ -21,6 +21,11 @@ jobs:
           # Export runner token so tip reads do not degrade to TRANSPORT_ERROR when
           # `gh` has no interactive auth on the Actions runner.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Batch 343: Intent probes call audit with timeout=60s. Honoring
+          # x-ratelimit-reset up to 60s (runs 36176016910/36176143525) times out
+          # before Batch 340b raw fallback. Early-fallback escalates to raw.
+          AUDIT_TRANSPORT_EARLY_FALLBACK: "1"
+          AUDIT_TRANSPORT_SLEEP_CAP_S: "8"
         run: python -m pytest -q
       - name: Alignment audit (read-only, expected MISALIGNED until main lands)
         env:
@@ -33,9 +38,11 @@ jobs:
           # detection is unchanged.
           # Batch 340b: after retries, script falls back to raw/ls-remote; residual
           # transport exit 2 soft-continues (same class as drift-watch record-only).
+          # Batch 343: early-fallback under Intent+audit steps (reset sleep → raw).
           AUDIT_TRANSPORT_RETRIES: "6"
           AUDIT_TRANSPORT_SLEEP_S: "3"
           AUDIT_TRANSPORT_SLEEP_CAP_S: "60"
+          AUDIT_TRANSPORT_EARLY_FALLBACK: "1"
         run: |
           set +e
           python scripts/audit_main_alignment.py
