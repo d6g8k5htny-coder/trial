@@ -1,3 +1,12 @@
+## STATUS (Batch 357 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch_no_promotion: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd357 --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch357_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 356 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: landed rebase conflict markers cleaned (LOG/LAND/OWNER/print_owner) + preserve_durable inv tip re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`eng_conflict_marker_fix_and_inv_tip_repin`.
