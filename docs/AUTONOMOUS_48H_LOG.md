@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence (research-guard edge, not tip-observe):** `guard_no_status_promotion` on empty/NO_PACKET checkout vs STATUS_GUARD snapshot with `inventory.shape` stripped → **exit 1 / ~19 false OPEN→ABSENT promotions**. With `inventory.shape=HAS_PACKET` → correct **exit 2** usage. Also Batch 262 Intent CI FAIL: unit called `_token()` with ambient Actions `GITHUB_TOKEN` still set.
 - **Defect shipped (avoid probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene / tip-observe):** (1) `_baseline_shape` / `_baseline_is_has_packet` recover shape from `live_shape` / nested audit / OPEN rows; NO_PACKET→exit 2; (2) Batch 262 Intent unit env-scrubs App tokens for file-discovery assert only.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- Trial main land via PR (this batch). Scientific effect NONE.
+- Trial main **PR #85 squash merge** @ `33bde2c`. Scientific effect NONE.
 
 ### Batch 262 (probe_main_write misses durable file token) — 2026-09-25 ~02:05 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
