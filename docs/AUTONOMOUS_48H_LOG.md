@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 357 — research_stack_audit_watch_no_promotion @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research stack audit: open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD living; NEVER promote.
+- Artifacts: `BATCH357_RESEARCH_STACK_AUDIT.json`, `BATCH357_RESEARCH_AUDIT_WATCH.json`. action=`research_stack_audit_watch`. Woke tip/eng/research peers. Goal OPEN.
+
 ### Batch 357 — eng unfreeze last-resort 356→357 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

@@ -107,7 +107,9 @@ def _living_batch_n() -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    # Batch 357: last-resort bumped off frozen "356".
+
+
+# Batch 357: last-resort bumped off frozen "356".
     return "357"
 def batch_marker() -> str:
     """Living wake marker — tip move unlocks re-post."""

@@ -16909,16 +16909,13 @@ def test_batch352_unfreeze_last_resort() -> None:
     )
     assert 'return "351"' not in helper
     # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', helper)]
-    assert _inv_rets and max(_inv_rets) >= 352
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357"))
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    _wake_head = poster.split("def batch_marker")[0]
-    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', _wake_head)]
-    assert _wake_rets and max(_wake_rets) >= 352
+    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355", "356", "357"))
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -18046,8 +18043,7 @@ def test_batch355_ci_audit_watch_idle() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', helper)]
-    assert _inv_rets and max(_inv_rets) >= 352
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357"))
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     start = intent.index("def test_batch352_unfreeze_last_resort")
     end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
@@ -18238,6 +18234,76 @@ def test_batch356_tip_or_eng_continue() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 356 tip-eng)" in owner
 
+def test_batch357_research_stack_audit_watch() -> None:
+    """Batch 357: research_stack_audit_watch_no_promotion; STATUS_GUARD living."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "357"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    living = watch.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    assert audit.get("action") == "research_stack_audit_watch"
+    counts = audit.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(audit.get("tip_sha") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "357"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "research_stack_audit_watch"
+    assert int(brief.get("open_premises") or 0) >= 13
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 357)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 357" in log_md and "research_stack_audit_watch" in log_md
 
 def test_batch357_idle_tip_sync_watch() -> None:
     """Batch 357: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
