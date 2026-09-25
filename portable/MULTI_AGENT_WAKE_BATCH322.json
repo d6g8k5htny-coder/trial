@@ -29,12 +29,21 @@
   "spawned_cloud_agents": [
     {"bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e", "name": "Cloud tip-sync and Path C", "assignment": "tip_sync_or_one_eng_fix_on_healthy_VM", "url": "https://cursor.com/agents/bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e"},
     {"bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec", "name": "Cloud multi-agent grant audit", "assignment": "grant_check_dual_vector_docs_inventory", "url": "https://cursor.com/agents/bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec"},
-    {"bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20", "name": "Cloud research-guarded eng hunt", "assignment": "tooling_tests_eng_without_claim_promotion", "url": "https://cursor.com/agents/bc-32759b2b-24be-57a1-8b35-f01c48b16a20"}
+    {"bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20", "name": "Cloud research-guarded eng hunt", "assignment": "tooling_tests_eng_without_claim_promotion", "url": "https://cursor.com/agents/bc-32759b2b-24be-57a1-8b35-f01c48b16a20"},
+    {"bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3", "name": "Land Batch322 wake dispatch PR", "assignment": "land_MULTI_AGENT_WAKE_BATCH322_on_trial", "url": "https://cursor.com/agents/bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3"},
+    {"bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9", "name": "Post wake comments on main eng PRs", "assignment": "gh_pr_comments_eng_only_92_93_87_36_21_12", "url": "https://cursor.com/agents/bc-dad4c232-0650-5862-bdc5-7444ce112ed9"}
   ],
+  "eng_pr_wake_targets": {
+    "repo": "d6g8k5htny-coder/main",
+    "comment": ["#92", "#93", "#87", "#36", "#21", "#12"],
+    "skip_research_drafts": ["#47", "#46", "#38", "#8", "#7"],
+    "mechanism": "trial Actions repository_dispatch wake-batch322-pr-comments + secrets.MAIN_PUSH_TOKEN (App ghs Issues:write 403)"
+  },
   "messaging_limits": {
     "cursor_cloud_mcp": "list/inspect only — no peer Create Run API",
     "cursor_api_key": "NOT_SET in this env — cannot POST /v1/agents/{id}/runs to external peers",
-    "mechanism_used": "Task resume (idle internal) + Task environment=cloud (fresh VMs)"
+    "app_ghs_pr_comment": "403 Resource not accessible by integration (Issues:write missing; trial-only install)",
+    "mechanism_used": "Task resume (idle internal) + Task environment=cloud (fresh VMs) + Actions MAIN_PUSH_TOKEN for eng PR wake comments"
   },
   "flipped_anything": false,
   "lemma_closed": false
