@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 338)
+
+Hardening tip **synced** `eeebb28`→`848aea2` after main **#101** + **#102** (tip_match=true; Path C idle). WRITE WRITABLE. Tip-sync keep-prior + REFRESH default 338 + `_LIVING_TIPS+=848aea2`. Inventable/math_status merges tip-sync only — **NEVER flip**. Guard: `lemma_closed=false`. action=`tip_sync`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 337)
 
 Hardening tip **stable** @ `eeebb28` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Eng: living `batch241-path-c-bundle` **script_stale=1** after Batch 336 wake — republished (tip_stale=0). `lemma_closed=false`. Scientific effect: NONE.

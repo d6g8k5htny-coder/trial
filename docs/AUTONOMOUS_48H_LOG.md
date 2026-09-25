@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 338 — tip-sync eeebb28→848aea2 after main #101+#102 (2026-09-25)
+
+- Mid-cycle tip moved during Batch 337 watch: #101 math_status carrier ABSENT → `9979c7f`, then tip @ `848aea2` (#102 inventable SIDE24 importers).
+- Tip-sync keep-prior; REFRESH default 338; `_LIVING_TIPS+=848aea2`. Focused 92 + claims/recovery 83; `lemma_closed=false`.
+- **NEVER flip research** inventable/math_status. #107 observation only.
+- Path C IDLE@0019 after sync.
+
 ### Batch 337 — living script_stale republish (2026-09-25)
 
 - Tip **stable** @ `eeebb28` (tip_sync_watch dry-run match=1). Path C IDLE@0019.

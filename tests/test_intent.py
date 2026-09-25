@@ -37,6 +37,7 @@ _LIVING_TIPS = (
     "077464e",
     "388a22c",
     "eeebb28",
+    "848aea2",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -13708,7 +13709,7 @@ def test_batch337_living_script_stale_republish() -> None:
     assert brief.get("tip_moved") is False
     assert brief.get("action") == "living_script_stale_republish"
     assert brief.get("defect_id") == "living_release_script_stale_after_336"
-    assert str(brief.get("tip", "")).startswith("eeebb28")
+    assert _living_tip(str(brief.get("tip", "")))
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH337_HUNT.json").read_text(encoding="utf-8")
@@ -13728,4 +13729,59 @@ def test_batch337_living_script_stale_republish() -> None:
     assert "Batch 337" in log_md
 
     assert _living_tip("eeebb28")
+
+def test_batch338_tip_sync_after_main_101_102() -> None:
+    """Batch 338: tip-sync eeebb28→848aea2 after main #101+#102."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH338_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "338"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_moved") is True
+    assert brief.get("action") == "tip_sync"
+    assert brief.get("defect_id") == "tip_sync_eeebb28_to_848aea2_main_101_102"
+    assert str(brief.get("tip", "")).startswith("848aea2")
+    assert str(brief.get("prior_tip", "")).startswith("eeebb28")
+    assert 101 in (brief.get("merged_prs") or [])
+    assert 102 in (brief.get("merged_prs") or [])
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH338_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("tip_moved") is True
+    assert hunt.get("defect_shipped") is True
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 338)
+    assert "848aea2" in _LIVING_TIPS
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "848aea2" in base
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify.get("base_tip_sha", "")).startswith("848aea2")
+    assert str(verify.get("prior_base_tip_sha", "")).startswith("eeebb28")
+    assert int(verify.get("refresh_batch") or 0) >= 338
+    assert verify.get("tip_refresh") is True
+    assert verify.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 338)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 338)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 338)" in owner
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert str(status.get("tip", "")).startswith("848aea2")
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
 

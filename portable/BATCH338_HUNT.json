@@ -1,0 +1,18 @@
+{
+  "batch": "338",
+  "hunt": "tip_sync_after_main_101_102",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_eeebb28_to_848aea2_main_101_102",
+  "tip": "848aea2",
+  "tip_moved": true,
+  "prior_tip": "eeebb28",
+  "hunt_0020": "NEGATIVE",
+  "HUNT_NEGATIVE": {
+    "new_eng_beyond_tip_sync": true,
+    "patch_0020": true
+  }
+}

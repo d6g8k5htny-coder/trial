@@ -1,0 +1,41 @@
+{
+  "batch": "338",
+  "generated_at_utc": "2026-09-25T18:06:14Z",
+  "status": "tip_sync_after_main_101_102",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "base_tip": "848aea2",
+  "prior_tip": "eeebb28",
+  "tip_moved": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "merged_prs": [
+    101,
+    102
+  ],
+  "note_main_pr_101": "math_status docs carrier ABSENT \u2014 tip-sync only NEVER flip",
+  "note_main_pr_102": "inventable SIDE24_CELL importers \u2014 tip-sync only NEVER flip",
+  "note_main_pr_107": "inventable OPEN_PROBLEMS errata merged near tip \u2014 observation only skipped promotion",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_eeebb28_to_848aea2_main_101_102",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C eeebb28\u2192848aea2",
+    "REFRESH default 338; _LIVING_TIPS+=848aea2"
+  ],
+  "action": "tip_sync",
+  "route_now": "TIP_SYNC",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_848aea2_after_sync",
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "evidence": {
+    "tip_start": "Batch 337 living republish @eeebb28; mid-cycle TIP_DRIFT\u21929979c7f (#101) then tip@848aea2 (#102)",
+    "refresh": "keep-prior focused 92 + claims/recovery 83; lemma_closed=false",
+    "research": "#101/#102/#107 inventable/math_status \u2014 tip-sync only NEVER promote"
+  },
+  "note": "Batch 338: tip-sync eeebb28\u2192848aea2 after #101+#102; inventable not promoted; lemma_closed=false."
+}

@@ -1,3 +1,7 @@
+## STATUS (Batch 338)
+
+tip `848aea2` tip_match=true TIP_OK after tip-sync; #101+#102 MERGED into hardening → refresh keep-prior; inventable/math_status NOT promoted; action=tip_sync; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 337)
 
 tip `eeebb28` tip_match=true; tip_sync_watch — living release script_stale republish (tip_stale=0); lemma_closed=false; scientific effect NONE.
