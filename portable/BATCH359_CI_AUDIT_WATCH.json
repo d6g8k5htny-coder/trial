@@ -1,0 +1,16 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:51:50Z",
+  "assignment": "ci_audit_watch_and_remediate",
+  "action": "eng_soften_357_tip_or_eng_action_allowlist",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "ci_status": "remediate",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "defect_id": "intent_batch357_tip_or_eng_frozen_action_research_stack",
+  "note": "Markers cleaned on 80168df9; remaining Intent red was frozen action research_stack_audit_watch vs living inventory_tip_repin. Soften allowlist. last-resort>=359.",
+  "coordinator_bcId": "bc-01a0cf1e"
+}

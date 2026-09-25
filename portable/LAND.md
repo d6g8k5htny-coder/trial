@@ -1,3 +1,7 @@
+## STATUS (Batch 359 soften-357-tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: soften Batch 357 tip_or_eng Intent action allowlist; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 359 wake)
 
 tip `e3cd7d4` tip_match=true; MULTI_AGENT_WAKE_BATCH359 wake+assign stopped agents; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
