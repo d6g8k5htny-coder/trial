@@ -1,3 +1,12 @@
+## STATUS (Batch 359 tip-eng-post)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: post eng-intent-json land — preserve_durable tip re-pin→HEAD + living republish (script_stale 1→0). `lemma_closed=false`. Goal OPEN.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=360 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 359 eng-intent-json)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: repair corrupt `BATCH345_TIP_SYNC_HUNT.json`; restore tip-sync `defect_id`; soften Batch 230 living `PATH_C_STATUS.goal_complete` pin (goal OPEN). `lemma_closed=false`. Goal OPEN.

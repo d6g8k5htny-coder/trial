@@ -50,6 +50,7 @@ fi
 echo "=== Batch 360 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 360: tip_or_eng inv tip re-pin + last-resort 359→360 + living republish @e3cd7d4"
 echo " Batch 359: eng repair BATCH345 tip-sync JSON + soften Batch 230 goal_complete living pin"
+echo " Batch 359: tip_or_eng post-eng inv tip re-pin + living republish @e3cd7d4"
 echo " Batch 360: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 359: eng living script_stale republish after WAKE359 (batch241; script_stale 1→0)"
 echo " Batch 359: soften Batch 357 tip_or_eng Intent action allowlist (ci_audit_watch)"

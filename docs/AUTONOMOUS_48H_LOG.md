@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — tip_or_eng post-eng: inv tip re-pin + living republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- After eng-intent-json land: trial tip lagged @`383177c9`; living `script_stale=1` (print_owner). PRESERVE_DURABLE re-pin→HEAD + living republish → script_stale=0.
+- NEVER flip research; skip inventable.
+
 ### Batch 359 — eng: repair BATCH345 tip-sync JSON + soften Batch 230 goal_complete pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

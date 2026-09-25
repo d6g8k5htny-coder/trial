@@ -1,16 +1,11 @@
 {
   "batch": "359",
-  "generated_at_utc": "2026-09-25T21:49:39Z",
-  "hunt": "tip_or_eng",
-  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
-  "tip_match": true,
+  "hunt": "post_eng_land_tip_pin_and_living_republish",
   "lemma_closed": false,
   "flipped_anything": false,
-  "scientific_effect": "NONE",
-  "action": "eng_inv_tip_repin_and_living_republish",
-  "defect_id": "living_script_stale_after_batch359_tip_eng",
-  "defect_found": true,
   "defect_shipped": true,
-  "hunt_0020": "NEGATIVE",
-  "goal": "OPEN"
+  "defect_id": "inventory_trial_tip_lag_and_living_script_stale_after_eng_land",
+  "tip_moved": false,
+  "tip": "e3cd7d4",
+  "generated_at_utc": "2026-09-25T22:00:38Z"
 }

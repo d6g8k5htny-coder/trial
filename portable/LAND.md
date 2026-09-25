@@ -1,3 +1,7 @@
+## STATUS (Batch 359 tip-eng-post)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + living republish after eng-intent-json; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 359 eng-intent-json)
 
 tip `e3cd7d4` tip_match=true; eng: repair BATCH345 tip-sync JSON + soften Batch 230 living goal_complete pin; lemma_closed=false; goal OPEN; scientific effect NONE.
