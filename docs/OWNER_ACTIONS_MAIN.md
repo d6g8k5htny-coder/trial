@@ -7,6 +7,10 @@ Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 358
 python3 -m pytest tests/test_intent.py::test_batch358_living_script_stale_republish -q
 ```
 
+## Batch 359 — inventory_preserve_durable_tip_pin
+
+Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD; fallbacks≥359; never demote 8/8. Goal OPEN. `lemma_closed=false`.
+
 ## STATUS (Batch 358 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
