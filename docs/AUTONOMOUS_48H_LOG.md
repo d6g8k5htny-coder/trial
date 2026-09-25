@@ -25,6 +25,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; trial tip lagged after Batch 355 lands → preserve_durable pin→HEAD; never demote 8/8 on writable=0 DENIED.
 - Evidence `BATCH356_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
+### Batch 356 — inventory_preserve_durable_tip_pin @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: trial inventory tip lagged 3 commits after lands; PRESERVE_DURABLE refresh →HEAD. Inventable skipped. Goal OPEN. NEVER flip research.
+
 
 ### Batch 356 — idle_no_commit tip-stable align watch @e3cd7d4 (2026-09-25)
 
