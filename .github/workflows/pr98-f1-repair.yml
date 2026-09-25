@@ -1,0 +1,76 @@
+name: PR98 F1 repair candidate
+on:
+  pull_request:
+    paths:
+      - 'reviews/pr98_f1_repair_20260925/**'
+      - '.github/workflows/pr98-f1-repair.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: reviewer
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: d6g8k5htny-coder/main
+          ref: 776fdb75eb718293e296937c33eb77c228616a86
+          path: subject
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+      - name: Verify immutable base and apply only the reviewed patch
+        run: |
+          set -euo pipefail
+          test "$(git -C subject rev-parse HEAD)" = 776fdb75eb718293e296937c33eb77c228616a86
+          echo '00a5af6734f6c89dc96253b75e7e0760cd4122eae76568655fed22adfd1281fa  subject/tools/claims_gate_adapter.py' | sha256sum -c -
+          git -C subject apply --check "$GITHUB_WORKSPACE/reviewer/reviews/pr98_f1_repair_20260925/adapter.patch"
+          git -C subject apply "$GITHUB_WORKSPACE/reviewer/reviews/pr98_f1_repair_20260925/adapter.patch"
+          cp reviewer/reviews/pr98_f1_repair_20260925/test_claims_gate_enforcement.py subject/tests/test_claims_gate_enforcement.py
+          echo '053128abfc91cd787963d4b9de95f833c5c0ac84a5d2b2c7ba9db70f3a2c540f  subject/tools/claims_gate_adapter.py' | sha256sum -c -
+          echo '32038a994536087a6c60861e4287495adcef4401bc2c61bed296b8dee494d178  subject/tests/test_claims_gate_enforcement.py' | sha256sum -c -
+      - name: F1 normal and optimized regressions plus semantic mutations
+        run: python -B -S reviewer/reviews/pr98_f1_repair_20260925/run_validation.py --subject-root subject --output "$RUNNER_TEMP/f1-evidence"
+      - name: Install exact upstream test dependencies
+        working-directory: subject
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-ci.lock
+      - name: Existing adapter and schema suites
+        working-directory: subject
+        run: |
+          set -o pipefail
+          python -m pytest -q tests/test_claims_gate_adapter.py tests/test_semantic_digest.py tests/test_scientific_state.py --junitxml="$RUNNER_TEMP/f1-evidence/adapter-junit.xml" 2>&1 | tee "$RUNNER_TEMP/f1-evidence/adapter-regressions.log"
+      - name: Complete upstream pytest suite with patch applied
+        if: ${{ !cancelled() }}
+        working-directory: subject
+        run: |
+          set -o pipefail
+          python -m pytest -q --junitxml="$RUNNER_TEMP/f1-evidence/full-junit.xml" 2>&1 | tee "$RUNNER_TEMP/f1-evidence/full-pytest.log"
+      - name: Record exact patched source and checkout identities
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/f1-evidence/source/tools" "$RUNNER_TEMP/f1-evidence/source/tests"
+          git -C reviewer rev-parse HEAD > "$RUNNER_TEMP/f1-evidence/reviewer-commit.txt"
+          git -C subject rev-parse HEAD > "$RUNNER_TEMP/f1-evidence/subject-base.txt"
+          git -C subject diff --binary > "$RUNNER_TEMP/f1-evidence/actual.patch"
+          git -C subject status --porcelain > "$RUNNER_TEMP/f1-evidence/subject-status.txt"
+          cp subject/tools/claims_gate_adapter.py subject/tools/semantic_digest.py "$RUNNER_TEMP/f1-evidence/source/tools/"
+          cp subject/tests/test_claims_gate_enforcement.py "$RUNNER_TEMP/f1-evidence/source/tests/"
+          cp reviewer/reviews/pr98_f1_repair_20260925/run_validation.py "$RUNNER_TEMP/f1-evidence/"
+          echo '053128abfc91cd787963d4b9de95f833c5c0ac84a5d2b2c7ba9db70f3a2c540f  subject/tools/claims_gate_adapter.py' | sha256sum -c -
+          echo '32038a994536087a6c60861e4287495adcef4401bc2c61bed296b8dee494d178  subject/tests/test_claims_gate_enforcement.py' | sha256sum -c -
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr98-f1-repair-evidence
+          path: ${{ runner.temp }}/f1-evidence
+          if-no-files-found: error
