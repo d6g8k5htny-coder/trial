@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — wake durable MAIN_PUSH_TOKEN file load (2026-09-25)
+
+- Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `post_batch322_wake_comments.token()` was env-only and preferred `GH_TOKEN` first (App ghs often lacks Issues:write). Now prefers `MAIN_PUSH_TOKEN`, then grant/`when_writable` durable file drops.
+- NEVER flip research.
+
 ### Batch 340 — republish CRITICAL includes audit_main_alignment (2026-09-25)
 
 - Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

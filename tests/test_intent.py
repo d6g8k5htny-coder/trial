@@ -14301,3 +14301,82 @@ def test_batch340_republish_critical_includes_audit() -> None:
     assert "CRITICAL" in land or "audit_main_alignment" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "CRITICAL" in log_md and "audit_main_alignment" in log_md
+
+
+def test_batch340_wake_durable_token() -> None:
+    """Batch 340: wake poster MAIN_PUSH_TOKEN-first + durable file drops."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path as P
+
+    poster_path = ROOT / "scripts" / "post_batch322_wake_comments.py"
+    poster = poster_path.read_text(encoding="utf-8")
+    assert "resolve_wake_token" in poster
+    assert "Batch 340" in poster
+    assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in poster
+    assert "/workspace/.secrets/MAIN_PUSH_TOKEN" in poster
+    assert "/tmp/gh-dylan-auth/access_token" in poster
+    # Prefer MAIN over GH (App ghs Issues:write gap).
+    assert '("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")' in poster
+    # Old GH-first env-only path must not remain.
+    assert (
+        'os.environ.get("GH_TOKEN") or os.environ.get("MAIN_PUSH_TOKEN")'
+        not in poster
+    )
+
+    spec = importlib.util.spec_from_file_location("wake340", poster_path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    tok, src = mod.resolve_wake_token(env={"MAIN_PUSH_TOKEN": "pat-main", "GH_TOKEN": "ghs-app"})
+    assert tok == "pat-main"
+    assert src == "env:MAIN_PUSH_TOKEN"
+
+    tok, src = mod.resolve_wake_token(env={"GH_TOKEN": "ghs-app"})
+    assert tok == "ghs-app"
+    assert src == "env:GH_TOKEN"
+
+    with tempfile.TemporaryDirectory() as td:
+        drop = P(td) / "MAIN_PUSH_TOKEN"
+        drop.write_text("pat-file\n", encoding="utf-8")
+        tok, src = mod.resolve_wake_token(env={}, file_candidates=(drop,))
+        assert tok == "pat-file"
+        assert src and src.startswith("file:")
+
+    tok, src = mod.resolve_wake_token(env={}, file_candidates=())
+    assert tok is None and src is None
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_WAKE_TOKEN.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "wake_token_env_only_gh_first_no_durable_files"
+    assert brief.get("action") == "eng_wake_durable_token"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("848aea2")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH340_WAKE_TOKEN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "wake_token_env_only_gh_first_no_durable_files"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("tip_moved") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "durable MAIN_PUSH_TOKEN" in unblock or "wake poster loads durable" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340 wake-token)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "wake durable MAIN_PUSH_TOKEN" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340 wake-token)" in owner

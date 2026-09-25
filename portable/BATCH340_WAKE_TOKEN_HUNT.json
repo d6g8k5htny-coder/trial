@@ -1,0 +1,19 @@
+{
+  "batch": "340",
+  "hunt": "wake_durable_token_after_tip_stable",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_token_env_only_gh_first_no_durable_files",
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "invent 0020",
+    "tip-sync (tip stable @848aea2)"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T18:28:57Z"
+}

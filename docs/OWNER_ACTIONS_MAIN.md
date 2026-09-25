@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 340 wake-token)
+
+Hardening tip **stable** @ `848aea2`. Eng: wake poster resolves durable `MAIN_PUSH_TOKEN` file drops (grant/`when_writable` order; MAIN before GH). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+WAKE_TOKEN_SOURCE_LOG=1 python3 scripts/post_batch322_wake_comments.py --help 2>/dev/null || true
+```
+
 ## STATUS (Batch 340)
 
 Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.
