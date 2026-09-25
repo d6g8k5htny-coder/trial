@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 324 (eng: print_owner TIP_DRIFT ≠ APPLY_READY) — 2026-09-25 ~16:40 UTC (PERMANENT window; scientific effect NONE; flipped nothing)
+
+- Peer tip-sync already landed `077464e` (batches 305/317/321). This agent did **not** re-tip-sync.
+- **Defect shipped:** `print_owner_unblock.sh` only treated `IDLE_PATH_C_DONE` as non-APPLY_READY; on `PATH_C_LANDED_TIP_DRIFT` it advertised APPLY_READY land (Batch 261 leftover). Now branches tip-drift → `refresh_path_c_bundle.sh` and `PATH_C_LANDED` → not APPLY_READY. Intent `test_batch324_*` runtime harness.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`.
 ### Batch 323 — grant --check inventory auto-refresh (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
@@ -58,7 +63,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **NEVER flip research:** inventable #85 content not promoted; `lemma_closed=false`; `flipped_anything=false`.
 - #87 OPEN DRAFT CI-fail skipped; #88 CLOSED. Path C idle; no 0020.
 
-## Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+### Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+
 
 - Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings). assert+align+probe+guard: `lemma_closed=false`. Tip CI green (ci/nav/withdrawal @ `02cfbfd`).
 - Main **#85** OPEN undrafted CI-SUCCESS inventable — **skipped** (NEVER flip research). **#87** OPEN DRAFT CI-FAILURE — skipped. **#88** tip-observe draft CI-SUCCESS — skipped. HOLDs 47/46/38/36/21/12/8/7 skipped.

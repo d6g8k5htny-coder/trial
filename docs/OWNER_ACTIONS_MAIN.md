@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 324)
+
+Hardening tip **synced** @ `077464e` (peer tip-sync 305/317). Eng shipped: `print_owner_unblock.sh` Path C line on `PATH_C_LANDED_TIP_DRIFT` → `refresh_path_c_bundle.sh` (pre-324 fell through to APPLY_READY land lie; Batch 261 IDLE-only leftover). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
+
+```bash
+./scripts/print_owner_unblock.sh | rg '^Path C:'   # tip-drift → refresh; idle → not APPLY_READY
+./scripts/refresh_path_c_bundle.sh --dry-run       # tip stable @ 077464e after peer sync
+
 ## STATUS (Batch 323)
 
 Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `owner_grant --check` now calls `refresh_ai_agent_access_inventory.py` to refresh `AI_AGENT_ACCESS_INVENTORY.json` tip_sha/pushed_at/write (+ sandbox.tip) from durable vector so the pointer cannot drift after Batch 321 manual refresh; pack+CRITICAL include the helper. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`grant_check_inventory_refresh`. Scientific effect: NONE.
@@ -34,6 +42,7 @@ Hardening tip **synced** `02cfbfd`→`0adeb65` after main **#85** inventable mer
 gh pr view 85 87 88 --repo d6g8k5htny-coder/main --json number,isDraft,state,mergedAt
 gh run list --repo d6g8k5htny-coder/main --branch chatgpt/drive-github-hardening-20260919 --limit 5
 ```
+
 
 ## STATUS (Batch 304)
 

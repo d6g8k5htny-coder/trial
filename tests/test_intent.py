@@ -11771,7 +11771,7 @@ def test_batch289_tip_sync_after_main_83() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 289" in unblock
-    # Header bumps on later tip-sync; >= 289 (no allowlist churn).
+    # Header bumps on later tip-sync / eng; >= 289 (no allowlist churn).
     _assert_print_owner_header_batch_at_least(unblock, 289)
     assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
 
@@ -12865,3 +12865,47 @@ def test_batch323_grant_check_inventory_refresh() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 323)" in land
 
+
+def test_batch324_print_owner_unblock_tip_drift_not_apply_ready() -> None:
+    """Batch 324: PATH_C_LANDED_TIP_DRIFT must not advertise APPLY_READY land."""
+    import json
+    import subprocess
+
+    unblock_path = ROOT / "scripts" / "print_owner_unblock.sh"
+    unblock = unblock_path.read_text(encoding="utf-8")
+    assert "Batch 324" in unblock
+    assert "PATH_C_LANDED_TIP_DRIFT" in unblock
+    # Tip-drift branch must precede the APPLY_READY fallback (Batch 261 leftover).
+    assert unblock.index("PATH_C_LANDED_TIP_DRIFT") < unblock.rindex(
+        "APPLY_READY on hardening BASE_TIP"
+    )
+    _assert_print_owner_header_batch_at_least(unblock, 324)
+
+    status_path = ROOT / "portable" / "PATH_C_STATUS.json"
+    prior = status_path.read_text(encoding="utf-8")
+    try:
+        data = json.loads(prior)
+        data["idle_status"] = "PATH_C_LANDED_TIP_DRIFT"
+        data["tip"] = "077464e"
+        data["base_tip"] = str(data.get("base_tip") or "02cfbfd")[:7]
+        data["tip_match"] = False
+        data["lemma_closed"] = False
+        status_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        out = subprocess.check_output(
+            ["bash", str(unblock_path)],
+            cwd=str(ROOT),
+            text=True,
+            stderr=subprocess.STDOUT,
+            timeout=180,
+        )
+    finally:
+        status_path.write_text(prior, encoding="utf-8")
+
+    path_c_lines = [ln for ln in out.splitlines() if ln.startswith("Path C:")]
+    assert path_c_lines, "print_owner_unblock missing Path C: line"
+    line = path_c_lines[0]
+    assert "PATH_C_LANDED_TIP_DRIFT" in line or "tip-drift" in line
+    assert "refresh_path_c_bundle" in line
+    # Must not advertise APPLY_READY land (negation phrase "not APPLY_READY" is OK).
+    assert "APPLY_READY on hardening" not in line
+    assert "# APPLY_READY" not in line

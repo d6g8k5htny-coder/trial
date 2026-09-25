@@ -1,0 +1,44 @@
+{
+  "batch": "324",
+  "hunt": "print_owner_unblock_tip_drift_apply_ready_lie",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "print_owner_unblock_path_c_landed_tip_drift_apply_ready_lie",
+  "bugs_fixed": [
+    "print_owner_unblock advertised APPLY_READY when idle_status=PATH_C_LANDED_TIP_DRIFT (Batch 261 IDLE_PATH_C_DONE-only leftover)",
+    "Intent Batch 289 STATUS header allowlist (289|297) broke on later eng/tip-sync header bumps \u2014 durable >= 289"
+  ],
+  "avoided": [
+    "tip-sync BASE_TIP/VERIFY/APPLY/MANIFEST to 077464e (peers batch305/317/321)",
+    "living release republish",
+    "pack_portable inventory (peer batch323 grant refresh helper)",
+    "research inventable / HOLD drafts",
+    "lemma_closed / prize / premise flips"
+  ],
+  "candidates_checked": {
+    "tip_vs_02cfbfd": "peer_tip_sync_landed_077464e",
+    "refresh_dry_run": "peer_synced_expect_stable",
+    "assert_path_c": "FAIL_tip_drift",
+    "print_owner_path_c_line_pre": "APPLY_READY_lie_on_PATH_C_LANDED_TIP_DRIFT",
+    "print_owner_path_c_line_post": "refresh_path_c_bundle_tip_drift_not_APPLY_READY",
+    "pack_portable_inventory": "peer_batch323_owns_grant_refresh_helper",
+    "living_release_VERIFY": "release_batch241_ok_tip_stale_pending_peer_sync",
+    "owner_unblock_header_assert": "softened_289_allowlist_to_ge_289"
+  },
+  "tip": "077464e",
+  "base_tip": "077464e",
+  "tip_moved": false,
+  "tip_sync_this_agent": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "HUNT_POSITIVE": {
+    "print_owner_unblock_tip_drift": true,
+    "note": "reproduced Path C: APPLY_READY line under PATH_C_LANDED_TIP_DRIFT; fixed to refresh_path_c_bundle"
+  },
+  "note": "Batch 324: peers tip-synced 077464e (305/317/321); shipped print_owner TIP_DRIFT\u2260APPLY_READY; lemma_closed=false; flipped nothing."
+}

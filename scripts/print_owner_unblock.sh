@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 323 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 324 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 324: print_owner Path C line follows PATH_C_LANDED_TIP_DRIFT → refresh_path_c_bundle (pre-324 fell through to APPLY_READY land lie; Batch 261 IDLE-only leftover)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"
 echo "  Batch 317: tip-sync 0adeb65→077464e after main #89 tip-observe mid-cycle; refresh keep-prior; living tip_stale republish; REFRESH default 317"
@@ -148,8 +149,15 @@ print(f"{fp_s}/{rw_s}")
 fi
 echo "  verify: $ROOT/portable/path-c-applied-bundle/VERIFY.json  # problems=0 lemma_closed=false focused ${VERIFY_FOCUSED}"
 # Batch 261: do not hardcode APPLY_READY when PATH_C_STATUS already idle.
+# Batch 324: PATH_C_LANDED_TIP_DRIFT is also not APPLY_READY — Path C already
+# landed; operators need tip-refresh (refresh_path_c_bundle), not land. Pre-324
+# only matched IDLE_PATH_C_DONE and fell through to APPLY_READY on tip drift.
 if [[ "${IDLE_STATUS}" == "IDLE_PATH_C_DONE" ]]; then
   echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # already-on-tip idle (IDLE_PATH_C_DONE) @ ${BASE_TIP_SHORT}; path_c_dry_run → idle not APPLY_READY"
+elif [[ "${IDLE_STATUS}" == "PATH_C_LANDED_TIP_DRIFT" ]]; then
+  echo "Path C: $ROOT/scripts/refresh_path_c_bundle.sh  # tip-drift (PATH_C_LANDED_TIP_DRIFT) BASE_TIP ${BASE_TIP_SHORT} != live tip ${STATUS_TIP}; refresh keep-prior — not APPLY_READY land"
+elif [[ "${IDLE_STATUS}" == "PATH_C_LANDED" ]]; then
+  echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # path_c_landed (PATH_C_LANDED) @ ${BASE_TIP_SHORT}; not APPLY_READY"
 else
   echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT} (or idle when landed)"
 fi

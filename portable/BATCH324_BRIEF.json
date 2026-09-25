@@ -1,0 +1,42 @@
+{
+  "batch": "324",
+  "generated_at_utc": "2026-09-25T16:40:00Z",
+  "status": "eng_fix_shipped",
+  "waiting_ci": false,
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "077464e",
+  "tip_full": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "base_tip": "077464e",
+  "base_tip_full": "02cfbfdf3ddc3120ddde6b67b0ff927115de6c4c",
+  "tip_moved": false,
+  "tip_sync_this_agent": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "print_owner_unblock_path_c_landed_tip_drift_apply_ready_lie",
+  "bugs_fixed": [
+    "print_owner_unblock PATH_C_LANDED_TIP_DRIFT \u2192 APPLY_READY land lie",
+    "Intent Batch 289 header allowlist \u2192 durable >= 289"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "path_c_0019_landed": true,
+  "path_c_landed": true,
+  "idle_status": "IDLE_PATH_C_DONE",
+  "pack_release": "batch241-path-c-bundle",
+  "automation_improvement": "print_owner_unblock tip-drift Path C line + durable STATUS header assert",
+  "main_pr_or_null": null,
+  "note": "Batch 324: peers tip-synced 077464e (305/317/321); shipped print_owner TIP_DRIFT\u2260APPLY_READY; lemma_closed=false; flipped nothing.",
+  "files": [
+    "scripts/print_owner_unblock.sh",
+    "tests/test_intent.py",
+    "portable/BATCH324_HUNT.json",
+    "portable/LAND.md",
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "docs/OWNER_ACTIONS_MAIN.md"
+  ]
+}

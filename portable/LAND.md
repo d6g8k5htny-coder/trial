@@ -1,3 +1,6 @@
+## STATUS (Batch 324)
+
+tip `077464e` tip_match=true after peer tip-sync; eng: print_owner_unblock no longer advertises APPLY_READY on PATH_C_LANDED_TIP_DRIFT — points to `refresh_path_c_bundle.sh` (Batch 261 IDLE-only leftover); lemma_closed=false; scientific effect NONE.
 ## STATUS (Batch 323)
 
 Hardening tip stable @ `077464e`. grant --check → refresh_ai_agent_access_inventory.py (pack+CRITICAL); AI_AGENT_ACCESS_INVENTORY tip_sha from durable vector. `lemma_closed=false`. Scientific effect: NONE.
@@ -9,6 +12,7 @@ tip `077464e` tip_match=true TIP_OK after tip-sync; #89 MERGED into hardening �
 ## STATUS (Batch 305)
 
 tip `0adeb65` tip_match=true TIP_OK after tip-sync; #85 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; #87 DRAFT skipped; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 
 ## STATUS (Batch 304)
 
