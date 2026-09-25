@@ -1,3 +1,7 @@
+## STATUS (Batch 293)
+
+tip `3a29f52` tip_match=true TIP_OK; research audit WITHOUT promotion — lemma_closed=false prizes open; flipped_anything=false; no NEW eng; living tip_stale=0 script_stale=0; scientific effect NONE.
+
 ## STATUS (Batch 291)
 
 tip `3a29f52` tip_match=true TIP_OK; DEEP idle — no new eng beyond 273–290; living tip_stale=0 script_stale=0; lemma_closed=false; scientific effect NONE.
