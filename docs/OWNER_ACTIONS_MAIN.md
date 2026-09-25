@@ -1,3 +1,13 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: landed rebase conflict markers cleaned (LOG/LAND/print_owner/Intent) + living script_stale republish + preserve_durable inv tip re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`eng_conflict_marker_fix_and_living_republish`.
+
+```bash
+rg -n '<<<<<<<' docs/AUTONOMOUS_48H_LOG.md portable/LAND.md scripts/print_owner_unblock.sh tests/test_intent.py || true
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch359_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 359 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH359_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

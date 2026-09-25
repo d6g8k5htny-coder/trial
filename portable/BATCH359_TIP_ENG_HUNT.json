@@ -1,0 +1,16 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:44:21Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_conflict_marker_fix_and_living_republish",
+  "defect_id": "landed_rebase_conflict_markers_and_living_script_stale",
+  "defect_found": true,
+  "defect_shipped": true,
+  "hunt_0020": "NEGATIVE",
+  "goal": "OPEN"
+}

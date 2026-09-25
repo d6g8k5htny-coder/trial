@@ -21,17 +21,20 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-<<<<<<< HEAD
-### Batch 359 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
+### Batch 359 — tip_or_eng: conflict-marker cleanup + living republish (2026-09-25)
 
-- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
-- tip_sync_watch: no tip move; living batch241 current. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
-=======
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: rebase conflict markers accidentally landed on main in LOG/LAND/print_owner/Intent — resolved keep-both; living script_stale republish; PRESERVE_DURABLE tip re-pin→HEAD.
+- Artifacts: `BATCH359_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+
 ### Batch 359 — inventory_preserve_durable_tip_pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; trial tip lagged after Batch 357/358 lands → preserve_durable pin→HEAD; never demote 8/8 on writable=0 DENIED.
 - Fallbacks/REFRESH →359. Evidence `BATCH359_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
->>>>>>> cursor/batch359-inv-preserve-tip-pin-68a4
+### Batch 359 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; living batch241 current. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 ### Batch 358 — eng living script_stale republish after tip_sync idle (2026-09-25)
 
