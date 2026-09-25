@@ -1,122 +1,122 @@
 {
-  "generated_at_utc": "2026-09-25T16:27:13Z",
-  "batch": "321",
+  "generated_at_utc": "2026-09-25T16:30:50Z",
+  "batch": "323",
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
   ],
   "repos_connected": [
     {
-      "name": "d6g8k5htny-coder/google-drive",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/governance-",
-      "perm": "push"
+      "name": "d6g8k5htny-coder/trial",
+      "perm": "pull"
     },
     {
       "name": "d6g8k5htny-coder/main",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/Math-",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/meta-framework",
-      "perm": "push"
-    },
-    {
-      "name": "d6g8k5htny-coder/query-",
-      "perm": "push"
+      "perm": "pull"
     },
     {
       "name": "d6g8k5htny-coder/sandbox",
       "perm": "push"
     },
     {
-      "name": "d6g8k5htny-coder/trial",
-      "perm": "push"
+      "name": "d6g8k5htny-coder/google-drive",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/governance-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/Math-",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/meta-framework",
+      "perm": "pull"
+    },
+    {
+      "name": "d6g8k5htny-coder/query-",
+      "perm": "pull"
     }
   ],
   "details": [
     {
-      "name": "d6g8k5htny-coder/google-drive",
+      "name": "d6g8k5htny-coder/trial",
+      "push": false,
+      "admin": false,
+      "default_branch": "main",
+      "pushed_at": "2026-09-25T16:30:42Z",
+      "tip_sha": "695530b7ec5c55fe89eae8443644e560253778a8",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/main",
+      "push": false,
+      "admin": false,
+      "default_branch": "main",
+      "pushed_at": "2026-09-25T16:29:53Z",
+      "tip_sha": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/sandbox",
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T18:41:13Z",
+      "pushed_at": "2026-09-25T16:29:57Z",
+      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
+      "has_agents": true,
+      "write": "WRITABLE"
+    },
+    {
+      "name": "d6g8k5htny-coder/google-drive",
+      "push": false,
+      "admin": false,
+      "default_branch": "main",
+      "pushed_at": "2026-09-25T16:29:47Z",
       "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/governance-",
-      "push": true,
-      "admin": true,
+      "push": false,
+      "admin": false,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T18:41:15Z",
+      "pushed_at": "2026-09-25T16:29:56Z",
       "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
-      "name": "d6g8k5htny-coder/main",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-24T20:04:01Z",
-      "tip_sha": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
       "name": "d6g8k5htny-coder/Math-",
-      "push": true,
-      "admin": true,
+      "push": false,
+      "admin": false,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T18:41:17Z",
+      "pushed_at": "2026-09-25T16:29:52Z",
       "tip_sha": "593adcaa89a29a7a837aebd29c920c145ebd6ae9",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/meta-framework",
-      "push": true,
-      "admin": true,
+      "push": false,
+      "admin": false,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T18:42:59Z",
+      "pushed_at": "2026-09-25T16:29:54Z",
       "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
     },
     {
       "name": "d6g8k5htny-coder/query-",
-      "push": true,
-      "admin": true,
+      "push": false,
+      "admin": false,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T18:41:20Z",
+      "pushed_at": "2026-09-25T16:29:56Z",
       "tip_sha": "1bd71fffce1eae12fd517017873bd4b7ffe25bc9",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/sandbox",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-24T18:41:22Z",
-      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/trial",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-24T19:58:24Z",
-      "tip_sha": "0b97407e11f30f8403d7819bd84ba888c6599e6e",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -127,7 +127,7 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 321: refreshed tip_sha snapshot from durable MAIN_PUSH_TOKEN (was Batch 259 stale); App ambient trial-only; durable 8/8 WRITABLE. Softened Batch 317 live tip Intent pins.",
+  "note": "Batch 322: sibling/repo alignment \u2014 grant --check dual-vector active 1/8 (App trial-only; sandbox 404) + durable 8/8 WRITABLE; MULTI_AGENT_ACCESS.md dual-vector OK; refreshed trial tip_sha after main move 695530b.",
   "main_writable": true,
   "sandbox_added": true,
   "sandbox": {
@@ -309,5 +309,9 @@
     }
   ],
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
-  "durable_sibling_coverage": "8/8_WRITABLE"
+  "durable_sibling_coverage": "8/8_WRITABLE",
+  "active_writable": "1/8",
+  "durable_writable": "8/8",
+  "active_sandbox_read": 404,
+  "durable_sandbox_read": 200
 }

@@ -258,6 +258,8 @@ import hashlib, os, tarfile, sys
 
 CRITICAL = (
     "scripts/owner_grant_ai_agent_access.sh",
+    # Batch 323: grant --check inventory tip refresh helper (pack+CRITICAL).
+    "scripts/refresh_ai_agent_access_inventory.py",
     "scripts/refresh_path_c_bundle.sh",
     "scripts/pack_portable.sh",
     "scripts/probe_main_write.py",

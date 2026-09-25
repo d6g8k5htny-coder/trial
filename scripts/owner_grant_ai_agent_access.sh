@@ -23,6 +23,11 @@
 #       # WRITABLE. Require a real `repositories` array before listing.
 #       # Batch 286: key present with null/non-list still used `(repos or [])`
 #       # → false install_missing=all8; require isinstance(list).
+#       # Batch 323: after dual-vector probe, refresh
+#       # portable/AI_AGENT_ACCESS_INVENTORY.json tip_sha / pushed_at / write
+#       # (and sandbox.tip) via refresh_ai_agent_access_inventory.py. Pre-323
+#       # --check only printed a pointer while tip_sha drifted. Never flips
+#       # lemma_closed / never prints tokens.
 #   ./scripts/owner_grant_ai_agent_access.sh --invite-collaborators
 #       # only if AI_COLLAB_USERNAMES env lists real logins (comma-separated)
 #   ./scripts/owner_grant_ai_agent_access.sh --help
@@ -61,7 +66,9 @@ Usage: owner_grant_ai_agent_access.sh [--dry-run] [--check] [--invite-collaborat
       install URLs with clear "select ALL repositories including sandbox".
       Batch 285/286: user-token 403 JSON or repositories null/non-list on
       /installation/repositories is not treated as an empty install listing
-      (no false install_missing_from_deps). Never prints tokens.
+      (no false install_missing_from_deps). Batch 323: refreshes
+      portable/AI_AGENT_ACCESS_INVENTORY.json tip_sha/pushed_at/write from
+      the durable vector (never flips lemma_closed). Never prints tokens.
 
   --invite-collaborators
       Invite collaborators ONLY when AI_COLLAB_USERNAMES is set to a
@@ -461,6 +468,39 @@ print("install_missing_from_deps:", missing)'
     echo "durable_sibling_coverage=${DURABLE_WRITABLE}/${#REPOS[@]}"
   else
     echo "durable_sibling_coverage=no_token"
+  fi
+  echo
+  # Batch 323: refresh living inventory tip_sha/pushed_at/write so agents do
+  # not read a stale pointer file. Prefer durable token; fall back to ambient.
+  # Writer: scripts/refresh_ai_agent_access_inventory.py (pack + CRITICAL).
+  # Never flips lemma_closed / scientific_effect / flipped_anything.
+  INV_PATH="$ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
+  if [[ -f "$INV_PATH" ]]; then
+    _INV_TOKEN=""
+    if discover_durable_main_push_token; then
+      _INV_TOKEN="$DURABLE_TOKEN"
+    fi
+    _PREV_GH_TOKEN="${GH_TOKEN:-}"
+    _PREV_GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+    if [[ -n "$_INV_TOKEN" ]]; then
+      export GH_TOKEN="$_INV_TOKEN"
+      export GITHUB_TOKEN="$_INV_TOKEN"
+    fi
+    INV_REFRESH_OUT="$(
+      INV_PATH="$INV_PATH" OWNER="$OWNER" REPOS_CSV="$(IFS=,; echo "${REPOS[*]}")" \
+      DURABLE_WRITABLE="$DURABLE_WRITABLE" DURABLE_SANDBOX_READ="$DURABLE_SANDBOX_READ" \
+      DURABLE_SANDBOX_WRITE="$DURABLE_SANDBOX_WRITE" ACTIVE_SANDBOX_READ="$ACTIVE_SANDBOX_READ" \
+      INV_BATCH=323 \
+      python3 "$ROOT/scripts/refresh_ai_agent_access_inventory.py" 2>/dev/null \
+        || echo "inventory_refresh=fail"
+    )"
+    echo "$INV_REFRESH_OUT"
+    unset GH_TOKEN GITHUB_TOKEN DURABLE_TOKEN _INV_TOKEN || true
+    [[ -n "${_PREV_GH_TOKEN}" ]] && export GH_TOKEN="${_PREV_GH_TOKEN}"
+    [[ -n "${_PREV_GITHUB_TOKEN}" ]] && export GITHUB_TOKEN="${_PREV_GITHUB_TOKEN}"
+    unset _PREV_GH_TOKEN _PREV_GITHUB_TOKEN || true
+  else
+    echo "inventory_refresh=skip missing=$INV_PATH"
   fi
   echo
   echo "Apps are not enumerable from a ghs installation token without owner OAuth."

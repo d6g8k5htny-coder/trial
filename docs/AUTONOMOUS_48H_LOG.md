@@ -21,6 +21,22 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 323 — grant --check inventory auto-refresh (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: Batch 321 manually refreshed inventory tip_sha; next drift would return without a script fix. `owner_grant_ai_agent_access.sh --check` now calls `scripts/refresh_ai_agent_access_inventory.py` to write living tip_sha/pushed_at/write (+ sandbox.tip) from the durable vector after dual-vector probe. Helper also added to `pack_portable` + republish CRITICAL (Batch 282-class pack completeness).
+- NEVER flip research.
+
+### Batch 322 — MULTI_AGENT wake+assign (2026-09-25 ~16:26 UTC)
+
+- Dylan asked to message stopped agents and assign project-intent tasks.
+- Woke 7 IDLE internal Task agents + spawned 4 cloud agents on healthy VMs (parent coordinator `/bin/bash` ENOENT).
+- Tip live still `077464e` (match); Path C IDLE@0019; `lemma_closed=false`; scientific effect NONE; flipped_anything=false.
+- Mechanism: Task `resume` for IDLE internals + `environment=cloud` peers (Cursor Cloud MCP has no peer Create-Run; `CURSOR_API_KEY` unset).
+- Also tasked peer to `gh` comment eng assignments on main PRs #92/#93/#87/#36/#21/#12 (ManagePullRequest is trial-repo-scoped).
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH322.json`
+- action=`multi_agent_wake_and_assign`; next=`tip_sync_drift_watch @077464e`.
+
 ### Batch 321 — soften live tip Intent pins + refresh inventory (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

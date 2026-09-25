@@ -12782,7 +12782,8 @@ def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "321"
+    # Batch 323+ auto-refresh advances batch stamp; keep 321 floor.
+    assert int(str(inv.get("batch") or "0")) >= 321
     assert inv.get("lemma_closed") is False
     assert inv.get("flipped_anything") is False
     assert inv.get("scientific_effect") == "NONE"
@@ -12799,4 +12800,68 @@ def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 321" in log_md
     assert "living tip" in log_md.lower() or "_living_tip" in log_md or "live tip" in log_md.lower()
+
+def test_batch323_grant_check_inventory_refresh() -> None:
+    """Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY from durable vector."""
+    import json
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "Batch 323" in grant
+    assert "refresh_ai_agent_access_inventory.py" in grant
+    assert "inventory_refresh=ok" in grant or "INV_REFRESH" in grant
+    assert "AI_AGENT_ACCESS_INVENTORY.json" in grant
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "inventory_refresh=ok" in helper
+    assert "tip_updates=" in helper
+    assert 'inv["lemma_closed"] = False' in helper
+    assert 'inv["flipped_anything"] = False' in helper
+    assert 'inv["scientific_effect"] = "NONE"' in helper
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "refresh_ai_agent_access_inventory.py" in pack
+    assert "owner_grant_ai_agent_access.sh" in pack
+
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "refresh_ai_agent_access_inventory.py" in republish
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    assert inv.get("main_writable") is True
+    # batch stamp advances with refresh; allow 321 manual or 323 auto.
+    assert int(str(inv.get("batch") or "0")) >= 321
+    details = inv.get("details") or []
+    assert len(details) == 8
+    for d in details:
+        tip = str(d.get("tip_sha") or "")
+        assert len(tip) == 40, f"short tip_sha for {d.get('name')}: {tip!r}"
+        assert d.get("write") == "WRITABLE"
+    sandbox = inv.get("sandbox") or {}
+    assert sandbox.get("write") == "WRITABLE"
+    tip7 = str(sandbox.get("tip") or "")
+    assert len(tip7) >= 7
+    # sandbox.tip must agree with details tip prefix (pre-323 drift class).
+    sb_detail = next(d for d in details if str(d.get("name") or "").endswith("/sandbox"))
+    assert str(sb_detail.get("tip_sha") or "").startswith(tip7[:7])
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 323)
+    assert "Batch 323" in unblock
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 323)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 323" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 323)" in land
 

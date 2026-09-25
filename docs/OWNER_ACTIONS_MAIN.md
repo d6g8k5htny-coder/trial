@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 323)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `owner_grant --check` now calls `refresh_ai_agent_access_inventory.py` to refresh `AI_AGENT_ACCESS_INVENTORY.json` tip_sha/pushed_at/write (+ sandbox.tip) from durable vector so the pointer cannot drift after Batch 321 manual refresh; pack+CRITICAL include the helper. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`grant_check_inventory_refresh`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check  # inventory_refresh=ok; durable 8/8
+./scripts/refresh_path_c_bundle.sh --dry-run      # tip stable @ 077464e
+```
+
 ## STATUS (Batch 317)
 
 Hardening tip **synced** `0adeb65`→`077464e` after main **#89** tip-observe merge into hardening (tip_match=true; Path C idle; BASE==LIVE after sync). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). **#89 MERGED**; **#87 OPEN DRAFT** research (skipped). Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 317 + `_LIVING_TIPS+=077464e`. Inventable tip-observe NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
