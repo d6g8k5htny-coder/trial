@@ -1,6 +1,6 @@
 {
   "batch": "264",
-  "generated_at_utc": "2026-09-25T02:29:05Z",
+  "generated_at_utc": "2026-09-25T02:33:21Z",
   "status": "path_b_dryrun_already_aligned_idle_fixed",
   "waiting_ci": false,
   "goal_complete": true,
@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "path_b_dry_run emits land_needed=false on ALREADY_ALIGNED; owner_land_path_b --dry-run idles (no re-run-to-land lie) matching live land short-circuit",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 87,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -62,7 +62,7 @@
     "pack_vs_release": "newer_deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 264: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; Path B dry-run lied re-run-to-land on ALREADY_ALIGNED \u2192 land_needed=false + idle; lemma_closed=false; flipped nothing. Never printed tokens. Avoided research-guard PACKET shape / probe durable file-token / path_c dry_run idle / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 264: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; Path B dry-run lied re-run-to-land on ALREADY_ALIGNED \u2192 land_needed=false + idle; lemma_closed=false; flipped nothing. Never printed tokens. Avoided research-guard PACKET shape / probe durable file-token / path_c dry_run idle / release republish / grant dual-vector / long hygiene. Trial main PR #87 squash merge @ fa5ea32.",
   "artifacts": [
     "scripts/path_b_dry_run.py",
     "scripts/owner_land_path_b.sh",
@@ -73,10 +73,15 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "docs/OWNER_ACTIONS_MAIN.md",
     "portable/LAND.md",
-    "tests/test_intent.py"
+    "tests/test_intent.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/87",
+    "https://github.com/d6g8k5htny-coder/trial/commit/fa5ea3227b4f"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "fa5ea32",
+  "trial_main_land_full": "fa5ea3227b4fa902acede68a1a1d0a2c6e42acb0",
+  "trial_main_land_method": "pr_87_squash_merge"
 }
