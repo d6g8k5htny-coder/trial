@@ -1,0 +1,36 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:30:00Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "aligned": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "status_guard_tip_lag_fcad723_after_tip_sync_e3cd7d4",
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "action": "eng_status_guard_tip_refresh",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @e3cd7d4)",
+    "wake/inv ultimate fallback already @345",
+    "living tip_stale=0 script_stale=0"
+  ],
+  "evidence": {
+    "before_tip_sha": "fcad72366743f5244eb26a0164e106419de78137",
+    "after_tip_sha": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+    "baseline_tip_sha": "fcad72366743f5244eb26a0164e106419de78137",
+    "guard_pass": true,
+    "violations": 0,
+    "open_premises": 13,
+    "open_lemmas": 1,
+    "open_prizes": 3
+  },
+  "goal": "OPEN"
+}
