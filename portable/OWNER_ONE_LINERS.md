@@ -5,17 +5,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
-> **Batch 268 — tip stable `fa32d11`; default ALIGNED `72558a5`; write WRITABLE; pack living-tag validate-before-write; release `batch241-path-c-bundle`**:
+> **Batch 268 — tip moved `fa32d11`→`8e359e5`; default ALIGNED `72558a5`; write WRITABLE; pack living-tag validate-before-write + tip refresh; release `batch241-path-c-bundle`**:
 >
 > ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ 8e359e5
 > ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz   # living_tag=batch241-path-c-bundle
 > cat portable/LIVING_PATH_C_RELEASE_TAG
-> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ fa32d11
 > ./scripts/when_writable_land.py --once --dry-run    # idle_path_c_done
 > ```
 >
 > Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Living pin: `portable/LIVING_PATH_C_RELEASE_TAG`.
-> Defect: pack wrote living pin before oneshot/open_pr fail-closed check (dirty pin on exit 2). No republish.
+> Defect: pack wrote living pin before oneshot/open_pr fail-closed check; tip refresh after main #73. No republish. No 0020.
 > `lemma_closed=false`. Scientific effect: **NONE**.
 
 > **Batch 249 — tip moved `542e6ec`→`fa32d11`; default ALIGNED `72558a5`; write WRITABLE; inventable tip-observe (#79); release `batch241-path-c-bundle`**:

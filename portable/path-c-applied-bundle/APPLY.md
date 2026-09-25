@@ -28,14 +28,14 @@ Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:
 
 ## Manual — git bundle fetch + merge (preferred; Batch 169+)
 
-On a clone that already has BASE_TIP `fa32d11` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
+On a clone that already has BASE_TIP `8e359e5` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
 
 ```bash
 # Shallow clone hardening @ BASE_TIP (or deepen an existing clone):
 git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
   https://github.com/d6g8k5htny-coder/main.git main && cd main
 # If already cloned: git fetch origin chatgpt/drive-github-hardening-20260919
-git checkout -B cursor/portable-engineering-patches fa32d1168ab5245090d6ff3324f4ee9e8124d95a
+git checkout -B cursor/portable-engineering-patches 8e359e5bf879f524e11cbeece9b36bd9996d2587
 # Prefer .bundle when present:
 git fetch /path/to/path-c-on-hardening.bundle cursor/portable-engineering-patches
 git merge --ff-only FETCH_HEAD
@@ -53,7 +53,7 @@ Then open a PR into `chatgpt/drive-github-hardening-20260919`. Do **not** apply 
 ## Manual — legacy `git am` of `.patch`
 
 ```bash
-git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches fa32d1168ab5245090d6ff3324f4ee9e8124d95a && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
+git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches 8e359e5bf879f524e11cbeece9b36bd9996d2587 && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
 ```
 
 ## Verify after fetch/merge or am

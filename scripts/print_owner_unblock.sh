@@ -90,7 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
-echo "  Batch 268: pack_portable living-tag validate-before-write (no dirty pin on oneshot/open_pr mismatch exit 2)"
+echo "  Batch 268: pack_portable living-tag validate-before-write + tip refresh fa32d11→8e359e5 (no 0020; no dirty pin on mismatch)"
 echo "  CI job: research-stack-status-guard (continue-on-error; artifact STATUS_GUARD_SNAPSHOT)"
 echo "Env write intent: .cursor/environment.json repositoryDependencies → main; relaunch Cloud Agent AFTER merge"
 echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch241-path-c-bundle"

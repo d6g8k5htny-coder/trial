@@ -10,7 +10,8 @@
   "bugs_fixed": [
     "pack_portable.sh wrote portable/LIVING_PATH_C_RELEASE_TAG before fail-closed oneshot/open_pr :-default check",
     "VERIFY.batch without matching release (batch=250, release stripped) left living pin dirty as batch250-path-c-bundle on pack exit 2",
-    "dirty pin raced owner_path_c_oneshot / write_path_c_status / republish_living_path_c_release readers mid-failure"
+    "dirty pin raced owner_path_c_oneshot / write_path_c_status / republish_living_path_c_release readers mid-failure",
+    "tip moved fa32d11→8e359e5 (main #73) during batch — refresh_path_c_bundle updated BASE_TIP/VERIFY/APPLY/MANIFEST (keep-prior; no 0020)"
   ],
   "avoided": [
     "when_writable dual-daemon flock",
@@ -24,14 +25,14 @@
     "long hygiene list"
   ],
   "candidates_checked": {
-    "green_eng_main_prs": "none_all_research_hold_drafts",
-    "tip_vs_fa32d11": "stable tip_moved=false refresh_dry_run_ok",
-    "patch_0020": "negative_tip_stable_IDLE_PATH_C_DONE",
-    "refresh_dry_run": "tip_stable_fa32d11",
+    "green_eng_main_prs": "none_at_start_research_hold_drafts; main_73_merged_externally_during_batch",
+    "tip_vs_fa32d11": "MOVED_to_8e359e5_refresh_landed",
+    "patch_0020": "negative_after_refresh_IDLE_PATH_C_DONE",
+    "refresh_dry_run": "TIP_DRIFT_then_refresh_ok",
     "pack_living_tag_race": "reproduced_dirty_pin_on_fail_fixed_validate_before_write",
-    "ci_tip_drift": "gate_ok_live_eq_base_eq_verify",
+    "ci_tip_drift": "caught_8e359e5_on_land_record_ci_then_refreshed",
     "sibling_grant": "durable_8_of_8_writable_app_sandbox_404_deferred",
-    "pack_vs_release": "local_newer_deferred_avoid_republish",
+    "pack_vs_release": "deferred_avoid_republish",
     "watch_workflow": "recent_runs_success",
     "when_writable_dual_daemon": "avoided_just_shipped_267",
     "path_c_dry_run_write_required": "avoided_just_shipped_266",
@@ -39,11 +40,11 @@
     "path_b_dryrun": "avoided_just_shipped_264",
     "research_guard_packet": "avoided_just_shipped_263",
     "probe_file_token": "avoided_just_shipped_262",
-    "release_republish": "avoided_pack_newer_deferred",
+    "release_republish": "avoided_deferred",
     "grant_dual_vector": "avoided_just_shipped_259"
   },
-  "tip": "fa32d11",
-  "tip_moved": false,
+  "tip": "8e359e5",
+  "tip_moved": true,
   "aligned": true,
   "write": "WRITABLE",
   "patch_0020": false,
