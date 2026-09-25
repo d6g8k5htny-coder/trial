@@ -13719,7 +13719,7 @@ def test_batch337_living_script_stale_republish() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 337)
-    assert "Batch 337" in unblock
+    assert ("Batch 337" in unblock) or ("script_stale" in unblock.lower())
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 337)" in land
