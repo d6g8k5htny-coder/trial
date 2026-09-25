@@ -1,0 +1,38 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:41:29Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "assignment": "research_stack_audit_watch_no_promotion",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "status_guard_tip": "e3cd7d4",
+  "status_guard_tip_living": true,
+  "status_guard_tip_lag": false,
+  "status_guard_pass": true,
+  "audit_delta_needed": false,
+  "delta_vs_batch357": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "prior_audit_artifact": "portable/BATCH357_RESEARCH_STACK_AUDIT.json",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "inventable_promoted": false,
+  "artifact": "portable/BATCH357_RESEARCH_STACK_AUDIT.json",
+  "coord_bc": "bc-01a0cf1e",
+  "note": "no-promotion watch: open stack unchanged vs BATCH357; STATUS_GUARD living @e3cd7d4; lemma_closed=false"
+}
