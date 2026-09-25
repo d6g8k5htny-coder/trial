@@ -1,3 +1,7 @@
+## STATUS (Batch 340)
+
+tip `848aea2` tip_match=true; eng: audit_main_alignment 403 rate-limit backoff (CI run 36172207352); misalignment detection unchanged; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 339)
 
 tip `848aea2` tip_match=true; tip watch — living release script_stale republish (tip_stale=0); lemma_closed=false; scientific effect NONE.

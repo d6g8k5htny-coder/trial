@@ -27,6 +27,13 @@ jobs:
           # Batch 19b taught the audit script to send Authorization when present;
           # export the runner token so CI does not hit unauthenticated rate limits.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Batch 340: installation primary rate-limit 403 exhausted Batch 256's
+          # 3×2s defaults (~6s) on align-watch run 36172207352 — more attempts +
+          # longer backoff (script also honors x-ratelimit-reset). Exit 1 (MISALIGNED)
+          # detection is unchanged.
+          AUDIT_TRANSPORT_RETRIES: "6"
+          AUDIT_TRANSPORT_SLEEP_S: "3"
+          AUDIT_TRANSPORT_SLEEP_CAP_S: "60"
         run: |
           set +e
           python scripts/audit_main_alignment.py

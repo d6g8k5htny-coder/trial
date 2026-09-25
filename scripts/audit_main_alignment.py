@@ -33,8 +33,12 @@ Q0_MARKERS = (
 )
 
 # Batch 256: brief retries on 429 / secondary rate-limit 403 (Intent + drift watch).
-_TRANSPORT_RETRIES = int(os.environ.get("AUDIT_TRANSPORT_RETRIES", "3"))
-_TRANSPORT_SLEEP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_S", "2"))
+# Batch 340: CI align-watch (run 36172207352) still exited 2 after ~6s — default
+# 3×2s exhausted under installation primary rate-limit 403. Raise attempts,
+# exponential backoff, honor x-ratelimit-reset. Misalignment exit 1 unchanged.
+_TRANSPORT_RETRIES = int(os.environ.get("AUDIT_TRANSPORT_RETRIES", "6"))
+_TRANSPORT_SLEEP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_S", "3"))
+_TRANSPORT_SLEEP_CAP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_CAP_S", "60"))
 
 
 def _token() -> str | None:
@@ -47,7 +51,7 @@ def _token() -> str | None:
 
 
 def _is_rate_limited(exc: BaseException) -> bool:
-    """True for HTTP 429 or GitHub secondary rate-limit 403 bodies."""
+    """True for HTTP 429 or GitHub primary/secondary rate-limit 403 bodies."""
     if isinstance(exc, urllib.error.HTTPError):
         if exc.code == 429:
             return True
@@ -61,12 +65,19 @@ def _is_rate_limited(exc: BaseException) -> bool:
         except Exception:  # noqa: BLE001 — best-effort body sniff
             body = ""
         blob = f"{exc.code} {exc.reason} {body}".lower()
-        return "rate limit" in blob or "secondary rate" in blob
-    return "rate limit" in str(exc).lower()
+        # Primary: "API rate limit exceeded for installation"
+        # Secondary: "You have exceeded a secondary rate limit"
+        return (
+            "rate limit" in blob
+            or "secondary rate" in blob
+            or "rate_limit" in blob
+        )
+    return "rate limit" in str(exc).lower() or "rate_limit" in str(exc).lower()
 
 
 def _retry_after_seconds(exc: BaseException, attempt: int) -> float:
-    delay = _TRANSPORT_SLEEP_S * attempt
+    """Exponential backoff; honor Retry-After and x-ratelimit-reset when present."""
+    delay = _TRANSPORT_SLEEP_S * (2 ** (attempt - 1))
     if isinstance(exc, urllib.error.HTTPError) and exc.headers:
         ra = exc.headers.get("Retry-After")
         if ra is not None:
@@ -74,7 +85,18 @@ def _retry_after_seconds(exc: BaseException, attempt: int) -> float:
                 delay = max(delay, float(ra))
             except ValueError:
                 pass
-    return min(delay, 30.0)
+        # Primary rate-limit reset is a unix epoch second.
+        reset = exc.headers.get("X-RateLimit-Reset") or exc.headers.get(
+            "x-ratelimit-reset"
+        )
+        if reset is not None:
+            try:
+                wait = float(reset) - time.time()
+                if wait > 0:
+                    delay = max(delay, wait)
+            except ValueError:
+                pass
+    return min(delay, _TRANSPORT_SLEEP_CAP_S)
 
 
 def get_json(url: str) -> dict | list:
@@ -95,7 +117,13 @@ def get_json(url: str) -> dict | list:
         except urllib.error.HTTPError as exc:
             last_exc = exc
             if _is_rate_limited(exc) and attempt < attempts:
-                time.sleep(_retry_after_seconds(exc, attempt))
+                delay = _retry_after_seconds(exc, attempt)
+                print(
+                    f"audit: rate-limit retry {attempt}/{attempts} "
+                    f"sleep={delay:.1f}s code={getattr(exc, 'code', '?')}",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
                 # Rebuild request — prior HTTPError may have consumed the body.
                 req = urllib.request.Request(url, headers=headers)
                 continue
@@ -103,7 +131,13 @@ def get_json(url: str) -> dict | list:
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last_exc = exc
             if _is_rate_limited(exc) and attempt < attempts:
-                time.sleep(_retry_after_seconds(exc, attempt))
+                delay = _retry_after_seconds(exc, attempt)
+                print(
+                    f"audit: rate-limit retry {attempt}/{attempts} "
+                    f"sleep={delay:.1f}s transport={type(exc).__name__}",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
                 continue
             raise
     assert last_exc is not None
@@ -130,7 +164,7 @@ def main() -> int:
     except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError, ValueError, KeyError) as exc:
         # Batch 155: also catch http.client.RemoteDisconnected (OSError) and
         # mid-request connection drops so CI Intent suite gets exit 2, not crash.
-        # Batch 256: rate-limit retries happen inside get_json; exhausted → exit 2.
+        # Batch 256/340: rate-limit retries happen inside get_json; exhausted → exit 2.
         print(f"audit: transport failure: {exc}", file=sys.stderr)
         return 2
     except Exception as exc:  # noqa: BLE001 — audit must never crash Intent suite
@@ -156,6 +190,7 @@ def main() -> int:
     }
     print(json.dumps(report, indent=2, sort_keys=True))
 
+    # Misalignment predicate unchanged (Batch 340 does not weaken detection).
     misaligned = bool(complexity_hits) or (not q0_hits and not has_agents)
     if misaligned:
         print(

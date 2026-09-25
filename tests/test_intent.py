@@ -13927,4 +13927,111 @@ def test_batch339_living_script_stale_republish() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 339" in log_md
 
+def test_batch340_audit_rate_limit_403_backoff() -> None:
+    """Batch 340: audit 403 installation rate-limit backoff; misalignment unchanged."""
+    import importlib.util
+    import json
+    import time
+    import urllib.error
+    from io import BytesIO
+    from unittest import mock
+
+    audit_path = ROOT / "scripts" / "audit_main_alignment.py"
+    audit_src = audit_path.read_text(encoding="utf-8")
+    assert "AUDIT_TRANSPORT_RETRIES" in audit_src
+    assert "AUDIT_TRANSPORT_SLEEP_CAP_S" in audit_src
+    assert "x-ratelimit-reset" in audit_src.lower() or "X-RateLimit-Reset" in audit_src
+    assert "Batch 340" in audit_src
+    assert "rate-limit retry" in audit_src
+    # Misalignment predicate must remain (do not weaken detection).
+    assert "misaligned = bool(complexity_hits)" in audit_src
+    assert 'return 1' in audit_src
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "AUDIT_TRANSPORT_RETRIES" in ci
+    assert "AUDIT_TRANSPORT_SLEEP_CAP_S" in ci
+
+    spec = importlib.util.spec_from_file_location("audit340", audit_path)
+    assert spec is not None and spec.loader is not None
+    audit = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(audit)
+
+    # 403 installation primary rate-limit body (CI run 36172207352 shape).
+    body = b'{"message":"API rate limit exceeded for installation. ..."}'
+    exc403 = urllib.error.HTTPError(
+        "https://api.github.com",
+        403,
+        "Forbidden",
+        hdrs={"X-RateLimit-Reset": str(int(time.time()) + 2)},
+        fp=BytesIO(body),
+    )
+    assert audit._is_rate_limited(exc403) is True
+    # Fresh exc for delay (body read is one-shot).
+    exc403b = urllib.error.HTTPError(
+        "https://api.github.com",
+        403,
+        "Forbidden",
+        hdrs={"X-RateLimit-Reset": str(int(time.time()) + 2)},
+        fp=BytesIO(body),
+    )
+    delay = audit._retry_after_seconds(exc403b, 1)
+    assert delay >= 2.0
+    assert delay <= audit._TRANSPORT_SLEEP_CAP_S
+
+    audit._TRANSPORT_SLEEP_S = 0.01
+    audit._TRANSPORT_RETRIES = 6
+    audit._TRANSPORT_SLEEP_CAP_S = 1.0
+    calls = {"n": 0}
+    ok_body = json.dumps({"ok": True}).encode()
+
+    class _CM:
+        def __init__(self, data: bytes) -> None:
+            self._data = data
+
+        def __enter__(self):
+            return BytesIO(self._data)
+
+        def __exit__(self, *args):
+            return False
+
+    def fake_urlopen(req, timeout=60):
+        calls["n"] += 1
+        if calls["n"] < 4:
+            raise urllib.error.HTTPError(
+                "https://api.github.com",
+                403,
+                "Forbidden",
+                hdrs={"Retry-After": "0"},
+                fp=BytesIO(
+                    b'{"message":"API rate limit exceeded for installation."}'
+                ),
+            )
+        return _CM(ok_body)
+
+    with mock.patch("urllib.request.urlopen", fake_urlopen):
+        data = audit.get_json("https://api.github.com/repos/example/x")
+    assert data == {"ok": True}
+    assert calls["n"] == 4
+
+    # Defaults stronger than Batch 256's 3/2s (exhausted in ~6s on CI).
+    # Re-read module-level defaults from source (test may have mutated).
+    assert 'AUDIT_TRANSPORT_RETRIES", "6"' in audit_src or "AUDIT_TRANSPORT_RETRIES', '6'" in audit_src
+    assert 'AUDIT_TRANSPORT_SLEEP_S", "3"' in audit_src or "AUDIT_TRANSPORT_SLEEP_S', '3'" in audit_src
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "Batch 340" in unblock
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in owner
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 340" in log_md
+    assert "36172207352" in log_md or "rate-limit" in log_md.lower()
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
 

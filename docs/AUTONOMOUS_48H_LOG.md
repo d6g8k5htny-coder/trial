@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — audit_main_alignment rate-limit backoff (2026-09-25)
+
+- Tip stable @ `848aea2` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Defect: CI align-watch run 36172207352 — `audit_main_alignment` HTTP 403 installation rate-limit → exit 2 after Batch 256's brief 3×2s retries.
+- Fix: defaults 6 attempts + exponential backoff + honor `x-ratelimit-reset` / `Retry-After`; CI workflow sets `AUDIT_TRANSPORT_*`; misalignment exit 1 unchanged.
+- NEVER flip research.
+
 ### Batch 339 — living script_stale republish (2026-09-25)
 
 - Tip **stable** @ `848aea2` (tip watch dry-run match=1). Path C IDLE@0019.
