@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 321 — soften live tip Intent pins + refresh inventory (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: Batch 317 Intent still pinned live BASE_TIP/VERIFY/PATH_C tip to `077464e` startswith — next tip-sync would re-red CI (same class as print_owner allowlist). Softened to `_living_tip` / living prior.
+- Refreshed `portable/AI_AGENT_ACCESS_INVENTORY.json` tip_sha snapshot from durable `--check` (Batch 259 stale tips → live 8/8 WRITABLE tips).
+- NEVER flip research.
+
 ### Batch 317 — tip-sync after main #89 (2026-09-25)
 
 - Hardening LIVE moved `0adeb65`→`077464e` (PR #89 MERGED tip-observe into `chatgpt/drive-github-hardening-20260919`; mergeCommit=077464e). Default main still `72558a5`.

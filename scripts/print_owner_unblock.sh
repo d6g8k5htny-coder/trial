@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"
 echo "  Batch 317: tip-sync 0adeb65→077464e after main #89 tip-observe mid-cycle; refresh keep-prior; living tip_stale republish; REFRESH default 317"
 echo "  Batch 305: tip-sync 02cfbfd→0adeb65 after main #85 inventable mid-cycle; refresh keep-prior; living tip_stale republish; REFRESH default 305"
 echo "  Batch 297: tip-sync 3a29f52→02cfbfd after main #84 tip-observe mid-cycle; refresh keep-prior; living tip_stale republish; REFRESH default 297"

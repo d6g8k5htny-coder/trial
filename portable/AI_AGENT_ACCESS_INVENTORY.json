@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-09-25T01:08:25Z",
-  "batch": "259",
+  "generated_at_utc": "2026-09-25T16:27:13Z",
+  "batch": "321",
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
@@ -46,7 +46,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:41:13Z",
-      "tip_sha": "ad44f9ce23f6be5e706bc9b796633fad39897c42",
+      "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -56,7 +56,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:41:15Z",
-      "tip_sha": "081280ee1881b4fd8bd9736fb4c27ddd16de8c7e",
+      "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -66,7 +66,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T20:04:01Z",
-      "tip_sha": "1c6e74bbc212198d51502ae3f6088ce1bc8cdb76",
+      "tip_sha": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -76,7 +76,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:41:17Z",
-      "tip_sha": "5f1d0d6f539a73fda1ed4129c8eeeae2d82dfebc",
+      "tip_sha": "593adcaa89a29a7a837aebd29c920c145ebd6ae9",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -86,7 +86,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:42:59Z",
-      "tip_sha": "1494d7c04e93f3dc47374d7dddb90efb66c28233",
+      "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -96,7 +96,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:41:20Z",
-      "tip_sha": "d17e2b9375bbd9e9e2f82cfc954e325b937cd504",
+      "tip_sha": "1bd71fffce1eae12fd517017873bd4b7ffe25bc9",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -106,7 +106,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T18:41:22Z",
-      "tip_sha": "9e0d00c512534147b81755be5ff3c3aed1f54606",
+      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -116,7 +116,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-24T19:58:24Z",
-      "tip_sha": "e72efb601dbbd6012c95c3c6c32a4c71c11546c5",
+      "tip_sha": "0b97407e11f30f8403d7819bd84ba888c6599e6e",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -127,7 +127,7 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 240 deep-hunt close: living inventory schema restored (apps_documented); sibling 8/8 WRITABLE.",
+  "note": "Batch 321: refreshed tip_sha snapshot from durable MAIN_PUSH_TOKEN (was Batch 259 stale); App ambient trial-only; durable 8/8 WRITABLE. Softened Batch 317 live tip Intent pins.",
   "main_writable": true,
   "sandbox_added": true,
   "sandbox": {

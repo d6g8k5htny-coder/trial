@@ -12736,14 +12736,17 @@ def test_batch317_tip_sync_after_main_89() -> None:
     assert "0adeb65" in _LIVING_TIPS
 
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "077464e" in base
+    # Live BASE_TIP supersedes across tip-sync; Batch 317 shipped 077464e.
+    assert _living_tip(base)
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
         )
     )
-    assert str(verify.get("base_tip_sha", "")).startswith("077464e")
-    assert str(verify.get("prior_base_tip_sha", "")).startswith("0adeb65")
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
+        verify.get("prior_base_tip_sha", "")
+    ).startswith("0adeb65")
     assert int(verify.get("refresh_batch") or 0) >= 317
     assert verify.get("keep_prior_bundle") is True
     assert verify.get("lemma_closed") is False
@@ -12760,8 +12763,40 @@ def test_batch317_tip_sync_after_main_89() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
-    assert str(status.get("tip", "")).startswith("077464e")
+    # Live tip supersedes across tip-sync; historical brief keeps 077464e.
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
+
+def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
+    """Batch 321: live tip Intent pins softened; inventory tip snapshot refreshed."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    assert "_assert_print_owner_header_batch_at_least" in intent
+    assert "_print_owner_header_batch" in intent
+    # Batch 317 live pins must not hard-require startswith 077464e on VERIFY/status.
+    assert "Live BASE_TIP supersedes across tip-sync; Batch 317 shipped 077464e" in intent
+    assert "Live tip supersedes across tip-sync; historical brief keeps 077464e" in intent
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("batch") == "321"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    assert inv.get("main_writable") is True
+    details = inv.get("details") or []
+    assert len(details) == 8
+    for d in details:
+        tip = str(d.get("tip_sha") or "")
+        assert len(tip) == 40, f"stale/short tip_sha for {d.get('name')}: {tip!r}"
+        assert d.get("write") == "WRITABLE"
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 321" in log_md
+    assert "living tip" in log_md.lower() or "_living_tip" in log_md or "live tip" in log_md.lower()
 
