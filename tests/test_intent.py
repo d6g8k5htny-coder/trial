@@ -18957,8 +18957,9 @@ def test_batch359_tip_or_eng_continue() -> None:
         "tests/test_intent.py",
     ):
         text = (ROOT / rel).read_text(encoding="utf-8")
-        assert "<<<<<<< HEAD" not in text
-        assert ">>>>>>> cursor/" not in text
+        for line in text.splitlines():
+            assert not line.startswith("<<<<<<< "), rel
+            assert not line.startswith(">>>>>>> "), rel
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 359)
