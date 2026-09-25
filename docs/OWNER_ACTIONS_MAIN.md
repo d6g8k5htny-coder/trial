@@ -6,6 +6,16 @@ Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`:
 ./scripts/owner_grant_ai_agent_access.sh --check
 ```
 
+
+## STATUS (Batch 355 soften-inv-base-tip)
+
+Hardening tip **stable** @ `e3cd7d4`. tip_sync_or_eng: tip match=1; peer idle+inv tip pin already landed. Eng: soften `test_batch355_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch355_inventory_preserve_durable_tip_pin -q
+```
+
 ## STATUS (Batch 355 wake)
 
 Hardening tip **stable** @ `e3cd7d4`. Dylan: message stopped agents + assign Path C tasks. Artifact: `MULTI_AGENT_WAKE_BATCH355.json` (8 IDLE Task-resume + 1 cloud peer). `lemma_closed=false`. Goal OPEN.

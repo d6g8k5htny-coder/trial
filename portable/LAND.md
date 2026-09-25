@@ -2,6 +2,11 @@
 
 tip `e3cd7d4` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→87eaa82; coverage 8/8_WRITABLE; BATCH355_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
 
+
+## STATUS (Batch 355 soften-inv-base-tip)
+
+tip `e3cd7d4` tip_match=true; eng: soften INV tip-pin Intent live BASE_TIP pin to `_living_tip`; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 355 wake)
 
 tip `e3cd7d4` tip_match=true; MULTI_AGENT wake+assign 8 IDLE + 1 cloud Path C peers; durable 8/8; lemma_closed=false; scientific effect NONE.
