@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-09-25T19:56:16Z",
-  "batch": "349",
+  "generated_at_utc": "2026-09-25T20:13:48Z",
+  "batch": 350,
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
@@ -116,9 +116,11 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-25T19:53:06Z",
-      "tip_sha": "33dda3b6a10b8c41bc57e79d5ae9fd62710f5acb",
+      "tip_sha": "cca819da5617b4c83648bd2ffb94976248a9443c",
       "has_agents": true,
-      "write": "WRITABLE"
+      "write": "WRITABLE",
+      "tip_pinned_at_utc": "2026-09-25T20:13:48Z",
+      "tip_pin_reason": "batch350_preserve_durable_after_349_idle"
     }
   ],
   "repos_count": 8,

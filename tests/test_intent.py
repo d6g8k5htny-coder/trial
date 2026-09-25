@@ -16636,3 +16636,35 @@ def test_batch349_idle_eng_hunt() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "eng_defect_hunt idle_no_commit" in log_md or "Batch 349" in log_md
 
+
+def test_batch350_inventory_tip_pin() -> None:
+    """Batch 350: inventory trial tip pinned after Batch 349 CI green; durable 8/8."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 350
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("33dda3b")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH350_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "350"
+    assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 350)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 350 and len(headers) == 1
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 350 inv-tip-pin)" in land
+

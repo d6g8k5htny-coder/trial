@@ -82,7 +82,7 @@ def _living_inventory_batch(root: str) -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "349"
+    return "350"
 
 
 def _no_durable_probe(

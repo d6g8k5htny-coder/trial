@@ -1,3 +1,7 @@
+## STATUS (Batch 350 inv-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory trial tip pin after Batch 349 (CI green); preserve_durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 349 idle-eng-hunt)
 
 tip `e3cd7d4` tip_match=true; eng_defect_hunt negative — no concrete eng; action=idle_no_commit; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

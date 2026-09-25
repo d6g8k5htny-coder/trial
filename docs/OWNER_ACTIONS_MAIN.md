@@ -1,3 +1,7 @@
+## STATUS (Batch 350 inv-tip-pin)
+
+Inventory trial tip pinned after Batch 349 CI-green remediate. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 349 idle-eng-hunt)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng hunt negative — no frozen tip pins / fallback lag / Intent syntax / living stale. action=`idle_no_commit`. Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

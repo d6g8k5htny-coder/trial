@@ -1,0 +1,18 @@
+{
+  "batch": "350",
+  "utc": "2026-09-25T20:13:32Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "coverage": "8/8_WRITABLE",
+  "action": "grant_inventory_tip_pin_after_main_lands",
+  "prior_trial_tip": "33dda3b6a10b",
+  "trial_tip": "cca819da5617b4c83648bd2ffb94976248a9443c",
+  "goal": "OPEN",
+  "note": "Batch349 CI remediate green (36182739385); tip-pin after idle pulse lands"
+}
