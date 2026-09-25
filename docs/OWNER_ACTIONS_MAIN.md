@@ -1,3 +1,36 @@
+## STATUS (Batch 358 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; living tip/script current. Evidence: `portable/BATCH358_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
+## STATUS (Batch 357 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged @`a7f4fce` after Batch 356/357 lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=357 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch357_tip_or_eng_continue -q
+```
+## STATUS (Batch 357 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. `research_stack_audit_watch`: open stack 13/1/3 without promotion; STATUS_GUARD living. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11 /tmp/hardening-e3cd357
+python3 -m pytest tests/test_intent.py::test_batch357_research_stack_audit_watch -q
+
+## STATUS (Batch 357 unfreeze-last-resort)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: print_owner header Batch 357 while wake/inv/REFRESH last-resort frozen at 356; Intent allowlist capped at 356 — bump →357 + living `>=352`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -c "import sys; sys.path.insert(0,'scripts'); import post_batch322_wake_comments as w; print(w._living_batch_n())"
+python3 -m pytest tests/test_intent.py::test_batch357_unfreeze_last_resort -q
+```
+
 ## STATUS (Batch 357 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0 — skip tip-pin treadmill. Evidence: `portable/BATCH357_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

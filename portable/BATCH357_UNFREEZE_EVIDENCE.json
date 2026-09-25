@@ -1,0 +1,21 @@
+{
+  "batch": "357",
+  "generated_at_utc": "2026-09-25T21:24:33Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "action": "eng_unfreeze_batch_last_resort_357",
+  "defect_id": "batch_last_resort_frozen_356_vs_living_357",
+  "script_stale_before": 1,
+  "script_stale_after": 0,
+  "tip_stale": 0,
+  "goal": "OPEN",
+  "bc_id": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+  "coordinator_bc": "bc-01a0cf1e"
+}

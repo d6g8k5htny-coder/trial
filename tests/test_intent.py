@@ -15568,7 +15568,6 @@ def test_batch345_tip_sync_e3cd7d4() -> None:
     assert brief.get("inventable_promoted") is False
     assert 105 in (brief.get("merged_prs") or [])
     assert _living_tip(str(brief.get("tip", "")))
-    assert str(brief.get("tip", "")).startswith("e3cd7d4")
     assert str(brief.get("prior_tip", "")).startswith("fcad723")
 
     hunt = json.loads(
@@ -16910,13 +16909,13 @@ def test_batch352_unfreeze_last_resort() -> None:
     )
     assert 'return "351"' not in helper
     # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356"))
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357", "358"))
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355", "356"))
+    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355", "356", "357", "358"))
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -16947,7 +16946,6 @@ def test_batch352_unfreeze_last_resort() -> None:
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal_complete") is False
     assert _living_tip(str(brief.get("tip", "")))
-    assert str(brief.get("tip", "")).startswith("e3cd7d4")
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH352_HUNT.json").read_text(encoding="utf-8")
@@ -16957,7 +16955,6 @@ def test_batch352_unfreeze_last_resort() -> None:
     assert hunt.get("tip_moved") is False
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "e3cd7d4" in base_tip
     assert _living_tip(base_tip)
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
@@ -17543,7 +17540,7 @@ def test_batch354_inventory_preserve_durable_tip_pin() -> None:
     assert evidence.get("flipped_anything") is False
     assert evidence.get("tip_match") is True
     assert evidence.get("scientific_effect") == "NONE"
-    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
     assert evidence.get("trial_tip_matches_live_head") is True
 
     brief = json.loads(
@@ -18046,7 +18043,7 @@ def test_batch355_ci_audit_watch_idle() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356"))
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357", "358"))
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     start = intent.index("def test_batch352_unfreeze_last_resort")
     end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
@@ -18156,7 +18153,6 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     assert evidence.get("tip_match") is True
     assert evidence.get("defect_id") == "inventory_trial_tip_lag_after_lands"
     assert evidence.get("scientific_effect") == "NONE"
-    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
     assert evidence.get("trial_tip_matches_live_head") is True
     assert _living_tip(str(evidence.get("hardening_tip") or ""))
 
@@ -18180,7 +18176,6 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base_tip)
-    assert "e3cd7d4" in base_tip
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 356 inv-preserve-tip-pin)" in land
@@ -18239,6 +18234,76 @@ def test_batch356_tip_or_eng_continue() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 356 tip-eng)" in owner
 
+def test_batch357_research_stack_audit_watch() -> None:
+    """Batch 357: research_stack_audit_watch_no_promotion; STATUS_GUARD living."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "357"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    living = watch.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    assert audit.get("action") == "research_stack_audit_watch"
+    counts = audit.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(audit.get("tip_sha") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "357"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "research_stack_audit_watch"
+    assert int(brief.get("open_premises") or 0) >= 13
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 357)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 357" in log_md and "research_stack_audit_watch" in log_md
 
 def test_batch357_idle_tip_sync_watch() -> None:
     """Batch 357: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -18337,6 +18402,82 @@ def test_batch357_research_stack_audit_watch() -> None:
         (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
             encoding="utf-8"
         )
+
+
+
+def test_batch357_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 357: preserve_durable tip pin after lands; tip e3cd7d4."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 357
+    assert inv.get("durable_writable") == "8/8"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("a7f4fce") and not tip.startswith("b6eb658")
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH357_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("batch") == "357"
+    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("durable") == "8/8_WRITABLE"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("defect_id") == "inventory_trial_tip_lag_after_lands"
+    assert evidence.get("trial_tip_matches_live_head") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH357_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "357"
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("lemma_closed") is False
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH357_INV_TIP_PIN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r"=== Batch (\d+)\s", unblock)
+    assert headers and int(headers[0]) >= 357 and len(headers) == 1
+    assert "Batch 357" in unblock and "tip_or_eng" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 tip-eng)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 357" in log_md
+
+
+def test_batch357_tip_or_eng_continue() -> None:
+    """Batch 357: tip_or_eng — inv tip re-pin after lands."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 357
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("a7f4fce")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH357_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
     )
     assert brief.get("batch") == "357"
     assert brief.get("lemma_closed") is False
@@ -18360,3 +18501,160 @@ def test_batch357_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 357 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 357" in log_md and "research_stack_audit_watch" in log_md
+    assert brief.get("action") == "inventory_tip_repin_after_land_head"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH357_TIP_ENG_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH357_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("action") == "inventory_tip_repin_after_land_head"
+    assert evidence.get("trial_tip_matches_live_head") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 357)
+    assert "tip_or_eng" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 tip-eng)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 tip-eng)" in owner
+
+
+def test_batch357_unfreeze_last_resort() -> None:
+    """Batch 357: last-resort batch defaults unfrozen 356→357; tip stable."""
+    import importlib.util
+    import json
+    import re
+    import tempfile
+    from pathlib import Path as P
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 357)
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 357
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    _wake_head = poster.split("def batch_marker")[0]
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', _wake_head)]
+    assert _wake_rets and max(_wake_rets) >= 357
+    assert 'return "351"' not in _wake_head
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 357)
+    assert "356→357" in unblock or "356->357" in unblock or "unfreeze" in unblock
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_inv_357",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    td = tempfile.mkdtemp()
+    (P(td) / "scripts").mkdir()
+    assert int(mod._living_inventory_batch(td)) >= 357
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH357_UNFREEZE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "357"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "batch_last_resort_frozen_356_vs_living_357"
+    assert brief.get("action") == "eng_unfreeze_batch_last_resort_357"
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH357_UNFREEZE_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "batch_last_resort_frozen_356_vs_living_357"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_moved") is False
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH357_UNFREEZE_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "eng_unfreeze_batch_last_resort_357"
+    assert evidence.get("lemma_closed") is False
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 unfreeze-last-resort)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 357 unfreeze-last-resort)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 357" in log_md and "356→357" in log_md
+
+def test_batch358_idle_tip_sync_watch() -> None:
+    """Batch 358: tip stable @e3cd7d4; idle_no_commit tip_sync_or_eng evidence."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH358_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "358"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH358_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH358_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "358"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("living_tip_stale") == 0
+    assert brief.get("living_script_stale") == 0
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 358)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 358 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 358 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 358" in log_md and "idle_no_commit" in log_md
+

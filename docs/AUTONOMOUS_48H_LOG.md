@@ -21,6 +21,28 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 358 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- batch346-tip-eng-watch pulse: no tip move; Batch 357 research/unfreeze/repin already on main. Woke tip/eng peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 357 — tip_or_eng: inv tip re-pin after lands (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`a7f4fce` after Batch 356/357 lands — PRESERVE_DURABLE re-pin→HEAD.
+- Artifacts: `BATCH357_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+### Batch 357 — research_stack_audit_watch_no_promotion @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research stack audit: open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD living; NEVER promote.
+- Artifacts: `BATCH357_RESEARCH_STACK_AUDIT.json`, `BATCH357_RESEARCH_AUDIT_WATCH.json`. action=`research_stack_audit_watch`. Woke tip/eng/research peers. Goal OPEN.
+
+### Batch 357 — eng unfreeze last-resort 356→357 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: header Batch 357 after tip_sync idle; wake/inv/REFRESH ultimate fallback frozen at 356; Intent allowlist 352–356 would re-red — bump →357 + living `>=352`. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
 ### Batch 357 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

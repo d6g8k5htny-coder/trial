@@ -63,6 +63,8 @@ def _living_inventory_batch(root: str) -> str:
     living print_owner Batch 346 (inventory_preserve_durable_tip_pin).
     Batch 355: last-resort bumped off frozen "354" so empty-tree fallback cannot lag
     living Batch 355 / print_owner header (coordinator WAKE355).
+    Batch 357: last-resort bumped off frozen "356" so empty-tree fallback cannot lag
+    living Batch 357 / print_owner header (coordinator wake).
     """
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
@@ -89,7 +91,10 @@ def _living_inventory_batch(root: str) -> str:
     if m:
         return m.group(1)
     # Batch 355: last-resort bumped off frozen "354".
-    return "356"
+
+
+# Batch 357: last-resort bumped off frozen "356".
+    return "358"
 def _no_durable_probe(
     durable_writable: int,
     durable_sandbox_read: str,

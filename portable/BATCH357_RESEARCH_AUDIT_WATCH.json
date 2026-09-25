@@ -1,6 +1,10 @@
 {
   "batch": "357",
+<<<<<<< HEAD
   "generated_at_utc": "2026-09-25T21:23:12Z",
+=======
+  "generated_at_utc": "2026-09-25T21:23:37Z",
+>>>>>>> 625a7944efb9bb1904df1b37ac487b3422778a16
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "hardening_tip_short": "e3cd7d4",
   "tip_match": true,

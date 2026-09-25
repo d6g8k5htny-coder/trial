@@ -1,3 +1,18 @@
+## STATUS (Batch 358 idle)
+
+tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 357 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after Batch 356/357 lands; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+## STATUS (Batch 357 research-audit-watch)
+
+tip `e3cd7d4` tip_match=true; research_stack_audit_watch: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
+## STATUS (Batch 357 unfreeze-last-resort)
+
+tip `e3cd7d4` tip_match=true; eng: unfreeze wake/inv/REFRESH last-resort 356→357; Intent living >=352; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 357 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
