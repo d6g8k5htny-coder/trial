@@ -1,3 +1,7 @@
+## STATUS (Batch 365 inv-tip-pin)
+
+inv tip re-pin beyond parent after Batch 365 living republish; tip `e3cd7d4`; durable 8/8; lemma_closed=false.
+
 ## STATUS (Batch 365 tip-eng)
 
 living VERIFY refresh_batch lag 363→364 republish; tip `e3cd7d4` tip_match; inv parent-pinned; durable 8/8; lemma_closed=false; action=eng_living_script_stale_republish.

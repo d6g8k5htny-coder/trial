@@ -1,3 +1,7 @@
+## STATUS (Batch 365 inv-tip-pin)
+
+PRESERVE_DURABLE inv tip pin after Batch 365 VERIFY republish. Goal OPEN.
+
 ## STATUS (Batch 365 tip-eng)
 
 Living `VERIFY.json` refresh_batch lagged at 363 after Batch 364 last-resort bump. Republished → refresh_batch=364. Tip stable @ `e3cd7d4`. Evidence: `portable/BATCH365_TIP_ENG_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
