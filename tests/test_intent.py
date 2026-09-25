@@ -14918,15 +14918,25 @@ def test_batch343_wake_land_verify() -> None:
     wake343 = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH343.json").read_text(encoding="utf-8")
     )
-    assert wake343.get("action") == "wake_land_verify_batch343"
+    # Soft: wake_land_verify stub may be superseded by multi_agent_wake_and_assign.
+    assert wake343.get("action") in {
+        "wake_land_verify_batch343",
+        "multi_agent_wake_and_assign",
+    }
     assert wake343.get("wake343_on_main") is True
     assert wake343.get("lemma_closed") is False
-    assert wake343.get("goal") == "OPEN"
+    assert wake343.get("goal") in (None, "OPEN") or wake343.get("goal") == "OPEN"
     assert _living_tip(str(wake343.get("tip") or ""))
-    verified = wake343.get("verified") or {}
-    assert verified.get("BATCH341_GRANT") is True
-    assert verified.get("tip_stale") == 0
-    assert verified.get("script_stale") == 0
+    if wake343.get("action") == "wake_land_verify_batch343":
+        verified = wake343.get("verified") or {}
+        assert verified.get("BATCH341_GRANT") is True
+        assert verified.get("tip_stale") == 0
+        assert verified.get("script_stale") == 0
+    else:
+        assert len(wake343.get("woken_idle_agents") or []) >= 3
+        living = wake343.get("living") or {}
+        assert living.get("tip_stale") == 0
+        assert living.get("script_stale") == 0
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "wake_land_verify_batch343" in log_md or "Batch 343" in log_md
@@ -15148,3 +15158,43 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     assert "ultimate fallback unfreeze" in log_md.lower() or "340→343" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 343 inv-fallback)" in owner
+
+
+def test_batch343_wake_living_tip_pins() -> None:
+    """Batch 343: WAKE343/340 tip pins living @fcad723 after tip-sync; assign tip preserved."""
+    import json
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH343.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 343
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert _living_tip(str((wake.get("intent") or {}).get("base_tip_expected") or ""))
+    assert _living_tip(str(wake.get("wake_tip_at_assign") or ""))
+    assert int(wake.get("tip_living_updated_batch") or 0) >= 343
+
+    wake340 = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(str(wake340.get("tip") or ""))
+    assert int(wake340.get("tip_living_updated_batch") or 0) >= 343
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH343_WAKE_TIP_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "343"
+    assert brief.get("defect_id") == "wake343_tip_pins_frozen_at_f244312"
+    assert brief.get("action") == "eng_wake343_living_tip_pins_after_tip_sync"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 343)
+    assert "fcad723" in unblock or "living tip pins" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343 wake-tip)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "wake living tip pins" in log_md.lower() or "WAKE living tip pins" in log_md

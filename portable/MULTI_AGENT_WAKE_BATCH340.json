@@ -22,7 +22,8 @@
   "durable": "8/8",
   "living": {
     "tip_stale": 0,
-    "script_stale": 0
+    "script_stale": 0,
+    "need_upload": 0
   },
   "intent": {
     "hardening_ref": "chatgpt/drive-github-hardening-20260919",
@@ -112,5 +113,5 @@
   "wake_tip_at_assign": "848aea2",
   "wake_tip_at_assign_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
   "tip_living_updated_batch": 343,
-  "tip_living_updated_utc": "2026-09-25T18:45:52Z"
+  "tip_living_updated_utc": "2026-09-25T19:00:39Z"
 }

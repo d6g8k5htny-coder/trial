@@ -1,3 +1,7 @@
+## STATUS (Batch 343 wake)
+
+Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`. Hardening tip stable @ `fcad723`. `lemma_closed=false`.
+
 See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.md).
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 

@@ -50,6 +50,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `f244312` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Assignment `grant_inventory_refresh_batch343`: dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; tip-refresh with `preserve_durable` stamps INV_BATCH →343 + tip pins; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH343_GRANT.json`. Goal OPEN. NEVER flip research.
+### Batch 343 — WAKE living tip pins after tip-sync fcad723 (2026-09-25)
+- Tip **stable** @ `fcad723` (post tip-sync from `f244312`). Path C IDLE@0019.
+- **Defect:** `MULTI_AGENT_WAKE_BATCH343`/`340` tip/`base_tip_expected` still @ `f244312` after tip-sync.
+- **Fix:** refresh living tip pins; preserve `wake_tip_at_assign`; soften Intent hard pins to `_living_tip`.
+- Living `script_stale` republish after print_owner/inventory drift.
+- `lemma_closed=false`; inventable NOT promoted.
 
 ### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
 

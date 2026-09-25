@@ -1,3 +1,11 @@
+## STATUS (Batch 343 wake-tip)
+
+tip `fcad723` tip_match=true; WAKE343/340 living tip pins refreshed after tip-sync; wake_tip_at_assign preserved; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 343 wake)
+
+tip `fcad723` tip_match=true; MULTI_AGENT wake+assign 10 IDLE + 1 cloud; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 inv-fallback)
 
 tip `fcad723` tip_match=true; eng: inventory ultimate fallback return `"343"` (was frozen `"340"` after tip-sync REFRESH 343); soften Batch 340 Intent hard pin; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
