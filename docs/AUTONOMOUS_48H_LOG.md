@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 269 (VERIFY.batch release-align after keep-prior refresh) — 2026-09-25 ~03:52 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `8e359e5`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Deep 0020 hunt: **NEGATIVE** (classic assign-open 0). Open main PRs: draft tip-observe #80 + research-hold drafts — **skipped**.
+- **Evidence:** keep-prior tip refresh stamped `VERIFY.batch=250` from stale `REFRESH_BATCH_TAG` default while `release=batch241-path-c-bundle`. Pack `release|batch` fallback would derive `batch250-path-c-bundle` if release stripped (Batch 268 only blocked dirty pin write).
+- **Defect shipped (avoid pack living-tag validate-before-write / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** `refresh_path_c_bundle` aligns `VERIFY.batch` to release digits; automation stamp → `refresh_batch`; default tag 269; heal VERIFY+MANIFEST.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial eng land follow-on. Scientific effect NONE.
+
 ### Batch 268 (pack living-tag race + tip refresh 8e359e5) — 2026-09-25 ~03:22 UTC (PERMANENT window; eng defect ship + tip refresh; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=true** → live `8e359e5` (main inventable tip-observe **#73** merged during batch). `refresh_path_c_bundle` updated BASE_TIP/VERIFY/APPLY/MANIFEST (keep-prior bundle; apply_all already-on-tip; focused 90 + claims/recovery 83). **No 0020.** Open remaining main PRs: research-hold drafts — **skipped**.

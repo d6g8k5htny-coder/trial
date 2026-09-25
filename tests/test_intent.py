@@ -9381,13 +9381,15 @@ def test_batch268_pack_living_tag_validate_before_write() -> None:
     assert verify_data.get("release") == tag
     assert verify_data.get("lemma_closed") is False
 
-    # Repro: strip VERIFY.release so pack derives batch{N} from batch field;
-    # oneshot/open_pr :-defaults stay batch241 → exit 2 must leave pin intact.
+    # Repro: strip VERIFY.release and plant a divergent automation batch so
+    # pack derives batch{N} ≠ oneshot :-default; exit 2 must leave pin intact.
+    # (Batch 269: live VERIFY.batch is release-aligned; inject divergence here.)
     living_before = living.read_text(encoding="utf-8")
     verify_before = verify.read_text(encoding="utf-8")
     try:
         vd = dict(verify_data)
         del vd["release"]
+        vd["batch"] = "250"
         verify.write_text(json.dumps(vd, indent=2) + "\n", encoding="utf-8")
         living.write_text(tag + "\n", encoding="utf-8")
         out = Path(tempfile.mkdtemp(prefix="pack268-out-")) / "pack.tgz"
@@ -9401,7 +9403,7 @@ def test_batch268_pack_living_tag_validate_before_write() -> None:
         assert proc.returncode == 2, (proc.stderr or "") + (proc.stdout or "")
         assert "living pin NOT written" in (proc.stderr or "")
         assert living.read_text(encoding="utf-8").strip() == tag
-        assert f"batch{vd['batch']}-path-c-bundle" in (proc.stderr or "")
+        assert "batch250-path-c-bundle" in (proc.stderr or "")
     finally:
         living.write_text(living_before, encoding="utf-8")
         verify.write_text(verify_before, encoding="utf-8")
@@ -9487,6 +9489,138 @@ def test_batch268_pack_living_tag_validate_before_write() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 268" in unblock
     assert "validate-before-write" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+
+def test_batch269_verify_batch_release_align() -> None:
+    """Batch 269: refresh keep-prior aligns VERIFY.batch to release; tip stable; no flip."""
+    import json
+    import re
+    import subprocess
+    import tempfile
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "Batch 269" in refresh
+    assert "REFRESH_BATCH_TAG:-269" in refresh
+    assert "refresh_batch" in refresh
+    assert "release_batch_aligned" in refresh
+    assert "align VERIFY.batch" in refresh
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    rel = verify.get("release")
+    assert rel == "batch241-path-c-bundle"
+    assert verify.get("batch") == "241"
+    assert verify.get("refresh_batch") == "269"
+    assert verify.get("release_batch_aligned") is True
+    assert verify.get("lemma_closed") is False
+    assert verify.get("flipped_anything") is False
+    m = re.fullmatch(r"batch(\d+)-path-c-bundle", rel)
+    assert m and verify["batch"] == m.group(1)
+    assert f"batch{verify['batch']}-path-c-bundle" == rel
+
+    manifest = json.loads(
+        (ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8")
+    )
+    assert str(manifest.get("verified_batch")) == "241"
+    assert str(manifest.get("refresh_batch")) == "269"
+
+    with tempfile.TemporaryDirectory(prefix="b269-verify-") as td:
+        stamped = {
+            "batch": "269",
+            "refresh_batch": "269",
+            "release": "batch241-path-c-bundle",
+            "lemma_closed": False,
+            "path_c_landed": True,
+            "flipped_anything": False,
+        }
+        mm = re.fullmatch(r"batch(\d+)-path-c-bundle", stamped["release"])
+        assert mm
+        stamped["batch"] = mm.group(1)
+        stamped["release_batch_aligned"] = True
+        out = Path(td) / "VERIFY.json"
+        out.write_text(json.dumps(stamped, indent=2) + "\n", encoding="utf-8")
+        got = json.loads(out.read_text(encoding="utf-8"))
+        assert got["batch"] == "241"
+        assert got["refresh_batch"] == "269"
+        assert got["release"] == "batch241-path-c-bundle"
+        assert f"batch{got['batch']}-path-c-bundle" == got["release"]
+
+    proc = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "refresh_path_c_bundle.sh"), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+    combined = (proc.stdout or "") + (proc.stderr or "")
+    assert "tip stable" in combined or "match=1" in combined
+    assert "8e359e5" in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH269_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "269"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == (
+        "verify_batch_divergent_from_release_after_keep_prior_refresh"
+    )
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("8e359e5")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+    assert brief.get("pack_release") == "batch241-path-c-bundle"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH269_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "269"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert "pack living-tag validate-before-write" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "when_writable dual-daemon flock" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH269_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 269" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 269)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 269)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 269" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 269" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

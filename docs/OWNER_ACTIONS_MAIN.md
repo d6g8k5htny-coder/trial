@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 269)
+
+Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. keep-prior refresh had stamped `VERIFY.batch=250` while `release=batch241-path-c-bundle` (pack fallback landmine). Fixed: release-align `VERIFY.batch` + `refresh_batch` automation stamp. No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ 8e359e5
+python3 -c 'import json; v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); print(v["batch"], v["release"], v.get("refresh_batch"), v.get("release_batch_aligned"))'
+./scripts/when_writable_land.py --once --dry-run                  # idle_path_c_done
+```
+
 ## STATUS (Batch 268)
 
 Hardening tip **moved** `fa32d11`→`8e359e5` (main tip-observe #73). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. `refresh_path_c_bundle` rebuilt BASE_TIP/VERIFY (keep-prior; no 0020). Also: `pack_portable` living-tag validate-before-write (no dirty pin on exit 2). No republish. `lemma_closed=false`. Scientific effect: NONE.

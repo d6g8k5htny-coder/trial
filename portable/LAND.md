@@ -1,3 +1,7 @@
+## STATUS (Batch 269)
+
+tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; VERIFY.batch aligned to release batch241 (was stale automation 250) + refresh_batch; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 268)
 
 tip `8e359e5` tip_moved=true (fa32d11→8e359e5 via main #73); refresh keep-prior; no 0020; pack_portable living-tag validate-before-write; lemma_closed=false; scientific effect NONE.

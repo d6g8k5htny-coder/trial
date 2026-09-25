@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 268 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 269 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 269: refresh_path_c_bundle VERIFY.batch aligned to release (was stale 250 vs batch241); refresh_batch automation stamp; no 0020"
 echo "  Batch 268: pack_portable living-tag validate-before-write + tip refresh fa32d11→8e359e5 (no 0020; no dirty pin on mismatch)"
 echo "  CI job: research-stack-status-guard (continue-on-error; artifact STATUS_GUARD_SNAPSHOT)"
 echo "Env write intent: .cursor/environment.json repositoryDependencies → main; relaunch Cloud Agent AFTER merge"

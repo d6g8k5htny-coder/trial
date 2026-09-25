@@ -30,7 +30,11 @@ FORCE=0
 DRY_RUN=0
 KEEP_WORKDIR=0
 SKIP_PYTEST=0
-BATCH_TAG="${REFRESH_BATCH_TAG:-250}"
+# Batch 269: default tracks the automation batch that invoked refresh.
+# VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
+# pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
+# while living release stays batch241-path-c-bundle.
+BATCH_TAG="${REFRESH_BATCH_TAG:-269}"
 
 usage() {
   cat <<'EOF'
@@ -45,7 +49,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   recorded in VERIFY.json (default 250)
+  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 269)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional tip-fetch + clone auth (never printed)
   REFRESH_TIP_FETCH_RETRIES   API retries on 429 / rate-limit 403 (default 3)
   REFRESH_TIP_FETCH_SLEEP_S   base sleep between tip-fetch retries (default 2)
@@ -389,9 +393,11 @@ fi
 GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 python3 - <<PY
 import json
+import re
 from pathlib import Path
 # Batch 232: preserve Path C land evidence across tip-refresh rewrites.
 # Batch 250: keep_prior_bundle ⇒ VERIFY tracks kept .bundle head (not allow-empty).
+# Batch 269: VERIFY.batch stays release-aligned; automation stamp → refresh_batch.
 prior = {}
 prior_path = Path("$VERIFY_OUT")
 if prior_path.is_file():
@@ -421,8 +427,12 @@ note = (
     f"{'kept prior .patch+.bundle (already-on-tip); ' if keep_prior else 'rebuilt; '}"
     f"lemma_closed=false; problems=$PROBLEMS"
 )
+# Batch 269: VERIFY.batch is the living-release contract (pack fallback).
+# Automation stamp lives in refresh_batch so keep-prior tip refresh cannot
+# plant batch{REFRESH_BATCH_TAG}-path-c-bundle while release stays batch241.
 verify = {
   "batch": str("$BATCH_TAG"),
+  "refresh_batch": str("$BATCH_TAG"),
   "generated_at_utc": "$GENERATED_AT",
   "base_tip_sha": "$LIVE_SHA",
   "applied_commit_sha": applied_sha,
@@ -502,8 +512,22 @@ if prior.get("path_c_landed") is True:
 # Default release label when tip-refresh wiped it (Intent living-release contract).
 if not verify.get("release"):
     verify["release"] = prior.get("release") or "batch241-path-c-bundle"
+# Batch 269: align VERIFY.batch with living release so pack's batch fallback
+# cannot invent a divergent tag (evidence: batch=250 + release=batch241 after
+# keep-prior tip refresh with stale REFRESH_BATCH_TAG default).
+rel = verify.get("release")
+m = re.fullmatch(r"batch(\d+)-path-c-bundle", str(rel or "").strip())
+if m:
+    verify["batch"] = m.group(1)
+    verify["release_batch_aligned"] = True
+else:
+    verify["release_batch_aligned"] = False
 Path("$VERIFY_OUT").write_text(json.dumps(verify, indent=2) + "\n", encoding="utf-8")
-print("refresh_path_c_bundle: wrote VERIFY.json")
+print(
+    "refresh_path_c_bundle: wrote VERIFY.json "
+    f"batch={verify.get('batch')} refresh_batch={verify.get('refresh_batch')} "
+    f"release={verify.get('release')} aligned={verify.get('release_batch_aligned')}"
+)
 PY
 
 # Keep APPLY.md tip SHA current without rewriting the whole playbook.
