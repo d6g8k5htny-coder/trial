@@ -1,3 +1,7 @@
+## STATUS (Batch 363 tip-eng)
+
+Living `VERIFY.json` refresh_batch lagged at 345 after Batch 362 lands. Republished via `refresh_path_c_bundle.sh --force` → refresh_batch=362. Tip stable @ `e3cd7d4`. Evidence: `portable/BATCH363_TIP_ENG_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 362 tip-eng-post-soften)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: post-soften inv tip lag + living script_stale — PRESERVE_DURABLE re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.

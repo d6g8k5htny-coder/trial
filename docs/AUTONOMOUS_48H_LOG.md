@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 363 — living script_stale republish VERIFY 345→362 @e3cd7d4 (2026-09-25)
+
+- Timer pulse: tip stable tip_match=1; inv parent-pinned; living VERIFY refresh_batch lagged at 345.
+- Forced living republish → refresh_batch=362; inventable skipped; woke tip/eng peers. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 362 — tip_or_eng: post-soften inv tip re-pin + living republish (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

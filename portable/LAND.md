@@ -1,3 +1,7 @@
+## STATUS (Batch 363 tip-eng)
+
+living VERIFY refresh_batch lag 345→362 republish; tip `e3cd7d4` tip_match; inv parent-pinned; durable 8/8; lemma_closed=false; action=eng_living_script_stale_republish.
+
 ## STATUS (Batch 362 tip-eng-post-soften)
 
 tip `e3cd7d4` tip_match=true; eng: post-soften inv tip re-pin→HEAD + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

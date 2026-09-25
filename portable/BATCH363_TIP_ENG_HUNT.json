@@ -1,0 +1,12 @@
+{
+  "batch": "363",
+  "utc": "2026-09-25T22:23:08Z",
+  "tip_moved": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "defect_id": "living_verify_refresh_batch_lag_345_vs_362",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "eng_living_script_stale_republish",
+  "inventable_skipped": true
+}
