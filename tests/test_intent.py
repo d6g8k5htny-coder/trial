@@ -19250,9 +19250,9 @@ def test_batch360_tip_or_eng_continue() -> None:
     evidence = json.loads((ROOT / "portable" / "BATCH360_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert ("REFRESH_BATCH_TAG:-360" in refresh) or ("REFRESH_BATCH_TAG:-361" in refresh)
+    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("360", "361", "362"))
     inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
-    assert ('return "360"' in inv_src) or ('return "361"' in inv_src)
+    assert any(f'return "{n}"' in inv_src for n in ("360", "361", "362"))
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 360)
     assert "STATUS (Batch 360 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
@@ -19409,8 +19409,10 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH361_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
-    assert "REFRESH_BATCH_TAG:-361" in (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert 'return "361"' in (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("361", "362"))
+    inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    assert any(f'return "{n}"' in inv_src for n in ("361", "362"))
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 361)
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
