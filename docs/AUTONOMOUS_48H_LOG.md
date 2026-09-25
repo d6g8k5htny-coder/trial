@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 tip-sync fcad723→e3cd7d4 after main #105 (2026-09-25)
+
+- Tip **moved** mid-cycle: main #105 CONTRIBUTION_PLAN retire docs → `e3cd7d4`.
+- Tip-sync keep-prior Path C; REFRESH 345; `_LIVING_TIPS += e3cd7d4`; inventory ultimate fallback 343→345.
+- Inventable/docs NOT promoted; `lemma_closed=false`; scientific effect NONE. Goal OPEN.
 ### Batch 345 — wake ultimate fallback unfreeze 341→345 + print_owner header (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

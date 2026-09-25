@@ -53,6 +53,7 @@ def _living_inventory_batch(root: str) -> str:
     fallback cannot lag living Batch 340 / REFRESH default 340.
     Batch 343: last-resort bumped off frozen "340" after tip-sync REFRESH default 343
     (same class as 336→340).
+    Batch 345: last-resort bumped off frozen "343" after tip-sync REFRESH default 345.
     """
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
@@ -78,7 +79,7 @@ def _living_inventory_batch(root: str) -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "343"
+    return "345"
 
 
 def _no_durable_probe(
