@@ -1,3 +1,7 @@
+## STATUS (Batch 346 ci-audit-watch)
+
+tip `e3cd7d4` tip_match=true; early-fallback+backoff intact; CI watch idle_no_commit; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346 inv-preserve-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin — trial→living HEAD; ultimate fallback 346; never demote 8/8 on writable=0 DENIED; lemma_closed=false; goal OPEN; scientific effect NONE.

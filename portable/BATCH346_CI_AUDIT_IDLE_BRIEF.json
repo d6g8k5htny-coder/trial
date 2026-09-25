@@ -1,0 +1,14 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:34:24Z",
+  "action": "idle_no_commit",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "ci_status": "queued_post_tip_sync_no_new_red_class",
+  "defect_id": null,
+  "inventable_promoted": false
+}
