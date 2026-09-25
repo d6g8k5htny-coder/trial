@@ -1,3 +1,11 @@
+## STATUS (Batch 359 grant)
+
+Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`09ef344`; INV_BATCH→359; coverage 8/8_WRITABLE; `BATCH359_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
 ## STATUS (Batch 359 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH357; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH359_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
