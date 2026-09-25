@@ -10600,3 +10600,113 @@ def test_batch277_owner_verify_release_first() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch278_pack_portable_help_not_out() -> None:
+    """Batch 278: pack_portable --help must not write an OUT tarball named --help."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+
+    pack = ROOT / "scripts" / "pack_portable.sh"
+    pack_txt = pack.read_text(encoding="utf-8")
+    assert "Batch 278" in pack_txt
+    assert "-h|--help" in pack_txt
+    assert "OUT path must not start with -" in pack_txt
+
+    living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
+    prior = living.read_text(encoding="utf-8")
+
+    with tempfile.TemporaryDirectory() as td:
+        help_run = subprocess.run(
+            ["bash", str(pack), "--help"],
+            cwd=td,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert help_run.returncode == 0, help_run.stderr + help_run.stdout
+        combined = (help_run.stdout or "") + (help_run.stderr or "")
+        assert "Usage:" in combined or "pack_portable.sh" in combined
+        assert "wrote " not in combined
+        assert not (Path(td) / "--help").exists()
+        assert not (ROOT / "--help").exists()
+        # --help must not stamp / rewrite the living pin.
+        assert living.read_text(encoding="utf-8") == prior
+
+        bad = subprocess.run(
+            ["bash", str(pack), "--force"],
+            cwd=td,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert bad.returncode == 2, bad.stderr + bad.stdout
+        assert "unknown option" in ((bad.stdout or "") + (bad.stderr or ""))
+
+        out = os.path.join(td, "pack.tgz")
+        ok = subprocess.run(
+            ["bash", str(pack), out],
+            cwd=td,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=90,
+        )
+        assert ok.returncode == 0, ok.stderr + ok.stdout
+        assert os.path.getsize(out) > 1000
+        assert "wrote " in ((ok.stdout or "") + (ok.stderr or ""))
+
+    assert living.read_text(encoding="utf-8").strip() == "batch241-path-c-bundle"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH278_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "278"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "pack_portable_dash_option_as_out_path"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("bfb7c38")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH278_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "pack_portable_dash_option_as_out_path"
+    assert any("VERIFY.release-first" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH278_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 278" in log_md
+    assert "pack_portable" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 278)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 278)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 278" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 278" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"

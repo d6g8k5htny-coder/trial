@@ -1,3 +1,7 @@
+## STATUS (Batch 278)
+
+tip `bfb7c38` tip_match=true; pack_portable treated `--help` as OUT.tgz (wrote `--help` tarball + stamped living pin); -h/--help usage + refuse dash-options; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 277)
 
 tip `bfb7c38` tip_match=true; owner oneshot/open_pr preferred dirty living pin over VERIFY.release (Batch 276 leftover); VERIFY.release-first derive; lemma_closed=false; scientific effect NONE.

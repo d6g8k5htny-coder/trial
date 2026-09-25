@@ -13,21 +13,65 @@
 # Pre-268 order wrote LIVING_PATH_C_RELEASE_TAG then fail-closed — a VERIFY.batch
 # without matching release left the pin dirty (e.g. batch250) on exit 2, racing
 # oneshot / write_path_c_status / republish readers. Never republish here.
+#
+# Batch 278: first positional is OUT.tgz only — never treat -h/--help or other
+# dash-options as an output path (pre-278 `pack_portable.sh --help` wrote a
+# ~480KB tarball named `--help` and stamped the living pin).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+usage() {
+  cat <<'EOF'
+pack_portable.sh — build trial-portable-main-fixes.tgz for owner download.
+
+Usage:
+  ./scripts/pack_portable.sh [OUT.tgz]
+  ./scripts/pack_portable.sh -h|--help
+
+Default OUT: sibling ../trial-portable-main-fixes.tgz when parent is writable;
+else ${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz (Batch 251 Cloud Agent /).
+
+Stamps portable/LIVING_PATH_C_RELEASE_TAG from VERIFY.release (Batch 268
+validate-before-write). Does not republish the GitHub release asset.
+Scientific effect: NONE. Never flips research status.
+EOF
+}
+
 # Batch 251: default OUT must land somewhere writable. Local clones often use
 # $ROOT/../trial-portable-main-fixes.tgz (sibling of the repo). Cloud Agent
 # mounts the tree at /workspace, so $ROOT/.. is / and bare `./scripts/pack_portable.sh`
 # failed with Permission denied (exit 2) — release publish blocked. Prefer the
 # sibling when the parent dir is writable; otherwise ${TMPDIR:-/tmp}/….
 _PACK_PARENT="$(cd "$ROOT/.." && pwd)"
-if [[ -n "${1:-}" ]]; then
-  OUT="$1"
-elif [[ -w "$_PACK_PARENT" ]]; then
-  OUT="$_PACK_PARENT/trial-portable-main-fixes.tgz"
-else
-  OUT="${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz"
-  echo "pack_portable: note: parent ${_PACK_PARENT} not writable; defaulting OUT=${OUT}" >&2
+OUT=""
+if [[ $# -gt 0 ]]; then
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -*)
+      echo "pack_portable: unknown option: $1 (OUT path must not start with -)" >&2
+      usage >&2
+      exit 2
+      ;;
+    *)
+      OUT="$1"
+      if [[ $# -gt 1 ]]; then
+        echo "pack_portable: unexpected extra args: ${*:2}" >&2
+        usage >&2
+        exit 2
+      fi
+      ;;
+  esac
+fi
+if [[ -z "$OUT" ]]; then
+  if [[ -w "$_PACK_PARENT" ]]; then
+    OUT="$_PACK_PARENT/trial-portable-main-fixes.tgz"
+  else
+    OUT="${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz"
+    echo "pack_portable: note: parent ${_PACK_PARENT} not writable; defaulting OUT=${OUT}" >&2
+  fi
 fi
 mkdir -p "$(dirname "$OUT")"
 

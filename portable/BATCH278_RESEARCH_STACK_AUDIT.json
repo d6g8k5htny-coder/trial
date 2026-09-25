@@ -1,0 +1,18 @@
+{
+  "batch": "278",
+  "generated_at_utc": "2026-09-25T07:09:40Z",
+  "shape": "HAS_PACKET",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "counts": {
+    "open_premises_frozen_layer": 13,
+    "open_lemmas": 1,
+    "open_obligations_packet": 2,
+    "open_prizes": 3,
+    "claims_total": 26,
+    "open_questions": 16
+  },
+  "tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
+  "note": "research stack remains OPEN; lemma_closed=false; no flips"
+}

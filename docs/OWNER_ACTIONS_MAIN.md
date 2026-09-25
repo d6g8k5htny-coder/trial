@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 278)
+
+Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `pack_portable.sh` treated argv[1] as OUT with no option parse — `./scripts/pack_portable.sh --help` wrote a ~480KB `--help` tarball and stamped the living pin. Fixed: `-h|--help` usage exit 0; other dash-options exit 2; positional OUT unchanged. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/pack_portable.sh --help                 # usage only; no OUT file
+./scripts/pack_portable.sh --force; echo $?       # exit 2
+./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
+```
+
 ## STATUS (Batch 277)
 
 Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 276 closed dirty living-pin for republish/`write_path_c_status`, but `owner_path_c_oneshot` / `owner_open_path_c_pr` still preferred `LIVING_PATH_C_RELEASE_TAG` over `VERIFY.release` (stale `batch250` → wrong PR release URL). Fixed: VERIFY.release-first derive (parity with pack/write_path_c_status). `lemma_closed=false`. Scientific effect: NONE.

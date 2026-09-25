@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 278 (pack_portable --help treated as OUT path) — 2026-09-25 ~07:09 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 277 already on trial main @ `4c7fa69`. Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
+- **Evidence:** `pack_portable.sh` took argv[1] as OUT with no option parse. `./scripts/pack_portable.sh --help` wrote a ~480KB tarball named `--help` and stamped `LIVING_PATH_C_RELEASE_TAG` (Batch 268 side-effect on a help probe).
+- **Defect shipped (avoid tip-observe / research HOLDs / owner VERIFY 277 / republish 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch 269 / pack validate-before-write 268 / asset --clobber churn):** `-h|--help` prints usage exit 0; other dash-options exit 2; positional OUT still packs. Pack-vs-release newer deferred.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 277 (owner oneshot/open_pr VERIFY.release-first leftover) — 2026-09-25 ~06:51 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 276 already on trial main @ `35e88f9`. Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
