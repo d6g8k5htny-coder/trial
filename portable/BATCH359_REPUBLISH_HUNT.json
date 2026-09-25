@@ -1,6 +1,6 @@
 {
   "batch": "359",
-  "generated_at_utc": "2026-09-25T21:51:58Z",
+  "generated_at_utc": "2026-09-25T21:53:09Z",
   "hunt": "tip_sync_or_eng_cloud_peer",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip_match": true,
@@ -8,7 +8,7 @@
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "action": "eng_living_script_stale_republish",
-  "defect_id": "living_script_stale_after_batch359_wake_land",
+  "defect_id": "living_script_stale_after_batch359_soften133",
   "defect_found": true,
   "defect_shipped": true,
   "hunt_0020": "NEGATIVE",

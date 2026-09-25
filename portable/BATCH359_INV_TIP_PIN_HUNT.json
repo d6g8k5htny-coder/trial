@@ -1,6 +1,6 @@
 {
   "batch": "359",
-  "generated_at_utc": "2026-09-25T21:51:46Z",
+  "generated_at_utc": "2026-09-25T21:53:09Z",
   "hunt": "inventory_tip_lag",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip_match": true,
