@@ -13043,6 +13043,8 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     assert wake.get("action") == "multi_agent_wake_and_assign"
     assert wake.get("lemma_closed") is False
     assert wake.get("flipped_anything") is False
+    assert wake.get("wake329_on_main") is True
+    assert _living_tip(str(wake.get("tip") or ""))
     assert wake.get("intent", {}).get("lemma_closed") is False
     assert wake.get("intent", {}).get("path_c") == "IDLE@0019"
     assert len(wake.get("woken_idle_agents") or []) >= 10

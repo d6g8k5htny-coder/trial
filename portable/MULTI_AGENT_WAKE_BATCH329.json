@@ -16,39 +16,116 @@
   },
   "coordinator_defect": {
     "id": "batch289_tip_refresh_living_assert",
-    "detail": "test_batch289 asserted VERIFY.tip_refresh is True; Batch 327 non-tip refresh_batch bump correctly sets tip_refresh=False while tip stays living — softened to (True, False)"
+    "detail": "test_batch289 asserted VERIFY.tip_refresh is True; Batch 327 non-tip refresh_batch bump correctly sets tip_refresh=False while tip stays living \u2014 softened to (True, False)"
   },
   "woken_idle_agents": [
-    {"bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e", "name": "Cloud tip-sync and Path C", "assignment": "tip_sync_watch_vs_BASE_TIP_077464e_or_one_eng"},
-    {"bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20", "name": "Cloud research-guarded eng hunt", "assignment": "eng_defect_hunt_no_claim_promotion"},
-    {"bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec", "name": "Cloud grant audit", "assignment": "grant_check_dual_vector_8of8_inventory"},
-    {"bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9", "name": "Post wake comments on main PRs", "assignment": "eng_pr_wake_comments_skip_research_drafts"},
-    {"bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3", "name": "Land Batch322 wake dispatch PR", "assignment": "land_or_verify_wake_artifacts_on_trial_main"},
-    {"bcId": "bc-9ab34e89-6e39-5c09-a4b7-0a09fd44fe4f", "name": "Wake tip-sync watch agent", "assignment": "tip_sync_watch_vs_BASE_TIP_077464e"},
-    {"bcId": "bc-8cf6e1f9-eb21-5d4d-9203-26626ace93bc", "name": "Wake sibling PR audit agent", "assignment": "sibling_PR_and_grant_check"},
-    {"bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5", "name": "Wake Batch310 CI eng agent", "assignment": "CI_green_on_batch329_tip_refresh_fix"},
-    {"bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf", "name": "Wake generalPurpose eng hunter", "assignment": "eng_defect_hunt_or_tip_sync"},
-    {"bcId": "bc-8e9d6a47-8c5f-590e-98de-267f8c926b6f", "name": "Wake second generalPurpose worker", "assignment": "pack_portable_and_grant_script_audit"},
-    {"bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302", "name": "Wake more idle eng agents", "assignment": "tip_or_eng_defect"},
-    {"bcId": "bc-0035fc13-fa1a-5dfe-9c2f-e2bca4401596", "name": "Wake third generalPurpose idle", "assignment": "grant_check_and_open_PRs"},
-    {"bcId": "bc-472bf5be-e8b7-5529-86c4-842ac1dab093", "name": "Post-Path-C align watch check", "assignment": "post_path_c_align_watch_pulse"},
-    {"bcId": "bc-5b941486-2338-5bcc-bffa-fc46719acd15", "name": "Fix trial PR105 sanity failure", "assignment": "CI_remediation_class_living_asserts"}
+    {
+      "bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e",
+      "name": "Cloud tip-sync and Path C",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_077464e_or_one_eng"
+    },
+    {
+      "bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20",
+      "name": "Cloud research-guarded eng hunt",
+      "assignment": "eng_defect_hunt_no_claim_promotion"
+    },
+    {
+      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+      "name": "Cloud grant audit",
+      "assignment": "grant_check_dual_vector_8of8_inventory"
+    },
+    {
+      "bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9",
+      "name": "Post wake comments on main PRs",
+      "assignment": "eng_pr_wake_comments_skip_research_drafts"
+    },
+    {
+      "bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+      "name": "Land Batch322 wake dispatch PR",
+      "assignment": "land_or_verify_wake_artifacts_on_trial_main"
+    },
+    {
+      "bcId": "bc-9ab34e89-6e39-5c09-a4b7-0a09fd44fe4f",
+      "name": "Wake tip-sync watch agent",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_077464e"
+    },
+    {
+      "bcId": "bc-8cf6e1f9-eb21-5d4d-9203-26626ace93bc",
+      "name": "Wake sibling PR audit agent",
+      "assignment": "sibling_PR_and_grant_check"
+    },
+    {
+      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
+      "name": "Wake Batch310 CI eng agent",
+      "assignment": "CI_green_on_batch329_tip_refresh_fix"
+    },
+    {
+      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+      "name": "Wake generalPurpose eng hunter",
+      "assignment": "eng_defect_hunt_or_tip_sync"
+    },
+    {
+      "bcId": "bc-8e9d6a47-8c5f-590e-98de-267f8c926b6f",
+      "name": "Wake second generalPurpose worker",
+      "assignment": "pack_portable_and_grant_script_audit"
+    },
+    {
+      "bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302",
+      "name": "Wake more idle eng agents",
+      "assignment": "tip_or_eng_defect"
+    },
+    {
+      "bcId": "bc-0035fc13-fa1a-5dfe-9c2f-e2bca4401596",
+      "name": "Wake third generalPurpose idle",
+      "assignment": "grant_check_and_open_PRs"
+    },
+    {
+      "bcId": "bc-472bf5be-e8b7-5529-86c4-842ac1dab093",
+      "name": "Post-Path-C align watch check",
+      "assignment": "post_path_c_align_watch_pulse"
+    },
+    {
+      "bcId": "bc-5b941486-2338-5bcc-bffa-fc46719acd15",
+      "name": "Fix trial PR105 sanity failure",
+      "assignment": "CI_remediation_class_living_asserts"
+    }
   ],
   "spawned_cloud_peers": [
-    {"assignment": "land_batch329_tip_refresh_assert_if_needed"},
-    {"assignment": "tip_sync_or_eng_on_healthy_VM"},
-    {"assignment": "grant_check_and_inventory_refresh"}
+    {
+      "assignment": "land_batch329_tip_refresh_assert_if_needed"
+    },
+    {
+      "assignment": "tip_sync_or_eng_on_healthy_VM"
+    },
+    {
+      "assignment": "grant_check_and_inventory_refresh"
+    }
   ],
   "eng_pr_wake_targets": {
     "repo": "d6g8k5htny-coder/main",
-    "comment": ["#92", "#93", "#87", "#36", "#21", "#12"],
-    "skip_research_drafts": ["#47", "#46", "#38", "#8", "#7"],
+    "comment": [
+      "#92",
+      "#93",
+      "#87",
+      "#36",
+      "#21",
+      "#12"
+    ],
+    "skip_research_drafts": [
+      "#47",
+      "#46",
+      "#38",
+      "#8",
+      "#7"
+    ],
     "mechanism": "trial Actions repository_dispatch wake-batch322-pr-comments + secrets.MAIN_PUSH_TOKEN"
   },
   "messaging_limits": {
-    "cursor_cloud_mcp": "list/inspect only — no peer Create Run API",
+    "cursor_cloud_mcp": "list/inspect only \u2014 no peer Create Run API",
     "mechanism_used": "Task resume (IDLE) + Task environment=cloud + Actions MAIN_PUSH_TOKEN for eng PR wake comments"
   },
   "flipped_anything": false,
-  "lemma_closed": false
+  "lemma_closed": false,
+  "tip": "077464e",
+  "wake329_on_main": true
 }
