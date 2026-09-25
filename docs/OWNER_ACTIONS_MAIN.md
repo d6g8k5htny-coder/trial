@@ -1,3 +1,12 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after grant/sync land — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=359 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch359_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 359 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`77f6b8c`; INV_BATCH→359; coverage 8/8_WRITABLE; `BATCH359_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
