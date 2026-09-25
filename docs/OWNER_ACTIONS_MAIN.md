@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 261)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. `path_c_dry_run` still reported `APPLY_READY_POST_ALIGNED_KEEP_HARDENING` / `apply_ready=true` after Path C landed on tip (owner landers already idle). Fixed: `IDLE_PATH_C_DONE` + `already_on_tip` + `apply_ready=false` when landed+tip match; `print_owner_unblock` Path C line follows idle. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/path_c_dry_run.py --skip-rebase-probe             # expect IDLE_PATH_C_DONE when landed
+./scripts/owner_land_path_c.sh --dry-run                    # already-on-tip idle
+./scripts/refresh_path_c_bundle.sh --dry-run                # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run            # idle_path_c_done
+```
+
 ## STATUS (Batch 260)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Living release `batch241-path-c-bundle` tgz still 351458 while local pack ~380287 (Batch 256–259 scripts absent). Republished via `republish_living_path_c_release.sh`; living-tolerant intent asserts for STATUS headers. `lemma_closed=false`. Scientific effect: NONE.

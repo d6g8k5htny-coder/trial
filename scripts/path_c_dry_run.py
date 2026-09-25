@@ -7,9 +7,14 @@ This script reports whether portable patches are ready to land on the hardening
 BASE_TIP *without* pushing. Does not open PRs or promote research status.
 
 Exit codes:
-  0 — apply_all --check OK on hardening (apply_ready); Path C landable with write
+  0 — apply check OK: APPLY_READY (landable) OR IDLE_PATH_C_DONE (already on tip)
   1 — apply check failed or hardening tip not Path-C shaped
   2 — transport / missing inputs
+
+Batch 261: when VERIFY.path_c_landed and tip_matches_base, do not advertise
+APPLY_READY / apply_ready=true (that lied after Path C landed on tip). Report
+IDLE_PATH_C_DONE with already_on_tip=true and apply_ready=false; apply_check_ok
+still reflects apply_all --check.
 
 Scientific effect: NONE.
 """
@@ -422,12 +427,24 @@ def main() -> int:
         )
 
         apply_ok = args.skip_apply_check or apply_exit == 0
-        report["apply_ready"] = bool(apply_ok and hard_shape["accepts"])
-        if report["apply_ready"]:
+        apply_check_ok = bool(apply_ok and hard_shape["accepts"])
+        report["apply_check_ok"] = apply_check_ok
+        tip_match = report.get("tip_matches_base") is True
+        # Batch 261: landed + tip match → idle (same class as owner_land_path_c /
+        # owner_open_path_c_pr already-on-tip). Do not advertise APPLY_READY land.
+        already_on_tip = bool(path_c_landed and tip_match and apply_check_ok)
+        report["already_on_tip"] = already_on_tip
+        if already_on_tip:
+            report["state"] = "IDLE_PATH_C_DONE"
+            report["idle_status"] = "IDLE_PATH_C_DONE"
+            report["apply_ready"] = False
+        elif apply_check_ok:
+            report["apply_ready"] = True
             report["state"] = "APPLY_READY"
             if not main_shape["accepts"] and report.get("default_aligned"):
                 report["state"] = "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
         else:
+            report["apply_ready"] = False
             report["state"] = "APPLY_CHECK_FAILED"
             report["error"] = apply_out or "apply_all --check failed"
 
@@ -435,7 +452,7 @@ def main() -> int:
         print(text)
         if args.json_out:
             Path(args.json_out).write_text(text + "\n", encoding="utf-8")
-        return 0 if report["apply_ready"] else 1
+        return 0 if (report["apply_ready"] or already_on_tip) else 1
     finally:
         if cleanup and work.exists():
             shutil.rmtree(work, ignore_errors=True)

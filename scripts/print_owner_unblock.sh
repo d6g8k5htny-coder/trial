@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 260 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 261 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -98,7 +98,12 @@ echo "  patch: $ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
 echo "  git bundle (Batch 169 preferred): $ROOT/portable/path-c-applied-bundle/path-c-on-hardening.bundle"
 echo "    git fetch …/path-c-on-hardening.bundle cursor/portable-engineering-patches && git merge --ff-only FETCH_HEAD"
 echo "  verify: $ROOT/portable/path-c-applied-bundle/VERIFY.json  # problems=0 lemma_closed=false focused 90/0"
-echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT}"
+# Batch 261: do not hardcode APPLY_READY when PATH_C_STATUS already idle.
+if [[ "${IDLE_STATUS}" == "IDLE_PATH_C_DONE" ]]; then
+  echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # already-on-tip idle (IDLE_PATH_C_DONE) @ ${BASE_TIP_SHORT}; path_c_dry_run → idle not APPLY_READY"
+else
+  echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # APPLY_READY on hardening BASE_TIP ${BASE_TIP_SHORT} (or idle when landed)"
+fi
 echo "Path C Actions: $ROOT/.github/workflows/land-path-c-on-main.yml  # dry_run default true; MAIN_PUSH_TOKEN for land"
 echo "  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=true"
 echo "  gh workflow run land-path-c-on-main --repo d6g8k5htny-coder/trial -f dry_run=false"
