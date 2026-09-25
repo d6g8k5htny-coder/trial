@@ -12920,3 +12920,15 @@ def test_batch322_multi_agent_wake() -> None:
     assert data.get("action") == "multi_agent_wake_and_assign"
     assert data.get("lemma_closed") is False
 
+def test_batch325_keep_prior_bundle_verify_workdir() -> None:
+    """Batch 325: keep-prior bundle verify uses WORKDIR (not trial ROOT abort)."""
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 325)
+    assert "Batch 325: verify against WORKDIR" in refresh
+    assert 'git -C "$WORKDIR" bundle verify' in refresh
+    # Tolerate empty/fail under set -e (list-heads + verify).
+    assert "|| true" in refresh
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 325" in log_md
+    assert "keep-prior" in log_md.lower() or "WORKDIR" in log_md
+
