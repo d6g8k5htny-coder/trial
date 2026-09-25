@@ -25,6 +25,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
 - tip_sync_watch: no tip move; living current — skip tip-pin treadmill. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+### Batch 357 — research_stack_audit_watch_no_promotion @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Audit: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; guard pass; script_stale=0.
+- Artifacts: `BATCH357_RESEARCH_STACK_AUDIT.json`, `BATCH357_RESEARCH_STACK_AUDIT_BRIEF.json`. action=`research_stack_audit_watch`. Inventable skipped. Goal OPEN. NEVER flip research.
+
 
 ### Batch 356 — conflict-marker cleanup + inv tip re-pin (2026-09-25)
 

@@ -6,6 +6,15 @@ Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). 
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
 ```
 
+## STATUS (Batch 357 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch_no_promotion: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd357 --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch357_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 356 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: landed rebase conflict markers cleaned (LOG/LAND/OWNER/print_owner) + preserve_durable inv tip re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`eng_conflict_marker_fix_and_inv_tip_repin`.
@@ -330,6 +339,8 @@ Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). 
 ```bash
 python3 scripts/guard_no_status_promotion.py --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11 <hardening-checkout>
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 346 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`840de46`; INV_BATCH→346; coverage 8/8_WRITABLE; `BATCH346_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
