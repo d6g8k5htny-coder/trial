@@ -28,6 +28,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Defect shipped (avoid tip-observe…tip-fetch rate-limit / owner unblock / lander dispatch):** `timeout_exit` — max-wait during transport streak → **exit 2** with `TRANSPORT_ERROR (no MISALIGNED poll; not exit 1)`; `status=` line reports `TRANSPORT_ERROR` honestly; MISALIGNED-only timeout still exit 1.
 - Candidates deferred: grant `--check` App/ghs sandbox 404 while dylan token sees repo (sibling probe); pack newer than living release (avoid republish).
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial main **direct land** @ `751cce5` (PR create 403). Scientific effect NONE.
 
 ### Batch 257 (refresh tip-fetch rate-limit fallback + print_owner_unblock WRITABLE) — 2026-09-25 ~00:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
