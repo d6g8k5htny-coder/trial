@@ -2,6 +2,10 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 338)
+
+Hardening tip **stable** @ `848aea2` tip_match=true. Post-Path-C align watch idle. Path C IDLE@0019; durable 8/8. action=`post_path_c_align_watch_idle`. `lemma_closed=false`.
+
 ## STATUS (Batch 337)
 
 Hardening tip **synced** @ `848aea2` after #101/#107/#102 mid-cycle. Tip-sync keep-prior; REFRESH default 337; `_LIVING_TIPS += 848aea2`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.

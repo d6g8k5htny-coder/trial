@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 338 — post-Path-C align watch idle (2026-09-25)
+
+- Tip stable @ `848aea2` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Timer pulse (stale prompt BASE_TIP=077464e ignored; live re-check). action=`post_path_c_align_watch_idle`.
+- NEVER flip research; inventable skipped.
+
 ### Batch 337 — tip-sync after main #101/#107/#102 (2026-09-25)
 
 - Hardening LIVE moved `eeebb28`→`848aea2` (#101 math_status CERTIFIED-absent carrier + #107 inventable OPEN_PROBLEMS errata + #102 inventable SIDE24_CELL importers MERGED into chatgpt/drive-github-hardening-20260919).

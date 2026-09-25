@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 337 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 338 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -104,6 +104,7 @@ echo " Batch 335: tip-sync 388a22c→eeebb28 after main #99/#100 (keep-prior; NO
 echo " Batch 336: wake poster INTENT tip derives from BASE_TIP (was frozen @077464e); preserve durable inventory on writable=0 DENIED; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins; MULTI_AGENT_WAKE"
 echo " Batch 337: tip stable @eeebb28 tip_match=1; MULTI_AGENT wake assign; research stack audit open (lemma_closed=false); idle_no_commit"
 echo " Batch 337: tip-sync eeebb28→848aea2 after main #101/#107/#102 (keep-prior; NOT promoted; supersedes idle pulse)"
+echo " Batch 338: post-Path-C align watch idle @848aea2 tip_match=1; lemma_closed=false"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"

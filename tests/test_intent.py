@@ -13797,3 +13797,27 @@ def test_batch337_no_frozen_live_tip_pins() -> None:
     assert 'verify.get("base_tip_sha", "")).startswith("848aea2")' not in body
     assert "848aea2" in _LIVING_TIPS
     assert "eeebb28" in _LIVING_TIPS
+
+
+def test_batch338_align_watch_idle() -> None:
+    """Batch 338: post-Path-C align watch idle; tip stable; lemma_closed false."""
+    import json
+
+    path = ROOT / "portable" / "BATCH338_ALIGN_WATCH.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("batch") == "338"
+    assert data.get("action") == "post_path_c_align_watch_idle"
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert data.get("tip_match") is True
+    assert data.get("aligned") is True
+    assert _living_tip(str(data.get("hardening_tip", "")))
+    assert _living_tip(str(data.get("base_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 338)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 338)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 338" in log_md
