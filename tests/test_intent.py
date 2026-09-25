@@ -9156,3 +9156,129 @@ def test_batch266_path_c_dry_run_write_required_when_idle() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+def test_batch267_when_writable_dual_daemon_status_race() -> None:
+    """Batch 267: daemon.lock refuses second loop; --once sidecar when lock held."""
+    import json
+    import subprocess
+    import tempfile
+    import time
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    src = script.read_text(encoding="utf-8")
+    assert "Batch 267" in src
+    assert "daemon_lock_held" in src
+    assert "DEFAULT_ONCE_STATUS" in src
+    assert "_try_acquire_daemon_lock" in src
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        status = td_path / "ww.status.json"
+        log = td_path / "ww.log"
+        stop = td_path / "ww.stop"
+        common = [
+            sys.executable,
+            str(script),
+            "--dry-run",
+            "--mock-probe",
+            "DENIED",
+            "--mock-install-has-main",
+            "false",
+            "--status",
+            str(status),
+            "--log",
+            str(log),
+            "--stop",
+            str(stop),
+        ]
+        daemon = subprocess.Popen(
+            common + ["--interval", "30"],
+            cwd=str(ROOT),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            time.sleep(1.2)
+            assert daemon.poll() is None, (daemon.stderr.read() if daemon.stderr else "")
+            second = subprocess.run(
+                common + ["--interval", "30"],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+            assert second.returncode == 2, second.stderr + second.stdout
+            assert "daemon_lock_held" in (second.stderr or "")
+            lock = status.with_name(status.name + ".daemon.lock")
+            assert lock.is_file()
+            data = json.loads(status.read_text(encoding="utf-8"))
+            assert data.get("daemon_lock") is True
+            assert data.get("lemma_closed") is False
+            assert data.get("scientific_effect") == "NONE"
+        finally:
+            stop.write_text("stop\n", encoding="utf-8")
+            try:
+                daemon.wait(timeout=35)
+            except subprocess.TimeoutExpired:
+                daemon.kill()
+                daemon.wait(timeout=5)
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH267_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "267"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "when_writable_dual_daemon_status_race"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH267_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "267"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "path_c dry-run write_required/stack prose" in (hunt.get("avoided") or [])
+    assert "Intent GITHUB_TOKEN scrub" in (hunt.get("avoided") or [])
+    assert "path_b dry-run" in (hunt.get("avoided") or [])
+    assert "research-guard PACKET" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "long hygiene list" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH267_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 267" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 267)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 267)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 267" in unblock
+    assert "when_writable_land.once.status.json" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))

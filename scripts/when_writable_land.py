@@ -83,6 +83,16 @@ Batch 240 — MAIN_PUSH_TOKEN + auto Path B restore:
   as aligned_drift_watch.py auto-restore. Token value never printed. Never flips
   research status.
 
+Batch 267 — daemon status race leftover:
+  Evidence: live ``--interval 300`` daemon + leftover ``--dry-run`` loop (no
+  ``--once``) both wrote ``when_writable_land.status.json`` for hours
+  (interleaved iter counters 85/103…102/119); ``--once`` probes were clobbered
+  within seconds. Fix: exclusive non-blocking flock on
+  ``<status>.daemon.lock`` for loop mode (second loop exits 2 /
+  ``daemon_lock_held``); ``--once`` against the default status path redirects
+  to ``when_writable_land.once.status.json`` when the daemon lock is held so
+  live status is not clobbered. Never flips research status.
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -90,6 +100,7 @@ research status. goal_complete stays false.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import json
 import os
 import subprocess
@@ -98,6 +109,7 @@ import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, TextIO
 
 ROOT = Path(__file__).resolve().parents[1]
 PROBE = ROOT / "scripts" / "probe_main_write.py"
@@ -149,6 +161,13 @@ DEFAULT_STOP = Path(
     os.environ.get(
         "WHEN_WRITABLE_STOP",
         "/cursor/stores/self/when_writable_land.stop",
+    )
+)
+# Batch 267: sidecar for --once when a loop daemon holds the status lock.
+DEFAULT_ONCE_STATUS = Path(
+    os.environ.get(
+        "WHEN_WRITABLE_ONCE_STATUS",
+        "/cursor/stores/self/when_writable_land.once.status.json",
     )
 )
 
@@ -270,6 +289,88 @@ def _write_status(status_path: Path, payload: dict) -> None:
     tmp = status_path.with_suffix(status_path.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     tmp.replace(status_path)
+
+
+def _daemon_lock_path(status_path: Path) -> Path:
+    """Lock file sibling of the status JSON (Batch 267 dual-daemon race)."""
+    return status_path.with_name(status_path.name + ".daemon.lock")
+
+
+def _paths_equal(a: Path, b: Path) -> bool:
+    return os.path.normpath(str(a)) == os.path.normpath(str(b))
+
+
+def _try_acquire_daemon_lock(lock_path: Path) -> tuple[TextIO | None, dict[str, Any]]:
+    """Non-blocking exclusive flock for loop-mode singleton.
+
+    Returns (fh, info). Caller must keep fh open for process lifetime.
+    On contention fh is None and info["skipped_reason"] == "daemon_lock_held".
+    """
+    info: dict[str, Any] = {
+        "lock": str(lock_path),
+        "pid": os.getpid(),
+        "held": False,
+        "skipped_reason": None,
+        "holder_pid": None,
+    }
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        fh = open(lock_path, "a+", encoding="utf-8")
+    except OSError as exc:
+        info["skipped_reason"] = f"lock_open_failed:{exc}"
+        return None, info
+    try:
+        fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        holder = None
+        try:
+            fh.seek(0)
+            raw = fh.read().strip()
+            if raw.startswith("pid="):
+                holder = raw.split("pid=", 1)[1].split()[0]
+        except OSError:
+            holder = None
+        try:
+            fh.close()
+        except OSError:
+            pass
+        info["skipped_reason"] = "daemon_lock_held"
+        info["holder_pid"] = holder
+        return None, info
+    try:
+        fh.seek(0)
+        fh.truncate()
+        fh.write(f"pid={os.getpid()}\n")
+        fh.flush()
+    except OSError:
+        pass
+    info["held"] = True
+    return fh, info
+
+
+def _daemon_lock_held(lock_path: Path) -> tuple[bool, str | None]:
+    """Probe whether another process holds the daemon lock (non-destructive)."""
+    if not lock_path.is_file():
+        return False, None
+    try:
+        with open(lock_path, "a+", encoding="utf-8") as fh:
+            try:
+                fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                holder = None
+                try:
+                    fh.seek(0)
+                    raw = fh.read().strip()
+                    if raw.startswith("pid="):
+                        holder = raw.split("pid=", 1)[1].split()[0]
+                except OSError:
+                    holder = None
+                return True, holder
+            # Acquired briefly → not held by anyone else; release immediately.
+            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+            return False, None
+    except OSError:
+        return False, None
 
 
 def _stop_requested(stop_path: Path) -> bool:
@@ -1401,6 +1502,38 @@ def main() -> int:
     if args.mock_install_has_main is not None:
         mock_install = args.mock_install_has_main == "true"
 
+    # Batch 267: loop-mode singleton + --once status isolation.
+    daemon_lock_fh: TextIO | None = None
+    lock_path = _daemon_lock_path(status_path)
+    once_status_redirected = False
+    if not args.once:
+        daemon_lock_fh, lock_info = _try_acquire_daemon_lock(lock_path)
+        if daemon_lock_fh is None:
+            reason = lock_info.get("skipped_reason") or "daemon_lock_held"
+            holder = lock_info.get("holder_pid")
+            msg = (
+                f"when_writable_land: ERROR: {reason} "
+                f"lock={lock_path} holder_pid={holder} "
+                f"(second loop refused — leftover --dry-run without --once "
+                f"was racing status JSON; use --once or stop the other daemon)"
+            )
+            print(msg, file=sys.stderr)
+            _log(log_path, f"action=refuse_start reason={reason} holder_pid={holder}")
+            return 2
+    else:
+        # --once against the shared default status: if a loop daemon holds the
+        # lock, write a sidecar so live status is not clobbered.
+        status_is_default = _paths_equal(status_path, DEFAULT_STATUS)
+        held, holder = _daemon_lock_held(lock_path)
+        if status_is_default and held:
+            status_path = DEFAULT_ONCE_STATUS
+            once_status_redirected = True
+            _log(
+                log_path,
+                f"once_status_redirect=true reason=daemon_lock_held "
+                f"holder_pid={holder} status={status_path}",
+            )
+
     # Resolve once at start; inject into process env so all children see it.
     # Log source label only — never the token value.
     token, token_source = resolve_main_push_token()
@@ -1414,7 +1547,8 @@ def main() -> int:
         log_path,
         f"start once={args.once} dry_run={args.dry_run} interval={args.interval}s "
         f"batch={args.batch} {token_note} scientific_effect=NONE lemma_closed=false "
-        f"install_repos_poll=true",
+        f"install_repos_poll=true daemon_lock={'held' if daemon_lock_fh else 'n/a'} "
+        f"once_status_redirected={once_status_redirected}",
     )
 
     iteration = 0
@@ -1435,6 +1569,9 @@ def main() -> int:
                     "flipped_anything": False,
                     "install_has_main": (last_report or {}).get("install_has_main"),
                     "last": last_report or None,
+                    "daemon_lock": bool(daemon_lock_fh),
+                    "daemon_pid": os.getpid() if daemon_lock_fh else None,
+                    "once_status_redirected": once_status_redirected,
                 }
                 _write_status(status_path, status)
                 _log(log_path, f"STOP file present ({stop_path}) — exiting cleanly")
@@ -1498,6 +1635,11 @@ def main() -> int:
                 ),
                 "tmux_session_hint": "when-writable-land",
                 "well_known_token_paths": list(WELL_KNOWN_TOKEN_PATHS),
+                "daemon_lock": bool(daemon_lock_fh),
+                "daemon_pid": os.getpid() if daemon_lock_fh else None,
+                "daemon_lock_path": str(lock_path),
+                "once_status_redirected": once_status_redirected,
+                "status_path": str(status_path),
                 "last": report,
             }
             _write_status(status_path, status)
@@ -1529,10 +1671,23 @@ def main() -> int:
             "flipped_anything": False,
             "install_has_main": (last_report or {}).get("install_has_main"),
             "last": last_report or None,
+            "daemon_lock": bool(daemon_lock_fh),
+            "daemon_pid": os.getpid() if daemon_lock_fh else None,
+            "once_status_redirected": once_status_redirected,
         }
         _write_status(status_path, status)
         _log(log_path, "KeyboardInterrupt — exiting cleanly")
         return 0
+    finally:
+        if daemon_lock_fh is not None:
+            try:
+                fcntl.flock(daemon_lock_fh.fileno(), fcntl.LOCK_UN)
+            except OSError:
+                pass
+            try:
+                daemon_lock_fh.close()
+            except OSError:
+                pass
 
 
 if __name__ == "__main__":
