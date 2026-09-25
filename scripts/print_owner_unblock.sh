@@ -47,7 +47,8 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 360 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 361 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 361: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current)"
 echo " Batch 360: tip_or_eng inv tip re-pin + last-resort 359→360 + living republish @e3cd7d4"
 echo " Batch 359: eng repair BATCH345 tip-sync JSON + soften Batch 230 goal_complete living pin"
 echo " Batch 359: tip_or_eng post-eng inv tip re-pin + living republish @e3cd7d4"

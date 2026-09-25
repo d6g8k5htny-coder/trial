@@ -1,3 +1,7 @@
+## STATUS (Batch 361 idle)
+
+tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 359 tip-eng-post)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + living republish after eng-intent-json; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
