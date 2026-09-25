@@ -8215,7 +8215,11 @@ def test_batch258_wait_until_aligned_transport_timeout_flake() -> None:
     assert "STATUS (Batch 258)" in land
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "Batch 258" in unblock
+    # Living STATUS header advances each batch (Batch 259+).
+    assert "Batch 25" in unblock or "PERMANENT" in unblock
+    assert "TRANSPORT_ERROR" in (ROOT / "scripts" / "wait_until_aligned.sh").read_text(
+        encoding="utf-8"
+    )
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
