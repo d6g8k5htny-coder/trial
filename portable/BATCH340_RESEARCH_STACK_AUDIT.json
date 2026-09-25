@@ -1,0 +1,10 @@
+{
+  "batch": "340",
+  "audit_kind": "research_stack_mechanical_open_list",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_sha": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "note": "tip-sync only after inventable #102 cluster; no status promotion",
+  "generated_at_utc": "2026-09-25T18:24:56Z"
+}

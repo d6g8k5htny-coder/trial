@@ -36,6 +36,7 @@ _LIVING_TIPS = (
     "0adeb65",
     "077464e",
     "388a22c",
+    "848aea2",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -13294,8 +13295,8 @@ def test_batch332_tip_sync_after_main_97() -> None:
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
         encoding="utf-8"
     )
+    # Live BASE_TIP supersedes across tip-sync; Batch 332 shipped 388a22c.
     assert _living_tip(base_tip)
-    assert "388a22c" in base_tip
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -13304,7 +13305,6 @@ def test_batch332_tip_sync_after_main_97() -> None:
     )
     assert int(str(verify.get("refresh_batch") or "0")) >= 332
     assert _living_tip(str(verify.get("base_tip_sha", "")))
-    assert str(verify.get("base_tip_sha", "")).startswith("388a22c")
     assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
         verify.get("prior_base_tip_sha", "")
     ).startswith("077464e")
@@ -13322,6 +13322,7 @@ def test_batch332_tip_sync_after_main_97() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert _living_tip(status.get("tip"))
+    # Live tip supersedes across tip-sync; historical brief keeps 388a22c.
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
 
@@ -13332,6 +13333,89 @@ def test_batch332_tip_sync_after_main_97() -> None:
     assert "STATUS (Batch 332)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 332" in log_md
+
+def test_batch340_tip_sync_after_main_102() -> None:
+    """Batch 340: tip-sync after main #102 inventable cluster; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "tip_sync_388a22c_to_848aea2_main_102"
+    assert brief.get("route_now") == "TIP_SYNC"
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is True
+    assert 102 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("848aea2")
+    assert str(brief.get("prior_tip", "")).startswith("388a22c")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH340_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_388a22c_to_848aea2_main_102"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert any("102" in a or "inventable" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH340_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
+        encoding="utf-8"
+    )
+    assert _living_tip(base_tip)
+    assert "848aea2" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 340
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert str(verify.get("base_tip_sha", "")).startswith("848aea2")
+    assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
+        verify.get("prior_base_tip_sha", "")
+    ).startswith("388a22c")
+    assert verify.get("lemma_closed") is False
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("tip_refresh") in (True, False)
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 340)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "848aea2" in unblock or "Batch 340" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert str(status.get("tip", "")).startswith("848aea2")
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+
+    assert "848aea2" in _LIVING_TIPS
+    assert "388a22c" in _LIVING_TIPS
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 340" in log_md
 
 def test_batch333_republish_release_view_retry() -> None:
     """Batch 333: republish retries release-view; STATUS_GUARD tip living."""

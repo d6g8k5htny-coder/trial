@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — tip-sync after main #102 (2026-09-25)
+
+- Hardening LIVE moved `388a22c`→`848aea2` (PRs #99/#100/#101/#107/#102 inventable/math_status docs MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=340 ./scripts/refresh_path_c_bundle.sh` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; REFRESH default 340; `_LIVING_TIPS += 848aea2`. Softened Batch 332 live BASE_TIP/VERIFY pins to `_living_tip`.
+- **NEVER flip research:** inventable #102 cluster not promoted; tip-observe #108 skipped; `lemma_closed=false`; `flipped_anything=false`.
+- Path C idle; no 0020. Durable write 8/8.
+
+
 ### Batch 334 — grant skip only when durable_token_source=none (2026-09-25)
 
 - Tip stable @ `388a22c` (match=1); Path C IDLE@0019; `lemma_closed=false`.

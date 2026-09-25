@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 340)
+
+Hardening tip **synced** @ `848aea2` (tip_match=true after #102 inventable cluster mid-cycle). Tip-sync keep-prior; REFRESH default 340; `_LIVING_TIPS += 848aea2`. Inventable NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
+```
+
 ## STATUS (Batch 334)
 
 Hardening tip **stable** @ `388a22c`. Eng: `--check` inventory skip gated on `durable_token_source=none` only — durable token + transient writable=0 still refreshes tips. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
