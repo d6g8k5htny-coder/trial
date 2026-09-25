@@ -6,19 +6,15 @@
   "tip_match": true,
   "lemma_closed": false,
   "flipped_anything": false,
+  "action": "eng_inv_tip_sync_and_living_republish",
   "scientific_effect": "NONE",
   "goal": "OPEN",
-  "inventable_promoted": false,
-  "coordinator_bcId": "bc-01a0cf1e",
-  "defect_id": "inventory_trial_tip_lag_after_lands",
   "path_c": "IDLE@0019",
-  "action": "inventory_preserve_durable_tip_pin",
-  "trial_tip_sha": "e08727ff8e71e67bcf85f7c4b206b2b365a9259a",
-  "trial_tip_matches_live_head": true,
   "durable": "8/8_WRITABLE",
-  "lag_before": 2,
+  "prior_trial_tip": "fd2961ced13e",
+  "trial_tip_sha": "e08727ff8e71e67bcf85f7c4b206b2b365a9259a",
   "live_trial_head": "e08727ff8e71e67bcf85f7c4b206b2b365a9259a",
-  "prior_trial_tip_sha": "fd2961ced13e",
+  "trial_tip_matches_live_head": true,
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
@@ -28,5 +24,8 @@
     "query-": "a61656f",
     "sandbox": "49ae345",
     "trial": "e08727f"
-  }
+  },
+  "defect_id": "inv_tip_lag_and_living_script_stale_after_363_post_eng",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e"
 }

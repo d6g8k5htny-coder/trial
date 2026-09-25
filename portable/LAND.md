@@ -1,3 +1,7 @@
+## STATUS (Batch 363 tip-eng-sync-living)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip sync→HEAD after post-eng land + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 363 tip-eng-post)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent after living republish + last-resort 362→363; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

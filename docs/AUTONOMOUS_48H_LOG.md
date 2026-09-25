@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 363 — tip_or_eng: inv tip sync + living republish after post-eng (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`fd2961c` after post-living re-pin land; living `script_stale=1` — PRESERVE_DURABLE sync→HEAD + batch241 `--force`.
+- Artifacts: `BATCH363_SYNC_LIVING_*.json`. NEVER flip research.
+
 ### Batch 363 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 362→363 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

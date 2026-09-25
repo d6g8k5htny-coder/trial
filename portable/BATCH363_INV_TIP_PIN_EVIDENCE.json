@@ -1,6 +1,6 @@
 {
   "batch": "363",
-  "generated_at_utc": "2026-09-25T22:24:23Z",
+  "generated_at_utc": "2026-09-25T22:26:35Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -16,20 +16,20 @@
   "durable": "8/8_WRITABLE",
   "coverage": "8/8_WRITABLE",
   "write": "WRITABLE",
-  "trial_tip_sha": "fd2961ced13e77dcee107c93af206977926da4f4",
-  "live_trial_head": "fd2961ced13e77dcee107c93af206977926da4f4",
+  "trial_tip_sha": "e08727ff8e71e67bcf85f7c4b206b2b365a9259a",
+  "live_trial_head": "e08727ff8e71e67bcf85f7c4b206b2b365a9259a",
   "trial_tip_matches_live_head": true,
-  "prior_trial_tip_sha": "e1bec3e8e6bd5af58ec5cef86cb4b3ce2337460b",
+  "prior_trial_tip_sha": "fd2961ced13e",
   "lag_before": 2,
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
     "main": "29db294",
     "Math-": "760340e",
-    "meta-framework": "14f6836",
+    "meta-framewo": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "fd2961c"
+    "trial": "e08727f"
   },
   "preserve_durable_writable0_denied": true,
   "inventory_batch": "363"

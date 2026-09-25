@@ -19644,3 +19644,51 @@ def test_batch363_inventory_preserve_durable_tip_pin() -> None:
     assert headers and int(headers[0]) >= 363 and len(headers) == 1
     assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch363_tip_eng_sync_living() -> None:
+    """Batch 363: tip_or_eng inv tip sync after post-eng + living republish."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 363
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("fd2961c")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH363_SYNC_LIVING_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "363"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_inv_tip_sync_and_living_republish"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH363_SYNC_LIVING_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH363_SYNC_LIVING_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "eng_inv_tip_sync_and_living_republish"
+    assert evidence.get("script_stale_post") == 0
+    assert evidence.get("tip_match") is True
+    assert evidence.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 363)
+    assert "inv tip sync after post-eng" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 363 tip-eng-sync-living)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 363 tip-eng-sync-living)" in owner

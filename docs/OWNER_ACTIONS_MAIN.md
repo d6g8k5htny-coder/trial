@@ -1,3 +1,13 @@
+## STATUS (Batch 363 tip-eng-sync-living)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory tip lagged after post-living re-pin land + living `script_stale=1` — PRESERVE_DURABLE sync→HEAD + batch241 `--force`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=363 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch363_tip_eng_sync_living -q
+```
+
 ## STATUS (Batch 363 tip-eng-post)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged 2 commits after Batch 363 living VERIFY republish; last-resort frozen 362 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→363 + living republish. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
