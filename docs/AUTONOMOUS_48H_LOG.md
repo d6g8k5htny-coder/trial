@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 325 — keep-prior bundle verify WORKDIR (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: `refresh_path_c_bundle.sh` keep-prior ran `git bundle verify` on trial ROOT → exit 1 under `set -euo pipefail` before VERIFY/APPLY/MANIFEST. Fix: verify via WORKDIR (or tolerate fail); REFRESH default 325.
+- Sourced from peer tip-sync agent branch `cursor/batch324-keep-prior-verify-309a` after Batch 324 tip-drift already landed on main.
+- NEVER flip research.
+
+
 ### Batch 324 (eng: print_owner TIP_DRIFT ≠ APPLY_READY) — 2026-09-25 ~16:40 UTC (PERMANENT window; scientific effect NONE; flipped nothing)
 
 - Peer tip-sync already landed `077464e` (batches 305/317/321). This agent did **not** re-tip-sync.
