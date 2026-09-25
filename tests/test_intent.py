@@ -15932,7 +15932,6 @@ def test_batch346_grant_inventory_refresh() -> None:
     assert "STATUS (Batch 346 grant)" in owner
 
 
-<<<<<<< HEAD
 def test_batch346_status_guard_tip_refresh_e3cd7d4() -> None:
     """Batch 346: STATUS_GUARD tip living @e3cd7d4 after tip-sync; no promotion."""
     import json
@@ -16007,16 +16006,10 @@ def test_batch346_status_guard_tip_refresh_e3cd7d4() -> None:
     assert "STATUS (Batch 346 status-guard)" in owner
 
 
-
-def test_batch346_multi_agent_wake_assign() -> None:
-    """Batch 346: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
-    import json
-=======
 def test_batch346_multi_agent_wake_assign() -> None:
     """Batch 346: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
     import json
     import re
->>>>>>> 0032938f (Batch 346: MULTI_AGENT wake+assign stopped Path C agents @e3cd7d4)
 
     wake = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH346.json").read_text(encoding="utf-8")
@@ -16053,11 +16046,6 @@ def test_batch346_multi_agent_wake_assign() -> None:
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
-<<<<<<< HEAD
-    import re
-
-=======
->>>>>>> 0032938f (Batch 346: MULTI_AGENT wake+assign stopped Path C agents @e3cd7d4)
     m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
     assert m is not None
     assert int(m.group(1)) >= 346
@@ -16067,7 +16055,4 @@ def test_batch346_multi_agent_wake_assign() -> None:
     m_inv = re.search(r'return "(\d+)"', helper)
     assert m_inv is not None
     assert int(m_inv.group(1)) >= 346
-<<<<<<< HEAD
-=======
 
->>>>>>> 0032938f (Batch 346: MULTI_AGENT wake+assign stopped Path C agents @e3cd7d4)
