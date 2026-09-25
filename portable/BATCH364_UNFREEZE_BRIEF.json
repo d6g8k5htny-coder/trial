@@ -1,0 +1,16 @@
+{
+  "batch": "364",
+  "generated_at_utc": "2026-09-25T22:36:46Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e",
+  "path_c": "IDLE@0019",
+  "action": "eng_unfreeze_last_resort_363_to_364",
+  "defect_id": "last_resort_frozen_363_vs_living_364"
+}
