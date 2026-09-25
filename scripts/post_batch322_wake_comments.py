@@ -103,7 +103,7 @@ def _living_batch_n() -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "350"
+    return "351"
 def batch_marker() -> str:
     """Living wake marker — tip move unlocks re-post."""
     return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"

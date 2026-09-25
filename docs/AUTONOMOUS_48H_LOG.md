@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 351 — inventory_preserve_durable_tip_pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; durable 8/8; trial tip lagged HEAD → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
+- Evidence `BATCH351_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
+
+
 ### Batch 350 — soften INV_TIP_PIN Intent action allowlist (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

@@ -1,3 +1,7 @@
+## STATUS (Batch 351 inv-preserve-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 350 soften-inv-tip-pin)
 
 tip `e3cd7d4` tip_match=true; eng: soften INV_TIP_PIN Intent action allowlist after peer re-pin rename; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
