@@ -6,6 +6,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 343 status-guard)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: `STATUS_GUARD_SNAPSHOT` tip_sha lagged at `f244312` after tip-sync — refreshed to `fcad723` (baseline→`f244312`; `guard_no_status_promotion` pass violations=0; no claim flip). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/guard_no_status_promotion.py --tip-sha fcad72366743f5244eb26a0164e106419de78137 <hardening-checkout>
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 ## STATUS (Batch 344)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Tip-sync watch: no tip move. Living tip_stale=0 script_stale=0; paper-trail tgz republish. Evidence: `portable/BATCH344_IDLE.json`. Guard+research: `lemma_closed=false`. action=`idle_no_commit`. Scientific effect: NONE.
