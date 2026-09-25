@@ -15,8 +15,8 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "inventory_batch": "348",
-  "trial_tip_sha": "4d941064471e1e6f39f7e466ca896613250caf12",
-  "live_trial_head": "4d941064471e1e6f39f7e466ca896613250caf12",
+  "trial_tip_sha": "e683e3a2879bc4f01e0669c66e0bc281aa38bc9c",
+  "live_trial_head": "e683e3a2879bc4f01e0669c66e0bc281aa38bc9c",
   "trial_tip_matches_live_head": true,
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -26,7 +26,7 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "4d94106"
+    "trial": "e683e3a"
   },
   "preserve_durable_writable0_denied": true,
   "coordinator_bcId": "bc-01a0cf1e",
