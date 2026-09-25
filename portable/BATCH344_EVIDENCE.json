@@ -1,10 +1,19 @@
 {
+  "batch": "344",
   "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
   "tip_match": true,
   "aligned": true,
   "lemma_closed": false,
   "write": "WRITABLE",
   "path_c": "IDLE@0019",
-  "action": "idle_no_commit",
-  "flipped_anything": false
+  "action": "eng_soften_343_tip_sync_watch_live_tip_pin",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "durable": "8/8",
+  "tip_moved": false,
+  "defect_id": "intent_batch343_tip_sync_watch_frozen_live_base_tip_fcad723",
+  "bc_id": "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
+  "coordinator_bc": "bc-01a0cf1e",
+  "generated_at_utc": "2026-09-25T19:12:00Z"
 }
