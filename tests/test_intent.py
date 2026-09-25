@@ -11726,17 +11726,20 @@ def test_batch289_tip_sync_after_main_83() -> None:
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
         encoding="utf-8"
     )
-    assert "3a29f526da5108df173edc390a8ca2d1f3d887c9" in base_tip
+    # Live BASE_TIP supersedes across tip-sync; Batch 289 shipped 3a29f52.
+    assert _living_tip(base_tip)
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
         )
     )
-    assert str(verify.get("refresh_batch", "")) == "289"
+    assert int(str(verify.get("refresh_batch") or "0")) >= 289
     assert _living_tip(str(verify.get("base_tip_sha", "")))
-    assert str(verify.get("base_tip_sha", "")).startswith("3a29f52")
-    assert str(verify.get("prior_base_tip_sha", "")).startswith("7d13a88")
+    # prior_base_tip_sha advances on later tip-syncs; only require living SHA.
+    assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
+        verify.get("prior_base_tip_sha", "")
+    ).startswith("7d13a88")
     assert verify.get("lemma_closed") is False
     assert verify.get("tip_refresh") is True
 
@@ -11745,7 +11748,8 @@ def test_batch289_tip_sync_after_main_83() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 289" in unblock
-    assert "=== Batch 289" in unblock
+    # Header line bumps on later tip-sync batches (297+); keep 289 history line.
+    assert "=== Batch 289" in unblock or "=== Batch 297" in unblock
     assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
 
     assert "3a29f52" in _LIVING_TIPS
