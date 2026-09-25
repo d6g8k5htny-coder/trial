@@ -16910,13 +16910,13 @@ def test_batch352_unfreeze_last_resort() -> None:
     )
     assert 'return "351"' not in helper
     # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354"))
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355"))
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert any(f'return "{n}"' in poster for n in ("352", "353", "354"))
+    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355"))
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -17630,3 +17630,54 @@ def test_batch354_living_script_stale_republish() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "living script_stale" in log_md and "Batch 354" in log_md
 
+
+
+def test_batch355_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 355: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 355
+    assert inv.get("durable_writable") == "8/8"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH355_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("batch") == "355"
+    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("durable") == "8/8_WRITABLE"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("scientific_effect") == "NONE"
+    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
+    assert evidence.get("trial_tip_matches_live_head") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH355_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "355"
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r"=== Batch (\d+)\s", unblock)
+    assert headers and int(headers[0]) >= 355 and len(headers) == 1
+    assert "inventory_preserve_durable_tip_pin" in unblock
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+    assert "e3cd7d4" in base_tip
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 inv-preserve-tip-pin)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 355" in log_md and "inventory_preserve_durable_tip_pin" in log_md

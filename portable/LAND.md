@@ -1,3 +1,7 @@
+## STATUS (Batch 355 inv-preserve-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 355; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 354 soften-inv-base-tip)
 
 tip `e3cd7d4` tip_match=true; eng: soften INV tip-pin Intent live BASE_TIP pin to `_living_tip`; lemma_closed=false; scientific effect NONE.
