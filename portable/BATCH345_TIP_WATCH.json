@@ -1,0 +1,32 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:15:16Z",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "hardening_tip_short": "fcad723",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "living_script_stale_republish",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living_before": {
+    "tip_stale": 0,
+    "script_stale": 1
+  },
+  "living_after": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "refresh_dry_run": "BASE_TIP=fcad723 live=fcad723 match=1",
+  "script_drift": [
+    "print_owner_unblock.sh",
+    "audit_main_alignment.py"
+  ],
+  "note": "Batch345 WAKE tip_sync_watch_vs_BASE_TIP_fcad723: tip stable; living script_stale republish; inventable skipped"
+}

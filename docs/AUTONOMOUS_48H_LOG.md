@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 WAKE — tip_sync_watch living script_stale @fcad723 (2026-09-25)
+
+- Tip **stable** @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Living `script_stale=1` (print_owner + audit_main_alignment drift) → republish → `tip_stale=0 script_stale=0`.
+- Evidence: `portable/BATCH345_TIP_WATCH.json`. Inventable skipped. action=`living_script_stale_republish`.
+
 ### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

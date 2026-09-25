@@ -5,6 +5,15 @@ Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). 
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
 AUDIT_TRANSPORT_EARLY_FALLBACK=1 python3 -m pytest tests/test_intent.py::test_batch343_audit_intent_timeout_early_fallback -q
 ```
+## STATUS (Batch 345 tip_sync_watch)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Living `script_stale=1` → republish cleared. Evidence: `portable/BATCH345_TIP_WATCH.json`. Guard+research: `lemma_closed=false`. action=`living_script_stale_republish`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 345 wake)
 Artifact: `portable/MULTI_AGENT_WAKE_BATCH345.json`. Tip stable @ `fcad723`. `lemma_closed=false`.
 

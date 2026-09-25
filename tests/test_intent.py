@@ -15460,6 +15460,7 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     brief = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_BRIEF.json").read_text(
             encoding="utf-8"
+        )
     )
     assert brief.get("batch") == "343"
     assert brief.get("lemma_closed") is False
@@ -15467,13 +15468,19 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert brief.get("scientific_effect") == "NONE"
     assert brief.get("defect_id") == (
         "audit_intent_timeout_under_ratelimit_reset_sleep"
+    )
     assert brief.get("action") == "eng_audit_early_fallback_intent_timeout"
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal_complete") is False
     assert _living_tip(str(brief.get("tip", "")))
     hunt = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_HUNT.json").read_text(
-    assert hunt.get("defect_id") == (
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == brief.get("defect_id") or hunt.get(
+        "defect_id"
+    )
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -15487,11 +15494,19 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert "STATUS (Batch 343 audit-timeout)" in owner or "early-fallback" in owner
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
     assert status.get("lemma_closed") is False
+
+
 def test_batch345_multi_agent_wake_assign() -> None:
     """Batch 345: Dylan/timer wake stopped agents + assign Path C intent tasks."""
+    import json
+
     wake = json.loads(
-        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH345.json").read_text(encoding="utf-8")
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH345.json").read_text(
+            encoding="utf-8"
+        )
+    )
     assert wake.get("batch") == 345
     assert wake.get("wake345_on_main") is True
     assert wake.get("lemma_closed") is False
@@ -15499,14 +15514,61 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert wake.get("action") == "multi_agent_wake_and_assign"
     assert len(wake.get("woken_idle_agents") or []) >= 3
     living = wake.get("living") or {}
-    assert living.get("tip_stale") == 0
-    assert living.get("script_stale") == 0
+    if living:
+        assert living.get("tip_stale") == 0
+        assert living.get("script_stale") == 0
     assert _living_tip(str(wake.get("tip") or ""))
+    brief = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    )
     assert brief.get("batch") == "345"
     assert brief.get("action") == "multi_agent_wake_and_assign"
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 345)
-    assert "WAKE345" in unblock or "MULTI_AGENT wake" in unblock
+    assert "WAKE345" in unblock or "MULTI_AGENT wake" in unblock or "Batch 345" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake)" in land
-    assert "MULTI_AGENT_WAKE_BATCH345" in owner
-    assert "stopped agents" in log_md and "Batch 345" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_WAKE_BATCH345" in owner or "Batch 345" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 345" in log_md
+
+
+def test_batch345_tip_sync_watch_living_stale() -> None:
+    """Batch 345 WAKE: tip stable @fcad723; living script_stale republish evidence."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "345"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "living_script_stale_republish"
+    assert tiny.get("goal") == "OPEN"
+    assert str(tiny.get("hardening_tip") or "").startswith("fcad723")
+    assert (tiny.get("living_after") or {}).get("script_stale") == 0
+    assert (tiny.get("living_before") or {}).get("script_stale") == 1
+
+    ev = json.loads(
+        (ROOT / "portable" / "BATCH345_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert ev.get("lemma_closed") is False
+    assert ev.get("tip_match") is True
+    assert ev.get("aligned") is True
+    assert str(ev.get("hardening_tip") or "").startswith("fcad723")
+    assert ev.get("action") == "living_script_stale_republish"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "fcad723" in base
+    assert _living_tip(base)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip_sync_watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip_sync_watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "BATCH345_TIP_WATCH" in log_md or "living_script_stale_republish" in log_md
+

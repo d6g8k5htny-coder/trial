@@ -1,3 +1,7 @@
+## STATUS (Batch 345 tip_sync_watch)
+
+tip `fcad723` tip_match=true; living script_stale republish (print_owner+audit drift); action=living_script_stale_republish; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 audit-timeout)
 
 tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
