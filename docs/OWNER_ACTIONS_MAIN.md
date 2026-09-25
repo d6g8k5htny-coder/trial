@@ -24,6 +24,10 @@ Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1; peer idle+liv
 python3 -m pytest tests/test_intent.py::test_batch354_inventory_preserve_durable_tip_pin -q
 ```
 
+## Batch 355 — inventory_preserve_durable_tip_pin
+
+Hardening tip **stable** @ `e3cd7d4`. `inventory_preserve_durable_tip_pin`: preserve_durable tip pin trial→HEAD (was lagging `e4f6eae`); never demote 8/8. Goal OPEN. `lemma_closed=false`.
+
 ## STATUS (Batch 354 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 354 inventory tip-pin — republish batch241-path-c-bundle `--force`. `lemma_closed=false`. Goal OPEN.
