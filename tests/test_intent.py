@@ -14448,8 +14448,8 @@ def test_batch340_tip_sync_f244312() -> None:
     assert any("108" in a or "inventable" in a for a in (hunt.get("avoided") or []))
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 340 shipped f244312.
     assert _living_tip(base_tip)
-    assert "f244312" in base_tip
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -14500,3 +14500,46 @@ def test_batch340_grant_inventory_refresh() -> None:
     assert "STATUS (Batch 340)" in owner
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340)" in land
+
+
+def test_batch341_soften_batch340_live_tip_pins() -> None:
+    """Batch 341: tip-sync Intent must not freeze live BASE_TIP to f244312."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch340_tip_sync_f244312")
+    end = intent.index("def test_batch340_grant_inventory_refresh")
+    body = intent[start:end]
+    assert "Live BASE_TIP supersedes across tip-sync; Batch 340 shipped f244312" in body
+    assert 'assert "f244312" in base_tip' not in body
+    assert 'verify.get("base_tip_sha", "")).startswith("f244312")' not in body
+    assert "f244312" in _LIVING_TIPS
+    assert "848aea2" in _LIVING_TIPS
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH341_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "341"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "intent_batch340_tip_sync_frozen_live_base_tip_f244312"
+    assert brief.get("action") == "eng_soften_340_live_tip_pins"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH341_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "intent_batch340_tip_sync_frozen_live_base_tip_f244312"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 341)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 341" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341)" in owner

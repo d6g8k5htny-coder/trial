@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 341 — soften Batch 340 tip-sync live BASE_TIP Intent pin (2026-09-25)
+
+- Tip stable @ `f244312` tip_match=1 (post #108 tip-sync); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: Batch 340 tip-sync Intent asserted `"f244312" in BASE_TIP` — next tip-sync would re-red CI (same class as Batch 336 soften of 335). Softened to `_living_tip` only; living pack tgz republish after tip-sync.
+- NEVER flip research; inventable skipped.
+
 ### Batch 340 tip-sync 848aea2→f244312 after main #108 (2026-09-25)
 
 - Tip **moved** mid-cycle: inventable tip-observe #108 → `f244312`.

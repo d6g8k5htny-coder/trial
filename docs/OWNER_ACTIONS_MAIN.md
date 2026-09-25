@@ -18,6 +18,15 @@ Hardening tip **synced** @ `f244312` after main #108 inventable tip-observe. Tip
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
 ```
 
+## STATUS (Batch 341)
+
+Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`"f244312" in base_tip`); living pack republish (tgz_newer after tip-sync). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 340)
 
 Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.

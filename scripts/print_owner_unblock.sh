@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 340 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 341 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -110,6 +110,7 @@ echo " Batch 340: MULTI_AGENT wake+assign stopped agents @848aea2; Path C IDLE@0
 echo " Batch 339: living script_stale republish after tip-stable watch @848aea2"
 echo " Batch 340: republish CRITICAL includes audit_main_alignment; audit rate-limit/raw fallback; inventory ultimate batch fallback unfrozen (was frozen 336); MULTI_AGENT wake+assign"
 echo " Batch 340: audit_main_alignment 403 rate-limit backoff + raw/ls-remote fallback; CI soft-continue transport exit 2"
+echo " Batch 341: soften Batch 340 tip-sync Intent live BASE_TIP pin (f244312); living tgz republish after tip-sync"
 echo " Batch 340: inventory ultimate fallback return \"340\" (was frozen 336); REFRESH default 340"
 echo " Batch 340: wake poster loads durable MAIN_PUSH_TOKEN files (MAIN first + grant/when_writable drops; App ghs Issues:write)"
 echo " Batch 340: tip-sync 848aea2→f244312 after main #108 inventable tip-observe (keep-prior; NOT promoted)"

@@ -1,0 +1,20 @@
+{
+  "batch": "341",
+  "hunt": "soften_340_live_base_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "intent_batch340_tip_sync_frozen_live_base_tip_f244312",
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "duplicate tip-sync",
+    "invent 0020"
+  ],
+  "tip_moved": false,
+  "tip": "f244312",
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T18:40:00Z"
+}

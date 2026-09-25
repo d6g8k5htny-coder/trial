@@ -1,0 +1,30 @@
+{
+  "batch": "341",
+  "generated_at_utc": "2026-09-25T18:40:00Z",
+  "status": "soften_340_tip_sync_live_base_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip_match": true,
+  "aligned": true,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "intent_batch340_tip_sync_frozen_live_base_tip_f244312",
+  "bugs_fixed": [
+    "test_batch340_tip_sync_f244312 asserted \"f244312\" in BASE_TIP — next tip-sync would re-red CI",
+    "living pack republish cleared script_stale=1 (print_owner) + tgz_newer after tip-sync"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_soften_340_live_tip_pins",
+  "route_now": "ENG_FIX",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "inventable_promoted": false,
+  "living_before": "tgz_newer=1 tip_stale=0 script_stale=1 need_upload=1",
+  "living_after": "tip_stale=0 script_stale=0 need_upload=0",
+  "note": "Tip already synced @f244312 (Batch 340 #108). Prefer living after tip-sync; Intent freeze is the concrete eng."
+}
