@@ -14035,3 +14035,43 @@ def test_batch340_audit_rate_limit_403_backoff() -> None:
     )
     assert status.get("lemma_closed") is False
 
+def test_batch340_wake_land_verify() -> None:
+    """Batch 340: wake340 on main; tip_match @848aea2; lemma_closed false."""
+    import json
+
+    path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("batch") == 340
+    assert data.get("action") == "wake_land_verify_batch340"
+    assert data.get("wake340_on_main") is True
+    assert data.get("tip_match") is True
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert data.get("scientific_effect") == "NONE"
+    assert data.get("path_c") == "IDLE@0019"
+    assert data.get("durable") == "8/8"
+    assert _living_tip(str(data.get("tip") or ""))
+    assert str(data.get("tip") or "").startswith("848aea2")
+    living = data.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("tip_match") is True
+    assert _living_tip(status.get("tip"))
+    assert status.get("lemma_closed") is False
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 340" in log_md
+

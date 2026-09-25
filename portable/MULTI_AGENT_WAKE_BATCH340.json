@@ -1,0 +1,41 @@
+{
+  "batch": 340,
+  "action": "wake_land_verify_batch340",
+  "requested_by": "Dylan Roy",
+  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "utc": "2026-09-25T18:23:00Z",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_match": true,
+  "wake340_on_main": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0
+  },
+  "intent": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "base_tip_expected": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+    "path_c": "IDLE@0019",
+    "lemma_closed": false,
+    "scientific_effect": "NONE",
+    "durable_write_target": "8/8",
+    "never_flip_research": true
+  },
+  "assignment": "wake_land_verify_batch340",
+  "agent_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+  "verified_prior_wakes": [
+    "MULTI_AGENT_WAKE_BATCH329.json",
+    "MULTI_AGENT_WAKE_BATCH336.json",
+    "MULTI_AGENT_WAKE_BATCH337.json"
+  ],
+  "messaging_limits": {
+    "mechanism_used": "Task resume (IDLE) + Task environment=cloud; direct trial main push when createPullRequest 403"
+  }
+}
