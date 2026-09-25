@@ -1,0 +1,12 @@
+{
+  "batch": "353",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "durable": "8/8_WRITABLE",
+  "lemma_closed": false,
+  "action": "inventory_preserve_durable_tip_pin",
+  "flipped_anything": false,
+  "goal": "OPEN",
+  "trial_tip_sha": "d9004720437b95992b37e90eb45cd3643a6a931b",
+  "scientific_effect": "NONE"
+}

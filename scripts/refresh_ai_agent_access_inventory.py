@@ -56,6 +56,8 @@ def _living_inventory_batch(root: str) -> str:
     Batch 345: last-resort bumped off frozen "343" after tip-sync REFRESH default 345.
     Batch 346: last-resort bumped off frozen "345"
     Batch 351: last-resort bumped so empty-tree fallback cannot lag print_owner 351.
+    Batch 353: last-resort bumped off frozen "352" so empty-tree fallback cannot lag
+    living Batch 353 / print_owner header (coordinator wake).
     Batch 352: last-resort bumped off frozen "351" so empty-tree fallback cannot lag
     living Batch 352 / print_owner header (coordinator wake).
     # prior: Batch 346 bumped off frozen "345" after WAKE346 print_owner header.
@@ -86,7 +88,7 @@ def _living_inventory_batch(root: str) -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "352"
+    return "353"
 
 
 def _no_durable_probe(
