@@ -482,12 +482,15 @@ print("install_missing_from_deps:", missing)'
   # while live durable remains 8/8 (Batch 322 false-negative class). Skip
   # instead of relying only on writer preserve. Do not open a false no_token
   # grant-audit eng branch.
+  # Batch 334: do NOT also skip on DURABLE_WRITABLE=0 when a durable token is
+  # present — transient probe 0/8 would freeze tip_sha while token exists;
+  # writer preserve_durable + durable GH_TOKEN still refresh tips safely.
   # Writer: scripts/refresh_ai_agent_access_inventory.py (pack + CRITICAL).
   # Never flips lemma_closed / scientific_effect / flipped_anything.
   INV_PATH="$ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
   if [[ ! -f "$INV_PATH" ]]; then
     echo "inventory_refresh=skip missing=$INV_PATH"
-  elif [[ "$DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0 ]]; then
+  elif [[ "$DURABLE_TOKEN_SOURCE" == "none" ]]; then
     echo "inventory_refresh=skip durable_token_source=${DURABLE_TOKEN_SOURCE} durable_writable=${DURABLE_WRITABLE} (retain living 8/8; do not App-corrupt)"
   else
     _INV_TOKEN=""

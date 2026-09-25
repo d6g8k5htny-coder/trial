@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 334 — grant skip only when durable_token_source=none (2026-09-25)
+
+- Tip stable @ `388a22c` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: Batch 331 skipped inventory refresh on `DURABLE_WRITABLE=0` even when a durable token was present — transient probe 0/8 froze tip_sha. Now skip **only** when `durable_token_source=none` (writer preserve still covers ambient).
+- NEVER flip research.
+
+
 ### Batch 333 — republish release-view retry + STATUS_GUARD tip (2026-09-25)
 
 - Tip stable @ `388a22c` (match=1); Path C IDLE@0019; `lemma_closed=false`.

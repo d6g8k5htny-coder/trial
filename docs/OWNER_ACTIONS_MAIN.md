@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 334)
+
+Hardening tip **stable** @ `388a22c`. Eng: `--check` inventory skip gated on `durable_token_source=none` only — durable token + transient writable=0 still refreshes tips. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
 ## STATUS (Batch 333)
 
 Hardening tip **stable** @ `388a22c`. Eng: living republish retries `gh release view` under rate-limit (dry-run soft-continues); STATUS_GUARD_SNAPSHOT tip_sha refreshed. Guard+research: `lemma_closed=false`. Scientific effect: NONE.

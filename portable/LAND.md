@@ -1,3 +1,7 @@
+## STATUS (Batch 334)
+
+tip `388a22c` tip_match=true; eng: grant --check skips inventory refresh only when durable_token_source=none (not on writable=0 with token); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 333)
 
 tip `388a22c` tip_match=true; eng: republish release-view retries rate-limit; STATUS_GUARD tip_sha living; lemma_closed=false; scientific effect NONE.

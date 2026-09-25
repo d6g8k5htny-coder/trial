@@ -13365,4 +13365,26 @@ def test_batch333_republish_release_view_retry() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 333" in log_md
 
+def test_batch334_grant_skip_only_when_token_none() -> None:
+    """Batch 334: inventory skip only when durable_token_source=none."""
+    import re
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "Batch 334" in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    # Must not OR with writable=0 (Batch 331 over-broad).
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+    assert "do not App-corrupt" in grant
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 334
+    _assert_print_owner_header_batch_at_least(unblock, 334)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 334)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 334" in log_md
+
 
