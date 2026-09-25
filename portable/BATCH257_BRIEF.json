@@ -72,6 +72,10 @@
     "portable/BATCH257_BRIEF.json",
     "portable/BATCH257_HUNT.json",
     "portable/BATCH257_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/commit/6dbe728bd92b0f1b485e5fb487f1518f28dd866e"
+  ],
+  "trial_main_land_method": "direct_ff_push",
+  "trial_main_land": "6dbe728",
+  "trial_main_land_full": "6dbe728bd92b0f1b485e5fb487f1518f28dd866e"
 }
