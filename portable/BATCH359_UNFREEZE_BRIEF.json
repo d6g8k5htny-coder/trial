@@ -23,7 +23,8 @@
     "inventory ultimate return 358→359",
     "wake ultimate return 358→359",
     "Intent allowlist 352..358 → living >=359",
-    "HEAD Intent parses after Batch357 merge SyntaxError class"
+    "HEAD Intent parses after Batch357 merge SyntaxError class",
+    "soften Batch357 tip_or_eng Intent mash (research_audit hard-pin → living tip-repin)"
   ],
   "action": "eng_unfreeze_batch_last_resort_359",
   "assignment": "ci_intent_unfreeze_living",
