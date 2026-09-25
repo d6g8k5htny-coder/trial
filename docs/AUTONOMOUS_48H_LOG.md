@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 336 (MULTI_AGENT wake verify+land; tip @eeebb28) — 2026-09-25 ~17:47 UTC
+- Confirmed `portable/MULTI_AGENT_WAKE_BATCH329.json` already on trial `main` (`wake329_on_main=true`; `lemma_closed=false`).
+- Landed `portable/MULTI_AGENT_WAKE_BATCH336.json` (tip=`eeebb28`, wake336_on_main=true, action, lemma_closed=false).
+- Tip live @ `eeebb28` after Batch 335 tip-sync; Path C IDLE@0019; NEVER flip research.
+- action=`multi_agent_wake_batch336_verify_land`; next=`tip_sync_drift_watch @eeebb28`.
+
 ### Batch 335 — tip-sync after main #99/#100 (2026-09-25)
 
 - Hardening LIVE moved `388a22c`→`eeebb28` (#100 conditional-importers sidecar + #99 ENV-RESCOV walk-down MERGED into chatgpt/drive-github-hardening-20260919).

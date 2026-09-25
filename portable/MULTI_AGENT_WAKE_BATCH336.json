@@ -1,0 +1,13 @@
+{
+  "batch": 336,
+  "tip": "eeebb28",
+  "wake336_on_main": true,
+  "action": "multi_agent_wake_batch336_verify_land",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "path_c": "IDLE@0019",
+  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH329.json",
+  "scientific_effect": "NONE",
+  "utc": "2026-09-25T17:47:00Z",
+  "agent_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3"
+}

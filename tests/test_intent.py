@@ -13445,3 +13445,26 @@ def test_batch335_tip_sync_after_main_99_100() -> None:
     assert "Batch 335" in log_md
 
 
+def test_batch336_multi_agent_wake_verify_land() -> None:
+    """Batch 336: wake336 on main; Batch 329 prior wake present; lemma_closed false."""
+    import json
+
+    wake329 = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH329.json"
+    assert wake329.is_file()
+    data329 = json.loads(wake329.read_text(encoding="utf-8"))
+    assert data329.get("lemma_closed") is False
+    assert data329.get("wake329_on_main") is True
+
+    path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH336.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("action") == "multi_agent_wake_batch336_verify_land"
+    assert data.get("wake336_on_main") is True
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert _living_tip(str(data.get("tip") or ""))
+    assert str(data.get("tip") or "").startswith("eeebb28")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 336" in log_md
+
