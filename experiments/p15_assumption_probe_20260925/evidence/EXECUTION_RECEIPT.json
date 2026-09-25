@@ -1,0 +1,48 @@
+{
+  "object": "P15-ASSUMPTION-PROBE-20260925-v1",
+  "scientific_effect": "NONE",
+  "promotion_permission": false,
+  "independent_review": false,
+  "adoption": "PENDING_DISTINCT_AGENT_REVIEW",
+  "source_math_commit": "0ae7e8fdf5d359f80cf6a3dcd614120f7aa9a19c",
+  "sources": {
+    "README.md": "2f7ed9493ffe5e59094b7fb9ffadbb6d73ec8614ffc415148694b7a550c7a801",
+    "RECON.md": "9ae3555675fd53d9ae6cc4e44efc112061c0a20275e0fdbad72873b1fe0ddaf2",
+    "probe.py": "d5113e589ce8a38bc4d6f7b65212e0efe7a701ad410a509ef8a5f2a17ba6b4d0",
+    "selftest.py": "608a1cbfa7348445cb98c8f33764f3be5d9320dbcb461c2f4dd0e73eb320cfca"
+  },
+  "modes": [
+    {
+      "optimized": false,
+      "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+      "z3_version": "4.13.3.0",
+      "native_library_sha256": "7accc397d4ac387468b09489bdaff9d82bfac4ca6a7e339b8fbb2167edf9c1c0",
+      "solver_queries": 224,
+      "elapsed_seconds": 1.0472722009999984,
+      "false_panel_count": 9,
+      "fixed_witness_detected_false": 2,
+      "fixed_witness_inapplicable_false": 2,
+      "solver_detected_false_with_rational_counterexample": 9,
+      "all_expected_matched": true,
+      "inconclusive_count": 0,
+      "report_sha256": "92afa7f58036c68fc5956e9d8e63d19610a39eb8b4456bc1f63b87cf31612c3d",
+      "selftests": 20
+    },
+    {
+      "optimized": true,
+      "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+      "z3_version": "4.13.3.0",
+      "native_library_sha256": "7accc397d4ac387468b09489bdaff9d82bfac4ca6a7e339b8fbb2167edf9c1c0",
+      "solver_queries": 224,
+      "elapsed_seconds": 1.0631918910000309,
+      "false_panel_count": 9,
+      "fixed_witness_detected_false": 2,
+      "fixed_witness_inapplicable_false": 2,
+      "solver_detected_false_with_rational_counterexample": 9,
+      "all_expected_matched": true,
+      "inconclusive_count": 0,
+      "report_sha256": "42cb19ae6e6a3986d680916736928d6c9cea40fb2f64f8e91d16b5608594ea32",
+      "selftests": 20
+    }
+  ]
+}
