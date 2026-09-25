@@ -8,4 +8,13 @@
   "action": "grant_inventory_tip_pin_after_main_lands",
   "pulse": "batch322-soon-timer",
   "artifact": "portable/BATCH351_INV_TIP_PIN_EVIDENCE.json"
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "durable": "8/8_WRITABLE",
+  "lemma_closed": false,
+  "action": "inventory_preserve_durable_tip_pin",
+  "flipped_anything": false,
+  "goal": "OPEN",
+  "trial_tip_sha": "e118d9d727efe76a496799156a3b1cbc1d3679e8",
+  "scientific_effect": "NONE"
 }
