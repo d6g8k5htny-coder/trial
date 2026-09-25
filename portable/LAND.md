@@ -1,3 +1,7 @@
+## STATUS (Batch 343 status-guard)
+
+tip `fcad723` tip_match=true; eng: STATUS_GUARD tip_sha + inventory.tip_sha refreshed f244312→fcad723 (baseline→f244312; guard pass violations=0; no promotion); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 wake-tip)
 
 tip `fcad723` tip_match=true; WAKE343/340 living tip pins refreshed after tip-sync; wake_tip_at_assign preserved; lemma_closed=false; scientific effect NONE.

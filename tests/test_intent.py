@@ -15198,3 +15198,78 @@ def test_batch343_wake_living_tip_pins() -> None:
     assert "STATUS (Batch 343 wake-tip)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "wake living tip pins" in log_md.lower() or "WAKE living tip pins" in log_md
+
+
+def test_batch343_status_guard_tip_refresh_fcad723() -> None:
+    """Batch 343: STATUS_GUARD tip living @fcad723 after tip-sync; no promotion."""
+    import json
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("flipped_anything") is False
+    assert snap.get("pass") is True
+    assert snap.get("scientific_effect") == "NONE"
+    assert snap.get("violations") == []
+    # Live STATUS_GUARD tip supersedes across tip-sync; Batch 343 shipped fcad723.
+    assert _living_tip(str(snap.get("tip_sha", "")))
+    assert _living_tip(str(snap.get("baseline_tip_sha", "")))
+    inv = snap.get("inventory") or {}
+    assert _living_tip(str(inv.get("tip_sha", "")))
+    assert inv.get("packet_lemma_closed") is False
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH343_STATUS_GUARD_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "343"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "status_guard_tip_lag_f244312_after_tip_sync_fcad723"
+    )
+    assert brief.get("action") == "eng_status_guard_tip_refresh"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    # Historical brief keeps fcad723; live snapshot tip may move.
+    assert str(brief.get("tip", "")).startswith("fcad723")
+    assert str(brief.get("prior_tip", "")).startswith("f244312")
+    assert brief.get("tip_match") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH343_STATUS_GUARD_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == (
+        "status_guard_tip_lag_f244312_after_tip_sync_fcad723"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH343_STATUS_GUARD_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("guard_pass") is True
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert evidence.get("action") == "eng_status_guard_tip_refresh"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 343)
+    assert "STATUS_GUARD tip refresh" in unblock and "fcad723" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343 status-guard)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "STATUS_GUARD tip refresh" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343 status-guard)" in owner
+

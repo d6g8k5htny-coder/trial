@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 — STATUS_GUARD tip refresh f244312→fcad723 (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `STATUS_GUARD_SNAPSHOT` tip_sha + inventory.tip_sha lagged at `f244312` after tip-sync to `fcad723` (same class as Batch 333/341). Ran `guard_no_status_promotion` @ hardening `fcad723` → pass violations=0; tip→`fcad723`; baseline→`f244312`; open_premises=13 open_lemmas=1 open_prizes=3; no promotion.
+- Artifacts: `BATCH343_STATUS_GUARD_{BRIEF,HUNT,EVIDENCE}.json`. Goal OPEN. NEVER flip research.
+
 ### Batch 343 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
