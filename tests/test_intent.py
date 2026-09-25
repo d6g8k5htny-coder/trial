@@ -28,6 +28,7 @@ _LIVING_TIPS = (
     "542e6ec",
     "fa32d11",
     "8e359e5",
+    "bfb7c38",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -7051,7 +7052,7 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     assert audit.get("problems") == 0
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    # Batch 268+: living tip may supersede fa32d11 (now 8e359e5+); keep historical brief tip.
+    # Batch 268+: living tip may supersede fa32d11 (now bfb7c38+); keep historical brief tip.
     assert _living_tip(base_tip)
 
     verify = json.loads(
@@ -9519,7 +9520,8 @@ def test_batch269_verify_batch_release_align() -> None:
     rel = verify.get("release")
     assert rel == "batch241-path-c-bundle"
     assert verify.get("batch") == "241"
-    assert verify.get("refresh_batch") == "269"
+    # Living tip-refresh may advance refresh_batch (Batch 272+: 8e359e5→bfb7c38).
+    assert int(str(verify.get("refresh_batch") or "0")) >= 269
     assert verify.get("release_batch_aligned") is True
     assert verify.get("lemma_closed") is False
     assert verify.get("flipped_anything") is False
@@ -9531,7 +9533,7 @@ def test_batch269_verify_batch_release_align() -> None:
         (ROOT / "portable" / "patches" / "MANIFEST.json").read_text(encoding="utf-8")
     )
     assert str(manifest.get("verified_batch")) == "241"
-    assert str(manifest.get("refresh_batch")) == "269"
+    assert int(str(manifest.get("refresh_batch") or "0")) >= 269
 
     with tempfile.TemporaryDirectory(prefix="b269-verify-") as td:
         stamped = {
@@ -9564,7 +9566,7 @@ def test_batch269_verify_batch_release_align() -> None:
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
     assert "tip stable" in combined or "match=1" in combined
-    assert "8e359e5" in combined
+    assert _living_tip(combined)
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH269_BRIEF.json").read_text(encoding="utf-8")
