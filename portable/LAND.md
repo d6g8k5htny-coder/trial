@@ -1,3 +1,7 @@
+## STATUS (Batch 355 wake)
+
+tip `e3cd7d4` tip_match=true; MULTI_AGENT wake+assign 8 IDLE + 1 cloud Path C peers; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 355 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

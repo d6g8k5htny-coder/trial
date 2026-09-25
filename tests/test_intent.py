@@ -17632,6 +17632,61 @@ def test_batch354_living_script_stale_republish() -> None:
 
 
 
+def test_batch355_multi_agent_wake_assign() -> None:
+    """Batch 355: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
+    import json
+    import re
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH355.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 355
+    assert wake.get("wake355_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert wake.get("scientific_effect") == "NONE"
+    assert len(wake.get("woken_idle_agents") or []) >= 3
+    living = wake.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert _living_tip(str(wake.get("wake_tip_at_assign") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH355_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "355"
+    assert brief.get("action") == "multi_agent_wake_and_assign"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 355)
+    assert "WAKE355" in unblock or "MULTI_AGENT wake" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 wake)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_WAKE_BATCH355" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "stopped agents" in log_md and "Batch 355" in log_md
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 355
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_inv = re.search(r'return "(\d+)"', helper)
+    assert m_inv is not None
+    assert int(m_inv.group(1)) >= 355
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 355)
+
 def test_batch355_idle_tip_sync_watch() -> None:
     """Batch 355: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -17732,3 +17787,4 @@ def test_batch355_inventory_preserve_durable_tip_pin() -> None:
     assert "STATUS (Batch 355 inv-preserve-tip-pin)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 355" in log_md and "inventory_preserve_durable_tip_pin" in log_md
+

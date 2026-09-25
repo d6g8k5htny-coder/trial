@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 355 — MULTI_AGENT wake+assign stopped Path C agents (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Dylan ask: message stopped agents + assign Path C intent tasks → `portable/MULTI_AGENT_WAKE_BATCH355.json`.
+- Task-resume 8 IDLE peers: tip/eng cloud, eng hunt, grant dual-vector, CI audit, inventory tip-pin, tip/eng peer, research audit, tip cloud; spawned 1 tip/eng cloud peer.
+- Wake/inventory ultimate fallback + REFRESH default →355. Inventable skipped. action=`multi_agent_wake_and_assign`. Goal OPEN.
+
 ### Batch 355 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

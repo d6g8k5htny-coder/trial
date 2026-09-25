@@ -1,3 +1,12 @@
+## STATUS (Batch 355 wake)
+
+Hardening tip **stable** @ `e3cd7d4`. Dylan: message stopped agents + assign Path C tasks. Artifact: `MULTI_AGENT_WAKE_BATCH355.json` (8 IDLE Task-resume + 1 cloud peer). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/print_owner_unblock.sh | head -20
+python3 -m pytest tests/test_intent.py::test_batch355_multi_agent_wake_assign -q
+```
+
 ## STATUS (Batch 355 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; peer idle+soften+republish already — no tip-pin treadmill. Evidence: `portable/BATCH355_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
