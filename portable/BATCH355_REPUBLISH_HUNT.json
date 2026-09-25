@@ -1,19 +1,25 @@
 {
   "batch": "355",
-  "hunt": "living_script_stale_republish",
+  "generated_at_utc": "2026-09-25T21:04:18Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
   "defect_shipped": true,
   "defect_found": true,
-  "defect_id": "living_script_stale_after_batch355_lands",
-  "avoided": [
-    "promote inventable",
-    "flip lemma_closed",
-    "invent 0020",
-    "tip-sync"
-  ],
-  "tip_moved": false,
+  "defect_id": "living_script_stale_after_batch355_wake_assign",
   "hunt_0020": "NEGATIVE",
-  "generated_at_utc": "2026-09-25T21:02:03Z"
+  "action": "living_script_stale_republish",
+  "skip": [
+    "inventable",
+    "tip-sync (match=1)",
+    "fallbacks already @355",
+    "inventory tip lag=2 deferred (prefer living script_stale)",
+    "Intent allowlist already includes 355"
+  ],
+  "goal": "OPEN"
 }

@@ -1,29 +1,30 @@
 {
   "batch": "355",
-  "generated_at_utc": "2026-09-25T21:02:03Z",
+  "generated_at_utc": "2026-09-25T21:04:18Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
-  "tip_moved": false,
-  "path_c": "IDLE@0019",
+  "aligned": true,
   "durable": "8/8",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
-  "goal_complete": false,
-  "goal": "OPEN",
-  "inventable_promoted": false,
-  "defect_shipped": true,
-  "defect_found": true,
-  "defect_id": "living_script_stale_after_batch355_lands",
-  "bugs_fixed": [
-    "living batch241-path-c-bundle script_stale=1 (print_owner/inventory drift) \u2192 republish script_stale=0"
-  ],
-  "living": {
-    "tip_stale": 0,
-    "script_stale": 0
+  "action": "living_script_stale_republish",
+  "defect_id": "living_script_stale_after_batch355_wake_assign",
+  "before": {
+    "script_stale": 1,
+    "drift": [
+      "print_owner_unblock.sh",
+      "refresh_ai_agent_access_inventory.py"
+    ]
   },
-  "action": "eng_living_script_stale_republish",
-  "coordinator_bc": "bc-01a0cf1e",
-  "note": "tip stable @e3cd7d4; tip_sync_or_eng pulse; skip inventable"
+  "after": {
+    "script_stale": 0,
+    "tip_stale": 0,
+    "upload": "batch241-path-c-bundle --clobber --force"
+  },
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "note": "After MULTI_AGENT wake+assign bumped scripts, living release script_stale=1. Republish --force cleared drift. tip_match=1."
 }
