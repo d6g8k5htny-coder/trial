@@ -2,7 +2,7 @@
   "batch": "297",
   "generated_at_utc": "2026-09-25T13:22:00Z",
   "status": "tip_sync_after_main_84",
-  "waiting_ci": true,
+  "waiting_ci": false,
   "goal_complete": false,
   "lemma_closed": false,
   "scientific_effect": "NONE",
