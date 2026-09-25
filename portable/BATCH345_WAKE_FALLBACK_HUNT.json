@@ -1,0 +1,32 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:16:00Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "tip_moved": false,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344",
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "action": "eng_wake_ultimate_fallback_unfreeze",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @fcad723)",
+    "STATUS_GUARD already @fcad723",
+    "living tip_stale=0 script_stale=0"
+  ],
+  "evidence": {
+    "before_fallback": "341",
+    "after_fallback": "345",
+    "print_owner_before": "dual_headers_344_first",
+    "print_owner_after": "single_header_345",
+    "living_batch_n_with_tree": "345"
+  },
+  "goal": "OPEN"
+}
