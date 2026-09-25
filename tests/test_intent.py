@@ -17632,61 +17632,6 @@ def test_batch354_living_script_stale_republish() -> None:
 
 
 
-def test_batch355_multi_agent_wake_assign() -> None:
-    """Batch 355: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
-    import json
-    import re
-
-    wake = json.loads(
-        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH355.json").read_text(encoding="utf-8")
-    )
-    assert wake.get("batch") == 355
-    assert wake.get("wake355_on_main") is True
-    assert wake.get("lemma_closed") is False
-    assert wake.get("flipped_anything") is False
-    assert wake.get("action") == "multi_agent_wake_and_assign"
-    assert wake.get("scientific_effect") == "NONE"
-    assert len(wake.get("woken_idle_agents") or []) >= 3
-    living = wake.get("living") or {}
-    assert living.get("tip_stale") == 0
-    assert living.get("script_stale") == 0
-    assert _living_tip(str(wake.get("tip") or ""))
-    assert _living_tip(str(wake.get("wake_tip_at_assign") or ""))
-
-    brief = json.loads(
-        (ROOT / "portable" / "BATCH355_WAKE_BRIEF.json").read_text(encoding="utf-8")
-    )
-    assert brief.get("batch") == "355"
-    assert brief.get("action") == "multi_agent_wake_and_assign"
-    assert brief.get("lemma_closed") is False
-    assert brief.get("flipped_anything") is False
-    assert brief.get("tip_match") is True
-
-    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 355)
-    assert "WAKE355" in unblock or "MULTI_AGENT wake" in unblock
-    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 355 wake)" in land
-    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-    assert "MULTI_AGENT_WAKE_BATCH355" in owner
-    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
-    assert "stopped agents" in log_md and "Batch 355" in log_md
-
-    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
-        encoding="utf-8"
-    )
-    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
-    assert m is not None
-    assert int(m.group(1)) >= 355
-    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
-        encoding="utf-8"
-    )
-    m_inv = re.search(r'return "(\d+)"', helper)
-    assert m_inv is not None
-    assert int(m_inv.group(1)) >= 355
-    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    _assert_refresh_batch_tag_default_at_least(refresh, 355)
-
 def test_batch355_idle_tip_sync_watch() -> None:
     """Batch 355: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -17788,3 +17733,53 @@ def test_batch355_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 355" in log_md and "inventory_preserve_durable_tip_pin" in log_md
 
+def test_batch355_grant_inventory_refresh() -> None:
+    """Batch 355: inventory batch >=355 + durable 8/8; grant skip source=none."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 355
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    assert inv.get("sandbox", {}).get("readable") is True
+    assert inv.get("sandbox", {}).get("write") == "WRITABLE"
+    for d in inv.get("details") or []:
+        assert d.get("push") is True, d
+        assert d.get("write") == "WRITABLE", d
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH355_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "355"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert tiny.get("durable") == "8/8"
+    assert tiny.get("action") == "grant_inventory_refresh_batch355"
+    assert tiny.get("assignment") == "grant_check_dual_vector_8of8"
+    assert tiny.get("tip_match") is True
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("goal") == "OPEN"
+    assert _living_tip(str(tiny.get("tip", "")))
+    assert _living_tip(str(tiny.get("hardening_tip", "")))
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 355)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 grant)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "BATCH355_GRANT" in log_md or "grant_inventory_refresh_batch355" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 grant)" in owner

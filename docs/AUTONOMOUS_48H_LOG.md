@@ -21,12 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 355 — MULTI_AGENT wake+assign stopped Path C agents (2026-09-25)
+### Batch 355 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
-- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
-- Dylan ask: message stopped agents + assign Path C intent tasks → `portable/MULTI_AGENT_WAKE_BATCH355.json`.
-- Task-resume 8 IDLE peers: tip/eng cloud, eng hunt, grant dual-vector, CI audit, inventory tip-pin, tip/eng peer, research audit, tip cloud; spawned 1 tip/eng cloud peer.
-- Wake/inventory ultimate fallback + REFRESH default →355. Inventable skipped. action=`multi_agent_wake_and_assign`. Goal OPEN.
+- Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`76ccf1b`; INV_BATCH→355; coverage 8/8_WRITABLE.
+- Artifact `portable/BATCH355_GRANT.json`. NEVER flip research.
 
 ### Batch 355 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
@@ -117,7 +116,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 352 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
-- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`20d1d08`; INV_BATCH→352; coverage 8/8_WRITABLE.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`76ccf1b`; INV_BATCH→352; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH352_GRANT.json`. NEVER flip research.
 
 ### Batch 352 — living script_stale republish after inv tip-pin (2026-09-25)
@@ -270,7 +269,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 346 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
-- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`840de46` (living HEAD); INV_BATCH→346; coverage 8/8_WRITABLE.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`76ccf1b` (living HEAD); INV_BATCH→346; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH346_GRANT.json`. NEVER flip research.
 ### Batch 346 — MULTI_AGENT wake+assign stopped agents @e3cd7d4 (2026-09-25)
 
@@ -312,7 +311,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 345 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
-- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`2364c36` (living HEAD); INV_BATCH→345; coverage 8/8_WRITABLE.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`76ccf1b` (living HEAD); INV_BATCH→345; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH345_GRANT.json`. NEVER flip research.
 
 ### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
