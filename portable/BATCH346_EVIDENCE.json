@@ -1,0 +1,11 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "eng_fallback_unfreeze_345_to_346",
+  "flipped_anything": false,
+  "batch": "346",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-25T19:29:29Z"
+}

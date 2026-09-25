@@ -15072,7 +15072,7 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert 'return "345"' in helper or 'return "343"' in helper
+    assert re.search(r'return "(\d+)"', helper) and int(re.search(r'return "(\d+)"', helper).group(1)) >= 343
     assert 'return "340"' not in helper
     assert 'return "336"' not in helper
     assert 'return "340"' not in helper
@@ -15818,3 +15818,88 @@ def test_batch345_grant_inventory_tip_pin() -> None:
     assert brief.get("batch") == "345"
     assert brief.get("action") == "grant_inventory_tip_pin_after_tip_sync"
     assert brief.get("lemma_closed") is False
+
+
+def test_batch346_fallback_unfreeze() -> None:
+    """Batch 346: wake+inventory ultimate fallback no longer freezes at 345."""
+    import importlib.util
+    import json
+    import re
+    import sys
+    import tempfile
+    from pathlib import Path
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 346
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_fb = re.search(r'return "(\d+)"', helper)
+    assert m_fb is not None
+    assert int(m_fb.group(1)) >= 346
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 346
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 346)
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import post_batch322_wake_comments as wake  # type: ignore
+
+    assert int(wake._living_batch_n()) >= 346
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_ai_agent_access_inventory",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    td = tempfile.mkdtemp()
+    (Path(td) / "scripts").mkdir()
+    assert int(mod._living_inventory_batch(td)) >= 346
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH346_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "346"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "wake_inv_ultimate_fallback_frozen_at_345"
+    assert brief.get("action") == "eng_fallback_unfreeze_345_to_346"
+    assert brief.get("tip_match") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH346_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("defect_id") == "wake_inv_ultimate_fallback_frozen_at_345"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH346_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "eng_fallback_unfreeze_345_to_346"
+    assert evidence.get("goal") == "OPEN"
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 346" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346)" in owner

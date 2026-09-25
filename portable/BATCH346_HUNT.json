@@ -1,0 +1,14 @@
+{
+  "batch": "346",
+  "hunt": "fallback_unfreeze",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_fallback_unfreeze_345_to_346",
+  "defect_found": true,
+  "defect_shipped": true,
+  "defect_id": "wake_inv_ultimate_fallback_frozen_at_345",
+  "generated_at_utc": "2026-09-25T19:29:29Z"
+}

@@ -85,6 +85,8 @@ def _living_batch_n() -> str:
     Batch 345: last-resort hardcoded return bumped off frozen "341" so empty-tree
     fallback cannot lag living Batch 345 / print_owner header (same class as
     inventory ultimate fallback 336→340→343).
+    Batch 346: last-resort bumped off frozen "345" after living header 346
+    (same class as inventory ultimate fallback 343→345).
     """
     try:
         text = _PRINT_OWNER.read_text(encoding="utf-8")
@@ -100,7 +102,7 @@ def _living_batch_n() -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "345"
+    return "346"
 
 
 def batch_marker() -> str:

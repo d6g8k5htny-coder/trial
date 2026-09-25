@@ -54,6 +54,7 @@ def _living_inventory_batch(root: str) -> str:
     Batch 343: last-resort bumped off frozen "340" after tip-sync REFRESH default 343
     (same class as 336→340).
     Batch 345: last-resort bumped off frozen "343" after tip-sync REFRESH default 345.
+    Batch 346: last-resort bumped off frozen "345" after living print_owner header 346.
     """
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
@@ -79,7 +80,7 @@ def _living_inventory_batch(root: str) -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "345"
+    return "346"
 
 
 def _no_durable_probe(

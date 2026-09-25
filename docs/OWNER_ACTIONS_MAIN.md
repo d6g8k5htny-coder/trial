@@ -1,3 +1,11 @@
+## STATUS (Batch 346)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle). Eng: wake+inventory ultimate fallback unfreeze **345→346**; print_owner header 346; REFRESH default 346. Guard+research: `lemma_closed=false`. action=`eng_fallback_unfreeze_345_to_346`. Goal OPEN. Scientific effect: NONE.
+
+```bash
+python3 -c "from scripts.post_batch322_wake_comments import _living_batch_n; print(_living_batch_n())"
+```
+
 ## STATUS (Batch 345 grant-tip-pin)
 
 Inventory trial tip pinned after tip-sync @`e3cd7d4`. `lemma_closed=false`.

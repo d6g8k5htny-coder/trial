@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 346 — wake+inventory ultimate fallback unfreeze 345→346 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: last-resort hardcoded batch fallbacks in `post_batch322_wake_comments._living_batch_n` and `refresh_ai_agent_access_inventory._living_inventory_batch` were frozen at **345** while print_owner moved to Batch 346 — empty-tree fallback lag (same class as 341→345 / 340→343).
+- Also: print_owner header → 346; REFRESH_BATCH_TAG default → 346.
+- NEVER flip research.
+
 ### Batch 345 — inventory tip pin after tip-sync e3cd7d4 (2026-09-25)
 
 - Grant peer landed BATCH345_GRANT; tip then moved → tip-sync @`e3cd7d4`. Inventory trial tip lagged @`0cec02be`.

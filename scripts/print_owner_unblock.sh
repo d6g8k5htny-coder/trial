@@ -47,7 +47,8 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 345 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 346: wake+inventory ultimate fallback unfreeze 345→346 (empty-tree last-resort)"
+echo "=== Batch 346 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 345: tip-sync fcad723→e3cd7d4 after main #105 CONTRIBUTION_PLAN retire (keep-prior; NOT promoted); REFRESH default 345"
 echo " Batch 345: tip-sync fcad723→e3cd7d4 (keep-prior; inventable NOT promoted)"
 echo " Batch 345: inventory tip pin after tip-sync e3cd7d4 (preserve_durable; trial→HEAD)"

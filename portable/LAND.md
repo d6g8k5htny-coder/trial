@@ -1,3 +1,7 @@
+## STATUS (Batch 346)
+
+tip `e3cd7d4` tip_match=true; eng: wake+inventory ultimate fallback unfreeze 345→346; print_owner header 346; REFRESH default 346; Path C IDLE@0019; durable 8/8; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 grant-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory trial tip pin after tip-sync; preserve_durable 8/8; lemma_closed=false; scientific effect NONE.

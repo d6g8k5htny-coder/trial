@@ -1,0 +1,16 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:29:29Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_fallback_unfreeze_345_to_346",
+  "defect_id": "wake_inv_ultimate_fallback_frozen_at_345",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "note": "print_owner header 346; wake+inventory last-resort 345\u2192346; tip stable @e3cd7d4"
+}
