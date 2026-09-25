@@ -5,9 +5,15 @@ Emits one JSON dashboard so agents/owners can trust would-align *before* any
 push. Does not push, create refs, or open PRs.
 
 Exit codes:
-  0 — git am OK (or already post-Option-B) AND local auditor ALIGNED (would-align)
+  0 — tip already ALIGNED (ALREADY_ALIGNED, land_needed=false) OR git am OK
+      (or already post-Option-B) AND local auditor ALIGNED (would-align;
+      land_needed=true only when a land would change the tip)
   1 — patch apply or auditor failed (would NOT align)
   2 — transport / missing inputs
+
+Batch 264: ``would_align=true`` on ALREADY_ALIGNED means the tip *passes* the
+auditor — not that a land is needed. ``land_needed`` is the honest land gate;
+owner_land_path_b --dry-run must idle (not "re-run to land") when false.
 
 Scientific effect: NONE.
 """
@@ -77,6 +83,7 @@ def main() -> int:
         "patch": str(patch),
         "state": "UNKNOWN",
         "would_align": False,
+        "land_needed": False,
         "git_am_exit": None,
         "git_am_skipped_already_post_option_b": False,
         "default_tip_sha": None,
@@ -160,7 +167,9 @@ def main() -> int:
             report["local_auditor"] = pre_payload
             report["local_auditor_exit"] = pre.returncode
             report["local_auditor_stderr"] = pre.stderr.strip()[-300:] if pre.stderr else ""
+            # would_align=true: tip passes auditor. land_needed=false: do not land.
             report["would_align"] = True
+            report["land_needed"] = False
             report["state"] = "ALREADY_ALIGNED"
             text = json.dumps(report, indent=2, sort_keys=True)
             print(text)
@@ -208,6 +217,7 @@ def main() -> int:
 
         would = audit.returncode == 0 and auditor_payload.get("state") == "ALIGNED"
         report["would_align"] = would
+        report["land_needed"] = bool(would)
         report["state"] = "WOULD_ALIGN" if would else "WOULD_NOT_ALIGN"
 
         text = json.dumps(report, indent=2, sort_keys=True)

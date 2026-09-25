@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 264 (Path B dry-run ALREADY_ALIGNED re-run-to-land lie) — 2026-09-25 ~02:26 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** `path_b_dry_run` → `state=ALREADY_ALIGNED` `would_align=true`; `owner_land_path_b --dry-run` printed "Re-run without --dry-run to land"; live `owner_land_path_b` short-circuits "already ALIGNED — Path B land not needed" (Batch 241/242). Dry-run lied that a land was required.
+- **Defect shipped (avoid research-guard PACKET shape / probe durable file-token / path_c dry_run idle / release republish / grant dual-vector / long hygiene):** (1) `path_b_dry_run` emits `land_needed=false` on ALREADY_ALIGNED; (2) `owner_land_path_b --dry-run` idles when ALREADY_ALIGNED / land_needed=false.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial main land pending this batch. Scientific effect NONE.
+
 ### Batch 263 (research-guard NO_PACKET shape-stripped false promotions) — 2026-09-25 ~02:14 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

@@ -1,3 +1,7 @@
+## STATUS (Batch 264)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; Path B dry-run lied "re-run to land" on ALREADY_ALIGNED → land_needed=false + idle message; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 263)
 
 tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; research-guard NO_PACKET vs shape-stripped HAS_PACKET baseline falsely reported ~19 promotions → recover shape + exit 2; Batch 262 Intent CI env-scrub; lemma_closed=false; scientific effect NONE.
