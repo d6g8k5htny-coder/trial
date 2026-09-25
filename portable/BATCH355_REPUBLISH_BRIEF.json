@@ -10,7 +10,7 @@
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "action": "living_script_stale_republish",
-  "defect_id": "living_script_stale_after_batch355_wake_assign",
+  "defect_id": "living_script_stale_after_batch355_lands",
   "before": {
     "script_stale": 1,
     "drift": [
