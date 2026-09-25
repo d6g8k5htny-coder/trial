@@ -1,3 +1,11 @@
+## STATUS (Batch 359 eng-intent-json)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: repair corrupt `BATCH345_TIP_SYNC_HUNT.json`; restore tip-sync `defect_id`; soften Batch 230 living `PATH_C_STATUS.goal_complete` pin (goal OPEN). `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch230_path_c_landed tests/test_intent.py::test_batch345_tip_sync_e3cd7d4 -q
+```
+
 ## STATUS (Batch 360 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + last-resort frozen 359 — preserve_durable re-pin→HEAD; REFRESH/last-resort→360; living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.

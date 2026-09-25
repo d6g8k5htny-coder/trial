@@ -1,0 +1,25 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:59:13Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "defect_id": "batch345_tip_sync_json_corrupt_and_batch230_goal_complete_pin",
+  "defect_shipped": true,
+  "evidence": {
+    "pre": {
+      "test_batch345_tip_sync_e3cd7d4": "defect_id None; BATCH345_TIP_SYNC_HUNT.json JSONDecodeError missing comma + duplicate keys",
+      "test_batch230_path_c_landed": "PATH_C_STATUS.goal_complete False vs Intent hard True"
+    },
+    "post": "Intent green; tip stable e3cd7d4; lemma_closed=false; goal OPEN"
+  },
+  "action": "ship_eng_defect",
+  "goal": "OPEN",
+  "inventable_promoted": false
+}

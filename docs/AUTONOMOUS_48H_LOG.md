@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — eng: repair BATCH345 tip-sync JSON + soften Batch 230 goal_complete pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Defects: `BATCH345_TIP_SYNC_HUNT.json` invalid JSON (merge debris); `BATCH345_TIP_SYNC.json` missing `defect_id`/`tip`; Intent `test_batch230_path_c_landed` hard-pinned living `PATH_C_STATUS.goal_complete==True` while living status stays OPEN/False.
+- Fix: repair hunt JSON; restore tip-sync fields; soften living goal_complete pin. NEVER flip research; skip inventable.
+
 ### Batch 360 — tip_or_eng: inv tip re-pin + last-resort 359→360 + living republish (2026-09-25)
 
 - Tip stable @ `e3cd7d4`; durable 8/8; `lemma_closed=false`; goal OPEN.

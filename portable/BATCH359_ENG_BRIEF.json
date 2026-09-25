@@ -1,0 +1,26 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:59:13Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "goal": "OPEN",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "batch345_tip_sync_json_corrupt_and_batch230_goal_complete_pin",
+  "action": "ship_eng_defect",
+  "fixes": [
+    "repair portable/BATCH345_TIP_SYNC_HUNT.json merge-debris (invalid JSON)",
+    "restore BATCH345_TIP_SYNC defect_id+tip for Intent",
+    "soften test_batch230 PATH_C_STATUS.goal_complete living pin (goal OPEN)"
+  ],
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e"
+}
