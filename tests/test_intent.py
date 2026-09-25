@@ -18113,3 +18113,53 @@ def test_batch356_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 356" in log_md and "idle_no_commit" in log_md
 
+
+
+def test_batch356_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 356: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 356
+    assert inv.get("durable_writable") == "8/8"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH356_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("batch") == "356"
+    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("durable") == "8/8_WRITABLE"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("scientific_effect") == "NONE"
+    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
+    assert evidence.get("trial_tip_matches_live_head") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH356_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "356"
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r"=== Batch (\d+)\s", unblock)
+    assert headers and int(headers[0]) >= 356 and len(headers) == 1
+    assert "inventory_preserve_durable_tip_pin" in unblock
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+    assert "e3cd7d4" in base_tip
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 356 inv-preserve-tip-pin)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 356" in log_md and "inventory_preserve_durable_tip_pin" in log_md
