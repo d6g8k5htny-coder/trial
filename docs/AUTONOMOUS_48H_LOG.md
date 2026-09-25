@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 256 (aligned_drift_watch restore/snapshot race + audit rate-limit retry) — 2026-09-25 ~00:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative. Main CI recent failures: **0**.
+- **Evidence:** after Path B restore, `aligned_drift_watch` flipped `report["state"]` from post-restore audit but left `report["audit"]` / `default_tip_sha` pre-restore → `ALIGNED_DRIFT_SNAPSHOT` could show state=ALIGNED with the old MISALIGNED tip SHA + markers. Concurrent restores had no lock. `audit_main_alignment` preferred a token but did not retry HTTP 429 / secondary rate-limit 403 (historical Intent exit-2 flake). `land-path-c` `workflow_dispatch` still 403 for ghs (expected); repository_dispatch idle already-on-tip.
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene / not when_writable install_has_main / not probe unique refs / not release republish):** (1) `_promote_post_restore_audit` copies post-restore audit into primary audit fields before snapshot; (2) nonblocking `fcntl` flock on `portable/.aligned_drift_restore.lock`; (3) `audit_main_alignment.get_json` retries rate-limits (`AUDIT_TRANSPORT_RETRIES` / `AUDIT_TRANSPORT_SLEEP_S`); (4) guard pass line prints `tip_sha`.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 255 (living Path C release assets stale vs pack → republish) — 2026-09-25 ~00:30 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts / tip-observe #73 — **skipped**. No green eng merge candidates. 0020 hunt: negative.

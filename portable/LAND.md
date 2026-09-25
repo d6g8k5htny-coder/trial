@@ -1,6 +1,11 @@
-## STATUS (Batch 255)
+## STATUS (Batch 256)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; living release pack stale → republish helper + clobber `batch241-path-c-bundle` shipped via PR #73 @`6f16c04`; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; aligned_drift_watch restore/snapshot race (stale pre-restore tip in snapshot) + flock + `audit_main_alignment` 429/rate-limit retry shipped; lemma_closed=false; scientific effect NONE.
+
+> ## STATUS (Batch 255)
+>
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; living release pack stale → republish helper + clobber `batch241-path-c-bundle` shipped via PR #73 @`6f16c04`; lemma_closed=false; scientific effect NONE.
+>
 
 > ## STATUS (Batch 254)
 >

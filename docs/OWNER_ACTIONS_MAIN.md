@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 256)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped `aligned_drift_watch` post-restore audit promotion + nonblocking restore flock (snapshot tip no longer races state) and `audit_main_alignment` retries on HTTP 429 / secondary rate-limit 403. Guard pass line prints `tip_sha`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/aligned_drift_watch.py --dry-run --no-probe   # route + snapshot fields
+python3 scripts/audit_main_alignment.py                       # retries rate-limit transport
+./scripts/refresh_path_c_bundle.sh --dry-run                  # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run              # idle_path_c_done
+```
+
 ## STATUS (Batch 255)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Living release `batch241-path-c-bundle` tgz was stale vs pack (268996→~345k; missing Batch 245–254 script fixes). Shipped `scripts/republish_living_path_c_release.sh` (pack+compare+`--clobber` upload when newer) and republished assets. `lemma_closed=false`. Scientific effect: NONE.

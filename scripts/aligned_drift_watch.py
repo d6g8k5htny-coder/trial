@@ -27,6 +27,7 @@ Scientific effect: NONE.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import importlib.util
 import json
 import os
@@ -46,6 +47,8 @@ PATH_C_STATUS = ROOT / "scripts" / "write_path_c_status.py"
 WHEN_WRITABLE = ROOT / "scripts" / "when_writable_land.py"
 SNAPSHOT = ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json"
 PATH_C_STATUS_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
+# Batch 256: serialize concurrent Path B restores (hourly watch + agent + lander).
+RESTORE_LOCK = ROOT / "portable" / ".aligned_drift_restore.lock"
 
 # Prefer Path B for restore when MISALIGNED; Path A is the alternate
 # (PR #2 ready/merge or revert-of-revert). Path C is post-ALIGNED hardening.
@@ -252,6 +255,9 @@ def _maybe_restore(report: dict, batch: str, *, dry_run: bool = False) -> dict:
     """Run restore_main_face when MISALIGNED + Path-B-capable write.
 
     Batch 240: child env carries MAIN_PUSH_TOKEN (discovered; never printed).
+    Batch 256: non-blocking flock so concurrent watchers do not race two Path B
+    lands; caller must promote post-restore audit into report["audit"] before
+    snapshot (otherwise state=ALIGNED while tip SHA stays pre-restore).
     """
     detail: dict = {
         "attempted": False,
@@ -262,6 +268,7 @@ def _maybe_restore(report: dict, batch: str, *, dry_run: bool = False) -> dict:
         "dry_run": dry_run,
         "route": ROUTE_WHEN_MISALIGNED,
         "token_source": _TOKEN_SOURCE,
+        "lock": "portable/.aligned_drift_restore.lock",
     }
     if report.get("state") != "MISALIGNED":
         detail["skipped_reason"] = "not_misaligned"
@@ -280,20 +287,67 @@ def _maybe_restore(report: dict, batch: str, *, dry_run: bool = False) -> dict:
         detail["would_run"] = cmd
         detail["attempted"] = False
         return detail
-    detail["attempted"] = True
-    proc = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        check=False,
-        timeout=300,
-        cwd=str(ROOT),
-        env=_CHILD_ENV,
-    )
-    detail["exit"] = proc.returncode
-    detail["stdout_tail"] = (proc.stdout or "")[-2000:]
-    detail["stderr_tail"] = (proc.stderr or "")[-2000:]
-    return detail
+
+    RESTORE_LOCK.parent.mkdir(parents=True, exist_ok=True)
+    lock_fh = None
+    try:
+        lock_fh = open(RESTORE_LOCK, "a+", encoding="utf-8")
+        try:
+            fcntl.flock(lock_fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            detail["skipped_reason"] = "restore_lock_held"
+            return detail
+        lock_fh.seek(0)
+        lock_fh.truncate()
+        lock_fh.write(f"pid={os.getpid()} batch={batch}\n")
+        lock_fh.flush()
+
+        detail["attempted"] = True
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=300,
+            cwd=str(ROOT),
+            env=_CHILD_ENV,
+        )
+        detail["exit"] = proc.returncode
+        detail["stdout_tail"] = (proc.stdout or "")[-2000:]
+        detail["stderr_tail"] = (proc.stderr or "")[-2000:]
+        return detail
+    finally:
+        if lock_fh is not None:
+            try:
+                fcntl.flock(lock_fh.fileno(), fcntl.LOCK_UN)
+            except OSError:
+                pass
+            try:
+                lock_fh.close()
+            except OSError:
+                pass
+
+
+def _promote_post_restore_audit(report: dict, audit2: dict | None, audit_ec2: int) -> None:
+    """Batch 256: keep snapshot tip/markers consistent with post-restore state.
+
+    Without this, restore can flip report['state'] to ALIGNED while report['audit']
+    (and therefore ALIGNED_DRIFT_SNAPSHOT.default_tip_sha + markers) still holds the
+    pre-restore MISALIGNED tip — a restore/snapshot race.
+    """
+    if audit2:
+        report["post_restore_audit"] = audit2
+        report["audit"] = audit2
+        tip = audit2.get("default_tip_sha")
+        if tip:
+            report["default_tip_sha"] = tip
+    if audit_ec2 == 0:
+        report["state"] = "ALIGNED"
+    elif audit_ec2 == 1:
+        report["state"] = "MISALIGNED"
+    else:
+        report["state"] = "TRANSPORT_ERROR"
+    report["preferred_restore_route"] = _preferred_restore_route(report["state"])
 
 
 def _should_auto_restore(
@@ -470,20 +524,13 @@ def main() -> int:
 
     if do_restore:
         report["restore"] = _maybe_restore(report, args.batch, dry_run=args.dry_run)
-        # Re-audit after restore attempt so exit code reflects post-restore tip.
+        # Re-audit after restore attempt so exit code + snapshot reflect tip.
         if report["restore"].get("attempted"):
             audit_ec2, audit2, audit_err2 = _run_json([sys.executable, str(AUDIT)])
             report["post_restore_audit_exit"] = audit_ec2
             report["post_restore_audit_stderr"] = audit_err2
-            if audit2:
-                report["post_restore_audit"] = audit2
-            if audit_ec2 == 0:
-                report["state"] = "ALIGNED"
-            elif audit_ec2 == 1:
-                report["state"] = "MISALIGNED"
-            else:
-                report["state"] = "TRANSPORT_ERROR"
-            report["preferred_restore_route"] = _preferred_restore_route(report["state"])
+            # Batch 256: promote audit2 into primary audit before snapshot write.
+            _promote_post_restore_audit(report, audit2, audit_ec2)
 
     if not args.no_snapshot:
         _write_snapshot(report, Path(args.snapshot))
