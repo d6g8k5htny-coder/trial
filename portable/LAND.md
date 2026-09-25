@@ -1,3 +1,6 @@
+## STATUS (Batch 359 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + REFRESH/last-resort 358→359; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
 ## STATUS (Batch 359 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — tip_or_eng: inv tip re-pin + last-resort unfreeze (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`bedc8d4` after Batch 358 lands — PRESERVE_DURABLE re-pin→HEAD; REFRESH/last-resort 358→359.
+- Artifacts: `BATCH359_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
 ### Batch 359 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
