@@ -39,7 +39,7 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "pack_portable: -h/--help prints usage (exit 0); other dash-options exit 2 — never treat as OUT.tgz (pre-278 wrote --help tarball + stamped living pin)",
+  "automation_improvement": "pack_portable: -h/--help prints usage (exit 0); other dash-options exit 2 \u2014 never treat as OUT.tgz (pre-278 wrote --help tarball + stamped living pin)",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
   "main_pr_or_null": null,
   "when_writable_idle": "idle_path_c_done",
@@ -47,11 +47,11 @@
   "refresh_dry_run": "tip_stable_bfb7c38",
   "green_eng_prs_merged": [],
   "evidence": {
-    "repro_pre278": "bash scripts/pack_portable.sh --help → wrote ./--help (~480KB) + stamped LIVING pin",
+    "repro_pre278": "bash scripts/pack_portable.sh --help \u2192 wrote ./--help (~480KB) + stamped LIVING pin",
     "post278_help": "exit 0 usage; no OUT file; living pin untouched",
-    "post278_unknown_opt": "bash scripts/pack_portable.sh --force → exit 2",
+    "post278_unknown_opt": "bash scripts/pack_portable.sh --force \u2192 exit 2",
     "post278_explicit_out": "bash scripts/pack_portable.sh /tmp/pack.tgz still packs",
-    "pack_vs_release_bytes": "481183 vs 386608 — asset republish deferred",
+    "pack_vs_release_bytes": "481183 vs 386608 \u2014 asset republish deferred",
     "apply_all_check": "already-applied @ bfb7c38 IDLE_PATH_C_DONE",
     "owner_verify_277": "already_fixed_skipped",
     "republish_276": "already_fixed_skipped",
@@ -76,5 +76,8 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "6d48999",
+  "trial_main_land_full": "6d48999a113f32904b87c6ac7d9319972e17c266",
+  "trial_main_land_method": "direct_push_main_pr_create_403"
 }
