@@ -1,4 +1,4 @@
-"""Independent final boundary review of main PR98 gate successor cc6a578.
+"""Independent final boundary review of main PR98 gate successor 2d3374c (E6 successor).
 
 Green means the listed safety properties reproduced on the exact immutable source.
 It is engineering evidence only, never mathematical/scientific acceptance.
@@ -6,8 +6,8 @@ It is engineering evidence only, never mathematical/scientific acceptance.
 from pathlib import Path
 import argparse, hashlib, json, os, subprocess, sys, tempfile
 
-SUBJECT="cc6a578b26f14a16025f4c955fe5efdd65890b1f"
-ADAPTER_SHA256="2213ca74a3b5fd74fcbbd915c324adc7660ca04a5f9a2e146499a64dff48b85e"
+SUBJECT="2d3374c5827650f5c9b462a77b29e17b998dbd96"
+ADAPTER_SHA256="3ebcbb8a7f9822763bc6e75ac2402741144410d5d0dfdc636d34216cd0665420"
 
 def git(root,*args,ok=True):
     p=subprocess.run(["git","-C",str(root),*args],capture_output=True,text=True,timeout=30)
@@ -167,6 +167,29 @@ def c_precision_upgrade(subject,opt):
         write(root/"claims/graph.json",g2);after=commit(root,"precision upgrade");rc,r=run(subject,root,before,after,opt)
         return rc==0 and r.get("transition_ok") is True and "P" in (r.get("coverage_repairs") or [])
 
+
+def c_precision_upgrade_semantic_change(subject,opt):
+    """E6: a binding-precision migration cannot erase simultaneous claim semantics."""
+    with tempfile.TemporaryDirectory() as d:
+        root=Path(d);g=graph(controlling_t=True)
+        g["claims"]["T"].pop("source")
+        g["claims"]["T"]["source_bindings"]=[bind("theorem.md")]
+        g["claims"]["T"]["statement"]="original theorem statement"
+        before=init(root,g)
+        body=(root/"theorem.md").read_bytes()
+        g2=json.loads((root/"claims/graph.json").read_text())
+        g2["claims"]["T"]["statement"]="SEMANTICALLY CHANGED theorem statement"
+        g2["claims"]["T"]["source_bindings"]=[bind(
+            "theorem.md",role="scientific_object",extraction_rule="whole_file",
+            expected_sha256=fresh_expected(body),
+            mirror_freshness="external_sync_obligation")]
+        write(root/"claims/graph.json",g2)
+        after=commit(root,"precision upgrade plus semantics")
+        rc,r=run(subject,root,before,after,opt)
+        return (rc!=0 and r.get("transition_ok") is False
+                and "T" in (r.get("controlling_impacted") or [])
+                and "T" not in (r.get("coverage_repairs") or []))
+
 CASES=[
  ("owner_propagation",c_owner_propagation),("owner_controlling_refusal",c_owner_controlling),
  ("malformed_old_crosswalk",c_malformed_old_crosswalk),("cross_repo_refusal",c_cross_repo_refusal),
@@ -174,6 +197,7 @@ CASES=[
  ("wrapper_only_noise",c_wrapper_only),("scientific_body_drift",c_body_drift),
  ("informational_carrier_noise",c_informational_noise),("stale_freshness",c_stale_freshness),
  ("precision_upgrade",c_precision_upgrade),
+ ("precision_upgrade_semantic_change",c_precision_upgrade_semantic_change),
 ]
 
 def main():
