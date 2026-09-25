@@ -1,3 +1,11 @@
+## STATUS (Batch 357 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0 — skip tip-pin treadmill. Evidence: `portable/BATCH357_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 356 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: landed rebase conflict markers cleaned (LOG/LAND/OWNER/print_owner) + preserve_durable inv tip re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`eng_conflict_marker_fix_and_inv_tip_repin`.

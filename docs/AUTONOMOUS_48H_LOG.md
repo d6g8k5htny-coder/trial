@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 357 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; living current — skip tip-pin treadmill. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 356 — conflict-marker cleanup + inv tip re-pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
