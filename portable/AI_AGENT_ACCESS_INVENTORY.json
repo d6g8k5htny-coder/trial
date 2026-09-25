@@ -1,10 +1,268 @@
 {
-  "generated_at_utc": "2026-09-25T20:40:30Z",
+  "active_sandbox_read": 404,
+  "active_writable": "1/8",
+  "apps": [
+    {
+      "app_url": "https://github.com/apps/cursor",
+      "fallback": null,
+      "http_status": 200,
+      "install_url": "https://github.com/apps/cursor/installations/new",
+      "label": "Cursor",
+      "official_documented": true,
+      "owner_hint": "select ALL repositories including sandbox",
+      "slug": "cursor"
+    },
+    {
+      "app_url": "https://github.com/apps/chatgpt-codex-connector",
+      "fallback": null,
+      "http_status": 200,
+      "install_url": "https://github.com/apps/chatgpt-codex-connector/installations/new",
+      "label": "ChatGPT Codex Connector",
+      "official_documented": true,
+      "owner_hint": "select ALL repositories including sandbox",
+      "slug": "chatgpt-codex-connector"
+    },
+    {
+      "app_url": "https://github.com/apps/claude",
+      "fallback": null,
+      "http_status": 200,
+      "install_url": "https://github.com/apps/claude/installations/new",
+      "label": "Claude",
+      "official_documented": true,
+      "owner_hint": "select ALL repositories including sandbox",
+      "slug": "claude"
+    },
+    {
+      "app_url": "https://github.com/apps/grok",
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
+      "http_status": 404,
+      "install_url": null,
+      "label": "Grok (xAI)",
+      "official_documented": false,
+      "owner_hint": "PAT on ALL 8 repos including sandbox",
+      "slug": "grok"
+    },
+    {
+      "app_url": "https://github.com/apps/xai",
+      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
+      "http_status": 404,
+      "install_url": null,
+      "label": "xAI",
+      "official_documented": false,
+      "owner_hint": "PAT on ALL 8 repos including sandbox",
+      "slug": "xai"
+    }
+  ],
+  "apps_documented": [
+    "cursor",
+    "chatgpt-codex-connector",
+    "claude",
+    "grok-pat-fallback"
+  ],
   "batch": "353",
+  "details": [
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/google-drive",
+      "push": true,
+      "pushed_at": "2026-09-25T20:28:48Z",
+      "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/governance-",
+      "push": true,
+      "pushed_at": "2026-09-25T20:39:59Z",
+      "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/main",
+      "push": true,
+      "pushed_at": "2026-09-25T20:39:45Z",
+      "tip_sha": "29db294db136fffe95d93b21d4e34f547f6b4bd0",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/Math-",
+      "push": true,
+      "pushed_at": "2026-09-25T20:39:47Z",
+      "tip_sha": "ac868b2b31d0995b75dd697f19d4c94735179a38",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/meta-framework",
+      "push": true,
+      "pushed_at": "2026-09-25T20:36:52Z",
+      "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/query-",
+      "push": true,
+      "pushed_at": "2026-09-25T20:38:14Z",
+      "tip_sha": "a61656fc7cbe704f5b874e1cae08637fb914227f",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/sandbox",
+      "push": true,
+      "pushed_at": "2026-09-25T18:47:27Z",
+      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
+      "write": "WRITABLE"
+    },
+    {
+      "admin": true,
+      "default_branch": "main",
+      "has_agents": true,
+      "name": "d6g8k5htny-coder/trial",
+      "push": true,
+      "pushed_at": "2026-09-25T20:40:15Z",
+      "tip_sha": "fa9b870cd35d581e255261681bb2f976cb9a420a",
+      "write": "WRITABLE"
+    }
+  ],
+  "durable_sandbox_read": 200,
+  "durable_sibling_coverage": "8/8_WRITABLE",
+  "durable_writable": "8/8",
+  "flipped_anything": false,
+  "generated_at_utc": "2026-09-25T20:40:30Z",
+  "gh_api_inventory": [
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "google-drive",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "governance-",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "Math-",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "meta-framework",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "query-",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "sandbox",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": true
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "trial",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    },
+    {
+      "api_ok": true,
+      "http_status": 200,
+      "name": "main",
+      "permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "private": false
+    }
+  ],
   "install_has_main": false,
+  "install_has_sandbox": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
   ],
+  "lemma_closed": false,
+  "main_writable": true,
+  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "note": "Batch 325b: inventory tip @0b81007 (living main pre-land); durable 8/8; lemma_closed=false.",
+  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -39,279 +297,21 @@
       "perm": "push"
     }
   ],
-  "details": [
-    {
-      "name": "d6g8k5htny-coder/google-drive",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:28:48Z",
-      "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/governance-",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:39:59Z",
-      "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/main",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:39:45Z",
-      "tip_sha": "29db294db136fffe95d93b21d4e34f547f6b4bd0",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/Math-",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:39:47Z",
-      "tip_sha": "ac868b2b31d0995b75dd697f19d4c94735179a38",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/meta-framework",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:36:52Z",
-      "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/query-",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:38:14Z",
-      "tip_sha": "a61656fc7cbe704f5b874e1cae08637fb914227f",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/sandbox",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T18:47:27Z",
-      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
-      "has_agents": true,
-      "write": "WRITABLE"
-    },
-    {
-      "name": "d6g8k5htny-coder/trial",
-      "push": true,
-      "admin": true,
-      "default_branch": "main",
-      "pushed_at": "2026-09-25T20:40:15Z",
-      "tip_sha": "b2703aa5c5ffe1a2f0ca23e79c1602bd4e641e9c",
-      "has_agents": true,
-      "write": "WRITABLE"
-    }
-  ],
   "repos_count": 8,
-  "sibling_write_count": 8,
-  "scientific_effect": "NONE",
-  "lemma_closed": false,
-  "flipped_anything": false,
-  "token_printed": false,
-  "note": "Batch 325b: inventory tip @0b81007 (living main pre-land); durable 8/8; lemma_closed=false.",
-  "main_writable": true,
-  "sandbox_added": true,
+  "repository_selection": "selected",
   "sandbox": {
-    "readable": true,
-    "write": "WRITABLE",
-    "has_agents": true,
-    "tip": "49ae345",
     "app_read_http": 404,
     "durable_read_http": 200,
-    "main_push_token_secret": true
+    "has_agents": true,
+    "main_push_token_secret": true,
+    "readable": true,
+    "tip": "49ae345",
+    "write": "WRITABLE"
   },
-  "apps_documented": [
-    "cursor",
-    "chatgpt-codex-connector",
-    "claude",
-    "grok-pat-fallback"
-  ],
-  "apps": [
-    {
-      "slug": "cursor",
-      "label": "Cursor",
-      "app_url": "https://github.com/apps/cursor",
-      "install_url": "https://github.com/apps/cursor/installations/new",
-      "http_status": 200,
-      "official_documented": true,
-      "fallback": null,
-      "owner_hint": "select ALL repositories including sandbox"
-    },
-    {
-      "slug": "chatgpt-codex-connector",
-      "label": "ChatGPT Codex Connector",
-      "app_url": "https://github.com/apps/chatgpt-codex-connector",
-      "install_url": "https://github.com/apps/chatgpt-codex-connector/installations/new",
-      "http_status": 200,
-      "official_documented": true,
-      "fallback": null,
-      "owner_hint": "select ALL repositories including sandbox"
-    },
-    {
-      "slug": "claude",
-      "label": "Claude",
-      "app_url": "https://github.com/apps/claude",
-      "install_url": "https://github.com/apps/claude/installations/new",
-      "http_status": 200,
-      "official_documented": true,
-      "fallback": null,
-      "owner_hint": "select ALL repositories including sandbox"
-    },
-    {
-      "slug": "grok",
-      "label": "Grok (xAI)",
-      "app_url": "https://github.com/apps/grok",
-      "install_url": null,
-      "http_status": 404,
-      "official_documented": false,
-      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
-      "owner_hint": "PAT on ALL 8 repos including sandbox"
-    },
-    {
-      "slug": "xai",
-      "label": "xAI",
-      "app_url": "https://github.com/apps/xai",
-      "install_url": null,
-      "http_status": 404,
-      "official_documented": false,
-      "fallback": "fine-grained PAT + optional owner-supplied collaborator usernames",
-      "owner_hint": "PAT on ALL 8 repos including sandbox"
-    }
-  ],
-  "install_has_sandbox": false,
-  "repository_selection": "selected",
-  "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
+  "sandbox_added": true,
+  "scientific_effect": "NONE",
   "script": "scripts/owner_grant_ai_agent_access.sh",
-  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret_trial_main_sandbox",
-  "gh_api_inventory": [
-    {
-      "name": "google-drive",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "governance-",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "Math-",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "meta-framework",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "query-",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "sandbox",
-      "api_ok": true,
-      "http_status": 200,
-      "private": true,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "trial",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    },
-    {
-      "name": "main",
-      "api_ok": true,
-      "http_status": 200,
-      "private": false,
-      "permissions": {
-        "admin": true,
-        "maintain": true,
-        "push": true,
-        "triage": true,
-        "pull": true
-      }
-    }
-  ],
-  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
-  "durable_sibling_coverage": "8/8_WRITABLE",
-  "active_writable": "1/8",
-  "durable_writable": "8/8",
-  "active_sandbox_read": 404,
-  "durable_sandbox_read": 200
+  "sibling_write_count": 8,
+  "token_printed": false,
+  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret_trial_main_sandbox"
 }

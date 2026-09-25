@@ -2,6 +2,10 @@
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
 
+## STATUS (Batch 353 inv-tip-repin)
+
+tip `e3cd7d4` tip_match=true; inventory tip re-pin→HEAD after living republish land; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 353 living-republish + inv-tip-pin)
 
 tip `e3cd7d4` tip_match=true; eng: living script_stale republish + inventory tip pin→HEAD; durable 8/8; lemma_closed=false; scientific effect NONE.
