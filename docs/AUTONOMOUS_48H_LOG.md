@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 322 — grant dual-vector inventory freshness (2026-09-25)
+
+- `./scripts/owner_grant_ai_agent_access.sh --check` this wake: App **1/8** (trial-only; sandbox 404); durable `durable_token_source=none` → **0/8** / `no_token` (grant **not** 8/8 on this VM).
+- Tip already synced @ `077464e` (Batch 317 after main #89); peer tip-sync agent running but BASE==LIVE — complementary eng only (no duplicate tip-sync).
+- Docs: `MULTI_AGENT_ACCESS.md` capability table now records this-VM durable absence while retaining last-confirmed **8/8 WRITABLE** / device **SUCCESS** language (Batch 303/321).
+- Inventory: batch 322; dual_vector_check evidence; trial tip_sha→`695530b`; `durable_sibling_coverage=no_token` + `last_durable_sibling_coverage=8/8_WRITABLE`.
+- Softened Batch 321 living inventory batch/coverage asserts; Intent test for Batch 322.
+- **NEVER flip research:** `lemma_closed=false`; `flipped_anything=false`; scientific effect NONE.
+
 ### Batch 321 — soften live tip Intent pins + refresh inventory (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

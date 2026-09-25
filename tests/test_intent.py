@@ -12327,6 +12327,9 @@ def test_batch303_align_repos_multi_agent_dual_vector() -> None:
     # Stale App-only single-column table must not return.
     assert "Device-flow user token | pending" not in doc
     assert "| Push `main` / other owner repos | **no**" not in doc
+    # Batch 322+: living table may record durable_token_source=none this VM while
+    # still retaining last-confirmed 8/8 WRITABLE language from Batch 303/321.
+    assert "durable_token_source=none" in doc or "Last confirmed" in doc
 
     grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
         encoding="utf-8"
@@ -12782,11 +12785,15 @@ def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "321"
+    # Living inventory batch supersedes (Batch 322+ may refresh after dual-vector probe).
+    assert str(inv.get("batch", "")).isdigit() and int(inv.get("batch") or 0) >= 321
     assert inv.get("lemma_closed") is False
     assert inv.get("flipped_anything") is False
     assert inv.get("scientific_effect") == "NONE"
-    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    # Batch 321 confirmed 8/8; Batch 322 wake may record no_token when durable absent.
+    assert inv.get("durable_sibling_coverage") in ("8/8_WRITABLE", "no_token")
+    if inv.get("durable_sibling_coverage") == "no_token":
+        assert inv.get("last_durable_sibling_coverage") == "8/8_WRITABLE"
     assert int(inv.get("sibling_write_count") or 0) == 8
     assert inv.get("main_writable") is True
     details = inv.get("details") or []
@@ -12799,4 +12806,60 @@ def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 321" in log_md
     assert "living tip" in log_md.lower() or "_living_tip" in log_md or "live tip" in log_md.lower()
+
+
+def test_batch322_grant_dual_vector_inventory_freshness() -> None:
+    """Batch 322: MULTI_AGENT capability + inventory match grant --check dual-vector."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH322_ALIGN.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "322"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("tip_match") is True
+    assert tiny.get("grant_8of8_this_vm") is False
+    assert tiny.get("active_writable") == "1/8"
+    assert tiny.get("durable_sibling_coverage") == "no_token"
+    assert tiny.get("action") == "docs_inventory_dual_vector_freshness"
+    assert tiny.get("tip_sync") == "skipped_peer_already_synced_077464e"
+
+    doc = (ROOT / "docs" / "MULTI_AGENT_ACCESS.md").read_text(encoding="utf-8")
+    assert "durable_token_source=none" in doc
+    assert "8/8 WRITABLE" in doc
+    assert "**SUCCESS**" in doc
+    assert "Dual-vector" in doc
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("batch") == "322"
+    assert inv.get("durable_sibling_coverage") == "no_token"
+    assert inv.get("last_durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("last_durable_probe_batch") == "321"
+    probe = inv.get("dual_vector_check") or {}
+    assert probe.get("active_writable") == "1/8"
+    assert probe.get("durable_token_source") == "none"
+    assert probe.get("durable_sibling_coverage") == "no_token"
+    assert probe.get("grant_8of8_this_vm") is False
+    assert probe.get("base_tip_match") is True
+    details = {d["name"]: d for d in (inv.get("details") or [])}
+    trial = details.get("d6g8k5htny-coder/trial") or {}
+    assert str(trial.get("tip_sha", "")).startswith("695530b")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 322" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 322)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 322)" in owner
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 

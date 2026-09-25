@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 322)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE after Batch 317 tip-sync — no duplicate tip-sync). Default tip ALIGNED @ `72558a5`. Grant dual-vector **this VM**: App ambient **1/8** (trial-only; sandbox 404); durable `MAIN_PUSH_TOKEN` **absent** (`durable_token_source=none` → probe skipped / **not** 8/8). Last durable **8/8 WRITABLE** confirmation remains Batch 321 when token was present. Shipped: `MULTI_AGENT_ACCESS.md` capability table + `AI_AGENT_ACCESS_INVENTORY.json` freshness vs live `--check` evidence; trial tip_sha→`695530b`. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`docs_inventory_dual_vector_freshness`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check   # dual-vector; this VM: App 1/8 + durable no_token
+./scripts/refresh_path_c_bundle.sh --dry-run       # tip stable @ 077464e
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 317)
 
 Hardening tip **synced** `0adeb65`→`077464e` after main **#89** tip-observe merge into hardening (tip_match=true; Path C idle; BASE==LIVE after sync). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). **#89 MERGED**; **#87 OPEN DRAFT** research (skipped). Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 317 + `_LIVING_TIPS+=077464e`. Inventable tip-observe NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.

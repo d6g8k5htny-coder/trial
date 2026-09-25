@@ -152,24 +152,28 @@ export AI_COLLAB_USERNAMES='login1,login2'   # owner-supplied only
 
 Dual-vector — same split as `./scripts/owner_grant_ai_agent_access.sh --check`
 (Batch 259+). Do **not** collapse App/ghs DENIED into durable-write failure.
+Do **not** claim durable **8/8 WRITABLE** on a wake where `--check` prints
+`durable_token_source=none` (Batch 322).
 
 | Capability | App / ghs (ambient install) | Durable device / `MAIN_PUSH_TOKEN` |
 |------------|-----------------------------|------------------------------------|
-| Push `trial` | yes | yes |
-| Push `main` + other `repositoryDependencies` | **no** (403; install trial-only) | **yes** (live `--check`: **8/8 WRITABLE**) |
-| Read / clone `sandbox` | **no** (404; not in install) | **yes** (HTTP 200) |
+| Push `trial` | yes | **this VM: no local token** (`durable_token_source=none`; probe skipped). Last confirmed **yes** when token present (Batch 321). |
+| Push `main` + other `repositoryDependencies` | **no** (403; install trial-only) | **this VM: no** (probe skipped). Last confirmed **8/8 WRITABLE** when device/`MAIN_PUSH_TOKEN` present (Batch 321). |
+| Read / clone `sandbox` | **no** (404; not in install) | **this VM: n/a** (no durable token). Last confirmed **yes** (HTTP 200). |
 | Topics / collaborators admin APIs | **no** (403 integration) | owner/admin as granted |
-| Device-flow user token | n/a | **SUCCESS** — see `portable/GH_DEVICE_LOGIN.md` |
+| Device-flow user token | n/a | **this VM: absent** — prior **SUCCESS** when device file present — see `portable/GH_DEVICE_LOGIN.md` |
 
 Live Cursor install today: `repository_selection=selected` → **`trial` only**
-(`install_has_main=false`, `install_has_sandbox=false`). App sandbox 404 while
-durable write is WRITABLE is expected until the install adds all eight repos.
+(`install_has_main=false`, `install_has_sandbox=false`). App sandbox 404 is
+expected until the install adds all eight repos. On wakes with a durable
+token, durable write can still be **8/8 WRITABLE** while App stays trial-only.
 
 Agents **cannot** finish App installs for you. Owner path: run
 `./scripts/owner_grant_ai_agent_access.sh`, complete each App UI selecting
-**ALL repositories including sandbox**, keep durable secret via
-`./scripts/owner_set_main_push_token.sh --also-sandbox --also-main`, then
-relaunch Cursor and reconnect ChatGPT/Claude/Grok.
+**ALL repositories including sandbox**, restore durable secret via
+`./scripts/owner_set_main_push_token.sh --also-sandbox --also-main` (and/or
+device login into a well-known token path), then relaunch Cursor and reconnect
+ChatGPT/Claude/Grok.
 
 ---
 

@@ -1,0 +1,33 @@
+{
+  "batch": "322",
+  "generated_at_utc": "2026-09-25T16:29:06Z",
+  "tip": "077464e",
+  "tip_full": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "tip_match": true,
+  "default_tip": "72558a5",
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE_PATH_C_DONE",
+  "grant_8of8_this_vm": false,
+  "active_writable": "1/8",
+  "durable_writable": "0/8",
+  "durable_token_source": "none",
+  "durable_sibling_coverage": "no_token",
+  "last_durable_8of8_batch": "321",
+  "install_has_main": false,
+  "install_has_sandbox": false,
+  "action": "docs_inventory_dual_vector_freshness",
+  "tip_sync": "skipped_peer_already_synced_077464e",
+  "open_prs_note": "trial open PRs empty; main has research PRs (87/92/93 etc) not tip-moving merges past BASE_TIP; Batch 317 already tip-synced 0adeb65→077464e after #89",
+  "peer_tip_sync": "Cloud tip-sync and Path C RUNNING but BASE==LIVE @077464e — complementary eng only",
+  "fix": "MULTI_AGENT_ACCESS capability table + AI_AGENT_ACCESS_INVENTORY still claimed live durable 8/8 WRITABLE while this wake grant --check printed durable_token_source=none / durable_writable=0/8; trial tip_sha lagged at 0b97407 after Batch 321 land @695530b",
+  "evidence": {
+    "check_script": "scripts/owner_grant_ai_agent_access.sh --check",
+    "active_summary": "active_writable=1/8 active_sandbox_read=404",
+    "durable_summary": "durable_writable=0/8 durable_token_source=none durable_sibling_coverage=no_token",
+    "install_repos": ["d6g8k5htny-coder/trial"]
+  },
+  "next": "owner restore MAIN_PUSH_TOKEN/device well-known path; App install add all 8 incl sandbox; tip_sync_drift_watch @077464e"
+}

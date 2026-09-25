@@ -1,3 +1,7 @@
+## STATUS (Batch 322)
+
+tip `077464e` tip_match=true TIP_OK (Batch 317 tip-sync already landed; no duplicate); grant --check dual-vector this VM: App **1/8**, durable **no_token** (not 8/8); refreshed MULTI_AGENT capability table + inventory evidence; trial tip_sha→695530b; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 317)
 
 tip `077464e` tip_match=true TIP_OK after tip-sync; #89 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable tip-observe NOT promoted; #87 DRAFT skipped; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.

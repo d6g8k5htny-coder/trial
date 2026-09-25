@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-09-25T16:27:13Z",
-  "batch": "321",
+  "generated_at_utc": "2026-09-25T16:29:06Z",
+  "batch": "322",
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
@@ -115,8 +115,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-24T19:58:24Z",
-      "tip_sha": "0b97407e11f30f8403d7819bd84ba888c6599e6e",
+      "pushed_at": "2026-09-25T16:27:39Z",
+      "tip_sha": "695530b7ec5c55fe89eae8443644e560253778a8",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -127,7 +127,7 @@
   "lemma_closed": false,
   "flipped_anything": false,
   "token_printed": false,
-  "note": "Batch 321: refreshed tip_sha snapshot from durable MAIN_PUSH_TOKEN (was Batch 259 stale); App ambient trial-only; durable 8/8 WRITABLE. Softened Batch 317 live tip Intent pins.",
+  "note": "Batch 322: grant --check dual-vector on this wake = App 1/8 + durable_token_source=none (probe skipped). Trial tip_sha refreshed to 695530b. Last durable 8/8 WRITABLE confirmation remains Batch 321 when MAIN_PUSH_TOKEN was present. Tip already synced @077464e (Batch 317); no tip-sync duplicate.",
   "main_writable": true,
   "sandbox_added": true,
   "sandbox": {
@@ -136,8 +136,30 @@
     "has_agents": true,
     "tip": "49ae345",
     "app_read_http": 404,
-    "durable_read_http": 200,
-    "main_push_token_secret": true
+    "durable_read_http": null,
+    "main_push_token_secret": true,
+    "durable_probe_this_vm": "skipped_no_token"
+  },
+  "dual_vector_check": {
+    "checked_at_utc": "2026-09-25T16:29:06Z",
+    "batch": "322",
+    "active_writable": "1/8",
+    "active_sandbox_read": 404,
+    "active_sandbox_write": "DENIED",
+    "durable_token_present": false,
+    "durable_token_source": "none",
+    "durable_writable": "0/8",
+    "durable_sibling_coverage": "no_token",
+    "durable_probe": "skipped",
+    "install_has_main": false,
+    "install_has_sandbox": false,
+    "install_repos": [
+      "d6g8k5htny-coder/trial"
+    ],
+    "last_durable_8of8_batch": "321",
+    "hardening_tip": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+    "base_tip_match": true,
+    "grant_8of8_this_vm": false
   },
   "apps_documented": [
     "cursor",
@@ -201,7 +223,7 @@
   "repository_selection": "selected",
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
   "script": "scripts/owner_grant_ai_agent_access.sh",
-  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret_trial_main_sandbox",
+  "token_vector": "none_this_vm; last_confirmed_device_auth_file+MAIN_PUSH_TOKEN_secret_trial_main_sandbox",
   "gh_api_inventory": [
     {
       "name": "google-drive",
@@ -308,6 +330,8 @@
       }
     }
   ],
-  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
-  "durable_sibling_coverage": "8/8_WRITABLE"
+  "owner_next": "Restore MAIN_PUSH_TOKEN/device into well-known path (or relaunch with secret); on Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches durable R/W",
+  "durable_sibling_coverage": "no_token",
+  "last_durable_sibling_coverage": "8/8_WRITABLE",
+  "last_durable_probe_batch": "321"
 }
