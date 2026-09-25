@@ -11750,8 +11750,13 @@ def test_batch289_tip_sync_after_main_83() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 289" in unblock
-    # Header line bumps on later tip-sync batches (297+); keep 289 history line.
-    assert "=== Batch 289" in unblock or "=== Batch 297" in unblock or "=== Batch 305" in unblock
+    # Header line bumps on later tip-sync batches (297/305/317+); keep 289 history line.
+    assert (
+        "=== Batch 289" in unblock
+        or "=== Batch 297" in unblock
+        or "=== Batch 305" in unblock
+        or "=== Batch 317" in unblock
+    )
     assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
 
     assert "3a29f52" in _LIVING_TIPS
