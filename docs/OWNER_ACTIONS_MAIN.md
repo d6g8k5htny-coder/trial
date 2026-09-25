@@ -1,3 +1,7 @@
+## STATUS (Batch 368 living-republish)
+
+Hardening tip **stable** @ `1ae02b9`. Living `script_stale=1` after STATUS_GUARD tip refresh — batch241 republish. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
+
 ## STATUS (Batch 368 status-guard)
 
 After tip-sync to `1ae02b9`, STATUS_GUARD tip lagged at `e3cd7d4`. Refreshed via `guard_no_status_promotion` (pass). Evidence: `portable/BATCH368_STATUS_GUARD_BRIEF.json`. Goal OPEN.

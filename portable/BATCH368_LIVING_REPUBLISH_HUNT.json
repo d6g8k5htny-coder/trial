@@ -1,0 +1,10 @@
+{
+  "batch": "368",
+  "generated_at_utc": "2026-09-25T23:38:16Z",
+  "defect_id": "living_script_stale_after_status_guard_tip_refresh",
+  "defect_found": true,
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "eng_living_script_stale_republish",
+  "goal": "OPEN"
+}

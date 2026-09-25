@@ -1,3 +1,7 @@
+## STATUS (Batch 368 living-republish)
+
+tip `1ae02b9` tip_match=true; living script_stale republish after STATUS_GUARD tip refresh; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 368 status-guard)
 
 STATUS_GUARD tip refresh e3cd7d4→1ae02b9 after tip-sync; tip_match; guard pass; open 13/1/3; lemma_closed=false; no promotion.

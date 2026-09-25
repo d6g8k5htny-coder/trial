@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 368 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 368: living script_stale republish after STATUS_GUARD tip refresh @1ae02b9"
 echo " Batch 368: tip_sync_watch confirm @1ae02b9 + soften Intent live tip pin (was e3cd7d4)"
 echo " Batch 368: tip-sync e3cd7d4→1ae02b9 after main #115 (keep-prior; inventable not promoted)"
 echo " Batch 368: STATUS_GUARD tip refresh e3cd7d4→1ae02b9 after tip-sync (guard pass; no promotion)"
