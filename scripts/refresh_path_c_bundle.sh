@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-282}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-283}"
 
 usage() {
   cat <<'EOF'
@@ -49,7 +49,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 282)
+  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 283)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional tip-fetch + clone auth (never printed)
   REFRESH_TIP_FETCH_RETRIES   API retries on 429 / rate-limit 403 (default 3)
   REFRESH_TIP_FETCH_SLEEP_S   base sleep between tip-fetch retries (default 2)

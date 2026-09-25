@@ -5,6 +5,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 283 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; republish tip_stale + living pack current; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/republish_living_path_c_release.sh --dry-run  # tip_stale=0 need_upload=0 after ship
+> tar -tzf <(gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial -p trial-portable-main-fixes.tgz -O) | grep owner_grant_ai_agent_access
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: after Batch 282 tip-sync, living release pack stayed at BASE_TIP `3b3860d` without grant while local/assert green @ `7d13a88`; republish byte-growth-only could miss tip-only drift. Fixed tip_stale gate + republish. No research flip. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 282 — tip `7d13a88` tip_match (synced from `3b3860d` after main #82); default ALIGNED `72558a5`; write WRITABLE; pack includes grant script; release `batch241-path-c-bundle`**:
 >
 > ```bash

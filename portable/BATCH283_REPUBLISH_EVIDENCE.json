@@ -1,0 +1,23 @@
+{
+  "batch": "283",
+  "release_tag": "batch241-path-c-bundle",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "release_tgz_bytes_before": 499119,
+  "release_tgz_sha256_before": "f257bf3bd714373ace42f8fc93b2116d937afce64c072b69c31527168f64129f",
+  "release_pack_tip_before": "3b3860da7336528a9517ae198f09c83f68fa137a",
+  "release_had_owner_grant_before": false,
+  "local_tip": "7d13a8809260747b374ded28bf359f89c34992ec",
+  "tip_stale_pre": true,
+  "tgz_newer_pre": true,
+  "need_upload_pre": true,
+  "release_tgz_bytes_after": 520199,
+  "release_tgz_sha256_after": "8b209ed8c5ebe594363ea246fcb05f2584e889e86bc0813b7b516101ba8cdf89",
+  "release_pack_tip_after": "7d13a8809260747b374ded28bf359f89c34992ec",
+  "release_had_owner_grant_after": true,
+  "tip_stale_post": false,
+  "need_upload_post": false,
+  "upload_ok": true,
+  "note": "Batch 283: tip_stale gate + living republish; owners now get tip 7d13a88 + owner_grant from batch241 release"
+}

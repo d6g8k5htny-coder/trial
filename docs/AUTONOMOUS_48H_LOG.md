@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 283 (republish tip_stale + living release lag after 282 tip-sync) — 2026-09-25 ~09:45 UTC (PERMANENT window; eng defect ship + living republish; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable **WRITABLE** / ls_remote=ok.
+- **Evidence:** living release `trial-portable-main-fixes.tgz` still **BASE_TIP 3b3860d** and **no** `owner_grant_ai_agent_access.sh` after Batch 282 tip-sync + pack-include-grant. Local pack @ `7d13a88` had grant. `refresh --dry-run` / `assert_path_c_ready` stayed green. `republish --dry-run` `need_upload=1` (`tgz_newer=1` + new `tip_stale=1`).
+- **Defect shipped (avoid inventable tip-observe / research HOLDs / pack omit grant 282 / grant ls-remote 281 / W2 contents-ref 280 / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** compare release-pack `BASE_TIP` vs local; `tip_stale=1` ⇒ `need_upload` even without byte growth; republish living assets @ `7d13a88` with grant; `REFRESH_BATCH_TAG` default 283.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 282 (pack_portable omits owner_grant + tip-sync 3b3860d→7d13a88 after #82) — 2026-09-25 ~09:20 UTC (PERMANENT window; eng defect ship + tip-sync; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP: started **tip_match @ 3b3860d**; mid-cycle main **#82** tip-observe merged (was DRAFT skipped at cycle start) → live **`7d13a88`** (TIP_MOVED). Tip-sync refresh + land. Research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable **WRITABLE** / ls_remote=ok (post-281).

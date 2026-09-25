@@ -20,6 +20,13 @@
 # "uploaded OK"). Stage a canonical basename before upload, and verify the
 # living release asset size+sha after --clobber (fail closed on mismatch).
 #
+# Batch 283: byte-growth-only TGZ_NEWER missed tip-only drift. After Batch 282
+# tip-sync 3b3860d→7d13a88 (+ pack include grant), living release
+# trial-portable-main-fixes.tgz still carried BASE_TIP 3b3860d and omitted
+# owner_grant — while refresh --dry-run / assert_path_c_ready stayed green.
+# Also compare release-pack BASE_TIP vs local BASE_TIP; tip mismatch ⇒
+# tip_stale=1 / need_upload=1 even when pack bytes did not grow.
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -170,6 +177,61 @@ elif [[ -n "${REL_TGZ_SHA:-}" && "$pack_sha" != "$REL_TGZ_SHA" && -n "${REL_TGZ_
   TGZ_NEWER=1
 fi
 
+# Batch 283: tip-currency gate. Byte-growth alone misses tip-sync packs that stay
+# same-or-smaller while BASE_TIP advanced (or release still lacks post-tip fixes).
+TIP_STALE=0
+LOCAL_TIP=""
+REL_PACK_TIP=""
+BASE_TIP_FILE="$ROOT/portable/patches/BASE_TIP.txt"
+parse_tip_sha() {
+  python3 -c '
+import re, sys
+text = sys.stdin.read()
+m = re.search(r"(?i)\b([0-9a-f]{40})\b", text)
+if m:
+    print(m.group(1).lower())
+    raise SystemExit(0)
+m = re.search(r"(?i)(?:^|[=:\s])([0-9a-f]{7,40})(?:\b|$)", text)
+if m:
+    print(m.group(1).lower()[:40])
+    raise SystemExit(0)
+raise SystemExit(1)
+' 2>/dev/null || true
+}
+if [[ -f "$BASE_TIP_FILE" ]]; then
+  LOCAL_TIP="$(tr -d '\r' <"$BASE_TIP_FILE" | head -n1 | parse_tip_sha || true)"
+fi
+# Prefer tip stamped inside the pack we just built (post-pack truth).
+if [[ -f "$OUT" ]]; then
+  PACK_TIP_LINE="$(tar -xOf "$OUT" portable/patches/BASE_TIP.txt 2>/dev/null | head -n1 || true)"
+  if [[ -n "$PACK_TIP_LINE" ]]; then
+    LOCAL_TIP="$(printf '%s\n' "$PACK_TIP_LINE" | parse_tip_sha || true)"
+  fi
+fi
+TIP_PROBE_DIR=""
+if [[ -n "$LOCAL_TIP" ]]; then
+  TIP_PROBE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/republish-tip-probe.XXXXXX")"
+  if gh release download "$TAG" --repo "$REPO" -p 'trial-portable-main-fixes.tgz' -D "$TIP_PROBE_DIR" --clobber >/dev/null 2>&1; then
+    REL_TIP_LINE="$(tar -xOf "$TIP_PROBE_DIR/trial-portable-main-fixes.tgz" portable/patches/BASE_TIP.txt 2>/dev/null | head -n1 || true)"
+    if [[ -n "$REL_TIP_LINE" ]]; then
+      REL_PACK_TIP="$(printf '%s\n' "$REL_TIP_LINE" | parse_tip_sha || true)"
+    fi
+  else
+    echo "republish_living_path_c_release: note: could not download living pack for tip probe (network/auth); tip_stale check skipped" >&2
+  fi
+  rm -rf "$TIP_PROBE_DIR"
+  TIP_PROBE_DIR=""
+fi
+# Normalize to 7-char prefix compare when lengths differ (short vs full SHA).
+if [[ -n "$LOCAL_TIP" && -n "$REL_PACK_TIP" ]]; then
+  local_cmp="${LOCAL_TIP:0:7}"
+  rel_cmp="${REL_PACK_TIP:0:7}"
+  if [[ "$local_cmp" != "$rel_cmp" ]]; then
+    TIP_STALE=1
+  fi
+fi
+echo "republish_living_path_c_release: local_tip=${LOCAL_TIP:-?} release_pack_tip=${REL_PACK_TIP:-?} tip_stale=${TIP_STALE}"
+
 BUNDLE_NEWER=0
 PATCH_NEWER=0
 if [[ -n "$bundle_sha" && -n "${REL_BUNDLE_SHA:-}" && "$bundle_sha" != "$REL_BUNDLE_SHA" ]]; then
@@ -184,11 +246,11 @@ elif [[ -n "$patch_sha" && -z "${REL_PATCH_SHA:-}" ]]; then
 fi
 
 NEED_UPLOAD=0
-if [[ "$FORCE" -eq 1 || "$TGZ_NEWER" -eq 1 || "$BUNDLE_NEWER" -eq 1 || "$PATCH_NEWER" -eq 1 ]]; then
+if [[ "$FORCE" -eq 1 || "$TGZ_NEWER" -eq 1 || "$BUNDLE_NEWER" -eq 1 || "$PATCH_NEWER" -eq 1 || "$TIP_STALE" -eq 1 ]]; then
   NEED_UPLOAD=1
 fi
 
-echo "republish_living_path_c_release: tgz_newer=${TGZ_NEWER} bundle_newer=${BUNDLE_NEWER} patch_newer=${PATCH_NEWER} force=${FORCE} need_upload=${NEED_UPLOAD} dry_run=${DRY_RUN}"
+echo "republish_living_path_c_release: tgz_newer=${TGZ_NEWER} tip_stale=${TIP_STALE} bundle_newer=${BUNDLE_NEWER} patch_newer=${PATCH_NEWER} force=${FORCE} need_upload=${NEED_UPLOAD} dry_run=${DRY_RUN}"
 
 if [[ "$NEED_UPLOAD" -eq 0 ]]; then
   echo "republish_living_path_c_release: OK — release assets already current (no upload)."

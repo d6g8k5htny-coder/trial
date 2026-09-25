@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 283)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. After Batch 282 tip-sync + pack-include-grant, living release `trial-portable-main-fixes.tgz` still carried `BASE_TIP` `3b3860d` and omitted `owner_grant` while `refresh --dry-run` / `assert_path_c_ready` stayed green. `republish` used byte-growth-only for `TGZ_NEWER` (tip-only drift could miss). Fixed: compare release-pack `BASE_TIP` vs local (`tip_stale=1` ⇒ `need_upload`); republish living assets. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 need_upload=0 after ship
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 282)
 
 Hardening tip **synced** `3b3860d`→`7d13a88` after main #82 tip-observe (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `pack_portable.sh` tarball omitted `scripts/owner_grant_ai_agent_access.sh` and `portable/AI_AGENT_ACCESS_INVENTORY.json` while `OWNER_ONE_LINERS.md` (in the same pack) referenced grant 8× — owners extracting the living release could not run the Batch 281 durable ls-remote auth fix. Fixed: include both in the pack list. Also `print_owner_unblock` now reads VERIFY focused N/M (was hardcoded 90/0 vs living 92/0). Tip-sync via `refresh_path_c_bundle.sh` (keep-prior). `lemma_closed=false`. Scientific effect: NONE.

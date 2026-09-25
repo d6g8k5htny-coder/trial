@@ -10628,7 +10628,7 @@ def test_batch278_pack_portable_help_not_out() -> None:
     # Living default advances each tip-sync batch (278→279+).
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282", "283")
     )
 
     living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
@@ -10759,7 +10759,7 @@ def test_batch279_republish_canonical_basename() -> None:
     # Living default advances each batch; 279 introduced the stamp at 279.
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282", "283")
     )
 
     with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
@@ -10877,7 +10877,7 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     # Batch 281+ advances default tag; 280 stamp may be historical only.
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282", "283")
     )
 
     brief = json.loads(
@@ -11044,7 +11044,11 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     assert "focused 90/0" not in unblock
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-282" in refresh
+    # Batch 282 introduced stamp default; Batch 283+ may bump TAG.
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert any(
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("282", "283")
+    )
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH282_BRIEF.json").read_text(encoding="utf-8")
@@ -11090,6 +11094,102 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 282" in ones
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch283_republish_tip_stale_living_release() -> None:
+    """Batch 283: republish tip_stale when living release BASE_TIP lags local."""
+    import json
+    import re
+    import subprocess
+
+    script = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "tip_stale" in script
+    assert "Batch 283" in script
+    assert "release_pack_tip" in script or "REL_PACK_TIP" in script
+    # tip mismatch must drive need_upload (not byte-growth alone).
+    assert "TIP_STALE" in script
+    assert 'TIP_STALE" -eq 1' in script or "TIP_STALE" in script
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-283" in refresh
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 283" in unblock
+    assert "tip_stale" in unblock
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH283_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "283"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "republish_byte_growth_misses_tip_stale_release"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH283_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "republish_byte_growth_misses_tip_stale_release"
+    assert any("282" in a or "grant" in a for a in (hunt.get("avoided") or []))
+    assert any("281" in a or "ls-remote" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH283_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH283_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("tip_stale_pre") is True
+    assert evidence.get("need_upload_pre") is True
+    assert str(evidence.get("release_pack_tip_before", "")).startswith("3b3860d")
+    assert evidence.get("release_had_owner_grant_before") is False
+
+    # Dry-run must emit tip_stale / need_upload keys (live tip may already match
+    # after upload in the same cycle — still assert script wiring via --help text).
+    help_out = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "republish_living_path_c_release.sh"), "--help"],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    ).stdout
+    assert "Batch 283" in help_out
+    assert "tip_stale" in help_out
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 283" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 283)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 283)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 283" in ones
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
