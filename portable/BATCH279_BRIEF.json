@@ -63,7 +63,7 @@
     "apply_all_check": "already-applied @ 3b3860d IDLE_PATH_C_DONE"
   },
   "next_focus": "tip_sync_drift_watch @3b3860d; keep Path C idle; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 279: tip stable 3b3860d; shipped republish canonical-basename staging + post-upload verify; living pack 386608→482632; lemma_closed=false; flipped nothing.",
+  "note": "Batch 279: tip stable 3b3860d; shipped republish canonical-basename staging + post-upload verify; living pack 386608\u2192482632; lemma_closed=false; flipped nothing.",
   "artifacts": [
     "scripts/republish_living_path_c_release.sh",
     "scripts/refresh_path_c_bundle.sh",
@@ -78,5 +78,8 @@
   "where": [
     "trial"
   ],
-  "path_c": true
+  "path_c": true,
+  "trial_main_land": "2a4edca",
+  "trial_main_land_full": "2a4edca93f4a0ec31b7d64ad44cbdd64f9d20b3e",
+  "trial_main_land_method": "direct_push_main_pr_create_403"
 }
