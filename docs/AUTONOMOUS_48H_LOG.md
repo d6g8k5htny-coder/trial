@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 364 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pinned; `lemma_closed=false`.
+- goal_continue pulse: CI Intent soften already on main; no tip move. Woke tip/eng peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 363 — CI Intent living >=N soften + VERIFY 363 + inv tip pin (2026-09-25)
 
 - Main Intent red: Batch 286 REFRESH any() allowlists from peer tip-eng softens; also VERIFY refresh_batch lag.

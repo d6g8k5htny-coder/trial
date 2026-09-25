@@ -1,3 +1,7 @@
+## STATUS (Batch 364 idle)
+
+tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0; inv parent-pinned; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 363 ci-intent)
 
 CI Intent Batch 286 allowlist red fixed via living >=N helpers; VERIFY refresh_batch=363; inv tip re-pin; tip `e3cd7d4`; lemma_closed=false.

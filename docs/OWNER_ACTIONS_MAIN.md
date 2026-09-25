@@ -1,3 +1,7 @@
+## STATUS (Batch 364 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true). tip_sync_watch idle; living current; inv parent-pinned. Evidence: `portable/BATCH364_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 363 ci-intent)
 
 Landed CI Intent soften from peer branch `e0eadda` onto main + VERIFY refresh_batch 363 + inv tip pin. Evidence: `portable/BATCH363_CI_INTENT_FIX_BRIEF.json`. Goal OPEN.
