@@ -12,6 +12,12 @@ Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`:
 ```bash
 ./scripts/owner_grant_ai_agent_access.sh --check
 # INV_BATCH=346 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+## STATUS (Batch 346 wake)
+
+Artifact: `portable/MULTI_AGENT_WAKE_BATCH346.json`. Tip stable @ `e3cd7d4`. Woke 7 IDLE Path C agents with tip-watch / tip-or-eng / eng-hunt / grant / CI-audit / inventory assignments. `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
 ```
 
 ## STATUS (Batch 345 grant-tip-pin)

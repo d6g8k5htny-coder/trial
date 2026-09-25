@@ -1,0 +1,82 @@
+{
+  "batch": 346,
+  "action": "multi_agent_wake_and_assign",
+  "requested_by": "Dylan Roy",
+  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "utc": "2026-09-25T19:30:00Z",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "wake346_on_main": true,
+  "pulse": "dylan-message-stopped-agents",
+  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH345.json",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0
+  },
+  "intent": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "base_tip_expected": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+    "path_c": "IDLE@0019",
+    "lemma_closed": false,
+    "scientific_effect": "NONE",
+    "durable_write_target": "8/8",
+    "never_flip_research": true
+  },
+  "woken_idle_agents": [
+    {
+      "bcId": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b",
+      "name": "Batch345 tip watch wake",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_e3cd7d4"
+    },
+    {
+      "bcId": "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
+      "name": "Batch345 tip/eng cloud wake",
+      "assignment": "tip_sync_or_eng_on_healthy_VM"
+    },
+    {
+      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+      "name": "Batch345 eng hunt wake",
+      "assignment": "eng_defect_hunt_no_claim_promotion"
+    },
+    {
+      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+      "name": "Batch345 grant dual-vector wake",
+      "assignment": "grant_check_dual_vector_8of8"
+    },
+    {
+      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
+      "name": "Wake CI audit remediation",
+      "assignment": "ci_audit_watch_and_remediate"
+    },
+    {
+      "bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
+      "name": "Wake grant inventory peer",
+      "assignment": "inventory_preserve_durable_tip_pin"
+    },
+    {
+      "bcId": "bc-dfd45dde-ca70-5895-8796-c35435b073eb",
+      "name": "Wake tip/eng rewake peer",
+      "assignment": "tip_or_eng_peer_continue"
+    }
+  ],
+  "spawned_cloud_peers": [],
+  "known_signals": [
+    "tip stable @e3cd7d4 tip_match=1 after Batch 345 tip-sync",
+    "Batch 346 soften tip_sync_watch live BASE_TIP Intent pin already on main",
+    "durable 8/8; Path C IDLE@0019; living tip_stale=0 script_stale=0"
+  ],
+  "messaging_limits": {
+    "mechanism_used": "Task resume (IDLE); isolated worktree land; direct trial main push when PR create 403"
+  },
+  "wake_tip_at_assign": "e3cd7d4",
+  "wake_tip_at_assign_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_living_updated_batch": 346
+}

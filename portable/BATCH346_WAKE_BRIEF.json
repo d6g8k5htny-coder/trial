@@ -1,0 +1,13 @@
+{
+  "batch": "346",
+  "utc": "2026-09-25T19:30:00Z",
+  "status": "multi_agent_wake_and_assign",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "multi_agent_wake_and_assign",
+  "woken": 7,
+  "pulse": "dylan-message-stopped-agents",
+  "artifact": "portable/MULTI_AGENT_WAKE_BATCH346.json"
+}
