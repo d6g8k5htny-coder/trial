@@ -1,3 +1,12 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=359 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch359_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 358 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 358 tip_sync idle; Intent return allowlist re-frozen 352–358 — republish + living `>=352`. `lemma_closed=false`. Goal OPEN.

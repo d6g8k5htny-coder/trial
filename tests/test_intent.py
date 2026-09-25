@@ -18794,3 +18794,108 @@ def test_batch358_living_script_stale_republish() -> None:
     assert "living script_stale" in log_md and "Batch 358" in log_md
 
 
+
+def test_batch359_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 359: preserve_durable tip pin after lands; tip e3cd7d4."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 359
+    assert inv.get("durable_writable") == "8/8"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("bedc8d4") and not tip.startswith("8431393")
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH359_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("batch") == "359"
+    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("durable") == "8/8_WRITABLE"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("defect_id") == "inventory_trial_tip_lag_after_lands"
+    assert evidence.get("trial_tip_matches_live_head") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH359_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "359"
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("lemma_closed") is False
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH359_INV_TIP_PIN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r"=== Batch (\d+)\s", unblock)
+    assert headers and int(headers[0]) >= 359 and len(headers) == 1
+    assert "Batch 359" in unblock and "tip_or_eng" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 tip-eng)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 359" in log_md
+
+
+def test_batch359_tip_or_eng_continue() -> None:
+    """Batch 359: tip_or_eng — inv tip re-pin after lands."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 359
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("bedc8d4")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH359_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "359"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "inventory_tip_repin_after_land_head"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH359_TIP_ENG_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH359_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("action") == "inventory_tip_repin_after_land_head"
+    assert evidence.get("trial_tip_matches_live_head") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 359)
+    assert "tip_or_eng" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 tip-eng)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 359 tip-eng)" in owner
