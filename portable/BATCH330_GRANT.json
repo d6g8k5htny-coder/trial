@@ -22,5 +22,5 @@
     "refresh writer forces push when durable_writable=8; keeps sandbox.readable on n/a"
   ],
   "inventory_batch": "330",
-  "trial_tip_sha": "0d135718ab6efb262899901259b14fa43d1d0f79"
+  "trial_tip_sha": "cf70a5d553067ab9863618e4fa723a525b4d18ac"
 }
