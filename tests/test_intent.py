@@ -30,6 +30,7 @@ _LIVING_TIPS = (
     "8e359e5",
     "bfb7c38",
     "3b3860d",
+    "7d13a88",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -11056,7 +11057,10 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     assert brief.get("defect_id") == "pack_portable_omits_owner_grant_script"
     assert brief.get("patch_0020") is False
     assert brief.get("hunt_0020") == "NEGATIVE"
-    assert str(brief.get("tip", "")).startswith("3b3860d")
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88") or str(
+        brief.get("tip", "")
+    ).startswith("3b3860d")
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH282_HUNT.json").read_text(encoding="utf-8")
@@ -11065,6 +11069,7 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     assert hunt.get("defect_id") == "pack_portable_omits_owner_grant_script"
     assert any("281" in a or "ls-remote" in a for a in (hunt.get("avoided") or []))
     assert any("280" in a or "contents-ref" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is True
 
     audit = json.loads(
         (ROOT / "portable" / "BATCH282_RESEARCH_STACK_AUDIT.json").read_text(

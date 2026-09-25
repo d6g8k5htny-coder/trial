@@ -9,10 +9,11 @@
   "defect_id": "pack_portable_omits_owner_grant_script",
   "bugs_fixed": [
     "pack tarball omitted owner_grant_ai_agent_access.sh while OWNER_ONE_LINERS referenced it 8× (Batch 281 fix unreachable from release extract)",
-    "print_owner_unblock VERIFY focused hardcoded 90/0 vs living 92/0"
+    "print_owner_unblock VERIFY focused hardcoded 90/0 vs living 92/0",
+    "tip-sync 3b3860d→7d13a88 after main #82 merged mid-cycle"
   ],
   "avoided": [
-    "tip-observe inventable README LOCK advance",
+    "tip-observe inventable README LOCK advance (skipped as DRAFT; later merged externally → tip-sync only)",
     "research HOLD drafts",
     "grant ls-remote auth (281)",
     "probe W2 contents-ref (280)",
@@ -27,7 +28,8 @@
     "when_writable once pid-liveness (270)"
   ],
   "candidates_checked": {
-    "tip_vs_3b3860d": "TIP_OK",
+    "tip_vs_3b3860d_cycle_start": "TIP_OK_then_TIP_MOVED_mid_ci",
+    "tip_vs_7d13a88": "TIP_OK_after_sync",
     "grant_durable_ls_remote": "already_fixed_281",
     "probe_w2_ref_first": "already_fixed_280",
     "republish_basename": "already_fixed_279",
@@ -37,13 +39,13 @@
     "land_workflows_idle": "already_fixed_272",
     "living_pack_vs_release": "bytes_near_parity_need_upload_0",
     "patch_0020": "NEGATIVE",
-    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped_at_start",
     "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE",
     "pack_missing_grant": "reproduced_absent_from_tgz",
     "unblock_focused_90": "reproduced_hardcoded_vs_VERIFY_92"
   },
-  "tip": "3b3860d",
-  "tip_moved": false,
+  "tip": "7d13a88",
+  "tip_moved": true,
   "aligned": true,
   "write": "WRITABLE",
   "patch_0020": false,
@@ -52,6 +54,6 @@
   "actionable_classic_tools_tests": 0,
   "HUNT_NEGATIVE": {
     "patch_0020": true,
-    "note": "eng defect was pack_portable omitting owner_grant after Batch 281"
+    "note": "eng defect was pack_portable omitting owner_grant; tip-sync after #82"
   }
 }

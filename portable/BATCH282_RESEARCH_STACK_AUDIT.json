@@ -1,5 +1,5 @@
 {
-  "root": "/tmp/batch282-tip/main",
+  "root": "/tmp/batch282-tip2/main",
   "scientific_effect": "NONE",
   "flipped_anything": false,
   "lemma_closed": false,
@@ -756,6 +756,6 @@
     "claims/graph.json",
     "registers/json/open_questions.json"
   ],
-  "tip_sha": "3b3860da7336528a9517ae198f09c83f68fa137a",
+  "tip_sha": "7d13a8809260747b374ded28bf359f89c34992ec",
   "batch": "282"
 }

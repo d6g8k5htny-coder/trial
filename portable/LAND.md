@@ -1,6 +1,6 @@
 ## STATUS (Batch 282)
 
-tip `3b3860d` tip_match=true; pack_portable omitted owner_grant_ai_agent_access.sh (+ inventory) while OWNER_ONE_LINERS referenced grant 8×; include in tarball; VERIFY-driven focused N/M; lemma_closed=false; scientific effect NONE.
+tip `7d13a88` tip_match=true (synced from `3b3860d` after main #82); pack_portable omitted owner_grant_ai_agent_access.sh (+ inventory) while OWNER_ONE_LINERS referenced grant 8×; include in tarball; VERIFY-driven focused N/M; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 281)
 

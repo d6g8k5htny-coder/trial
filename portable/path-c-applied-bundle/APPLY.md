@@ -1,6 +1,6 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
-**Batch 244 (living tip / pack sync):** hardening tip **`3b3860d`** (== BASE_TIP; [PR #71](https://github.com/d6g8k5htny-coder/main/pull/71) 0019 attestations RW @ `542e6ec`). Living release **`batch241-path-c-bundle`**. Patches **0001–0004+0008–0019** are **already on tip** — `owner_land_path_c.sh --from-bundle` dry-run exits 0 with `already_applied_on_tip=true` (`.bundle` ff-only may diverge; apply_all `--check` is the authority). Do **not** re-land Path C onto `3b3860d`. `when_writable_land` → `idle_path_c_done` (0018+0019 markers true). `lemma_closed=false`. Scientific effect: **NONE**.
+**Batch 244 (living tip / pack sync):** hardening tip **`7d13a88`** (== BASE_TIP; [PR #71](https://github.com/d6g8k5htny-coder/main/pull/71) 0019 attestations RW @ `542e6ec`). Living release **`batch241-path-c-bundle`**. Patches **0001–0004+0008–0019** are **already on tip** — `owner_land_path_c.sh --from-bundle` dry-run exits 0 with `already_applied_on_tip=true` (`.bundle` ff-only may diverge; apply_all `--check` is the authority). Do **not** re-land Path C onto `7d13a88`. `when_writable_land` → `idle_path_c_done` (0018+0019 markers true). `lemma_closed=false`. Scientific effect: **NONE**.
 
 **Batch 232 (tip refresh):** hardening tip **`93a4ecd`→`377201c`** ([PR #62](https://github.com/d6g8k5htny-coder/main/pull/62) inventable campaign; PACKET kept; flags unflipped). Path C eng stack **already on tip** (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). Historical `.bundle`+`.patch` retained for pre-land tips. `lemma_closed=false`. Scientific effect: **NONE**.
 
@@ -22,20 +22,20 @@ mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path
 # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
 ```
 
-On tip **`3b3860d`** expect dry-run / land to report **`already_applied_on_tip=true`** (no new commits). Prior release tags (`batch239` / `batch218` / `batch207` / …) are historical only — do not download them for new lands.
+On tip **`7d13a88`** expect dry-run / land to report **`already_applied_on_tip=true`** (no new commits). Prior release tags (`batch239` / `batch218` / `batch207` / …) are historical only — do not download them for new lands.
 
 Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).
 
 ## Manual — git bundle fetch + merge (preferred; Batch 169+)
 
-On a clone that already has BASE_TIP `3b3860d` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
+On a clone that already has BASE_TIP `7d13a88` (shallow OK — Batch 170 E2E verified `--depth 1` and `--depth 80`):
 
 ```bash
 # Shallow clone hardening @ BASE_TIP (or deepen an existing clone):
 git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
   https://github.com/d6g8k5htny-coder/main.git main && cd main
 # If already cloned: git fetch origin chatgpt/drive-github-hardening-20260919
-git checkout -B cursor/portable-engineering-patches 3b3860da7336528a9517ae198f09c83f68fa137a
+git checkout -B cursor/portable-engineering-patches 7d13a8809260747b374ded28bf359f89c34992ec
 # Prefer .bundle when present:
 git fetch /path/to/path-c-on-hardening.bundle cursor/portable-engineering-patches
 git merge --ff-only FETCH_HEAD
@@ -46,14 +46,14 @@ git push -u origin HEAD
 
 Then open a PR into `chatgpt/drive-github-hardening-20260919`. Do **not** apply on post-#41 default `main` (no `PACKET.json`).
 
-**Living tip note:** at `3b3860d` the merge may refuse ff-only (historical applied range diverged); that is expected — patches are already on tip. Prefer `apply_all.sh --check` / `owner_land_path_c.sh --from-bundle --dry-run`.
+**Living tip note:** at `7d13a88` the merge may refuse ff-only (historical applied range diverged); that is expected — patches are already on tip. Prefer `apply_all.sh --check` / `owner_land_path_c.sh --from-bundle --dry-run`.
 
 **Batch 170 E2E:** shallow clone @ `8ea3b5f` → `git fetch` `.bundle` → `merge --ff-only` → HEAD `81c09d6`; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90** passed.
 
 ## Manual — legacy `git am` of `.patch`
 
 ```bash
-git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches 3b3860da7336528a9517ae198f09c83f68fa137a && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
+git fetch origin chatgpt/drive-github-hardening-20260919 && git checkout -B cursor/portable-engineering-patches 7d13a8809260747b374ded28bf359f89c34992ec && git am /path/to/path-c-on-hardening.patch && git push -u origin HEAD
 ```
 
 ## Verify after fetch/merge or am

@@ -4,11 +4,12 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 282)
 
-Hardening tip **stable** @ `3b3860d` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `pack_portable.sh` tarball omitted `scripts/owner_grant_ai_agent_access.sh` and `portable/AI_AGENT_ACCESS_INVENTORY.json` while `OWNER_ONE_LINERS.md` (in the same pack) referenced grant 8× — owners extracting the living release could not run the Batch 281 durable ls-remote auth fix. Fixed: include both in the pack list. Also `print_owner_unblock` now reads VERIFY focused N/M (was hardcoded 90/0 vs living 92/0). `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **synced** `3b3860d`→`7d13a88` after main #82 tip-observe (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `pack_portable.sh` tarball omitted `scripts/owner_grant_ai_agent_access.sh` and `portable/AI_AGENT_ACCESS_INVENTORY.json` while `OWNER_ONE_LINERS.md` (in the same pack) referenced grant 8× — owners extracting the living release could not run the Batch 281 durable ls-remote auth fix. Fixed: include both in the pack list. Also `print_owner_unblock` now reads VERIFY focused N/M (was hardcoded 90/0 vs living 92/0). Tip-sync via `refresh_path_c_bundle.sh` (keep-prior). `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
 ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
 tar -tzf /tmp/trial-portable-main-fixes.tgz | grep owner_grant_ai_agent_access
+./scripts/refresh_path_c_bundle.sh --dry-run
 ./scripts/assert_path_c_ready.sh
 ```
 
