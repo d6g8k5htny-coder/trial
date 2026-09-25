@@ -1,6 +1,6 @@
 ## STATUS (Batch 255)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; living release pack stale → `republish_living_path_c_release.sh` + clobber upload `batch241-path-c-bundle` shipped; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; living release pack stale → republish helper + clobber `batch241-path-c-bundle` shipped via PR #73 @`6f16c04`; lemma_closed=false; scientific effect NONE.
 
 > ## STATUS (Batch 254)
 >
