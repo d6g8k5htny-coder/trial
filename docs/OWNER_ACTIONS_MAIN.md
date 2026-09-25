@@ -1,3 +1,12 @@
+## STATUS (Batch 346)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Eng: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin to `_living_tip` (Batch 344/fcad723 class). Evidence: `portable/BATCH346_EVIDENCE.json`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch346_soften_tip_sync_watch_live_tip_pin -q
+```
+
 ## STATUS (Batch 345 grant-tip-pin)
 
 Inventory trial tip pinned after tip-sync @`e3cd7d4`. `lemma_closed=false`.

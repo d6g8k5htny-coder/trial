@@ -1,0 +1,18 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:29:26Z",
+  "status": "eng_soften_live_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "tip_moved": false,
+  "action": "eng_soften_345_tip_sync_watch_live_tip_pin",
+  "defect_id": "intent_batch345_tip_sync_watch_frozen_live_base_tip_e3cd7d4",
+  "defect_shipped": true,
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "path_c": "IDLE@0019"
+}

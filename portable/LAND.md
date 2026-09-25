@@ -1,3 +1,7 @@
+## STATUS (Batch 346)
+
+tip `e3cd7d4` tip_match=true; eng: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin (`e3cd7d4` in base → `_living_tip`); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 grant-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory trial tip pin after tip-sync; preserve_durable 8/8; lemma_closed=false; scientific effect NONE.

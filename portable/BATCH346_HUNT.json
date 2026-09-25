@@ -1,0 +1,18 @@
+{
+  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:29:26Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "intent_batch345_tip_sync_watch_frozen_live_base_tip_e3cd7d4",
+  "hunt_0020": "NEGATIVE",
+  "tip_moved": false,
+  "avoided": [
+    "promote inventable",
+    "flip lemma_closed",
+    "invent 0020",
+    "duplicate tip-sync"
+  ]
+}
