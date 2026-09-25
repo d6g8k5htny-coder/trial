@@ -1,0 +1,31 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_inv_tip_repin_and_living_republish",
+  "batch": "361",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip": "6108a303538884329f8782b81f35bf890863c3d1",
+  "trial_tip_sha": "36b877a8ae78438f67ac5f65277c7f9c46d129e3",
+  "live_trial_head": "36b877a8ae78438f67ac5f65277c7f9c46d129e3",
+  "trial_tip_matches_live_head": true,
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "8fef315",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "36b877a"
+  },
+  "generated_at_utc": "2026-09-25T22:10:14Z",
+  "defect_id": "inventory_tip_lag_beyond_parent_and_living_script_stale",
+  "coordinator_bcId": "bc-01a0cf1e",
+  "also_unfroze_last_resort": "360\u2192361",
+  "lag_beyond_parent": true
+}

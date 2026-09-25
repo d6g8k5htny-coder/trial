@@ -1,3 +1,7 @@
+## STATUS (Batch 361 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-resort 360→361 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 361 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
