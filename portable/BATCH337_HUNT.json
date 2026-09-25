@@ -1,18 +1,18 @@
 {
   "batch": "337",
-  "hunt": "tip_stable_post_336_eng",
+  "hunt": "tip_sync_after_main_101_107_102",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
-  "defect_shipped": false,
-  "defect_found": false,
-  "defect_id": null,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_eeebb28_to_848aea2_main_101_107_102",
   "avoided": [
-    "promote inventable drafts",
+    "promote #101/#107/#102 claim status",
     "flip lemma_closed",
     "invent 0020"
   ],
-  "tip_moved": false,
+  "tip_moved": true,
   "hunt_0020": "NEGATIVE",
-  "generated_at_utc": "2026-09-25T18:04:17Z"
+  "generated_at_utc": "2026-09-25T18:10:00Z"
 }

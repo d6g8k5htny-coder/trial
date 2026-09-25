@@ -21,13 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 337 — tip stable + MULTI_AGENT wake + research audit (2026-09-25)
+### Batch 337 — tip-sync after main #101/#107/#102 (2026-09-25)
 
-- Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
-- Batch 336 CI green @ `05a5d50` (wake living tip + preserve writable0 + wake assign).
-- Woke IDLE tip/eng/grant peers + spawned cloud tip/eng peer; inventable drafts skipped.
-- Research stack audit (hardening tip checkout): open premises/lemmas/prizes remain OPEN; no status promotion.
-- action=`idle_no_commit_wake_assign`; NEVER flip research.
+- Hardening LIVE moved `eeebb28`→`848aea2` (#101 CERTIFIED carrier ABSENT + #107 OPEN_PROBLEMS frozen errata + #102 SIDE24_CELL importers MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=337` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; `_LIVING_TIPS += 848aea2`.
+- Inventable docs MERGED to hardening tip only — NOT promoted; `lemma_closed=false`; scientific effect NONE.
+- Path C IDLE@0019; no 0020. Prior Batch 337 wake/idle @eeebb28 superseded mid-cycle by tip move.
+- action=`tip_sync_landed`; NEVER flip research.
 
 ### Batch 336 — wake INTENT living BASE_TIP (2026-09-25)
 

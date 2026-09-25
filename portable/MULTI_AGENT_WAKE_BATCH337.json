@@ -3,9 +3,9 @@
   "action": "multi_agent_wake_and_assign",
   "requested_by": "Dylan Roy",
   "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
-  "utc": "2026-09-25T18:04:17Z",
-  "tip": "eeebb28",
-  "tip_full": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "utc": "2026-09-25T18:10:00Z",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
   "tip_match": true,
   "wake337_on_main": true,
   "lemma_closed": false,
@@ -48,5 +48,6 @@
   ],
   "messaging_limits": {
     "mechanism_used": "Task resume (IDLE) + Task environment=cloud"
-  }
+  },
+  "note": "mid-cycle tip moved eeebb28\u2192848aea2; tip-sync landed Batch 337"
 }
