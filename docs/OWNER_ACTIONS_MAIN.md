@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 339)
+
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle). Tip watch: no tip move. Eng: living `batch241-path-c-bundle` **script_stale=1** after Batch 338 — republished. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 338)
 
 Hardening tip **stable** @ `848aea2` tip_match=true. Post-Path-C align watch idle. Path C IDLE@0019; durable 8/8. action=`post_path_c_align_watch_idle`. `lemma_closed=false`.

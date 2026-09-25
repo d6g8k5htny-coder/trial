@@ -1,0 +1,17 @@
+{
+  "batch": "339",
+  "hunt": "tip_watch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "living_release_script_stale_after_338",
+  "tip": "848aea2",
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "candidates_checked": {
+    "refresh_dry_run": "match=1",
+    "living": "script_stale_FIXED"
+  }
+}
