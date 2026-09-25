@@ -1,0 +1,26 @@
+{
+  "batch": "330",
+  "landed_as_batch": "331",
+  "wake_batch": "329",
+  "generated_at_utc": "2026-09-25T17:20:00Z",
+  "write_durable": "8/8_WRITABLE",
+  "coverage": "8/8_WRITABLE",
+  "tip_sha": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "default_tip": "72558a5",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "grant_check_skip_inventory_refresh_without_durable_token",
+  "path_c": "IDLE@0019",
+  "vm_check": {
+    "active_writable": "1/8",
+    "durable_token_source": "none",
+    "durable_probe": "skipped",
+    "note": "VM lacked MAIN_PUSH_TOKEN/device; do NOT record no_token \u2014 live durable remains 8/8"
+  },
+  "eng": [
+    "owner_grant --check skips inventory_refresh when durable_token_source=none",
+    "refresh writer forces push when durable_writable=8 (with preserve_durable belt)"
+  ],
+  "peer_bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec"
+}

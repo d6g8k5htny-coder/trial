@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 331 — grant skip no-token inventory refresh (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng (from Batch329 grant-audit wake): `owner_grant_ai_agent_access.sh --check` skips inventory refresh when `durable_token_source=none` / durable_writable=0 (belt with Batch 330 preserve). Writer forces `push` when durable_writable=8/8. Artifact `portable/BATCH330_GRANT.json`.
+- NEVER flip research.
+
+
 ### Batch 330 — no_token durable preserve (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

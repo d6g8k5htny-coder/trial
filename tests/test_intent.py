@@ -13211,3 +13211,43 @@ def test_batch330_inv_no_token_preserve_durable() -> None:
     assert "Batch 330" in log_md
 
 
+
+
+def test_batch331_grant_skip_inventory_refresh_without_durable() -> None:
+    """Batch 331: grant --check skips inventory refresh when durable token absent."""
+    import json
+    import re
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "Batch 331" in grant
+    assert "inventory_refresh=skip durable_token_source=" in grant
+    assert "do not App-corrupt" in grant
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "durable_writable == len(repos)" in helper
+    assert "Batch 331" in helper
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH330_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "330"
+    assert tiny.get("write_durable") == "8/8_WRITABLE"
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert str(tiny.get("tip_sha", "")).startswith("077464e")
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("action") == "grant_check_skip_inventory_refresh_without_durable_token"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 331
+    _assert_print_owner_header_batch_at_least(unblock, 331)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 331)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 331" in log_md
+

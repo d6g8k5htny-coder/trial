@@ -1,3 +1,7 @@
+## STATUS (Batch 331)
+
+tip `077464e` tip_match=true; eng: grant --check skips inventory refresh when durable_token_source=none; writer forces push on durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 330)
 
 tip `077464e` tip_match=true; eng: no_token tip-refresh preserves durable 8/8 push/admin/sandbox.readable (DURABLE_SANDBOX_WRITE=n/a); lemma_closed=false; scientific effect NONE.

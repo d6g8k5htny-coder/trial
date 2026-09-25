@@ -14,6 +14,10 @@ tip-refresh only — do **not** clobber durable push/admin/perm, sandbox.readabl
 or durable_sibling_coverage 8/8 with ambient App/ghs pull-only permissions.
 False no_token grant-audit branches are not an eng fix. lemma_closed stays false.
 
+Batch 331: when durable_writable == len(repos), force push/WRITABLE so App
+permissions:{push:false} cannot rewrite connected→pull. Grant --check skips
+inventory refresh entirely when durable_token_source=none (belt with preserve).
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 
@@ -49,7 +53,7 @@ def _living_inventory_batch(root: str) -> str:
             return b
     except (OSError, json.JSONDecodeError):
         pass
-    return "328"
+    return "331"
 
 
 def _no_durable_probe(
@@ -176,6 +180,13 @@ def refresh(
             # Ambient ghs is often pull-only on siblings; do not demote durable.
             push = bool(prev.get("push", True))
             admin = bool(prev.get("admin", True))
+        elif durable_writable == len(repos) and repos:
+            # Batch 331: App/ghs often reports permissions.push=false even when
+            # the durable vector is 8/8 WRITABLE — do not rewrite connected→pull.
+            push = True
+            admin = bool(perms.get("admin", prev.get("admin", True))) or bool(
+                prev.get("admin", True)
+            )
         else:
             push = bool(perms.get("push", prev.get("push", True)))
             admin = bool(perms.get("admin", prev.get("admin", True)))

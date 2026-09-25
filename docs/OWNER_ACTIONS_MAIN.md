@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 331)
+
+Hardening tip **stable** @ `077464e`. Eng: `--check` skips inventory tip-refresh without durable token (retain living 8/8; do not App-corrupt). Writer forces push when durable_writable=8. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
 ## STATUS (Batch 330)
 
 Hardening tip **stable** @ `077464e`. Eng: inventory tip-refresh on ambient/no_token `--check` preserves durable 8/8 (no false grant-audit branch). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
