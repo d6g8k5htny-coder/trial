@@ -1,0 +1,20 @@
+{
+  "batch": "343",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "hardening_tip_short": "fcad723",
+  "prior_tip": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_landed",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "inventable_promoted": false,
+  "merged_prs": [
+    109
+  ],
+  "note": "tip-sync keep-prior f244312\u2192fcad723 after main #109 inventable nav; NOT promoted",
+  "refresh_batch": 344,
+  "idle_status": "IDLE_PATH_C_DONE",
+  "generated_at_utc": "2026-09-25T18:54:37Z"
+}

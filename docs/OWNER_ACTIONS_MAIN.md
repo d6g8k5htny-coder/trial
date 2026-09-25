@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 344)
+
+Hardening tip **synced** @ `fcad723` (tip_match=true after #109 inventable nav mid-cycle). Tip-sync keep-prior; REFRESH default 344; `_LIVING_TIPS += fcad723`. Inventable NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 ## STATUS (Batch 341 inv-batch-pin)
 
 Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 Intent living `INV_BATCH` hard pin after Batch 342 tip-refresh left inventory at 342 (Intent CI red on `== "340"`). Guard+research: `lemma_closed=false`. Scientific effect: NONE.

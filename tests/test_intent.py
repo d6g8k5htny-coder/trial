@@ -39,6 +39,7 @@ _LIVING_TIPS = (
     "eeebb28",
     "848aea2",
     "f244312",
+    "fcad723",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -14054,9 +14055,11 @@ def test_batch340_wake_land_verify() -> None:
     assert data.get("path_c") == "IDLE@0019"
     assert data.get("durable") == "8/8"
     assert _living_tip(str(data.get("tip") or ""))
-    # Batch 342: living tip pins refreshed to f244312; wake_tip_at_assign keeps 848aea2.
+    # Live WAKE tip supersedes across tip-sync; Batch 342 shipped f244312.
     assert str(data.get("tip") or "").startswith("f244312") or _living_tip(data.get("tip"))
-    assert str((data.get("intent") or {}).get("base_tip_expected") or "").startswith("f244312")
+    assert _living_tip(
+        str((data.get("intent") or {}).get("base_tip_expected") or "")
+    )
     assert _living_tip(str(data.get("wake_tip_at_assign") or ""))
     living = data.get("living") or {}
     assert living.get("tip_stale") == 0
@@ -14648,15 +14651,18 @@ def test_batch342_wake340_living_tip_pins() -> None:
     assert wake.get("batch") == 340
     assert wake.get("lemma_closed") is False
     assert wake.get("flipped_anything") is False
-    assert str(wake.get("tip") or "").startswith("f244312")
-    assert str((wake.get("intent") or {}).get("base_tip_expected") or "").startswith(
-        "f244312"
+    # Live WAKE tip supersedes across tip-sync; Batch 342 shipped f244312.
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert _living_tip(
+        str((wake.get("intent") or {}).get("base_tip_expected") or "")
     )
     assert _living_tip(str(wake.get("wake_tip_at_assign") or ""))
     assert int(wake.get("tip_living_updated_batch") or 0) >= 342
     agents = wake.get("woken_idle_agents") or []
     assert any(
-        "f244312" in str(a.get("assignment") or "") for a in agents
+        "f244312" in str(a.get("assignment") or "")
+        or _living_tip(str(a.get("assignment") or ""))
+        for a in agents
     )
 
     brief = json.loads(
@@ -14713,9 +14719,10 @@ def test_batch343_living_script_stale_republish() -> None:
     wake = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
     )
-    assert str(wake.get("tip") or "").startswith("f244312")
-    assert str((wake.get("intent") or {}).get("base_tip_expected") or "").startswith(
-        "f244312"
+    # Live WAKE tip supersedes across tip-sync; Batch 343 observed f244312.
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert _living_tip(
+        str((wake.get("intent") or {}).get("base_tip_expected") or "")
     )
     living = wake.get("living") or {}
     assert living.get("tip_stale") == 0
@@ -14733,6 +14740,73 @@ def test_batch343_living_script_stale_republish() -> None:
     assert "Batch 343" in log_md
 
     assert _living_tip("f244312")
+
+
+def test_batch344_tip_sync_after_main_109() -> None:
+    """Batch 344 / 343 wake: tip-sync f244312→fcad723 after #109; inventable not promoted."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "343"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("aligned") is True
+    assert tiny.get("tip_match") is True
+    assert tiny.get("action") == "tip_sync_landed"
+    assert tiny.get("inventable_promoted") is False
+    assert str(tiny.get("hardening_tip") or "").startswith("fcad723")
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    assert 109 in (tiny.get("merged_prs") or [])
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "fcad723" in base_tip
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 344
+    assert str(verify.get("base_tip_sha") or "").startswith("fcad723")
+    assert _living_tip(str(verify.get("prior_base_tip_sha") or "")) or str(
+        verify.get("prior_base_tip_sha") or ""
+    ).startswith("f244312")
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 344)
+
+    assert "fcad723" in _LIVING_TIPS
+    assert "f244312" in _LIVING_TIPS
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert str(status.get("tip") or "").startswith("fcad723")
+    assert status.get("tip_match") is True
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert str(wake.get("tip") or "").startswith("fcad723")
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 344)
+    assert "fcad723" in unblock or "Batch 344" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 344)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 344)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 344" in log_md or "fcad723" in log_md
 
 
 def test_batch341_research_stack_audit() -> None:

@@ -5,8 +5,8 @@
   "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "utc": "2026-09-25T18:25:28Z",
-  "tip": "f244312",
-  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
   "tip_match": true,
   "wake340_on_main": true,
   "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH337.json",
@@ -27,18 +27,19 @@
   },
   "intent": {
     "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-    "base_tip_expected": "f244312db901cf6ede88e46af663398d496eb989",
+    "base_tip_expected": "fcad723",
     "path_c": "IDLE@0019",
     "lemma_closed": false,
     "scientific_effect": "NONE",
     "durable_write_target": "8/8",
-    "never_flip_research": true
+    "never_flip_research": true,
+    "base_tip_full": "fcad72366743f5244eb26a0164e106419de78137"
   },
   "woken_idle_agents": [
     {
       "bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e",
       "name": "Batch340 tip-sync watch",
-      "assignment": "tip_sync_watch_vs_BASE_TIP_f244312",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_fcad723",
       "assignment_prior": "tip_sync_watch_vs_BASE_TIP_848aea2"
     },
     {
@@ -112,6 +113,8 @@
   },
   "wake_tip_at_assign": "848aea2",
   "wake_tip_at_assign_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
-  "tip_living_updated_batch": 342,
-  "tip_living_updated_utc": "2026-09-25T18:45:52Z"
+  "tip_living_updated_batch": 344,
+  "tip_living_updated_utc": "2026-09-25T18:45:52Z",
+  "tip_refresh_batch": 343,
+  "generated_at_utc": "2026-09-25T18:54:37Z"
 }
