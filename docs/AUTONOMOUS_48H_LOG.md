@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 348 — inventory_preserve_durable_tip_pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; durable 8/8; trial tip lagged after lands → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
+- Evidence `BATCH348_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
+
+
 ### Batch 348 — inventory tip pin + research stack audit @e3cd7d4 (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8.
