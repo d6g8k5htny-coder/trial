@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 356 — soften INV tip-pin Intent merge dedupe (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: merge left duplicate Intent test + frozen defect_id assert; dedupe to living allowlist. Goal OPEN. NEVER flip research.
+
+
 ### Batch 356 — inventory_preserve_durable_tip_pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; trial tip lagged after Batch 355 lands → preserve_durable pin→HEAD; never demote 8/8 on writable=0 DENIED.

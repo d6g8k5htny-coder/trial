@@ -1,0 +1,16 @@
+{
+  "batch": "356",
+  "generated_at_utc": "2026-09-25T21:15:20Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_soften_inv_tip_pin_intent_merge_dedupe",
+  "defect_id": "intent_batch356_inv_tip_pin_duplicate_hard_defect_id",
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "note": "Merge left duplicate test_batch356_inventory_preserve_durable_tip_pin + frozen defect_id assert; dedupe + living allowlist."
+}
