@@ -1,3 +1,7 @@
+## STATUS (Batch 368 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true). tip_sync_watch idle; living current; inv parent-pinned. Evidence: `portable/BATCH368_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 367 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 367 idle; last-resort + VERIFY frozen at 366 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→367 + VERIFY→367 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.

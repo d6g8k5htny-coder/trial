@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 368 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
+
+- Timer pulse: tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pinned; `lemma_closed=false`.
+- No tip move; Batch 367 research/tip-eng already on main. Woke tip/eng peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 367 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 366→367 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
