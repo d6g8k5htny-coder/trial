@@ -21,13 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 289 (permanent-watch IDLE) — 2026-09-25 ~11:18 UTC (PERMANENT window; idle; scientific effect NONE; flipped nothing)
+### Batch 289 (tip-sync 7d13a88→3a29f52 after main #83) — 2026-09-25 ~11:26 UTC (PERMANENT window; tip-sync + living republish; scientific effect NONE; flipped nothing)
 
-- Tip **stable** @ `7d13a88` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8).
-- Open main PRs: all **DRAFT** research HOLD / tip-observe — skipped (no green eng merge). Trial open PRs: none.
-- Hunt: living release `tip_stale=0` `script_stale=0` `need_upload=0` (CRITICAL scripts match); deep 0020 NEGATIVE; no new eng beyond 273–288. Status-timestamp-only `tgz_newer` noise not shipped.
-- Guard+research: `lemma_closed=false`; `flipped_anything=false`. Paper trail only.
-- next_focus=`tip_sync_drift_watch @7d13a88`; skip research HOLD drafts; App install add sandbox when Dylan relaunches.
+- Tip **moved** mid-cycle: started TIP_OK @ `7d13a88`; main **#83** (nav inventable; was DRAFT skipped at start) merged externally → live `3a29f52`. Idle paper trail on `c1c5ac6` CI went red (`_living_tip` / refresh TIP_DRIFT).
+- Tip-sync: `refresh_path_c_bundle` keep-prior (focused 92 + claims/recovery 83); BASE_TIP/VERIFY/APPLY/MANIFEST/PATH_C @ `3a29f52`; Path C still `IDLE_PATH_C_DONE`. Living release `tip_stale=1` → republish. `REFRESH_BATCH_TAG` default → 289; Intent `_LIVING_TIPS` += `3a29f52`.
+- Open remaining main PRs: tip-observe #84 + research HOLD drafts — skipped. Guard+research: `lemma_closed=false`; `flipped_anything=false`. No 0020.
+- next_focus=`tip_sync_drift_watch @3a29f52`; skip research HOLD / tip-observe inventable; App install add sandbox when Dylan relaunches.
 
 ### Batch 288 (when_writable CRITICAL + living republish — 287 leftover) — 2026-09-25 ~11:05 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 

@@ -31,6 +31,7 @@ _LIVING_TIPS = (
     "bfb7c38",
     "3b3860d",
     "7d13a88",
+    "3a29f52",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -11632,7 +11633,6 @@ def test_batch288_when_writable_critical_living_republish() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 288" in unblock
-    assert "=== Batch 288" in unblock
     assert "when_writable" in unblock
 
     for rel in (
@@ -11682,8 +11682,8 @@ def test_batch288_when_writable_critical_living_republish() -> None:
     assert "STATUS (Batch 288)" in land
 
 
-def test_batch289_permanent_watch_idle() -> None:
-    """Batch 289: permanent-watch IDLE — no new eng; lemma stays open."""
+def test_batch289_tip_sync_after_main_83() -> None:
+    """Batch 289: tip-sync 7d13a88→3a29f52 after main #83; living tip_stale; REFRESH 289."""
     import json
 
     brief = json.loads(
@@ -11693,25 +11693,26 @@ def test_batch289_permanent_watch_idle() -> None:
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
-    assert brief.get("defect_shipped") is False
-    assert brief.get("defect_found") is False
-    assert brief.get("defect_id") is None
-    assert brief.get("route_now") == "IDLE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_found") is True
+    assert brief.get("defect_id") == "tip_sync_7d13a88_to_3a29f52_main_83"
+    assert brief.get("tip_moved") is True
+    assert brief.get("route_now") == "TIP_SYNC"
     assert brief.get("patch_0020") is False
     assert brief.get("hunt_0020") == "NEGATIVE"
     assert _living_tip(str(brief.get("tip", "")))
-    assert str(brief.get("tip", "")).startswith("7d13a88")
+    assert str(brief.get("tip", "")).startswith("3a29f52")
+    assert str(brief.get("prior_tip", "")).startswith("7d13a88")
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH289_HUNT.json").read_text(encoding="utf-8")
     )
-    assert hunt.get("defect_shipped") is False
-    assert hunt.get("defect_found") is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "tip_sync_7d13a88_to_3a29f52_main_83"
     assert hunt.get("lemma_closed") is False
     assert hunt.get("flipped_anything") is False
-    assert hunt.get("tip_moved") is False
-    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_not_273_288") is True
-    assert any("288" in a or "CRITICAL" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is True
+    assert any("83" in a or "CRITICAL" in a or "288" in a for a in (hunt.get("avoided") or []))
 
     audit = json.loads(
         (ROOT / "portable" / "BATCH289_RESEARCH_STACK_AUDIT.json").read_text(
@@ -11721,13 +11722,45 @@ def test_batch289_permanent_watch_idle() -> None:
     assert audit.get("lemma_closed") is False
     assert audit.get("flipped_anything") is False
 
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
+        encoding="utf-8"
+    )
+    assert "3a29f526da5108df173edc390a8ca2d1f3d887c9" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert str(verify.get("refresh_batch", "")) == "289"
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert str(verify.get("base_tip_sha", "")).startswith("3a29f52")
+    assert str(verify.get("prior_base_tip_sha", "")).startswith("7d13a88")
+    assert verify.get("lemma_closed") is False
+    assert verify.get("tip_refresh") is True
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 289)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 289" in unblock
+    assert "=== Batch 289" in unblock
+    assert "3a29f52" in unblock or "tip-sync" in unblock.lower() or "7d13a88" in unblock
+
+    assert "3a29f52" in _LIVING_TIPS
+
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 289" in log_md
+    assert "#83" in log_md or "3a29f52" in log_md
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 289)" in land
+    assert "3a29f52" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 289)" in owner
 
-    # Keep living REFRESH default from last eng ship (288); idle does not bump.
-    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    _assert_refresh_batch_tag_default_at_least(refresh, 288)
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False

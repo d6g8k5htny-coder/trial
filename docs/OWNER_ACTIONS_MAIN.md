@@ -4,11 +4,12 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 289)
 
-Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Permanent-watch cycle: open main PRs all draft research HOLD (skipped); living release `tip_stale=0` `script_stale=0`; deep 0020 NEGATIVE; no new eng defect beyond Batches 273–288. IDLE. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **synced** `7d13a88`→`3a29f52` after main #83 nav inventable (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Cycle started TIP_OK @ `7d13a88` with idle paper trail; #83 merged mid-cycle → Intent/`refresh --dry-run` TIP_DRIFT. Tip-sync via `refresh_path_c_bundle` (keep-prior); living release `tip_stale` republish; bump `REFRESH_BATCH_TAG` default to 289; Intent `_LIVING_TIPS` += `3a29f52`. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
 ./scripts/assert_path_c_ready.sh
-./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0 need_upload=0
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 after ship
 ```
 
 ## STATUS (Batch 288)
