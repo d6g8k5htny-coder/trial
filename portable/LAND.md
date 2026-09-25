@@ -1,6 +1,11 @@
-## STATUS (Batch 256)
+## STATUS (Batch 257)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; aligned_drift_watch restore/snapshot race + flock + audit rate-limit retry shipped via PR #76 @`06b5389`; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; refresh tip-fetch rate-limit retry + gh_api/git_ls_remote fallbacks + print_owner_unblock live PATH_C_STATUS WRITABLE + owner_open_path_c_pr VERIFY-idle edge + land-path-c dispatch payload comment shipped; lemma_closed=false; scientific effect NONE.
+
+> ## STATUS (Batch 256)
+>
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; aligned_drift_watch restore/snapshot race + flock + audit rate-limit retry shipped via PR #76 @`06b5389`; lemma_closed=false; scientific effect NONE.
+>
 
 > ## STATUS (Batch 255)
 >

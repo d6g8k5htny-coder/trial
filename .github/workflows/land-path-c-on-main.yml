@@ -7,10 +7,13 @@
 #      type=land-path-c-on-main (cursor[bot] ghs path — workflow_dispatch returns
 #      403 for this installation; Contents write can POST /dispatches)
 #
-# When MAIN_PUSH_TOKEN appears, fire apply land:
-#   gh api repos/d6g8k5htny-coder/trial/dispatches -f event_type=land-path-c-on-main \
-#     --input - <<< '{"client_payload":{"dry_run":false}}'
+# When MAIN_PUSH_TOKEN appears, fire apply land (full JSON body — do not mix
+# -f event_type with a partial --input that omits event_type):
+#   printf '%s' '{"event_type":"land-path-c-on-main","client_payload":{"dry_run":false}}' \
+#     | gh api --method POST repos/d6g8k5htny-coder/trial/dispatches --input -
+# Or: ./scripts/dispatch_land_path_c.sh --apply
 # Default (no payload / dry_run omitted) stays dry-run-only (safe).
+# client_payload.dry_run accepts JSON bool/string ("false"/"0"/"no"); empty/null → true.
 #
 # Scientific effect: NONE. Engineering hygiene only (portable apply_all
 # 0001–0004 + 0008–0019). lemma_closed must stay false. Never flips research

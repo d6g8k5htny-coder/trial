@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 257)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Real CI Tip-drift dry-sim failed on unauthenticated tip-fetch HTTP 403 rate-limit. Shipped `refresh_path_c_bundle` rate-limit retries + `gh api` / `git ls-remote` fallbacks; `print_owner_unblock` reads live `PATH_C_STATUS.write_state` (no longer Batch 169 / DENIED); `owner_open_path_c_pr` idles on VERIFY tip match when ls-remote empty; land-path-c dispatch comment uses full JSON body. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run                  # tip match @ fa32d11; tip_fetch_via=*
+./scripts/print_owner_unblock.sh | head -n 5                  # write WRITABLE from PATH_C_STATUS
+./scripts/owner_open_path_c_pr.sh --dry-run                    # already_on_tip idle
+./scripts/when_writable_land.py --once --dry-run              # idle_path_c_done
+```
+
 ## STATUS (Batch 256)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped `aligned_drift_watch` post-restore audit promotion + nonblocking restore flock (snapshot tip no longer races state) and `audit_main_alignment` retries on HTTP 429 / secondary rate-limit 403. Guard pass line prints `tip_sha`. `lemma_closed=false`. Scientific effect: NONE.

@@ -218,6 +218,8 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "--- dry-run summary ---"
   # Batch 250: when Path C already on tip (VERIFY.path_c_landed / idle), do not
   # advertise a no-op push/PR — same class as Path B ALIGNED short-circuit.
+  # Batch 257: if ls-remote fails (transport) but VERIFY.path_c_landed + BASE_TIP
+  # matches VERIFY.base_tip_sha, still idle — do not advertise a false land.
   PATH_C_LANDED="$(python3 -c '
 import json,sys
 from pathlib import Path
@@ -228,7 +230,14 @@ except Exception:
   d={}
 print("true" if d.get("path_c_landed") is True else "false")
 ' "$VERIFY_JSON" 2>/dev/null || echo false)"
-  if [[ "$PATH_C_LANDED" == "true" && -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+  TIP_OK=0
+  if [[ -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    TIP_OK=1
+  elif [[ -z "$LIVE_SHA" && -n "$VERIFY_SHA" && ( "$VERIFY_SHA" == "$BASE_TIP_SHA" || "$VERIFY_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${VERIFY_SHA}"* ) ]]; then
+    TIP_OK=1
+    echo "tip_matches_base=true (VERIFY.base_tip_sha; live ls-remote unavailable)"
+  fi
+  if [[ "$PATH_C_LANDED" == "true" && "$TIP_OK" -eq 1 ]]; then
     echo "already_on_tip=true path_c_landed=true"
     echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
     echo "owner_open_path_c_pr: dry-run OK — already-on-tip idle (no no-op land)."

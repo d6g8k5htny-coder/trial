@@ -7850,6 +7850,137 @@ def test_batch256_aligned_drift_restore_race_and_audit_rate_limit() -> None:
     assert ".aligned_drift_restore.lock" in gitignore
 
 
+def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> None:
+    """Batch 257: tip-fetch rate-limit fallback + print_owner_unblock WRITABLE; no flip."""
+    import json
+    import os
+    import stat
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    refresh = ROOT / "scripts" / "refresh_path_c_bundle.sh"
+    assert refresh.is_file()
+    mode = refresh.stat().st_mode
+    assert mode & stat.S_IXUSR
+    text = refresh.read_text(encoding="utf-8")
+    assert "REFRESH_TIP_FETCH_RETRIES" in text
+    assert "git_ls_remote" in text
+    assert "gh_api" in text
+    assert "rate-limit" in text.lower() or "rate limit" in text.lower()
+    assert "tip_fetch_via" in text
+    assert "Never print tokens" in text or "never printed" in text.lower()
+
+    # Simulate curl 403 rate-limit → must fall back (gh or ls-remote), not die.
+    with tempfile.TemporaryDirectory() as td:
+        fake = Path(td)
+        curl = fake / "curl"
+        curl.write_text(
+            "#!/bin/bash\n"
+            "printf '%s\\n%s\\n' "
+            "'{\"message\":\"API rate limit exceeded for 9.9.9.9\"}' '403'\n"
+            "exit 0\n",
+            encoding="utf-8",
+        )
+        curl.chmod(0o755)
+        env = os.environ.copy()
+        for k in ("GITHUB_TOKEN", "GH_TOKEN", "MAIN_PUSH_TOKEN"):
+            env.pop(k, None)
+        env["PATH"] = f"{fake}:{env.get('PATH', '')}"
+        env["REFRESH_TIP_FETCH_RETRIES"] = "1"
+        env["REFRESH_TIP_FETCH_SLEEP_S"] = "0"
+        proc = subprocess.run(
+            [str(refresh), "--dry-run"],
+            cwd=str(ROOT),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+        out = (proc.stdout or "") + (proc.stderr or "")
+        assert proc.returncode == 0, out
+        assert "tip_fetch_via=" in out
+        assert "git_ls_remote" in out or "gh_api" in out
+        assert "dry-run OK tip stable" in out or "tip stable" in out
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "PATH_C_STATUS.json" in unblock
+    assert "write_state" in unblock
+    assert "Batch 257" in unblock
+    assert 'echo "=== Batch 257 — PERMANENT window' in unblock
+    # Must not hardcode stale Batch 169 / 1c6e74b as the live header.
+    assert "Batch 169 — PERMANENT window; ALIGNED @ 1c6e74b" not in unblock
+    assert "write ${WRITE_STATE}" in unblock or "write_state=${WRITE_STATE}" in unblock
+
+    open_pr = (ROOT / "scripts" / "owner_open_path_c_pr.sh").read_text(encoding="utf-8")
+    assert "VERIFY.base_tip_sha; live ls-remote unavailable" in open_pr
+    assert "TIP_OK" in open_pr
+
+    path_c_wf = (ROOT / ".github" / "workflows" / "land-path-c-on-main.yml").read_text(
+        encoding="utf-8"
+    )
+    assert '"event_type":"land-path-c-on-main"' in path_c_wf
+    assert "client_payload" in path_c_wf
+    # Misleading -f + partial --input pattern removed.
+    assert '-f event_type=land-path-c-on-main' not in path_c_wf or (
+        '{"event_type":"land-path-c-on-main"' in path_c_wf
+    )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH257_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "257"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == (
+        "refresh_tip_fetch_rate_limit_fallback_plus_print_owner_unblock_writable"
+    )
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH257_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "257"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "ci.yml YAML" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+    assert "aligned_drift flock" in (hunt.get("avoided") or [])
+
+    audit_json = json.loads(
+        (ROOT / "portable" / "BATCH257_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit_json.get("lemma_closed") is False
+    assert audit_json.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 257" in log
+    assert "rate-limit" in log.lower() or "rate limit" in log.lower()
+    assert "WRITABLE" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 257)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 257)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+
 def test_batch255_republish_living_path_c_release_assets() -> None:
     """Batch 255: republish helper when pack newer than living release; no flip."""
     import json

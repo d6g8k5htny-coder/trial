@@ -18,9 +18,39 @@ if [[ -f "$BASE_TIP_FILE" ]]; then
   BASE_TIP_SHORT="${BASE_TIP_SHORT:0:7}"
 fi
 
-echo "=== Batch 169 — PERMANENT window; ALIGNED @ 1c6e74b (PR #41); Path C BASE_TIP ${BASE_TIP_SHORT}; git .bundle preferred; unrestricted/auto-approve; HOLD VOID ==="
+# Batch 257: header used to freeze Batch 169 / tip 1c6e74b / "write DENIED" while
+# portable/PATH_C_STATUS.json already reported WRITABLE @ fa32d11. Prefer live status
+# (never print tokens / raw device secrets beyond existing GH_DEVICE_LOGIN paths).
+STATUS_FILE="$ROOT/portable/PATH_C_STATUS.json"
+WRITE_STATE="UNKNOWN"
+STATUS_TIP="$BASE_TIP_SHORT"
+IDLE_STATUS=""
+STATUS_GEN=""
+if [[ -f "$STATUS_FILE" ]]; then
+  eval "$(python3 -c '
+import json,shlex,sys
+from pathlib import Path
+p=Path(sys.argv[1])
+try:
+    d=json.loads(p.read_text(encoding="utf-8"))
+except Exception:
+    d={}
+def emit(k,v):
+    if v is None:
+        v=""
+    print(f"{k}={shlex.quote(str(v))}")
+emit("WRITE_STATE", d.get("write_state") or "UNKNOWN")
+emit("STATUS_TIP", (d.get("tip") or d.get("base_tip") or "")[:7])
+emit("IDLE_STATUS", d.get("idle_status") or "")
+emit("STATUS_GEN", d.get("generated_at") or "")
+' "$STATUS_FILE")"
+fi
+[[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
+
+echo "=== Batch 257 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
+echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
 echo "Window: $ROOT/scripts/check_autonomous_window.py  # PERMANENT_UNTIL_OWNER_INTERVENES"
 echo "Path C ONE-SHOT (Batch 165+): $ROOT/scripts/owner_path_c_oneshot.sh --dry-run"
 echo "  token → owner_open_path_c_pr.sh (else owner_land_path_c.sh); no token → unblock menu"
@@ -59,7 +89,7 @@ echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch241-pat
 echo "Path C ONE-SHOT (owner laptop): gh release download batch241-path-c-bundle -R d6g8k5htny-coder/trial -p 'trial-portable-main-fixes.tgz' -p 'path-c-on-hardening.bundle'"
 echo "  then: tar -xzf trial-portable-main-fixes.tgz -C /tmp/path-c-land && /tmp/path-c-land/scripts/owner_path_c_oneshot.sh --from-bundle"
 echo "Timer: re-arm permanent-autonomous-align-watch @ 10800s + gh-dylan-device-auth-check @ 1800s (preferred_auth_interval_s=1800; single; no dup)."
-echo "PR #41 renewed default tip to 1c6e74b (ALIGNED). ALIGNED can revert (#32 history) — keep Path B ready."
+echo "PR #41 renewed default tip (ALIGNED). Current default tip may be newer — keep Path B ready if ALIGNED reverts (#32 history)."
 echo "Path A OR Path B OK when MISALIGNED. Prefer Path B (Option-B README+AGENTS)."
 echo "One-command: $ROOT/scripts/restore_main_face.sh  # short-circuits when already ALIGNED"
 echo "Path C BASE_TIP file: $BASE_TIP_LINE"
@@ -79,7 +109,7 @@ echo "Rebase conflict paths: portable/PATH_C_REBASE_CONFLICT_REPORT_67.json (ci.
 echo "Rebase helper: $ROOT/scripts/path_c_rebase_helper.sh --dry-run  # prefer abort; never invent research status"
 echo "Resolution notes: portable/PATH_C_REBASE_RESOLUTION_NOTES_68.json"
 echo "Post-#41: do NOT PATH_C_BASE=main (ALIGNED landing lacks PACKET.json)."
-echo "Batch 132: research audit OPEN premises=13 lemmas=1 prizes=3 @ c82c9357; when_writable_land loads dylan device token; write DENIED; no 0017."
+echo "Write live: ${WRITE_STATE} (from PATH_C_STATUS; probe below may confirm). Research audit stays OPEN; lemma_closed=false; no status flips."
 echo "pack_portable.sh auto-globs RESTORE_PLAN_* + BATCH*_TOKEN_SEARCH + PATH_C_REBASE_* + BATCH*_RESEARCH_STACK_AUDIT + STATUS_GUARD_SNAPSHOT + ALIGNED_DRIFT_SNAPSHOT + validate_land_workflows (Batch 64+/67+/68+/70+/72+/73+/74+/86)."
 echo "Research-stack OPEN audit (Batch 70/132; read-only; no flips): $ROOT/scripts/audit_research_stack_open.py <checkout>"
 echo "  artifact: portable/BATCH132_RESEARCH_STACK_AUDIT.json  |  docs/MECHANICAL_FINDINGS_MAIN.md"

@@ -46,7 +46,9 @@ Options:
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
   REFRESH_BATCH_TAG   recorded in VERIFY.json (default 250)
-  GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional clone auth (never printed)
+  GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional tip-fetch + clone auth (never printed)
+  REFRESH_TIP_FETCH_RETRIES   API retries on 429 / rate-limit 403 (default 3)
+  REFRESH_TIP_FETCH_SLEEP_S   base sleep between tip-fetch retries (default 2)
 
 Exit:
   0  tip already current (no --force) OR rebuild succeeded / dry-run match
@@ -106,29 +108,21 @@ PRIOR_SHA="$(parse_base_tip_sha "$BASE_LINE" || true)"
 [[ -n "$PRIOR_SHA" ]] || die "could not parse SHA from BASE_TIP.txt: $BASE_LINE"
 
 API_URL="https://api.github.com/repos/${MAIN_REPO}/commits/${HARDENING_REF}"
-AUTH_HDR=()
+# Batch 257: tip-fetch used to die on the first unauthenticated HTTP 403 rate-limit
+# (trial CI Tip-drift dry-sim red on shared runner IPs). Retry rate-limits, prefer
+# token when present, then gh api / git ls-remote fallbacks. Never print tokens.
 TOK="${GITHUB_TOKEN:-${GH_TOKEN:-${MAIN_PUSH_TOKEN:-}}}"
-if [[ -n "$TOK" ]]; then
-  AUTH_HDR=(-H "Authorization: Bearer ${TOK}")
+if [[ -z "$TOK" ]] && command -v gh >/dev/null 2>&1; then
+  # Prefer gh's stored token without printing (CI may lack env GITHUB_TOKEN on this step).
+  TOK="$(gh auth token 2>/dev/null || true)"
 fi
-echo "refresh_path_c_bundle: fetching live tip ${MAIN_REPO}@${HARDENING_REF}"
-# -f: treat HTTP >=400 as failure (404 repo/ref, 403 rate-limit, etc.)
-HTTP_CODE=0
-LIVE_JSON="$(curl -sS -w '\n%{http_code}' "${AUTH_HDR[@]}" -H 'Accept: application/vnd.github+json' "$API_URL")" || die "tip fetch failed (curl transport)"
-HTTP_CODE="$(printf '%s' "$LIVE_JSON" | tail -n1)"
-LIVE_JSON="$(printf '%s' "$LIVE_JSON" | sed '$d')"
-if [[ "$HTTP_CODE" != "200" ]]; then
-  API_MSG="$(printf '%s' "$LIVE_JSON" | python3 -c '
-import json,sys
-try:
-    d=json.load(sys.stdin)
-except Exception:
-    print("non-json body"); raise SystemExit(0)
-print(d.get("message") or d.get("error") or d.get("documentation_url") or "unknown")
-' 2>/dev/null || echo "unparseable")"
-  die "tip fetch HTTP ${HTTP_CODE}: ${API_MSG}"
-fi
-LIVE_SHA="$(printf '%s' "$LIVE_JSON" | python3 -c '
+TIP_FETCH_RETRIES="${REFRESH_TIP_FETCH_RETRIES:-3}"
+TIP_FETCH_SLEEP_S="${REFRESH_TIP_FETCH_SLEEP_S:-2}"
+LIVE_SHA=""
+LIVE_FETCH_VIA=""
+
+_parse_commit_sha_json() {
+  python3 -c '
 import json,sys,re
 try:
     d=json.load(sys.stdin)
@@ -141,7 +135,85 @@ if not re.fullmatch(r"[0-9a-f]{40}", sha):
     print(f"bad_sha:{msg}", file=sys.stderr)
     raise SystemExit(1)
 print(sha)
-')" || die "could not parse live tip sha from API JSON"
+'
+}
+
+_is_rate_limit_msg() {
+  local code="$1" msg="$2"
+  local blob
+  blob="$(printf '%s %s' "$code" "$msg" | tr '[:upper:]' '[:lower:]')"
+  [[ "$code" == "429" ]] && return 0
+  [[ "$blob" == *"rate limit"* || "$blob" == *"secondary rate"* ]] && return 0
+  return 1
+}
+
+echo "refresh_path_c_bundle: fetching live tip ${MAIN_REPO}@${HARDENING_REF}"
+# 1) curl GitHub commits API (token when available) with brief rate-limit retries.
+attempt=1
+while [[ "$attempt" -le "$TIP_FETCH_RETRIES" ]]; do
+  AUTH_HDR=()
+  if [[ -n "$TOK" ]]; then
+    AUTH_HDR=(-H "Authorization: Bearer ${TOK}")
+  fi
+  HTTP_CODE=0
+  LIVE_JSON=""
+  if LIVE_JSON="$(curl -sS -w '\n%{http_code}' "${AUTH_HDR[@]}" -H 'Accept: application/vnd.github+json' \
+      -H 'User-Agent: trial-refresh-path-c-bundle' "$API_URL")"; then
+    HTTP_CODE="$(printf '%s' "$LIVE_JSON" | tail -n1)"
+    LIVE_JSON="$(printf '%s' "$LIVE_JSON" | sed '$d')"
+    if [[ "$HTTP_CODE" == "200" ]]; then
+      if LIVE_SHA="$(printf '%s' "$LIVE_JSON" | _parse_commit_sha_json)"; then
+        LIVE_FETCH_VIA="curl_api"
+        break
+      fi
+    else
+      API_MSG="$(printf '%s' "$LIVE_JSON" | python3 -c '
+import json,sys
+try:
+    d=json.load(sys.stdin)
+except Exception:
+    print("non-json body"); raise SystemExit(0)
+print(d.get("message") or d.get("error") or d.get("documentation_url") or "unknown")
+' 2>/dev/null || echo "unparseable")"
+      if _is_rate_limit_msg "$HTTP_CODE" "$API_MSG" && [[ "$attempt" -lt "$TIP_FETCH_RETRIES" ]]; then
+        sleep_s="$(python3 -c "print(min(${TIP_FETCH_SLEEP_S}*${attempt}, 30))" 2>/dev/null || echo "$TIP_FETCH_SLEEP_S")"
+        echo "refresh_path_c_bundle: tip fetch HTTP ${HTTP_CODE} rate-limit; retry ${attempt}/${TIP_FETCH_RETRIES} sleep=${sleep_s}s"
+        sleep "$sleep_s"
+        attempt=$((attempt + 1))
+        continue
+      fi
+      echo "refresh_path_c_bundle: tip fetch HTTP ${HTTP_CODE}: ${API_MSG} (will try fallbacks)"
+      break
+    fi
+  else
+    echo "refresh_path_c_bundle: tip fetch curl transport failed (will try fallbacks)"
+    break
+  fi
+  attempt=$((attempt + 1))
+done
+
+# 2) gh api fallback (uses gh auth / GH_TOKEN; never print token).
+if [[ -z "$LIVE_SHA" ]] && command -v gh >/dev/null 2>&1; then
+  if GH_JSON="$(gh api "repos/${MAIN_REPO}/commits/${HARDENING_REF}" 2>/dev/null)"; then
+    if LIVE_SHA="$(printf '%s' "$GH_JSON" | _parse_commit_sha_json)"; then
+      LIVE_FETCH_VIA="gh_api"
+    else
+      LIVE_SHA=""
+    fi
+  fi
+fi
+
+# 3) git ls-remote fallback — avoids REST rate-limit ceilings on shared CI IPs.
+if [[ -z "$LIVE_SHA" ]]; then
+  LS_OUT="$(git ls-remote "https://github.com/${MAIN_REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1 || true)"
+  if [[ "$LS_OUT" =~ ^[0-9a-f]{40}$ ]]; then
+    LIVE_SHA="$LS_OUT"
+    LIVE_FETCH_VIA="git_ls_remote"
+  fi
+fi
+
+[[ -n "$LIVE_SHA" ]] || die "tip fetch failed (curl/gh/ls-remote); last HTTP may be rate-limit — set GITHUB_TOKEN or retry"
+echo "refresh_path_c_bundle: tip_fetch_via=${LIVE_FETCH_VIA}"
 LIVE_SHORT="${LIVE_SHA:0:7}"
 PRIOR_SHORT="${PRIOR_SHA:0:7}"
 

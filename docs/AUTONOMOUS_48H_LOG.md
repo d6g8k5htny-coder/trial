@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 257 (refresh tip-fetch rate-limit fallback + print_owner_unblock WRITABLE) — 2026-09-25 ~00:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence (real CI fail):** Tip-drift dry-sim red on runs [36078066855](https://github.com/d6g8k5htny-coder/trial/actions/runs/36078066855) / [36078871433](https://github.com/d6g8k5htny-coder/trial/actions/runs/36078871433): `refresh_path_c_bundle: ERROR: tip fetch HTTP 403: API rate limit exceeded` (unauthenticated curl; no retry/fallback). `print_owner_unblock` still said Batch 169 / `1c6e74b` / **write DENIED** while `PATH_C_STATUS.write_state=WRITABLE`.
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene / not when_writable install_has_main / not probe unique refs / not release republish / not aligned_drift flock / not audit rate-limit / not guard tip_sha log):** (1) `refresh_path_c_bundle` tip-fetch retries 429/rate-limit 403 then `gh api` / `git ls-remote` fallbacks; (2) `print_owner_unblock` header from live `PATH_C_STATUS`; (3) `owner_open_path_c_pr` VERIFY-match idle when ls-remote empty; (4) land-path-c dispatch comment = full JSON `event_type`+`client_payload.dry_run`.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 256 (aligned_drift_watch restore/snapshot race + audit rate-limit retry) — 2026-09-25 ~00:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative. Main CI recent failures: **0**.
