@@ -1,3 +1,7 @@
+## STATUS (Batch 353 inv-tip-repin post-eng)
+
+tip `e3cd7d4` tip_match=true; inventory tip re-pin→HEAD after eng living republish; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 353 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living script_stale republish after research-audit merge; durable 8/8; lemma_closed=false; scientific effect NONE.
