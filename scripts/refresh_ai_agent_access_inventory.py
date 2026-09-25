@@ -9,6 +9,11 @@ Batch 328: INV_BATCH default no longer freezes at \"323\" — derive from
 print_owner_unblock.sh header (=== Batch N ===) so tip refreshes stamp the
 living automation batch. Env INV_BATCH still overrides.
 
+Batch 330: when durable_writable == len(repos), force push/WRITABLE and do
+not let App/ambient permissions:{push:false} rewrite connected→pull. When
+durable_sandbox_read is n/a/? keep prior sandbox.readable (no_token must not
+flip readable false).
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 """
@@ -24,7 +29,7 @@ from typing import Any
 
 
 def _living_inventory_batch(root: str) -> str:
-    """Prefer print_owner header Batch N; else prior inventory batch; else 328."""
+    """Prefer print_owner header Batch N; else prior inventory batch; else 330."""
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
         text = open(unblock, encoding="utf-8").read()
@@ -41,7 +46,7 @@ def _living_inventory_batch(root: str) -> str:
             return b
     except (OSError, json.JSONDecodeError):
         pass
-    return "328"
+    return "330"
 
 
 def _gh_json(args: list[str]) -> Any:
@@ -101,7 +106,7 @@ def refresh(
         "%Y-%m-%dT%H:%M:%SZ"
     )
     if batch is None:
-        batch = "328"
+        batch = "330"
     inv["batch"] = str(batch)
     inv["token_printed"] = False
     inv["multi_agent_script"] = "scripts/owner_grant_ai_agent_access.sh"
@@ -132,10 +137,20 @@ def refresh(
             if durable_sandbox_write in ("WRITABLE", "DENIED"):
                 write = durable_sandbox_write
         perms = meta.get("permissions") if isinstance(meta.get("permissions"), dict) else {}
+        # Batch 330: App/ghs often reports permissions.push=false even when the
+        # durable vector is 8/8 WRITABLE — do not rewrite connected→pull.
+        if durable_writable == len(repos) and repos:
+            push = True
+            admin = bool(perms.get("admin", prev.get("admin", True))) or bool(
+                prev.get("admin", True)
+            )
+        else:
+            push = bool(perms.get("push", prev.get("push", True)))
+            admin = bool(perms.get("admin", prev.get("admin", True)))
         row = {
             "name": repo,
-            "push": bool(perms.get("push", prev.get("push", True))),
-            "admin": bool(perms.get("admin", prev.get("admin", True))),
+            "push": push,
+            "admin": admin,
             "default_branch": meta.get("default_branch")
             or prev.get("default_branch")
             or "main",
@@ -151,8 +166,15 @@ def refresh(
 
         if repo == f"{owner}/sandbox":
             prev_sb = inv.get("sandbox") if isinstance(inv.get("sandbox"), dict) else {}
+            ds = str(durable_sandbox_read)
+            if ds in ("n/a", "?", ""):
+                readable = bool(prev_sb.get("readable", True))
+            elif ds == "404":
+                readable = False
+            else:
+                readable = True
             inv["sandbox"] = {
-                "readable": str(durable_sandbox_read) not in ("404", "n/a", "?", ""),
+                "readable": readable,
                 "write": durable_sandbox_write
                 if durable_sandbox_write in ("WRITABLE", "DENIED")
                 else row["write"],

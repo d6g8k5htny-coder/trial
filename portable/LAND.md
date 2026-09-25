@@ -1,3 +1,7 @@
+## STATUS (Batch 330)
+
+tip `077464e` tip_match=true; grant --check skips inventory refresh when durable_token_source=none (retain living 8/8; no App-corrupt); refresh writer forces push when durable_writable=8; inventory batch 330; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 329)
 
 tip `077464e` tip_match=true; eng: Batch 289 Intent no longer freezes VERIFY.tip_refresh=True (non-tip refresh_batch bumps set false); MULTI_AGENT_WAKE_BATCH329 wake+assign; lemma_closed=false; scientific effect NONE.

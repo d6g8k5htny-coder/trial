@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 330 — grant --check skip inventory refresh without durable token (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; durable coverage **8/8_WRITABLE** (coordinator live); `lemma_closed=false`.
+- This VM `--check`: App 1/8 + `durable_token_source=none` — do **not** record `no_token` (Batch 322 false-negative class).
+- Eng: `owner_grant_ai_agent_access.sh --check` skips `refresh_ai_agent_access_inventory.py` when durable token absent; writer forces `push` when `durable_writable=8` and keeps `sandbox.readable` on `n/a`.
+- Inventory living batch stamp → **330**; tiny `portable/BATCH330_GRANT.json`.
+- NEVER flip research.
+
 ### Batch 329 — living tip_refresh assert + multi-agent wake (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

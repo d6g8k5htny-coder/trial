@@ -13073,3 +13073,71 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
+
+def test_batch330_grant_skip_inventory_refresh_without_durable() -> None:
+    """Batch 330: grant --check skips inventory refresh when durable token absent."""
+    import json
+    import re
+    import subprocess
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(encoding="utf-8")
+    assert "Batch 330" in grant
+    assert "inventory_refresh=skip durable_token_source=" in grant
+    assert "do not App-corrupt" in grant
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 330" in helper
+    assert "force push" in helper.lower() or "durable_writable == len(repos)" in helper
+    assert 'ds in ("n/a", "?", "")' in helper or 'durable_sandbox_read) not in' not in helper
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH330_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "330"
+    assert tiny.get("write_durable") == "8/8_WRITABLE"
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert str(tiny.get("tip_sha", "")).startswith("077464e")
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("action") == "grant_check_skip_inventory_refresh_without_durable_token"
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(str(inv.get("batch") or "0")) >= 330
+    assert inv.get("lemma_closed") is False
+    assert (inv.get("repos_connected") or [{}])[0].get("perm") == "push"
+    assert (inv.get("sandbox") or {}).get("readable") is True
+
+    # Runtime: --check without durable token must skip refresh (not corrupt).
+    out = subprocess.check_output(
+        [str(ROOT / "scripts" / "owner_grant_ai_agent_access.sh"), "--check"],
+        cwd=ROOT,
+        text=True,
+        timeout=120,
+    )
+    assert "inventory_refresh=skip durable_token_source=none" in out or (
+        "inventory_refresh=ok" in out and "durable_token_source=" in out
+    )
+    # After no-token check, living coverage must still be 8/8 (not no_token rewrite).
+    inv2 = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv2.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert (inv2.get("repos_connected") or [{}])[0].get("perm") == "push"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 330
+    _assert_print_owner_header_batch_at_least(unblock, 330)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 330)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 330)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 330" in log_md

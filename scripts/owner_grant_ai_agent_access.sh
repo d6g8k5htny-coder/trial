@@ -471,11 +471,18 @@ print("install_missing_from_deps:", missing)'
   fi
   echo
   # Batch 323: refresh living inventory tip_sha/pushed_at/write so agents do
-  # not read a stale pointer file. Prefer durable token; fall back to ambient.
+  # not read a stale pointer file. Prefer durable token.
+  # Batch 330: NEVER refresh from App/ambient when durable_token_source=none —
+  # VM-local no_token would corrupt connected perm→pull + sandbox.readable=false
+  # while live durable remains 8/8 WRITABLE (Batch 322 false-negative class).
   # Writer: scripts/refresh_ai_agent_access_inventory.py (pack + CRITICAL).
   # Never flips lemma_closed / scientific_effect / flipped_anything.
   INV_PATH="$ROOT/portable/AI_AGENT_ACCESS_INVENTORY.json"
-  if [[ -f "$INV_PATH" ]]; then
+  if [[ ! -f "$INV_PATH" ]]; then
+    echo "inventory_refresh=skip missing=$INV_PATH"
+  elif [[ "$DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0 ]]; then
+    echo "inventory_refresh=skip durable_token_source=${DURABLE_TOKEN_SOURCE} durable_writable=${DURABLE_WRITABLE} (retain living 8/8; do not App-corrupt)"
+  else
     _INV_TOKEN=""
     if discover_durable_main_push_token; then
       _INV_TOKEN="$DURABLE_TOKEN"
@@ -500,8 +507,6 @@ print("install_missing_from_deps:", missing)'
     [[ -n "${_PREV_GH_TOKEN}" ]] && export GH_TOKEN="${_PREV_GH_TOKEN}"
     [[ -n "${_PREV_GITHUB_TOKEN}" ]] && export GITHUB_TOKEN="${_PREV_GITHUB_TOKEN}"
     unset _PREV_GH_TOKEN _PREV_GITHUB_TOKEN || true
-  else
-    echo "inventory_refresh=skip missing=$INV_PATH"
   fi
   echo
   echo "Apps are not enumerable from a ghs installation token without owner OAuth."

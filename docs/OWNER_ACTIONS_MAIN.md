@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 330)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan **8/8**). Eng: `owner_grant --check` was refreshing `AI_AGENT_ACCESS_INVENTORY` from App/ambient when `durable_token_source=none` → connected `push`→`pull` + `sandbox.readable=false` (Batch 322 false `no_token` class). Now **skips** inventory refresh without durable token; refresh writer forces `push` when `durable_writable=8`. Inventory living batch **330**. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`grant_check_skip_inventory_refresh_without_durable_token`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check   # expect inventory_refresh=skip when no token; retain 8/8
+python3 -c 'import json; print(json.load(open("portable/BATCH330_GRANT.json"))["coverage"])'
+```
+
 ## STATUS (Batch 329)
 
 Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — Batch 327 non-tip `refresh_batch` bump correctly sets `tip_refresh=False` while tip stays living → assert softened to `(True, False)`. Dylan wake: `portable/MULTI_AGENT_WAKE_BATCH329.json` (resume IDLE + cloud peers). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`living_tip_refresh_assert_and_wake`. Scientific effect: NONE.
