@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 265)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. Batch 262 live-ignore Intent still inherited Actions `GITHUB_TOKEN` after Batch 263 unit-only scrub → `token_source=env:GITHUB_TOKEN` under `PATH_C_IGNORE_FILE_TOKENS` DENIED → trial-ci Intent reds (36086754869+). Fixed: scrub `GH_TOKEN`/`GITHUB_TOKEN` in live-ignore subprocess (no probe redesign). `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+PATH_C_IGNORE_FILE_TOKENS=1 env -u GITHUB_TOKEN -u GH_TOKEN -u MAIN_PUSH_TOKEN \
+  python3 scripts/probe_main_write.py                         # DENIED token_source empty
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run                  # idle_path_c_done
+```
+
 ## STATUS (Batch 264)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth / durable file). Path C `IDLE_PATH_C_DONE`. `owner_land_path_b --dry-run` advertised "Re-run without --dry-run to land" while `path_b_dry_run` reported `ALREADY_ALIGNED` and live land already short-circuits (Batch 241/242). Fixed: `land_needed=false` on ALREADY_ALIGNED; dry-run idles honestly. `lemma_closed=false`. Scientific effect: NONE.

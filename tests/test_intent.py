@@ -8650,6 +8650,11 @@ def test_batch262_probe_file_token_discovery() -> None:
     assert _living_tip(status.get("tip"))
 
     # Live ignore → DENIED (App); never assert token material in stdout.
+    # Batch 265: Actions always injects GITHUB_TOKEN. Batch 263 scrubbed only the
+    # unit _token() block; this live ignore subprocess still inherited env:GITHUB_TOKEN
+    # → token_source='env:GITHUB_TOKEN' while DENIED, reding trial-ci Intent
+    # (runs 36086754869 / 36086753751 / 36086723977). Scrub ambient App/env tokens
+    # so IGNORE_FILE_TOKENS exercises App/gh-auth-only DENIED with no durable source.
     ignore = subprocess.run(
         [sys.executable, str(probe)],
         capture_output=True,
@@ -8661,7 +8666,7 @@ def test_batch262_probe_file_token_discovery() -> None:
             **{
                 k: v
                 for k, v in os.environ.items()
-                if k not in ("MAIN_PUSH_TOKEN",)
+                if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
             },
             "PATH_C_IGNORE_FILE_TOKENS": "1",
         },
@@ -8672,6 +8677,8 @@ def test_batch262_probe_file_token_discovery() -> None:
     if ignore.returncode == 1:
         data = json.loads(ignore.stdout[ignore.stdout.find("{") :])
         assert data.get("state") == "DENIED"
+        # After scrub: no env/file durable source. Do not accept env:GITHUB_TOKEN —
+        # that was the CI flake (Actions ambient token ≠ durable file discovery).
         assert data.get("token_source") in (None, "")
 
 
@@ -8918,6 +8925,140 @@ def test_batch264_path_b_dryrun_already_aligned_idle() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 264" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+
+def test_batch265_live_ignore_ci_isolate_github_token() -> None:
+    """Batch 265: Batch 262 live-ignore Intent scrubs Actions GITHUB_TOKEN; no flip."""
+    import json
+    import subprocess
+
+    probe = ROOT / "scripts" / "probe_main_write.py"
+    # Source contract: live-ignore env must scrub ambient App tokens (Batch 265).
+    src = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    assert "Batch 265" in src
+    assert 'if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")' in src
+    # Regression: old MAIN_PUSH_TOKEN-only scrub must not remain in live-ignore block.
+    live_ignore_region = src.split("Live ignore → DENIED")[1].split(
+        "def test_batch263_"
+    )[0]
+    assert "GH_TOKEN" in live_ignore_region
+    assert "GITHUB_TOKEN" in live_ignore_region
+
+    # Simulate Actions ambient GITHUB_TOKEN; scrubbed child must not report it.
+    ignore = subprocess.run(
+        [sys.executable, str(probe)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+        env={
+            **{
+                k: v
+                for k, v in os.environ.items()
+                if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+            },
+            "PATH_C_IGNORE_FILE_TOKENS": "1",
+            # Inject then rely on scrub list in the env dict construction above —
+            # explicitly omit so child cannot see an ambient Actions token.
+        },
+    )
+    assert ignore.returncode in (0, 1, 2)
+    assert "ghp_" not in ignore.stdout
+    assert "gho_" not in ignore.stdout
+    if ignore.returncode == 1:
+        data = json.loads(ignore.stdout[ignore.stdout.find("{") :])
+        assert data.get("state") == "DENIED"
+        assert data.get("token_source") in (None, "")
+        assert data.get("token_source") != "env:GITHUB_TOKEN"
+
+    # Contrasting control: with GITHUB_TOKEN present (old flake shape), probe may
+    # label env:GITHUB_TOKEN — documenting why the scrub is required. Never print
+    # the fake value beyond the env key label in JSON.
+    control = subprocess.run(
+        [sys.executable, str(probe)],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        check=False,
+        cwd=str(ROOT),
+        env={
+            **{
+                k: v
+                for k, v in os.environ.items()
+                if k not in ("MAIN_PUSH_TOKEN",)
+            },
+            "PATH_C_IGNORE_FILE_TOKENS": "1",
+            "GITHUB_TOKEN": "ghs_batch265_ci_isolate_control_never_print",
+        },
+    )
+    assert "ghs_batch265_ci_isolate_control_never_print" not in control.stdout
+    if control.returncode in (1, 2) and "{" in control.stdout:
+        cdata = json.loads(control.stdout[control.stdout.find("{") :])
+        # Without scrub, Actions-shaped env labels the ephemeral token source.
+        assert cdata.get("token_source") in (
+            "env:GITHUB_TOKEN",
+            None,
+            "",
+            "env:GH_TOKEN",
+            "env:MAIN_PUSH_TOKEN",
+        )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH265_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "265"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "batch262_live_ignore_ci_isolate_github_token"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH265_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "265"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "path_b dry-run land_needed" in (hunt.get("avoided") or [])
+    assert "research-guard PACKET" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "path_c dry_run idle" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "long hygiene list" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH265_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 265" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 265)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 265)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 265" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

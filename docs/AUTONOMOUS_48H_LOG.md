@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 265 (Batch 262 live-ignore Actions GITHUB_TOKEN CI isolate) — 2026-09-25 ~02:42 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence (CI fail):** `test_batch262_probe_file_token_discovery` live-ignore subprocess scrubbed only `MAIN_PUSH_TOKEN`; Actions ambient `GITHUB_TOKEN` → `token_source=env:GITHUB_TOKEN` while DENIED → Intent AssertionError. Trial-ci reds after Batch 264 land: 36086754869 / 36086753751 / 36086723977 / 36086493453. Batch 263 only env-scrubbed the unit `_token()` block.
+- **Defect shipped (avoid path_b dry-run land_needed / research-guard PACKET / probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene):** live-ignore subprocess also scrubs `GH_TOKEN`/`GITHUB_TOKEN` so IGNORE_FILE_TOKENS DENIED asserts empty `token_source` (no probe redesign).
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 264 (Path B dry-run ALREADY_ALIGNED re-run-to-land lie) — 2026-09-25 ~02:26 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

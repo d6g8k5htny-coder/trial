@@ -1,3 +1,7 @@
+## STATUS (Batch 265)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; Batch 262 live-ignore Intent CI flake (Actions GITHUB_TOKEN → token_source under IGNORE) → scrub GH_TOKEN/GITHUB_TOKEN in live subprocess; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 264)
 
 tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; Path B dry-run lied "re-run to land" on ALREADY_ALIGNED → land_needed=false + idle message; lemma_closed=false; scientific effect NONE.

@@ -1,0 +1,90 @@
+{
+  "batch": "265",
+  "generated_at_utc": "2026-09-25T02:42:00Z",
+  "status": "batch262_live_ignore_ci_isolate_github_token_fixed",
+  "waiting_ci": false,
+  "goal_complete": true,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "base_tip": "fa32d11",
+  "default_tip": "72558a5b",
+  "default_tip_full": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "aligned": true,
+  "tip_moved": false,
+  "hardening_tip_moved": false,
+  "default_tip_moved": false,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "merged_prs": [],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
+  "defect_shipped": true,
+  "defect_id": "batch262_live_ignore_ci_isolate_github_token",
+  "patch_0020": false,
+  "path_c_0019_landed": true,
+  "path_c_landed": true,
+  "pack_release": "batch241-path-c-bundle",
+  "automation_improvement": "Batch 262 live-ignore Intent subprocess now scrubs Actions GITHUB_TOKEN/GH_TOKEN (Batch 263 only scrubbed the unit _token block) so PATH_C_IGNORE_FILE_TOKENS DENIED asserts token_source empty — clears trial-ci reds 36086754869/36086753751/36086723977",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "main_pr_or_null": null,
+  "when_writable_idle": "idle_path_c_done",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "green_eng_prs_merged": [],
+  "evidence": {
+    "before": {
+      "test": "test_batch262_probe_file_token_discovery live ignore",
+      "subprocess_env_scrubbed": ["MAIN_PUSH_TOKEN"],
+      "actions_ambient": "GITHUB_TOKEN present",
+      "token_source_when_denied": "env:GITHUB_TOKEN",
+      "ci_runs_failed": [
+        36086754869,
+        36086753751,
+        36086723977,
+        36086493453
+      ]
+    },
+    "after": {
+      "subprocess_env_scrubbed": [
+        "MAIN_PUSH_TOKEN",
+        "GH_TOKEN",
+        "GITHUB_TOKEN"
+      ],
+      "token_source_when_denied": null,
+      "probe_redesign": false
+    },
+    "main_ci_recent_failures": 0,
+    "actionable_classic_tools_tests": 0,
+    "pack_vs_release": "newer_deferred_avoid_republish"
+  },
+  "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
+  "note": "Batch 265: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; Batch 262 live-ignore Intent CI flake (Actions GITHUB_TOKEN → token_source=env:GITHUB_TOKEN under IGNORE) → scrub GH_TOKEN/GITHUB_TOKEN in live subprocess; lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_b dry-run land_needed / research-guard PACKET / probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene.",
+  "artifacts": [
+    "tests/test_intent.py",
+    "scripts/print_owner_unblock.sh",
+    "portable/BATCH265_BRIEF.json",
+    "portable/BATCH265_HUNT.json",
+    "portable/BATCH265_RESEARCH_STACK_AUDIT.json",
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "docs/OWNER_ACTIONS_MAIN.md",
+    "portable/LAND.md"
+  ],
+  "shipped": true,
+  "where": [
+    "trial"
+  ],
+  "trial_main_land": null,
+  "trial_main_land_method": null
+}
