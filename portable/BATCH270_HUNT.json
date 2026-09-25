@@ -1,0 +1,60 @@
+{
+  "batch": "270",
+  "hunt": "when_writable_once_pid_liveness_flock_miss",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "when_writable_once_pid_liveness_flock_miss",
+  "bugs_fixed": [
+    "when_writable_land --once flock probe returned free while live --interval daemon left <status>.daemon.lock pid=<live> (F_GETLK F_UNLCK; /proc/locks empty)",
+    "--once --dry-run set once_status_redirected=false and wrote shared when_writable_land.status.json (clobbered live loop dry_run/once fields)",
+    "second loop could also acquire flock while peer daemon still alive without a durable flock"
+  ],
+  "avoided": [
+    "VERIFY.batch release-align",
+    "pack living-tag validate-before-write",
+    "when_writable flock redesign",
+    "path_c dry-run idle",
+    "path_b dry-run idle",
+    "Intent token scrub",
+    "research-guard PACKET",
+    "probe durable file-token",
+    "release republish",
+    "grant dual-vector",
+    "long hygiene list",
+    "tip-observe merge #80/#81",
+    "research HOLD drafts"
+  ],
+  "candidates_checked": {
+    "tip_vs_8e359e5": "stable tip_moved=false refresh_dry_run_ok",
+    "patch_0020": "NEGATIVE_classic_assign_open_0_focused173_receipts541_mid363_0RW",
+    "green_eng_main_prs": "none_draft_tip_observe_80_81_plus_research_holds_skipped",
+    "when_writable_once_clobber": "reproduced_flock_miss_pid_live_fixed_pid_liveness",
+    "verify_batch_vs_release": "avoided_just_shipped_269_aligned",
+    "pack_living_tag": "avoided_just_shipped_268",
+    "when_writable_dual_daemon_flock": "avoided_just_shipped_267_extended_pid_only",
+    "path_c_dry_run_write_required": "avoided_just_shipped_266",
+    "intent_github_token_scrub": "avoided_just_shipped_265",
+    "path_b_dryrun": "avoided_just_shipped_264",
+    "research_guard_packet": "avoided_just_shipped_263",
+    "probe_file_token": "avoided_just_shipped_262",
+    "release_republish": "avoided_deferred_448747_vs_386608",
+    "grant_dual_vector": "avoided_just_shipped_259"
+  },
+  "tip": "8e359e5",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "resource_warnings": true,
+    "bare_open_actionable": true,
+    "note": "deep tip hunt clean; eng defect was trial when_writable --once isolation leftover not portable 0020"
+  }
+}

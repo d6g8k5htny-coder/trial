@@ -1,3 +1,7 @@
+## STATUS (Batch 270)
+
+tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; when_writable --once pid-liveness when flock misses live lockfile pid=; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 269)
 
 tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; VERIFY.batch aligned to release batch241 (was stale automation 250) + refresh_batch; lemma_closed=false; scientific effect NONE.

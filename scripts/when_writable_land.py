@@ -93,6 +93,16 @@ Batch 267 — daemon status race leftover:
   to ``when_writable_land.once.status.json`` when the daemon lock is held so
   live status is not clobbered. Never flips research status.
 
+Batch 270 — --once pid-liveness fallback (flock miss leftover):
+  Evidence: live ``--interval 300`` daemon left ``<status>.daemon.lock`` with
+  ``pid=<live>`` but ``F_GETLK`` / non-blocking flock probe reported free
+  (``/proc/locks`` empty; fd still open). ``--once --dry-run`` then set
+  ``once_status_redirected=false`` and clobbered the shared status JSON
+  (``dry_run=true`` / ``once=true`` over the live loop record). Fix: when
+  flock probe says free, treat lock as held if the lockfile ``pid=N`` names a
+  live ``when_writable_land`` process (and refuse second loop the same way).
+  Never flips research status.
+
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises /
 research status. goal_complete stays false.
 """
@@ -300,11 +310,56 @@ def _paths_equal(a: Path, b: Path) -> bool:
     return os.path.normpath(str(a)) == os.path.normpath(str(b))
 
 
+def _read_lockfile_holder_pid(lock_path: Path) -> str | None:
+    """Return pid=N from a daemon.lock file, or None."""
+    try:
+        raw = lock_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not raw.startswith("pid="):
+        return None
+    holder = raw.split("pid=", 1)[1].split()[0]
+    return holder or None
+
+
+def _pid_is_live_when_writable(pid_s: str | None) -> bool:
+    """True if pid_s is this host's live when_writable_land process (not self)."""
+    if not pid_s:
+        return False
+    try:
+        pid = int(pid_s)
+    except ValueError:
+        return False
+    if pid <= 0 or pid == os.getpid():
+        return False
+    cmdline_path = Path(f"/proc/{pid}/cmdline")
+    if not cmdline_path.is_file():
+        return False
+    try:
+        cmdline = cmdline_path.read_bytes().replace(b"\0", b" ").decode(
+            "utf-8", errors="replace"
+        )
+    except OSError:
+        return False
+    return "when_writable_land" in cmdline
+
+
+def _live_peer_holder_pid(lock_path: Path) -> str | None:
+    """Batch 270: lockfile pid= of a live when_writable_land peer, else None."""
+    holder = _read_lockfile_holder_pid(lock_path)
+    if _pid_is_live_when_writable(holder):
+        return holder
+    return None
+
+
 def _try_acquire_daemon_lock(lock_path: Path) -> tuple[TextIO | None, dict[str, Any]]:
     """Non-blocking exclusive flock for loop-mode singleton.
 
     Returns (fh, info). Caller must keep fh open for process lifetime.
     On contention fh is None and info["skipped_reason"] == "daemon_lock_held".
+
+    Batch 270: even if flock appears free, refuse when lockfile pid= names a
+    live when_writable_land peer (flock miss / lost lock leftover).
     """
     info: dict[str, Any] = {
         "lock": str(lock_path),
@@ -313,6 +368,12 @@ def _try_acquire_daemon_lock(lock_path: Path) -> tuple[TextIO | None, dict[str, 
         "skipped_reason": None,
         "holder_pid": None,
     }
+    peer = _live_peer_holder_pid(lock_path)
+    if peer is not None:
+        info["skipped_reason"] = "daemon_lock_held"
+        info["holder_pid"] = peer
+        info["held_via"] = "pid_liveness"
+        return None, info
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     try:
         fh = open(lock_path, "a+", encoding="utf-8")
@@ -322,20 +383,30 @@ def _try_acquire_daemon_lock(lock_path: Path) -> tuple[TextIO | None, dict[str, 
     try:
         fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
-        holder = None
-        try:
-            fh.seek(0)
-            raw = fh.read().strip()
-            if raw.startswith("pid="):
-                holder = raw.split("pid=", 1)[1].split()[0]
-        except OSError:
-            holder = None
+        holder = _read_lockfile_holder_pid(lock_path)
         try:
             fh.close()
         except OSError:
             pass
         info["skipped_reason"] = "daemon_lock_held"
         info["holder_pid"] = holder
+        info["held_via"] = "flock"
+        return None, info
+    # Re-check peer after acquire: another loop may have written pid without
+    # a durable flock (Batch 270 flock-miss path).
+    peer = _live_peer_holder_pid(lock_path)
+    if peer is not None:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+        except OSError:
+            pass
+        try:
+            fh.close()
+        except OSError:
+            pass
+        info["skipped_reason"] = "daemon_lock_held"
+        info["holder_pid"] = peer
+        info["held_via"] = "pid_liveness"
         return None, info
     try:
         fh.seek(0)
@@ -345,11 +416,16 @@ def _try_acquire_daemon_lock(lock_path: Path) -> tuple[TextIO | None, dict[str, 
     except OSError:
         pass
     info["held"] = True
+    info["held_via"] = "flock"
     return fh, info
 
 
 def _daemon_lock_held(lock_path: Path) -> tuple[bool, str | None]:
-    """Probe whether another process holds the daemon lock (non-destructive)."""
+    """Probe whether another process holds the daemon lock (non-destructive).
+
+    Batch 270: flock probe + pid-liveness fallback when lockfile pid= names a
+    live when_writable_land peer but flock appears free.
+    """
     if not lock_path.is_file():
         return False, None
     try:
@@ -357,20 +433,17 @@ def _daemon_lock_held(lock_path: Path) -> tuple[bool, str | None]:
             try:
                 fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
             except BlockingIOError:
-                holder = None
-                try:
-                    fh.seek(0)
-                    raw = fh.read().strip()
-                    if raw.startswith("pid="):
-                        holder = raw.split("pid=", 1)[1].split()[0]
-                except OSError:
-                    holder = None
+                holder = _read_lockfile_holder_pid(lock_path)
                 return True, holder
-            # Acquired briefly → not held by anyone else; release immediately.
+            # Acquired briefly → flock not held by anyone else; release.
             fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
-            return False, None
     except OSError:
-        return False, None
+        pass
+    # Flock free — still held if lockfile points at a live peer daemon.
+    peer = _live_peer_holder_pid(lock_path)
+    if peer is not None:
+        return True, peer
+    return False, None
 
 
 def _stop_requested(stop_path: Path) -> bool:

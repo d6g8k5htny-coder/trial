@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 270)
+
+Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. Live `--interval` daemon left lockfile `pid=<live>` but flock probe free → `--once` clobbered shared status. Fixed: pid-liveness fallback for `--once` sidecar + second-loop refuse. No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/when_writable_land.py --once --dry-run            # sidecar if lockfile pid= live
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ 8e359e5
+```
+
 ## STATUS (Batch 269)
 
 Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. keep-prior refresh had stamped `VERIFY.batch=250` while `release=batch241-path-c-bundle` (pack fallback landmine). Fixed: release-align `VERIFY.batch` + `refresh_batch` automation stamp. No republish. `lemma_closed=false`. Scientific effect: NONE.

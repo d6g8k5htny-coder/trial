@@ -9631,3 +9631,177 @@ def test_batch269_verify_batch_release_align() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch270_when_writable_once_pid_liveness() -> None:
+    """Batch 270: --once redirects on lockfile pid= live even when flock probe misses."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+    import time
+
+    script = ROOT / "scripts" / "when_writable_land.py"
+    src = script.read_text(encoding="utf-8")
+    assert "Batch 270" in src
+    assert "_live_peer_holder_pid" in src
+    assert "_pid_is_live_when_writable" in src
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        default_status = td_path / "when_writable_land.status.json"
+        once_status = td_path / "when_writable_land.once.status.json"
+        log = td_path / "ww.log"
+        stop = td_path / "ww.stop"
+        lock = default_status.with_name(default_status.name + ".daemon.lock")
+        env = {
+            **dict(os.environ),
+            "WHEN_WRITABLE_STATUS": str(default_status),
+            "WHEN_WRITABLE_ONCE_STATUS": str(once_status),
+            "WHEN_WRITABLE_LOG": str(log),
+            "WHEN_WRITABLE_STOP": str(stop),
+        }
+        # Peer process whose /proc/cmdline contains when_writable_land, no flock.
+        peer_script = td_path / "fake_when_writable_land_peer.py"
+        peer_script.write_text("import time\ntime.sleep(90)\n", encoding="utf-8")
+        sleeper = subprocess.Popen(
+            [sys.executable, str(peer_script)],
+            cwd=str(ROOT),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        try:
+            time.sleep(0.2)
+            lock.write_text(f"pid={sleeper.pid}\n", encoding="utf-8")
+            default_status.write_text(
+                json.dumps(
+                    {
+                        "dry_run": False,
+                        "once": False,
+                        "daemon_lock": True,
+                        "daemon_pid": sleeper.pid,
+                        "marker": "batch270-live",
+                        "lemma_closed": False,
+                        "scientific_effect": "NONE",
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            once = subprocess.run(
+                [
+                    sys.executable,
+                    str(script),
+                    "--once",
+                    "--dry-run",
+                    "--mock-probe",
+                    "DENIED",
+                    "--mock-install-has-main",
+                    "false",
+                ],
+                cwd=str(ROOT),
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=60,
+                check=False,
+            )
+            assert once.returncode == 0, once.stderr + once.stdout
+            assert once_status.is_file(), "once must redirect when lockfile pid= live"
+            once_data = json.loads(once_status.read_text(encoding="utf-8"))
+            assert once_data.get("once") is True
+            assert once_data.get("once_status_redirected") is True
+            assert once_data.get("lemma_closed") is False
+            live = json.loads(default_status.read_text(encoding="utf-8"))
+            assert live.get("marker") == "batch270-live"
+            assert live.get("once") is False
+            assert live.get("dry_run") is False
+            second = subprocess.run(
+                [
+                    sys.executable,
+                    str(script),
+                    "--dry-run",
+                    "--interval",
+                    "30",
+                    "--mock-probe",
+                    "DENIED",
+                    "--mock-install-has-main",
+                    "false",
+                    "--status",
+                    str(default_status),
+                    "--log",
+                    str(log),
+                    "--stop",
+                    str(stop),
+                ],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+            assert second.returncode == 2, second.stderr + second.stdout
+            assert "daemon_lock_held" in (second.stderr or "")
+        finally:
+            sleeper.kill()
+            sleeper.wait(timeout=5)
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH270_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "270"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "when_writable_once_pid_liveness_flock_miss"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("8e359e5")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH270_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "270"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert "VERIFY.batch release-align" in (hunt.get("avoided") or [])
+    assert "pack living-tag validate-before-write" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH270_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 270" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 270)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 270)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 270" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 270" in unblock
+    assert "pid-liveness" in unblock or "pid=" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
