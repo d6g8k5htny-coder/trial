@@ -1,3 +1,7 @@
+## STATUS (Batch 289)
+
+tip `7d13a88` tip_match=true; permanent-watch IDLE — no new eng beyond 273–288; Path C idle; living CRITICAL scripts current; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 288)
 
 tip `7d13a88` tip_match=true; republish CRITICAL +when_writable (287 leftover); living script_stale cleared; lemma_closed=false; scientific effect NONE.

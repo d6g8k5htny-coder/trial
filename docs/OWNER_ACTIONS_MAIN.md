@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 289)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Permanent-watch cycle: open main PRs all draft research HOLD (skipped); living release `tip_stale=0` `script_stale=0`; deep 0020 NEGATIVE; no new eng defect beyond Batches 273–288. IDLE. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/assert_path_c_ready.sh
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0 need_upload=0
+```
+
 ## STATUS (Batch 288)
 
 Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 287 fixed `when_writable_land` repositories-list parity with probe, but republish `CRITICAL` omitted `when_writable_land.py` — a when_writable-only fix would leave living release `script_stale=0` while the lander still shipped the pre-287 `or []` false-empty install. Living release also still lacked the 287 probe/refresh bytes (`script_stale=1`). Fixed: add `when_writable_land.py` to `CRITICAL`; republish living pack; bump `REFRESH_BATCH_TAG` default to 288. `lemma_closed=false`. Scientific effect: NONE.
