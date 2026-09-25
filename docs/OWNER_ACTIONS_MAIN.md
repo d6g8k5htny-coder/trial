@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 290)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer timestamp-only PATH_C/STATUS_GUARD churn — not eng). Deep hunt beyond 273–289 **NEGATIVE**. No tip-sync. No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/assert_path_c_ready.sh
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 289)
 
 Hardening tip **synced** `7d13a88`→`3a29f52` after main #83 nav inventable (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Cycle started TIP_OK @ `7d13a88` with idle paper trail; #83 merged mid-cycle → Intent/`refresh --dry-run` TIP_DRIFT. Tip-sync via `refresh_path_c_bundle` (keep-prior); living release `tip_stale` republish; bump `REFRESH_BATCH_TAG` default to 289; Intent `_LIVING_TIPS` += `3a29f52`. `lemma_closed=false`. Scientific effect: NONE.

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 290 (permanent-watch IDLE — tip stable, no new eng) — 2026-09-25 ~11:45 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `3a29f52` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan).
+- Open main PRs: all **DRAFT** research HOLD / tip-observe #84 / inventable #85 — skipped (no green eng merge).
+- Living release: tip_stale=0 script_stale=0; CRITICAL scripts sha256 match living pack; tgz_newer=1 from PATH_C/STATUS_GUARD `generated_at` only (not eng).
+- Deep hunt beyond batches 273–289 **NEGATIVE** (no 0020; no leftover script defect). Guard+research: `lemma_closed=false`; `flipped_anything=false`.
+- next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+
 ### Batch 289 (tip-sync 7d13a88→3a29f52 after main #83) — 2026-09-25 ~11:26 UTC (PERMANENT window; tip-sync + living republish; scientific effect NONE; flipped nothing)
 
 - Tip **moved** mid-cycle: started TIP_OK @ `7d13a88`; main **#83** (nav inventable; was DRAFT skipped at start) merged externally → live `3a29f52`. Idle paper trail on `c1c5ac6` CI went red (`_living_tip` / refresh TIP_DRIFT).
