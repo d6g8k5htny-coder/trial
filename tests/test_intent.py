@@ -7694,3 +7694,102 @@ def test_batch254_probe_ref_collision_422_false_transport() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch255_republish_living_path_c_release_assets() -> None:
+    """Batch 255: republish helper when pack newer than living release; no flip."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "republish_living_path_c_release.sh"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "gh release upload" in text
+    assert "--clobber" in text
+    assert "--dry-run" in text
+    assert "LIVING_PATH_C_RELEASE_TAG" in text
+    assert "lemma_closed" in text
+    assert "scientific_effect" in text.lower() or "Scientific effect" in text
+    assert "Never prints tokens" in text or "Never print tokens" in text
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "republish_living_path_c_release.sh" in pack
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH255_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "255"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "living_path_c_release_assets_stale_vs_pack"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH255_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "255"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_id") == "living_path_c_release_assets_stale_vs_pack"
+    assert "living-tag" in (hunt.get("avoided") or [])
+    assert "probe unique refs" in (hunt.get("avoided") or [])
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH255_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("pack_newer") is True
+    assert evidence.get("living_tag") == "batch241-path-c-bundle"
+    assert int(evidence.get("release_tgz_bytes_before") or 0) == 268996
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+
+    # Dry-run exits 0: either detects stale pack (would upload) or assets already current.
+    dry = subprocess.run(
+        ["bash", str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    out = dry.stdout + dry.stderr
+    assert "batch241-path-c-bundle" in out or "path-c-bundle" in out
+    assert (
+        "would: gh release upload" in out
+        or "already current" in out
+        or "need_upload=0" in out
+        or "need_upload=1" in out
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH255_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 255" in log
+    assert "republish" in log.lower()
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 255)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 255)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
