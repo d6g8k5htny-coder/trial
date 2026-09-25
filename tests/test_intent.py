@@ -16658,7 +16658,12 @@ def test_batch350_inventory_tip_pin() -> None:
         (ROOT / "portable" / "BATCH350_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
     )
     assert brief.get("batch") == "350"
-    assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"
+    # Living allowlist: peer re-pins may rename action across tip-stable landings.
+    assert brief.get("action") in (
+        "grant_inventory_tip_pin_after_main_lands",
+        "inventory_preserve_durable_tip_pin",
+        "grant_inventory_tip_pin_after_land_head",
+    )
     assert brief.get("lemma_closed") is False
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -16668,6 +16673,54 @@ def test_batch350_inventory_tip_pin() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 350 inv-tip-pin)" in land
 
+
+def test_batch350_soften_inv_tip_pin_action() -> None:
+    """Batch 350: soften INV_TIP_PIN Intent frozen action after peer re-pin."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH350_SOFTEN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "350"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("action") == "eng_soften_inv_tip_pin_action_allowlist"
+    assert tiny.get("goal") == "OPEN"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH350_SOFTEN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("defect_id") == "intent_batch350_inv_tip_pin_frozen_action"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_soften_inv_tip_pin_action_allowlist"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH350_SOFTEN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_match") is True
+
+    # Softened allowlist present on inv tip-pin Intent.
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch350_inventory_tip_pin")
+    end = intent.index("\ndef test_", start + 1)
+    body = intent[start:end]
+    assert "inventory_preserve_durable_tip_pin" in body
+    assert 'assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"' not in body
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 350)
+    assert "soften INV_TIP_PIN" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 350 soften-inv-tip-pin)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 350 soften-inv-tip-pin)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "soften INV_TIP_PIN" in log_md or "intent_batch350_inv_tip_pin_frozen_action" in log_md
 
 
 def test_batch350_idle_tip_sync_or_eng() -> None:

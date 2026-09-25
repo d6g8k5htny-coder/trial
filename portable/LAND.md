@@ -1,3 +1,7 @@
+## STATUS (Batch 350 soften-inv-tip-pin)
+
+tip `e3cd7d4` tip_match=true; eng: soften INV_TIP_PIN Intent action allowlist after peer re-pin rename; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 350 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

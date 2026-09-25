@@ -1,3 +1,12 @@
+## STATUS (Batch 350 soften-inv-tip-pin)
+
+Hardening tip **stable** @ `e3cd7d4`. tip_sync_watch: tip match=1 (peer idle already). One eng: soften `BATCH350_INV_TIP_PIN` Intent action allowlist (`inventory_preserve_durable_tip_pin` living). `lemma_closed=false`. action=`eng_soften_inv_tip_pin_action_allowlist`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch350_soften_inv_tip_pin_action -q
+```
+
 ## STATUS (Batch 350 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; no new eng beyond peers (349 idle/CI + 350 inv tip pin). Paper-trail living tgz. Evidence: `portable/BATCH350_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

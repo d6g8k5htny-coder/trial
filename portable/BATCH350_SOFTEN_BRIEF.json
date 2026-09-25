@@ -1,0 +1,15 @@
+{
+  "batch": "350",
+  "generated_at_utc": "2026-09-25T20:20:01Z",
+  "defect_id": "intent_batch350_inv_tip_pin_frozen_action",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "action": "eng_soften_inv_tip_pin_action_allowlist",
+  "inventable_promoted": false,
+  "goal": "OPEN",
+  "note": "Peer idle landed; CI red: INV brief action inventory_preserve_durable_tip_pin vs frozen grant_inventory_tip_pin_after_main_lands."
+}

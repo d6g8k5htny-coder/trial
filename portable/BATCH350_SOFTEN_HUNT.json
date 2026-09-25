@@ -1,0 +1,21 @@
+{
+  "batch": "350",
+  "generated_at_utc": "2026-09-25T20:20:01Z",
+  "hunt": "tip_sync_watch_vs_BASE_TIP",
+  "defect_id": "intent_batch350_inv_tip_pin_frozen_action",
+  "defect_found": true,
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "action": "eng_soften_inv_tip_pin_action_allowlist",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @e3cd7d4)",
+    "duplicate idle (peer 4c1b58e)"
+  ],
+  "goal": "OPEN"
+}
