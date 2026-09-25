@@ -1,3 +1,12 @@
+## STATUS (Batch 363 tip-eng-post)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged 2 commits after Batch 363 living VERIFY republish; last-resort frozen 362 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→363 + living republish. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=363 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch363_inventory_preserve_durable_tip_pin -q
+```
+
 ## STATUS (Batch 363 tip-eng)
 
 Living `VERIFY.json` refresh_batch lagged at 345 after Batch 362 lands. Republished via `refresh_path_c_bundle.sh --force` → refresh_batch=362. Tip stable @ `e3cd7d4`. Evidence: `portable/BATCH363_TIP_ENG_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
