@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 355 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 355: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4"
+echo " Batch 355: grant_check_dual_vector_8of8 tip refresh @e3cd7d4 (BATCH355_GRANT; preserve_durable)"
 echo " Batch 355: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current; no tip-pin treadmill)"
 
 echo " Batch 355: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
