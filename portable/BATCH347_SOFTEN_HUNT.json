@@ -1,0 +1,26 @@
+{
+  "batch": "347",
+  "generated_at_utc": "2026-09-25T19:45:00Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "intent_batch346_wake_frozen_live_tip_e3cd7d4",
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "action": "eng_soften_346_wake_live_tip_pin",
+  "skip": [
+    "inventable",
+    "tip-sync (tip_match=1 @e3cd7d4)",
+    "STATUS_GUARD already @e3cd7d4",
+    "living tip_stale=0 script_stale=0",
+    "inventory tip-pin already shipped Batch 347"
+  ],
+  "goal": "OPEN"
+}

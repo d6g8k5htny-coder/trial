@@ -16022,8 +16022,9 @@ def test_batch346_multi_agent_wake_assign() -> None:
     living = wake.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
+    # Living tip supersedes across tip-sync; Batch 346 wake shipped e3cd7d4.
+    # Do not hard-pin wake tip SHA (Batch 341/344/346 class).
     assert _living_tip(str(wake.get("tip") or ""))
-    assert str(wake.get("tip") or "").startswith("e3cd7d4")
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH346_WAKE_BRIEF.json").read_text(encoding="utf-8")
@@ -16315,4 +16316,57 @@ def test_batch347_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 347 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "BATCH347_IDLE" in log_md or "Batch 347" in log_md
+
+
+def test_batch347_soften_wake346_live_tip_pin() -> None:
+    """Batch 347: WAKE346 Intent must not freeze live wake tip to e3cd7d4."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch346_multi_agent_wake_assign")
+    end = intent.index("def test_batch346_inventory_preserve_durable_tip_pin")
+    body = intent[start:end]
+    assert "Living tip supersedes across tip-sync; Batch 346 wake shipped e3cd7d4" in body
+    assert 'startswith("e3cd7d4")' not in body
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH347_SOFTEN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "347"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "intent_batch346_wake_frozen_live_tip_e3cd7d4"
+    assert brief.get("action") == "eng_soften_346_wake_live_tip_pin"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert brief.get("tip_match") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH347_SOFTEN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "intent_batch346_wake_frozen_live_tip_e3cd7d4"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH347_SOFTEN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert evidence.get("action") == "eng_soften_346_wake_live_tip_pin"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 347)
+    assert "soften Batch 346 wake Intent" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 347 soften-wake-pin)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "soften WAKE346" in log_md or "intent_batch346_wake_frozen_live_tip_e3cd7d4" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 347 soften-wake-pin)" in owner
 

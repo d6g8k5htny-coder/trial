@@ -1,3 +1,6 @@
+## STATUS (Batch 347 soften-wake-pin)
+
+tip `e3cd7d4` tip_match=true; eng: soften Batch 346 wake Intent live tip pin (`startswith("e3cd7d4")` → `_living_tip`); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 ## STATUS (Batch 347 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

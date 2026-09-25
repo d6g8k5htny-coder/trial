@@ -1,3 +1,10 @@
+## STATUS (Batch 347 soften-wake-pin)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: soften `test_batch346_multi_agent_wake_assign` live wake tip `startswith("e3cd7d4")` → `_living_tip` (Batch 341/344/346 class). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch347_soften_wake346_live_tip_pin -q
 ## STATUS (Batch 347 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Living tip_stale=0 script_stale=0; paper-trail tgz republish. Evidence: `portable/BATCH347_IDLE.json`. Guard+research: `lemma_closed=false`. action=`idle_no_commit`. Scientific effect: NONE.

@@ -1,0 +1,31 @@
+{
+  "batch": "347",
+  "generated_at_utc": "2026-09-25T19:45:00Z",
+  "status": "soften_wake346_intent_live_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "intent_batch346_wake_frozen_live_tip_e3cd7d4",
+  "bugs_fixed": [
+    "test_batch346_multi_agent_wake_assign hard-pinned wake tip startswith e3cd7d4 after _living_tip (next tip-sync CI red)"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_soften_346_wake_live_tip_pin",
+  "inventable_promoted": false,
+  "goal_complete": false,
+  "goal": "OPEN",
+  "complements": "Batch 346 soften tip_sync_watch live BASE_TIP pin; Batch 344 soften class",
+  "note": "Tip stable @e3cd7d4 tip_match=1; soften only; lemma_closed=false."
+}

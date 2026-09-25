@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 347 — soften WAKE346 Intent live tip pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `test_batch346_multi_agent_wake_assign` hard-pinned `wake.tip startswith("e3cd7d4")` after `_living_tip` — next tip-sync would re-red CI (Batch 341/344/346 class). Softened to `_living_tip` only.
+- Artifacts: `BATCH347_SOFTEN_{BRIEF,HUNT,EVIDENCE}.json`. Goal OPEN. NEVER flip research.
 ### Batch 347 — tip_sync_watch idle @e3cd7d4 (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0.
