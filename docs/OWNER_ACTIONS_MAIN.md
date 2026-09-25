@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## STATUS (Batch 356 soften-inv-intent)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: duplicate `test_batch356_inventory_preserve_durable_tip_pin` + frozen `defect_id` after peer merge — single living test. `lemma_closed=false`. Goal OPEN.
@@ -5,6 +6,11 @@ Hardening tip **stable** @ `e3cd7d4`. Eng: duplicate `test_batch356_inventory_pr
 ```bash
 python3 -m pytest tests/test_intent.py::test_batch356_inventory_preserve_durable_tip_pin -q
 ```
+=======
+## STATUS (Batch 356 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lag after Intent-fix land — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN.
+>>>>>>> 8ddc00f (Batch 356: tip_or_eng inv tip re-pin after Intent-fix land)
 
 ## STATUS (Batch 356 inv-preserve-tip-pin)
 

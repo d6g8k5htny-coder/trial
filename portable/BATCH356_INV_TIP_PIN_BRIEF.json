@@ -7,7 +7,10 @@
   "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
   "goal": "OPEN",
-  "trial_tip_sha": "b6eb658a3d6d71e7aa2bd9eefa807ffb474927f9",
+  "trial_tip_sha": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
   "scientific_effect": "NONE",
-  "defect_id": "inventory_trial_tip_lag_after_lands"
+  "defect_id": "inventory_trial_tip_lag_after_lands",
+  "live_trial_head": "383713b8e60cd08ec7734d9f83d40019c6b5e135",
+  "trial_tip_matches_live_head": true,
+  "generated_at_utc": "2026-09-25T21:16:19Z"
 }

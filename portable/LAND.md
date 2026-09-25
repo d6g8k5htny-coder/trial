@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 ## STATUS (Batch 356 soften-inv-intent)
 
 tip `e3cd7d4` tip_match=true; eng: soften INV tip-pin Intent merge dedupe; lemma_closed=false; scientific effect NONE.
+=======
+## STATUS (Batch 356 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after Intent-fix land; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+>>>>>>> 8ddc00f (Batch 356: tip_or_eng inv tip re-pin after Intent-fix land)
 
 ## STATUS (Batch 356 inv-preserve-tip-pin)
 
