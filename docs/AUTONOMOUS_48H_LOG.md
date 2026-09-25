@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 338 — inventory tip refresh after align watch (2026-09-25)
+
+- Tip stable @ `848aea2` tip_match=1; durable 8/8; `lemma_closed=false`.
+- Grant `--check` refreshed `AI_AGENT_ACCESS_INVENTORY` batch 337→338 + sibling tip_sha/pushed_at.
+- NEVER flip research.
+
 ### Batch 338 — post-Path-C align watch idle (2026-09-25)
 
 - Tip stable @ `848aea2` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

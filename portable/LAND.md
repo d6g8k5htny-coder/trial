@@ -1,6 +1,6 @@
 ## STATUS (Batch 338)
 
-tip `848aea2` tip_match=true; post-Path-C align watch idle; Path C IDLE@0019; durable 8/8; lemma_closed=false; action=post_path_c_align_watch_idle; scientific effect NONE.
+tip `848aea2` tip_match=true; post-Path-C align watch idle; Path C IDLE@0019; durable 8/8; lemma_closed=false; action=post_path_c_align_watch_idle; inventory tip refresh batch 338; scientific effect NONE.
 
 ## STATUS (Batch 337)
 
