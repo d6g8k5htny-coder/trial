@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 276 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; republish post-pack living-tag; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ bfb7c38
+> ./scripts/republish_living_path_c_release.sh --dry-run   # upload target = post-pack pin
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: republish captured living-tag before pack (stale batch250 → wrong upload). Fixed post-pack TAG. Asset --clobber deferred. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 275 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; MANIFEST.verified_batch release-align; release `batch241-path-c-bundle`**:
 >
 > ```bash

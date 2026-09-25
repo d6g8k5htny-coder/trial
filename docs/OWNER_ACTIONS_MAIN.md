@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 276)
+
+Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `republish_living_path_c_release` captured living-tag **before** pack (stale `batch250` → wrong upload target while pack rewrote pin to `batch241`). Fixed: post-pack TAG + `write_path_c_status` VERIFY.release-first. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+echo batch250-path-c-bundle > portable/LIVING_PATH_C_RELEASE_TAG
+./scripts/republish_living_path_c_release.sh --dry-run   # upload target tag=batch241 (post-pack); restores pin
+./scripts/refresh_path_c_bundle.sh --dry-run             # tip match @ bfb7c38
+```
+
 ## STATUS (Batch 275)
 
 Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 269 aligned `VERIFY.batch` to release `241` but `MANIFEST.verified_batch` still stamped from `REFRESH_BATCH_TAG` (would regress on next tip-refresh). Fixed: release-align MANIFEST from VERIFY + stamp `refresh_batch`. `lemma_closed=false`. Scientific effect: NONE.

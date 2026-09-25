@@ -8,6 +8,12 @@
 # fallback, pack TMPDIR/living-tag, …) that the release tarball still lacked.
 # Bundle/patch digests can match (keep-prior) while the pack tarball is stale.
 #
+# Batch 276: read upload TAG *after* pack_portable stamps the living pin.
+# Pre-276 captured TAG from LIVING_PATH_C_RELEASE_TAG before pack — a stale
+# dirty pin (e.g. batch250 from the Batch 268 race class) made `gh release
+# upload` target the wrong tag while pack rewrote the pin to VERIFY.release
+# (batch241). Pack first → post-pack pin / VERIFY.release → upload.
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -40,7 +46,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -h|--help)
-      sed -n '2,22p' "$0"
+      sed -n '2,26p' "$0"
       exit 0
       ;;
     *)
@@ -55,25 +61,48 @@ VERIFY_JSON="$ROOT/portable/path-c-applied-bundle/VERIFY.json"
 BUNDLE="$ROOT/portable/path-c-applied-bundle/path-c-on-hardening.bundle"
 PATCH="$ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
 
+# Snapshot pre-pack pin for mismatch diagnostics only (Batch 276). Never use as
+# upload target — pack_portable validate-before-write may rewrite a dirty pin.
+PRE_PACK_TAG=""
 if [[ -f "$LIVING_TAG_FILE" ]]; then
-  TAG="$(tr -d '[:space:]' <"$LIVING_TAG_FILE")"
-elif [[ -f "$VERIFY_JSON" ]]; then
-  TAG="$(python3 -c 'import json,sys; d=json.load(open(sys.argv[1],encoding="utf-8")); print((d.get("release") or "").strip())' "$VERIFY_JSON")"
-else
-  echo "republish_living_path_c_release: missing living tag / VERIFY.json" >&2
-  exit 2
-fi
-if [[ -z "$TAG" || "$TAG" != *-path-c-bundle ]]; then
-  echo "republish_living_path_c_release: invalid living tag '${TAG}'" >&2
-  exit 2
+  PRE_PACK_TAG="$(tr -d '[:space:]' <"$LIVING_TAG_FILE")"
 fi
 
 if [[ -z "$OUT" ]]; then
   OUT="${TMPDIR:-/tmp}/trial-portable-main-fixes.tgz"
 fi
 
-echo "republish_living_path_c_release: packing → ${OUT} (tag=${TAG})"
+echo "republish_living_path_c_release: packing → ${OUT}"
 bash "$ROOT/scripts/pack_portable.sh" "$OUT"
+
+# Batch 276: upload target = post-pack living pin (Batch 268 stamp), else VERIFY.
+TAG=""
+if [[ -f "$LIVING_TAG_FILE" ]]; then
+  TAG="$(tr -d '[:space:]' <"$LIVING_TAG_FILE")"
+fi
+if [[ -z "$TAG" || "$TAG" != *-path-c-bundle ]]; then
+  if [[ -f "$VERIFY_JSON" ]]; then
+    TAG="$(
+      python3 -c '
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+rel = (d.get("release") or "").strip()
+if rel.endswith("-path-c-bundle"):
+    print(rel)
+elif d.get("batch") is not None:
+    print("batch{}-path-c-bundle".format(d["batch"]))
+' "$VERIFY_JSON"
+    )"
+  fi
+fi
+if [[ -z "$TAG" || "$TAG" != *-path-c-bundle ]]; then
+  echo "republish_living_path_c_release: invalid living tag '${TAG}' after pack" >&2
+  exit 2
+fi
+if [[ -n "$PRE_PACK_TAG" && "$PRE_PACK_TAG" != "$TAG" ]]; then
+  echo "republish_living_path_c_release: note: pre-pack pin '${PRE_PACK_TAG}' → post-pack '${TAG}' (Batch 276 post-pack tag; refuse stale upload target)" >&2
+fi
+echo "republish_living_path_c_release: upload target tag=${TAG} (post-pack)"
 
 sha256_file() {
   python3 -c 'import hashlib,sys; h=hashlib.sha256();

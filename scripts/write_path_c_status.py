@@ -229,24 +229,27 @@ def _device_code_public() -> tuple[str | None, float | None, str | None]:
 
 
 def _release_tag() -> str | None:
-    # Batch 245: prefer living-tag file stamped by pack_portable / VERIFY sync.
+    # Batch 245 + Batch 276: derive like pack_portable — VERIFY.release first,
+    # then VERIFY.batch, then living pin. Pre-276 preferred a possibly-stale
+    # LIVING_PATH_C_RELEASE_TAG over VERIFY (same dirty-pin class as republish
+    # pre-pack TAG capture). Never trust a dirty pin when VERIFY knows release.
+    if VERIFY_FILE.is_file():
+        try:
+            verify = json.loads(VERIFY_FILE.read_text(encoding="utf-8"))
+            rel = verify.get("release")
+            if isinstance(rel, str) and rel.strip().endswith("-path-c-bundle"):
+                return rel.strip()
+            batch = verify.get("batch")
+            if batch is not None:
+                return f"batch{batch}-path-c-bundle"
+        except (OSError, json.JSONDecodeError):
+            pass
     if LIVING_TAG_FILE.is_file():
         try:
             tag = LIVING_TAG_FILE.read_text(encoding="utf-8").strip()
             if tag.endswith("-path-c-bundle"):
                 return tag
         except OSError:
-            pass
-    if VERIFY_FILE.is_file():
-        try:
-            verify = json.loads(VERIFY_FILE.read_text(encoding="utf-8"))
-            rel = verify.get("release")
-            if isinstance(rel, str) and rel:
-                return rel
-            batch = verify.get("batch")
-            if batch is not None:
-                return f"batch{batch}-path-c-bundle"
-        except (OSError, json.JSONDecodeError):
             pass
     # Fall back to oneshot default if present.
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"

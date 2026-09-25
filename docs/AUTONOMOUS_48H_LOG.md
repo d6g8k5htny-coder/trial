@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 276 (republish living-tag pre-pack race leftover) — 2026-09-25 ~06:40 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 275 already on trial main @ `fac2df6` (timer wake → cycle as 276). Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
+- **Evidence:** `republish_living_path_c_release.sh` captured `TAG` from `LIVING_PATH_C_RELEASE_TAG` **before** `pack_portable` (Batch 268 validate-before-write stamps pin from VERIFY.release). Plant stale pin `batch250-path-c-bundle` → pack rewrote pin to `batch241-path-c-bundle` but pre-276 dry-run/`gh release upload` still targeted **batch250**. Same dirty-pin class: `write_path_c_status._release_tag` preferred living pin over VERIFY.release.
+- **Defect shipped (avoid tip-observe / research HOLDs / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch 269 / pack validate-before-write itself 268 / asset --clobber churn):** pack first → read post-pack living pin for upload TAG; note pre→post mismatch; `write_path_c_status` VERIFY.release-first. Pack-vs-release newer (478088 vs 386608) deferred (race fix only).
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 275 (MANIFEST.verified_batch release-align leftover) — 2026-09-25 ~06:15 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Main CI tip run 36098032016 success. Draft main #81 inventable README unmix skipped. Inventable tip-observe of `bfb7c38` skipped (HEAD **is** #80 observe-of-`8e359e5`; no post-observe tip move). Deep 0020 hunt: **NEGATIVE**.

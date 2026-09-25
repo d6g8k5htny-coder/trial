@@ -1,0 +1,61 @@
+{
+  "batch": "276",
+  "hunt": "republish_living_tag_captured_before_pack",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "republish_living_tag_captured_before_pack",
+  "bugs_fixed": [
+    "republish_living_path_c_release captured TAG from LIVING_PATH_C_RELEASE_TAG before pack_portable — stale dirty pin (batch250) → gh release upload wrong tag while pack rewrote pin to VERIFY.release (batch241)",
+    "write_path_c_status._release_tag preferred living pin over VERIFY.release (same dirty-pin class)"
+  ],
+  "avoided": [
+    "inventable tip-observe of bfb7c38 (HEAD is already #80 observe-of-8e359e5)",
+    "main draft #81 inventable README unmix (research-adjacent)",
+    "research HOLD drafts",
+    "MANIFEST.verified_batch release-align (just shipped 275)",
+    "APPLY/VERIFY living-tip+pytest (273)",
+    "land-workflows Path C idle (272)",
+    "probe_main_write_vectors dry_run DISPATCH_OK (271)",
+    "when_writable once pid-liveness (270)",
+    "VERIFY.batch release-align (269)",
+    "pack living-tag validate-before-write itself (268 — this is the republish leftover)",
+    "asset republish --clobber churn (race fix only; pack newer deferred)",
+    "path_c/path_b dry-run idle",
+    "grant dual-vector",
+    "long hygiene list",
+    "sibling AGENTS stubs (no eng surface)"
+  ],
+  "candidates_checked": {
+    "tip_vs_bfb7c38": "stable tip_match=true TIP_OK",
+    "patch_0020": "NEGATIVE_pending_empty_apply_all_already_on_tip",
+    "inventable_tip_observe": "HEAD_is_observe_of_8e359e5_skipped",
+    "main_pr_81": "research_adjacent_docs_unmix_skipped",
+    "open_main_prs": "all_DRAFT_no_mergable_green_eng",
+    "land_workflows_272": "already_fixed_validate_ok",
+    "probe_w3_271": "already_fixed_path_b_keys_W1_W2_W4",
+    "manifest_275": "verified_batch=241 refresh_batch=275 ok",
+    "pack_living_tag_268": "validate-before-write ok; republish leftover found",
+    "republish_pre_pack_tag": "reproduced_stale_batch250_upload_target_fixed",
+    "write_path_c_status_living_first": "VERIFY_release_preferred_fixed",
+    "siblings": "AGENTS_stubs_only_no_defect",
+    "pack_vs_release_newer": "deferred_no_clobber_this_batch"
+  },
+  "tip": "bfb7c38",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "resource_warnings": true,
+    "bare_open_actionable": true,
+    "tip_observe_post_merge_drift": true,
+    "note": "deep tip hunt clean; eng defect was republish pre-pack living-tag capture leftover after Batch 268 pack validate-before-write"
+  }
+}

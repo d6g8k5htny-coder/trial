@@ -10366,3 +10366,112 @@ def test_batch275_manifest_verified_batch_release_align() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch276_republish_living_tag_post_pack() -> None:
+    """Batch 276: republish reads upload TAG after pack; stale pre-pack pin ignored."""
+    import json
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    script = ROOT / "scripts" / "republish_living_path_c_release.sh"
+    text = script.read_text(encoding="utf-8")
+    assert "Batch 276" in text
+    assert "post-pack" in text
+    assert "PRE_PACK_TAG" in text
+    # Pack must run before TAG is finalized for upload.
+    pack_idx = text.find('bash "$ROOT/scripts/pack_portable.sh"')
+    target_idx = text.find("upload target tag=")
+    assert 0 <= pack_idx < target_idx
+
+    status_py = (ROOT / "scripts" / "write_path_c_status.py").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 276" in status_py
+    assert "VERIFY.release" in status_py
+    # VERIFY block must appear before living-pin fallback in _release_tag.
+    rel_fn = status_py.find("def _release_tag")
+    verify_idx = status_py.find("VERIFY_FILE.is_file()", rel_fn)
+    living_idx = status_py.find("LIVING_TAG_FILE.is_file()", rel_fn)
+    assert 0 <= rel_fn < verify_idx < living_idx
+
+    living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
+    prior = living.read_text(encoding="utf-8")
+    assert prior.strip() == "batch241-path-c-bundle"
+    try:
+        living.write_text("batch250-path-c-bundle\n", encoding="utf-8")
+        with tempfile.TemporaryDirectory(prefix="b276-intent-") as td:
+            out = Path(td) / "pack.tgz"
+            dry = subprocess.run(
+                ["bash", str(script), "--dry-run", "--out", str(out)],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            assert dry.returncode == 0, dry.stderr + dry.stdout
+            combined = (dry.stdout or "") + (dry.stderr or "")
+            assert "upload target tag=batch241-path-c-bundle" in combined
+            assert "pre-pack pin 'batch250-path-c-bundle'" in combined
+            assert "would: gh release upload batch241-path-c-bundle" in combined
+            assert "batch250-path-c-bundle --repo" not in combined
+        assert living.read_text(encoding="utf-8").strip() == "batch241-path-c-bundle"
+    finally:
+        living.write_text(
+            prior if prior.endswith("\n") else prior + "\n", encoding="utf-8"
+        )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH276_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "276"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "republish_living_tag_captured_before_pack"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("bfb7c38")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH276_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "republish_living_tag_captured_before_pack"
+    assert any(
+        "pack living-tag validate-before-write itself" in a
+        for a in (hunt.get("avoided") or [])
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH276_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 276" in log_md
+    assert "pre-pack" in log_md.lower() or "post-pack" in log_md.lower()
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 276)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 276)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 276" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 276" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
