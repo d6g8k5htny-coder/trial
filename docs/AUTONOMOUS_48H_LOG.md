@@ -27,6 +27,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Living release `script_stale=1` (tip_stale=0) after Batch 338 — republished `batch241-path-c-bundle`.
 - `lemma_closed=false`; no research flip.
 
+### Batch 338 — wake marker living tip (2026-09-25)
+
+- Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `post_batch322_wake_comments.py` `BATCH_MARKER` frozen at **Batch 329 wake** → forever skipped re-posts after tip-sync. Eng PRs #92/#93/#87/#36/#21/#12 still Intent `@077464e` while BASE_TIP=`848aea2` (Batch 336 only fixed `intent_line()`). Skip gate now keys off living tip; marker=`Batch N wake @tip`; trial link not merged PR #112.
+- NEVER flip research.
+
 ### Batch 338 — inventory tip refresh after align watch (2026-09-25)
 
 - Tip stable @ `848aea2` tip_match=1; durable 8/8; `lemma_closed=false`.

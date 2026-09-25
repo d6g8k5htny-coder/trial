@@ -4,7 +4,7 @@ tip `848aea2` tip_match=true; tip watch — living release script_stale republis
 
 ## STATUS (Batch 338)
 
-tip `848aea2` tip_match=true; post-Path-C align watch idle; Path C IDLE@0019; durable 8/8; lemma_closed=false; action=post_path_c_align_watch_idle; inventory tip refresh batch 338; scientific effect NONE.
+tip `848aea2` tip_match=true; eng: wake poster skip gate keys off living BASE_TIP (was frozen `Batch 329 wake` → eng PRs stuck Intent `@077464e`); post-Path-C align watch idle; inventory tip refresh batch 338; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 337)
 

@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
-"""Post Batch 329 wake comments on eng PRs in d6g8k5htny-coder/main.
+"""Post Path-C eng wake comments on eng PRs in d6g8k5htny-coder/main.
 
-Skips research drafts. Skips if an identical Batch 329 wake comment already
-exists. Uses GH_TOKEN / MAIN_PUSH_TOKEN (App ghs lacks Issues:write).
-Triggered via trial workflow wake-batch322-pr-comments (repository_dispatch).
+Skips research drafts. Skips only when a wake comment already advertises the
+*living* BASE_TIP (not a frozen batch marker). Uses GH_TOKEN / MAIN_PUSH_TOKEN
+(App ghs lacks Issues:write). Triggered via trial workflow
+wake-batch322-pr-comments (repository_dispatch).
 
 Batch 336: INTENT tip is derived from portable/patches/BASE_TIP.txt (living),
 not a frozen SHA (Batch 329 left @077464e while tip moved 388a22c→eeebb28).
+
+Batch 338: BATCH_MARKER was frozen at \"Batch 329 wake\" so tip-sync never
+re-posted — eng PRs #92/#93/#87/#36/#21/#12 still carried Intent @077464e while
+BASE_TIP lived at 848aea2. Marker + skip gate now key off living tip.
+TRIAL link is the trial repo (not merged PR #112).
 
 Scientific effect: NONE. lemma_closed stays false.
 """
@@ -21,12 +27,13 @@ import urllib.request
 from pathlib import Path
 
 REPO = "d6g8k5htny-coder/main"
-BATCH_MARKER = "Batch 329 wake"
 COORD = "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
-TRIAL_PR = "https://github.com/d6g8k5htny-coder/trial/pull/112"
+# Batch 338: do not freeze a merged trial PR number (#112).
+TRIAL_REPO = "https://github.com/d6g8k5htny-coder/trial"
 _ROOT = Path(__file__).resolve().parents[1]
 _BASE_TIP_FILE = _ROOT / "portable" / "patches" / "BASE_TIP.txt"
 _HARDENING_REF = "chatgpt/drive-github-hardening-20260919"
+_PRINT_OWNER = _ROOT / "scripts" / "print_owner_unblock.sh"
 
 
 def _living_tip_short() -> str:
@@ -46,12 +53,52 @@ def _living_tip_short() -> str:
     return "unknown"
 
 
+def _living_batch_n() -> str:
+    """Batch 338: automation batch from print_owner header (no freeze at 329)."""
+    try:
+        text = _PRINT_OWNER.read_text(encoding="utf-8")
+    except OSError:
+        text = ""
+    m = re.search(r"=== Batch (\d+)\b", text)
+    if m:
+        return m.group(1)
+    return "338"
+
+
+def batch_marker() -> str:
+    """Living wake marker — tip move unlocks re-post (Batch 338)."""
+    return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"
+
+
+# Back-compat alias for Intent / importers that still read BATCH_MARKER.
+# Must not be a frozen \"Batch 329 wake\" string.
+BATCH_MARKER = batch_marker  # callable; see also batch_marker()
+
+
 def intent_line() -> str:
     return (
         f"Intent: tip {_HARDENING_REF} @ {_living_tip_short()}; "
         "Path C IDLE@0019; lemma_closed=false; scientific effect NONE; "
         "no claim promotion"
     )
+
+
+def _wake_body_has_living_tip(body: str, tip: str | None = None) -> bool:
+    """True when a prior wake comment already advertises the living tip."""
+    tip = tip or _living_tip_short()
+    if not tip or tip == "unknown":
+        return False
+    b = body or ""
+    if "wake" not in b.lower():
+        return False
+    # Match Intent line tip pin produced by intent_line().
+    if f"@ {tip}" in b:
+        return True
+    # Marker form: Batch N wake @<tip>
+    if f"wake @{tip}" in b.lower():
+        return True
+    return False
+
 
 TASKS: dict[int, str] = {
     92: (
@@ -115,17 +162,19 @@ def api(method: str, path: str, body: dict | None = None) -> object:
         headers={
             "Authorization": f"Bearer {token()}",
             "Accept": "application/vnd.github+json",
+            "User-Agent": "trial-batch338-wake",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "trial-batch329-wake",
         },
     )
+    if data is not None:
+        req.add_header("Content-Type", "application/json")
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             raw = resp.read().decode()
-            return json.loads(raw) if raw else None
+            return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as e:
-        err = e.read().decode()
-        raise SystemExit(f"HTTP {e.code} {method} {path}: {err}") from e
+        err = e.read().decode() if e.fp else ""
+        raise SystemExit(f"HTTP {e.code} {path}: {err[:400]}") from e
 
 
 def list_comments(n: int) -> list[dict]:
@@ -137,8 +186,6 @@ def list_comments(n: int) -> list[dict]:
             f"/repos/{REPO}/issues/{n}/comments?per_page=100&page={page}",
         )
         assert isinstance(chunk, list)
-        if not chunk:
-            break
         out.extend(chunk)
         if len(chunk) < 100:
             break
@@ -147,8 +194,9 @@ def list_comments(n: int) -> list[dict]:
 
 
 def wake_body(n: int) -> str:
+    marker = batch_marker()
     return (
-        f"**{BATCH_MARKER}** — project-intent eng resume (not research flip)\n"
+        f"**{marker}** — project-intent eng resume (not research flip)\n"
         "\n"
         f"Coordinator: {COORD}\n"
         "\n"
@@ -158,34 +206,45 @@ def wake_body(n: int) -> str:
         "\n"
         "Path C intent advance only. Keep DRAFT discipline where applicable; "
         "never promote claims/premises/prizes/lemmas. "
-        f"Trial wake path: [PR #112]({TRIAL_PR}) / workflow `wake-batch322-pr-comments`.\n"
+        f"Trial wake path: [{TRIAL_REPO}]({TRIAL_REPO}) / workflow "
+        "`wake-batch322-pr-comments`.\n"
     )
 
 
 def main() -> int:
     commented: list[dict] = []
     skipped: list[dict] = []
+    tip = _living_tip_short()
+    marker = batch_marker()
 
     for n in SKIP_DRAFTS:
         skipped.append({"pr": n, "reason": "research_draft"})
 
     urls: list[str] = []
     for n in ENG:
+        comments = list_comments(n)
         existing = [
-            c for c in list_comments(n) if BATCH_MARKER in (c.get("body") or "")
+            c for c in comments if _wake_body_has_living_tip(c.get("body") or "", tip)
         ]
         if existing:
-            print(f"SKIP #{n}: identical {BATCH_MARKER} already present")
+            print(f"SKIP #{n}: living tip @{tip} already present in wake comment")
             for c in existing:
                 u = c.get("html_url") or ""
                 print(u)
                 if u:
                     urls.append(u)
-            skipped.append({"pr": n, "reason": "identical_batch329_wake", "urls": [
-                c.get("html_url") for c in existing if c.get("html_url")
-            ]})
+            skipped.append(
+                {
+                    "pr": n,
+                    "reason": "identical_living_tip_wake",
+                    "tip": tip,
+                    "urls": [
+                        c.get("html_url") for c in existing if c.get("html_url")
+                    ],
+                }
+            )
             continue
-        print(f"POST #{n}...")
+        print(f"POST #{n} marker={marker}...")
         created = api(
             "POST",
             f"/repos/{REPO}/issues/{n}/comments",
@@ -199,11 +258,14 @@ def main() -> int:
         commented.append({"pr": n, "url": u})
 
     result = {
-        "batch": 329,
+        "batch": int(_living_batch_n()),
+        "marker": marker,
+        "tip": tip,
         "commented": commented,
         "skipped": skipped,
         "lemma_closed": False,
         "flipped_anything": False,
+        "scientific_effect": "NONE",
     }
     print("=== RESULT JSON ===")
     print(json.dumps(result, indent=2))
@@ -211,7 +273,7 @@ def main() -> int:
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
-            f.write("## Batch 329 wake comment URLs\n")
+            f.write(f"## {marker} comment URLs\n")
             for u in urls:
                 f.write(f"- {u}\n")
             f.write("\n```json\n")

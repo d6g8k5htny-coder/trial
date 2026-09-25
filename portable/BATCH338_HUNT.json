@@ -1,0 +1,24 @@
+{
+  "batch": "338",
+  "hunt": "wake_marker_frozen_329",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_marker_frozen_329_skips_living_tip",
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "tip_moved": false,
+  "tip": "848aea2",
+  "hunt_0020": "NEGATIVE",
+  "evidence": {
+    "eng_prs_stale_tip": "077464e",
+    "living_base_tip": "848aea2",
+    "frozen_marker": "Batch 329 wake"
+  },
+  "generated_at_utc": "2026-09-25T18:20:00Z"
+}

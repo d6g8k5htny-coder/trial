@@ -1,0 +1,29 @@
+{
+  "batch": "338",
+  "generated_at_utc": "2026-09-25T18:20:00Z",
+  "status": "wake_marker_living_tip",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_match": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_marker_frozen_329_skips_living_tip",
+  "bugs_fixed": [
+    "BATCH_MARKER frozen at Batch 329 wake forever-skipped re-posts after tip-sync; eng PRs #92/#93/#87/#36/#21/#12 still Intent @077464e while BASE_TIP=848aea2",
+    "skip gate now keys off living BASE_TIP; marker=Batch N wake @tip; TRIAL link no longer merged PR #112"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_wake_marker_living_tip",
+  "route_now": "ENG_FIX",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "inventable_promoted": false,
+  "note": "Batch 336 made intent_line living but skip still matched frozen Batch 329 marker."
+}

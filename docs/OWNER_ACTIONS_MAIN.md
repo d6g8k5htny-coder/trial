@@ -13,7 +13,11 @@ Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle). Tip watch: n
 
 ## STATUS (Batch 338)
 
-Hardening tip **stable** @ `848aea2` tip_match=true. Post-Path-C align watch idle. Path C IDLE@0019; durable 8/8. action=`post_path_c_align_watch_idle`. `lemma_closed=false`.
+Hardening tip **stable** @ `848aea2`. Eng: wake poster skip gate keys off living `BASE_TIP` (frozen `Batch 329 wake` left eng PRs Intent `@077464e` after tip-sync). Align watch idle; inventory tip refresh. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c "from scripts.post_batch322_wake_comments import batch_marker, intent_line; print(batch_marker()); print(intent_line())"
+```
 
 ## STATUS (Batch 337)
 

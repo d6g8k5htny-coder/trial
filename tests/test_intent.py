@@ -13822,6 +13822,79 @@ def test_batch338_align_watch_idle() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 338" in log_md
 
+
+def test_batch338_wake_marker_living_tip() -> None:
+    """Batch 338: wake skip gate keys off living tip — not frozen Batch 329 marker."""
+    import json
+    import sys
+
+    poster_path = ROOT / "scripts" / "post_batch322_wake_comments.py"
+    poster = poster_path.read_text(encoding="utf-8")
+    assert "Batch 338" in poster
+    assert "batch_marker" in poster
+    assert "_wake_body_has_living_tip" in poster
+    assert 'BATCH_MARKER = "Batch 329 wake"' not in poster
+    assert "pull/112" not in poster
+    assert "TRIAL_REPO" in poster
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import post_batch322_wake_comments as wake  # type: ignore
+
+    tip = wake._living_tip_short()
+    assert _living_tip(tip)
+    marker = wake.batch_marker()
+    assert tip in marker
+    assert marker.startswith("Batch ")
+    assert "wake @" in marker
+    assert "329" not in marker or tip in marker  # living N, not frozen 329-only
+
+    stale = (
+        "**Batch 329 wake** — project-intent eng resume\n\n"
+        "Intent: tip chatgpt/drive-github-hardening-20260919 @ 077464e; "
+        "Path C IDLE@0019\n"
+    )
+    assert wake._wake_body_has_living_tip(stale) is False
+    fresh = wake.wake_body(92)
+    assert wake._wake_body_has_living_tip(fresh) is True
+    assert tip in fresh
+    assert "077464e" not in fresh or tip == "077464e"
+    assert "pull/112" not in fresh
+    assert wake.intent_line().startswith("Intent: tip ")
+    assert tip in wake.intent_line()
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH338_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "338"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "wake_marker_frozen_329_skips_living_tip"
+    assert brief.get("action") == "eng_wake_marker_living_tip"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH338_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_found") is True
+    assert hunt.get("defect_id") == "wake_marker_frozen_329_skips_living_tip"
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 338)
+    assert "wake poster skip" in unblock or "Batch 329 wake" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 338)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 338" in log_md
+    assert "wake marker" in log_md.lower() or "Batch 329 wake" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 338)" in owner
+
+
 def test_batch339_living_script_stale_republish() -> None:
     """Batch 339: tip stable @848aea2; living script_stale republish."""
     import json
@@ -13853,4 +13926,5 @@ def test_batch339_living_script_stale_republish() -> None:
     assert "STATUS (Batch 339)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 339" in log_md
+
 
