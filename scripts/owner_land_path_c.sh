@@ -359,17 +359,42 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   fi
   [[ -f "$DRY_RUN_PY" ]] || die "missing $DRY_RUN_PY"
   echo "--- path_c_dry_run (apply_all --check + post-ALIGNED tip shape) ---"
+  DRY_JSON_OUT="$(mktemp)"
   set +e
-  python3 "$DRY_RUN_PY"
+  python3 "$DRY_RUN_PY" --json-out "$DRY_JSON_OUT"
   dry_ec=$?
   set -e
   if [[ "$dry_ec" -eq 0 ]]; then
+    # Batch 253: when Path C already on tip, do not advertise a no-op land
+    # (same already-on-tip idle class as owner_open_path_c_pr Batch 250).
+    PATH_C_LANDED="$(python3 -c '
+import json,sys
+from pathlib import Path
+p=Path(sys.argv[1])
+try:
+  d=json.loads(p.read_text(encoding="utf-8"))
+except Exception:
+  d={}
+print("true" if d.get("path_c_landed") is True else "false")
+print("true" if d.get("tip_matches_base") is True else "false")
+' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\n')"
+    LANDED_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '1p')"
+    TIP_MATCH_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '2p')"
+    rm -f "$DRY_JSON_OUT"
+    if [[ "$LANDED_LINE" == "true" && "$TIP_MATCH_LINE" == "true" ]]; then
+      echo "already_on_tip=true path_c_landed=true tip_matches_base=true"
+      echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
+      echo "owner_land_path_c: dry-run OK — already-on-tip idle (no no-op land)."
+      echo "Scientific effect: NONE"
+      exit 0
+    fi
     echo "owner_land_path_c: dry-run OK — apply_ready on hardening BASE_TIP."
     echo "Land with write creds: $0   (or $0 --from-bundle after extracting release tarball)"
     echo "Do NOT PATH_C_BASE=main on post-#41 tip."
     echo "Scientific effect: NONE"
     exit 0
   fi
+  rm -f "$DRY_JSON_OUT"
   if [[ "$dry_ec" -eq 2 ]]; then
     echo "owner_land_path_c: ERROR: path_c_dry_run transport/missing inputs (exit=2). See JSON above." >&2
     exit 2

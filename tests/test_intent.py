@@ -7455,3 +7455,127 @@ def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 252)" in land
+
+
+def test_batch253_when_writable_token_install_and_land_dry_run_idle() -> None:
+    """Batch 253: user-token install check fallback + land-path-c dry-run idle."""
+    import importlib.util
+    import json
+    import tempfile
+    from unittest import mock
+
+    probe_path = ROOT / "scripts" / "probe_main_write.py"
+    probe_src = probe_path.read_text(encoding="utf-8")
+    assert "user_token_install_denied" in probe_src
+    assert "gh_api_without_user_token_env" in probe_src
+    assert "install_query_mode" in probe_src
+
+    spec = importlib.util.spec_from_file_location("probe_main_write_b253", probe_path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    # Simulate user-token Bearer 403 on App-only install endpoint, then gh fallback.
+    def fake_request(method: str, url: str, body=None):  # noqa: ANN001
+        assert "installation/repositories" in url
+        return 403, {"message": "Resource not accessible by integration"}
+
+    class FakeProc:
+        returncode = 0
+        stdout = json.dumps(
+            {
+                "total_count": 1,
+                "repository_selection": "selected",
+                "repositories": [{"full_name": "d6g8k5htny-coder/trial"}],
+            }
+        )
+        stderr = ""
+
+    with mock.patch.object(mod, "_request", side_effect=fake_request):
+        with mock.patch.object(mod, "_token", return_value="ghp_FAKE_BATCH253"):
+            with mock.patch("subprocess.run", return_value=FakeProc()) as run:
+                detail = mod.check_installation_repositories()
+    assert detail["install_has_main"] is False
+    assert detail["names"] == ["d6g8k5htny-coder/trial"]
+    assert detail["user_token_install_denied"] is True
+    assert detail["install_query_mode"] == "gh_app_fallback_after_user_token_403"
+    assert run.call_count == 1
+    # Fallback must strip user-token env keys (never print values).
+    env = run.call_args.kwargs.get("env") or {}
+    assert "MAIN_PUSH_TOKEN" not in env
+    assert "GH_TOKEN" not in env
+    assert "GITHUB_TOKEN" not in env
+
+    # If gh fallback also fails, still report False (not None poison).
+    class FailProc:
+        returncode = 1
+        stdout = ""
+        stderr = "gh: HTTP 403"
+
+    with mock.patch.object(mod, "_request", side_effect=fake_request):
+        with mock.patch.object(mod, "_token", return_value="ghp_FAKE_BATCH253"):
+            with mock.patch("subprocess.run", return_value=FailProc()):
+                detail2 = mod.check_installation_repositories()
+    assert detail2["install_has_main"] is False
+    assert detail2["install_query_mode"] == "user_token_not_installation"
+    assert detail2.get("user_token_install_denied") is True
+
+    land_c = (ROOT / "scripts" / "owner_land_path_c.sh").read_text(encoding="utf-8")
+    assert "already-on-tip idle" in land_c
+    assert "--json-out" in land_c
+    assert "Batch 253" in land_c
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "Batch 253" in ww
+    assert "install_has_main under user-token load" in ww
+
+    # Live dry-run: path_c_landed + tip match → idle (no apply_ready land advert).
+    wrap = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "owner_land_path_c.sh"), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert wrap.returncode == 0, wrap.stderr + wrap.stdout
+    combined = wrap.stdout + wrap.stderr
+    assert "already-on-tip idle" in combined or "already_on_tip=true" in combined
+    assert "apply_ready on hardening BASE_TIP" not in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH253_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "253"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert "when_writable" in (brief.get("defect_id") or "")
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH253_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "253"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH253_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 253" in log
+
+    # tempfile only — never print
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "t"
+        p.write_text("x", encoding="utf-8")
+        assert p.read_text(encoding="utf-8") == "x"

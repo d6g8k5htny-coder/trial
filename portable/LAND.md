@@ -1,6 +1,6 @@
-## STATUS (Batch 252)
+## STATUS (Batch 253)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; watch issue GraphQL hygiene shipped; open issues 23→0; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; when_writable user-token install fallback + land-path-c dry-run already-on-tip idle shipped; lemma_closed=false; scientific effect NONE.
 
 # One-command land paths for `d6g8k5htny-coder/main`
 
@@ -10,7 +10,7 @@ Cursor App install is often **trial-only** (git push / Git Data API **403** on
 `main`). Device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens).
 See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 
-> ## STATUS (Batch 251) — PERMANENT window; ALIGNED @ `72558a5`; Path C BASE_TIP `fa32d11`; release `batch241-path-c-bundle`; write **WRITABLE**; pack OUT writable fallback
+> ## STATUS (Batch 252) — PERMANENT window; ALIGNED @ `72558a5`; Path C BASE_TIP `fa32d11`; release `batch241-path-c-bundle`; write **WRITABLE**; watch issue GraphQL hygiene
 >
 > Owner (Dylan Roy): **NO restrictions; everything auto-approved; agents decide.
 > Broad grant — any model may alter GitHub that isn’t beneficial; add anything.**
@@ -20,8 +20,7 @@ See `portable/PATH_C_STATUS.json` `write_state` for the live probe.
 > tip_moved=false; Path C 0001–0019 already on tip → **`IDLE_PATH_C_DONE`**).
 > Write **WRITABLE** via device-auth + durable `MAIN_PUSH_TOKEN` (App install still
 > often trial-only / `install_has_main=false`). Release: **`batch241-path-c-bundle`**.
-> Bare `pack_portable.sh` now falls back to `${TMPDIR:-/tmp}/…` when `$ROOT/..` is
-> not writable (Cloud Agent `/workspace`). Prefer `./scripts/restore_main_face.sh`
+> Prefer `./scripts/restore_main_face.sh`
 > for MISALIGNED restore (ALIGNED → no-op).
 > Multi-agent: [`docs/MULTI_AGENT_ACCESS.md`](../docs/MULTI_AGENT_ACCESS.md) —
 > grant Cursor + Codex + Claude + Grok on **all 8** repos including **sandbox**.

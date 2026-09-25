@@ -30,6 +30,13 @@ Token discovery (first existing wins; value never printed):
 Injected into child git/gh/probe/land env as MAIN_PUSH_TOKEN (+ GH_TOKEN /
 GITHUB_TOKEN when those are unset).
 
+Batch 253 — install_has_main under user-token load:
+  User/PAT/device tokens get HTTP 403 on App-only ``/installation/repositories``.
+  ``probe_main_write.check_installation_repositories`` falls back to ``gh api``
+  with user-token env stripped (or reports install_has_main=false) so
+  when_writable no longer records install_has_main=None / names=[] while
+  probe=WRITABLE. Never prints tokens.
+
 Batch 140 — repository_dispatch when token file appears:
   Well-known MAIN_PUSH_TOKEN file paths (drop a PAT here; value never logged):
     /cursor/stores/self/MAIN_PUSH_TOKEN

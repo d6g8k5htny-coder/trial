@@ -2,6 +2,10 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 253)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped when_writable user-token `/installation/repositories` fallback (install_has_main no longer None) + `owner_land_path_c --dry-run` already-on-tip idle. `lemma_closed=false`. Scientific effect: NONE.
+
 ## STATUS (Batch 252)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped watch-main-alignment GraphQL issue hygiene (close-all / dedupe; avoid Search + App REST open-list empties). Closed trial open-issue backlog 23→0. `lemma_closed=false`. Scientific effect: NONE.

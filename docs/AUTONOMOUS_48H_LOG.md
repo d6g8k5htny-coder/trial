@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 253 (when_writable token-load install + land-path-c dry-run idle) — 2026-09-25 ~00:06 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.
+- `refresh_path_c_bundle --dry-run` tip stable @ fa32d11. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only (#73/#47/#46/#38/#36/#21/#12/#8/#7) — **skipped**. No green eng merge candidates. 0020 hunt: negative (no actionable bare-open / ResourceWarning on tip).
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene GraphQL):** (1) Loading device/PAT `MAIN_PUSH_TOKEN` into child env made `GET /installation/repositories` return **403** → `install_has_main=None` `names=[]` while `probe=WRITABLE`. Fixed: `probe_main_write.check_installation_repositories` falls back to `gh api` with user-token env stripped (`install_query_mode=gh_app_fallback_after_user_token_403`) or reports `false` (not None). (2) `owner_land_path_c.sh --dry-run` advertised **apply_ready** land when `path_c_landed`+`tip_matches_base` — now **already-on-tip idle**.
+- Path C: tip stable → **`IDLE_PATH_C_DONE`**. Research audit OPEN_HOLD; **flipped nothing**. Never printed tokens.
+
 ### Batch 252 (watch-main-alignment issue hygiene GraphQL) — 2026-09-24 ~23:52– UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

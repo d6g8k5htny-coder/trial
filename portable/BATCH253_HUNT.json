@@ -1,0 +1,38 @@
+{
+  "batch": "253",
+  "hunt": "refresh_0020_and_when_writable_token_install",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_id": "when_writable_token_load_install_has_main_none_and_land_path_c_dry_run_idle",
+  "bugs_fixed": [
+    "User/PAT/device token load made GET /installation/repositories return 403 → install_has_main=None names=[] while probe=WRITABLE",
+    "owner_land_path_c.sh --dry-run advertised apply_ready land when path_c_landed+tip_matches_base (no-op land)"
+  ],
+  "avoided": [
+    "tip-observe",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag",
+    "assert idle",
+    "empty RW",
+    "OWNER faces",
+    "ci.yml YAML",
+    "#78",
+    "VERIFY honesty",
+    "pack_portable TMPDIR",
+    "issue hygiene GraphQL"
+  ],
+  "tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "actionable_classic_count": 0,
+  "resourcewarning_focused": "0_on_test_intent_sample",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "path_c": "IDLE_PATH_C_DONE",
+  "green_eng_prs_merged": []
+}

@@ -112,10 +112,36 @@ def _request(method: str, url: str, body: dict | None = None) -> tuple[int, dict
         raise RuntimeError(f"transport: {exc}") from exc
 
 
+def _parse_installation_repos_body(
+    body: dict,
+) -> tuple[list[str], int | None, str | None]:
+    repos = body.get("repositories") or []
+    names: list[str] = []
+    for repo in repos:
+        if isinstance(repo, dict):
+            full = repo.get("full_name") or ""
+            if full:
+                names.append(str(full))
+    total = body.get("total_count")
+    selection = body.get("repository_selection")
+    return (
+        names,
+        int(total) if isinstance(total, int) else None,
+        str(selection) if selection is not None else None,
+    )
+
+
 def check_installation_repositories() -> dict:
     """Return install_has_main + names from GET /installation/repositories.
 
     Fail-soft: transport errors yield install_has_main=None with detail.
+
+    Batch 253 — user/PAT token load must not poison this App-only endpoint:
+    when MAIN_PUSH_TOKEN / device-flow user token is injected into env,
+    urllib Bearer auth gets HTTP 403 on ``/installation/repositories`` and
+    previously left ``install_has_main=None`` (names=[]). Fall back to
+    ``gh api`` with user-token env vars stripped so the host App login can
+    answer the installation selection. Never prints tokens.
     """
     out: dict = {
         "endpoint": "/installation/repositories",
@@ -131,20 +157,66 @@ def check_installation_repositories() -> dict:
         out["error"] = str(exc)
         return out
     out["http_status"] = status
+    used_user_token = _token() is not None
+    # App-only endpoint: user/PAT Bearer → 401/403. Retry via gh hosts login.
+    if used_user_token and status in (401, 403):
+        out["user_token_install_http_status"] = status
+        out["user_token_install_denied"] = True
+        out["fallback"] = "gh_api_without_user_token_env"
+        import subprocess
+
+        clean_env = {
+            k: v
+            for k, v in os.environ.items()
+            if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+        }
+        proc = subprocess.run(
+            ["gh", "api", "/installation/repositories"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+            env=clean_env,
+        )
+        raw = (proc.stdout or "").strip()
+        if proc.returncode != 0:
+            err = (proc.stderr or raw or f"gh exit {proc.returncode}")[-500:]
+            out["fallback_error"] = err
+            # Still not an installation credential — report false (not None)
+            # so when_writable flip detection sees a concrete bool under
+            # durable user-token write (WRITABLE) instead of None poison.
+            out["install_has_main"] = False
+            out["install_query_mode"] = "user_token_not_installation"
+            out["body"] = body if isinstance(body, dict) else {"raw": str(body)[:500]}
+            return out
+        try:
+            fb_body = json.loads(raw) if raw else {}
+        except json.JSONDecodeError:
+            out["fallback_error"] = "json_decode"
+            out["install_has_main"] = False
+            out["install_query_mode"] = "user_token_not_installation"
+            return out
+        if not isinstance(fb_body, dict):
+            out["install_has_main"] = False
+            out["install_query_mode"] = "user_token_not_installation"
+            return out
+        names, total, selection = _parse_installation_repos_body(fb_body)
+        out["http_status"] = 200
+        out["total_count"] = total
+        out["repository_selection"] = selection
+        out["names"] = names
+        out["install_has_main"] = MAIN_FULL in names
+        out["install_query_mode"] = "gh_app_fallback_after_user_token_403"
+        return out
     if status != 200 or not isinstance(body, dict):
         out["body"] = body if isinstance(body, dict) else {"raw": str(body)[:500]}
         return out
-    repos = body.get("repositories") or []
-    names: list[str] = []
-    for repo in repos:
-        if isinstance(repo, dict):
-            full = repo.get("full_name") or ""
-            if full:
-                names.append(str(full))
-    out["total_count"] = body.get("total_count")
-    out["repository_selection"] = body.get("repository_selection")
+    names, total, selection = _parse_installation_repos_body(body)
+    out["total_count"] = total
+    out["repository_selection"] = selection
     out["names"] = names
     out["install_has_main"] = MAIN_FULL in names
+    out["install_query_mode"] = "direct"
     return out
 
 
