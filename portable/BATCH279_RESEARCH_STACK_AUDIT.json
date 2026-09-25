@@ -1,0 +1,18 @@
+{
+  "batch": "279",
+  "generated_at_utc": "2026-09-25T07:50:30Z",
+  "shape": "HAS_PACKET",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "counts": {
+    "open_premises_frozen_layer": 13,
+    "open_lemmas": 1,
+    "open_obligations_packet": 2,
+    "open_prizes": 3,
+    "claims_total": 26,
+    "open_questions": 16
+  },
+  "tip_sha": "3b3860da7336528a9517ae198f09c83f68fa137a",
+  "note": "research stack remains OPEN; lemma_closed=false; no flips; Batch 279 eng-only republish basename fix"
+}

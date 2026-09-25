@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 279 (republish --out basename leak + living pack stale) — 2026-09-25 ~07:48 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD — **skipped**. Deep 0020 hunt: **NEGATIVE**.
+- **Evidence:** living release `trial-portable-main-fixes.tgz` still **386608** / `9200c50d…` while fresh pack **482632** (Batches 261–278 script fixes). `republish_living_path_c_release.sh --out /tmp/batch279-upload.tgz` called `gh release upload` with that path → created asset **`batch279-upload.tgz`** and left living pack stale; script still printed **uploaded OK**.
+- **Defect shipped (avoid tip-observe / research HOLDs / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** stage canonical `trial-portable-main-fixes.tgz` before upload; post-upload size+sha verify (fail closed); prefer dylan device token when App/ghs lacks release write; deleted leak asset; clobber-uploaded living pack 386608→482632.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 278 (pack --help OUT + tip-sync refresh APPLY heredoc) — 2026-09-25 ~07:20 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP: started **tip_match @ bfb7c38**; mid-cycle main **#81** merged → live **`3b3860d`** (TIP_MOVED). Tip-sync refresh + land. Research HOLD drafts skipped at cycle start. Deep 0020 hunt: **NEGATIVE**.

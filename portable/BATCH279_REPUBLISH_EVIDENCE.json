@@ -1,0 +1,29 @@
+{
+  "batch": "279",
+  "living_tag": "batch241-path-c-bundle",
+  "pack_newer": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "release_tgz_bytes_before": 386608,
+  "release_tgz_sha256_before": "9200c50ded341b9b1cfcfc4152ea61f4b572572bc83b82a728c2098d7ab71463",
+  "pack_tgz_bytes_pre_upload": 482632,
+  "pack_tgz_sha256_pre_upload": "b571a4bb90a8b6885e59ef9092b20886292bafb80930e340178d4fd2a473dd77",
+  "basename_leak_repro": {
+    "out_path": "/tmp/batch279-upload.tgz",
+    "leak_asset_name": "batch279-upload.tgz",
+    "leak_asset_bytes": 482632,
+    "living_asset_still_bytes": 386608,
+    "script_claimed": "uploaded OK"
+  },
+  "basename_leak_asset_deleted_id": "587833836",
+  "release_tgz_bytes_after": 484663,
+  "release_tgz_sha256_after": "b7eb104732589c0a4f86db1b08fb72fb381055b7fb9f220f79d49e9243adfd36",
+  "upload_ok": true,
+  "post_upload_verify": true,
+  "canonical_staging": true,
+  "final_wrong_out_basename_upload_ok": true,
+  "bundle_digest_match": true,
+  "patch_digest_match": true,
+  "deferred_from_batches": "261-278"
+}

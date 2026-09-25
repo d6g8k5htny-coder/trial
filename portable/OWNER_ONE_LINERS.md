@@ -5,6 +5,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 279 — tip `3b3860d` tip_match; default ALIGNED `72558a5`; write WRITABLE; republish canonical basename + post-upload verify; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/republish_living_path_c_release.sh --dry-run --out /tmp/wrong-name.tgz
+> # stages …/trial-portable-main-fixes.tgz (not wrong-name.tgz)
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: `gh release upload` used `--out` basename → living `trial-portable-main-fixes.tgz` stayed at 386608 while script printed uploaded OK. No research flip. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 278 — tip `3b3860d` tip_match (synced from `bfb7c38`); default ALIGNED `72558a5`; write WRITABLE; pack help + refresh heredoc; release `batch241-path-c-bundle`**:
 >
 > ```bash

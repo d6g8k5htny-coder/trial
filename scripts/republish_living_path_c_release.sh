@@ -14,6 +14,12 @@
 # upload` target the wrong tag while pack rewrote the pin to VERIFY.release
 # (batch241). Pack first → post-pack pin / VERIFY.release → upload.
 #
+# Batch 279: `gh release upload` names the asset from the local basename.
+# `--out /tmp/foo.tgz` therefore created release asset `foo.tgz` and left
+# living `trial-portable-main-fixes.tgz` stale (script still printed
+# "uploaded OK"). Stage a canonical basename before upload, and verify the
+# living release asset size+sha after --clobber (fail closed on mismatch).
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -46,7 +52,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -h|--help)
-      sed -n '2,26p' "$0"
+      sed -n '2,30p' "$0"
       exit 0
       ;;
     *)
@@ -189,7 +195,27 @@ if [[ "$NEED_UPLOAD" -eq 0 ]]; then
   exit 0
 fi
 
-UPLOAD_ARGS=("$OUT")
+# Batch 279: gh release upload uses the local basename as the asset name.
+# Always stage the pack as trial-portable-main-fixes.tgz so --out cannot
+# create a sibling asset (e.g. batch279-upload.tgz) while leaving the living
+# pack stale.
+CANON_NAME="trial-portable-main-fixes.tgz"
+STAGE_DIR=""
+UPLOAD_PACK="$OUT"
+if [[ "$(basename -- "$OUT")" != "$CANON_NAME" ]]; then
+  STAGE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/republish-canon.XXXXXX")"
+  UPLOAD_PACK="$STAGE_DIR/$CANON_NAME"
+  cp -f "$OUT" "$UPLOAD_PACK"
+  echo "republish_living_path_c_release: staged canonical pack basename ${CANON_NAME} (from $(basename -- "$OUT"))"
+fi
+cleanup_stage() {
+  if [[ -n "$STAGE_DIR" && -d "$STAGE_DIR" ]]; then
+    rm -rf "$STAGE_DIR"
+  fi
+}
+trap cleanup_stage EXIT
+
+UPLOAD_ARGS=("$UPLOAD_PACK")
 [[ -f "$BUNDLE" ]] && UPLOAD_ARGS+=("$BUNDLE")
 [[ -f "$PATCH" ]] && UPLOAD_ARGS+=("$PATCH")
 
@@ -199,6 +225,55 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
 fi
 
 echo "republish_living_path_c_release: uploading ${#UPLOAD_ARGS[@]} asset(s) to ${TAG} (--clobber)"
+# Prefer durable dylan device token when present (App/ghs may lack release write).
+if [[ -z "${GH_TOKEN:-}" && -z "${GITHUB_TOKEN:-}" && -f /tmp/gh-dylan-auth/access_token ]]; then
+  export GH_TOKEN
+  GH_TOKEN="$(tr -d '[:space:]' </tmp/gh-dylan-auth/access_token)"
+fi
 gh release upload "$TAG" "${UPLOAD_ARGS[@]}" --repo "$REPO" --clobber
-echo "republish_living_path_c_release: uploaded OK tag=${TAG} pack_sha256=${pack_sha} lemma_closed=false scientific_effect=NONE"
+
+# Post-upload verify: living asset must match the pack we just uploaded.
+REL_AFTER="$(gh release view "$TAG" --repo "$REPO" --json assets 2>/dev/null)" || {
+  echo "republish_living_path_c_release: ERROR: cannot re-view release ${TAG} after upload" >&2
+  exit 1
+}
+eval "$(
+  REL_JSON="$REL_AFTER" CANON_NAME="$CANON_NAME" python3 - <<'PY'
+import json, os, shlex
+data = json.loads(os.environ["REL_JSON"])
+name = os.environ["CANON_NAME"]
+assets = {a["name"]: a for a in (data.get("assets") or []) if isinstance(a, dict)}
+tgz = assets.get(name) or {}
+
+def dig(a):
+    d = (a.get("digest") or "")
+    if isinstance(d, str) and d.startswith("sha256:"):
+        return d.split(":", 1)[1]
+    return ""
+
+print("REL_AFTER_BYTES=" + shlex.quote(str(tgz.get("size") or "")))
+print("REL_AFTER_SHA=" + shlex.quote(dig(tgz)))
+print("REL_AFTER_HAS_CANON=" + ("1" if name in assets else "0"))
+# Flag accidental basename-leak assets from pre-279 --out misuse.
+leaks = sorted(
+    n for n in assets
+    if n.endswith(".tgz") and n != name
+)
+print("REL_AFTER_TGZ_LEAKS=" + shlex.quote(",".join(leaks)))
+PY
+)"
+
+if [[ "${REL_AFTER_HAS_CANON:-0}" != "1" ]]; then
+  echo "republish_living_path_c_release: ERROR: living asset ${CANON_NAME} missing after upload" >&2
+  exit 1
+fi
+if [[ "${REL_AFTER_BYTES:-}" != "$pack_bytes" || "${REL_AFTER_SHA:-}" != "$pack_sha" ]]; then
+  echo "republish_living_path_c_release: ERROR: post-upload mismatch living bytes=${REL_AFTER_BYTES:-?} sha=${REL_AFTER_SHA:-?} != pack bytes=${pack_bytes} sha=${pack_sha}" >&2
+  exit 1
+fi
+if [[ -n "${REL_AFTER_TGZ_LEAKS:-}" ]]; then
+  echo "republish_living_path_c_release: note: extra release .tgz assets present (pre-279 basename leak?): ${REL_AFTER_TGZ_LEAKS}" >&2
+fi
+
+echo "republish_living_path_c_release: uploaded OK tag=${TAG} pack_sha256=${pack_sha} living_bytes=${REL_AFTER_BYTES} living_sha256=${REL_AFTER_SHA} lemma_closed=false scientific_effect=NONE"
 exit 0

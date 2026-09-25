@@ -10624,7 +10624,11 @@ def test_batch278_pack_portable_help_not_out() -> None:
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     assert "Batch 278" in refresh
     assert "python3 - <<'PY'" in refresh
-    assert 'REFRESH_BATCH_TAG:-278' in refresh or 'REFRESH_BATCH_TAG:-278}"' in refresh
+    # Living default advances each tip-sync batch (278→279+).
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert any(
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281")
+    )
 
     living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
     prior = living.read_text(encoding="utf-8")
@@ -10725,6 +10729,118 @@ def test_batch278_pack_portable_help_not_out() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 278" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch279_republish_canonical_basename() -> None:
+    """Batch 279: republish stages canonical pack basename + post-upload verify."""
+    import json
+    import subprocess
+    import tempfile
+    from pathlib import Path as P
+
+    script = ROOT / "scripts" / "republish_living_path_c_release.sh"
+    text = script.read_text(encoding="utf-8")
+    assert "Batch 279" in text
+    assert "CANON_NAME" in text
+    assert "trial-portable-main-fixes.tgz" in text
+    assert "staged canonical pack basename" in text
+    assert "post-upload mismatch" in text or "REL_AFTER_SHA" in text
+    assert "gh-dylan-auth/access_token" in text
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-279" in refresh
+
+    with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
+        out = P(td) / "wrong-name.tgz"
+        dry = subprocess.run(
+            ["bash", str(script), "--dry-run", "--out", str(out)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=120,
+        )
+        assert dry.returncode == 0, dry.stderr + dry.stdout
+        combined = (dry.stdout or "") + (dry.stderr or "")
+        assert "staged canonical pack basename trial-portable-main-fixes.tgz" in combined
+        assert "wrong-name.tgz" in combined
+        # Dry-run upload line must use canonical basename, not the --out leak name.
+        assert "trial-portable-main-fixes.tgz" in combined
+        assert "/wrong-name.tgz --repo" not in combined
+        assert "would: gh release upload batch241-path-c-bundle" in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH279_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "279"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "republish_out_basename_leaves_living_pack_stale"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("upload_ok") is True
+    assert int(brief.get("release_tgz_bytes_before") or 0) == 386608
+    assert int(brief.get("release_tgz_bytes_after") or 0) >= 482632
+    assert str(brief.get("tip", "")).startswith("3b3860d")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH279_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "republish_out_basename_leaves_living_pack_stale"
+    assert any("pack_portable --help" in a for a in (hunt.get("avoided") or []))
+    assert any("VERIFY.release-first" in a for a in (hunt.get("avoided") or []))
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH279_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("pack_newer") is True
+    assert evidence.get("living_tag") == "batch241-path-c-bundle"
+    assert evidence.get("upload_ok") is True
+    assert evidence.get("canonical_staging") is True
+    assert evidence.get("post_upload_verify") is True
+    assert evidence.get("basename_leak_repro", {}).get("leak_asset_name") == (
+        "batch279-upload.tgz"
+    )
+    assert int(evidence.get("release_tgz_bytes_before") or 0) == 386608
+    assert int(evidence.get("release_tgz_bytes_after") or 0) >= 482632
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH279_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 279" in log_md
+    assert "basename" in log_md.lower() or "batch279-upload" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 279)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 279)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 279" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 279" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

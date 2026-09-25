@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 279)
+
+Hardening tip **stable** @ `3b3860d` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Living release pack stale (386608→482632) AND `republish --out /tmp/foo.tgz` uploaded asset named `foo.tgz` while leaving `trial-portable-main-fixes.tgz` stale (still printed "uploaded OK"). Fixed: stage canonical basename + post-upload size/sha verify; prefer dylan token when App/ghs lacks release write. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run --out /tmp/wrong-name.tgz
+# must stage …/trial-portable-main-fixes.tgz (not wrong-name.tgz)
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 278)
 
 Hardening tip **synced** `bfb7c38`→`3b3860d` after main #81 (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Shipped: (1) `pack_portable` `-h|--help` not OUT; (2) `refresh_path_c_bundle` APPLY soft-update `<<'PY'` (Batch 273 unquoted-heredoc leftover aborted before MANIFEST on first tip move). `lemma_closed=false`. Scientific effect: NONE.

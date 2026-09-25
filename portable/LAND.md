@@ -1,3 +1,7 @@
+## STATUS (Batch 279)
+
+tip `3b3860d` tip_match=true; republish `--out` basename leaked as release asset (living pack stale + false "uploaded OK"); stage canonical trial-portable-main-fixes.tgz + post-upload verify; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 278)
 
 tip `3b3860d` tip_match=true (synced from `bfb7c38` after main #81); pack `--help` not OUT; refresh APPLY soft-update quoted heredoc (Batch 273 leftover); lemma_closed=false; scientific effect NONE.

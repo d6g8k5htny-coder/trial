@@ -1,0 +1,47 @@
+{
+  "batch": "279",
+  "hunt": "republish_out_basename_and_living_pack_stale",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "republish_out_basename_leaves_living_pack_stale",
+  "bugs_fixed": [
+    "gh release upload used --out basename → leak asset; living pack stale; false uploaded OK",
+    "missing post-upload living size/sha verify",
+    "living release lagged local pack (386608 vs 482632)"
+  ],
+  "avoided": [
+    "tip-observe inventable README LOCK advance",
+    "research HOLD drafts",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_3b3860d": "TIP_OK",
+    "pack_vs_release_bytes": "386608_vs_482632_STALE",
+    "republish_out_basename": "reproduced_leak_asset_batch279-upload.tgz",
+    "patch_0020": "NEGATIVE",
+    "open_main_prs": "all_DRAFT_research_HOLD_skipped",
+    "sibling_sandbox": "App_404_durable_WRITABLE_known"
+  },
+  "tip": "3b3860d",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was republish --out basename leak + deferred living pack stale"
+  }
+}
