@@ -24,7 +24,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 359 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
-- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`09ef344`; INV_BATCH→359; coverage 8/8_WRITABLE.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`a4a42a1`; INV_BATCH→359; coverage 8/8_WRITABLE.
 - Artifact `portable/BATCH359_GRANT.json`. NEVER flip research.
 
 ### Batch 359 — research_stack_audit_watch_no_promotion (2026-09-25)
