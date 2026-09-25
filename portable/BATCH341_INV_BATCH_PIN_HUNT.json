@@ -1,0 +1,23 @@
+{
+  "batch": "341",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "assignment": "eng_defect_hunt_no_claim_promotion",
+  "coordinator": "bc-01a0cf1e",
+  "defect_id": "intent_batch340_inv_batch_hard_pin_after_342",
+  "tip": "f244312",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "inventable_promoted": false,
+  "hunt_0020": "NEGATIVE",
+  "evidence": {
+    "pytest_before": "test_batch340_inventory_ultimate_fallback_unfreeze FAILED assert '342' == '340'",
+    "pytest_before_grant": "test_batch340_grant_inventory_refresh FAILED assert '342' == '340'",
+    "living_inv_batch": "342",
+    "frozen_assert": "inv.get(\"batch\") == \"340\""
+  },
+  "skip": ["inventable", "tip-sync (tip_match=1 @f244312)", "soften @7beeef7 already landed"],
+  "note": "Batch 341 CONTINUE; never flip lemma_closed."
+}

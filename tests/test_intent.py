@@ -14176,7 +14176,8 @@ def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "340"
+    # Living INV_BATCH supersedes across grant tip-refresh; Batch 340 shipped 340.
+    assert int(str(inv.get("batch") or "0")) >= 340
     assert inv.get("lemma_closed") is False
     assert inv.get("flipped_anything") is False
     assert inv.get("scientific_effect") == "NONE"
@@ -14494,7 +14495,8 @@ def test_batch340_grant_inventory_refresh() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "340"
+    # Living INV_BATCH supersedes across grant tip-refresh; Batch 340 shipped 340.
+    assert int(str(inv.get("batch") or "0")) >= 340
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     assert inv.get("sibling_write_count") == 8
     assert inv.get("lemma_closed") is False
@@ -14752,7 +14754,8 @@ def test_batch342_inventory_tip_refresh_and_wake_token_pin() -> None:
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
-    assert inv.get("batch") == "342"
+    # Living INV_BATCH supersedes across grant tip-refresh; Batch 342 shipped 342.
+    assert int(str(inv.get("batch") or "0")) >= 342
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     assert inv.get("lemma_closed") is False
     assert int(inv.get("sibling_write_count") or 0) == 8
@@ -14778,3 +14781,61 @@ def test_batch342_inventory_tip_refresh_and_wake_token_pin() -> None:
     assert "STATUS (Batch 342)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "inventory tip refresh batch 342" in log_md.lower() or "Batch 342" in log_md
+
+
+def test_batch341_soften_inv_batch_hard_pins_after_342() -> None:
+    """Batch 341 continue: Batch 340 Intent must not freeze living INV_BATCH to 340."""
+    import json
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch340_inventory_ultimate_fallback_unfreeze")
+    end = intent.index("def test_batch340_multi_agent_wake_assign")
+    body = intent[start:end]
+    assert 'inv.get("batch") == "340"' not in body
+    assert "Living INV_BATCH supersedes across grant tip-refresh" in body
+
+    start2 = intent.index("def test_batch340_grant_inventory_refresh")
+    end2 = intent.index("def test_batch341_soften_batch340_live_tip_pins")
+    body2 = intent[start2:end2]
+    assert 'inv.get("batch") == "340"' not in body2
+    assert "Living INV_BATCH supersedes across grant tip-refresh" in body2
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 342
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH341_INV_BATCH_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "341"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "intent_batch340_inv_batch_hard_pin_after_342"
+    assert brief.get("action") == "soften_inv_batch_hard_pins"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH341_INV_BATCH_PIN_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == "intent_batch340_inv_batch_hard_pin_after_342"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 341)
+    assert "inv_batch" in unblock.lower() or "INV_BATCH" in unblock or "inventory batch hard pin" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341 inv-batch-pin)" in land or "inv_batch_hard_pin" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "inv_batch" in log_md.lower() or "INV_BATCH hard pin" in log_md or "inventory batch hard pin" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341 inv-batch-pin)" in owner or "inv_batch" in owner.lower()

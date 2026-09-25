@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 341 CONTINUE — soften INV_BATCH hard pin (2026-09-25)
+
+- Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- **Defect:** Batch 340 Intent hard-pinned living inventory batch (`inv.get("batch") == "340"`); Batch 342 tip-refresh stamped INV_BATCH 342 → Intent CI red.
+- **Fix:** soften INV_BATCH hard pin to `>= 340` (and Batch 342 living pin to `>= 342`); same class as live BASE_TIP pin softens @`7beeef7`.
+- NEVER flip research.
+
 ### Batch 343 — living script_stale republish (2026-09-25)
 
 - Tip **stable** @ `f244312` (tip_sync_watch dry-run match=1). Path C IDLE@0019.

@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 341 inv-batch-pin)
+
+Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 Intent living `INV_BATCH` hard pin after Batch 342 tip-refresh left inventory at 342 (Intent CI red on `== "340"`). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch341_soften_inv_batch_hard_pins_after_342 -q
+```
+
 ## STATUS (Batch 343)
 
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move; WAKE340 tip pins already living @ `f244312` (Batch 342). Eng: living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` drift after Batch 341/342) — republish cleared. `lemma_closed=false`. Scientific effect: NONE.
