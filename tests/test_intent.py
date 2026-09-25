@@ -20404,3 +20404,45 @@ def test_batch368_soften_tip_sync_watch_live_tip_pin() -> None:
     assert "STATUS (Batch 368 tip-sync-watch-confirm)" in owner or "soften" in owner.lower()
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "soften" in log_md.lower() and "1ae02b9" in log_md
+
+
+
+def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
+    """Batch 368: STATUS_GUARD tip living @1ae02b9 after tip-sync; no promotion."""
+    import json
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert snap.get("flipped_anything") is False
+    assert not (snap.get("violations") or [])
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+    assert str(snap.get("tip_sha") or "").startswith("1ae02b9")
+    assert str(snap.get("baseline_tip_sha") or "").startswith("e3cd7d4")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH368_STATUS_GUARD_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "368"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_status_guard_tip_refresh"
+    assert brief.get("defect_id") == "status_guard_tip_lag_e3cd7d4_after_tip_sync_1ae02b9"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH368_STATUS_GUARD_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "eng_status_guard_tip_refresh"
+    assert evidence.get("pass") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 368)
+    assert "STATUS_GUARD tip refresh" in unblock and "1ae02b9" in unblock
+    assert "STATUS (Batch 368 status-guard)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 status-guard)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

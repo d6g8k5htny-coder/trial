@@ -1,0 +1,8 @@
+{
+  "batch": "368",
+  "utc": "2026-09-25T23:36:38Z",
+  "defect_id": "status_guard_tip_lag_e3cd7d4_after_tip_sync_1ae02b9",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "eng_status_guard_tip_refresh"
+}

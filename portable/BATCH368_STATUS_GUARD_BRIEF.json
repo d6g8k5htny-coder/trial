@@ -1,0 +1,23 @@
+{
+  "batch": "368",
+  "generated_at_utc": "2026-09-25T23:36:38Z",
+  "status": "status_guard_tip_refresh_e3cd7d4_to_1ae02b9",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_full": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "prior_tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "defect_shipped": true,
+  "defect_id": "status_guard_tip_lag_e3cd7d4_after_tip_sync_1ae02b9",
+  "action": "eng_status_guard_tip_refresh",
+  "inventable_promoted": false,
+  "goal_complete": false,
+  "goal": "OPEN",
+  "note": "Tip stable @1ae02b9 tip_match=1; guard pass violations=0; lemma_closed=false."
+}

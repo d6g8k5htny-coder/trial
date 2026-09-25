@@ -1,3 +1,7 @@
+## STATUS (Batch 368 status-guard)
+
+After tip-sync to `1ae02b9`, STATUS_GUARD tip lagged at `e3cd7d4`. Refreshed via `guard_no_status_promotion` (pass). Evidence: `portable/BATCH368_STATUS_GUARD_BRIEF.json`. Goal OPEN.
+
 ## STATUS (Batch 368 tip-sync-watch-confirm)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true after tip-sync e3cd7d4→1ae02b9). tip_sync_watch: no further tip move; living tip/script current. Softened Intent frozen assignment `tip_sync_watch_vs_BASE_TIP_e3cd7d4` → living. Evidence: `portable/BATCH368_IDLE.json` + `BATCH368_SOFTEN_*.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

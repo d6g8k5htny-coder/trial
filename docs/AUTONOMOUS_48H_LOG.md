@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 368 — STATUS_GUARD tip refresh e3cd7d4→1ae02b9 (2026-09-25)
+
+- After tip-sync, STATUS_GUARD tip_sha lagged at `e3cd7d4`. Ran `guard_no_status_promotion` @ `1ae02b9` → pass; tip→`1ae02b9`; baseline→`e3cd7d4`; open 13/1/3; no promotion. Also PRESERVE_DURABLE inv tip re-pin. Goal OPEN.
+
+
 ### Batch 368 — tip_sync_watch confirm @1ae02b9 + Intent soft-pin (2026-09-25)
 
 - Tip stable @ `1ae02b9` tip_match=1 (post tip-sync e3cd7d4→1ae02b9); Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

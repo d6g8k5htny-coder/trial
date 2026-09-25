@@ -1,3 +1,7 @@
+## STATUS (Batch 368 status-guard)
+
+STATUS_GUARD tip refresh e3cd7d4→1ae02b9 after tip-sync; tip_match; guard pass; open 13/1/3; lemma_closed=false; no promotion.
+
 ## STATUS (Batch 368 tip-sync-watch-confirm)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch confirm after tip-sync; Intent soft-pin living tip; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
