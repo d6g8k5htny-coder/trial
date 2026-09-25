@@ -1,0 +1,33 @@
+{
+  "batch": "342",
+  "generated_at_utc": "2026-09-25T18:45:52Z",
+  "status": "wake340_living_tip_pins",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip_match": true,
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake340_tip_pins_frozen_at_848aea2",
+  "bugs_fixed": [
+    "MULTI_AGENT_WAKE_BATCH340 tip/tip_full/intent.base_tip_expected still @848aea2 after tip-sync to f244312",
+    "assignment tip_sync_watch_vs_BASE_TIP_848aea2 \u2192 living f244312"
+  ],
+  "action": "eng_wake340_living_tip_pins",
+  "route_now": "ENG_FIX",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_f244312",
+  "evidence": {
+    "tip": "TIP_OK @f244312 BASE==LIVE match=1",
+    "wake_before": "tip=848aea2 base_tip_expected=848aea2\u2026",
+    "wake_after": "tip=f244312 base_tip_expected=f244312\u2026 wake_tip_at_assign preserved",
+    "living": "tip_stale=0 script_stale=0 tgz_newer=1 brief-only",
+    "research": "inventable drafts skipped"
+  },
+  "note": "Batch 342 tip_sync_watch: tip stable; refreshed WAKE340 living tip pins; lemma_closed=false."
+}

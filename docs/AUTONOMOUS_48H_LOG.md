@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 342 — WAKE340 living tip pins (2026-09-25)
+
+- Tip **stable** @ `f244312` (tip_sync_watch dry-run match=1). Path C IDLE@0019.
+- **Defect:** `MULTI_AGENT_WAKE_BATCH340.json` tip/`base_tip_expected` still @ `848aea2` after Batch 340 tip-sync to `f244312`.
+- **Fix:** refresh living tip pins; preserve `wake_tip_at_assign=848aea2`; assignment → `tip_sync_watch_vs_BASE_TIP_f244312`.
+- `lemma_closed=false`; inventable drafts skipped; no research flip.
+
 ### Batch 341 — soften Batch 340 tip-sync live BASE_TIP Intent pin (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1 (post #108 tip-sync); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

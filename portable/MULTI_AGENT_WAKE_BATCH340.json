@@ -5,8 +5,8 @@
   "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "utc": "2026-09-25T18:25:28Z",
-  "tip": "848aea2",
-  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
   "tip_match": true,
   "wake340_on_main": true,
   "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH337.json",
@@ -27,7 +27,7 @@
   },
   "intent": {
     "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-    "base_tip_expected": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+    "base_tip_expected": "f244312db901cf6ede88e46af663398d496eb989",
     "path_c": "IDLE@0019",
     "lemma_closed": false,
     "scientific_effect": "NONE",
@@ -35,19 +35,64 @@
     "never_flip_research": true
   },
   "woken_idle_agents": [
-    {"bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e", "name": "Batch340 tip-sync watch", "assignment": "tip_sync_watch_vs_BASE_TIP_848aea2"},
-    {"bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20", "name": "Batch340 eng defect hunt", "assignment": "eng_defect_hunt_no_claim_promotion"},
-    {"bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec", "name": "Batch340 grant dual-vector", "assignment": "grant_check_dual_vector_8of8"},
-    {"bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302", "name": "Batch337 tip or eng wake", "assignment": "tip_or_eng_defect"},
-    {"bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf", "name": "Batch337 eng hunter wake", "assignment": "eng_defect_hunt_or_idle"},
-    {"bcId": "bc-3fb93461-8bac-53a9-96aa-f28a6d27f477", "name": "Batch340 tip/eng cloud peer", "assignment": "tip_or_eng_on_healthy_VM"},
-    {"bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5", "name": "Batch336 CI remediation wake", "assignment": "ci_audit_rate_limit_retry"},
-    {"bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3", "name": "Batch340 wake land verify", "assignment": "wake_land_verify_batch340"},
-    {"bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4", "name": "Batch340 grant inventory peer", "assignment": "grant_inventory_refresh_batch340"},
-    {"bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9", "name": "Batch340 eng PR wake comments", "assignment": "post_eng_pr_wake_comments"}
+    {
+      "bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e",
+      "name": "Batch340 tip-sync watch",
+      "assignment": "tip_sync_watch_vs_BASE_TIP_f244312",
+      "assignment_prior": "tip_sync_watch_vs_BASE_TIP_848aea2"
+    },
+    {
+      "bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20",
+      "name": "Batch340 eng defect hunt",
+      "assignment": "eng_defect_hunt_no_claim_promotion"
+    },
+    {
+      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+      "name": "Batch340 grant dual-vector",
+      "assignment": "grant_check_dual_vector_8of8"
+    },
+    {
+      "bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302",
+      "name": "Batch337 tip or eng wake",
+      "assignment": "tip_or_eng_defect"
+    },
+    {
+      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+      "name": "Batch337 eng hunter wake",
+      "assignment": "eng_defect_hunt_or_idle"
+    },
+    {
+      "bcId": "bc-3fb93461-8bac-53a9-96aa-f28a6d27f477",
+      "name": "Batch340 tip/eng cloud peer",
+      "assignment": "tip_or_eng_on_healthy_VM"
+    },
+    {
+      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
+      "name": "Batch336 CI remediation wake",
+      "assignment": "ci_audit_rate_limit_retry"
+    },
+    {
+      "bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+      "name": "Batch340 wake land verify",
+      "assignment": "wake_land_verify_batch340"
+    },
+    {
+      "bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
+      "name": "Batch340 grant inventory peer",
+      "assignment": "grant_inventory_refresh_batch340"
+    },
+    {
+      "bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9",
+      "name": "Batch340 eng PR wake comments",
+      "assignment": "post_eng_pr_wake_comments"
+    }
   ],
   "spawned_cloud_peers": [
-    {"bcId": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b", "name": "Batch340 tip eng cloud fresh", "assignment": "tip_sync_or_eng_on_healthy_VM"}
+    {
+      "bcId": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b",
+      "name": "Batch340 tip eng cloud fresh",
+      "assignment": "tip_sync_or_eng_on_healthy_VM"
+    }
   ],
   "peer_lands_this_pulse": [
     "066994c audit_main_alignment 403 rate-limit backoff",
@@ -56,11 +101,16 @@
     "d8c4c27 audit rate-limit raw/ls-remote fallback + CI soft-continue"
   ],
   "known_signals": [
-    "Batch 338 align-watch CI 36172207352 failed audit_main_alignment HTTP 403 — fixed on main",
+    "Batch 338 align-watch CI 36172207352 failed audit_main_alignment HTTP 403 \u2014 fixed on main",
     "living batch241-path-c-bundle script_stale=0 tip_stale=0 after Batch 339",
-    "tip stable @848aea2 tip_match=1; Path C IDLE@0019; durable 8/8"
+    "living tip advanced 848aea2\u2192f244312 after main #108 tip-observe; wake tip pins refreshed Batch 342",
+    "tip stable @f244312 tip_match=1; Path C IDLE@0019; durable 8/8"
   ],
   "messaging_limits": {
     "mechanism_used": "Task resume (IDLE) + Task environment=cloud; direct trial main push when createPullRequest 403"
-  }
+  },
+  "wake_tip_at_assign": "848aea2",
+  "wake_tip_at_assign_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_living_updated_batch": 342,
+  "tip_living_updated_utc": "2026-09-25T18:45:52Z"
 }

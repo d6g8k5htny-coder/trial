@@ -14038,7 +14038,7 @@ def test_batch340_audit_rate_limit_403_backoff() -> None:
 
 
 def test_batch340_wake_land_verify() -> None:
-    """Batch 340: wake340 on main; tip_match @848aea2; lemma_closed false."""
+    """Batch 340: wake340 on main; tip_match living; lemma_closed false."""
     import json
 
     path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json"
@@ -14054,7 +14054,10 @@ def test_batch340_wake_land_verify() -> None:
     assert data.get("path_c") == "IDLE@0019"
     assert data.get("durable") == "8/8"
     assert _living_tip(str(data.get("tip") or ""))
-    # Live tip supersedes; historical wake tip may stay 848aea2 across tip-sync.
+    # Batch 342: living tip pins refreshed to f244312; wake_tip_at_assign keeps 848aea2.
+    assert str(data.get("tip") or "").startswith("f244312") or _living_tip(data.get("tip"))
+    assert str((data.get("intent") or {}).get("base_tip_expected") or "").startswith("f244312")
+    assert str(data.get("wake_tip_at_assign") or "").startswith("848aea2")
     living = data.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
@@ -14330,7 +14333,11 @@ def test_batch340_republish_critical_includes_audit() -> None:
     end = intent.index("def test_batch340_audit_rate_limit_raw_fallback")
     body = intent[start:end]
     assert 'startswith("848aea2")' not in body
-    assert "Live tip supersedes; historical wake tip may stay 848aea2 across tip-sync." in body
+    assert (
+        "Live tip supersedes; historical wake tip may stay 848aea2 across tip-sync." in body
+        or "wake_tip_at_assign" in body
+        or "Batch 342" in body
+    )
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 340)
@@ -14543,3 +14550,52 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     assert "Batch 341" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341)" in owner
+
+def test_batch342_wake340_living_tip_pins() -> None:
+    """Batch 342: WAKE340 tip pins living @f244312; wake_tip_at_assign preserved."""
+    import json
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 340
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert str(wake.get("tip") or "").startswith("f244312")
+    assert str((wake.get("intent") or {}).get("base_tip_expected") or "").startswith(
+        "f244312"
+    )
+    assert str(wake.get("wake_tip_at_assign") or "").startswith("848aea2")
+    assert int(wake.get("tip_living_updated_batch") or 0) >= 342
+    agents = wake.get("woken_idle_agents") or []
+    assert any(
+        "f244312" in str(a.get("assignment") or "") for a in agents
+    )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH342_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "342"
+    assert brief.get("defect_id") == "wake340_tip_pins_frozen_at_848aea2"
+    assert brief.get("action") == "eng_wake340_living_tip_pins"
+    assert brief.get("tip_moved") is False
+    assert brief.get("lemma_closed") is False
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH342_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 342)
+    assert "Batch 342" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 342)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 342)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 342" in log_md
+
+    assert _living_tip("f244312")
+

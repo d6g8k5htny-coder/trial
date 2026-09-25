@@ -1,3 +1,7 @@
+## STATUS (Batch 342)
+
+tip `f244312` tip_match=true; eng: MULTI_AGENT_WAKE_BATCH340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved); lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 341)
 
 tip `f244312` tip_match=true; eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`f244312` in base_tip would re-red next tip-sync); living pack tgz republish after tip-sync; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
