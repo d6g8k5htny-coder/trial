@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 351 — research_stack_audit_watch + living script_stale (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Watch: open stack premises=13 lemmas=1 prizes=3; STATUS_GUARD tip living @e3cd7d4; no promotion.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` after inv-pin lands → republish `script_stale=0`; inventory tip pin→HEAD.
+- Artifact: `portable/BATCH351_RESEARCH_AUDIT_WATCH.json`. action=`living_script_stale_republish`. Goal OPEN. NEVER flip research.
+
 ### Batch 351 — inventory_preserve_durable_tip_pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4`; durable 8/8; trial tip lagged HEAD → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
