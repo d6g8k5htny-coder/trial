@@ -1,0 +1,25 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:17:39Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "prior_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_landed",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "tip_moved": true,
+  "inventable_promoted": false,
+  "merged_prs": [
+    105
+  ],
+  "refresh_batch": 345,
+  "keep_prior": true,
+  "note": "tip-sync keep-prior fcad723\u2192e3cd7d4 after main #105 docs; inventable/research NOT promoted"
+}

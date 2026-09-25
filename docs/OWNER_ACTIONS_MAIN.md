@@ -1,3 +1,11 @@
+## STATUS (Batch 345 tip-sync)
+
+Hardening tip **synced** @ `e3cd7d4` (tip_match=true after #105 mid-cycle). Tip-sync keep-prior; REFRESH default 345; `_LIVING_TIPS += e3cd7d4`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 343 audit-timeout)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: Intent audit timeout under rate-limit reset sleep — `AUDIT_TRANSPORT_EARLY_FALLBACK=1` → raw/ls-remote inside 60s budget (CI 36176016910). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

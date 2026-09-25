@@ -40,6 +40,7 @@ _LIVING_TIPS = (
     "848aea2",
     "f244312",
     "fcad723",
+    "e3cd7d4",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -15541,3 +15542,62 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH345" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 345" in log_md
+
+def test_batch345_tip_sync_after_main_105() -> None:
+    """Batch 345: tip-sync fcad723→e3cd7d4 after main #105; inventable not promoted."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "345"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "tip_sync_landed"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("goal") == "OPEN"
+    assert str(tiny.get("hardening_tip") or "").startswith("e3cd7d4")
+    assert 105 in (tiny.get("merged_prs") or [])
+
+    ev = json.loads(
+        (ROOT / "portable" / "BATCH345_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert ev.get("action") == "tip_sync_landed"
+    assert ev.get("lemma_closed") is False
+    assert str(ev.get("hardening_tip") or "").startswith("e3cd7d4")
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "e3cd7d4" in base
+    assert _living_tip(base)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 345
+    assert str(verify.get("base_tip_sha") or "").startswith("e3cd7d4")
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 345)
+    assert "e3cd7d4" in _LIVING_TIPS
+    assert "fcad723" in _LIVING_TIPS
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert str(status.get("tip") or "").startswith("e3cd7d4")
+    assert status.get("tip_match") is True
+    assert status.get("lemma_closed") is False
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "e3cd7d4" in log_md
+

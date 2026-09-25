@@ -5,8 +5,8 @@
   "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
   "utc": "2026-09-25T19:14:06Z",
-  "tip": "fcad723",
-  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip_match": true,
   "wake345_on_main": true,
   "pulse": "batch329-tip-eng-watch-timer",
@@ -23,12 +23,13 @@
   },
   "intent": {
     "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-    "base_tip_expected": "fcad72366743f5244eb26a0164e106419de78137",
+    "base_tip_expected": "e3cd7d4",
     "path_c": "IDLE@0019",
     "lemma_closed": false,
     "scientific_effect": "NONE",
     "durable_write_target": "8/8",
-    "never_flip_research": true
+    "never_flip_research": true,
+    "base_tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11"
   },
   "woken_idle_agents": [
     {
@@ -67,5 +68,6 @@
     "mechanism_used": "Task resume (IDLE); direct trial main push when PR create 403"
   },
   "wake_tip_at_assign": "fcad723",
-  "wake_tip_at_assign_full": "fcad72366743f5244eb26a0164e106419de78137"
+  "wake_tip_at_assign_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_living_updated_batch": 345
 }
