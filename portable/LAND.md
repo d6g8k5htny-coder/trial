@@ -1,5 +1,9 @@
 ## STATUS (Batch 362 tip-eng)
 
+tip `e3cd7d4` tip_match=true; eng: post-land inv tip re-pin beyond parent + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
+## STATUS (Batch 362 tip-eng)
+
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-resort 361→362 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
 
 ## STATUS (Batch 362 research-audit-watch)

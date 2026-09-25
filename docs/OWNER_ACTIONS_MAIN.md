@@ -1,5 +1,9 @@
 ## STATUS (Batch 362 tip-eng)
 
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 362 lands; living script_stale — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
+## STATUS (Batch 362 tip-eng)
+
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 362 idle/research (lag=4); last-resort frozen 361 — preserve_durable re-pin→HEAD + unfreeze→362 + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
 
 ```bash

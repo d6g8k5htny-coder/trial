@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 362 — tip_or_eng: post-land inv tip re-pin beyond parent + living republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip @`590928e` lagged beyond parent after Batch 362 lands; living script_stale — PRESERVE_DURABLE re-pin→HEAD + living republish. NEVER flip research.
+
 ### Batch 362 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 361→362 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
