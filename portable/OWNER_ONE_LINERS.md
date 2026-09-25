@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 270 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; when_writable --once pid-liveness; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ 8e359e5
+> ./scripts/when_writable_land.py --once --dry-run    # sidecar if lockfile pid= live (flock miss)
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: --once flock probe free while live daemon lockfile pid= → clobbered shared status. Pid-liveness fallback. No republish. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 269 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; VERIFY.batch release-align; release `batch241-path-c-bundle`**:
 >
 > ```bash
