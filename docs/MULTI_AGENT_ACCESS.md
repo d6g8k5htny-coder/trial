@@ -165,6 +165,12 @@ Live Cursor install today: `repository_selection=selected` → **`trial` only**
 (`install_has_main=false`, `install_has_sandbox=false`). App sandbox 404 while
 durable write is WRITABLE is expected until the install adds all eight repos.
 
+Batch 329: a Cloud peer `--check` without an in-pod `MAIN_PUSH_TOKEN` prints
+`durable_sibling_coverage=no_token` for **this shell only**. That is not durable
+write loss — Actions/device durable remains **8/8 WRITABLE**. Inventory tip
+refresh preserves prior durable push/admin/`sandbox.readable` and must not open
+a false no_token grant-audit branch.
+
 Agents **cannot** finish App installs for you. Owner path: run
 `./scripts/owner_grant_ai_agent_access.sh`, complete each App UI selecting
 **ALL repositories including sandbox**, keep durable secret via

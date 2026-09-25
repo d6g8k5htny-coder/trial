@@ -26,6 +26,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
 - Eng: Batch 289 Intent asserted `VERIFY.tip_refresh is True` → CI red on tip after Batch 327 non-tip refresh_batch bump (`tip_refresh=False`, tip still living). Softened to `(True, False)`.
 - Dylan ask: message stopped agents + assign Path C intent tasks → `portable/MULTI_AGENT_WAKE_BATCH329.json` (Task resume IDLE + cloud peers).
+- Eng (peer grant check): ambient/no_token `--check` tip-refresh was demoting durable inventory push/admin/`sandbox.readable` to App pull-only. `refresh_ai_agent_access_inventory.py` preserves durable 8/8 when `DURABLE_SANDBOX_WRITE=n/a`. Do **not** open a false no_token grant-audit branch.
 - NEVER flip research.
 
 - **Also shipped (this agent):** republish CRITICAL += `print_owner_unblock.sh` (Batch 324 tip-drift fix was pack-only); `refresh()` None-batch living derive; REFRESH default/header 329. Avoided duplicating tip_refresh assert soften.

@@ -4,11 +4,12 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 329)
 
-Hardening tip **stable** @ `077464e` (tip_match=true; Path C IDLE@0019). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: (1) `test_batch289` tip_refresh living `(True, False)` after non-tip refresh_batch; Dylan wake `MULTI_AGENT_WAKE_BATCH329.json`. (2) republish CRITICAL += `print_owner_unblock.sh` (pre-329 pack-only; living release could keep APPLY_READY tip-drift lie with tip_stale=0); inventory `refresh()` None-batch living derive; REFRESH default 329. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C IDLE@0019). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: (1) living tip_refresh asserts + Dylan wake `MULTI_AGENT_WAKE_BATCH329.json`; (2) republish CRITICAL += `print_owner_unblock.sh`; inventory `refresh()` None-batch living derive; REFRESH default 329; (3) no_token/`DURABLE_SANDBOX_WRITE=n/a` tip-refresh **preserves** durable push/admin/`sandbox.readable` 8/8 — do **not** open a false no_token grant-audit branch. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/republish_living_path_c_release.sh --dry-run   # script_stale catches print_owner drift
-./scripts/refresh_path_c_bundle.sh --dry-run             # tip stable @ 077464e
+./scripts/owner_grant_ai_agent_access.sh --check
+./scripts/republish_living_path_c_release.sh --dry-run
+./scripts/refresh_path_c_bundle.sh --dry-run
 ```
 
 ## STATUS (Batch 328)

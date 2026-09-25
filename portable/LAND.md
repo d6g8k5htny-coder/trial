@@ -1,6 +1,6 @@
 ## STATUS (Batch 329)
 
-tip `077464e` tip_match=true; eng: (1) Batch 289 Intent tip_refresh living `(True, False)` + MULTI_AGENT_WAKE_BATCH329; (2) republish CRITICAL includes print_owner_unblock.sh (Batch 324 tip-drift pack-only miss); inventory refresh() None-batch living derive; REFRESH default 329; lemma_closed=false; scientific effect NONE.
+tip `077464e` tip_match=true; Path C IDLE@0019; durable 8/8; eng: living tip_refresh + MULTI_AGENT_WAKE_BATCH329; CRITICAL print_owner; refresh() None-batch living; no_token tip-refresh preserves durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 328)
 
