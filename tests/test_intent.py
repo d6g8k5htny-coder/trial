@@ -7051,7 +7051,8 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     assert audit.get("problems") == 0
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "fa32d1168ab5245090d6ff3324f4ee9e8124d95a" in base_tip
+    # Batch 268+: living tip may supersede fa32d11 (now 8e359e5+); keep historical brief tip.
+    assert _living_tip(base_tip)
 
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
@@ -7059,7 +7060,7 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
         )
     )
     assert verify.get("lemma_closed") is False
-    assert verify.get("base_tip_sha", "").startswith("fa32d11")
+    assert _living_tip(verify.get("base_tip_sha"))
     assert verify.get("path_c_landed") is True
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
@@ -7084,7 +7085,7 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     assert status.get("lemma_closed") is False
     assert status.get("tip_match") is True
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-    assert str(status.get("tip", "")).startswith("fa32d11")
+    assert _living_tip(status.get("tip"))
 
     snap = json.loads(
         (ROOT / "portable" / "ALIGNED_DRIFT_SNAPSHOT.json").read_text(encoding="utf-8")
