@@ -1,3 +1,7 @@
+## STATUS (Batch 365 research-audit-watch)
+
+tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 365 inv-tip-pin)
 
 inv tip re-pin beyond parent after Batch 365 living republish; tip `e3cd7d4`; durable 8/8; lemma_closed=false.
