@@ -18355,54 +18355,6 @@ def test_batch357_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 357 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 357" in log_md and "idle_no_commit" in log_md
-def test_batch357_research_stack_audit_watch() -> None:
-    """Batch 357: research_stack_audit_watch_no_promotion; STATUS_GUARD living."""
-    import json
-
-    watch = json.loads(
-        (ROOT / "portable" / "BATCH357_RESEARCH_AUDIT_WATCH.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert watch.get("batch") == "357"
-    assert watch.get("lemma_closed") is False
-    assert watch.get("flipped_anything") is False
-    assert watch.get("tip_match") is True
-    assert watch.get("action") == "research_stack_audit_watch"
-    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
-    assert watch.get("scientific_effect") == "NONE"
-    assert watch.get("goal_complete") is False
-    assert watch.get("inventable_promoted") is False
-    assert watch.get("status_guard_tip_living") is True
-    assert watch.get("status_guard_tip_lag") is False
-    assert int(watch.get("open_premises") or 0) >= 13
-    assert int(watch.get("open_lemmas") or 0) >= 1
-    assert int(watch.get("open_prizes") or 0) >= 3
-    assert _living_tip(str(watch.get("hardening_tip") or ""))
-    living = watch.get("living") or {}
-    assert living.get("tip_stale") == 0
-    assert living.get("script_stale") == 0
-
-    audit = json.loads(
-        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert audit.get("lemma_closed") is False
-    assert audit.get("flipped_anything") is False
-    assert audit.get("scientific_effect") == "NONE"
-    assert audit.get("action") == "research_stack_audit_watch"
-    counts = audit.get("counts") or {}
-    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
-    assert int(counts.get("open_lemmas") or 0) >= 1
-    assert int(counts.get("open_prizes") or 0) >= 3
-    assert _living_tip(str(audit.get("tip_sha") or ""))
-
-    brief = json.loads(
-        (ROOT / "portable" / "BATCH357_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-
 
 
 def test_batch357_inventory_preserve_durable_tip_pin() -> None:

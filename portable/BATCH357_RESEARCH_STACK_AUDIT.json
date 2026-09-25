@@ -758,17 +758,9 @@
   ],
   "tip_sha": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "batch": "357",
-<<<<<<< HEAD
   "tip_short": "e3cd7d4",
   "action": "research_stack_audit_watch",
   "assignment": "research_stack_audit_watch_no_promotion",
-  "generated_at_utc": "2026-09-25T21:23:12Z",
+  "generated_at_utc": "2026-09-25T21:36:02Z",
   "coord_bc": "bc-01a0cf1e"
-=======
-  "generated_at_utc": "2026-09-25T21:23:37Z",
-  "action": "research_stack_audit_watch",
-  "assignment": "research_stack_audit_watch_no_promotion",
-  "coord_bc": "bc-01a0cf1e",
-  "tip_short": "e3cd7d4"
->>>>>>> 625a7944efb9bb1904df1b37ac487b3422778a16
 }
