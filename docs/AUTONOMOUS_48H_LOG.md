@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — unfreeze last-resort 351→352 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: print_owner / REFRESH default / inventory ultimate / wake ultimate still froze at **351** while coordinator Batch 352 wake ran (same class as 336→340→343→345→346→351).
+- NEVER flip research; skip inventable.
+
 ### Batch 352 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0 + paper-trail tgz; `lemma_closed=false`.

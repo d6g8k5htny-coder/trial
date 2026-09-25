@@ -88,6 +88,8 @@ def _living_batch_n() -> str:
     Batch 346: last-resort bumped off frozen "345" after WAKE346 print_owner header.
     Batch 346: last-resort bumped off frozen "345" so empty-tree fallback cannot
     lag living print_owner Batch 346.
+    Batch 352: last-resort bumped off frozen "351" so empty-tree fallback cannot
+    lag living Batch 352 / print_owner header (coordinator wake).
     """
     try:
         text = _PRINT_OWNER.read_text(encoding="utf-8")

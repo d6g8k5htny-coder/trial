@@ -1,0 +1,19 @@
+{
+  "batch": "352",
+  "hunt": "unfreeze_last_resort_351_to_352",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "batch_last_resort_frozen_351_vs_living_352",
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "invent 0020",
+    "tip-sync (tip stable @e3cd7d4)"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T20:28:29Z"
+}

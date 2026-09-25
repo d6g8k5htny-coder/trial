@@ -56,6 +56,8 @@ def _living_inventory_batch(root: str) -> str:
     Batch 345: last-resort bumped off frozen "343" after tip-sync REFRESH default 345.
     Batch 346: last-resort bumped off frozen "345"
     Batch 351: last-resort bumped so empty-tree fallback cannot lag print_owner 351.
+    Batch 352: last-resort bumped off frozen "351" so empty-tree fallback cannot lag
+    living Batch 352 / print_owner header (coordinator wake).
     # prior: Batch 346 bumped off frozen "345" after WAKE346 print_owner header.
     Batch 346: last-resort bumped off frozen "345" so empty-tree fallback cannot lag
     living print_owner Batch 346 (inventory_preserve_durable_tip_pin).

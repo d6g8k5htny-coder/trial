@@ -16895,6 +16895,75 @@ def test_batch351_idle_tip_sync_or_eng() -> None:
     assert "Batch 351" in log_md and "idle_no_commit" in log_md
 
 
+def test_batch352_unfreeze_last_resort() -> None:
+    """Batch 352: last-resort batch defaults unfrozen 351→352; tip stable."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path as P
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 352)
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'return "351"' not in helper
+    assert 'return "352"' in helper
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    # Ultimate fallback in _living_batch_n (not historical notes).
+    assert 'return "352"' in poster
+    assert 'return "351"' not in poster.split("def batch_marker")[0]
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 352)
+    assert "351→352" in unblock or "351->352" in unblock or "unfreeze" in unblock
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_inv_352",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    td = tempfile.mkdtemp()
+    (P(td) / "scripts").mkdir()
+    assert mod._living_inventory_batch(td) == "352"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH352_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "352"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == "batch_last_resort_frozen_351_vs_living_352"
+    assert brief.get("action") == "eng_unfreeze_batch_last_resort_352"
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("e3cd7d4")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH352_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "batch_last_resort_frozen_351_vs_living_352"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("tip_moved") is False
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "e3cd7d4" in base_tip
+    assert _living_tip(base_tip)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 352)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 352" in log_md and "351→352" in log_md
+
 def test_batch352_idle_tip_sync_watch() -> None:
     """Batch 352: tip stable @e3cd7d4; idle_no_commit tip_sync_watch evidence."""
     import json
@@ -16939,4 +17008,3 @@ def test_batch352_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 352 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 352" in log_md and "tip_sync_watch idle_no_commit" in log_md
-
