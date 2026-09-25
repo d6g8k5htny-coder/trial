@@ -21,19 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-<<<<<<< HEAD
 ### Batch 350 — soften INV_TIP_PIN Intent action allowlist (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - tip_sync_watch: peer idle already @`4c1b58e`; one eng — soften frozen `BATCH350_INV_TIP_PIN.action` allowlist after peer re-pin rename (`inventory_preserve_durable_tip_pin`).
 - Artifacts: `BATCH350_SOFTEN_{EVIDENCE,BRIEF,HUNT}.json`. Inventable skipped. Goal OPEN. NEVER flip research.
-=======
 ### Batch 351 — inventory tip pin (batch322-soon timer) @e3cd7d4 (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4` (match=1; timer prompt still said `077464e` — re-checked LIVE).
 - Eng: inventory trial tip lagged @`642aded` after Batch 350 idle → preserve_durable pin→HEAD; fallbacks→351.
 - `lemma_closed=false`. Goal OPEN.
->>>>>>> a85e8a2 (Batch 351: inventory tip pin after Batch 350 idle (batch322-soon))
 
 ### Batch 350 — idle_no_commit tip-stable watch @e3cd7d4 (2026-09-25)
 
