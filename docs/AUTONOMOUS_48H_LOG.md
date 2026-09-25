@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** `path_c_dry_run` → `state=APPLY_READY_POST_ALIGNED_KEEP_HARDENING` / `apply_ready=true` while `path_c_landed=true` + `tip_matches_base=true` (apply_all already-landed idempotent). `owner_land_path_c --dry-run` correctly idle; dry-run JSON still advertised land. `print_owner_unblock` hardcoded Path C APPLY_READY line despite `idle_status=IDLE_PATH_C_DONE`.
 - **Defect shipped (avoid release republish / grant dual-vector / wait_until_aligned / tip-observe / Path A/B / …):** (1) `path_c_dry_run` → `IDLE_PATH_C_DONE` + `already_on_tip` + `apply_ready=false` + `apply_check_ok=true` when landed+tip match; (2) `print_owner_unblock` Path C line follows idle; (3) `refresh_restore_plan` recognizes idle state.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- Pack vs living release already current — no republish. Scientific effect NONE.
+- Pack vs living release already current — no republish. Trial main **PR #81 squash merge** @ `d3a1d13`. Scientific effect NONE.
 
 ### Batch 260 (living Path C release pack stale → republish) — 2026-09-25 ~01:22 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
