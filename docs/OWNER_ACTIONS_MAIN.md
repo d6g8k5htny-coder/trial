@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 255)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Living release `batch241-path-c-bundle` tgz was stale vs pack (268996→~345k; missing Batch 245–254 script fixes). Shipped `scripts/republish_living_path_c_release.sh` (pack+compare+`--clobber` upload when newer) and republished assets. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # compare only
+./scripts/republish_living_path_c_release.sh             # upload if pack newer
+./scripts/refresh_path_c_bundle.sh --dry-run             # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run         # idle_path_c_done
+```
+
 ## STATUS (Batch 254)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Shipped `probe_main_write` unique probe-ref (`time_ns`+pid+uuid) + retry on HTTP 422 "Reference already exists" so concurrent probes do not false-report TRANSPORT_ERROR. `lemma_closed=false`. Scientific effect: NONE.

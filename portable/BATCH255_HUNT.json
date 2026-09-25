@@ -1,0 +1,47 @@
+{
+  "batch": "255",
+  "hunt": "refresh_0020_and_republish_stale_living_release",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_id": "living_path_c_release_assets_stale_vs_pack",
+  "bugs_fixed": [
+    "Living release batch241-path-c-bundle tgz lagged trial main (268996B / pre-Batch245 scripts) while fresh pack carried Batch245\u2013254 fixes; no helper compared+clobbered assets"
+  ],
+  "avoided": [
+    "tip-observe",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag",
+    "assert idle",
+    "empty RW",
+    "OWNER faces",
+    "ci.yml YAML",
+    "#78",
+    "VERIFY honesty",
+    "pack_portable TMPDIR",
+    "issue hygiene GraphQL",
+    "when_writable install_has_main",
+    "probe unique refs"
+  ],
+  "candidates_checked": {
+    "green_eng_main_prs": "none_all_research_hold_drafts_or_tip_observe_73",
+    "repository_dispatch_lander": "recent_runs_success_no_new_defect",
+    "guard_no_status_promotion": "stable_exit2_on_missing_checkout",
+    "audit_main_alignment_transport": "exit0_public_ok",
+    "release_asset_publish": "pack_newer_than_release_republished",
+    "patch_0020": "negative_tip_stable"
+  },
+  "tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "actionable_classic_count": 0,
+  "resourcewarning_focused": "skipped_empty_rw_avoid",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "path_c": "IDLE_PATH_C_DONE",
+  "green_eng_prs_merged": []
+}

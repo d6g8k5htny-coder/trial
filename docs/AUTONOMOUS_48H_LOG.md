@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 255 (living Path C release assets stale vs pack → republish) — 2026-09-25 ~00:30 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts / tip-observe #73 — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** living release `batch241-path-c-bundle` `trial-portable-main-fixes.tgz` = **268996** bytes / sha256 `4e13dc46…`; fresh pack = **~345138** bytes / sha256 `4fef0a47…`. Bundle+patch digests still match (keep-prior). Release tarball lacked Batch 245–254 script fixes (`probe_main_write` unique-ref, when_writable install fallback, pack living-tag/TMPDIR, …).
+- **Defect shipped (not tip-observe / not Path A/B ALIGNED no-op / not sibling AGENTS / not living-tag churn / not assert-idle / not empty RW / not OWNER faces / not ci.yml YAML / not #78 / not VERIFY honesty / not pack TMPDIR / not issue hygiene / not when_writable install_has_main / not probe unique refs):** `scripts/republish_living_path_c_release.sh` packs, compares sha/size to living release, and `gh release upload --clobber` when newer (`--dry-run` / `--force`). Wired into `pack_portable.sh`. Assets republished on `batch241-path-c-bundle`.
+- Candidates checked without new defect: repository_dispatch lander (recent success), guard_no_status_promotion, audit_main_alignment transport OK.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 254 (probe_main_write ref collision → false TRANSPORT_ERROR) — 2026-09-25 ~00:18 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - WRITE **WRITABLE** (device-auth; never printed). Hardening tip **`fa32d11`** (== BASE_TIP; tip_moved=false). Default tip **ALIGNED** @ `72558a5`. `lemma_closed=false`.

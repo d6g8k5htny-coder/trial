@@ -203,5 +203,6 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/refresh_path_c_bundle.sh \
   scripts/dispatch_land_path_c.sh \
   scripts/pack_portable.sh \
+  scripts/republish_living_path_c_release.sh \
   scripts/wait_until_aligned.sh
 echo "wrote $OUT ($(wc -c <"$OUT") bytes; living_tag=${LIVING_TAG}; ${#rel_restore[@]} restore plans; ${#rel_tokens[@]} token logs; ${#rel_rebase[@]} rebase reports; ${#rel_rebase_notes[@]} rebase notes; ${#rel_stack_audits[@]} stack audits; ${#rel_status_guard[@]} status guards; ${#rel_objective_evidence[@]} objective evidence; ${#rel_batch_briefs[@]} briefs; ${#rel_batch_hunts[@]} hunts)"
