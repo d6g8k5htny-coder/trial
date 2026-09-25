@@ -15011,3 +15011,32 @@ def test_batch343_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH343" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 343" in log_md
+
+def test_batch343_tip_sync_watch_confirm() -> None:
+    """Batch 343 WAKE: tip_sync_watch confirm @fcad723; evidence fields present."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert str(tiny.get("hardening_tip") or "").startswith("fcad723")
+    assert tiny.get("action") in ("tip_sync_landed", "tip_sync_watch_confirm_evidence_align")
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH343_TIP_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("aligned") is True
+    assert str(watch.get("hardening_tip") or "").startswith("fcad723")
+    assert watch.get("action") == "tip_sync_watch_confirm_evidence_align"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "fcad723" in base
+    assert _living_tip(base)
+

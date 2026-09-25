@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 WAKE — tip_sync_watch confirm @fcad723 (2026-09-25)
+
+- Tip **stable** @ `fcad723` (match=1 after peer tip-sync `de2f74d` / #109). Path C IDLE@0019; durable 8/8.
+- Living `tip_stale=0 script_stale=0` (no republish). Evidence fields: `hardening_tip`+`aligned` on `BATCH343_TIP_SYNC.json`; confirm `BATCH343_TIP_WATCH.json`.
+- NEVER flip research; inventable #109 not promoted; `lemma_closed=false`.
+
 ### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
 
 - Tip **moved** mid-cycle: inventable #109 → `fcad723`.

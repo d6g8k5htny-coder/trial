@@ -1,0 +1,17 @@
+{
+  "batch": "343",
+  "generated_at_utc": "2026-09-25T18:58:34Z",
+  "hardening_tip": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_watch_confirm_evidence_align",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "peer_tip_sync": "de2f74d",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "note": "WAKE tip_sync_watch: tip already @fcad723 (peer tip-sync #109); aligned BATCH343_TIP_SYNC hardening_tip+aligned fields; living current; inventable NOT promoted"
+}

@@ -1,3 +1,7 @@
+## STATUS (Batch 343 tip_sync_watch)
+
+tip `fcad723` tip_match=true; tip_sync_watch confirm after peer tip-sync #109; evidence hardening_tip+aligned; living tip_stale=0 script_stale=0; inventable NOT promoted; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 tip-sync)
 
 tip `fcad723` tip_match=true TIP_OK after tip-sync; #109 MERGED into hardening → refresh keep-prior; inventable NOT promoted; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
