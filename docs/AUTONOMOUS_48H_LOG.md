@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
+
+- Tip **moved** mid-cycle: inventable #109 RN_SIDE24_CELL pointer → `fcad723`.
+- Tip-sync keep-prior Path C; REFRESH 343; `_LIVING_TIPS += fcad723`.
+- Inventable NOT promoted; `lemma_closed=false`; scientific effect NONE.
+
 ### Batch 343 (MULTI_AGENT wake_land_verify; tip @f244312) — 2026-09-25 ~18:53 UTC
 - Coordinator `bc-01a0cf1e`: IDLE agent resumed — `wake_land_verify_batch343`.
 - Verified WAKE340 tip pins living @ `f244312` tip_match=1; Path C IDLE@0019; goal OPEN; `lemma_closed=false`.
