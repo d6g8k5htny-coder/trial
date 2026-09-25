@@ -1,8 +1,8 @@
 {
   "batch": "278",
-  "generated_at_utc": "2026-09-25T07:20:30Z",
+  "generated_at_utc": "2026-09-25T07:40:51Z",
   "status": "pack_help_fix_and_tip_sync_shipped",
-  "waiting_ci": true,
+  "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -80,5 +80,12 @@
   "trial_main_land_method_prior": "direct_push_main_pr_create_403",
   "ci_tip_sync_run": "36107390597",
   "ci_tip_sync_conclusion": "failure",
-  "ci_fix": "verify_focused_passed_living_92"
+  "ci_fix": "verify_focused_passed_living_92",
+  "trial_main_land": "715c585",
+  "trial_main_land_full": "715c58578e81db5ddbceefc91e8ba7ac256bfaaf",
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "ci_fix_run": "36108028749",
+  "ci_fix_conclusion": "success",
+  "main_ci_tip_conclusion": "success",
+  "path_c": true
 }
