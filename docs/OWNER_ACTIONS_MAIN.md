@@ -1,3 +1,7 @@
+## STATUS (Batch 365 post-research-inv-pin)
+
+PRESERVE_DURABLE inv tip pin after Batch 365 research audit merge (`1d8528b`). Evidence: `portable/BATCH365_POST_RESEARCH_INV_PIN_BRIEF.json`. Goal OPEN.
+
 ## STATUS (Batch 365 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH362; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH365_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

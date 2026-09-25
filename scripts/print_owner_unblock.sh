@@ -51,6 +51,7 @@ echo "=== Batch 365 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; wri
 echo " Batch 365: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no delta vs 362"
 echo " Batch 365: living script_stale republish VERIFY refresh_batch 363→364 @e3cd7d4 (tip_match; inv parent-pinned)"
 echo " Batch 365: inv tip re-pin beyond parent after living republish @e3cd7d4"
+echo " Batch 365: post-research inv tip re-pin beyond parent @e3cd7d4"
 echo " Batch 364: tip_or_eng inv tip re-pin beyond parent + last-resort 363→364 + living republish @e3cd7d4"
 echo " Batch 364: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; inv parent-pinned)"
 echo " Batch 363: CI Intent living >=N soften + VERIFY refresh_batch 363 + inv tip pin @e3cd7d4"

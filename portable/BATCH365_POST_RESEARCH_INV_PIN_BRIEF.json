@@ -1,0 +1,15 @@
+{
+  "batch": "365",
+  "utc": "2026-09-25T22:51:09Z",
+  "action": "inventory_preserve_durable_tip_pin",
+  "defect_id": "inventory_trial_tip_lag_beyond_parent_after_research_audit",
+  "lemma_closed": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "goal": "OPEN",
+  "trial_tip_sha": "1d8528b89a9f037bbf3e5e5e8ee245bcefe2d3ff",
+  "lag_beyond_parent": true,
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip_sha": "7f0d2b26b465",
+  "coordinator_bcId": "bc-01a0cf1e"
+}
