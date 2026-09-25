@@ -1,3 +1,6 @@
+## STATUS (Batch 352 republish)
+
+tip `e3cd7d4` tip_match=true; eng: living batch241 script_stale republish after Batch 352 inv tip-pin (script_stale 1→0); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 ## STATUS (Batch 352)
 
 tip `e3cd7d4` tip_match=true; eng: unfreeze last-resort batch defaults 351→352 (print_owner/REFRESH/inventory/wake); lemma_closed=false; scientific effect NONE.

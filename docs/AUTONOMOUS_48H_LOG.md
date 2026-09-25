@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — living script_stale republish after inv tip-pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: after peer Batch 352 inventory tip-pin, living release `script_stale=1` (print_owner / wake / inventory / refresh CRITICAL drift). `republish_living_path_c_release.sh --force` → `script_stale=0 tip_stale=0`.
+- Artifacts: `BATCH352_REPUBLISH_{BRIEF,HUNT,EVIDENCE}.json`. Inventable skipped. Goal OPEN.
 ### Batch 352 — unfreeze last-resort 351→352 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

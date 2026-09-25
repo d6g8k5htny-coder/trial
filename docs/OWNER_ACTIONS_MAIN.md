@@ -1,3 +1,12 @@
+## STATUS (Batch 352 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living `batch241-path-c-bundle` lagged CRITICAL scripts after Batch 352 inv tip-pin — `republish_living_path_c_release.sh --force` cleared `script_stale` (1→0). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 352)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: unfreeze print_owner/REFRESH/inventory/wake last-resort **351→352**. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
