@@ -1,0 +1,26 @@
+{
+  "batch": "330",
+  "hunt": "tip_sync_watch_idle_then_eng",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "inventory_refresh_batch_none_froze_328",
+  "tip": "077464e",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "hunt_0020": "NEGATIVE",
+  "candidates_checked": {
+    "refresh_dry_run": "match=1_tip_stable_077464e",
+    "batch329_tip_refresh_wake": "already_on_main",
+    "script_stale": "0_tip_stale_0_tgz_newer_brief_only_no_republish",
+    "refresh_batch_none": "froze_328_FIXED",
+    "ready_non_draft_eng": "none_all_draft_research_skip"
+  },
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "tip_sync_needed": true
+  }
+}

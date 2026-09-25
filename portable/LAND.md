@@ -1,3 +1,7 @@
+## STATUS (Batch 330)
+
+tip `077464e` tip_match=true; tip_sync_watch IDLE tip — eng: inventory `refresh(batch=None)` no longer freezes batch at 328 (uses `_living_inventory_batch`); REFRESH default 330; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 329)
 
 tip `077464e` tip_match=true; eng: Batch 289 Intent no longer freezes VERIFY.tip_refresh=True (non-tip refresh_batch bumps set false); MULTI_AGENT_WAKE_BATCH329 wake+assign; lemma_closed=false; scientific effect NONE.

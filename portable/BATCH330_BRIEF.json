@@ -1,0 +1,34 @@
+{
+  "batch": "330",
+  "generated_at_utc": "2026-09-25T17:12:15Z",
+  "status": "inv_batch_none_fallback_living",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "077464e",
+  "tip_full": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "base_tip": "077464e",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "inventory_refresh_batch_none_froze_328",
+  "bugs_fixed": [
+    "refresh_ai_agent_access_inventory.refresh(batch=None) used hard-coded \"328\" (Batch 328 fixed CLI INV_BATCH only)",
+    "_living_inventory_batch terminal fallback 328\u2192329; REFRESH default 330"
+  ],
+  "action": "eng_inv_batch_none_fallback",
+  "route_now": "ENG_FIX",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_077464e",
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "evidence": {
+    "tip": "TIP_OK @077464e BASE==LIVE match=1; Batch 329 tip_refresh+wake already on main",
+    "repro": "refresh(inv, repos, batch=None) stamped batch=328 after print_owner header advanced to 329",
+    "fix": "batch=None \u2192 _living_inventory_batch(root); REFRESH default 330",
+    "skipped_research": "all open main PRs DRAFT inventable/HOLD \u2014 skipped"
+  },
+  "note": "Batch 330 tip_sync_watch: tip stable; shipped inventory refresh(batch=None) living fallback; lemma_closed=false."
+}

@@ -13071,3 +13071,50 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
+def test_batch330_inventory_refresh_batch_none_living() -> None:
+    """Batch 330: refresh(batch=None) uses living inventory batch (not freeze 328)."""
+    import json
+    import re
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "_living_inventory_batch" in helper
+    assert 'batch = "328"' not in helper
+    assert "_living_inventory_batch(root)" in helper
+    # Terminal fallback advanced with living wake batch.
+    assert re.search(r'return "329"', helper) or re.search(
+        r"_living_inventory_batch\(root\)", helper
+    )
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH330_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "330"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("defect_id") == "inventory_refresh_batch_none_froze_328"
+    assert brief.get("action") == "eng_inv_batch_none_fallback"
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("077464e")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH330_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("tip_moved") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 330)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 330)
+    assert "Batch 330" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 330)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 330)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 330" in log_md
+

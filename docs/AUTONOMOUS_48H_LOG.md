@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 330 — inventory refresh(batch=None) living fallback (2026-09-25)
+
+- Tip **stable** @ `077464e` (tip_sync_watch dry-run match=1). Path C IDLE@0019. Batch 329 tip_refresh+wake already on main.
+- **Defect:** `refresh_ai_agent_access_inventory.refresh(batch=None)` still hard-froze `"328"` after Batch 328 fixed CLI `INV_BATCH` only — library callers rewound stamps past print_owner 329+.
+- **Fix:** `batch=None` → `_living_inventory_batch(root)`; terminal fallback 329; REFRESH default 330.
+- Guard: `lemma_closed=false`; `flipped_anything=false`. No research flip.
+
 ### Batch 329 — living tip_refresh assert + multi-agent wake (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

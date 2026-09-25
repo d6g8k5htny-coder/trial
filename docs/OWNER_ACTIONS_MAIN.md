@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 330)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle). WRITE WRITABLE. Tip-sync watch: no tip move. Eng: `refresh_ai_agent_access_inventory.refresh(batch=None)` hard-froze `"328"` after Batch 328 fixed CLI INV_BATCH only — now uses `_living_inventory_batch`. REFRESH default 330. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 077464e
+python3 -c 'from scripts.refresh_ai_agent_access_inventory import refresh, _living_inventory_batch; print(_living_inventory_batch("."))'
+```
+
 ## STATUS (Batch 329)
 
 Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — Batch 327 non-tip `refresh_batch` bump correctly sets `tip_refresh=False` while tip stays living → assert softened to `(True, False)`. Dylan wake: `portable/MULTI_AGENT_WAKE_BATCH329.json` (resume IDLE + cloud peers). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`living_tip_refresh_assert_and_wake`. Scientific effect: NONE.

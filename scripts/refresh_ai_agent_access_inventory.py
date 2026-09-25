@@ -9,6 +9,9 @@ Batch 328: INV_BATCH default no longer freezes at \"323\" — derive from
 print_owner_unblock.sh header (=== Batch N ===) so tip refreshes stamp the
 living automation batch. Env INV_BATCH still overrides.
 
+Batch 330: refresh(batch=None) no longer hard-freezes \"328\" — uses
+_living_inventory_batch (same living header contract as CLI main).
+
 Scientific effect: NONE. Never flips lemma_closed / flipped_anything.
 Never prints tokens.
 """
@@ -24,7 +27,7 @@ from typing import Any
 
 
 def _living_inventory_batch(root: str) -> str:
-    """Prefer print_owner header Batch N; else prior inventory batch; else 328."""
+    """Prefer print_owner header Batch N; else prior inventory batch; else 329."""
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:
         text = open(unblock, encoding="utf-8").read()
@@ -41,7 +44,7 @@ def _living_inventory_batch(root: str) -> str:
             return b
     except (OSError, json.JSONDecodeError):
         pass
-    return "328"
+    return "329"
 
 
 def _gh_json(args: list[str]) -> Any:
@@ -101,7 +104,12 @@ def refresh(
         "%Y-%m-%dT%H:%M:%SZ"
     )
     if batch is None:
-        batch = "328"
+        # Batch 330: same living-stamp contract as CLI main() / Batch 328 INV_BATCH.
+        # Pre-330 hard-froze "328" so library callers (batch=None) rewound stamps
+        # after print_owner advanced (329+).
+        # inv_path is portable/AI_AGENT_ACCESS_INVENTORY.json → repo root
+        root = os.path.abspath(os.path.join(os.path.dirname(inv_path), ".."))
+        batch = _living_inventory_batch(root)
     inv["batch"] = str(batch)
     inv["token_printed"] = False
     inv["multi_agent_script"] = "scripts/owner_grant_ai_agent_access.sh"
