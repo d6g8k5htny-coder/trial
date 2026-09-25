@@ -13,11 +13,11 @@ python3 -c 'import json; print(json.load(open("portable/BATCH330_GRANT.json"))["
 
 ## STATUS (Batch 329)
 
-Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `test_batch289_tip_sync_after_main_83` froze `VERIFY.tip_refresh is True` — Batch 327 non-tip `refresh_batch` bump correctly sets `tip_refresh=False` while tip stays living → assert softened to `(True, False)`. Dylan wake: `portable/MULTI_AGENT_WAKE_BATCH329.json` (resume IDLE + cloud peers). Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`living_tip_refresh_assert_and_wake`. Scientific effect: NONE.
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C IDLE@0019). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: (1) `test_batch289` tip_refresh living `(True, False)` after non-tip refresh_batch; Dylan wake `MULTI_AGENT_WAKE_BATCH329.json`. (2) republish CRITICAL += `print_owner_unblock.sh` (pre-329 pack-only; living release could keep APPLY_READY tip-drift lie with tip_stale=0); inventory `refresh()` None-batch living derive; REFRESH default 329. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/refresh_path_c_bundle.sh --dry-run
-python3 -c 'import json; print(json.load(open("portable/MULTI_AGENT_WAKE_BATCH329.json"))["action"])'
+./scripts/republish_living_path_c_release.sh --dry-run   # script_stale catches print_owner drift
+./scripts/refresh_path_c_bundle.sh --dry-run             # tip stable @ 077464e
 ```
 
 ## STATUS (Batch 328)

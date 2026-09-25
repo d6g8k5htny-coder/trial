@@ -93,6 +93,7 @@ echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock +
 echo "  Batch 324: print_owner Path C line follows PATH_C_LANDED_TIP_DRIFT → refresh_path_c_bundle (pre-324 fell through to APPLY_READY land lie; Batch 261 IDLE-only leftover)"
 echo " Batch 327: VERIFY refresh_batch after keep-prior WORKDIR force; pack+CRITICAL include post_batch322_wake_comments.py"
 echo " Batch 330: grant --check skips inventory refresh when durable_token_source=none (retain living 8/8; no App-corrupt connected→pull)"
+echo "  Batch 329: republish CRITICAL includes print_owner_unblock.sh (Batch 324 tip-drift Path C line was pack-only; living release could stay APPLY_READY-stale with tip_stale=0)"
 echo "  Batch 329: living tip_refresh assert (Batch 289 CI red after non-tip refresh_batch); MULTI_AGENT_WAKE_BATCH329"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"

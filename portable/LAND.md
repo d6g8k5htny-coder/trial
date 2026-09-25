@@ -4,7 +4,7 @@ tip `077464e` tip_match=true; grant --check skips inventory refresh when durable
 
 ## STATUS (Batch 329)
 
-tip `077464e` tip_match=true; eng: Batch 289 Intent no longer freezes VERIFY.tip_refresh=True (non-tip refresh_batch bumps set false); MULTI_AGENT_WAKE_BATCH329 wake+assign; lemma_closed=false; scientific effect NONE.
+tip `077464e` tip_match=true; eng: (1) Batch 289 Intent tip_refresh living `(True, False)` + MULTI_AGENT_WAKE_BATCH329; (2) republish CRITICAL includes print_owner_unblock.sh (Batch 324 tip-drift pack-only miss); inventory refresh() None-batch living derive; REFRESH default 329; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 328)
 
