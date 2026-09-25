@@ -1,7 +1,5 @@
 {
-  "generated_at_utc": "2026-09-25T20:21:25Z",
-  "batch": 351,
-  "generated_at_utc": "2026-09-25T20:22:59Z",
+  "generated_at_utc": "2026-09-25T20:23:47Z",
   "batch": "351",
   "install_has_main": false,
   "install_repos": [
@@ -117,14 +115,10 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T20:15:10Z",
-      "tip_sha": "4c1b58ed5847f72a7a3a73de4e56cac5401cb068",
-      "pushed_at": "2026-09-25T20:22:53Z",
-      "tip_sha": "e118d9d727efe76a496799156a3b1cbc1d3679e8",
+      "pushed_at": "2026-09-25T20:23:08Z",
+      "tip_sha": "68cbf363c3b5537813938e0dcda49b5e323b7fa6",
       "has_agents": true,
-      "write": "WRITABLE",
-      "tip_pinned_at_utc": "2026-09-25T20:21:25Z",
-      "tip_pin_reason": "batch351_preserve_durable_after_350_idle"
+      "write": "WRITABLE"
     }
   ],
   "repos_count": 8,
