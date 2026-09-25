@@ -1,18 +1,21 @@
 {
   "batch": "352",
-  "generated_at_utc": "2026-09-25T20:27:53Z",
+  "generated_at_utc": "2026-09-25T20:29:45Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
   "tip_match": true,
   "durable": "8/8_WRITABLE",
+  "coverage": "8/8_WRITABLE",
   "lemma_closed": false,
-  "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
   "scientific_effect": "NONE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "path_c": "IDLE@0019",
   "goal": "OPEN",
-  "coverage": "8/8_WRITABLE",
+  "inventable_promoted": false,
   "inventory_batch": "352",
-  "trial_tip_sha": "09f8c045cc0c29a7928e09a0ff17976a9a6b7e96",
-  "live_trial_head": "09f8c045cc0c29a7928e09a0ff17976a9a6b7e96",
+  "trial_tip_sha": "846b1dfde295192fbc8477023de068e97e64e391",
+  "live_trial_head": "846b1dfde295192fbc8477023de068e97e64e391",
   "trial_tip_matches_live_head": true,
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -22,9 +25,10 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "09f8c04"
+    "trial": "846b1df"
   },
   "preserve_durable_writable0_denied": true,
   "coordinator_bcId": "bc-01a0cf1e",
-  "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4"
+  "peer_bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
+  "note": "post-land re-pin after Batch352 tip_sync idle; preserve_durable; grant skip source=none"
 }

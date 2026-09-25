@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — inventory_preserve_durable_tip_pin re-pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; grant `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`846b1df` (post tip_sync idle HEAD); never demote 8/8 on writable=0.
+- Evidence `BATCH352_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
+
 ### Batch 352 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0 + paper-trail tgz; `lemma_closed=false`.
