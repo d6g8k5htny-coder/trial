@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 357 — eng unfreeze last-resort 356→357 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: header Batch 357 after tip_sync idle; wake/inv/REFRESH ultimate fallback frozen at 356; Intent allowlist 352–356 would re-red — bump →357 + living `>=352`. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
 ### Batch 357 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

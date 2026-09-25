@@ -1,0 +1,30 @@
+{
+  "batch": "357",
+  "generated_at_utc": "2026-09-25T21:24:33Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "write": "WRITABLE",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "inventable_promoted": false,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "batch_last_resort_frozen_356_vs_living_357",
+  "bugs_fixed": [
+    "REFRESH_BATCH_TAG default 356\u2192357",
+    "inventory ultimate return 356\u2192357",
+    "wake ultimate return 356\u2192357",
+    "Intent allowlist 352..356 \u2192 living >=352"
+  ],
+  "action": "eng_unfreeze_batch_last_resort_357",
+  "hunt_0020": "NEGATIVE",
+  "coordinator_bc": "bc-01a0cf1e",
+  "note": "header 357 after tip_sync idle; fallbacks frozen 356; Intent allowlist would re-red"
+}

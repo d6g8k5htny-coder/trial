@@ -1,3 +1,12 @@
+## STATUS (Batch 357 unfreeze-last-resort)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: print_owner header Batch 357 while wake/inv/REFRESH last-resort frozen at 356; Intent allowlist capped at 356 — bump →357 + living `>=352`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -c "import sys; sys.path.insert(0,'scripts'); import post_batch322_wake_comments as w; print(w._living_batch_n())"
+python3 -m pytest tests/test_intent.py::test_batch357_unfreeze_last_resort -q
+```
+
 ## STATUS (Batch 357 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0 — skip tip-pin treadmill. Evidence: `portable/BATCH357_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

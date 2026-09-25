@@ -1,0 +1,17 @@
+{
+  "batch": "357",
+  "generated_at_utc": "2026-09-25T21:24:33Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "batch_last_resort_frozen_356_vs_living_357",
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_unfreeze_batch_last_resort_357",
+  "goal": "OPEN"
+}
