@@ -16910,13 +16910,13 @@ def test_batch352_unfreeze_last_resort() -> None:
     )
     assert 'return "351"' not in helper
     # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355"))
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356"))
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355"))
+    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355", "356"))
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -18046,7 +18046,7 @@ def test_batch355_ci_audit_watch_idle() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355"))
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356"))
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     start = intent.index("def test_batch352_unfreeze_last_resort")
     end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
@@ -18061,3 +18061,55 @@ def test_batch355_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
+
+def test_batch356_idle_tip_sync_watch() -> None:
+    """Batch 356: tip stable @e3cd7d4; idle_no_commit align-watch evidence."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH356_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "356"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH356_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH356_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "356"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("living_tip_stale") == 0
+    assert brief.get("living_script_stale") == 0
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 356)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 356 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 356 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 356" in log_md and "idle_no_commit" in log_md
+

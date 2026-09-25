@@ -1,3 +1,11 @@
+## STATUS (Batch 356 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). post-path-c-align-watch: no tip move; living tip/script current. Evidence: `portable/BATCH356_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 355 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + living script_stale — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.

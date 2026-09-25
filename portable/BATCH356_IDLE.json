@@ -1,0 +1,23 @@
+{
+  "batch": "356",
+  "utc": "2026-09-25T21:11:22Z",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "idle_no_commit",
+  "goal_complete": false,
+  "inventable_promoted": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "write": "8/8",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0
+  },
+  "pulse": "post-path-c-align-watch",
+  "woken_peers": 4
+}

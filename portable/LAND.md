@@ -1,3 +1,7 @@
+## STATUS (Batch 356 idle)
+
+tip `e3cd7d4` tip_match=true; post-path-c-align-watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 355 ci-audit-watch)
 
 tip `e3cd7d4` tip_match=true; CI green after unfreeze living allowlist; idle_no_commit; lemma_closed=false; scientific effect NONE.

@@ -1,0 +1,12 @@
+{
+  "batch": "356",
+  "utc": "2026-09-25T21:11:22Z",
+  "tip_moved": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "defect_id": null,
+  "hunt_0020": "NEGATIVE",
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "inventable_skipped": true
+}

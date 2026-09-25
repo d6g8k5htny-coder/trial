@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 356 — idle_no_commit tip-stable align watch @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- post-path-c-align-watch pulse: no tip move; peers already shipped Batch 355 wake/grant/CI/research/living. Woke tip/eng/inventory peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 355 — ci_audit_watch idle (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
