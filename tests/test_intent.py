@@ -14301,3 +14301,61 @@ def test_batch340_republish_critical_includes_audit() -> None:
     assert "CRITICAL" in land or "audit_main_alignment" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "CRITICAL" in log_md and "audit_main_alignment" in log_md
+
+
+def test_batch340c_wake_durable_token_file() -> None:
+    """Batch 340c: wake poster loads durable MAIN_PUSH_TOKEN file drops."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path as P
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340C_WAKE_TOKEN.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340c"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "eng_wake_durable_token_file"
+    assert brief.get("defect_id") == "wake_token_env_only_misses_durable_file"
+    assert _living_tip(str(brief.get("tip", "")))
+
+    poster_path = ROOT / "scripts" / "post_batch322_wake_comments.py"
+    poster = poster_path.read_text(encoding="utf-8")
+    assert "_DURABLE_TOKEN_FILES" in poster
+    assert "resolve_wake_token" in poster
+    assert "/cursor/stores/self/MAIN_PUSH_TOKEN" in poster
+    assert "/tmp/gh-dylan-auth/access_token" in poster
+    assert '("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")' in poster
+    assert 'os.environ.get("GH_TOKEN") or os.environ.get("MAIN_PUSH_TOKEN")' not in poster
+
+    spec = importlib.util.spec_from_file_location(
+        "post_batch322_wake_comments_340c", poster_path
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    t, src = mod.resolve_wake_token(env={}, file_candidates=())
+    assert t is None and src is None
+    t, src = mod.resolve_wake_token(
+        env={"MAIN_PUSH_TOKEN": "tok_main", "GH_TOKEN": "tok_gh"},
+        file_candidates=(),
+    )
+    assert t == "tok_main" and src == "env:MAIN_PUSH_TOKEN"
+    with tempfile.TemporaryDirectory() as td:
+        drop = P(td) / "MAIN_PUSH_TOKEN"
+        drop.write_text("tok_file\n", encoding="utf-8")
+        t, src = mod.resolve_wake_token(env={}, file_candidates=(drop,))
+        assert t == "tok_file" and src == f"file:{drop}"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "durable MAIN_PUSH_TOKEN" in unblock or "wake poster token" in unblock
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 340)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "durable MAIN_PUSH_TOKEN" in land or "wake poster" in land.lower()
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "340c" in log_md or "durable token" in log_md.lower()

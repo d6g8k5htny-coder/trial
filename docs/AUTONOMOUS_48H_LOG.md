@@ -21,13 +21,20 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340c — wake durable token file discovery (2026-09-25)
+
+- Tip **stable** @ `848aea2` (BASE_TIP match). Path C IDLE@0019; durable 8/8.
+- Eng: `post_batch322_wake_comments.token()` loads durable MAIN_PUSH_TOKEN file
+  drops (grant / when_writable order). Env-only missed living-tip re-posts after
+  Batch 338 skip-gate fix. Prefer MAIN_PUSH_TOKEN over App GH_TOKEN.
+- Complements peer Batch 340 wake narrow + audit rate-limit eng.
+- `lemma_closed=false`; no research flip.
+
 ### Batch 340 — republish CRITICAL includes audit_main_alignment (2026-09-25)
 
 - Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Eng: Batch 340 audit rate-limit/backoff + raw fallback was pack-included but absent from `republish_living_path_c_release` CRITICAL — audit-only drift left living `script_stale=0` (same class as when_writable 288 / print_owner 329). Soften wake340 Intent tip `startswith("848aea2")` hard pin.
 - NEVER flip research.
-
-
 
 ### Batch 340 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
 

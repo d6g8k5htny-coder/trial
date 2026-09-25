@@ -1,6 +1,6 @@
 ## STATUS (Batch 340)
 
-tip `848aea2` tip_match=true; eng: republish CRITICAL += `audit_main_alignment.py` (was pack-only); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+tip `848aea2` tip_match=true; eng: inventory ultimate fallback 336→340; wake poster durable MAIN_PUSH_TOKEN files; audit CRITICAL include; MULTI_AGENT wake+assign; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 339)
 

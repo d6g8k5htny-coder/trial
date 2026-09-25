@@ -4,13 +4,11 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.
-
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: republish CRITICAL += `audit_main_alignment.py` (pack-only left living `script_stale=0` on audit-only drift); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: inventory ultimate fallback 336→340; wake poster `token()` loads durable `MAIN_PUSH_TOKEN` file drops; audit rate-limit/CRITICAL; Dylan wake+assign → `portable/MULTI_AGENT_WAKE_BATCH340.json`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/republish_living_path_c_release.sh --dry-run   # CRITICAL includes audit
-AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
+python3 -c "from scripts.post_batch322_wake_comments import resolve_wake_token, batch_marker; t,s=resolve_wake_token(); print(s, batch_marker())"
+python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
 ```
 ```
