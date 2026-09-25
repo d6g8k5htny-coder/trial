@@ -14599,3 +14599,56 @@ def test_batch342_wake340_living_tip_pins() -> None:
 
     assert _living_tip("f244312")
 
+def test_batch341_research_stack_audit() -> None:
+    """Batch 341: research audit WITHOUT promotion; lemma stays open."""
+    import json
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH341_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("batch") == "341"
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("action") == "research_stack_audit_without_status_promotion"
+    assert (audit.get("packet") or {}).get("lemma_closed") is False
+    assert (audit.get("packet") or {}).get("prizes_solved") is False
+    assert len(audit.get("open_premises") or []) >= 1
+    counts = audit.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 1
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) == 3
+    assert _living_tip(str(audit.get("tip_sha") or audit.get("tip_short") or ""))
+    prs = audit.get("open_main_prs") or {}
+    eng = {p.get("number") for p in (prs.get("eng_only_noted") or [])}
+    assert {36, 21, 12} <= eng
+    skipped = {p.get("number") for p in (prs.get("inventable_research_drafts_skipped") or [])}
+    assert 109 in skipped or 110 in skipped
+    assert prs.get("promoted") == []
+    assert (audit.get("guard") or {}).get("pass") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH341_RESEARCH_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "341"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "research_stack_audit_without_status_promotion"
+    assert brief.get("inventable_promoted") is False
+    ra = brief.get("research_audit") or {}
+    assert ra.get("lemma_closed") is False
+    assert ra.get("open_premises") >= 1
+    assert ra.get("guard_pass") is True
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "Batch 341 research audit" in land
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "research stack audit" in unblock.lower() or "Batch 341" in unblock
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 341" in log_md and "WITHOUT promotion" in log_md
+

@@ -115,6 +115,7 @@ echo " Batch 340: inventory ultimate fallback return \"340\" (was frozen 336); R
 echo " Batch 340: wake poster loads durable MAIN_PUSH_TOKEN files (MAIN first + grant/when_writable drops; App ghs Issues:write)"
 echo " Batch 340: tip-sync 848aea2→f244312 after main #108 inventable tip-observe (keep-prior; NOT promoted)"
 echo " Batch 340: audit_main_alignment 403 rate-limit backoff; grant inventory tip refresh batch 340 (preserve durable 8/8)"
+echo " Batch 341: research stack audit WITHOUT promotion @f244312 (open_premises=13; inventable drafts skipped; eng-only #36/#21/#12 noted; lemma_closed=false)"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"
