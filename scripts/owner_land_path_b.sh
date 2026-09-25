@@ -109,14 +109,42 @@ echo
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "--- path_b_dry_run certainty (no push) ---"
   set +e
-  python3 "$DRY_RUN_PY"
+  DRY_JSON="$(python3 "$DRY_RUN_PY")"
   dry_ec=$?
   set -e
+  printf '%s\n' "$DRY_JSON"
   if [[ "$dry_ec" -ne 0 ]]; then
     die "dry-run certainty failed (exit=$dry_ec). Patch may not would-align against live tip."
   fi
   echo
-  echo "owner_land_path_b: dry-run OK — would-align=true. Re-run without --dry-run to land."
+  # Batch 264: ALREADY_ALIGNED must not advertise "re-run to land" — live land
+  # already short-circuits (Batch 241/242). would_align=true only means the tip
+  # passes the auditor; land_needed=false is the honest idle gate.
+  DRY_STATE="$(printf '%s\n' "$DRY_JSON" | python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except Exception:
+    d = {}
+print(d.get("state") or "")
+')"
+  LAND_NEEDED="$(printf '%s\n' "$DRY_JSON" | python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except Exception:
+    d = {}
+v = d.get("land_needed")
+if v is None:
+    # Pre-Batch-264 JSON: treat ALREADY_ALIGNED as idle.
+    v = (d.get("state") != "ALREADY_ALIGNED")
+print("true" if v else "false")
+')"
+  if [[ "$DRY_STATE" == "ALREADY_ALIGNED" || "$LAND_NEEDED" == "false" ]]; then
+    echo "owner_land_path_b: dry-run OK — already ALIGNED (ALREADY_ALIGNED); Path B land not needed (no push/PR)."
+  else
+    echo "owner_land_path_b: dry-run OK — would-align=true land_needed=true. Re-run without --dry-run to land."
+  fi
   echo "Scientific effect: NONE"
   exit 0
 fi

@@ -8821,3 +8821,106 @@ def test_batch263_research_guard_nopacket_shape_stripped() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch264_path_b_dryrun_already_aligned_idle() -> None:
+    """Batch 264: Path B dry-run ALREADY_ALIGNED must not lie 're-run to land'."""
+    import json
+    import subprocess
+
+    dry_py = ROOT / "scripts" / "path_b_dry_run.py"
+    owner_b = ROOT / "scripts" / "owner_land_path_b.sh"
+    src_py = dry_py.read_text(encoding="utf-8")
+    src_sh = owner_b.read_text(encoding="utf-8")
+    assert "Batch 264" in src_py
+    assert "land_needed" in src_py
+    assert "Batch 264" in src_sh
+    assert "ALREADY_ALIGNED" in src_sh
+    assert "land_needed" in src_sh
+    assert "Path B land not needed" in src_sh
+
+    # Live tip is ALIGNED → dry-run must report idle, not solicit land.
+    result = subprocess.run(
+        ["python3", str(dry_py)],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data.get("scientific_effect") == "NONE"
+    assert data.get("state") == "ALREADY_ALIGNED"
+    assert data.get("would_align") is True
+    assert data.get("land_needed") is False
+    assert data.get("git_am_skipped_already_aligned") is True
+
+    dry = subprocess.run(
+        ["bash", str(owner_b), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    combined = dry.stdout + dry.stderr
+    assert "ALREADY_ALIGNED" in combined
+    assert "Path B land not needed" in combined
+    assert "Re-run without --dry-run to land" not in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH264_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "264"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "path_b_dryrun_already_aligned_rerun_to_land_lie"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH264_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "264"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "research-guard PACKET shape" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "path_c dry_run idle" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "long hygiene list" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH264_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 264" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 264)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 264)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 264" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
