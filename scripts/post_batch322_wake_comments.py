@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Post Batch 322 wake comments on eng PRs in d6g8k5htny-coder/main.
+"""Post Batch 329 wake comments on eng PRs in d6g8k5htny-coder/main.
 
-Skips research drafts. Skips if an identical Batch 322 wake comment already
+Skips research drafts. Skips if an identical Batch 329 wake comment already
 exists. Uses GH_TOKEN / MAIN_PUSH_TOKEN (App ghs lacks Issues:write).
+Triggered via trial workflow wake-batch322-pr-comments (repository_dispatch).
 
 Scientific effect: NONE. lemma_closed stays false.
 """
@@ -10,12 +11,12 @@ from __future__ import annotations
 
 import json
 import os
-import subprocess
 import sys
 import urllib.error
 import urllib.request
 
 REPO = "d6g8k5htny-coder/main"
+BATCH_MARKER = "Batch 329 wake"
 COORD = "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
 INTENT = (
     "Intent: tip chatgpt/drive-github-hardening-20260919 @ 077464e; "
@@ -65,6 +66,9 @@ TASKS: dict[int, str] = {
     ),
 }
 
+ENG = (92, 93, 87, 36, 21, 12)
+SKIP_DRAFTS = (47, 46, 38, 8, 7)
+
 
 def token() -> str:
     t = (os.environ.get("GH_TOKEN") or os.environ.get("MAIN_PUSH_TOKEN") or "").strip()
@@ -83,7 +87,7 @@ def api(method: str, path: str, body: dict | None = None) -> object:
             "Authorization": f"Bearer {token()}",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "trial-batch322-wake",
+            "User-Agent": "trial-batch329-wake",
         },
     )
     try:
@@ -115,7 +119,7 @@ def list_comments(n: int) -> list[dict]:
 
 def wake_body(n: int) -> str:
     return (
-        "**Batch 322 wake** — project-intent eng resume (not research flip)\n"
+        f"**{BATCH_MARKER}** — project-intent eng resume (not research flip)\n"
         "\n"
         f"Coordinator: {COORD}\n"
         "\n"
@@ -123,23 +127,34 @@ def wake_body(n: int) -> str:
         "\n"
         f"**Eng resume task:** {TASKS[n]}\n"
         "\n"
-        "Artifact: trial `portable/MULTI_AGENT_WAKE_BATCH322.json` / "
-        f"[trial PR #112]({TRIAL_PR}). Keep DRAFT discipline where applicable; "
-        "never promote claims/premises/prizes/lemmas.\n"
+        "Path C intent advance only. Keep DRAFT discipline where applicable; "
+        "never promote claims/premises/prizes/lemmas. "
+        f"Trial wake path: [PR #112]({TRIAL_PR}) / workflow `wake-batch322-pr-comments`.\n"
     )
 
 
 def main() -> int:
+    commented: list[dict] = []
+    skipped: list[dict] = []
+
+    for n in SKIP_DRAFTS:
+        skipped.append({"pr": n, "reason": "research_draft"})
+
     urls: list[str] = []
-    for n in (92, 93, 87, 36, 21, 12):
-        existing = [c for c in list_comments(n) if "Batch 322 wake" in (c.get("body") or "")]
+    for n in ENG:
+        existing = [
+            c for c in list_comments(n) if BATCH_MARKER in (c.get("body") or "")
+        ]
         if existing:
-            print(f"SKIP #{n}: identical Batch 322 wake already present")
+            print(f"SKIP #{n}: identical {BATCH_MARKER} already present")
             for c in existing:
                 u = c.get("html_url") or ""
                 print(u)
                 if u:
                     urls.append(u)
+            skipped.append({"pr": n, "reason": "identical_batch329_wake", "urls": [
+                c.get("html_url") for c in existing if c.get("html_url")
+            ]})
             continue
         print(f"POST #{n}...")
         created = api(
@@ -152,13 +167,27 @@ def main() -> int:
         print(u)
         if u:
             urls.append(u)
+        commented.append({"pr": n, "url": u})
+
+    result = {
+        "batch": 329,
+        "commented": commented,
+        "skipped": skipped,
+        "lemma_closed": False,
+        "flipped_anything": False,
+    }
+    print("=== RESULT JSON ===")
+    print(json.dumps(result, indent=2))
 
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
-            f.write("## Batch 322 wake comment URLs\n")
+            f.write("## Batch 329 wake comment URLs\n")
             for u in urls:
                 f.write(f"- {u}\n")
+            f.write("\n```json\n")
+            f.write(json.dumps(result, indent=2))
+            f.write("\n```\n")
     print("=== COMMENT URLS ===")
     for u in urls:
         print(u)
