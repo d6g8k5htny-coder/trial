@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-25T13:21:58Z",
+  "generated_at_utc": "2026-09-25T13:42:00Z",
   "guard": "no_status_promotion",
   "scientific_effect": "NONE",
   "goal_complete": false,
@@ -7,7 +7,7 @@
   "flipped_anything": false,
   "tip_sha": "02cfbfdf3ddc3120ddde6b67b0ff927115de6c4c",
   "baseline_path": "/workspace/portable/STATUS_GUARD_SNAPSHOT.json",
-  "baseline_tip_sha": "3a29f526da5108df173edc390a8ca2d1f3d887c9",
+  "baseline_tip_sha": "02cfbfdf3ddc3120ddde6b67b0ff927115de6c4c",
   "pass": true,
   "violations": [],
   "new_open_only": {

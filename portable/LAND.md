@@ -1,3 +1,7 @@
+## STATUS (Batch 298)
+
+tip `02cfbfd` tip_match=true TIP_OK; permanent-watch IDLE — BASE==LIVE; #85 OPEN undrafted CI-green inventable skipped; #87 DRAFT CI-fail skipped; #88 NEW tip-observe draft skipped; 0020 NEGATIVE; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 297)
 
 tip `02cfbfd` tip_match=true TIP_OK (synced from `3a29f52` after main #84 mid-cycle); refresh keep-prior; living tip_stale republish; REFRESH default 297; #85 OPEN undrafted skipped; #87 DRAFT skipped; action=tip_sync; lemma_closed=false; scientific effect NONE.
