@@ -26,7 +26,8 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip vs BASE_TIP `8e359e5`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Deep 0020 hunt: **NEGATIVE** (focused 173 + receipts/bridge 541 + mid 363 / 0 RW; AST classic assign-open 0). Open main PRs: draft tip-observe #80/#81 + research-hold drafts — **skipped**.
 - **Evidence:** live `--interval 300` daemon left `<status>.daemon.lock` with `pid=<live>` but flock probe / `F_GETLK` reported free (`/proc/locks` empty). `--once --dry-run` set `once_status_redirected=false` and clobbered shared status (`dry_run=true` / `once=true` over the live loop record).
 - **Defect shipped (avoid VERIFY.batch release-align / pack living-tag / when_writable flock redesign / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** `when_writable_land` treats lockfile `pid=` of a live `when_writable_land` process as held when flock misses — `--once` → sidecar; second loop exits 2.
-- Research: `lemma_closed=false`; flipped nothing. Never printed tokens. Scientific effect NONE.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Trial eng **PR #100 squash merge** @ `df6e3d7`. Scientific effect NONE.
 
 ### Batch 269 (VERIFY.batch release-align after keep-prior refresh) — 2026-09-25 ~03:52 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
