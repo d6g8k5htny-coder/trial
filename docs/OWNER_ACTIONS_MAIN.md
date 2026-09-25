@@ -4,11 +4,13 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C IDLE@0019). Dylan ask: message stopped agents + assign Path C intent → `portable/MULTI_AGENT_WAKE_BATCH340.json` (Task resume IDLE + cloud peer). Durable 8/8. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: inventory ultimate batch fallback 336→340; wake poster `token()` loads durable `MAIN_PUSH_TOKEN` file drops; `audit_main_alignment` rate-limit backoff + raw/ls-remote fallback. Dylan wake+assign → `portable/MULTI_AGENT_WAKE_BATCH340.json`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/owner_grant_ai_agent_access.sh --check
+python3 -c "from scripts.refresh_ai_agent_access_inventory import _living_inventory_batch; print(_living_inventory_batch('.'))"
+python3 -c "from scripts.post_batch322_wake_comments import resolve_wake_token, batch_marker; t,s=resolve_wake_token(); print(s, batch_marker())"
 python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
 ```
 
 ## STATUS (Batch 339)

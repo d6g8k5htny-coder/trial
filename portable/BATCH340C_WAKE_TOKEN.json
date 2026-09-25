@@ -1,0 +1,40 @@
+{
+  "batch": "340c",
+  "generated_at_utc": "2026-09-25T18:32:00Z",
+  "status": "wake_durable_token_file_discovery",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_match": true,
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake_token_env_only_misses_durable_file",
+  "bugs_fixed": [
+    "wake poster token() only read env GH_TOKEN/MAIN_PUSH_TOKEN — App ghs lacks Issues:write; durable file drops unused",
+    "resolve_wake_token loads grant/when_writable durable paths; prefer MAIN_PUSH_TOKEN over GH_TOKEN"
+  ],
+  "complements": [
+    "peer Batch 340 wake narrow #36/#21/#12",
+    "peer Batch 340 audit rate-limit backoff + raw/ls-remote fallback"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_wake_durable_token_file",
+  "route_now": "ENG_FIX",
+  "inventable_promoted": false,
+  "evidence": {
+    "tip": "TIP_OK @848aea2 match=1 BASE_TIP==live",
+    "token_before": "env GH_TOKEN|MAIN_PUSH_TOKEN only",
+    "token_after": "env MAIN_PUSH_TOKEN/GH_TOKEN/GITHUB_TOKEN then durable file drops",
+    "eng_pr_wake": "#36/#21/#12 Batch 340 @848aea2 (peer); #92/#93/#87 still Batch 329 @077464e (out of ENG)"
+  },
+  "note": "Batch 340c: tip stable; wake durable token file discovery; lemma_closed=false."
+}
