@@ -27,6 +27,13 @@
 # Also compare release-pack BASE_TIP vs local BASE_TIP; tip mismatch ⇒
 # tip_stale=1 / need_upload=1 even when pack bytes did not grow.
 #
+# Batch 286: tip_stale=0 still left living pack without Batch 285 grant fix
+# (repositories-array gate). Compare sha256 of critical scripts inside the
+# local pack vs the living release pack; any drift ⇒ script_stale=1 /
+# need_upload=1 (independent of tip / byte growth). Also grant --check now
+# requires isinstance(repositories, list) so null/non-list is not an empty
+# install listing.
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -179,7 +186,12 @@ fi
 
 # Batch 283: tip-currency gate. Byte-growth alone misses tip-sync packs that stay
 # same-or-smaller while BASE_TIP advanced (or release still lacks post-tip fixes).
+# Batch 286: tip_match + byte-growth-only still missed critical *script* drift —
+# post-285 living release kept tip 7d13a88 (tip_stale=0) while owner_grant lacked
+# the repositories-array gate (and repositories null/non-list still false-missing).
+# Compare sha256 of critical scripts inside local pack vs release pack.
 TIP_STALE=0
+SCRIPT_STALE=0
 LOCAL_TIP=""
 REL_PACK_TIP=""
 BASE_TIP_FILE="$ROOT/portable/patches/BASE_TIP.txt"
@@ -209,18 +221,18 @@ if [[ -f "$OUT" ]]; then
   fi
 fi
 TIP_PROBE_DIR=""
-if [[ -n "$LOCAL_TIP" ]]; then
+REL_PACK_TGZ=""
+if [[ -n "$LOCAL_TIP" || -f "$OUT" ]]; then
   TIP_PROBE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/republish-tip-probe.XXXXXX")"
   if gh release download "$TAG" --repo "$REPO" -p 'trial-portable-main-fixes.tgz' -D "$TIP_PROBE_DIR" --clobber >/dev/null 2>&1; then
-    REL_TIP_LINE="$(tar -xOf "$TIP_PROBE_DIR/trial-portable-main-fixes.tgz" portable/patches/BASE_TIP.txt 2>/dev/null | head -n1 || true)"
+    REL_PACK_TGZ="$TIP_PROBE_DIR/trial-portable-main-fixes.tgz"
+    REL_TIP_LINE="$(tar -xOf "$REL_PACK_TGZ" portable/patches/BASE_TIP.txt 2>/dev/null | head -n1 || true)"
     if [[ -n "$REL_TIP_LINE" ]]; then
       REL_PACK_TIP="$(printf '%s\n' "$REL_TIP_LINE" | parse_tip_sha || true)"
     fi
   else
-    echo "republish_living_path_c_release: note: could not download living pack for tip probe (network/auth); tip_stale check skipped" >&2
+    echo "republish_living_path_c_release: note: could not download living pack for tip/script probe (network/auth); tip_stale/script_stale check skipped" >&2
   fi
-  rm -rf "$TIP_PROBE_DIR"
-  TIP_PROBE_DIR=""
 fi
 # Normalize to 7-char prefix compare when lengths differ (short vs full SHA).
 if [[ -n "$LOCAL_TIP" && -n "$REL_PACK_TIP" ]]; then
@@ -231,6 +243,62 @@ if [[ -n "$LOCAL_TIP" && -n "$REL_PACK_TIP" ]]; then
   fi
 fi
 echo "republish_living_path_c_release: local_tip=${LOCAL_TIP:-?} release_pack_tip=${REL_PACK_TIP:-?} tip_stale=${TIP_STALE}"
+
+# Batch 286: critical-script content drift (independent of tip / byte growth).
+if [[ -n "${REL_PACK_TGZ:-}" && -f "$OUT" && -f "$REL_PACK_TGZ" ]]; then
+  SCRIPT_STALE="$(
+    OUT="$OUT" REL_PACK_TGZ="$REL_PACK_TGZ" python3 - <<'PY'
+import hashlib, os, tarfile, sys
+
+CRITICAL = (
+    "scripts/owner_grant_ai_agent_access.sh",
+    "scripts/refresh_path_c_bundle.sh",
+    "scripts/pack_portable.sh",
+    "scripts/probe_main_write.py",
+    "scripts/probe_main_write_vectors.py",
+    "scripts/republish_living_path_c_release.sh",
+)
+
+def member_sha(tgz: str, name: str) -> str:
+    try:
+        with tarfile.open(tgz, "r:gz") as tf:
+            try:
+                m = tf.getmember(name)
+            except KeyError:
+                return ""
+            f = tf.extractfile(m)
+            if f is None:
+                return ""
+            h = hashlib.sha256()
+            while True:
+                chunk = f.read(1 << 16)
+                if not chunk:
+                    break
+                h.update(chunk)
+            return h.hexdigest()
+    except OSError:
+        return ""
+
+local = os.environ["OUT"]
+rel = os.environ["REL_PACK_TGZ"]
+stale = 0
+for name in CRITICAL:
+    a = member_sha(local, name)
+    b = member_sha(rel, name)
+    if a != b:
+        stale = 1
+        print(f"script_drift {name} local={a[:12] or 'MISSING'} release={b[:12] or 'MISSING'}", file=sys.stderr)
+print(stale)
+PY
+  )"
+  SCRIPT_STALE="${SCRIPT_STALE//$'\n'/}"
+  SCRIPT_STALE="${SCRIPT_STALE:-0}"
+fi
+if [[ -n "${TIP_PROBE_DIR:-}" ]]; then
+  rm -rf "$TIP_PROBE_DIR"
+  TIP_PROBE_DIR=""
+fi
+echo "republish_living_path_c_release: script_stale=${SCRIPT_STALE}"
 
 BUNDLE_NEWER=0
 PATCH_NEWER=0
@@ -246,11 +314,11 @@ elif [[ -n "$patch_sha" && -z "${REL_PATCH_SHA:-}" ]]; then
 fi
 
 NEED_UPLOAD=0
-if [[ "$FORCE" -eq 1 || "$TGZ_NEWER" -eq 1 || "$BUNDLE_NEWER" -eq 1 || "$PATCH_NEWER" -eq 1 || "$TIP_STALE" -eq 1 ]]; then
+if [[ "$FORCE" -eq 1 || "$TGZ_NEWER" -eq 1 || "$BUNDLE_NEWER" -eq 1 || "$PATCH_NEWER" -eq 1 || "$TIP_STALE" -eq 1 || "$SCRIPT_STALE" -eq 1 ]]; then
   NEED_UPLOAD=1
 fi
 
-echo "republish_living_path_c_release: tgz_newer=${TGZ_NEWER} tip_stale=${TIP_STALE} bundle_newer=${BUNDLE_NEWER} patch_newer=${PATCH_NEWER} force=${FORCE} need_upload=${NEED_UPLOAD} dry_run=${DRY_RUN}"
+echo "republish_living_path_c_release: tgz_newer=${TGZ_NEWER} tip_stale=${TIP_STALE} script_stale=${SCRIPT_STALE} bundle_newer=${BUNDLE_NEWER} patch_newer=${PATCH_NEWER} force=${FORCE} need_upload=${NEED_UPLOAD} dry_run=${DRY_RUN}"
 
 if [[ "$NEED_UPLOAD" -eq 0 ]]; then
   echo "republish_living_path_c_release: OK — release assets already current (no upload)."

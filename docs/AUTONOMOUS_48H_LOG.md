@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 286 (grant list + living script_stale + REFRESH Intent durable) — 2026-09-25 ~10:35 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Trial open PRs: none. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient install trial-only; dylan durable **8/8 WRITABLE**.
+- **Evidence (1):** Batch 285 required `"repositories" in d` but `"repositories": null` / non-list still hit `(repos or [])` → false `install_missing_from_deps=all8`.
+- **Evidence (2):** living `trial-portable-main-fixes.tgz` tip_match @ `7d13a88` (`tip_stale=0`) still lacked Batch 285 grant gate; owners extracting release got pre-285 false-missing.
+- **Evidence (3):** Intent tests hard-allowlisted `REFRESH_BATCH_TAG:-{278…285}` — every default bump forced N prior-test edits.
+- **Defect shipped (avoid inventable tip-observe / research HOLDs / App_install_add_sandbox owner UI / grant 403-key-only 285 / tip_stale 283 / pack omit grant 282 / grant ls-remote 281 / W2 280 / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** `isinstance(repositories, list)`; republish `script_stale` critical-script sha256 vs living pack; Intent `_assert_refresh_batch_tag_default_at_least`; `REFRESH_BATCH_TAG` default 286; republish living assets.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 285 (grant --check install 403 JSON false-missing) — 2026-09-25 ~10:10 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Trial open PRs: none. Tip CI: success. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: install endpoint unavailable under user token; dylan durable **8/8 WRITABLE** / ls_remote=ok.

@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 286)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 285 required a `repositories` **key** but `"repositories": null` / non-list still used `(repos or [])` → false `install_missing_from_deps=all8`. Living release still lacked the 285 grant fix while `tip_stale=0`. Fixed: require `isinstance(repositories, list)`; republish `script_stale` (critical-script sha256 vs living pack); Intent `REFRESH_BATCH_TAG` uses `>=` not allowlists. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check   # repositories null → installation: unavailable (not install_missing=all8)
+./scripts/republish_living_path_c_release.sh --dry-run   # script_stale=0 after ship
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 285)
 
 Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `owner_grant_ai_agent_access.sh --check` under a user/PAT/device token called `GET /installation/repositories`, which returns HTTP 403 **with a JSON error body**. Pre-285 treated any non-empty stdout as an install listing → `names=[]`, `install_has_*=false`, `install_missing_from_deps=<all 8>` while dual-vector probes were **8/8 WRITABLE** (false App-scope alarm). Fixed: require a real `repositories` array; otherwise print `installation: unavailable` + `installation_note`. `lemma_closed=false`. Scientific effect: NONE.

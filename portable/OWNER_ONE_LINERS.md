@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 286 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant list+script_stale+REFRESH durable; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/owner_grant_ai_agent_access.sh --check  # repositories null/non-list → unavailable (NOT install_missing=all8)
+> ./scripts/republish_living_path_c_release.sh --dry-run  # script_stale compares critical scripts vs living pack
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defects: (1) Batch 285 key-only check still treated `repositories: null` as empty listing; (2) living release tip_match left pre-285 grant; republish now sets `script_stale=1` on critical-script sha drift; (3) Intent REFRESH_BATCH_TAG allowlists → `>= N`. No research flip. No 0020.
+
 > **Batch 285 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant install 403 FP fixed; release `batch241-path-c-bundle`**:
 >
 > ```bash

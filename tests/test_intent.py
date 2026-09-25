@@ -57,6 +57,26 @@ def _living_release(val) -> bool:
     return s in _LIVING_RELEASES or s.endswith("-path-c-bundle")
 
 
+def _refresh_batch_tag_default(refresh_text: str) -> int:
+    """Batch 286: parse REFRESH_BATCH_TAG default; stop hardcoded allowlist churn.
+
+    Prior Intent gates listed every subsequent batch number (278…285…) so each
+    tip-sync / eng batch that bumped the default had to edit N prior tests.
+    Contract is: default exists and is an int >= the batch that introduced the
+    assert (callers pass min_batch).
+    """
+    import re
+
+    m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", refresh_text)
+    assert m is not None, "REFRESH_BATCH_TAG:-N default missing in refresh_path_c_bundle.sh"
+    return int(m.group(1))
+
+
+def _assert_refresh_batch_tag_default_at_least(refresh_text: str, min_batch: int) -> None:
+    got = _refresh_batch_tag_default(refresh_text)
+    assert got >= min_batch, f"REFRESH_BATCH_TAG default {got} < {min_batch}"
+
+
 
 def test_readme_states_sandbox_boundary() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -10625,11 +10645,8 @@ def test_batch278_pack_portable_help_not_out() -> None:
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     assert "Batch 278" in refresh
     assert "python3 - <<'PY'" in refresh
-    # Living default advances each tip-sync batch (278→279+).
-    assert "REFRESH_BATCH_TAG:-" in refresh
-    assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282", "283", "284", "285")
-    )
+    # Living default advances each tip-sync batch; Batch 286: >= not allowlist.
+    _assert_refresh_batch_tag_default_at_least(refresh, 278)
 
     living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
     prior = living.read_text(encoding="utf-8")
@@ -10756,11 +10773,8 @@ def test_batch279_republish_canonical_basename() -> None:
     assert "gh-dylan-auth/access_token" in text
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Living default advances each batch; 279 introduced the stamp at 279.
-    assert "REFRESH_BATCH_TAG:-" in refresh
-    assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282", "283", "284", "285")
-    )
+    # Living default advances each batch; Batch 286: >= not allowlist.
+    _assert_refresh_batch_tag_default_at_least(refresh, 279)
 
     with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
         out = P(td) / "wrong-name.tgz"
@@ -10874,11 +10888,8 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     assert refs_idx >= 0 and put_idx > refs_idx
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Batch 281+ advances default tag; 280 stamp may be historical only.
-    assert "REFRESH_BATCH_TAG:-" in refresh
-    assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282", "283", "284", "285")
-    )
+    # Batch 286: >= not allowlist (280 stamp may be historical only).
+    _assert_refresh_batch_tag_default_at_least(refresh, 280)
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH280_BRIEF.json").read_text(encoding="utf-8")
@@ -10947,8 +10958,8 @@ def test_batch281_grant_durable_ls_remote_auth() -> None:
     assert "_ls_tok" in text
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Batch 281 introduced authenticated stamp default; Batch 282+ may bump TAG.
-    assert "REFRESH_BATCH_TAG:-" in refresh
+    # Batch 281 introduced authenticated stamp default; Batch 286: >= not allowlist.
+    _assert_refresh_batch_tag_default_at_least(refresh, 281)
     assert "x-access-token" in (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
         encoding="utf-8"
     )
@@ -11044,11 +11055,8 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     assert "focused 90/0" not in unblock
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Batch 282 introduced stamp default; Batch 283+ may bump TAG.
-    assert "REFRESH_BATCH_TAG:-" in refresh
-    assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("282", "283", "284", "285")
-    )
+    # Batch 282 introduced stamp default; Batch 286: >= not allowlist.
+    _assert_refresh_batch_tag_default_at_least(refresh, 282)
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH282_BRIEF.json").read_text(encoding="utf-8")
@@ -11120,9 +11128,8 @@ def test_batch283_republish_tip_stale_living_release() -> None:
     assert 'TIP_STALE" -eq 1' in script or "TIP_STALE" in script
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Batch 283 introduced stamp default; Batch 285+ may bump TAG.
-    assert "REFRESH_BATCH_TAG:-" in refresh
-    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("283", "284", "285"))
+    # Batch 283 introduced stamp default; Batch 286: >= not allowlist.
+    _assert_refresh_batch_tag_default_at_least(refresh, 283)
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 283" in unblock
@@ -11211,8 +11218,13 @@ def test_batch285_grant_install_403_json_false_missing() -> None:
     )
     assert "Batch 285" in grant
     assert "installation_note" in grant
-    # Fail-closed: require repositories key before listing missing deps.
-    assert '"repositories" not in d' in grant
+    # Fail-closed: require a real repositories list before listing missing deps.
+    # Batch 286 strengthened key-presence → isinstance(list); either form OK.
+    assert (
+        '"repositories" not in d' in grant
+        or "isinstance(repos, list)" in grant
+        or "not isinstance(repos, list)" in grant
+    )
     assert "install_missing_from_deps" in grant
 
     # Synthetic 403 body must not produce install_missing_from_deps.
@@ -11275,7 +11287,8 @@ print("install_missing_from_deps:", ["x"] if not names else [])
     assert "ok 1" in proc2.stdout
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-285" in refresh
+    # Batch 285 stamp; Batch 286+ advances default — use >= not exact match.
+    _assert_refresh_batch_tag_default_at_least(refresh, 285)
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 285" in unblock
@@ -11322,6 +11335,155 @@ print("install_missing_from_deps:", ["x"] if not names else [])
 
     ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
     assert "Batch 285" in ones
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch286_grant_list_script_stale_refresh_durable() -> None:
+    """Batch 286: repositories must be list; republish script_stale; REFRESH >= durable."""
+    import json
+    import subprocess
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 286" in grant
+    assert "isinstance(repos, list)" in grant or "not isinstance(repos, list)" in grant
+    assert "installation_note" in grant
+
+    # Synthetic null / non-list must not produce install_missing_from_deps.
+    snippet = r'''
+import json, sys
+raw = sys.stdin.read()
+try:
+    d = json.loads(raw)
+except json.JSONDecodeError:
+    print("installation: unavailable (not an App installation token, or 403)")
+    raise SystemExit(0)
+repos = d.get("repositories") if isinstance(d, dict) else None
+if not isinstance(d, dict) or not isinstance(repos, list):
+    print("installation: unavailable (not an App installation token, or 403)")
+    msg = d.get("message") if isinstance(d, dict) else None
+    if isinstance(msg, str) and msg.strip():
+        print("installation_note:", msg.strip()[:240])
+    raise SystemExit(0)
+names=[r.get("full_name") for r in repos if isinstance(r, dict)]
+print("install_missing_from_deps:", ["x"] if not names else [])
+'''
+    for fake in (
+        json.dumps({"repositories": None, "total_count": 0}),
+        json.dumps({"repositories": "nope"}),
+        json.dumps(
+            {
+                "message": "You must authenticate with an installation access token",
+                "status": "403",
+            }
+        ),
+    ):
+        proc = subprocess.run(
+            ["python3", "-c", snippet],
+            input=fake,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=15,
+        )
+        out = proc.stdout
+        assert "installation: unavailable" in out
+        assert "install_missing_from_deps" not in out
+
+    # Real list still parses.
+    listing = json.dumps(
+        {
+            "total_count": 1,
+            "repository_selection": "selected",
+            "repositories": [{"full_name": "d6g8k5htny-coder/trial"}],
+        }
+    )
+    proc_ok = subprocess.run(
+        ["python3", "-c", snippet],
+        input=listing,
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=15,
+    )
+    assert "install_missing_from_deps: []" in proc_ok.stdout
+
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 286" in republish
+    assert "SCRIPT_STALE" in republish
+    assert "script_stale" in republish
+    assert "owner_grant_ai_agent_access.sh" in republish
+    assert 'SCRIPT_STALE" -eq 1' in republish or "SCRIPT_STALE" in republish
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 286)
+    # Helper itself is the durable contract (no more allowlist churn).
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    assert "_assert_refresh_batch_tag_default_at_least" in intent
+    assert "_refresh_batch_tag_default" in intent
+    # No remaining REFRESH allowlist any(...) loops (helper replaced them).
+    import re
+
+    allowlists = re.findall(
+        r'f"REFRESH_BATCH_TAG:-\{n\}" in refresh for n in', intent
+    )
+    assert allowlists == [], f"stale REFRESH allowlists remain: {allowlists}"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 286" in unblock
+    assert "script_stale" in unblock
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH286_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "286"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "grant_list_script_stale_refresh_durable"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH286_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "grant_list_script_stale_refresh_durable"
+    assert any("285" in a or "403" in a for a in (hunt.get("avoided") or []))
+    assert any("283" in a or "tip_stale" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH286_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 286" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 286)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 286)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 286" in ones
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

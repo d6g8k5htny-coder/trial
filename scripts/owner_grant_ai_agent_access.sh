@@ -21,6 +21,8 @@
 #       # non-empty stdout as a listing → names=[] + install_missing_from_deps=
 #       # all 8 (false App-scope alarm) while dual-vector write was 8/8
 #       # WRITABLE. Require a real `repositories` array before listing.
+#       # Batch 286: key present with null/non-list still used `(repos or [])`
+#       # → false install_missing=all8; require isinstance(list).
 #   ./scripts/owner_grant_ai_agent_access.sh --invite-collaborators
 #       # only if AI_COLLAB_USERNAMES env lists real logins (comma-separated)
 #   ./scripts/owner_grant_ai_agent_access.sh --help
@@ -57,9 +59,9 @@ Usage: owner_grant_ai_agent_access.sh [--dry-run] [--check] [--invite-collaborat
       read, and create-ref write (probe refs deleted). Lists ALL
       repositoryDependencies (expect 8 including sandbox). Prints App
       install URLs with clear "select ALL repositories including sandbox".
-      Batch 285: user-token 403 JSON on /installation/repositories is not
-      treated as an empty install listing (no false install_missing_from_deps).
-      Never prints tokens.
+      Batch 285/286: user-token 403 JSON or repositories null/non-list on
+      /installation/repositories is not treated as an empty install listing
+      (no false install_missing_from_deps). Never prints tokens.
 
   --invite-collaborators
       Invite collaborators ONLY when AI_COLLAB_USERNAMES is set to a
@@ -377,6 +379,9 @@ if [[ "$DO_CHECK" -eq 1 ]]; then
   # install_missing_from_deps=<all repositoryDependencies> (false App-scope
   # alarm) while dual-vector probes were 8/8 WRITABLE. Only parse when the
   # payload actually carries a repositories array.
+  # Batch 286: `"repositories": null` (or a non-list) still passed the key
+  # check; `(d.get("repositories") or [])` then looked like an empty App
+  # install → false install_missing_from_deps=all8. Require a real list.
   install_json="$(gh api /installation/repositories 2>/dev/null || true)"
   if [[ -n "$install_json" ]]; then
     echo "$install_json" | python3 -c 'import json,sys
@@ -386,14 +391,15 @@ try:
 except json.JSONDecodeError:
     print("installation: unavailable (not an App installation token, or 403)")
     raise SystemExit(0)
-if not isinstance(d, dict) or "repositories" not in d:
-    # Error body (e.g. status=403 message=... ) — not an install listing.
+repos = d.get("repositories") if isinstance(d, dict) else None
+if not isinstance(d, dict) or not isinstance(repos, list):
+    # Error body / null / non-list — not an install listing.
     print("installation: unavailable (not an App installation token, or 403)")
     msg = d.get("message") if isinstance(d, dict) else None
     if isinstance(msg, str) and msg.strip():
         print("installation_note:", msg.strip()[:240])
     raise SystemExit(0)
-names=[r.get("full_name") for r in (d.get("repositories") or []) if isinstance(r, dict)]
+names=[r.get("full_name") for r in repos if isinstance(r, dict)]
 print("installation:", json.dumps({"total_count":d.get("total_count"),"repository_selection":d.get("repository_selection"),"names":names}, indent=2))
 print("install_has_main:", any(n=="'"$OWNER"'/main" for n in names))
 print("install_has_sandbox:", any(n=="'"$OWNER"'/sandbox" for n in names))

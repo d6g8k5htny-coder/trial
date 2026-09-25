@@ -1,3 +1,7 @@
+## STATUS (Batch 286)
+
+tip `7d13a88` tip_match=true; grant repositories null/non-list false-missing; living release tip_match lacked 285 grant fix; script_stale + isinstance(list) + durable REFRESH Intent; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 285)
 
 tip `7d13a88` tip_match=true; grant --check user-token 403 JSON on /installation/repositories treated as empty listing (false install_missing=all8 while 8/8 WRITABLE); require repositories array; lemma_closed=false; scientific effect NONE.

@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 286: grant --check requires isinstance(repositories, list) (null/non-list ≠ empty install); republish script_stale compares critical script sha256 vs living pack (post-285 tip_match left release without grant fix); Intent REFRESH_BATCH_TAG uses >= not allowlist"
 echo "  Batch 285: grant --check treats user-token 403 JSON on /installation/repositories as unavailable (pre-285 empty listing → false install_missing_from_deps=all8 while 8/8 WRITABLE)"
 echo "  Batch 283: republish tip_stale when living release BASE_TIP lags local (byte-growth-only missed tip-sync 3b3860d→7d13a88; release lacked grant)"
 echo "  Batch 282: pack_portable includes owner_grant_ai_agent_access.sh + AI_AGENT_ACCESS_INVENTORY.json (OWNER_ONE_LINERS referenced grant 8× but tarball omitted it post-281)"
