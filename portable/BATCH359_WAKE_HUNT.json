@@ -1,0 +1,11 @@
+{
+  "batch": "359",
+  "utc": "2026-09-25T21:48:39Z",
+  "defect_id": "stopped_agents_idle_need_path_c_assign",
+  "defect_shipped": true,
+  "action": "multi_agent_wake_and_assign",
+  "lemma_closed": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "woken": 11
+}

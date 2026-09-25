@@ -1,0 +1,18 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:50:15Z",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "tip_moved": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "batch357_tip_or_eng_living_action_pin",
+  "action": "ship_eng_defect"
+}

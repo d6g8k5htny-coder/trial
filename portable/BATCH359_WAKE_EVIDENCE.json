@@ -1,0 +1,14 @@
+{
+  "batch": "359",
+  "utc": "2026-09-25T21:48:39Z",
+  "action": "multi_agent_wake_and_assign",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "woken_idle_agents": 11,
+  "scientific_effect": "NONE",
+  "goal_complete": false
+}

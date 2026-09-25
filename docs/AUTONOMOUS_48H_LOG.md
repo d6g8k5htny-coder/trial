@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — soften Batch 357 tip_or_eng living pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Defect: Intent hard-pinned living BATCH357_TIP_ENG_BRIEF.action to research_stack_audit_watch while living action is inventory_tip_repin_after_land_head.
+- Fix: soften action allowlist. NEVER flip research.
+
 ### Batch 359 — tip_or_eng: inv tip re-pin after grant/sync lands (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

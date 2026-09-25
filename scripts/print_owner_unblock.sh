@@ -53,6 +53,7 @@ echo " Batch 359: grant_check_dual_vector_8of8 tip refresh @e3cd7d4 (BATCH359_GR
 echo " Batch 359: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no delta vs 357"
 echo " Batch 359: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current)"
 echo " Batch 359: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
+echo " Batch 359: soften Batch 357 tip_or_eng living brief pin"
 
 echo " Batch 358: eng living script_stale republish after tip_sync idle (batch241; script_stale 1→0; Intent allowlist living)"
 echo " Batch 358: tip_or_eng inv tip re-pin after lands @e3cd7d4"
