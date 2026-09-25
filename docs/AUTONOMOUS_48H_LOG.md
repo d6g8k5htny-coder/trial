@@ -21,19 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 343 tip-sync f244312→fcad723 after main #109 (2026-09-25)
+### Batch 343 — tip-sync after main #109 (2026-09-25)
 
-- Tip **moved** mid-cycle: inventable #109 → `fcad723`.
-- Tip-sync keep-prior; living tip_stale republish; inventable NOT promoted.
-- `lemma_closed=false`; scientific effect NONE.
-
-### Batch 343 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
-
-- Dylan ask: message stopped agents + assign Path C intent tasks.
-- Tip **stable** @ `f244312` (tip_match=1). Path C IDLE@0019; durable 8/8; living `script_stale=0 tip_stale=0`.
-- Woke 10 IDLE agents via Task resume + spawned 1 cloud peer; action=`multi_agent_wake_and_assign`.
-- Also completed full `BATCH341_GRANT.json` land @`20d6003a` (peer stub merged).
-- Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`; `lemma_closed=false`; NEVER flip research.
+- Hardening LIVE moved `f244312`→`fcad723` (#109 inventable RN_SIDE24_CELL pointer MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=343` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; `_LIVING_TIPS += fcad723`.
+- Inventable docs MERGED to hardening tip only — NOT promoted; `lemma_closed=false`; scientific effect NONE.
+- Path C IDLE@0019; no 0020. Prior Batch 343 script_stale republish @f244312 superseded mid-cycle.
+- action=`tip_sync_landed`; NEVER flip research.
 
 ### Batch 343 (MULTI_AGENT wake_land_verify; tip @f244312) — 2026-09-25 ~18:53 UTC
 - Coordinator `bc-01a0cf1e`: IDLE agent resumed — `wake_land_verify_batch343`.

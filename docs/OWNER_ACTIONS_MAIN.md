@@ -2,6 +2,19 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 343 tip-sync)
+
+Hardening tip **synced** `f244312`→`fcad723` after main **#109** (tip_match=true; Path C idle; BASE==LIVE after sync). Inventable claim NOT promoted. Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 343 + `_LIVING_TIPS+=fcad723`. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
+## STATUS (Batch 343)
+
+Hardening tip **synced** `f244312`→`fcad723` after main **#109** (tip_match=true; Path C idle; BASE==LIVE after sync). Inventable claim NOT promoted. Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 343 + `_LIVING_TIPS+=fcad723`. `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
 ## STATUS (Batch 341 inv-batch-pin)
 
 Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 Intent living `INV_BATCH` hard pin after Batch 342 tip-refresh left inventory at 342 (Intent CI red on `== "340"`). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
@@ -9,20 +22,6 @@ Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 Intent living `INV_B
 ```bash
 python3 -m pytest tests/test_intent.py::test_batch341_soften_inv_batch_hard_pins_after_342 -q
 ```
-
-## STATUS (Batch 343 tip-sync)
-
-Hardening tip **synced** @ `fcad723` after main #109 inventable. Tip-sync keep-prior; inventable NOT promoted; `_LIVING_TIPS += fcad723`. `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
-
-```bash
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
-```
-
-## STATUS (Batch 343 wake)
-
-Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`.
-
-Hardening tip **stable** @ `f244312`. MULTI_AGENT wake+assign; full BATCH341_GRANT on main. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
 
 ## STATUS (Batch 343)
 

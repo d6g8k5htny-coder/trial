@@ -1,114 +1,24 @@
 {
   "batch": 343,
-  "action": "multi_agent_wake_and_assign",
-  "requested_by": "Dylan Roy",
-  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
-  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
-  "utc": "2026-09-25T18:56:21Z",
-  "tip": "f244312",
-  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "action": "wake_land_verify_batch343",
+  "tip": "fcad723",
   "tip_match": true,
   "wake343_on_main": true,
-  "verified_prior_wake": "MULTI_AGENT_WAKE_BATCH340.json",
-  "verified_prior_wakes": [
-    "MULTI_AGENT_WAKE_BATCH329.json",
-    "MULTI_AGENT_WAKE_BATCH336.json",
-    "MULTI_AGENT_WAKE_BATCH337.json",
-    "MULTI_AGENT_WAKE_BATCH340.json"
-  ],
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "path_c": "IDLE@0019",
-  "durable": "8/8",
-  "living": {
+  "goal": "OPEN",
+  "verified": {
+    "BATCH341_GRANT": true,
+    "WAKE340_tip": "f244312",
     "tip_stale": 0,
-    "script_stale": 0,
-    "need_upload": 0
+    "script_stale": 0
   },
+  "coordinator_bcId": "bc-01a0cf1e",
+  "agent_bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
   "intent": {
-    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
-    "base_tip_expected": "f244312db901cf6ede88e46af663398d496eb989",
-    "path_c": "IDLE@0019",
-    "lemma_closed": false,
-    "scientific_effect": "NONE",
-    "durable_write_target": "8/8",
-    "never_flip_research": true
-  },
-  "woken_idle_agents": [
-    {
-      "bcId": "bc-232cbb8d-dcde-56f8-8f07-21cacf9ce31b",
-      "name": "Batch340 tip eng cloud fresh",
-      "assignment": "tip_sync_watch_vs_BASE_TIP_f244312"
-    },
-    {
-      "bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
-      "name": "Batch340 eng hunter idle",
-      "assignment": "eng_defect_hunt_no_claim_promotion"
-    },
-    {
-      "bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
-      "name": "Batch341 grant dual-vector",
-      "assignment": "grant_check_dual_vector_8of8"
-    },
-    {
-      "bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302",
-      "name": "Batch340 tip or eng peer",
-      "assignment": "tip_or_eng_defect"
-    },
-    {
-      "bcId": "bc-3fb93461-8bac-53a9-96aa-f28a6d27f477",
-      "name": "Batch341 research audit no promo",
-      "assignment": "tip_or_eng_on_healthy_VM"
-    },
-    {
-      "bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5",
-      "name": "Batch340 CI rate-limit fix",
-      "assignment": "ci_audit_watch_and_remediate"
-    },
-    {
-      "bcId": "bc-d9358658-7c71-5414-bdd3-59cf3f0b68a4",
-      "name": "Batch340 grant inventory peer",
-      "assignment": "grant_inventory_refresh_batch343"
-    },
-    {
-      "bcId": "bc-dad4c232-0650-5862-bdc5-7444ce112ed9",
-      "name": "Batch340 eng PR wake comments",
-      "assignment": "post_eng_pr_wake_comments"
-    },
-    {
-      "bcId": "bc-fe924526-b5d6-53fa-a911-fae0b4d9d3d3",
-      "name": "Batch340 wake land verify",
-      "assignment": "wake_land_verify_batch343"
-    },
-    {
-      "bcId": "bc-dfd45dde-ca70-5895-8796-c35435b073eb",
-      "name": "Batch340 tip/eng rewake",
-      "assignment": "tip_sync_or_eng_on_healthy_VM"
-    }
-  ],
-  "spawned_cloud_peers": [
-    {
-      "bcId": "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
-      "name": "Batch343 tip eng cloud fresh",
-      "assignment": "tip_sync_or_eng_on_healthy_VM"
-    }
-  ],
-  "peer_lands_this_pulse": [
-    "62a2b8e7 Batch 343: wake land+verify GRANT341 + living stale clear",
-    "20d6003a Batch 341: grant inventory tip refresh @f244312 (full artifact merge)",
-    "8c3d7ffb Batch 341: soften INV_BATCH Intent hard pin after 342 tip-refresh",
-    "c0cf7530 Batch 343: living script_stale republish after tip-stable watch @f244312"
-  ],
-  "known_signals": [
-    "tip stable @f244312 tip_match=1; Path C IDLE@0019; durable 8/8",
-    "BATCH341_GRANT.json full tip_pins artifact on main @20d6003a",
-    "living batch241-path-c-bundle tip_stale=0 script_stale=0 after Batch 343",
-    "inventable drafts skipped; lemma_closed=false"
-  ],
-  "messaging_limits": {
-    "mechanism_used": "Task resume (IDLE) + Task environment=cloud; isolated worktree for coordinator land; direct trial main push"
-  },
-  "wake_tip_at_assign": "f244312",
-  "wake_tip_at_assign_full": "f244312db901cf6ede88e46af663398d496eb989"
+    "base_tip_expected": "fcad72366743f5244eb26a0164e106419de78137"
+  }
 }

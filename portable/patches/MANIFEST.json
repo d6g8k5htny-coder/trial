@@ -1,6 +1,6 @@
 {
   "schema": "portable.patches.manifest.v1",
-  "generated_at_utc": "2026-09-25T18:54:49Z",
+  "generated_at_utc": "2026-09-25T18:55:44Z",
   "generated_from": [
     "portable/patches/apply_all.sh",
     "portable/patches/*.patch headers"

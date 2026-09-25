@@ -49,7 +49,6 @@ fi
 
 echo "=== Batch 343 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312"
-echo " Batch 343: MULTI_AGENT wake+assign stopped agents (WAKE343)"
 echo " Batch 342: inventory tip refresh batch 342 + soften wake-token Intent live tip pin"
 echo " Batch 341: soften Batch 340 Intent living INV_BATCH hard pin after Batch 342 tip-refresh (CI red == \"340\" vs living 342)"
 echo " Batch 341: grant inventory tip refresh @f244312 (BATCH341_GRANT; preserve_durable)"
@@ -126,7 +125,7 @@ echo " Batch 341: research stack audit WITHOUT promotion @f244312 (open_premises
 echo " Batch 342: WAKE340 tip pins refreshed 848aea2→living f244312 (wake_tip_at_assign preserved)"
 echo " Batch 342: inventory tip refresh batch 342 + soften wake-token Intent live tip pin"
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312 (print_owner drift after 341/342)"
-echo " Batch 343: tip-sync f244312→fcad723 after main #109 inventable (keep-prior; NOT promoted)"
+echo " Batch 343: tip-sync f244312→fcad723 after main #109 (keep-prior; NOT promoted)"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"

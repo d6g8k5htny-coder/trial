@@ -1,32 +1,41 @@
 {
   "batch": "343",
-  "generated_at_utc": "2026-09-25T18:47:53Z",
-  "status": "living_script_stale_republish",
+  "generated_at_utc": "2026-09-25T18:57:03Z",
+  "status": "tip_sync_after_main_109",
   "lemma_closed": false,
-  "scientific_effect": "NONE",
   "flipped_anything": false,
-  "tip": "f244312",
-  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
-  "tip_moved": false,
+  "scientific_effect": "NONE",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "prior_tip": "f244312",
   "tip_match": true,
+  "tip_moved": true,
+  "hardening_tip_moved": true,
   "aligned": true,
   "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "merged_prs": [
+    109
+  ],
+  "main_pr_109": {
+    "state": "MERGED",
+    "title": "docs(inventable): RN_SIDE24_CELL pointer to frozen OPEN_PROBLEMS errata E1",
+    "note": "inventable navigation only \u2014 NOT promoted"
+  },
   "defect_shipped": true,
   "defect_found": true,
-  "defect_id": "living_release_script_stale_after_342",
+  "defect_id": "tip_sync_f244312_to_fcad723_main_109",
   "bugs_fixed": [
-    "living batch241-path-c-bundle script_stale=1 (print_owner_unblock.sh drift after Batch 341/342)"
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST f244312\u2192fcad723 after main #109",
+    "keep-prior Path C; REFRESH 343; _LIVING_TIPS+=fcad723"
   ],
-  "action": "living_script_stale_republish",
-  "route_now": "ENG_FIX",
-  "idle_status": "IDLE_PATH_C_DONE",
-  "refresh_dry_run": "tip_stable_f244312",
-  "wake340": "tip pins already living @f244312 (Batch 342); wake_tip_at_assign preserved",
-  "evidence": {
-    "tip": "TIP_OK @f244312 match=1",
-    "living_before": "script_stale=1 tip_stale=0 (print_owner local=453a2a5c3ace release=9ca1e790d99d)",
-    "living_after": "script_stale=0 tip_stale=0",
-    "research": "inventable drafts skipped"
-  },
-  "note": "Batch 343 tip_sync_watch: tip stable; WAKE340 already @f244312; living script_stale republish; lemma_closed=false."
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "tip_sync_landed",
+  "route_now": "TIP_SYNC",
+  "inventable_promoted": false,
+  "prior_batch343_script_stale": "superseded mid-cycle by tip move",
+  "note": "Batch 343 tip-sync after inventable #109; claim NOT promoted; lemma_closed=false. Audit rate-limit backoff+raw fallback already on main."
 }

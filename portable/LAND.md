@@ -1,16 +1,12 @@
-## STATUS (Batch 343 tip-sync)
-
-tip `fcad723` tip_match=true TIP_OK after tip-sync; #109 MERGED into hardening → refresh keep-prior; inventable NOT promoted; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
-
-## STATUS (Batch 343 wake)
-
-tip `f244312` tip_match=true; MULTI_AGENT wake+assign 10 IDLE + 1 cloud; BATCH341_GRANT full artifact on main; lemma_closed=false; scientific effect NONE.
-
 ## STATUS (Batch 341 inv-batch-pin)
 
 tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard pin (`== "340"` → `>= 340`) after Batch 342 tip-refresh; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 343)
+
+tip `fcad723` tip_match=true TIP_OK after tip-sync; #109 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; prior script_stale pulse superseded; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 343 script_stale)
 
 tip `f244312` tip_match=true; tip watch — living release script_stale republish (print_owner drift after 341/342; tip_stale=0; WAKE340 already living); lemma_closed=false; scientific effect NONE.
 

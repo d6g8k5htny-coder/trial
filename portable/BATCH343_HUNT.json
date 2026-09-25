@@ -1,18 +1,28 @@
 {
   "batch": "343",
-  "hunt": "tip_sync_watch",
+  "generated_at_utc": "2026-09-25T18:57:03Z",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_f244312_to_fcad723_main_109",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
-  "defect_shipped": true,
-  "defect_found": true,
-  "defect_id": "living_release_script_stale_after_342",
-  "tip": "f244312",
-  "tip_moved": false,
+  "tip_moved": true,
   "hunt_0020": "NEGATIVE",
+  "HUNT_NEGATIVE": {
+    "new_eng_beyond_tip_sync": true,
+    "audit_rate_limit": "already_fixed_340"
+  },
   "candidates_checked": {
-    "refresh_dry_run": "match=1",
-    "wake340_tip": "already_living_f244312",
-    "living": "script_stale_FIXED"
-  }
+    "main_pr_109": "MERGED inventable navigation \u2014 skipped promotion"
+  },
+  "bugs_fixed": [
+    "tip-sync f244312\u2192fcad723 after main #109",
+    "REFRESH_BATCH_TAG default 343; living tip_stale republish"
+  ],
+  "avoided": [
+    "inventable #109 claim promotion",
+    "lemma_closed flip",
+    "research HOLD merges"
+  ]
 }
