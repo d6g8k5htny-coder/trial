@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 359 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 359: MULTI_AGENT wake+assign stopped agents @e3cd7d4 (WAKE359; Dylan message-stopped-agents)"
 echo " Batch 359: eng living script_stale republish after tip_or_eng tip-pin (batch241; script_stale 1→0)"
 echo " Batch 359: tip_or_eng inv tip re-pin after grant/sync lands @e3cd7d4"
 echo " Batch 359: grant_check_dual_vector_8of8 tip refresh @e3cd7d4 (BATCH359_GRANT; preserve_durable)"

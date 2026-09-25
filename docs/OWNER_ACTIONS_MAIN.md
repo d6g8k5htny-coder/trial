@@ -1,3 +1,7 @@
+## STATUS (Batch 359 wake)
+
+tip `e3cd7d4` tip_match=true; MULTI_AGENT_WAKE_BATCH359; woken IDLE Path C peers + cloud spawn; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 359 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale after tip_or_eng tip-pin — republish batch241. `lemma_closed=false`. Goal OPEN.
