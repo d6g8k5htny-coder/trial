@@ -2,6 +2,10 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 337)
+
+Hardening tip **stable** @ `eeebb28` tip_match=true. MULTI_AGENT wake assign; research stack audit (open stack; no promotion). Path C IDLE@0019; durable 8/8. action=`idle_no_commit_wake_assign`. `lemma_closed=false`. Scientific effect: NONE.
+
 ## STATUS (Batch 336)
 
 Hardening tip **stable** @ `eeebb28`. Eng: wake poster INTENT tip derives from `BASE_TIP.txt` (was frozen `@077464e`); preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins. `lemma_closed=false`. Scientific effect: NONE.

@@ -1,0 +1,18 @@
+{
+  "batch": "337",
+  "hunt": "tip_stable_post_336_eng",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": false,
+  "defect_found": false,
+  "defect_id": null,
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T18:04:17Z"
+}

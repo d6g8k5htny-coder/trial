@@ -1,0 +1,18 @@
+{
+  "batch": "337",
+  "generated_at_utc": "2026-09-25T18:04:17Z",
+  "tip_sha": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+  "audit_kind": "research_stack_open",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "open_questions": 16,
+  "shape": "HAS_PACKET",
+  "status_promotion": false,
+  "note": "Read-only audit via scripts/audit_research_stack_open.py on shallow hardening tip; no claim/lemma flips."
+}

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 337 — tip stable + MULTI_AGENT wake + research audit (2026-09-25)
+
+- Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Batch 336 CI green @ `05a5d50` (wake living tip + preserve writable0 + wake assign).
+- Woke IDLE tip/eng/grant peers + spawned cloud tip/eng peer; inventable drafts skipped.
+- Research stack audit (hardening tip checkout): open premises/lemmas/prizes remain OPEN; no status promotion.
+- action=`idle_no_commit_wake_assign`; NEVER flip research.
+
 ### Batch 336 — wake INTENT living BASE_TIP (2026-09-25)
 
 - Tip stable @ `eeebb28` (match=1); Path C IDLE@0019; `lemma_closed=false`.

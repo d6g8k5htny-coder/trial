@@ -13694,3 +13694,58 @@ def test_batch336_wake_intent_living_base_tip() -> None:
     assert "wake INTENT" in log_md or "post_batch322_wake_comments" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 336)" in owner
+
+
+def test_batch337_idle_wake_and_research_audit() -> None:
+    """Batch 337: tip-stable idle pulse; wake337; research audit open; lemma_closed false."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH337_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "337"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("action") == "idle_no_commit_wake_assign"
+    assert brief.get("tip_match") is True
+    assert brief.get("patch_0020") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH337_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_found") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH337_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    assert audit.get("status_promotion") is False
+    assert int(audit.get("open_premises") or 0) >= 1
+    assert _living_tip(str(audit.get("tip_sha", "")))
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH337.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert wake.get("wake337_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert len(wake.get("woken_idle_agents") or []) >= 3
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 337)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 337)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 337" in log_md

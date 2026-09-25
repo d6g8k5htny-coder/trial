@@ -1,3 +1,7 @@
+## STATUS (Batch 337)
+
+tip `eeebb28` tip_match=true; MULTI_AGENT wake assign; research stack audit open (lemma_closed=false); Path C IDLE@0019; durable 8/8; action=idle_no_commit_wake_assign; scientific effect NONE.
+
 ## STATUS (Batch 336)
 
 tip `eeebb28` tip_match=true; eng: wake poster INTENT tip derives from BASE_TIP (was frozen @077464e); preserve durable inventory on writable=0 DENIED; MULTI_AGENT wake; inventory REFRESH_BATCH_TAG fallback; soften 335 live tip pins; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
