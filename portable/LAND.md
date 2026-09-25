@@ -1,3 +1,7 @@
+## STATUS (Batch 271)
+
+tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; probe_main_write_vectors W3a–W3e dry_run false_positive (Batch 141 W3f-only leftover) excluded from path_b_ready; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 270)
 
 tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; when_writable --once pid-liveness when flock misses live lockfile pid=; lemma_closed=false; scientific effect NONE.

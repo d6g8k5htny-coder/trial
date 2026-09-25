@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 271)
+
+Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. `probe_main_write_vectors` counted W3a–W3e `dry_run=true` workflow_dispatch as Path-B WRITABLE (Batch 141 only fixed W3f) → `path_b_ready` true while W1 DENIED. Fixed: `DISPATCH_OK_DRY_RUN` + exclude from `path_b_keys` (W1/W2/W4* only). No republish. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/probe_main_write_vectors.py 2>/dev/null | python3 -c 'import sys,json; d=json.load(sys.stdin); print(d.get("path_b_ready"), d.get("path_b_writable_vectors"), d.get("w3_dry_run_false_positives"))'
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ 8e359e5
+```
+
 ## STATUS (Batch 270)
 
 Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. Live `--interval` daemon left lockfile `pid=<live>` but flock probe free → `--once` clobbered shared status. Fixed: pid-liveness fallback for `--once` sidecar + second-loop refuse. No republish. `lemma_closed=false`. Scientific effect: NONE.

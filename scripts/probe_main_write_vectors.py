@@ -8,12 +8,15 @@ Vectors (non-destructive where possible):
   W1  git_refs create+delete (same as probe_main_write.py)
   W2  contents PUT on a throwaway branch path (cleaned up if it lands)
   W3a workflow_dispatch land-option-b-on-main on trial (dry_run)
-  W3b workflow_dispatch land-option-b-on-main on main
-  W3c Actions API dispatch on trial
+  W3b workflow_dispatch land-option-b-on-main on main (dry_run)
+  W3c Actions API dispatch on trial (dry_run)
   W3d workflow_dispatch land-path-c-on-main on trial (dry_run; Path C)
-  W3e Actions API dispatch land-path-c-on-main on trial
+  W3e Actions API dispatch land-path-c-on-main on trial (dry_run)
   W3f repository_dispatch land-path-c-on-main on trial (dry_run; Batch 141:
       success → DISPATCH_OK_DRY_RUN false_positive; excluded from path_b_ready)
+  Batch 271: W3a–W3e dry_run success is the same class of false_positive as W3f —
+      proves trial/main workflow_dispatch only; does NOT mutate d6g8k5htny-coder/main.
+      Excluded from path_b_ready / path_b_writable_vectors (W1/W2/W4* still count).
   W4a fork create
   W4b GraphQL createCommitOnBranch (forbidden → no write)
   W4c pulls create capability (expects 403 without a pushed head)
@@ -305,13 +308,30 @@ def main() -> int:
             w2["state"] = "WRITABLE"
         vectors["W2_contents_put"] = w2
 
-        # W3a — workflow_dispatch trial (gh CLI preferred for dispatch ergonomics)
+        # W3a — workflow_dispatch trial (gh CLI preferred for dispatch ergonomics).
+        # Batch 271: dry_run=true success is NOT Path-B main write (same class as W3f).
         w3a = _dispatch_workflow(TRIAL, "land-option-b-on-main.yml")
-        vectors["W3a_dispatch_trial"] = w3a
+        vectors["W3a_dispatch_trial"] = _as_dry_run_dispatch_probe(
+            w3a,
+            target_repo=TRIAL,
+            workflow="land-option-b-on-main.yml",
+            note=(
+                "Batch 271: dry_run workflow_dispatch on trial only proves Actions "
+                "dispatch on trial — not Contents/refs write on d6g8k5htny-coder/main."
+            ),
+        )
 
         # W3b — workflow_dispatch main (usually 404: workflow absent on default tip)
         w3b = _dispatch_workflow(REPO, "land-option-b-on-main.yml")
-        vectors["W3b_dispatch_main"] = w3b
+        vectors["W3b_dispatch_main"] = _as_dry_run_dispatch_probe(
+            w3b,
+            target_repo=REPO,
+            workflow="land-option-b-on-main.yml",
+            note=(
+                "Batch 271: dry_run workflow_dispatch on main (when present) does not "
+                "prove MAIN_PUSH_TOKEN / refs write; excluded from path_b_ready."
+            ),
+        )
 
         # W3c — Actions API dispatch on trial
         d_status, d_body = _request(
@@ -319,16 +339,32 @@ def main() -> int:
             f"{TRIAL_API}/actions/workflows/land-option-b-on-main.yml/dispatches",
             {"ref": "main", "inputs": {"dry_run": "true"}},
         )
-        vectors["W3c_api_dispatch_trial"] = {
-            "http_status": d_status,
-            "msg": _short(d_body),
-            # 204 = accepted dispatch
-            "state": "WRITABLE" if d_status in (200, 201, 204) else _classify(d_status, d_body),
-        }
+        w3c_ok = d_status in (200, 201, 204)
+        vectors["W3c_api_dispatch_trial"] = _as_dry_run_dispatch_probe(
+            {
+                "http_status": d_status,
+                "msg": _short(d_body),
+                "state": "WRITABLE" if w3c_ok else _classify(d_status, d_body),
+            },
+            target_repo=TRIAL,
+            workflow="land-option-b-on-main.yml",
+            note=(
+                "Batch 271: Actions API dry_run dispatch on trial is false_positive "
+                "for main write (parity with W3f / W3a)."
+            ),
+        )
 
         # W3d — Path C workflow_dispatch on trial (Batch 69+)
         w3d = _dispatch_workflow(TRIAL, "land-path-c-on-main.yml")
-        vectors["W3d_dispatch_path_c_trial"] = w3d
+        vectors["W3d_dispatch_path_c_trial"] = _as_dry_run_dispatch_probe(
+            w3d,
+            target_repo=TRIAL,
+            workflow="land-path-c-on-main.yml",
+            note=(
+                "Batch 271: Path C dry_run workflow_dispatch on trial ≠ Path B / main "
+                "write; excluded from path_b_ready."
+            ),
+        )
 
         # W3e — Path C Actions API dispatch on trial
         d2_status, d2_body = _request(
@@ -336,11 +372,20 @@ def main() -> int:
             f"{TRIAL_API}/actions/workflows/land-path-c-on-main.yml/dispatches",
             {"ref": "main", "inputs": {"dry_run": "true"}},
         )
-        vectors["W3e_api_dispatch_path_c_trial"] = {
-            "http_status": d2_status,
-            "msg": _short(d2_body),
-            "state": "WRITABLE" if d2_status in (200, 201, 204) else _classify(d2_status, d2_body),
-        }
+        w3e_ok = d2_status in (200, 201, 204)
+        vectors["W3e_api_dispatch_path_c_trial"] = _as_dry_run_dispatch_probe(
+            {
+                "http_status": d2_status,
+                "msg": _short(d2_body),
+                "state": "WRITABLE" if w3e_ok else _classify(d2_status, d2_body),
+            },
+            target_repo=TRIAL,
+            workflow="land-path-c-on-main.yml",
+            note=(
+                "Batch 271: Path C Actions API dry_run dispatch on trial is "
+                "false_positive for main write."
+            ),
+        )
 
         # W3f — Path C repository_dispatch on *trial* (Batch 139/141).
         # Batch 141: dry_run=true success is a FALSE POSITIVE for main write.
@@ -444,16 +489,13 @@ def main() -> int:
 
         report["vectors"] = vectors
 
-        # Path-B-capable = can actually mutate main (refs/contents/real dispatch/fork).
-        # W3f dry-run on trial is excluded (Batch 141 false_positive neutralization).
+        # Path-B-capable = can actually mutate main (refs/contents/fork/commit/PR).
+        # Dry-run workflow/repository dispatches (W3a–W3f) are excluded:
+        #   Batch 141 neutralized W3f; Batch 271 extends to W3a–W3e (all fire
+        #   dry_run=true only — trial Actions OK ≠ main Contents/refs write).
         path_b_keys = (
             "W1_git_refs",
             "W2_contents_put",
-            "W3a_dispatch_trial",
-            "W3b_dispatch_main",
-            "W3c_api_dispatch_trial",
-            "W3d_dispatch_path_c_trial",
-            "W3e_api_dispatch_path_c_trial",
             "W4a_fork",
             "W4b_graphql_createCommitOnBranch",
             "W4c_pulls_create",
@@ -465,6 +507,22 @@ def main() -> int:
         report["w3f_state"] = w3f.get("state")
         report["w3f_real_main_write"] = False
         report["w3f_false_positive"] = bool(w3f.get("false_positive_for_main_write"))
+        w3_dry_keys = (
+            "W3a_dispatch_trial",
+            "W3b_dispatch_main",
+            "W3c_api_dispatch_trial",
+            "W3d_dispatch_path_c_trial",
+            "W3e_api_dispatch_path_c_trial",
+        )
+        w3_dry_fp = [
+            k
+            for k in w3_dry_keys
+            if (vectors.get(k) or {}).get("false_positive_for_main_write")
+        ]
+        report["w3_dry_run_false_positives"] = w3_dry_fp
+        report["w3_dry_run_false_positive"] = bool(w3_dry_fp) or bool(
+            report.get("w3f_false_positive")
+        )
         # REACHED_422 on contents/refs often means write scope present but bad payload —
         # treat as interesting but not WRITABLE for landing.
         report["path_b_writable_vectors"] = writable
@@ -481,10 +539,11 @@ def main() -> int:
         report["state"] = "DENIED"
         report["path_b_ready"] = False
         print(json.dumps(report, indent=2, sort_keys=True))
-        if report.get("w3f_false_positive"):
+        if report.get("w3_dry_run_false_positive"):
             print(
                 "probe_main_write_vectors: DENIED — no Path-B-capable write vector "
-                "(W3f dry-run dispatch on trial is false_positive for main write)",
+                "(W3a–W3f dry_run dispatch is false_positive for main write; "
+                "need W1/W2/W4*)",
                 file=sys.stderr,
             )
         else:
@@ -499,6 +558,37 @@ def main() -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
         print(f"probe_main_write_vectors: {exc}", file=sys.stderr)
         return 2
+
+
+def _as_dry_run_dispatch_probe(
+    vec: dict,
+    *,
+    target_repo: str,
+    workflow: str,
+    note: str,
+) -> dict:
+    """Annotate a dry_run workflow_dispatch probe as non–Path-B (Batch 271).
+
+    Successful dry_run dispatch is recorded as DISPATCH_OK_DRY_RUN with
+    ``false_positive_for_main_write=True`` so it cannot inflate path_b_ready.
+    Failures keep their classified state and stay non-capable.
+    """
+    out = dict(vec)
+    ok_states = {"WRITABLE", "DISPATCH_OK_DRY_RUN"}
+    http = out.get("http_status")
+    success = out.get("state") in ok_states or http in (200, 201, 204)
+    if success:
+        out["state"] = "DISPATCH_OK_DRY_RUN"
+        out["false_positive_for_main_write"] = True
+    else:
+        out["false_positive_for_main_write"] = False
+    out["path_b_capable"] = False
+    out["main_write"] = False
+    out["target_repo"] = target_repo
+    out["workflow"] = workflow
+    out["client_payload_dry_run"] = True
+    out["note"] = note
+    return out
 
 
 def _dispatch_workflow(repo: str, workflow_file: str) -> dict:

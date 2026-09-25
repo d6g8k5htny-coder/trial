@@ -64,6 +64,10 @@ The agent keeps a device-flow poller alive in tmux session `gh-device-login`. Wh
 
 `probe_main_write_vectors` vector **W3f** (`repository_dispatch` on **trial** with `dry_run=true`) can return HTTP 201 while direct main write stays **DENIED**. That is **not** a write path to `d6g8k5htny-coder/main`. Batch 141 classifies it as `DISPATCH_OK_DRY_RUN`, sets `path_b_capable=false`, and keeps overall `path_b_ready=false` so agents do not skip real lands.
 
+## W3a–W3e dry_run false positive (Batch 271)
+
+Batch 141 left **W3a/W3b/W3c/W3d/W3e** (`workflow_dispatch` / Actions API with `dry_run=true`) inside `path_b_keys`. A token that can only dispatch trial workflows made `path_b_ready=true` while W1 refs stayed **DENIED**. Batch 271 classifies those the same as W3f (`DISPATCH_OK_DRY_RUN`, `false_positive_for_main_write=true`) and keeps `path_b_keys` to **W1/W2/W4*** only.
+
 Real Path C still needs one of: device-flow authorize → user token, or `MAIN_PUSH_TOKEN` file drop + trial Actions secret, or Cursor App install of `main`, or local `--from-bundle`.
 
 ## MAIN_PUSH_TOKEN file drop (Batch 140)
