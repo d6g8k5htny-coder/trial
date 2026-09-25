@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — audit raw/ls-remote fallback after rate-limit (2026-09-25)
+
+- Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; `lemma_closed=false`.
+- Eng: peer Batch 340 backoff still exits 2 when installation rate-limit reset window is long. Added `git ls-remote` + `raw.githubusercontent.com` fallback after API exhaustion; CI soft-continues residual transport exit 2.
+- NEVER flip research.
+
 ### Batch 340 (MULTI_AGENT wake land+verify; tip @848aea2) — 2026-09-25 ~18:23 UTC
 - Coordinator `bc-01a0cf1e`: Dylan permanent Path C autonomy wake.
 - Confirmed tip_match @ `848aea2`; Path C IDLE@0019; living `tip_stale=0` `script_stale=0`; durable inventory 8/8; `lemma_closed=false`.

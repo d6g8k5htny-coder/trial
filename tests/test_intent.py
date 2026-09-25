@@ -14075,3 +14075,83 @@ def test_batch340_wake_land_verify() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 340" in log_md
 
+
+
+def test_batch340_audit_rate_limit_raw_fallback() -> None:
+    """Batch 340b: raw/ls-remote fallback after rate-limit; CI soft-continue exit 2."""
+    import importlib.util
+    import json
+    import urllib.error
+    import urllib.request
+    from io import BytesIO
+    from unittest import mock
+
+    audit_path = ROOT / "scripts" / "audit_main_alignment.py"
+    audit_src = audit_path.read_text(encoding="utf-8")
+    assert "_audit_via_raw_fallback" in audit_src
+    assert "raw.githubusercontent.com" in audit_src
+    assert "ls-remote" in audit_src
+    assert "RateLimitExhausted" in audit_src
+    assert "misaligned = bool(complexity_hits)" in audit_src
+
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "soft continue" in ci.lower() or "soft-continue" in ci.lower()
+    assert "AUDIT_TRANSPORT_RETRIES" in ci
+
+    spec = importlib.util.spec_from_file_location("audit340b", audit_path)
+    assert spec is not None and spec.loader is not None
+    audit = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(audit)
+
+    audit._TRANSPORT_SLEEP_S = 0.0
+    audit._TRANSPORT_RETRIES = 2
+    real_urlopen = urllib.request.urlopen
+
+    def selective(req, timeout=60):
+        url = getattr(req, "full_url", str(req))
+        if "api.github.com" in url:
+            raise urllib.error.HTTPError(
+                url,
+                403,
+                "Forbidden",
+                hdrs={},
+                fp=BytesIO(
+                    b'{"message":"API rate limit exceeded for installation."}'
+                ),
+            )
+        return real_urlopen(req, timeout=timeout)
+
+    with mock.patch("urllib.request.urlopen", selective):
+        code = audit.main()
+    assert code in (0, 1)
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "audit_main_alignment_rate_limit_no_raw_fallback"
+    )
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH340_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == (
+        "audit_main_alignment_rate_limit_no_raw_fallback"
+    )
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in land
+    assert "raw" in land.lower() or "fallback" in land.lower()
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "raw/ls-remote" in log_md or "raw fallback" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in owner

@@ -1,0 +1,19 @@
+{
+  "batch": "340",
+  "hunt": "audit_rate_limit_raw_fallback",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "audit_main_alignment_rate_limit_no_raw_fallback",
+  "avoided": [
+    "promote inventable drafts",
+    "flip lemma_closed",
+    "duplicate peer backoff 066994c"
+  ],
+  "tip_moved": false,
+  "tip": "848aea2",
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T18:28:00Z"
+}

@@ -1,0 +1,24 @@
+{
+  "batch": "340",
+  "generated_at_utc": "2026-09-25T18:28:00Z",
+  "status": "audit_rate_limit_raw_fallback",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "audit_main_alignment_rate_limit_no_raw_fallback",
+  "bugs_fixed": [
+    "after Batch 340 backoff, exhausted installation rate-limit still exited 2 with no non-API path",
+    "raw.githubusercontent.com + git ls-remote fallback; CI soft-continue residual transport exit 2"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "action": "eng_audit_rate_limit_raw_fallback",
+  "inventable_promoted": false,
+  "complements": "066994c audit backoff"
+}

@@ -31,6 +31,8 @@ jobs:
           # 3×2s defaults (~6s) on align-watch run 36172207352 — more attempts +
           # longer backoff (script also honors x-ratelimit-reset). Exit 1 (MISALIGNED)
           # detection is unchanged.
+          # Batch 340b: after retries, script falls back to raw/ls-remote; residual
+          # transport exit 2 soft-continues (same class as drift-watch record-only).
           AUDIT_TRANSPORT_RETRIES: "6"
           AUDIT_TRANSPORT_SLEEP_S: "3"
           AUDIT_TRANSPORT_SLEEP_CAP_S: "60"
@@ -41,8 +43,11 @@ jobs:
           set -e
           # 1 = misalignment still present on upstream main (current truth)
           # 0 = already fixed upstream
-          # 2 = transport failure (fail the job)
-          if [ "$code" -eq 2 ]; then exit 2; fi
+          # 2 = transport failure — Batch 340b soft-continue after retries+fallback
+          if [ "$code" -eq 2 ]; then
+            echo "::warning::alignment audit transport failure (exit 2) — soft continue"
+            exit 0
+          fi
           exit 0
       - name: Alignment watch (informational)
         env:

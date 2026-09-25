@@ -4,7 +4,7 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Eng: `audit_main_alignment` Batch 256 retries (3×2s) exhausted on CI align-watch run **36172207352** under installation primary rate-limit 403 — stronger defaults (6 attempts, exponential backoff, `x-ratelimit-reset`) + CI env. **Misalignment exit 1 unchanged.** Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`audit_rate_limit_retry`. Scientific effect: NONE.
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: `audit_main_alignment` 403 rate-limit exponential backoff + **raw/ls-remote fallback** after API exhaustion; CI soft-continues residual transport exit 2. **Misalignment exit 1 unchanged.** Guard+research: `lemma_closed=false`. action=`audit_rate_limit_raw_fallback`. Scientific effect: NONE.
 
 ```bash
 AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
