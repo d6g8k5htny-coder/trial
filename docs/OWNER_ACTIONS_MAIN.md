@@ -1,3 +1,7 @@
+## STATUS (Batch 355 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + living script_stale — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 355 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch_no_promotion: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
