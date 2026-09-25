@@ -1,8 +1,11 @@
 {
   "batch": "350",
-  "defect_id": "inventory_trial_tip_lag_33dda3b_after_349_idle",
-  "hunt_0020": "NEGATIVE",
+  "defect_id": "inventory_trial_tip_lag_after_lands",
+  "defect_found": true,
   "defect_shipped": true,
+  "action": "inventory_preserve_durable_tip_pin",
   "lemma_closed": false,
-  "action": "grant_inventory_tip_pin_after_main_lands"
+  "flipped_anything": false,
+  "hunt_0020": "NEGATIVE",
+  "tip": "e3cd7d4"
 }

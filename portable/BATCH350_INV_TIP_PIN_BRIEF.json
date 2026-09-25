@@ -1,10 +1,12 @@
 {
   "batch": "350",
-  "utc": "2026-09-25T20:13:32Z",
-  "tip": "e3cd7d4",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip_match": true,
+  "durable": "8/8_WRITABLE",
   "lemma_closed": false,
+  "action": "inventory_preserve_durable_tip_pin",
   "flipped_anything": false,
-  "action": "grant_inventory_tip_pin_after_main_lands",
-  "artifact": "portable/BATCH350_INV_TIP_PIN_EVIDENCE.json"
+  "goal": "OPEN",
+  "trial_tip_sha": "c0b3f4f9d25014e66a408417f7f5399167b2bdcb",
+  "scientific_effect": "NONE"
 }
