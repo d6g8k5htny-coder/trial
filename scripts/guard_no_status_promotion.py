@@ -437,6 +437,43 @@ def _baseline_tip_sha(baseline_raw: dict[str, Any], baseline_inv: dict[str, Any]
     return None
 
 
+def _baseline_shape(baseline_raw: dict[str, Any], baseline_inv: dict[str, Any]) -> str | None:
+    """Recover baseline shape when inventory.shape was clobbered / omitted.
+
+    Batch 263: NO_PACKET live vs a HAS_PACKET baseline must exit 2 (usage),
+    not exit 1 with false OPEN→ABSENT promotion violations. Older or
+    tip-sha-clobber snapshots may keep premises/lemmas while dropping
+    ``inventory.shape``; also recover from snapshot ``live_shape`` / nested
+    hardening_tip_audit / non-empty OPEN inventory (infer HAS_PACKET).
+    """
+    for candidate in (
+        baseline_inv.get("shape"),
+        baseline_raw.get("live_shape"),
+        baseline_raw.get("shape"),
+    ):
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    hta = baseline_raw.get("hardening_tip_audit")
+    if isinstance(hta, dict):
+        nested = hta.get("shape")
+        if isinstance(nested, str) and nested.strip():
+            return nested.strip()
+    # Infer HAS_PACKET when baseline still carries OPEN stack rows.
+    for key in ("premises", "lemmas", "prizes", "obligations"):
+        bag = baseline_inv.get(key) or {}
+        if isinstance(bag, dict) and bag:
+            return "HAS_PACKET"
+    return None
+
+
+def _baseline_is_has_packet(
+    baseline_raw: dict[str, Any], baseline_inv: dict[str, Any]
+) -> bool:
+    """True when baseline represents a HAS_PACKET research stack."""
+    shape = _baseline_shape(baseline_raw, baseline_inv)
+    return shape == "HAS_PACKET"
+
+
 def build_snapshot(
     *,
     tip_sha: str,
@@ -563,6 +600,11 @@ def main(argv: list[str] | None = None) -> int:
             recovered = _baseline_tip_sha(baseline_raw, baseline_inv)
             if recovered and not baseline_inv.get("tip_sha"):
                 baseline_inv = {**baseline_inv, "tip_sha": recovered}
+            # Batch 263: preserve shape when inventory.shape was clobbered/omitted
+            # (else NO_PACKET live falsely reports OPEN→ABSENT promotions).
+            recovered_shape = _baseline_shape(baseline_raw, baseline_inv)
+            if recovered_shape and not baseline_inv.get("shape"):
+                baseline_inv = {**baseline_inv, "shape": recovered_shape}
         else:
             baseline_inv = extract_open_inventory(baseline_raw)
 
@@ -580,7 +622,11 @@ def main(argv: list[str] | None = None) -> int:
 
         # NO_PACKET on default tip cannot be compared as a promotion pass against
         # a HAS_PACKET baseline — treat as usage error so CI clones hardening tip.
-        if live_report.get("shape") == "NO_PACKET" and baseline_inv.get("shape") == "HAS_PACKET":
+        # Batch 263: recover shape from live_shape / nested audit / OPEN rows when
+        # inventory.shape was stripped (avoid false promotion FAIL).
+        if live_report.get("shape") == "NO_PACKET" and _baseline_is_has_packet(
+            baseline_raw if isinstance(baseline_raw, dict) else {}, baseline_inv
+        ):
             print(
                 "guard_no_status_promotion: checkout is NO_PACKET but baseline is "
                 "HAS_PACKET — pass the hardening tip clone",

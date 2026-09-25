@@ -1,7 +1,11 @@
-## STATUS (Batch 262)
+## STATUS (Batch 263)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; `probe_main_write(+vectors)` missed durable file tokens → live DENIED while PATH_C_STATUS WRITABLE → file discovery + `token_source`; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; research-guard NO_PACKET vs shape-stripped HAS_PACKET baseline falsely reported ~19 promotions → recover shape + exit 2; Batch 262 Intent CI env-scrub; lemma_closed=false; scientific effect NONE.
 
+> ## STATUS (Batch 262)
+>
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; `probe_main_write(+vectors)` missed durable file tokens → live DENIED while PATH_C_STATUS WRITABLE → file discovery + `token_source`; lemma_closed=false; scientific effect NONE.
+>
 > ## STATUS (Batch 261)
 >
 > tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; `path_c_dry_run` lied APPLY_READY when already-on-tip → IDLE_PATH_C_DONE + apply_ready=false; print_owner_unblock idle Path C line; lemma_closed=false; scientific effect NONE.

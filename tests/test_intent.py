@@ -8568,39 +8568,37 @@ def test_batch262_probe_file_token_discovery() -> None:
         tok_path = P(td) / "MAIN_PUSH_TOKEN"
         secret = "ghp_batch262_probe_file_token_unit_never_print"
         tok_path.write_text(secret + "\n", encoding="utf-8")
-        env = {
-            k: v
-            for k, v in os.environ.items()
-            if k not in ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
-        }
-        env["PATH_C_IGNORE_FILE_TOKENS"] = "0"
-        # Monkey via rewriting DEFAULT paths is hard; call helpers via import.
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location("probe_main_write_b262", probe)
-        assert spec and spec.loader
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        # Patch default files for this process.
-        mod._DEFAULT_TOKEN_FILES = (str(tok_path),)
-        mod._TOKEN_SOURCE = None
-        got = mod._token()
-        assert got == secret
-        assert mod._token_source() == f"file:{tok_path}"
-        # Ignore-file path skips discovery.
-        env_ignore = dict(os.environ)
-        env_ignore["PATH_C_IGNORE_FILE_TOKENS"] = "1"
-        # Re-exec helper with env — _ignore_file_tokens reads os.environ
-        old = os.environ.get("PATH_C_IGNORE_FILE_TOKENS")
+        # Cloud Agent / Actions always inject GITHUB_TOKEN; scrub ambient App
+        # tokens so the unit assert exercises file discovery (Batch 262 CI flake).
+        scrubbed_keys = ("MAIN_PUSH_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+        saved_env = {k: os.environ.pop(k) for k in scrubbed_keys if k in os.environ}
+        old_ignore = os.environ.get("PATH_C_IGNORE_FILE_TOKENS")
         try:
+            os.environ["PATH_C_IGNORE_FILE_TOKENS"] = "0"
+            import importlib.util
+
+            spec = importlib.util.spec_from_file_location("probe_main_write_b262", probe)
+            assert spec and spec.loader
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            # Patch default files for this process.
+            mod._DEFAULT_TOKEN_FILES = (str(tok_path),)
+            mod._TOKEN_SOURCE = None
+            got = mod._token()
+            assert got == secret
+            assert mod._token_source() == f"file:{tok_path}"
+            # Ignore-file path skips discovery.
             os.environ["PATH_C_IGNORE_FILE_TOKENS"] = "1"
             mod._TOKEN_SOURCE = None
             assert mod._token() is None
         finally:
-            if old is None:
+            for k in scrubbed_keys:
+                os.environ.pop(k, None)
+            os.environ.update(saved_env)
+            if old_ignore is None:
                 os.environ.pop("PATH_C_IGNORE_FILE_TOKENS", None)
             else:
-                os.environ["PATH_C_IGNORE_FILE_TOKENS"] = old
+                os.environ["PATH_C_IGNORE_FILE_TOKENS"] = old_ignore
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH262_BRIEF.json").read_text(encoding="utf-8")
@@ -8675,3 +8673,151 @@ def test_batch262_probe_file_token_discovery() -> None:
         data = json.loads(ignore.stdout[ignore.stdout.find("{") :])
         assert data.get("state") == "DENIED"
         assert data.get("token_source") in (None, "")
+
+
+def test_batch263_research_guard_nopacket_shape_stripped() -> None:
+    """Batch 263: research-guard NO_PACKET vs shape-stripped HAS_PACKET → exit 2."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path as P
+
+    guard = ROOT / "scripts" / "guard_no_status_promotion.py"
+    src = guard.read_text(encoding="utf-8")
+    assert "Batch 263" in src
+    assert "_baseline_shape" in src
+    assert "_baseline_is_has_packet" in src
+
+    spec = importlib.util.spec_from_file_location("guard_no_status_promotion_b263", guard)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert (snap.get("inventory") or {}).get("premises")
+
+    # Unit: recover shape from live_shape / OPEN rows when inventory.shape wiped.
+    stripped_inv = dict(snap["inventory"])
+    stripped_inv.pop("shape", None)
+    baseline_raw = {
+        "guard": "no_status_promotion",
+        "live_shape": "HAS_PACKET",
+        "tip_sha": snap.get("tip_sha"),
+        "baseline_tip_sha": snap.get("baseline_tip_sha"),
+        "inventory": stripped_inv,
+    }
+    assert mod._baseline_shape(baseline_raw, stripped_inv) == "HAS_PACKET"
+    assert mod._baseline_is_has_packet(baseline_raw, stripped_inv) is True
+    # Infer from OPEN premises alone when live_shape also missing.
+    bare = {"guard": "no_status_promotion", "inventory": stripped_inv}
+    assert mod._baseline_shape(bare, stripped_inv) == "HAS_PACKET"
+
+    with tempfile.TemporaryDirectory() as td:
+        td_path = P(td)
+        empty = td_path / "empty_checkout"
+        empty.mkdir()
+        base_path = td_path / "shape_stripped_baseline.json"
+        # Snapshot-shaped baseline with inventory.shape removed (clobber edge).
+        bad = dict(snap)
+        bad["inventory"] = dict(snap["inventory"])
+        bad["inventory"].pop("shape", None)
+        # Keep live_shape so recovery path is exercised; also works without it.
+        base_path.write_text(json.dumps(bad), encoding="utf-8")
+        out = td_path / "out.json"
+        rc = mod.main(
+            [
+                str(empty),
+                "--trial-root",
+                str(ROOT),
+                "--baseline",
+                str(base_path),
+                "--snapshot-out",
+                str(out),
+                "--tip-sha",
+                "deadbeef_batch263",
+            ]
+        )
+        # Usage error — not false promotion FAIL (exit 1).
+        assert rc == 2
+        assert not out.exists()
+
+        # Also when live_shape stripped: infer HAS_PACKET from OPEN premises.
+        bad2 = dict(bad)
+        bad2.pop("live_shape", None)
+        bad2["inventory"] = dict(bad["inventory"])
+        bad2["inventory"].pop("shape", None)
+        base2 = td_path / "infer_baseline.json"
+        base2.write_text(json.dumps(bad2), encoding="utf-8")
+        out2 = td_path / "out2.json"
+        rc2 = mod.main(
+            [
+                str(empty),
+                "--trial-root",
+                str(ROOT),
+                "--baseline",
+                str(base2),
+                "--snapshot-out",
+                str(out2),
+                "--tip-sha",
+                "deadbeef_batch263_infer",
+            ]
+        )
+        assert rc2 == 2
+        assert not out2.exists()
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH263_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "263"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "research_guard_nopacket_shape_stripped_false_promotions"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH263_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "263"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "path_c dry_run idle" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH263_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 263" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 263)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 263)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 263" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
