@@ -50,6 +50,7 @@ fi
 echo "=== Batch 344 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 344: tip_sync_watch idle @fcad723 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 343: STATUS_GUARD tip refresh f244312→fcad723 after tip-sync (guard pass; no promotion)"
+echo " Batch 344: idle_no_commit tip-stable watch @fcad723 (batch327 timer pulse)"
 echo " Batch 343: inventory ultimate fallback return \"343\" (was frozen 340 after tip-sync REFRESH 343); soften Batch 340 Intent hard pin"
 echo " Batch 343: grant inventory tip refresh batch 343 (preserve durable 8/8 on writable=0)"
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312"

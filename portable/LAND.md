@@ -5,6 +5,8 @@ tip `fcad723` tip_match=true; eng: STATUS_GUARD tip_sha + inventory.tip_sha refr
 ## STATUS (Batch 344)
 
 tip `fcad723` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+## STATUS (Batch 344 idle)
+tip `fcad723` tip_match=true; idle_no_commit after tip-stable watch; living clean; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 343 wake-tip)
 

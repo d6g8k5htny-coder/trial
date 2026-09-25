@@ -15306,3 +15306,30 @@ def test_batch343_status_guard_tip_refresh_fcad723() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 343 status-guard)" in owner
 
+
+
+def test_batch344_idle_no_commit() -> None:
+    """Batch 344: tip-stable idle_no_commit evidence @fcad723; lemma_closed false."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH344_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "344"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH344_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 344)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 344 idle)" in land

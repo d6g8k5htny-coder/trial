@@ -1,3 +1,7 @@
+## STATUS (Batch 344 idle)
+
+Hardening tip **stable** @ `fcad723`. idle_no_commit. `lemma_closed=false`.
+
 ## STATUS (Batch 343 wake)
 
 Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`. Hardening tip stable @ `fcad723`. `lemma_closed=false`.
