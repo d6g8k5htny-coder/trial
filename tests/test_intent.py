@@ -12800,3 +12800,93 @@ def test_batch321_soften_live_tip_pins_and_inventory_refresh() -> None:
     assert "Batch 321" in log_md
     assert "living tip" in log_md.lower() or "_living_tip" in log_md or "live tip" in log_md.lower()
 
+def test_batch324_keep_prior_abort_fix() -> None:
+    """Batch 324: keep-prior bundle verify abort fix; tip stable @077464e."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH324_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "324"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_found") is True
+    assert brief.get("defect_id") == "refresh_keep_prior_bundle_verify_trial_root_abort"
+    assert brief.get("route_now") == "ENG_FIX"
+    assert brief.get("action") == "eng_keep_prior_abort_fix"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("aligned") is True
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("077464e")
+    evidence = brief.get("evidence") or {}
+    assert "exit 1" in (evidence.get("repro") or "") or "abort" in (
+        evidence.get("repro") or ""
+    ).lower()
+    assert "WORKDIR" in (evidence.get("fix") or "") or "324" in (
+        evidence.get("fix") or ""
+    )
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH324_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_found") is True
+    assert hunt.get("defect_id") == "refresh_keep_prior_bundle_verify_trial_root_abort"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    checked = hunt.get("candidates_checked") or {}
+    assert "exit_1" in (checked.get("refresh_force_before") or "")
+    assert "exit_0" in (checked.get("refresh_force_after") or "")
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH324_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("batch") == "324"
+    assert str(audit.get("tip_sha", "")).startswith("077464e")
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 324" in log_md
+    assert "keep-prior" in log_md.lower() or "bundle verify" in log_md.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 324)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 324)" in owner
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 324)
+    assert "Batch 324: verify against WORKDIR" in refresh
+    assert 'git -C "$WORKDIR" bundle verify' in refresh
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(verify.get("refresh_batch") or 0) >= 324
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 324" in unblock
+    _assert_print_owner_header_batch_at_least(unblock, 324)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+    assert status.get("write_state") == "WRITABLE"
+

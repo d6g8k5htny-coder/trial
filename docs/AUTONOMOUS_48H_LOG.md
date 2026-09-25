@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 324 — keep-prior abort fix (2026-09-25)
+
+- Tip **stable** @ `077464e` (BASE==LIVE; tip-sync already landed Batch 305+317). Path C `IDLE_PATH_C_DONE`. WRITE WRITABLE (durable dylan 8/8).
+- **Defect:** `refresh_path_c_bundle.sh` keep-prior ran `git bundle verify` on trial ROOT (missing bundle prerequisite commits → exit 1). Under `set -euo pipefail` aborted before VERIFY/APPLY/MANIFEST write (`--force` exit 1; VERIFY.refresh_batch stuck at 317).
+- **Fix:** verify via WORKDIR hardening clone (or tolerate fail) before honesty extract; REFRESH default 324. Repro→fix: `--force` exit 0; VERIFY.refresh_batch=324.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`eng_keep_prior_abort_fix`. No research flip. No 0020.
+
 ### Batch 321 — soften live tip Intent pins + refresh inventory (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

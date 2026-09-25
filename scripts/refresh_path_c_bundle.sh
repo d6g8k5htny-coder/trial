@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-317}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-324}"
 
 usage() {
   cat <<'EOF'
@@ -379,11 +379,24 @@ KEEP_PRIOR_BUNDLE="${KEEP_PRIOR_BUNDLE:-0}"
 LOCAL_ALLOW_EMPTY_SHA="$APPLIED_SHA"
 BUNDLE_HEAD_SHA=""
 if [[ -s "$BUNDLE_OUT" ]]; then
-  BUNDLE_HEAD_SHA="$(git bundle list-heads "$BUNDLE_OUT" 2>/dev/null | awk '{print $1; exit}')"
+  # list-heads does not need object DB; tolerate empty/fail under set -e.
+  BUNDLE_HEAD_SHA="$(git bundle list-heads "$BUNDLE_OUT" 2>/dev/null | awk '{print $1; exit}' || true)"
 fi
 BUNDLE_REQUIRES_SHA=""
 if [[ -s "$BUNDLE_OUT" ]]; then
-  BUNDLE_REQUIRES_SHA="$(git bundle verify "$BUNDLE_OUT" 2>&1 | awk '/requires this ref:/{getline; gsub(/^[[:space:]]+/,"",$0); print; exit}')"
+  # Batch 324: verify against WORKDIR (hardening clone), never trial ROOT.
+  # Trial lacks bundle prerequisite commits → `git bundle verify` exits 1;
+  # under set -euo pipefail that aborted keep-prior before VERIFY/APPLY/MANIFEST
+  # write (tip-sync / --force incomplete). Same Batch 180 class as the
+  # recreate-path verify above.
+  _bundle_verify_out=""
+  if [[ -n "${WORKDIR:-}" && -d "${WORKDIR}/.git" ]]; then
+    _bundle_verify_out="$(git -C "$WORKDIR" bundle verify "$BUNDLE_OUT" 2>&1 || true)"
+  else
+    _bundle_verify_out="$(git bundle verify "$BUNDLE_OUT" 2>&1 || true)"
+  fi
+  BUNDLE_REQUIRES_SHA="$(printf '%s\n' "$_bundle_verify_out" | awk '/requires this ref:/{getline; gsub(/^[[:space:]]+/,"",$0); print; exit}' || true)"
+  unset _bundle_verify_out
 fi
 if [[ "$KEEP_PRIOR_BUNDLE" -eq 1 && -n "$BUNDLE_HEAD_SHA" ]]; then
   APPLIED_SHA="$BUNDLE_HEAD_SHA"

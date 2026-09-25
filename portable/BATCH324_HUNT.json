@@ -1,0 +1,40 @@
+{
+  "batch": "324",
+  "hunt": "keep_prior_abort_fix",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "refresh_keep_prior_bundle_verify_trial_root_abort",
+  "bugs_fixed": [
+    "keep-prior abort: git bundle verify on trial ROOT under pipefail skipped VERIFY/APPLY/MANIFEST",
+    "REFRESH default 324"
+  ],
+  "avoided": [
+    "tip-sync churn (already @077464e via Batch 305+317)",
+    "research HOLD drafts #87/#92/#93",
+    "invent 0020",
+    "promote lemma_closed"
+  ],
+  "candidates_checked": {
+    "tip_vs_077464e": "TIP_OK_BASE_eq_LIVE",
+    "refresh_force_before": "exit_1_VERIFY_stale_refresh_batch_317",
+    "refresh_force_after": "exit_0_VERIFY_refresh_batch_324",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "077464e",
+  "tip_moved": false,
+  "prior_tip": "077464e",
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 1,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "tip_sync_needed": true,
+    "note": "tip stable; eng defect was keep-prior abort; fixed"
+  }
+}

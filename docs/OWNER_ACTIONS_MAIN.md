@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 324)
+
+Hardening tip **stable** @ `077464e` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). **Defect:** `refresh_path_c_bundle.sh` keep-prior path ran `git bundle verify` on trial ROOT (missing bundle prereqs → exit 1); under `set -euo pipefail` aborted after BASE_TIP / before VERIFY/APPLY/MANIFEST (`--force` exit 1; VERIFY.refresh_batch stuck). **Fix:** verify via WORKDIR (or tolerate fail). REFRESH default 324. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`eng_keep_prior_abort_fix`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 077464e
+REFRESH_BATCH_TAG=324 ./scripts/refresh_path_c_bundle.sh --force   # keep-prior completes VERIFY
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 317)
 
 Hardening tip **synced** `0adeb65`→`077464e` after main **#89** tip-observe merge into hardening (tip_match=true; Path C idle; BASE==LIVE after sync). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). **#89 MERGED**; **#87 OPEN DRAFT** research (skipped). Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 317 + `_LIVING_TIPS+=077464e`. Inventable tip-observe NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
