@@ -1,0 +1,57 @@
+{
+  "batch": "283",
+  "hunt": "republish_byte_growth_misses_tip_stale_release",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "republish_byte_growth_misses_tip_stale_release",
+  "bugs_fixed": [
+    "republish TGZ_NEWER used byte-growth only → tip-sync packs that stay same-or-smaller left living release at old BASE_TIP (3b3860d) while local/assert green @ 7d13a88",
+    "living release trial-portable-main-fixes.tgz still lacked owner_grant after Batch 282 pack fix (never republished)",
+    "refresh --dry-run / assert_path_c_ready stayed OK while owners downloading batch241 release got stale tip + missing grant"
+  ],
+  "avoided": [
+    "research HOLD drafts (83/47/46/38/36/21/12/8/7)",
+    "tip-observe inventable content",
+    "pack omit grant (282)",
+    "grant ls-remote auth (281)",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_7d13a88": "TIP_OK",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "pack_missing_grant_local": "already_fixed_282",
+    "living_release_pack": "stale_tip_3b3860d_no_grant_need_upload_1",
+    "republish_byte_growth_only": "reproduced_tip_stale_class",
+    "grant_durable_ls_remote": "already_fixed_281",
+    "probe_w2_ref_first": "already_fixed_280",
+    "republish_basename": "already_fixed_279",
+    "when_writable_once": "already_fixed_270",
+    "land_workflows_idle": "already_fixed_272",
+    "patch_0020": "NEGATIVE",
+    "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE_ls_remote_ok"
+  },
+  "tip": "7d13a88",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was republish tip_stale + living release lag after 282 tip-sync"
+  }
+}
