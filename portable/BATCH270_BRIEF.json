@@ -43,7 +43,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "when_writable_land --once/--loop treat lockfile pid= of live when_writable_land as held when flock probe misses",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 100,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_8e359e5",
@@ -65,7 +65,7 @@
     "pack_vs_release": "deferred_avoid_republish_448747_vs_386608"
   },
   "next_focus": "tip_sync_drift_watch @8e359e5; keep Path C idle until next tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish); restart when_writable daemon to pick up pid-liveness",
-  "note": "Batch 270: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80/#81 + research HOLDs skipped). NEW eng: when_writable --once flock probe missed while live --interval daemon left lockfile pid= live → clobbered shared status. Fixed: pid-liveness fallback for --once redirect + second-loop refuse. lemma_closed=false; flipped nothing. Never printed tokens. Avoided VERIFY.batch release-align / pack living-tag / when_writable flock redesign / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 270: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80/#81 + research HOLDs skipped). NEW eng: when_writable --once flock probe missed while live --interval daemon left lockfile pid= live \u2192 clobbered shared status. Fixed: pid-liveness fallback for --once redirect + second-loop refuse. lemma_closed=false; flipped nothing. Never printed tokens. Avoided VERIFY.batch release-align / pack living-tag / when_writable flock redesign / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene. Trial eng PR #100 squash merge @df6e3d7.",
   "artifacts": [
     "scripts/when_writable_land.py",
     "portable/BATCH270_BRIEF.json",
@@ -76,10 +76,15 @@
     "portable/LAND.md",
     "portable/OWNER_ONE_LINERS.md",
     "scripts/print_owner_unblock.sh",
-    "tests/test_intent.py"
+    "tests/test_intent.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/100",
+    "https://github.com/d6g8k5htny-coder/trial/commit/df6e3d79670d24cdefa51c2062e2e72947ac697c"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "df6e3d7",
+  "trial_main_land_method": "pr_100_squash_merge",
+  "trial_main_land_full": "df6e3d79670d24cdefa51c2062e2e72947ac697c"
 }

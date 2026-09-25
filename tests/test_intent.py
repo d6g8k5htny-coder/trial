@@ -9763,6 +9763,10 @@ def test_batch270_when_writable_once_pid_liveness() -> None:
     assert brief.get("aligned") is True
     assert brief.get("write") == "WRITABLE"
     assert brief.get("green_eng_prs_merged") == []
+    assert brief.get("main_pr_or_null") in (None, 100)
+    assert str(brief.get("trial_main_land", "")).startswith("df6e3d7") or brief.get(
+        "main_pr_or_null"
+    ) in (None, 100)
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH270_HUNT.json").read_text(encoding="utf-8")
