@@ -1,7 +1,7 @@
 {
   "batch": "341",
-  "generated_at_utc": "2026-09-25T18:40:00Z",
-  "status": "soften_340_tip_sync_live_base_tip_pin",
+  "generated_at_utc": "2026-09-25T18:46:00Z",
+  "status": "wake_batch_n_living_print_owner",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
@@ -13,18 +13,16 @@
   "durable": "8/8",
   "defect_shipped": true,
   "defect_found": true,
-  "defect_id": "intent_batch340_tip_sync_frozen_live_base_tip_f244312",
+  "defect_id": "wake_batch_n_frozen_340_vs_print_owner_341",
   "bugs_fixed": [
-    "test_batch340_tip_sync_f244312 asserted \"f244312\" in BASE_TIP — next tip-sync would re-red CI",
-    "living pack republish cleared script_stale=1 (print_owner) + tgz_newer after tip-sync"
+    "post_batch322_wake_comments _WAKE_BATCH frozen at \"340\" while print_owner header is Batch 341 — wake markers lagged forever",
+    "STATUS_GUARD tip_sha refreshed 848aea2→f244312 (no claim flip)"
   ],
+  "prior_batch341": "intent_batch340_tip_sync_frozen_live_base_tip_f244312 @7beeef7",
   "patch_0020": false,
   "hunt_0020": "NEGATIVE",
-  "action": "eng_soften_340_live_tip_pins",
+  "action": "eng_wake_batch_living",
   "route_now": "ENG_FIX",
   "idle_status": "IDLE_PATH_C_DONE",
-  "inventable_promoted": false,
-  "living_before": "tgz_newer=1 tip_stale=0 script_stale=1 need_upload=1",
-  "living_after": "tip_stale=0 script_stale=0 need_upload=0",
-  "note": "Tip already synced @f244312 (Batch 340 #108). Prefer living after tip-sync; Intent freeze is the concrete eng."
+  "inventable_promoted": false
 }

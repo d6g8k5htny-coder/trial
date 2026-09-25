@@ -28,6 +28,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Fix:** refresh living tip pins; preserve `wake_tip_at_assign=848aea2`; assignment → `tip_sync_watch_vs_BASE_TIP_f244312`.
 - `lemma_closed=false`; inventable drafts skipped; no research flip.
 
+### Batch 341 — wake batch N living from print_owner (2026-09-25)
+
+- Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `post_batch322_wake_comments.py` froze `_WAKE_BATCH="340"` (Batch 340 lag workaround) while print_owner header is Batch 341 — wake markers stuck at Batch 340. Restored `_living_batch_n` from print_owner / REFRESH default. STATUS_GUARD tip refreshed `848aea2`→`f244312`.
+- Prior Batch 341 soften @`7beeef7` kept. NEVER flip research.
 ### Batch 341 — research stack audit WITHOUT promotion (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8.

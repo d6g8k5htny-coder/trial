@@ -14511,8 +14511,6 @@ def test_batch340_grant_inventory_refresh() -> None:
 
 def test_batch341_soften_batch340_live_tip_pins() -> None:
     """Batch 341: tip-sync Intent must not freeze live BASE_TIP to f244312."""
-    import json
-
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     start = intent.index("def test_batch340_tip_sync_f244312")
     end = intent.index("def test_batch340_grant_inventory_refresh")
@@ -14523,6 +14521,49 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     assert "f244312" in _LIVING_TIPS
     assert "848aea2" in _LIVING_TIPS
 
+    # Living BATCH341_BRIEF may supersede across Batch 341 eng continues.
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 341" in log_md
+    assert "f244312" in log_md or "soften" in log_md.lower()
+
+
+def test_batch341_wake_batch_n_living_print_owner() -> None:
+    """Batch 341: wake _living_batch_n from print_owner — not frozen _WAKE_BATCH=340."""
+    import json
+    import sys
+
+    poster_path = ROOT / "scripts" / "post_batch322_wake_comments.py"
+    poster = poster_path.read_text(encoding="utf-8")
+    assert "Batch 341" in poster
+    import re
+
+    assert re.search(r'(?m)^_WAKE_BATCH = "340"\s*$', poster) is None
+    assert "_living_batch_n" in poster
+    assert "print_owner_unblock.sh" in poster or "_PRINT_OWNER" in poster
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import post_batch322_wake_comments as wake  # type: ignore
+
+    n = wake._living_batch_n()
+    assert n.isdigit()
+    assert int(n) >= 341
+    tip = wake._living_tip_short()
+    assert _living_tip(tip)
+    marker = wake.batch_marker()
+    assert tip in marker
+    assert f"Batch {n} wake @" in marker
+    assert "Batch 340 wake @" not in marker or n == "340"
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("flipped_anything") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha", "")))
+
     brief = json.loads(
         (ROOT / "portable" / "BATCH341_BRIEF.json").read_text(encoding="utf-8")
     )
@@ -14530,24 +14571,26 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
-    assert brief.get("defect_id") == "intent_batch340_tip_sync_frozen_live_base_tip_f244312"
-    assert brief.get("action") == "eng_soften_340_live_tip_pins"
+    assert brief.get("defect_id") == "wake_batch_n_frozen_340_vs_print_owner_341"
+    assert brief.get("action") == "eng_wake_batch_living"
     assert brief.get("inventable_promoted") is False
     assert _living_tip(str(brief.get("tip", "")))
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH341_HUNT.json").read_text(encoding="utf-8")
     )
-    assert hunt.get("defect_id") == "intent_batch340_tip_sync_frozen_live_base_tip_f244312"
+    assert hunt.get("defect_id") == "wake_batch_n_frozen_340_vs_print_owner_341"
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 341)
+    assert "wake" in unblock.lower() and ("340" in unblock or "batch" in unblock.lower())
+
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
-    assert "Batch 341" in log_md
+    assert "wake batch" in log_md.lower() or "_WAKE_BATCH" in log_md or "living_batch" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341)" in owner
 

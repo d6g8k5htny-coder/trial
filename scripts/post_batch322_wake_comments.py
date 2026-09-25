@@ -19,6 +19,8 @@ admission / #12 fail-closed OPEN/HOLD. Skip inventable/research drafts
 (#110,#109,#108,#106,#105,#103,#98,#46,#38,#8,#7). Wake marker Batch 340;
 resume tasks: no lemma_closed flip; tip-align if base drifted; additive-only.
 
+Batch 341: `_living_batch_n` again derives from print_owner header (Batch 340 froze `_WAKE_BATCH="340"`).
+
 Batch 340 (rewake): token() was env-only and preferred GH_TOKEN first. App
 ghs often lacks Issues:write; durable Path C write uses well-known
 MAIN_PUSH_TOKEN file drops (grant / when_writable_land order). Prefer
@@ -42,14 +44,14 @@ TRIAL_REPO = "https://github.com/d6g8k5htny-coder/trial"
 _ROOT = Path(__file__).resolve().parents[1]
 _BASE_TIP_FILE = _ROOT / "portable" / "patches" / "BASE_TIP.txt"
 _HARDENING_REF = "chatgpt/drive-github-hardening-20260919"
-# Batch 340 coordinator wake — explicit marker (print_owner may lag at 339).
-_WAKE_BATCH = "340"
 # Batch 340: same durable drop order as grant / when_writable_land.
 _DURABLE_TOKEN_FILES = (
     Path("/cursor/stores/self/MAIN_PUSH_TOKEN"),
     Path("/workspace/.secrets/MAIN_PUSH_TOKEN"),
     Path("/tmp/gh-dylan-auth/access_token"),
 )
+_PRINT_OWNER = _ROOT / "scripts" / "print_owner_unblock.sh"
+_REFRESH = _ROOT / "scripts" / "refresh_path_c_bundle.sh"
 
 
 def _living_tip_short() -> str:
@@ -68,7 +70,28 @@ def _living_tip_short() -> str:
 
 
 def _living_batch_n() -> str:
-    return _WAKE_BATCH
+    """Batch 341: derive automation batch from print_owner (not frozen _WAKE_BATCH=340).
+
+    Batch 340 froze `_WAKE_BATCH = "340"` because print_owner lagged at 339 —
+    after Batch 341 header bump that freeze left wake markers at Batch 340 forever
+    (same class as Batch 338 Batch 329 marker freeze). Prefer print_owner header,
+    else REFRESH_BATCH_TAG default, else "341".
+    """
+    try:
+        text = _PRINT_OWNER.read_text(encoding="utf-8")
+    except OSError:
+        text = ""
+    m = re.search(r"=== Batch (\d+)\b", text)
+    if m:
+        return m.group(1)
+    try:
+        rtext = _REFRESH.read_text(encoding="utf-8")
+    except OSError:
+        rtext = ""
+    m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
+    if m:
+        return m.group(1)
+    return "341"
 
 
 def batch_marker() -> str:

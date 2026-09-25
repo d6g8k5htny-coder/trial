@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 341)
+
+Hardening tip **stable** @ `f244312`. Eng: wake `_living_batch_n` from print_owner (was frozen `_WAKE_BATCH="340"`); soften Batch 340 tip-sync Intent live BASE_TIP pin; STATUS_GUARD tip→`f244312`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c "from scripts.post_batch322_wake_comments import batch_marker; print(batch_marker())"
+```
+
+
 ## STATUS (Batch 342)
 
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move. Eng: `MULTI_AGENT_WAKE_BATCH340.json` tip/`intent.base_tip_expected` still frozen @ `848aea2` after tip-sync — refreshed to living `f244312` (historical `wake_tip_at_assign` preserved). `lemma_closed=false`. Scientific effect: NONE.
@@ -10,7 +19,6 @@ Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync wat
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
 python3 -c 'import json;d=json.load(open("portable/MULTI_AGENT_WAKE_BATCH340.json"));print(d["tip"], d["intent"]["base_tip_expected"][:7])'
 ```
-
 ## STATUS (Batch 340 wake-token)
 
 Hardening tip **stable** @ `848aea2`. Eng: wake poster resolves durable `MAIN_PUSH_TOKEN` file drops (grant/`when_writable` order; MAIN before GH). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
@@ -34,15 +42,6 @@ Hardening tip **stable** @ `f244312`. Research stack audit WITHOUT promotion (`p
 ```bash
 python3 scripts/audit_research_stack_open.py /path/to/hardening-tip
 python3 scripts/guard_no_status_promotion.py /path/to/hardening-tip
-```
-
-## STATUS (Batch 341)
-
-Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`"f244312" in base_tip`); living pack republish (tgz_newer after tip-sync). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
-
-```bash
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
-./scripts/republish_living_path_c_release.sh --dry-run
 ```
 
 ## STATUS (Batch 340)
