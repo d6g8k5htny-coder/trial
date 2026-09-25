@@ -14155,3 +14155,65 @@ def test_batch340_audit_rate_limit_raw_fallback() -> None:
     assert "raw/ls-remote" in log_md or "raw fallback" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340)" in owner
+
+
+def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
+    """Batch 340: empty-tree inventory batch fallback no longer freezes at 336."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'return "336"' not in helper
+    assert 'return "340"' in helper
+    assert "last-resort" in helper or "REFRESH_BATCH_TAG" in helper
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 340)
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_ai_agent_access_inventory",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+
+    td = tempfile.mkdtemp()
+    (Path(td) / "scripts").mkdir()
+    assert mod._living_inventory_batch(td) == "340"
+
+    # REFRESH-only tree still wins over hardcoded when present
+    (Path(td) / "scripts" / "refresh_path_c_bundle.sh").write_text(
+        'BATCH_TAG="${REFRESH_BATCH_TAG:-341}"\n', encoding="utf-8"
+    )
+    assert mod._living_inventory_batch(td) == "341"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_INV_FALLBACK_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("defect_id") == "inventory_ultimate_fallback_frozen_336"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "ship_eng_defect"
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH340_INV_FALLBACK_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == "inventory_ultimate_fallback_frozen_336"
+    assert hunt.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "frozen 336" in unblock or "ultimate fallback" in unblock
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "ultimate fallback" in log_md

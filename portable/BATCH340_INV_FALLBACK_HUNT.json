@@ -1,0 +1,26 @@
+{
+  "batch": "340",
+  "hunt": "inventory_ultimate_fallback_frozen_336",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "inventory_ultimate_fallback_frozen_336",
+  "evidence": {
+    "empty_tree_fallback_pre": "336",
+    "empty_tree_fallback_post": "340",
+    "refresh_default_pre": "337",
+    "refresh_default_post": "340",
+    "print_owner_header": "340"
+  },
+  "avoided": [
+    "tip-sync (tip stable @848aea2)",
+    "flip lemma_closed",
+    "promote inventable",
+    "invent 0020"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T18:30:00Z"
+}

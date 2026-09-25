@@ -108,6 +108,7 @@ echo " Batch 338: post-Path-C align watch idle @848aea2 tip_match=1; lemma_close
 echo " Batch 338: wake poster skip gate keys off living BASE_TIP (was frozen Batch 329 wake → eng PRs stuck @077464e)"
 echo " Batch 339: living script_stale republish after tip-stable watch @848aea2"
 echo " Batch 340: audit_main_alignment 403 rate-limit backoff + raw/ls-remote fallback; CI soft-continue transport exit 2"
+echo " Batch 340: inventory ultimate fallback return \"340\" (was frozen 336); REFRESH default 340"
 echo " Batch 328: inventory refresh INV_BATCH derives from print_owner header (was frozen 323)"
 echo "  Batch 323: grant --check refreshes AI_AGENT_ACCESS_INVENTORY via refresh_ai_agent_access_inventory.py (pre-323 pointer drifted; sandbox.tip vs details); pack+CRITICAL include helper"
 echo "  Batch 321: soften Batch 317 live BASE_TIP/VERIFY/PATH_C tip Intent pins to _living_tip; refresh AI_AGENT_ACCESS_INVENTORY tip_sha from durable 8/8"

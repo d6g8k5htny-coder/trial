@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — inventory ultimate fallback unfreeze (2026-09-25)
+
+- Tip stable @ `848aea2` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Defect: `_living_inventory_batch` last-resort `return "336"` froze empty-tree fallback while living header was Batch 340 and `REFRESH_BATCH_TAG` default lagged at 337.
+- Fix: bump ultimate return + `REFRESH_BATCH_TAG` default to 340.
+- NEVER flip research.
+
 ### Batch 340 — audit raw/ls-remote fallback after rate-limit (2026-09-25)
 
 - Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; `lemma_closed=false`.
