@@ -1,3 +1,7 @@
+## STATUS (Batch 345 tip-sync)
+
+tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; #105 MERGED into hardening → refresh keep-prior; CONTRIBUTION_PLAN retire docs NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 audit-timeout)
 
 tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

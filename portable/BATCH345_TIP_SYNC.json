@@ -1,0 +1,28 @@
+{
+  "batch": "345",
+  "generated_at_utc": "2026-09-25T19:18:00Z",
+  "status": "tip_sync_after_main_105",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "prior_tip": "fcad723",
+  "tip_match": true,
+  "tip_moved": true,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "merged_prs": [
+    105
+  ],
+  "defect_id": "tip_sync_fcad723_to_e3cd7d4_main_105",
+  "action": "tip_sync_landed",
+  "inventable_promoted": false,
+  "keep_prior_bundle": true,
+  "refresh_batch": "345",
+  "goal_complete": false,
+  "note": "docs #105 CONTRIBUTION_PLAN retire MERGED mid-cycle; tip-sync Path C only (NOT promoted)"
+}

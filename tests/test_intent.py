@@ -40,6 +40,7 @@ _LIVING_TIPS = (
     "848aea2",
     "f244312",
     "fcad723",
+    "e3cd7d4",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -15071,10 +15072,12 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert 'return "343"' in helper
-    assert 'return "340"' not in helper
     assert 'return "336"' not in helper
-    assert "Batch 343" in helper or "REFRESH default 343" in helper or "frozen \"340\"" in helper
+    assert 'return "340"' not in helper
+    # Living ultimate fallback supersedes; Batch 343 shipped "343".
+    m_fb = re.search(r'return "(\d+)"', helper)
+    assert m_fb is not None
+    assert int(m_fb.group(1)) >= 343
 
     # Soften Batch 340 Intent — must not re-freeze return "340"
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
@@ -15098,7 +15101,7 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
 
     td = tempfile.mkdtemp()
     (Path(td) / "scripts").mkdir()
-    assert mod._living_inventory_batch(td) == "343"
+    assert mod._living_inventory_batch(td) == m_fb.group(1)
 
     (Path(td) / "scripts" / "refresh_path_c_bundle.sh").write_text(
         'BATCH_TAG="${REFRESH_BATCH_TAG:-344}"\n', encoding="utf-8"
@@ -15541,3 +15544,72 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH345" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 345" in log_md
+
+
+def test_batch345_tip_sync_e3cd7d4() -> None:
+    """Batch 345: tip-sync fcad723→e3cd7d4 after main #105; docs not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "345"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4_main_105"
+    assert brief.get("inventable_promoted") is False
+    assert 105 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("e3cd7d4")
+    assert str(brief.get("prior_tip", "")).startswith("fcad723")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4_main_105"
+    assert hunt.get("lemma_closed") is False
+    assert any("105" in a or "inventable" in a or "docs" in a for a in (hunt.get("avoided") or []))
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH345_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("aligned") is True
+    assert evidence.get("action") == "tip_sync_landed"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert str(evidence.get("write", "")).upper() == "WRITABLE"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 345 shipped e3cd7d4.
+    # Do not hard-pin the live tip SHA in BASE_TIP (Batch 341/344 class).
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 345
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    assert "e3cd7d4" in _LIVING_TIPS
+    assert "fcad723" in _LIVING_TIPS
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 345)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 345)
+    assert "e3cd7d4" in unblock or "tip-sync" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in land
+    assert "e3cd7d4" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 345 tip-sync" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in owner
