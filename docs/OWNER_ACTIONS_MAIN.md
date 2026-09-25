@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 343 inv-fallback)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: inventory `_living_inventory_batch` last-resort return `"340"` lagged tip-sync REFRESH default 343 — bumped to `"343"`; softened Batch 340 Intent hard pin on `return "340"`. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c "from scripts.refresh_ai_agent_access_inventory import _living_inventory_batch; import tempfile; from pathlib import Path; td=tempfile.mkdtemp(); Path(td,'scripts').mkdir(); print(_living_inventory_batch(td))"
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 ## STATUS (Batch 343 tip-sync)
 
 Hardening tip **synced** `f244312`→`fcad723` after main **#109** (tip_match=true; Path C idle; BASE==LIVE after sync). Inventable claim NOT promoted. Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 343 + `_LIVING_TIPS+=fcad723`. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.

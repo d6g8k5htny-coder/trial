@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 343 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 343: inventory ultimate fallback return \"343\" (was frozen 340 after tip-sync REFRESH 343); soften Batch 340 Intent hard pin"
 echo " Batch 343: grant inventory tip refresh batch 343 (preserve durable 8/8 on writable=0)"
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312"
 echo " Batch 342: inventory tip refresh batch 342 + soften wake-token Intent live tip pin"

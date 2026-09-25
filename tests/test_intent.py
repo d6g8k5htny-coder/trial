@@ -14216,7 +14216,11 @@ def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
         encoding="utf-8"
     )
     assert 'return "336"' not in helper
-    assert 'return "340"' in helper
+    # Living ultimate fallback supersedes across tip-sync; Batch 340 shipped "340".
+    # Do not freeze assert 'return "340"' (Batch 343 class after REFRESH 343).
+    m_fb = re.search(r'return "(\d+)"', helper)
+    assert m_fb is not None, "missing last-resort return \"N\" in inventory helper"
+    assert int(m_fb.group(1)) >= 340
     assert "last-resort" in helper or "REFRESH_BATCH_TAG" in helper
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
@@ -14232,7 +14236,7 @@ def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
 
     td = tempfile.mkdtemp()
     (Path(td) / "scripts").mkdir()
-    assert mod._living_inventory_batch(td) == "340"
+    assert mod._living_inventory_batch(td) == m_fb.group(1)
 
     # REFRESH-only tree still wins over hardcoded when present
     (Path(td) / "scripts" / "refresh_path_c_bundle.sh").write_text(
@@ -15043,3 +15047,104 @@ def test_batch343_tip_sync_watch_confirm() -> None:
     assert "fcad723" in base
     assert _living_tip(base)
 
+
+
+def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
+    """Batch 343: empty-tree inventory batch fallback no longer freezes at 340."""
+    import importlib.util
+    import json
+    import re
+    import tempfile
+    from pathlib import Path
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'return "343"' in helper
+    assert 'return "340"' not in helper
+    assert 'return "336"' not in helper
+    assert "Batch 343" in helper or "REFRESH default 343" in helper or "frozen \"340\"" in helper
+
+    # Soften Batch 340 Intent — must not re-freeze return "340"
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch340_inventory_ultimate_fallback_unfreeze")
+    end = intent.index("def test_batch340_multi_agent_wake_assign")
+    body = intent[start:end]
+    assert 'assert \'return "340"\' in helper' not in body
+    assert 'assert mod._living_inventory_batch(td) == "340"' not in body
+    assert "Living ultimate fallback supersedes" in body
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 343)
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_ai_agent_access_inventory",
+        ROOT / "scripts" / "refresh_ai_agent_access_inventory.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+
+    td = tempfile.mkdtemp()
+    (Path(td) / "scripts").mkdir()
+    assert mod._living_inventory_batch(td) == "343"
+
+    (Path(td) / "scripts" / "refresh_path_c_bundle.sh").write_text(
+        'BATCH_TAG="${REFRESH_BATCH_TAG:-344}"\n', encoding="utf-8"
+    )
+    assert mod._living_inventory_batch(td) == "344"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH343_INV_FALLBACK_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "343"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "inventory_ultimate_fallback_frozen_340_after_tip_sync_343"
+    )
+    assert brief.get("action") == "eng_inv_ultimate_fallback_unfreeze"
+    assert brief.get("inventable_promoted") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert brief.get("tip_match") is True
+    assert brief.get("aligned") is True
+    assert str(brief.get("write", "")).upper() == "WRITABLE"
+    assert brief.get("path_c") == "IDLE@0019"
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH343_INV_FALLBACK_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_id") == (
+        "inventory_ultimate_fallback_frozen_340_after_tip_sync_343"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH343_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("aligned") is True
+    assert evidence.get("action") == "eng_inv_ultimate_fallback_unfreeze"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert str(evidence.get("write", "")).upper() == "WRITABLE"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 343)
+    assert "ultimate fallback" in unblock and "343" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343 inv-fallback)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "ultimate fallback unfreeze" in log_md.lower() or "340→343" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 343 inv-fallback)" in owner

@@ -1,3 +1,7 @@
+## STATUS (Batch 343 inv-fallback)
+
+tip `fcad723` tip_match=true; eng: inventory ultimate fallback return `"343"` (was frozen `"340"` after tip-sync REFRESH 343); soften Batch 340 Intent hard pin; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 341 inv-batch-pin)
 
 tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard pin (`== "340"` → `>= 340`) after Batch 342 tip-refresh; lemma_closed=false; scientific effect NONE.
