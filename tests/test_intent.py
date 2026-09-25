@@ -14035,6 +14035,7 @@ def test_batch340_audit_rate_limit_403_backoff() -> None:
     )
     assert status.get("lemma_closed") is False
 
+
 def test_batch340_wake_land_verify() -> None:
     """Batch 340: wake340 on main; tip_match @848aea2; lemma_closed false."""
     import json
@@ -14075,3 +14076,76 @@ def test_batch340_wake_land_verify() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 340" in log_md
 
+
+def test_batch340_grant_inventory_refresh() -> None:
+    """Batch 340: inventory tip pins + preserve durable 8/8; grant skip source=none."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("batch") == "340"
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("sibling_write_count") == 8
+    assert inv.get("sandbox", {}).get("readable") is True
+    assert inv.get("sandbox", {}).get("write") == "WRITABLE"
+    assert inv.get("main_writable") is True
+    for d in inv.get("details") or []:
+        assert d.get("push") is True, d
+        assert d.get("write") == "WRITABLE", d
+        assert len(str(d.get("tip_sha") or "")) >= 7
+    for c in inv.get("repos_connected") or []:
+        assert c.get("perm") == "push", c
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH340_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "340"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert tiny.get("action") == "grant_inventory_refresh_batch340"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("tip", "")))
+    assert str(tiny.get("tip", "")).startswith("848aea2")
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert "durable_writable == 0" in helper
+    assert "preserve_durable" in helper
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 340
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "grant inventory" in unblock.lower() or "Batch 340" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in land
+    assert "grant_inventory_refresh" in land or "inventory" in land.lower()
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert (
+        "grant inventory tip refresh" in log_md.lower()
+        or "grant_inventory_refresh" in log_md
+    )
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in owner
+    assert "grant inventory" in owner.lower() or "durable_token_source=none" in owner
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
+        encoding="utf-8"
+    )
+    assert _living_tip(base_tip)
+    assert "848aea2" in base_tip

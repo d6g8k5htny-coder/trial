@@ -21,11 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — grant inventory tip refresh (2026-09-25)
+
+- Tip stable @ `848aea2` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Assignment `grant_inventory_refresh_batch340`: dual-vector `--check` → `durable_token_source=none` → skip App-corrupt refresh; tip-refresh with `preserve_durable` (`durable_writable=0`) pins query-/trial tips; coverage stays 8/8_WRITABLE.
+- Artifact `portable/BATCH340_GRANT.json`. NEVER flip research.
+
 ### Batch 340 (MULTI_AGENT wake land+verify; tip @848aea2) — 2026-09-25 ~18:23 UTC
 - Coordinator `bc-01a0cf1e`: Dylan permanent Path C autonomy wake.
 - Confirmed tip_match @ `848aea2`; Path C IDLE@0019; living `tip_stale=0` `script_stale=0`; durable inventory 8/8; `lemma_closed=false`.
 - Landed `portable/MULTI_AGENT_WAKE_BATCH340.json` (was missing on trial main).
 - action=`wake_land_verify_batch340`; NEVER flip research; scientific effect NONE.
+
 
 ### Batch 340 — audit_main_alignment rate-limit backoff (2026-09-25)
 
