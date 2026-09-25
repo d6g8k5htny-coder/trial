@@ -1,8 +1,8 @@
 {
   "batch": "280",
-  "generated_at_utc": "2026-09-25T08:30:00Z",
+  "generated_at_utc": "2026-09-25T08:37:36Z",
   "status": "probe_w2_contents_ref_first_shipped",
-  "waiting_ci": true,
+  "waiting_ci": false,
   "goal_complete": true,
   "lemma_closed": false,
   "scientific_effect": "NONE",
@@ -20,11 +20,21 @@
   "write": "WRITABLE",
   "write_durable": true,
   "merged_prs": [],
-  "research_hold_prs_skipped": [82, 47, 46, 38, 36, 21, 12, 8, 7],
+  "research_hold_prs_skipped": [
+    82,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
   "defect_shipped": true,
   "defect_id": "probe_w2_contents_put_missing_git_ref",
   "bugs_fixed": [
-    "probe_main_write_vectors W2 contents PUT without creating throwaway git ref → false DENIED 404 Branch not found while W1 WRITABLE",
+    "probe_main_write_vectors W2 contents PUT without creating throwaway git ref \u2192 false DENIED 404 Branch not found while W1 WRITABLE",
     "path_b_writable_vectors omitted W2 despite Contents:Write"
   ],
   "patch_0020": false,
@@ -41,12 +51,12 @@
   "green_eng_prs_merged": [],
   "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE",
   "evidence": {
-    "repro": "PUT /contents with branch=cursor-wvec-contents-* (no prior git ref) → 404 Branch not found; POST git/refs then PUT → 201 WRITABLE",
+    "repro": "PUT /contents with branch=cursor-wvec-contents-* (no prior git ref) \u2192 404 Branch not found; POST git/refs then PUT \u2192 201 WRITABLE",
     "fix": "create throwaway ref before contents PUT; cleanup file+ref",
     "apply_all_check": "already-applied @ 3b3860d IDLE_PATH_C_DONE"
   },
   "next_focus": "tip_sync_drift_watch @3b3860d; keep Path C idle; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 280: tip stable 3b3860d; shipped probe W2 contents ref-first (false DENIED 404 fix); lemma_closed=false; flipped nothing.",
+  "note": "Batch 280: tip stable 3b3860d; shipped probe W2 contents ref-first; direct-landed trial main @9de159a (PR create 403); CI green; lemma_closed=false; flipped nothing.",
   "artifacts": [
     "scripts/probe_main_write_vectors.py",
     "scripts/refresh_path_c_bundle.sh",
@@ -57,7 +67,16 @@
     "tests/test_intent.py"
   ],
   "shipped": true,
-  "where": ["trial"],
+  "where": [
+    "trial"
+  ],
   "path_c": true,
-  "trial_main_land_method": "pending"
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "trial_main_land": "9de159a",
+  "trial_main_land_full": "9de159a9804bb05e707970424ae4623d3dd2cf65",
+  "ci_defect_run": "36113119953",
+  "ci_defect_conclusion": "success",
+  "ci_branch_run": "36113104276",
+  "ci_branch_conclusion": "success",
+  "main_ci_tip_conclusion": "success"
 }
