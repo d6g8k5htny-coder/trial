@@ -1,0 +1,16 @@
+{
+  "batch": "368",
+  "generated_at_utc": "2026-09-25T23:29:41Z",
+  "defect_id": "tip_sync_e3cd7d4_to_1ae02b9_main_115",
+  "lemma_closed": false,
+  "defect_found": true,
+  "defect_shipped": true,
+  "action": "tip_sync_landed",
+  "goal": "OPEN",
+  "avoided": [
+    "inventable_promotion",
+    "research_status_flip",
+    "main_115_docs_claim_promotion",
+    "REFRESH_any_allowlists"
+  ]
+}

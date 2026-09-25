@@ -1,3 +1,7 @@
+## STATUS (Batch 368 tip-sync)
+
+tip `1ae02b9` tip_match=true; tip-sync keep-prior e3cd7d4→1ae02b9 after main #115; durable 8/8; lemma_closed=false; inventable not promoted; scientific effect NONE.
+
 ## STATUS (Batch 368 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent after idle + last-resort/VERIFY 367→368 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

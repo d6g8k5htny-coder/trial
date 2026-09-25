@@ -41,6 +41,7 @@ _LIVING_TIPS = (
     "f244312",
     "fcad723",
     "e3cd7d4",
+    "1ae02b9",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -20280,3 +20281,66 @@ def test_batch368_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 368)
     assert "STATUS (Batch 368 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch368_tip_sync_1ae02b9() -> None:
+    """Batch 368: tip-sync e3cd7d4→1ae02b9 after main #115; docs not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH368_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "368"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("defect_id") == "tip_sync_e3cd7d4_to_1ae02b9_main_115"
+    assert brief.get("inventable_promoted") is False
+    assert 115 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("prior_tip", "")).startswith("e3cd7d4")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH368_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_e3cd7d4_to_1ae02b9_main_115"
+    assert hunt.get("lemma_closed") is False
+    assert any("115" in a or "inventable" in a for a in (hunt.get("avoided") or []))
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH368_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("action") == "tip_sync_landed"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 368
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
+    assert "1ae02b9" in _LIVING_TIPS
+    assert "e3cd7d4" in _LIVING_TIPS
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 368)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 368)
+    assert "1ae02b9" in unblock or "tip-sync" in unblock.lower()
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 tip-sync)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 368 tip-sync" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 tip-sync)" in owner

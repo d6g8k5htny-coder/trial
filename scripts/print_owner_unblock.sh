@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 368 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 368: tip-sync e3cd7d4→1ae02b9 after main #115 (keep-prior; inventable not promoted)"
 echo " Batch 368: tip_or_eng inv tip re-pin beyond parent + last-resort 367→368 + VERIFY 367→368 @e3cd7d4"
 echo " Batch 368: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; inv parent-pinned)"
 echo " Batch 367: tip_or_eng inv tip re-pin beyond parent + last-resort 366→367 + VERIFY 366→367 @e3cd7d4"

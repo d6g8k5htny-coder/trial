@@ -1,3 +1,12 @@
+## STATUS (Batch 368 tip-sync)
+
+Hardening tip **moved** e3cd7d4→`1ae02b9` (main #115). Tip-sync keep-prior Path C refresh; `_LIVING_TIPS+=1ae02b9`. Inventable NOT promoted. `lemma_closed=false`. Goal OPEN. action=`tip_sync_landed`.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --skip-pytest
+python3 -m pytest tests/test_intent.py::test_batch368_tip_sync_1ae02b9 -q
+```
+
 ## STATUS (Batch 368 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 368 idle; last-resort + VERIFY frozen at 367 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→368 + VERIFY→368 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
