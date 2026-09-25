@@ -19249,10 +19249,12 @@ def test_batch360_tip_or_eng_continue() -> None:
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH360_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
+    # Living >=360 (Batch 286 helper); no REFRESH/return any() allowlist churn.
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("360", "361", "362", "363"))
+    _assert_refresh_batch_tag_default_at_least(refresh, 360)
     inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
-    assert any(f'return "{n}"' in inv_src for n in ("360", "361", "362", "363"))
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_src)]
+    assert _inv_rets and max(_inv_rets) >= 360
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 360)
     assert "STATUS (Batch 360 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
@@ -19409,10 +19411,12 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH361_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
+    # Living >=361 (Batch 286 helper); no REFRESH/return any() allowlist churn.
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("361", "362", "363"))
+    _assert_refresh_batch_tag_default_at_least(refresh, 361)
     inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
-    assert any(f'return "{n}"' in inv_src for n in ("361", "362", "363"))
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_src)]
+    assert _inv_rets and max(_inv_rets) >= 361
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 361)
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
@@ -19570,10 +19574,12 @@ def test_batch362_tip_or_eng_continue() -> None:
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
+    # Living >=362 (Batch 286 helper); do not hard-pin return "362" / REFRESH:-362.
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert any(f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("362", "363"))
+    _assert_refresh_batch_tag_default_at_least(refresh, 362)
     inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
-    assert any(f'return "{n}"' in inv_src for n in ("362", "363"))
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_src)]
+    assert _inv_rets and max(_inv_rets) >= 362
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 362)
     assert "STATUS (Batch 362 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
