@@ -1,3 +1,7 @@
+## STATUS (Batch 368 living-upload-confirm)
+
+tip `1ae02b9` tip_match=true; living batch241 upload confirm after Intent-only land; Intent 276/279 `--force`; inv tip pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 368 living-republish)
 
 tip `1ae02b9` tip_match=true; living script_stale republish after STATUS_GUARD tip refresh; durable 8/8; lemma_closed=false; goal OPEN.

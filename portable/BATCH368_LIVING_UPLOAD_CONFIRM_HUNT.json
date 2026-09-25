@@ -1,0 +1,16 @@
+{
+  "batch": "368",
+  "defect_shipped": true,
+  "defect_id": "living_intent_only_land_left_tgz_stale_and_276_279_need_upload0",
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "living_upload_confirm_plus_intent_force_soften",
+  "avoided": [
+    "status/lemma promotion",
+    "REFRESH_BATCH_TAG exact any-allowlist",
+    "research stack flip"
+  ]
+}

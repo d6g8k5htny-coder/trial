@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 368 — living upload confirm + Intent 276/279 --force + inv tip pin @1ae02b9 (2026-09-25)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Peer living land Intent-only → release tgz still stale; CI failed 276/279 when living-current `need_upload=0`. Uploaded batch241; Intent dry-runs use `--force`; inv tip re-pin→HEAD. Goal OPEN.
+
+
 ### Batch 368 — living script_stale republish after STATUS_GUARD tip refresh @1ae02b9 (2026-09-25)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; inv parent-pinned; `lemma_closed=false`.

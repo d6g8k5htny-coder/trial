@@ -10479,8 +10479,10 @@ def test_batch276_republish_living_tag_post_pack() -> None:
         living.write_text("batch250-path-c-bundle\n", encoding="utf-8")
         with tempfile.TemporaryDirectory(prefix="b276-intent-") as td:
             out = Path(td) / "pack.tgz"
+            # --force: living-current trees otherwise exit need_upload=0 before
+            # the post-pack tag / dry-run upload assertions (Batch 368 flake).
             dry = subprocess.run(
-                ["bash", str(script), "--dry-run", "--out", str(out)],
+                ["bash", str(script), "--dry-run", "--force", "--out", str(out)],
                 cwd=str(ROOT),
                 capture_output=True,
                 text=True,
@@ -10827,8 +10829,10 @@ def test_batch279_republish_canonical_basename() -> None:
 
     with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
         out = P(td) / "wrong-name.tgz"
+        # --force: living-current trees otherwise exit need_upload=0 before
+        # canonical staging / dry-run upload assertions (Batch 368 flake).
         dry = subprocess.run(
-            ["bash", str(script), "--dry-run", "--out", str(out)],
+            ["bash", str(script), "--dry-run", "--force", "--out", str(out)],
             cwd=str(ROOT),
             capture_output=True,
             text=True,
@@ -20467,3 +20471,53 @@ def test_batch368_living_script_stale_republish() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 368)
     assert "STATUS (Batch 368 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch368_living_upload_confirm_intent_force() -> None:
+    """Batch 368: living upload confirm + Intent 276/279 --force soften @1ae02b9."""
+    import json
+    import re
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH368_LIVING_UPLOAD_CONFIRM_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "368"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("upload_ok") is True
+    assert brief.get("action") == "living_upload_confirm_plus_intent_force_soften"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH368_LIVING_UPLOAD_CONFIRM_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH368_LIVING_UPLOAD_CONFIRM_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("upload_ok") is True
+    assert evidence.get("need_upload_after") == 0
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    # Living-current need_upload=0 must not skip post-pack/staging asserts.
+    assert re.search(
+        r"b276-intent-.*?--dry-run\",\s*\"--force\"",
+        intent,
+        flags=re.DOTALL,
+    )
+    assert re.search(
+        r"b279-intent-.*?--dry-run\",\s*\"--force\"",
+        intent,
+        flags=re.DOTALL,
+    )
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 368)
+    assert "STATUS (Batch 368 living-upload-confirm)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")
+    assert "STATUS (Batch 368 living-upload-confirm)" in (
+        ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
+    ).read_text(encoding="utf-8")

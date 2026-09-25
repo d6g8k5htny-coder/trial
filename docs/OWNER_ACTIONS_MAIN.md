@@ -1,3 +1,7 @@
+## STATUS (Batch 368 living-upload-confirm)
+
+Hardening tip **stable** @ `1ae02b9`. Peer living land was Intent-only; release tgz still stale and CI failed 276/279 on living-current `need_upload=0`. Uploaded batch241; softened Intent dry-runs with `--force`; inv tip re-pin. Evidence: `portable/BATCH368_LIVING_UPLOAD_CONFIRM_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 368 living-republish)
 
 Hardening tip **stable** @ `1ae02b9`. Living `script_stale=1` after STATUS_GUARD tip refresh — batch241 republish. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
