@@ -10,6 +10,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 344)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: soften Batch 343 tip_sync_watch Intent live BASE_TIP pin (`"fcad723" in base`); next tip-sync would re-red CI (Batch 341 class). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+python3 -m pytest tests/test_intent.py::test_batch344_soften_tip_sync_watch_live_tip_pin -q
+```
+
+
 ## STATUS (Batch 343 status-guard)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: `STATUS_GUARD_SNAPSHOT` tip_sha lagged at `f244312` after tip-sync — refreshed to `fcad723` (baseline→`f244312`; `guard_no_status_promotion` pass violations=0; no claim flip). Guard+research: `lemma_closed=false`. Scientific effect: NONE.

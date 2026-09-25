@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 344 — soften tip_sync_watch live BASE_TIP Intent pin (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: tip_sync_watch (+ idle) Intent hard-pinned live BASE_TIP — softened to `_living_tip` (Batch 341 class).
+- NEVER flip research; inventable skipped. Goal OPEN.
+
 ### Batch 343 — STATUS_GUARD tip refresh f244312→fcad723 (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
