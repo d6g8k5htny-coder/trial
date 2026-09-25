@@ -5,7 +5,7 @@
   "generated_at_utc": "2026-09-25T17:20:00Z",
   "write_durable": "8/8_WRITABLE",
   "coverage": "8/8_WRITABLE",
-  "tip_sha": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+  "tip_sha": "388a22caff13c449f0e3264b0aff314d456d6659",
   "default_tip": "72558a5",
   "lemma_closed": false,
   "flipped_anything": false,
@@ -22,5 +22,6 @@
     "owner_grant --check skips inventory_refresh when durable_token_source=none",
     "refresh writer forces push when durable_writable=8 (with preserve_durable belt)"
   ],
-  "peer_bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec"
+  "peer_bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec",
+  "prior_tip_sha": "077464ef5e2859ce98cbb9307799d5867a820eaf"
 }

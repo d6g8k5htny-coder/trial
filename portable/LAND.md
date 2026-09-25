@@ -1,3 +1,7 @@
+## STATUS (Batch 332)
+
+tip `388a22c` tip_match=true TIP_OK after tip-sync; #97 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 331)
 
 tip `077464e` tip_match=true; eng: grant --check skips inventory refresh when durable_token_source=none; writer forces push on durable 8/8; lemma_closed=false; scientific effect NONE.

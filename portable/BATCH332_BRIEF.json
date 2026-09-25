@@ -1,0 +1,62 @@
+{
+  "batch": "332",
+  "generated_at_utc": "2026-09-25T17:32:11Z",
+  "status": "tip_sync_after_main_97",
+  "waiting_ci": false,
+  "goal_complete": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "388a22c",
+  "tip_full": "388a22caff13c449f0e3264b0aff314d456d6659",
+  "base_tip": "388a22c",
+  "prior_tip": "077464e",
+  "default_tip": "72558a5b",
+  "aligned": true,
+  "tip_moved": true,
+  "hardening_tip_moved": true,
+  "default_tip_moved": false,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "merged_prs": [
+    97
+  ],
+  "note_main_pr_97": "inventable RN crosswalk docs MERGED mid-cycle \u2192 tip 388a22c; tip-sync Path C only (no research/inventable promotion)",
+  "main_pr_97": {
+    "state": "MERGED",
+    "isDraft": false,
+    "mergedAt": "2026-09-25T17:06:27Z",
+    "baseRefName": "chatgpt/drive-github-hardening-20260919",
+    "mergeCommit": "388a22caff13c449f0e3264b0aff314d456d6659",
+    "title": "docs(inventable): RN crosswalk, mesoscopic challenge, and Math- #8 handoff"
+  },
+  "research_hold_prs_skipped": [
+    96,
+    92,
+    87,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_077464e_to_388a22c_main_97",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C 077464e\u2192388a22c after main #97",
+    "living release tip_stale republish; REFRESH default 332; _LIVING_TIPS += 388a22c"
+  ],
+  "patch_0020": false,
+  "hunt_0020": "NEGATIVE",
+  "path_c_0019_landed": true,
+  "path_c_landed": true,
+  "pack_release": "batch241-path-c-bundle",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "action": "tip_sync_landed",
+  "route_now": "TIP_SYNC",
+  "next_focus": "tip_sync_drift_watch @388a22c; keep Path C idle; NEVER flip research"
+}

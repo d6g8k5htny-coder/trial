@@ -35,6 +35,7 @@ _LIVING_TIPS = (
     "02cfbfd",
     "0adeb65",
     "077464e",
+    "388a22c",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -13235,7 +13236,7 @@ def test_batch331_grant_skip_inventory_refresh_without_durable() -> None:
     assert tiny.get("batch") == "330"
     assert tiny.get("write_durable") == "8/8_WRITABLE"
     assert tiny.get("coverage") == "8/8_WRITABLE"
-    assert str(tiny.get("tip_sha", "")).startswith("077464e")
+    assert _living_tip(str(tiny.get("tip_sha", "")))
     assert tiny.get("lemma_closed") is False
     assert tiny.get("flipped_anything") is False
     assert tiny.get("action") == "grant_check_skip_inventory_refresh_without_durable_token"
@@ -13250,4 +13251,86 @@ def test_batch331_grant_skip_inventory_refresh_without_durable() -> None:
     assert "STATUS (Batch 331)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 331" in log_md
+
+def test_batch332_tip_sync_after_main_97() -> None:
+    """Batch 332: tip-sync after main #97 inventable; inventable not promoted."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH332_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "332"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "tip_sync_077464e_to_388a22c_main_97"
+    assert brief.get("route_now") == "TIP_SYNC"
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is True
+    assert 97 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("388a22c")
+    assert str(brief.get("prior_tip", "")).startswith("077464e")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH332_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_077464e_to_388a22c_main_97"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert any("97" in a or "inventable" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH332_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
+        encoding="utf-8"
+    )
+    assert _living_tip(base_tip)
+    assert "388a22c" in base_tip
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 332
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert str(verify.get("base_tip_sha", "")).startswith("388a22c")
+    assert _living_tip(str(verify.get("prior_base_tip_sha", ""))) or str(
+        verify.get("prior_base_tip_sha", "")
+    ).startswith("077464e")
+    assert verify.get("lemma_closed") is False
+    assert verify.get("tip_refresh") in (True, False)
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 332)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 332)
+    assert "388a22c" in unblock or "Batch 332" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+
+    assert "388a22c" in _LIVING_TIPS
+    assert "077464e" in _LIVING_TIPS
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 332)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 332" in log_md
+
 

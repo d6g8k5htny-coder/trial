@@ -1,0 +1,24 @@
+{
+  "batch": "332",
+  "hunt": "tip_sync_after_main_97",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_077464e_to_388a22c_main_97",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C 077464e\u2192388a22c",
+    "living tip_stale republish + REFRESH default 332 + _LIVING_TIPS+=388a22c"
+  ],
+  "avoided": [
+    "promote inventable #97 claim status",
+    "flip lemma_closed / research OPEN holds",
+    "research HOLD drafts",
+    "invent 0020",
+    "re-land Path C eng stack (already on tip; keep-prior)"
+  ],
+  "tip_moved": true,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T17:32:11Z"
+}

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 332 — tip-sync after main #97 (2026-09-25)
+
+- Hardening LIVE moved `077464e`→`388a22c` (PR #97 inventable RN crosswalk MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=332 ./scripts/refresh_path_c_bundle.sh` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; REFRESH default 332; `_LIVING_TIPS += 388a22c`.
+- **NEVER flip research:** inventable #97 not promoted; `lemma_closed=false`; `flipped_anything=false`.
+- Path C idle; no 0020. CI was red on tip_drift until this sync.
+
+
 ### Batch 331 — grant skip no-token inventory refresh (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.
