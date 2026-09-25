@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 358 — eng living script_stale republish after tip_sync idle (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living release `script_stale=1` after tip_sync idle; Intent allowlist re-frozen 352–358 → living `>=352`; republish `--force`. Inventable skipped. Goal OPEN. NEVER flip research.
+
 ### Batch 358 — tip_or_eng: inv tip re-pin after lands (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

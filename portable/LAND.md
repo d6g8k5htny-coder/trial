@@ -1,3 +1,7 @@
+## STATUS (Batch 358 republish)
+
+tip `e3cd7d4` tip_match=true; eng: living script_stale republish after tip_sync idle; Intent allowlist living; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 358 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after lands; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

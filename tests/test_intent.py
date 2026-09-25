@@ -16909,13 +16909,16 @@ def test_batch352_unfreeze_last_resort() -> None:
     )
     assert 'return "351"' not in helper
     # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357", "358"))
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 352
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert any(f'return "{n}"' in poster for n in ("352", "353", "354", "355", "356", "357", "358"))
+    _wake_head = poster.split("def batch_marker")[0]
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', _wake_head)]
+    assert _wake_rets and max(_wake_rets) >= 352
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -18043,7 +18046,8 @@ def test_batch355_ci_audit_watch_idle() -> None:
     helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355", "356", "357", "358"))
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 352
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     start = intent.index("def test_batch352_unfreeze_last_resort")
     end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
@@ -18715,4 +18719,78 @@ def test_batch358_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 358 tip-eng)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 358 tip-eng)" in owner
+
+
+def test_batch358_living_script_stale_republish() -> None:
+    """Batch 358: living script_stale republish after tip_sync idle; lemma open."""
+    import json
+    import re
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH358_REPUBLISH_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "358"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("defect_id") == "living_script_stale_after_batch358_tip_sync_idle"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    assert (brief.get("after") or {}).get("script_stale") == 0
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH358_REPUBLISH_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_id") == "living_script_stale_after_batch358_tip_sync_idle"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH358_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("script_stale_after") == 0
+    assert evidence.get("tip_stale") == 0
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("action") == "eng_living_script_stale_republish"
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    # Intent allowlist living (max return N>=352; no frozen 352..358 any()).
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 352
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    _wake_head = poster.split("def batch_marker")[0]
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', _wake_head)]
+    assert _wake_rets and max(_wake_rets) >= 352
+    # Frozen any() tuple must not reappear in Batch 352 unfreeze body.
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch352_unfreeze_last_resort")
+    end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
+    body = intent[start:end]
+    assert 'in ("352", "353", "354", "355", "356", "357", "358")' not in body
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 358)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 358 and len(headers) == 1
+    assert "living script_stale republish" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 358 republish)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 358 republish)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "living script_stale" in log_md and "Batch 358" in log_md
+
 

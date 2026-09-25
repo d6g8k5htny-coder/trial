@@ -1,3 +1,12 @@
+## STATUS (Batch 358 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living `script_stale` after Batch 358 tip_sync idle; Intent return allowlist re-frozen 352–358 — republish + living `>=352`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch358_living_script_stale_republish -q
+```
+
 ## STATUS (Batch 358 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.

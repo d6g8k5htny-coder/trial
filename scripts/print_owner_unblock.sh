@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 358 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 358: eng living script_stale republish after tip_sync idle (batch241; script_stale 1→0; Intent allowlist living)"
 echo " Batch 358: tip_or_eng inv tip re-pin after lands @e3cd7d4"
 echo " Batch 358: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 echo " Batch 357: tip_or_eng inv tip re-pin after Batch 356/357 lands @e3cd7d4"
