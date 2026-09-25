@@ -1,6 +1,6 @@
 {
   "batch": "343",
-  "generated_at_utc": "2026-09-25T19:02:18Z",
+  "generated_at_utc": "2026-09-25T19:02:43Z",
   "tip": "fcad723",
   "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
   "coverage": "8/8_WRITABLE",
@@ -18,7 +18,7 @@
     "active_writable": "1/8",
     "durable_token_source": "none",
     "inventory_refresh": "skip durable_token_source=none",
-    "preserve_durable_tip_refresh": "INV_BATCH=343 durable_writable=0 tip_updates trial\u219214bba11"
+    "preserve_durable_tip_refresh": "INV_BATCH=343 durable_writable=0 tip_updates trial\u219292cb8cf"
   },
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -28,7 +28,7 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "14bba11"
+    "trial": "92cb8cf"
   },
   "coordinator_bcId": "bc-01a0cf1e"
 }

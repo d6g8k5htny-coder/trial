@@ -8,7 +8,7 @@ tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard
 
 ## STATUS (Batch 343)
 
-tip `fcad723` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→14bba11; coverage 8/8_WRITABLE; BATCH343_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
+tip `fcad723` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→92cb8cf; coverage 8/8_WRITABLE; BATCH343_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
 
 tip `fcad723` tip_match=true; tip_sync_or_eng pulse — peer tip-sync already landed; living tip/script clean; action=idle_no_commit; goal OPEN; lemma_closed=false; scientific effect NONE.
 
