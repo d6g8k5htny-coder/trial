@@ -11885,3 +11885,72 @@ def test_batch291_idle_deep() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
+
+
+def test_batch293_research_audit_idle() -> None:
+    """Batch 293: research audit WITHOUT promotion; lemma stays open; no NEW eng."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH293_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "293"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is False
+    assert brief.get("defect_found") is False
+    assert brief.get("defect_id") is None
+    assert brief.get("route_now") == "RESEARCH_AUDIT_IDLE"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("3a29f52")
+    ra = brief.get("research_audit") or {}
+    assert ra.get("lemma_closed") is False
+    assert ra.get("prizes_solved") is False
+    assert ra.get("open_prizes") == 3
+    assert ra.get("flipped_anything") is False
+    assert ra.get("guard_pass") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH293_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is False
+    assert hunt.get("defect_found") is False
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is False
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_not_273_291") is True
+    assert any("0020" in a or "invent" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH293_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert (audit.get("packet") or {}).get("lemma_closed") is False
+    assert (audit.get("packet") or {}).get("prizes_solved") is False
+    assert len(audit.get("open_prizes") or []) == 3
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 293" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 293)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 293)" in owner
+
+    # Keep living REFRESH default from last eng ship (289); audit idle does not bump.
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 289)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False

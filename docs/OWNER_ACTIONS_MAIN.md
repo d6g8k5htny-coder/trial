@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 293)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Research audit WITHOUT promotion: HAS_PACKET `lemma_closed=false` prizes open; guard pass; `flipped_anything=false`. Sibling skim: dylan durable 8/8 WRITABLE (ambient sandbox 404 / App install trial-only); write+align feasible; no invent 0020. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable — skipped. Living tip_stale=0 script_stale=0. No NEW eng. No tip-sync. No republish. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+python3 scripts/audit_research_stack_open.py /tmp/main-harden-b293 --tip-sha 3a29f526da5108df173edc390a8ca2d1f3d887c9
+python3 scripts/guard_no_status_promotion.py /tmp/main-harden-b293 --tip-sha 3a29f526da5108df173edc390a8ca2d1f3d887c9
+```
+
 ## STATUS (Batch 291)
 
 Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer from BATCH290 briefs + PATH_C/STATUS_GUARD `generated_at` — not eng). `rg repositories or []` only comments/asserts. Inventable CRITICAL expand (write_path_c_status/assert/print_owner) skipped — living sha match. DEEP hunt beyond 273–290 **NEGATIVE**. No tip-sync. No republish. `lemma_closed=false`. Scientific effect: NONE.

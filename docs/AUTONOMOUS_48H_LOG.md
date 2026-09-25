@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 293 (research audit WITHOUT promotion — tip stable, open stack recorded) — 2026-09-25 ~12:15 UTC (PERMANENT window; research_audit paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
+- Research audit (no promotion): `audit_research_stack_open` HAS_PACKET — `lemma_closed=false`, prizes open (3), premises 13, lemmas 1; `guard_no_status_promotion` pass violations=0; `flipped_anything=false`. Evidence: `portable/BATCH293_RESEARCH_STACK_AUDIT.json`.
+- Sibling skim (`.cursor/environment.json` 8 deps): ambient `gh` public repos OK / sandbox 404; dylan durable **8/8 WRITABLE**; write+align feasible; do not invent 0020.
+- Eng hunt: no NEW defect beyond 273–291 (research HOLD / tip-observe / inventable skipped; living tip_stale=0 script_stale=0). Batch 292 was tip-OK idle.
+- next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+
 ### Batch 291 (DEEP idle — tip stable, no new eng beyond 273–290) — 2026-09-25 ~12:02 UTC (PERMANENT window; idle_deep paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
