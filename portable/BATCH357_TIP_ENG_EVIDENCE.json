@@ -1,0 +1,29 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "inventory_tip_repin_after_land_head",
+  "batch": "357",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip": "a7f4fce39499ce922cd0087b0817c35d7b0b8309",
+  "trial_tip_sha": "80bae23c09c3b3c05e15c9db63a3a309e62539d4",
+  "live_trial_head": "80bae23c09c3b3c05e15c9db63a3a309e62539d4",
+  "trial_tip_matches_live_head": true,
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "ac868b2",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "80bae23"
+  },
+  "generated_at_utc": "2026-09-25T21:25:21Z",
+  "defect_id": "inventory_trial_tip_lag_after_lands",
+  "coordinator_bcId": "bc-01a0cf1e"
+}

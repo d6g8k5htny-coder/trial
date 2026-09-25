@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 357 — tip_or_eng: inv tip re-pin after conflict-marker land (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`a7f4fce` after Batch 356 conflict-marker land @`b5563e2` — PRESERVE_DURABLE re-pin→HEAD; REFRESH/last-resort 356→357.
+- Artifacts: `BATCH357_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
 ### Batch 357 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

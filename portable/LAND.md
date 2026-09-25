@@ -1,3 +1,6 @@
+## STATUS (Batch 357 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after Batch 356 conflict-marker land; REFRESH/last-resort 356→357; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
 ## STATUS (Batch 357 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

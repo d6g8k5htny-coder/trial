@@ -89,6 +89,8 @@ def _living_batch_n() -> str:
     Batch 346: last-resort bumped off frozen "345" so empty-tree fallback cannot
     lag living print_owner Batch 346.
     Batch 352: last-resort bumped off frozen "351" so empty-tree fallback cannot
+    Batch 357: last-resort bumped off frozen "356" so empty-tree fallback cannot
+    lag print_owner 357.
     lag living Batch 352 / print_owner header (coordinator wake).
     """
     try:
@@ -105,7 +107,7 @@ def _living_batch_n() -> str:
     m = re.search(r"REFRESH_BATCH_TAG:-(\d+)", rtext)
     if m:
         return m.group(1)
-    return "356"
+    return "357"
 def batch_marker() -> str:
     """Living wake marker — tip move unlocks re-post."""
     return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"
