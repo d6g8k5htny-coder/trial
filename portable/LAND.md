@@ -1,3 +1,7 @@
+## STATUS (Batch 347 inv-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory trial tip pin after Batch 346 lands (preserve_durable; trial→`a136c2d`); durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living batch241 script_stale republish after fallback 346 (script_stale 1→0); Path C IDLE@0019; durable 8/8; goal OPEN; lemma_closed=false; scientific effect NONE.

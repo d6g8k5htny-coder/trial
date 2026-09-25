@@ -16237,3 +16237,50 @@ def test_batch346_living_script_stale_republish() -> None:
     assert "script_stale" in log_md and "republish" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346 republish)" in owner
+
+
+def test_batch347_inventory_tip_pin() -> None:
+    """Batch 347: inventory trial tip pinned after Batch 346 lands; durable 8/8."""
+    import json
+    import re
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 347
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip
+    assert not tip.startswith("3240e1a")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH347_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "347"
+    assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"
+    assert brief.get("lemma_closed") is False
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH347_INV_TIP_PIN_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("coverage") == "8/8_WRITABLE"
+    assert evidence.get("action") == "grant_inventory_tip_pin_after_main_lands"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 347)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 347
+    assert len(headers) == 1  # single living header
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 347 inv-tip-pin)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "inventory tip pin" in log_md and "Batch 347" in log_md
+

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 347 — inventory tip pin after Batch 346 lands (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8.
+- Eng: inventory trial tip lagged @`3240e1a` after Batch 346 lands → preserve_durable pin→HEAD `a136c2d`; INV_BATCH→347; ultimate fallback 346→347.
+- Artifacts: `BATCH347_INV_TIP_PIN_{BRIEF,HUNT,EVIDENCE}.json`. `lemma_closed=false`. Goal OPEN.
+
 ### Batch 346 — living script_stale republish after tip-stable @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

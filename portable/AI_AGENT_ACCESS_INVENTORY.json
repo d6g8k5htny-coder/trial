@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-09-25T19:34:17Z",
-  "batch": "346",
+  "generated_at_utc": "2026-09-25T19:39:28Z",
+  "batch": "347",
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
@@ -55,7 +55,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T19:34:01Z",
+      "pushed_at": "2026-09-25T19:34:53Z",
       "tip_sha": "ec8461372911fe1a8d575971ba2d7c8cbb478c79",
       "has_agents": true,
       "write": "WRITABLE"
@@ -65,7 +65,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T19:33:47Z",
+      "pushed_at": "2026-09-25T19:38:52Z",
       "tip_sha": "29db294db136fffe95d93b21d4e34f547f6b4bd0",
       "has_agents": true,
       "write": "WRITABLE"
@@ -115,8 +115,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-25T19:33:58Z",
-      "tip_sha": "3240e1a5e6d42f0e8c84546a52feb65a5c400bc0",
+      "pushed_at": "2026-09-25T19:36:38Z",
+      "tip_sha": "a136c2d50f584f57c860b0468e51b8188ce6bb16",
       "has_agents": true,
       "write": "WRITABLE"
     }

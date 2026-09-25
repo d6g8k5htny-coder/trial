@@ -1,3 +1,11 @@
+## STATUS (Batch 347 inv-tip-pin)
+
+Inventory trial tip pinned after Batch 346 lands @`a136c2d`. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+INV_BATCH=347 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+```
+
 ## STATUS (Batch 346 republish)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). Eng: living `batch241-path-c-bundle` lagged CRITICAL scripts after Batch 346 fallback unfreeze — `republish_living_path_c_release.sh` `--clobber` cleared `script_stale` (1→0). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
