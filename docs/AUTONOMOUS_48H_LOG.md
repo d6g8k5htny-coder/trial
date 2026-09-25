@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** `probe_main_write_vectors` `path_b_keys` still included W3a/W3b/W3c/W3d/W3e while every dispatch fires `dry_run=true` only. Synthetic W1 DENIED + W3a/W3c/W3d/W3e WRITABLE → **`path_b_ready=true`** (Batch 141 only neutralized W3f). `aligned_drift_watch` listed those dry_run vectors under `path_b_writable_vectors`.
 - **Defect shipped (avoid when_writable once pid-liveness / VERIFY.batch release-align / pack living-tag / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** annotate W3a–W3e as `DISPATCH_OK_DRY_RUN` + `false_positive_for_main_write`; `path_b_keys` = W1/W2/W4* only.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- Trial eng land pending this PR. Scientific effect NONE.
+- Trial eng **PR #103 squash merge** @ `37eeb70`. Scientific effect NONE.
 
 ### Batch 270 (when_writable --once pid-liveness flock-miss leftover) — 2026-09-25 ~04:24 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 

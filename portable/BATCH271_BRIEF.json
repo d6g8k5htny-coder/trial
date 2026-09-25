@@ -1,6 +1,6 @@
 {
   "batch": "271",
-  "generated_at_utc": "2026-09-25T04:55:00Z",
+  "generated_at_utc": "2026-09-25T04:58:49Z",
   "status": "probe_w3_dryrun_false_positive_shipped",
   "waiting_ci": false,
   "goal_complete": true,
@@ -43,7 +43,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "probe_main_write_vectors: W3a–W3e dry_run workflow_dispatch success → DISPATCH_OK_DRY_RUN false_positive; excluded from path_b_ready (Batch 141 only covered W3f)",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 103,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_8e359e5",
@@ -58,7 +58,7 @@
     "pack_vs_release": "deferred_avoid_republish_455984_vs_386608"
   },
   "next_focus": "tip_sync_drift_watch @8e359e5; keep Path C idle until next tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish)",
-  "note": "Batch 271: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80/#81 + research HOLDs skipped). NEW eng: probe_main_write_vectors counted W3a–W3e dry_run=true workflow_dispatch as path_b_capable WRITABLE → path_b_ready true while W1 DENIED (Batch 141 only fixed W3f). Fixed: annotate DISPATCH_OK_DRY_RUN + false_positive; path_b_keys = W1/W2/W4* only. lemma_closed=false; flipped nothing. Never printed tokens. Avoided when_writable once pid-liveness / VERIFY.batch release-align / pack living-tag / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 271: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80/#81 + research HOLDs skipped). NEW eng: probe_main_write_vectors counted W3a–W3e dry_run=true workflow_dispatch as path_b_capable WRITABLE → path_b_ready true while W1 DENIED (Batch 141 only fixed W3f). Fixed: annotate DISPATCH_OK_DRY_RUN + false_positive; path_b_keys = W1/W2/W4* only. lemma_closed=false; flipped nothing. Never printed tokens. Avoided when_writable once pid-liveness / VERIFY.batch release-align / pack living-tag / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene. Trial eng PR #103 squash merge @37eeb70.",
   "artifacts": [
     "scripts/probe_main_write_vectors.py",
     "portable/BATCH271_BRIEF.json",
@@ -70,10 +70,15 @@
     "portable/OWNER_ONE_LINERS.md",
     "portable/GH_DEVICE_LOGIN.md",
     "scripts/print_owner_unblock.sh",
-    "tests/test_intent.py"
+    "tests/test_intent.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/103",
+    "https://github.com/d6g8k5htny-coder/trial/commit/37eeb7029aadda18cf71064b7b4bd23867a09278"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "37eeb70",
+  "trial_main_land_method": "pr_103_squash_merge",
+  "trial_main_land_full": "37eeb7029aadda18cf71064b7b4bd23867a09278"
 }
