@@ -1,0 +1,12 @@
+{
+  "batch": "352",
+  "generated_at_utc": "2026-09-25T20:36:14Z",
+  "action": "idle_no_commit",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "ci_status": "green",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN"
+}
