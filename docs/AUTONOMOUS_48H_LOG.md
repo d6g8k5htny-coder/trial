@@ -21,6 +21,19 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 355 — eng living script_stale republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` (print_owner/inventory drift after Batch 355 inv pin/wake lands). Republish → script_stale=0.
+- NEVER flip research; skip inventable. Goal OPEN.
+
+### Batch 355 — MULTI_AGENT wake+assign stopped Path C agents (2026-09-25)
+
+### Batch 355 — soften INV tip-pin Intent live BASE_TIP pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- tip_sync_or_eng: peer idle + inv tip pin already on main; eng soften frozen `assert "e3cd7d4" in base_tip` → `_living_tip`; paper-trail tgz.
+- Artifact: `BATCH355_SOFTEN_EVIDENCE.json`. Goal OPEN. NEVER flip research.
 ### Batch 355 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
