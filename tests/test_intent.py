@@ -18796,7 +18796,6 @@ def test_batch358_living_script_stale_republish() -> None:
 
 
 
-<<<<<<< HEAD
 def test_batch359_idle_tip_sync_watch() -> None:
     """Batch 359: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -18847,7 +18846,7 @@ def test_batch359_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 359 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "idle_no_commit" in log_md
-=======
+
 def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     """Batch 359: preserve_durable tip pin after lands; tip e3cd7d4."""
     import json
@@ -18904,4 +18903,3 @@ def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     assert "STATUS (Batch 359 inv-preserve-tip-pin)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "inventory_preserve_durable_tip_pin" in log_md
->>>>>>> cursor/batch359-inv-preserve-tip-pin-68a4
