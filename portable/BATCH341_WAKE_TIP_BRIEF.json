@@ -1,0 +1,18 @@
+{
+  "batch": "341",
+  "generated_at_utc": "2026-09-25T18:45:23Z",
+  "status": "wake340_tip_follows_living_base_tip",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "tip_match": true,
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "wake340_tip_frozen_848aea2_after_tip_sync_f244312",
+  "action": "eng_wake_tip_living",
+  "inventory_batch": "341",
+  "inventable_promoted": false,
+  "note": "MULTI_AGENT_WAKE_BATCH340 tip was frozen @848aea2 after tip-sync to f244312; now living."
+}

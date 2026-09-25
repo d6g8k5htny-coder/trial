@@ -14400,7 +14400,7 @@ def test_batch340_wake_durable_token() -> None:
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal_complete") is False
     assert _living_tip(str(brief.get("tip", "")))
-    assert str(brief.get("tip", "")).startswith("848aea2")
+    # Batch 341: live tip may move after tip-sync; do not freeze startswith 848aea2.
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH340_WAKE_TOKEN_HUNT.json").read_text(encoding="utf-8")
@@ -14543,3 +14543,62 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     assert "Batch 341" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341)" in owner
+
+
+def test_batch341_wake_tip_living_and_research_audit() -> None:
+    """Batch 341: wake tip follows living BASE_TIP; research audit no promo."""
+    import json
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("wake340_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert _living_tip(str(wake.get("tip") or ""))
+    assert str(wake.get("tip") or "").startswith("f244312") or _living_tip(str(wake.get("tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH341_WAKE_TIP_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "341"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_id") == "wake340_tip_frozen_848aea2_after_tip_sync_f244312"
+    assert brief.get("action") == "eng_wake_tip_living"
+    assert _living_tip(str(brief.get("tip", "")))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH341_RESEARCH_STACK_AUDIT.json").read_text(encoding="utf-8")
+    )
+    assert audit.get("batch") == "341"
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("inventable_promoted") is False
+    assert int(audit.get("open_premises") or 0) >= 1
+    assert _living_tip(str(audit.get("tip", "")))
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("batch") == "341"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+
+    # Softened wake-token live tip pin
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch340_wake_durable_token")
+    end = intent.index("def test_batch340_tip_sync_f244312")
+    body = intent[start:end]
+    assert 'startswith("848aea2")' not in body
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 341)
+    assert "wake tip" in unblock.lower() or "MULTI_AGENT_WAKE tip" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341)" in land
+    assert "wake" in land.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 341)" in owner
+    assert "MULTI_AGENT_WAKE" in owner or "BATCH341_RESEARCH_STACK_AUDIT" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "wake tip living" in log_md.lower() or "MULTI_AGENT_WAKE_BATCH340.json" in log_md

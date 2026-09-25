@@ -1,0 +1,76 @@
+{
+  "batch": "341",
+  "generated_at_utc": "2026-09-25T18:45:23Z",
+  "action": "research_stack_audit_without_status_promotion",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "f244312",
+  "tip_full": "f244312db901cf6ede88e46af663398d496eb989",
+  "path_c": "IDLE@0019",
+  "open_premises": 8,
+  "open_prs_audited": [
+    {
+      "n": 111,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 110,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 109,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 106,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 105,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 103,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 98,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 46,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 38,
+      "kind": "inventable_draft",
+      "action": "skip"
+    },
+    {
+      "n": 36,
+      "kind": "eng",
+      "action": "keep_open_no_claim_promo"
+    },
+    {
+      "n": 21,
+      "kind": "eng",
+      "action": "keep_open_no_claim_promo"
+    },
+    {
+      "n": 12,
+      "kind": "eng_hold",
+      "action": "keep_open_no_claim_promo"
+    }
+  ],
+  "inventable_promoted": false,
+  "note": "Batch 341 audit: inventable skipped; eng PRs tip-align only; lemma_closed stays false."
+}

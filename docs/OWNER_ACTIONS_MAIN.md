@@ -2,9 +2,18 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 341)
+
+Hardening tip **stable** @ `f244312`. Eng: MULTI_AGENT_WAKE tip follows living BASE_TIP (was frozen @848aea2); inventory batch 341; research stack audit (inventable skipped); soften tip-sync Intent live pin. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['tip'])"
+cat portable/BATCH341_RESEARCH_STACK_AUDIT.json | python3 -m json.tool | head
+```
+
 ## STATUS (Batch 340 wake-token)
 
-Hardening tip **stable** @ `848aea2`. Eng: wake poster resolves durable `MAIN_PUSH_TOKEN` file drops (grant/`when_writable` order; MAIN before GH). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **stable** @ living BASE_TIP. Eng: wake poster resolves durable `MAIN_PUSH_TOKEN` file drops (grant/`when_writable` order; MAIN before GH). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
 WAKE_TOKEN_SOURCE_LOG=1 python3 scripts/post_batch322_wake_comments.py --help 2>/dev/null || true
@@ -16,14 +25,6 @@ Hardening tip **synced** @ `f244312` after main #108 inventable tip-observe. Tip
 
 ```bash
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
-```
-
-## STATUS (Batch 341)
-
-Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`"f244312" in base_tip`); living pack republish (tgz_newer after tip-sync). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
-
-```bash
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
 ./scripts/republish_living_path_c_release.sh --dry-run
 ```
 
@@ -31,14 +32,11 @@ Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 tip-sync Intent live
 
 Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: republish CRITICAL += `audit_main_alignment.py` (pack-only left living `script_stale=0` on audit-only drift); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **stable** @ living BASE_TIP. Eng: republish CRITICAL += `audit_main_alignment.py`; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback; grant inventory tip refresh. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/republish_living_path_c_release.sh --dry-run   # CRITICAL includes audit
+./scripts/republish_living_path_c_release.sh --dry-run
 AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
-```
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Dylan ask: message stopped agents → `portable/MULTI_AGENT_WAKE_BATCH340.json`. Eng: `audit_main_alignment` 403 rate-limit backoff + grant inventory tip refresh batch 340 (preserve durable 8/8; `--check` skip when `durable_token_source=none`). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Scientific effect: NONE.
 python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
 ```
 

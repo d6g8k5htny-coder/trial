@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 341 — wake tip living + inventory + research audit (2026-09-25)
+
+- Tip stable @ `f244312` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `MULTI_AGENT_WAKE_BATCH340.json` tip was frozen @848aea2 after tip-sync → living `f244312`; soften wake-token Intent live tip pin; inventory refresh batch 341.
+- Research audit: inventable drafts skipped; eng #36/#21/#12 keep-open no promo; `portable/BATCH341_RESEARCH_STACK_AUDIT.json`.
+- NEVER flip research.
+
 ### Batch 341 — soften Batch 340 tip-sync live BASE_TIP Intent pin (2026-09-25)
 
 - Tip stable @ `f244312` tip_match=1 (post #108 tip-sync); Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

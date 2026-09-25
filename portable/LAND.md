@@ -1,6 +1,6 @@
 ## STATUS (Batch 341)
 
-tip `f244312` tip_match=true; eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`f244312` in base_tip would re-red next tip-sync); living pack tgz republish after tip-sync; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+tip `f244312` tip_match=true; eng: MULTI_AGENT_WAKE tip follows living BASE_TIP (was frozen @848aea2); inventory batch 341 tip refresh; research stack audit (inventable skipped; lemma_closed=false); soften 340 tip-sync Intent live pin; Path C IDLE@0019; durable 8/8; scientific effect NONE.
 
 ## STATUS (Batch 340 wake-token)
 
