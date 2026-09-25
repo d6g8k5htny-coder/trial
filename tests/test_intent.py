@@ -17252,3 +17252,62 @@ def test_batch352_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
+
+
+def test_batch353_research_stack_audit_watch() -> None:
+    """Batch 353: research_stack_audit_watch; STATUS_GUARD living; no promotion."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH353_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "353"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    living = watch.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH353_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("scientific_effect") == "NONE"
+    counts = audit.get("counts") or {}
+    assert int(counts.get("open_premises_frozen_layer") or 0) >= 13
+    assert int(counts.get("open_lemmas") or 0) >= 1
+    assert int(counts.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(audit.get("tip_sha") or ""))
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 353)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "research_stack_audit_watch" in log_md and "Batch 353" in log_md
