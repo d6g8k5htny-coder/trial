@@ -1,6 +1,6 @@
 {
   "batch": "356",
-  "generated_at_utc": "2026-09-25T21:13:27Z",
+  "generated_at_utc": "2026-09-25T21:14:10Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -14,9 +14,10 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "inventory_batch": "356",
-  "trial_tip_sha": "e91a4f3d4db9afb9b68c35a6aa795ba62839832b",
-  "live_trial_head": "e91a4f3d4db9afb9b68c35a6aa795ba62839832b",
+  "trial_tip_sha": "f52232ac99f9bdbd899947eab9c352cb7a9d3f22",
+  "live_trial_head": "f52232ac99f9bdbd899947eab9c352cb7a9d3f22",
   "trial_tip_matches_live_head": true,
+  "prior_trial_tip_sha": "3eba995c8221",
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
@@ -25,8 +26,9 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "e91a4f3"
+    "trial": "f52232a"
   },
   "preserve_durable_writable0_denied": true,
-  "coordinator_bcId": "bc-01a0cf1e"
+  "coordinator_bcId": "bc-01a0cf1e",
+  "defect_id": "inventory_trial_tip_lag_after_lands"
 }
