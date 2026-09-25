@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 260 (living Path C release pack stale → republish) — 2026-09-25 ~01:22 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** living release `batch241-path-c-bundle` tgz **351458** / sha `a4f23da7…` vs local pack **380287** / sha `134d24d4…` (Batch 259 deferred 373392 vs 351458). Release missing `owner_grant_ai_agent_access.sh`, `watch_alignment_issue_hygiene.py`, and Batch 256–259 script fixes.
+- **Defect shipped (avoid grant dual-vector / wait_until_aligned / tip-observe / Path A/B / …):** `republish_living_path_c_release.sh` clobber upload → release tgz **380287**; living-tolerant intent asserts for `print_owner_unblock` / LAND STATUS headers (CI reds 36080808841 / 36080755890).
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 259 (grant --check dual-vector sandbox durable MAIN_PUSH_TOKEN) — 2026-09-25 ~01:08 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

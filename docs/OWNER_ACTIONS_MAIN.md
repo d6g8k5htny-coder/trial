@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 260)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Living release `batch241-path-c-bundle` tgz still 351458 while local pack ~380287 (Batch 256–259 scripts absent). Republished via `republish_living_path_c_release.sh`; living-tolerant intent asserts for STATUS headers. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run      # pack vs living release
+./scripts/refresh_path_c_bundle.sh --dry-run                # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run            # idle_path_c_done
+```
+
 ## STATUS (Batch 259)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. `owner_grant_ai_agent_access --check` only probed App/ghs → sandbox 404 looked like durable failure while MAIN_PUSH_TOKEN was 8/8 WRITABLE. Fixed: dual-vector probe + `owner_set_main_push_token` uses discovered-token auth + `--also-sandbox`. `lemma_closed=false`. Scientific effect: NONE.

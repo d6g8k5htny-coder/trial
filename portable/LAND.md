@@ -1,6 +1,11 @@
-## STATUS (Batch 259)
+## STATUS (Batch 260)
 
-tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; grant `--check` dual-vector (App/ghs sandbox 404 vs durable MAIN_PUSH_TOKEN 8/8 WRITABLE) + `owner_set_main_push_token` discovered-token auth + `--also-sandbox` shipped; lemma_closed=false; scientific effect NONE.
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; living release pack stale (351458→380287) republished on `batch241-path-c-bundle` (Batch 256–259 scripts); living-tolerant intent asserts; lemma_closed=false; scientific effect NONE.
+
+> ## STATUS (Batch 259)
+>
+> tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; grant `--check` dual-vector (App/ghs sandbox 404 vs durable MAIN_PUSH_TOKEN 8/8 WRITABLE) + `owner_set_main_push_token` discovered-token auth + `--also-sandbox` shipped; lemma_closed=false; scientific effect NONE.
+>
 
 > ## STATUS (Batch 258)
 >

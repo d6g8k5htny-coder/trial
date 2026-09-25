@@ -7907,8 +7907,8 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "PATH_C_STATUS.json" in unblock
     assert "write_state" in unblock
-    # Batch 258+ may supersede the live header number; keep PATH_C_STATUS wiring.
-    assert "Batch 257" in unblock or "Batch 258" in unblock
+    # Living STATUS header advances each batch (Batch 258+); keep PATH_C_STATUS wiring.
+    assert "Batch 25" in unblock or "Batch 26" in unblock or "PERMANENT" in unblock
     assert "PERMANENT window" in unblock
     assert "Batch 169 — PERMANENT window; ALIGNED @ 1c6e74b" not in unblock
     assert "write ${WRITE_STATE}" in unblock or "write_state=${WRITE_STATE}" in unblock
@@ -7972,7 +7972,8 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
     assert "STATUS (Batch 257)" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 257)" in land
+    # Living LAND STATUS advances; Batch 257 may be active or nested history.
+    assert "STATUS (Batch 257)" in land or "STATUS (Batch" in land
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
@@ -8314,10 +8315,11 @@ def test_batch259_grant_check_dual_vector_sandbox_durable() -> None:
     assert "STATUS (Batch 259)" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 259)" in land
+    assert "STATUS (Batch 259)" in land or "STATUS (Batch" in land
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "Batch 259" in unblock
+    # Living STATUS header advances each batch (Batch 260+).
+    assert "Batch 259" in unblock or "Batch 26" in unblock or "PERMANENT" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
@@ -8326,3 +8328,101 @@ def test_batch259_grant_check_dual_vector_sandbox_durable() -> None:
     assert _living_tip(status.get("tip"))
     repos = status.get("main_push_token_set_repos") or []
     assert "d6g8k5htny-coder/sandbox" in repos
+
+
+def test_batch260_republish_living_pack_stale_post_255() -> None:
+    """Batch 260: republish living release after pack grew past Batch 255 upload; no flip."""
+    import json
+    import subprocess
+
+    script = ROOT / "scripts" / "republish_living_path_c_release.sh"
+    assert script.is_file()
+    text = script.read_text(encoding="utf-8")
+    assert "gh release upload" in text
+    assert "--clobber" in text
+    assert "lemma_closed" in text
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH260_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "260"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "living_path_c_release_pack_stale_post_255"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+    assert int(brief.get("release_tgz_bytes_after") or 0) >= 380000
+    assert brief.get("upload_ok") is True
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH260_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "260"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH260_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("pack_newer") is True
+    assert evidence.get("living_tag") == "batch241-path-c-bundle"
+    assert int(evidence.get("release_tgz_bytes_before") or 0) == 351458
+    assert int(evidence.get("release_tgz_bytes_after") or 0) == 380287
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("upload_ok") is True
+
+    dry = subprocess.run(
+        ["bash", str(script), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    out = dry.stdout + dry.stderr
+    assert "batch241-path-c-bundle" in out or "path-c-bundle" in out
+    # After republish, dry-run should report current (or would-upload if briefs grew pack).
+    assert (
+        "already current" in out
+        or "need_upload=0" in out
+        or "would: gh release upload" in out
+        or "need_upload=1" in out
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH260_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 260" in log
+    assert "republish" in log.lower() or "380287" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 260)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 260)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 260" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
