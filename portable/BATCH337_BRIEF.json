@@ -25,8 +25,12 @@
     "tip": "TIP_OK @eeebb28 BASE==LIVE match=1",
     "assert": "IDLE_PATH_C_DONE stack_end=0019",
     "living_before": "tip_stale=0 script_stale=1 need_upload=1",
-    "living_after": "script_stale cleared via republish",
+    "living_after": "script_stale=0 tip_stale=0 need_upload=0 after post-paperwork republish",
     "research": "all main open PRs draft \u2014 skipped"
   },
-  "note": "Batch 337 tip_sync_watch: tip stable; living script_stale republish; lemma_closed=false."
+  "note": "Batch 337 tip_sync_watch: tip stable; living script_stale republish; lemma_closed=false.",
+  "trial_sha": "243e84c2515a09db282cb39b4af5b908f1eb085b",
+  "trial_branch": "cursor/batch337-living-script-stale-309a",
+  "compare_url": "https://github.com/d6g8k5htny-coder/trial/compare/main...cursor/batch337-living-script-stale-309a?expand=1",
+  "trial_pr_create": "blocked_integration_403"
 }
