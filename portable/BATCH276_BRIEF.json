@@ -51,10 +51,10 @@
   "evidence": {
     "repro_pre_pack_pin": "batch250-path-c-bundle",
     "repro_post_pack_pin": "batch241-path-c-bundle",
-    "pre276_upload_target": "batch250-path-c-bundle (WRONG — captured before pack)",
+    "pre276_upload_target": "batch250-path-c-bundle (WRONG \u2014 captured before pack)",
     "post276_upload_target": "batch241-path-c-bundle (post-pack living pin)",
     "write_path_c_status": "VERIFY.release preferred over living pin (parity with pack derive)",
-    "pack_vs_release_bytes": "478088 vs 386608 — race fix only; asset republish deferred",
+    "pack_vs_release_bytes": "478088 vs 386608 \u2014 race fix only; asset republish deferred",
     "apply_all_check": "already-applied @ bfb7c38 IDLE_PATH_C_DONE",
     "inventable_tip_observe": "HEAD bfb7c38 IS observe-of-8e359e5; skipped",
     "land_workflows_272": "already_fixed_skipped",
@@ -62,7 +62,7 @@
     "manifest_275": "already_fixed_skipped"
   },
   "next_focus": "tip_sync_drift_watch @bfb7c38; keep Path C idle; skip research HOLD drafts; deferred pack-vs-release asset upload (race fixed; optional --force later)",
-  "note": "Batch 276 (timer wake as 275 already @fac2df6): tip match @bfb7c38 Path C idle; all open main PRs DRAFT skipped. NEW eng: republish captured LIVING_PATH_C_RELEASE_TAG before pack_portable — stale dirty pin (batch250) uploaded to wrong release while pack rewrote pin to VERIFY.release (batch241). Fixed post-pack TAG + write_path_c_status VERIFY-first. lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 276 (timer wake as 275 already @fac2df6): tip match @bfb7c38 Path C idle; all open main PRs DRAFT skipped. NEW eng: republish captured LIVING_PATH_C_RELEASE_TAG before pack_portable \u2014 stale dirty pin (batch250) uploaded to wrong release while pack rewrote pin to VERIFY.release (batch241). Fixed post-pack TAG + write_path_c_status VERIFY-first. lemma_closed=false; flipped nothing. Never printed tokens. Direct-landed trial main @ ce70665 (gh pr create 403).",
   "artifacts": [
     "scripts/republish_living_path_c_release.sh",
     "scripts/write_path_c_status.py",
@@ -79,5 +79,8 @@
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "ce70665",
+  "trial_main_land_method": "direct_push_main_pr_create_403",
+  "trial_main_land_full": "ce70665c9645892b321d0b40c68d14a81a92c99f"
 }
