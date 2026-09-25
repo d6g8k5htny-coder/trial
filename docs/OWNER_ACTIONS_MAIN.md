@@ -1,3 +1,13 @@
+## STATUS (Batch 359 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lag + living script_stale after conflict-fix lands — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=359 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch359_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 359 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH357; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH359_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
