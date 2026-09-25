@@ -1,6 +1,6 @@
 {
   "batch": "265",
-  "generated_at_utc": "2026-09-25T02:42:00Z",
+  "generated_at_utc": "2026-09-25T02:46:05Z",
   "status": "batch262_live_ignore_ci_isolate_github_token_fixed",
   "waiting_ci": false,
   "goal_complete": true,
@@ -36,9 +36,9 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "Batch 262 live-ignore Intent subprocess now scrubs Actions GITHUB_TOKEN/GH_TOKEN (Batch 263 only scrubbed the unit _token block) so PATH_C_IGNORE_FILE_TOKENS DENIED asserts token_source empty — clears trial-ci reds 36086754869/36086753751/36086723977",
+  "automation_improvement": "Batch 262 live-ignore Intent subprocess now scrubs Actions GITHUB_TOKEN/GH_TOKEN (Batch 263 only scrubbed the unit _token block) so PATH_C_IGNORE_FILE_TOKENS DENIED asserts token_source empty \u2014 clears trial-ci reds 36086754869/36086753751/36086723977",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 89,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -46,7 +46,9 @@
   "evidence": {
     "before": {
       "test": "test_batch262_probe_file_token_discovery live ignore",
-      "subprocess_env_scrubbed": ["MAIN_PUSH_TOKEN"],
+      "subprocess_env_scrubbed": [
+        "MAIN_PUSH_TOKEN"
+      ],
       "actions_ambient": "GITHUB_TOKEN present",
       "token_source_when_denied": "env:GITHUB_TOKEN",
       "ci_runs_failed": [
@@ -70,7 +72,7 @@
     "pack_vs_release": "newer_deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 265: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; Batch 262 live-ignore Intent CI flake (Actions GITHUB_TOKEN → token_source=env:GITHUB_TOKEN under IGNORE) → scrub GH_TOKEN/GITHUB_TOKEN in live subprocess; lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_b dry-run land_needed / research-guard PACKET / probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 265: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; Batch 262 live-ignore Intent CI flake (Actions GITHUB_TOKEN \u2192 token_source=env:GITHUB_TOKEN under IGNORE) \u2192 scrub GH_TOKEN/GITHUB_TOKEN in live subprocess; lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_b dry-run land_needed / research-guard PACKET / probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene. Trial main PR #89 squash merge @ a32d392.",
   "artifacts": [
     "tests/test_intent.py",
     "scripts/print_owner_unblock.sh",
@@ -79,12 +81,15 @@
     "portable/BATCH265_RESEARCH_STACK_AUDIT.json",
     "docs/AUTONOMOUS_48H_LOG.md",
     "docs/OWNER_ACTIONS_MAIN.md",
-    "portable/LAND.md"
+    "portable/LAND.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/89",
+    "https://github.com/d6g8k5htny-coder/trial/commit/a32d392cfb79"
   ],
   "shipped": true,
   "where": [
     "trial"
   ],
-  "trial_main_land": null,
-  "trial_main_land_method": null
+  "trial_main_land": "a32d392",
+  "trial_main_land_method": "pr_89_squash_merge",
+  "trial_main_land_full": "a32d392cfb79d688853048d2da39578c0e7bb8ec"
 }
