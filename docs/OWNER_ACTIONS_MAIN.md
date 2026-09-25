@@ -4,11 +4,11 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: `audit_main_alignment` 403 rate-limit exponential backoff + **raw/ls-remote fallback** after API exhaustion; CI soft-continues residual transport exit 2. **Misalignment exit 1 unchanged.** Guard+research: `lemma_closed=false`. action=`audit_rate_limit_raw_fallback`. Scientific effect: NONE.
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C IDLE@0019). Dylan ask: message stopped agents + assign Path C intent → `portable/MULTI_AGENT_WAKE_BATCH340.json` (Task resume IDLE + cloud peer). Durable 8/8. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
-./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
+./scripts/owner_grant_ai_agent_access.sh --check
+python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
 ```
 
 ## STATUS (Batch 339)

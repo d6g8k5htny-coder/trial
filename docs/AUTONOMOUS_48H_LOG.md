@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
+
+- Dylan ask: message stopped agents + assign Path C intent tasks.
+- Tip **stable** @ `848aea2` (tip_match=1). Path C IDLE@0019; durable 8/8; living `script_stale=0 tip_stale=0`.
+- Woke 10 IDLE agents via Task resume + spawned 1 cloud peer (`bc-232cbb8d`).
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`; `lemma_closed=false`; NEVER flip research.
+
 ### Batch 340 — inventory ultimate fallback unfreeze (2026-09-25)
 
 - Tip stable @ `848aea2` (match=1); Path C IDLE@0019; `lemma_closed=false`.

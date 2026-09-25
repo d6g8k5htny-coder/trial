@@ -14043,7 +14043,7 @@ def test_batch340_wake_land_verify() -> None:
     assert path.is_file()
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data.get("batch") == 340
-    assert data.get("action") == "wake_land_verify_batch340"
+    assert data.get("action") == "multi_agent_wake_and_assign"
     assert data.get("wake340_on_main") is True
     assert data.get("tip_match") is True
     assert data.get("lemma_closed") is False
@@ -14056,6 +14056,8 @@ def test_batch340_wake_land_verify() -> None:
     living = data.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
+    assert len(data.get("woken_idle_agents") or []) >= 3
+    assert len(data.get("spawned_cloud_peers") or []) >= 1
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
@@ -14217,3 +14219,38 @@ def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "ultimate fallback" in log_md
+
+
+def test_batch340_multi_agent_wake_assign() -> None:
+    """Batch 340: Dylan wake stopped agents + assign Path C intent tasks."""
+    import json
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH340.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 340
+    assert wake.get("wake340_on_main") is True
+    assert wake.get("lemma_closed") is False
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert len(wake.get("woken_idle_agents") or []) >= 3
+    assert len(wake.get("spawned_cloud_peers") or []) >= 1
+    living = wake.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH340_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "340"
+    assert brief.get("action") == "multi_agent_wake_and_assign"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "MULTI_AGENT wake" in unblock or "wake+assign" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "wake" in land.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "MULTI_AGENT_WAKE_BATCH340" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "stopped agents" in log_md or "wake+assign" in log_md

@@ -106,6 +106,7 @@ echo " Batch 337: tip stable @eeebb28 tip_match=1; MULTI_AGENT wake assign; rese
 echo " Batch 337: tip-sync eeebb28→848aea2 after main #101/#107/#102 (keep-prior; NOT promoted; supersedes idle pulse)"
 echo " Batch 338: post-Path-C align watch idle @848aea2 tip_match=1; lemma_closed=false"
 echo " Batch 338: wake poster skip gate keys off living BASE_TIP (was frozen Batch 329 wake → eng PRs stuck @077464e)"
+echo " Batch 340: MULTI_AGENT wake+assign stopped agents @848aea2; Path C IDLE@0019; lemma_closed=false"
 echo " Batch 339: living script_stale republish after tip-stable watch @848aea2"
 echo " Batch 340: audit_main_alignment 403 rate-limit backoff + raw/ls-remote fallback; CI soft-continue transport exit 2"
 echo " Batch 340: inventory ultimate fallback return \"340\" (was frozen 336); REFRESH default 340"

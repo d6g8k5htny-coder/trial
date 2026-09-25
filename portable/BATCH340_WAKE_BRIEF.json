@@ -1,0 +1,16 @@
+{
+  "batch": "340",
+  "generated_at_utc": "2026-09-25T18:25:28Z",
+  "status": "multi_agent_wake_and_assign",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "848aea2",
+  "tip_full": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
+  "tip_moved": false,
+  "tip_match": true,
+  "action": "multi_agent_wake_and_assign",
+  "woken_idle_count": 10,
+  "spawned_cloud_count": 1,
+  "note": "Batch 340: Dylan asked to message stopped agents + assign Path C intent tasks."
+}
