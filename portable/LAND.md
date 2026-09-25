@@ -1,3 +1,11 @@
+## STATUS (Batch 363 republish-after-inv)
+
+tip `e3cd7d4` tip_match=true; eng: living script_stale republish after inv tip-pin; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 363 inv-tip-repin)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after living VERIFY republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 363 tip-eng)
 
 living VERIFY refresh_batch lag 345→362 republish; tip `e3cd7d4` tip_match; inv parent-pinned; durable 8/8; lemma_closed=false; action=eng_living_script_stale_republish.

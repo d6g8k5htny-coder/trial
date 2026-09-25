@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 363 — tip_or_eng: inv tip re-pin after living VERIFY republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`e1bec3e` after Batch 363 living VERIFY republish — PRESERVE_DURABLE re-pin→HEAD.
+- Living `script_stale=1` after pin → batch241 `--force` republish.
+- Artifacts: `BATCH363_INV_TIP_PIN_*.json`, `BATCH363_TIP_ENG_CONTINUE_*.json`, `BATCH363_REPUBLISH_*.json`. NEVER flip research.
+
 ### Batch 363 — living script_stale republish VERIFY 345→362 @e3cd7d4 (2026-09-25)
 
 - Timer pulse: tip stable tip_match=1; inv parent-pinned; living VERIFY refresh_batch lagged at 345.
