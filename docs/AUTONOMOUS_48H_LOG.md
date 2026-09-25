@@ -21,7 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+### Batch 305 — tip-sync after main #85 (2026-09-25)
+
+- Hardening LIVE moved `02cfbfd`→`0adeb65` (PR #85 MERGED into `chatgpt/drive-github-hardening-20260919`; mergeCommit=0adeb65). Default main still `72558a5` (no tip-sync trigger from default alone).
+- Tip-sync: `REFRESH_BATCH_TAG=305 ./scripts/refresh_path_c_bundle.sh` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; REFRESH default 305; `_LIVING_TIPS += 0adeb65`. assert IDLE_PATH_C_DONE @ `0adeb65`.
+- **NEVER flip research:** inventable #85 content not promoted; `lemma_closed=false`; `flipped_anything=false`.
+- #87 OPEN DRAFT CI-fail skipped; #88 CLOSED. Path C idle; no 0020.
+
+## Batch 304 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85 status, idle_no_commit) — 2026-09-25 ~14:22 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings). assert+align+probe+guard: `lemma_closed=false`. Tip CI green (ci/nav/withdrawal @ `02cfbfd`).
 - Main **#85** OPEN undrafted CI-SUCCESS inventable — **skipped** (NEVER flip research). **#87** OPEN DRAFT CI-FAILURE — skipped. **#88** tip-observe draft CI-SUCCESS — skipped. HOLDs 47/46/38/36/21/12/8/7 skipped.

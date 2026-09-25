@@ -1,0 +1,47 @@
+{
+  "batch": "305",
+  "hunt": "tip_sync_after_main_85",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "tip_sync_02cfbfd_to_0adeb65_main_85",
+  "bugs_fixed": [
+    "tip-sync BASE_TIP+VERIFY+APPLY+MANIFEST+PATH_C 02cfbfd\u21920adeb65",
+    "living tip_stale republish + REFRESH default 305 + _LIVING_TIPS+=0adeb65"
+  ],
+  "avoided": [
+    "promote inventable #85 claim / RN_SIDE24_CELL discharge",
+    "flip lemma_closed / research OPEN holds",
+    "research HOLD draft #87 CI-fail",
+    "invent 0020",
+    "re-land Path C eng stack (already on tip; keep-prior)"
+  ],
+  "candidates_checked": {
+    "tip_start_02cfbfd": "TIP_OK_then_DRIFT_after_85",
+    "main_pr_85": "MERGED_to_hardening_tip_0adeb65",
+    "main_pr_87": "OPEN_DRAFT_CI_fail_skip",
+    "main_pr_88": "CLOSED_tip_observe_skip",
+    "tip_sync": "keep_prior_refresh_batch_305",
+    "living_release": "tip_stale_1_cleared_by_republish",
+    "refresh_dry_run_after": "match=1_tip_stable_0adeb65",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "guard_research": "pass_lemma_closed_false_flipped_false",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "0adeb65",
+  "tip_moved": true,
+  "prior_tip": "02cfbfd",
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "new_eng_beyond_tip_sync": true,
+    "note": "tip-sync ship only after #85 merge into hardening; inventable content not promoted; no other eng defect"
+  }
+}

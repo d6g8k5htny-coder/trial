@@ -1,3 +1,7 @@
+## STATUS (Batch 305)
+
+tip `0adeb65` tip_match=true TIP_OK after tip-sync; #85 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; #87 DRAFT skipped; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 304)
 
 tip `02cfbfd` tip_match=true TIP_OK; permanent-watch IDLE — BASE==LIVE; assert+align+probe+guard lemma_closed=false; #85 OPEN undrafted CI-green inventable skipped; #87 DRAFT CI-fail skipped; #88 tip-observe draft skipped; 0020 NEGATIVE; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
