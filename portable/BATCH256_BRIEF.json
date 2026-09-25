@@ -19,7 +19,17 @@
   "write": "WRITABLE",
   "write_durable": true,
   "merged_prs": [],
-  "research_hold_prs_skipped": [73, 47, 46, 38, 36, 21, 12, 8, 7],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
   "defect_shipped": true,
   "defect_id": "aligned_drift_watch_restore_snapshot_race_and_audit_rate_limit",
   "patch_0020": false,
@@ -38,7 +48,10 @@
     "post_restore_promote_helper": "_promote_post_restore_audit",
     "restore_lock": "portable/.aligned_drift_restore.lock",
     "audit_rate_limit_retries": 3,
-    "audit_rate_limit_env": ["AUDIT_TRANSPORT_RETRIES", "AUDIT_TRANSPORT_SLEEP_S"],
+    "audit_rate_limit_env": [
+      "AUDIT_TRANSPORT_RETRIES",
+      "AUDIT_TRANSPORT_SLEEP_S"
+    ],
     "guard_pass_line_includes_tip_sha": true,
     "workflow_dispatch_land_path_c": "403_ghs_expected",
     "repository_dispatch_land_path_c": "success_idle_already_on_tip",
@@ -53,6 +66,10 @@
     "portable/BATCH256_BRIEF.json",
     "portable/BATCH256_HUNT.json",
     "portable/BATCH256_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/76"
+  ],
+  "trial_main_land_method": "pr_76_squash_merge",
+  "trial_main_land": "06b5389",
+  "trial_main_land_full": "06b5389dfa34460dbb6d1607497976c8bc87f535"
 }
