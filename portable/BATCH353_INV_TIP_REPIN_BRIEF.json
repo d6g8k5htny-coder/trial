@@ -1,0 +1,13 @@
+{
+  "batch": "353",
+  "utc": "2026-09-25T20:43:02Z",
+  "action": "inventory_preserve_durable_tip_pin",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "trial_tip_before": "b2703aa5c5ff",
+  "trial_tip_after": "fa9b870cd35d581e255261681bb2f976cb9a420a",
+  "durable": "8/8_WRITABLE",
+  "pulse": "followup-after-inventory-peer-idle"
+}
