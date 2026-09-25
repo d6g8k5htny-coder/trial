@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 354 — idle_no_commit tip-stable + wake peers (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- CI unfreeze Intent living on main (no remaining hard-pin `return "352"`). Woke tip/eng/inventory/cloud peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 354 — eng living script_stale republish after inv tip-pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

@@ -1,0 +1,8 @@
+{
+  "batch": "354",
+  "utc": "2026-09-25T20:53:15Z",
+  "defect_shipped": false,
+  "lemma_closed": false,
+  "tip_moved": false,
+  "note": "tip stable; living current; unfreeze Intent already living >=352; peers woken"
+}
