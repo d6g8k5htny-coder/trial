@@ -15789,3 +15789,32 @@ def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
     assert "e3cd7d4" in base
     assert _living_tip(base)
 
+
+
+def test_batch345_grant_inventory_tip_pin() -> None:
+    """Batch 345: inventory trial tip pinned after tip-sync; durable 8/8."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 345
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial"))
+    assert str(trial.get("tip_sha") or "")
+    assert not str(trial.get("tip_sha") or "").startswith("0cec02be")
+
+    grant = json.loads(
+        (ROOT / "portable" / "BATCH345_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert grant.get("lemma_closed") is False
+    assert _living_tip(str(grant.get("tip") or ""))
+    assert grant.get("coverage") == "8/8_WRITABLE"
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH345_GRANT_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "345"
+    assert brief.get("action") == "grant_inventory_tip_pin_after_tip_sync"
+    assert brief.get("lemma_closed") is False

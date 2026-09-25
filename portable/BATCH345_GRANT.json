@@ -1,15 +1,15 @@
 {
   "batch": "345",
-  "generated_at_utc": "2026-09-25T19:17:52Z",
-  "tip": "fcad723",
-  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "generated_at_utc": "2026-09-25T19:23:33Z",
+  "tip": "e3cd7d4",
+  "tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "coverage": "8/8_WRITABLE",
   "write_durable": "8/8_WRITABLE",
   "sibling_write_count": 8,
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
-  "action": "grant_inventory_refresh_batch345",
+  "action": "grant_inventory_tip_pin_after_tip_sync",
   "assignment": "grant_check_dual_vector_8of8",
   "path_c": "IDLE@0019",
   "goal": "OPEN",
@@ -28,7 +28,11 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "a1cb550"
+    "trial": "6ab1a23"
   },
-  "coordinator_bcId": "bc-01a0cf1e"
+  "coordinator_bcId": "bc-01a0cf1e",
+  "tip_match": true,
+  "trial_tip_sha": "6ab1a2322ee68f9aa58a8a8e10893fbcbd7f8045",
+  "note": "Post-land inventory tip pin after tip-sync e3cd7d4; preserve durable 8/8; trial tip\u2192HEAD",
+  "durable_writable": "8/8"
 }

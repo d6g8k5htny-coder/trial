@@ -1,0 +1,13 @@
+{
+  "batch": "345",
+  "action": "grant_inventory_tip_pin_after_tip_sync",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_id": "inventory_trial_tip_lag_after_tip_sync_e3cd7d4",
+  "coverage": "8/8_WRITABLE",
+  "trial_tip_sha": "6ab1a2322ee68f9aa58a8a8e10893fbcbd7f8045",
+  "inventable_promoted": false
+}

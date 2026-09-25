@@ -1,3 +1,7 @@
+## STATUS (Batch 345 grant-tip-pin)
+
+Inventory trial tip pinned after tip-sync @`e3cd7d4`. `lemma_closed=false`.
+
 ## STATUS (Batch 345 wake-fallback)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: wake `_living_batch_n` last-resort return `"341"` lagged living Batch 345; print_owner dual `===` headers left first-match at 344 after WAKE345 — single header @345 + fallback `"345"`. Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

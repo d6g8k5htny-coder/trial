@@ -1,3 +1,7 @@
+## STATUS (Batch 345 grant-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory trial tip pin after tip-sync; preserve_durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 tip_sync_watch)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch confirm; fixed BATCH345_TIP_SYNC JSON; living paper-trail; lemma_closed=false; scientific effect NONE.

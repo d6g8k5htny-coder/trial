@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 — inventory tip pin after tip-sync e3cd7d4 (2026-09-25)
+
+- Grant peer landed BATCH345_GRANT; tip then moved → tip-sync @`e3cd7d4`. Inventory trial tip lagged @`0cec02be`.
+- Refresh trial tip_sha→HEAD; grant tip pins living; preserve durable 8/8. `lemma_closed=false`.
+
 ### Batch 345 WAKE — tip_sync_watch confirm @e3cd7d4 (2026-09-25)
 
 - Tip **stable** @ `e3cd7d4` (match=1 after peer tip-sync #105). Path C IDLE@0019; durable 8/8.
