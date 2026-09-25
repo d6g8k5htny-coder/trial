@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -31,6 +32,10 @@ Q0_MARKERS = (
     "PR #2",
 )
 
+# Batch 256: brief retries on 429 / secondary rate-limit 403 (Intent + drift watch).
+_TRANSPORT_RETRIES = int(os.environ.get("AUDIT_TRANSPORT_RETRIES", "3"))
+_TRANSPORT_SLEEP_S = float(os.environ.get("AUDIT_TRANSPORT_SLEEP_S", "2"))
+
 
 def _token() -> str | None:
     """Prefer GH_TOKEN / GITHUB_TOKEN so CI avoids unauthenticated rate limits."""
@@ -39,6 +44,37 @@ def _token() -> str | None:
         if val:
             return val
     return None
+
+
+def _is_rate_limited(exc: BaseException) -> bool:
+    """True for HTTP 429 or GitHub secondary rate-limit 403 bodies."""
+    if isinstance(exc, urllib.error.HTTPError):
+        if exc.code == 429:
+            return True
+        body = ""
+        try:
+            raw = exc.read()
+            if raw:
+                body = raw.decode("utf-8", errors="replace")
+                # Allow later str(exc) / diagnostics; HTTPError.read is one-shot.
+                exc.msg = (exc.msg or "") + f" body={body[:200]}"
+        except Exception:  # noqa: BLE001 — best-effort body sniff
+            body = ""
+        blob = f"{exc.code} {exc.reason} {body}".lower()
+        return "rate limit" in blob or "secondary rate" in blob
+    return "rate limit" in str(exc).lower()
+
+
+def _retry_after_seconds(exc: BaseException, attempt: int) -> float:
+    delay = _TRANSPORT_SLEEP_S * attempt
+    if isinstance(exc, urllib.error.HTTPError) and exc.headers:
+        ra = exc.headers.get("Retry-After")
+        if ra is not None:
+            try:
+                delay = max(delay, float(ra))
+            except ValueError:
+                pass
+    return min(delay, 30.0)
 
 
 def get_json(url: str) -> dict | list:
@@ -50,8 +86,28 @@ def get_json(url: str) -> dict | list:
     if token:
         headers["Authorization"] = f"Bearer {token}"
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.load(resp)
+    last_exc: BaseException | None = None
+    attempts = max(1, _TRANSPORT_RETRIES)
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return json.load(resp)
+        except urllib.error.HTTPError as exc:
+            last_exc = exc
+            if _is_rate_limited(exc) and attempt < attempts:
+                time.sleep(_retry_after_seconds(exc, attempt))
+                # Rebuild request — prior HTTPError may have consumed the body.
+                req = urllib.request.Request(url, headers=headers)
+                continue
+            raise
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            last_exc = exc
+            if _is_rate_limited(exc) and attempt < attempts:
+                time.sleep(_retry_after_seconds(exc, attempt))
+                continue
+            raise
+    assert last_exc is not None
+    raise last_exc
 
 
 def get_readme_text() -> tuple[str, str]:
@@ -74,6 +130,7 @@ def main() -> int:
     except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError, ValueError, KeyError) as exc:
         # Batch 155: also catch http.client.RemoteDisconnected (OSError) and
         # mid-request connection drops so CI Intent suite gets exit 2, not crash.
+        # Batch 256: rate-limit retries happen inside get_json; exhausted → exit 2.
         print(f"audit: transport failure: {exc}", file=sys.stderr)
         return 2
     except Exception as exc:  # noqa: BLE001 — audit must never crash Intent suite

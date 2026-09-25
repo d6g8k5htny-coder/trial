@@ -7696,6 +7696,160 @@ def test_batch254_probe_ref_collision_422_false_transport() -> None:
     assert _living_tip(status.get("tip"))
 
 
+def test_batch256_aligned_drift_restore_race_and_audit_rate_limit() -> None:
+    """Batch 256: restore/snapshot race fix + audit rate-limit retry; no flip."""
+    import importlib.util
+    import json
+    import urllib.error
+    from io import BytesIO
+    from unittest import mock
+
+    adw_path = ROOT / "scripts" / "aligned_drift_watch.py"
+    assert adw_path.is_file()
+    adw_src = adw_path.read_text(encoding="utf-8")
+    assert "_promote_post_restore_audit" in adw_src
+    assert "restore_lock_held" in adw_src
+    assert "fcntl" in adw_src
+    assert ".aligned_drift_restore.lock" in adw_src
+    assert "Batch 256" in adw_src or "post-restore audit" in adw_src
+
+    spec = importlib.util.spec_from_file_location("adw256", adw_path)
+    assert spec is not None and spec.loader is not None
+    adw = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(adw)
+
+    # Reproduce the race: state flips ALIGNED while audit tip stays pre-restore
+    # unless promote helper rewrites primary audit fields before snapshot.
+    report = {
+        "state": "MISALIGNED",
+        "audit": {
+            "default_tip_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "complexity_markers_present": ["δC = 0"],
+            "q0_or_notice_markers_present": [],
+        },
+        "default_tip_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    }
+    post = {
+        "default_tip_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "complexity_markers_present": [],
+        "q0_or_notice_markers_present": ["SIDE24"],
+        "default_branch": "main",
+        "root_has_AGENTS_md": True,
+    }
+    adw._promote_post_restore_audit(report, post, 0)
+    assert report["state"] == "ALIGNED"
+    assert report["audit"] is post
+    assert report["default_tip_sha"].startswith("bbbb")
+    assert report["preferred_restore_route"]["prefer"] in (
+        "Path_C_on_hardening",
+        "tip_sync_drift_watch",
+    )
+
+    audit_path = ROOT / "scripts" / "audit_main_alignment.py"
+    audit_src = audit_path.read_text(encoding="utf-8")
+    assert "AUDIT_TRANSPORT_RETRIES" in audit_src
+    assert "rate limit" in audit_src.lower()
+    assert "_is_rate_limited" in audit_src
+    assert "Retry-After" in audit_src
+
+    spec_a = importlib.util.spec_from_file_location("audit256", audit_path)
+    assert spec_a is not None and spec_a.loader is not None
+    audit = importlib.util.module_from_spec(spec_a)
+    spec_a.loader.exec_module(audit)
+    audit._TRANSPORT_SLEEP_S = 0.0
+    calls = {"n": 0}
+    ok_body = json.dumps({"ok": True}).encode()
+
+    class _CM:
+        def __init__(self, data: bytes) -> None:
+            self._data = data
+
+        def __enter__(self):
+            return BytesIO(self._data)
+
+        def __exit__(self, *args):
+            return False
+
+    def fake_urlopen(req, timeout=60):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            raise urllib.error.HTTPError(
+                "https://api.github.com",
+                429,
+                "rate limit exceeded",
+                hdrs={"Retry-After": "0"},
+                fp=BytesIO(b'{"message":"API rate limit exceeded"}'),
+            )
+        return _CM(ok_body)
+
+    with mock.patch("urllib.request.urlopen", fake_urlopen):
+        data = audit.get_json("https://api.github.com/repos/example/x")
+    assert data == {"ok": True}
+    assert calls["n"] == 3
+
+    guard_src = (ROOT / "scripts" / "guard_no_status_promotion.py").read_text(
+        encoding="utf-8"
+    )
+    assert "tip_sha=" in guard_src
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH256_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "256"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == (
+        "aligned_drift_watch_restore_snapshot_race_and_audit_rate_limit"
+    )
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH256_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "256"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_id") == (
+        "aligned_drift_watch_restore_snapshot_race_and_audit_rate_limit"
+    )
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+
+    audit_json = json.loads(
+        (ROOT / "portable" / "BATCH256_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit_json.get("lemma_closed") is False
+    assert audit_json.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 256" in log
+    assert "restore" in log.lower() and "rate-limit" in log.lower()
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 256)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 256)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert ".aligned_drift_restore.lock" in gitignore
+
+
 def test_batch255_republish_living_path_c_release_assets() -> None:
     """Batch 255: republish helper when pack newer than living release; no flip."""
     import json

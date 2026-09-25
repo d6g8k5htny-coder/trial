@@ -4,3 +4,5 @@ __pycache__/
 .pytest_cache/
 *.pyc
 .DS_Store
+# Batch 256: runtime flock for concurrent Path B restores
+portable/.aligned_drift_restore.lock

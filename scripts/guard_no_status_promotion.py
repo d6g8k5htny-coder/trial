@@ -612,9 +612,13 @@ def main(argv: list[str] | None = None) -> int:
 
     n_viol = len(violations)
     counts = current_inv.get("counts") or {}
+    # Batch 256: always echo tip_sha on the pass line so CI/logs keep tip
+    # forensics even when inventory was previously clobbered empty.
+    tip_for_log = tip_sha or current_inv.get("tip_sha") or ""
     print(
         f"guard_no_status_promotion: pass={n_viol == 0} violations={n_viol} "
         f"shape={live_report.get('shape')} "
+        f"tip_sha={tip_for_log or 'UNKNOWN'} "
         f"open_premises={counts.get('open_premises_frozen_layer', 0)} "
         f"open_lemmas={counts.get('open_lemmas', 0)} "
         f"open_prizes={counts.get('open_prizes', 0)} "

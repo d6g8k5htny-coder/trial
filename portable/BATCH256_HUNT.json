@@ -1,0 +1,52 @@
+{
+  "batch": "256",
+  "hunt": "refresh_0020_and_aligned_drift_restore_race",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_id": "aligned_drift_watch_restore_snapshot_race_and_audit_rate_limit",
+  "bugs_fixed": [
+    "aligned_drift_watch updated state from post-restore audit but left report['audit']/default_tip_sha pre-restore → snapshot tip/markers raced with state",
+    "concurrent Path B restores had no flock (hourly watch + agent + lander)",
+    "audit_main_alignment had token preference but no 429/secondary-rate-limit retry (Intent/drift transport exit 2)",
+    "guard_no_status_promotion pass line omitted tip_sha forensics"
+  ],
+  "avoided": [
+    "tip-observe",
+    "Path A/B ALIGNED no-ops",
+    "sibling AGENTS",
+    "living-tag",
+    "assert idle",
+    "empty RW",
+    "OWNER faces",
+    "ci.yml YAML",
+    "#78",
+    "VERIFY honesty",
+    "pack TMPDIR",
+    "issue hygiene",
+    "when_writable install_has_main",
+    "probe unique refs",
+    "release republish"
+  ],
+  "candidates_checked": {
+    "green_eng_main_prs": "none_all_research_hold_drafts",
+    "land_path_c_workflow_dispatch": "ghs_403_expected_repository_dispatch_ok_idle_on_tip",
+    "guard_no_status_promotion_tip_sha": "pass_line_now_prints_tip_sha",
+    "audit_main_alignment_rate_limit": "retry_429_and_secondary_403_shipped",
+    "aligned_drift_watch_restore_race": "promote_post_restore_audit_plus_flock_shipped",
+    "main_ci_fail": "recent_main_runs_success",
+    "patch_0020": "negative_tip_stable"
+  },
+  "tip": "fa32d11",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "actionable_classic_count": 0,
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "path_c": "IDLE_PATH_C_DONE",
+  "green_eng_prs_merged": [],
+  "when_writable_idle": "idle_path_c_done"
+}
