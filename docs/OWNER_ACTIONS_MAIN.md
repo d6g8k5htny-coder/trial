@@ -9,6 +9,7 @@ Hardening tip **synced** @ `077464e` (peer tip-sync 305/317). Eng shipped: `prin
 ```bash
 ./scripts/print_owner_unblock.sh | rg '^Path C:'   # tip-drift → refresh; idle → not APPLY_READY
 ./scripts/refresh_path_c_bundle.sh --dry-run       # tip stable @ 077464e after peer sync
+```
 
 ## STATUS (Batch 323)
 
