@@ -56,7 +56,9 @@
     "fix": "bundle verify via WORKDIR + || true; --force exit 0; wrote VERIFY refresh_batch=324",
     "assert": "IDLE_PATH_C_DONE tip=077464e tip_match=true lemma_closed=false",
     "write": "WRITABLE durable dylan 8/8; App trial-only",
-    "guard_research": "pass lemma_closed=false flipped_anything=false @077464e"
+    "guard_research": "pass lemma_closed=false flipped_anything=false @077464e",
+    "pr": "gh pr create 403; ManagePullRequest absent; branch pushed",
+    "living_release": "script_stale republish OK pack sha 6e455227\u2026"
   },
   "next_focus": "tip_sync_drift_watch @077464e; keep Path C idle; skip research HOLD drafts",
   "note": "Batch 324: tip stable @077464e; shipped keep-prior abort fix so tip-sync/--force completes VERIFY write; lemma_closed=false; flipped nothing.",
@@ -75,5 +77,10 @@
     "docs/OWNER_ACTIONS_MAIN.md",
     "docs/AUTONOMOUS_48H_LOG.md",
     "tests/test_intent.py"
-  ]
+  ],
+  "trial_pr_url": null,
+  "trial_pr_create": "blocked_integration_403_no_ManagePullRequest",
+  "trial_branch": "cursor/batch324-keep-prior-verify-309a",
+  "trial_sha": "298501ad0a378eb74cb981a845714fda719f8d2d",
+  "compare_url": "https://github.com/d6g8k5htny-coder/trial/compare/main...cursor/batch324-keep-prior-verify-309a?expand=1"
 }
