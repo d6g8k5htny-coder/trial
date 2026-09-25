@@ -1,0 +1,16 @@
+{
+  "batch": "368",
+  "generated_at_utc": "2026-09-25T23:26:33Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "action": "eng_living_verify_refresh_batch_bump",
+  "defect_id": "living_verify_refresh_batch_lag_367_vs_368",
+  "living_refresh_batch": "368",
+  "prior_verify_refresh_batch": "367",
+  "path_c": "IDLE@0019"
+}
