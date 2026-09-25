@@ -17798,12 +17798,22 @@ def test_batch355_inventory_preserve_durable_tip_pin() -> None:
     assert "inventory_preserve_durable_tip_pin" in unblock
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 355 inv pin shipped e3cd7d4.
     assert _living_tip(base_tip)
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 355 inv-preserve-tip-pin)" in land
+    assert "STATUS (Batch 355 soften-inv-base-tip)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 355" in log_md and "inventory_preserve_durable_tip_pin" in log_md
+    soften = json.loads(
+        (ROOT / "portable" / "BATCH355_SOFTEN_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert soften.get("action") == "eng_soften_inv_tip_pin_live_base_tip"
+    assert soften.get("lemma_closed") is False
+    assert soften.get("flipped_anything") is False
+    assert soften.get("tip_match") is True
+
 
 def test_batch355_grant_inventory_refresh() -> None:
     """Batch 355: inventory batch >=355 + durable 8/8; grant skip source=none."""

@@ -7,6 +7,15 @@ python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd355 --tip-sha e3
 python3 -m pytest tests/test_intent.py::test_batch355_research_stack_audit_watch -q
 ```
 
+## STATUS (Batch 355 soften-inv-base-tip)
+
+Hardening tip **stable** @ `e3cd7d4`. tip_sync_or_eng: tip match=1; peer idle+inv tip pin already landed. Eng: soften `test_batch355_inventory_preserve_durable_tip_pin` live BASE_TIP `assert "e3cd7d4" in base_tip` → `_living_tip`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch355_inventory_preserve_durable_tip_pin -q
+```
+
 ## STATUS (Batch 355 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`76ccf1b`; INV_BATCH→355; coverage 8/8_WRITABLE; `BATCH355_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
