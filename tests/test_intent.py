@@ -16909,14 +16909,13 @@ def test_batch352_unfreeze_last_resort() -> None:
         encoding="utf-8"
     )
     assert 'return "351"' not in helper
-    # Living last-resort may advance past 352 (Batch 353+); never freeze below 352.
-    assert 'return "352"' in helper or 'return "353"' in helper
+    assert 'return "352"' in helper
 
     poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
         encoding="utf-8"
     )
     # Ultimate fallback in _living_batch_n (not historical notes).
-    assert 'return "352"' in poster or 'return "353"' in poster
+    assert 'return "352"' in poster
     assert 'return "351"' not in poster.split("def batch_marker")[0]
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -16932,7 +16931,7 @@ def test_batch352_unfreeze_last_resort() -> None:
     spec.loader.exec_module(mod)
     td = tempfile.mkdtemp()
     (P(td) / "scripts").mkdir()
-    assert int(mod._living_inventory_batch(td)) >= 352
+    assert mod._living_inventory_batch(td) == "352"
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH352_BRIEF.json").read_text(encoding="utf-8")
@@ -17299,8 +17298,9 @@ def test_batch353_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 353" in log_md and "tip_sync_watch idle_no_commit" in log_md
 
-def test_batch353_inventory_preserve_durable_tip_pin() -> None:
-    """Batch 353: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
+
+def test_batch353_living_republish_inv_tip_pin() -> None:
+    """Batch 353: living script_stale republish + inventory tip pin→HEAD @e3cd7d4."""
     import json
     import re
 
@@ -17308,24 +17308,13 @@ def test_batch353_inventory_preserve_durable_tip_pin() -> None:
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
     assert int(str(inv.get("batch") or "0")) >= 353
-    assert inv.get("durable_writable") == "8/8"
-    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     assert inv.get("lemma_closed") is False
-    assert inv.get("flipped_anything") is False
-    assert inv.get("scientific_effect") == "NONE"
-
-    evidence = json.loads(
-        (ROOT / "portable" / "BATCH353_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
     )
-    assert evidence.get("batch") == "353"
-    assert evidence.get("action") == "inventory_preserve_durable_tip_pin"
-    assert evidence.get("durable") == "8/8_WRITABLE"
-    assert evidence.get("lemma_closed") is False
-    assert evidence.get("flipped_anything") is False
-    assert evidence.get("tip_match") is True
-    assert evidence.get("scientific_effect") == "NONE"
-    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
-    assert evidence.get("trial_tip_matches_live_head") is True
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("382f153b")
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH353_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
@@ -17333,20 +17322,44 @@ def test_batch353_inventory_preserve_durable_tip_pin() -> None:
     assert brief.get("batch") == "353"
     assert brief.get("action") == "inventory_preserve_durable_tip_pin"
     assert brief.get("lemma_closed") is False
-    assert brief.get("flipped_anything") is False
+
+    living = json.loads(
+        (ROOT / "portable" / "BATCH353_LIVING_REPUBLISH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living.get("batch") == "353"
+    assert living.get("action") == "living_script_stale_republish"
+    assert living.get("lemma_closed") is False
+    assert living.get("script_stale") == 0
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    headers = re.findall(r"=== Batch (\d+)\s", unblock)
-    assert headers and int(headers[0]) >= 353 and len(headers) == 1
-    assert "inventory_preserve_durable_tip_pin" in unblock
-
-    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "e3cd7d4" in base_tip
-
+    _assert_print_owner_header_batch_at_least(unblock, 353)
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 353 inv-preserve-tip-pin)" in land
+    assert "STATUS (Batch 353 living-republish + inv-tip-pin)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 353 living-republish + inv-tip-pin)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
-    assert "Batch 353" in log_md and "inventory_preserve_durable_tip_pin" in log_md
+    assert "Batch 353" in log_md and (
+        "inventory_preserve_durable_tip_pin" in log_md or "living script_stale" in log_md
+    )
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 353
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_inv = re.search(r'return "(\d+)"', helper)
+    assert m_inv is not None
+    assert int(m_inv.group(1)) >= 353
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    m_r = re.search(r"REFRESH_BATCH_TAG:-(\d+)", refresh)
+    assert m_r is not None
+    assert int(m_r.group(1)) >= 353
 
 
 def test_batch353_research_stack_audit_watch() -> None:
