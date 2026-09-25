@@ -1,0 +1,30 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_inv_tip_repin_and_living_republish",
+  "batch": "356",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "prior_trial_tip": "3eba995c8221",
+  "trial_tip_sha": "2a096ccb69e5d53308bbdb3d1d7b835c9c85c51e",
+  "live_trial_head": "2a096ccb69e5d53308bbdb3d1d7b835c9c85c51e",
+  "trial_tip_matches_live_head": true,
+  "script_stale_pre": 1,
+  "script_stale_post": 0,
+  "tip_pins": {
+    "google-drive": "ea55c6e",
+    "governance-": "ec84613",
+    "main": "29db294",
+    "Math-": "ac868b2",
+    "meta-framewo": "14f6836",
+    "query-": "a61656f",
+    "sandbox": "49ae345",
+    "trial": "2a096cc"
+  },
+  "generated_at_utc": "2026-09-25T21:12:35Z",
+  "inventory_batch": "356"
+}

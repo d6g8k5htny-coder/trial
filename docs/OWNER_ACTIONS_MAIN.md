@@ -1,3 +1,12 @@
+## STATUS (Batch 356 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lag + living CRITICAL `script_stale` after Batch 356 idle — preserve_durable re-pin→HEAD (INV_BATCH 356) + living republish. `lemma_closed=false`. Goal OPEN.
+```bash
+INV_BATCH=356 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+./scripts/refresh_path_c_bundle.sh --dry-run
+```
+
 ## STATUS (Batch 356 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). post-path-c-align-watch: no tip move; living tip/script current. Evidence: `portable/BATCH356_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
