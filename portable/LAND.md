@@ -2,6 +2,10 @@
 
 tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
 
+## STATUS (Batch 354 inv-preserve-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 354; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 353 inv-tip-repin post-eng)
 
 tip `e3cd7d4` tip_match=true; inventory tip re-pin→HEAD after eng living republish; durable 8/8; lemma_closed=false; scientific effect NONE.

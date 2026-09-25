@@ -26,6 +26,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - tip_sync_or_eng: no tip move; peers already shipped 353 research_audit + living republish + inv re-pin; living tip/script current. Paper-trail living tgz. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
+### Batch 354 — inventory_preserve_durable_tip_pin (2026-09-25)
+
+- Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; trial tip lagged after Batch 353 lands → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
+- Evidence `BATCH354_INV_TIP_PIN_EVIDENCE.json`. `lemma_closed=false`; goal OPEN.
+
 ### Batch 353 — eng living script_stale republish after research-audit merge (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
