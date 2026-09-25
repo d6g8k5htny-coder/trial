@@ -9225,6 +9225,76 @@ def test_batch267_when_writable_dual_daemon_status_race() -> None:
                 daemon.kill()
                 daemon.wait(timeout=5)
 
+    # --once against default status path redirects to once sidecar when lock held.
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        default_status = td_path / "when_writable_land.status.json"
+        once_status = td_path / "when_writable_land.once.status.json"
+        log = td_path / "ww.log"
+        stop = td_path / "ww.stop"
+        env = {
+            **dict(**{k: v for k, v in __import__("os").environ.items()}),
+            "WHEN_WRITABLE_STATUS": str(default_status),
+            "WHEN_WRITABLE_ONCE_STATUS": str(once_status),
+            "WHEN_WRITABLE_LOG": str(log),
+            "WHEN_WRITABLE_STOP": str(stop),
+        }
+        daemon = subprocess.Popen(
+            [
+                sys.executable,
+                str(script),
+                "--dry-run",
+                "--interval",
+                "30",
+                "--mock-probe",
+                "DENIED",
+                "--mock-install-has-main",
+                "false",
+            ],
+            cwd=str(ROOT),
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        try:
+            time.sleep(1.2)
+            assert daemon.poll() is None
+            once = subprocess.run(
+                [
+                    sys.executable,
+                    str(script),
+                    "--once",
+                    "--dry-run",
+                    "--mock-probe",
+                    "DENIED",
+                    "--mock-install-has-main",
+                    "false",
+                ],
+                cwd=str(ROOT),
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=60,
+                check=False,
+            )
+            assert once.returncode == 0, once.stderr + once.stdout
+            assert once_status.is_file(), "once should redirect to sidecar when lock held"
+            once_data = json.loads(once_status.read_text(encoding="utf-8"))
+            assert once_data.get("once") is True
+            assert once_data.get("once_status_redirected") is True
+            assert once_data.get("lemma_closed") is False
+            # Live daemon status must remain a loop record (not once=true).
+            live = json.loads(default_status.read_text(encoding="utf-8"))
+            assert live.get("once") is False
+            assert live.get("daemon_lock") is True
+        finally:
+            stop.write_text("stop\n", encoding="utf-8")
+            try:
+                daemon.wait(timeout=35)
+            except subprocess.TimeoutExpired:
+                daemon.kill()
+                daemon.wait(timeout=5)
+
     brief = json.loads(
         (ROOT / "portable" / "BATCH267_BRIEF.json").read_text(encoding="utf-8")
     )

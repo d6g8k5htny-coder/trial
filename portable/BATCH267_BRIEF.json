@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "when_writable_land loop-mode exclusive flock on <status>.daemon.lock (second loop exits 2 daemon_lock_held); --once against default status redirects to when_writable_land.once.status.json when daemon lock held — stops leftover --dry-run loop racing live status (iters 85/103…102/119)",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 94,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -64,7 +64,7 @@
     "pack_vs_release": "newer_deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches; ensure single when-writable daemon holds lock",
-  "note": "Batch 267: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; when_writable dual-daemon status race leftover fixed (flock + once sidecar); lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_c dry-run write_required/stack prose / Intent token scrub / path_b dry-run / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 267: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; when_writable dual-daemon status race leftover fixed (flock + once sidecar); lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_c dry-run write_required/stack prose / Intent token scrub / path_b dry-run / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene. Trial main PR #94 squash merge @ 84ab1ca.",
   "artifacts": [
     "scripts/when_writable_land.py",
     "scripts/print_owner_unblock.sh",
@@ -73,10 +73,15 @@
     "portable/BATCH267_RESEARCH_STACK_AUDIT.json",
     "docs/AUTONOMOUS_48H_LOG.md",
     "docs/OWNER_ACTIONS_MAIN.md",
-    "portable/LAND.md"
+    "portable/LAND.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/94",
+    "https://github.com/d6g8k5htny-coder/trial/commit/84ab1ca80ebe"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "84ab1ca",
+  "trial_main_land_method": "pr_94_squash_merge",
+  "trial_main_land_full": "84ab1ca80ebefc40b4d53d844d0634e224a465aa"
 }
