@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — eng living script_stale republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` after Batch 359 idle/inv pin lands. Republish → script_stale=0.
+- NEVER flip research; skip inventable. Goal OPEN.
+
 ### Batch 359 — tip_or_eng: inv tip re-pin after grant/sync lands (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
@@ -38,7 +44,6 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Research audit watch: open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD living; delta vs BATCH357 all 0 — no-promotion evidence only (no full AUDIT re-copy).
 - Artifacts: `BATCH359_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
-
 
 ### Batch 359 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 

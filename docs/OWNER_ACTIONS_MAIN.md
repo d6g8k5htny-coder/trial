@@ -1,3 +1,11 @@
+## STATUS (Batch 359 republish)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale republish (1→0). Guard+research: `lemma_closed=false`. Goal OPEN. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+```
+
 ## STATUS (Batch 359 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after grant/sync land — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.

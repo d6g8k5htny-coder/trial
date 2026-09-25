@@ -1,0 +1,19 @@
+{
+  "batch": "359",
+  "hunt": "living_script_stale_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "living_script_stale_after_batch359_lands",
+  "avoided": [
+    "promote inventable",
+    "flip lemma_closed",
+    "invent 0020",
+    "tip-sync"
+  ],
+  "tip_moved": false,
+  "hunt_0020": "NEGATIVE",
+  "generated_at_utc": "2026-09-25T21:44:43Z"
+}
