@@ -1,3 +1,7 @@
+## STATUS (Batch 352 ci-audit-watch)
+
+tip `e3cd7d4` tip_match=true; CI green after INV_TIP soften + EARLY_FALLBACK isolate; idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 352 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

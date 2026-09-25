@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — ci_audit_watch idle (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- CI green after Batch 350 INV_TIP_PIN soften + Batch 349 EARLY_FALLBACK unit isolate (runs b83bb5eb / d6a82e25 / 8c7c44a2 / 2b627979 / 846b1dfd).
+- No new eng defect; inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 352 — tip_or_eng: inv tip re-pin + living republish (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

@@ -1,0 +1,54 @@
+{
+  "batch": "352",
+  "generated_at_utc": "2026-09-25T20:36:14Z",
+  "action": "idle_no_commit",
+  "assignment": "ci_audit_watch_and_remediate",
+  "hardening_tip": "e3cd7d4",
+  "hardening_tip_full": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "ci_status": "green",
+  "ci_green_runs": [
+    {
+      "id": 36185308115,
+      "sha": "b83bb5eb",
+      "title": "Batch 350: soften INV_TIP_PIN Intent action allowlist"
+    },
+    {
+      "id": 36185666348,
+      "sha": "d6a82e25",
+      "title": "Batch 351: land research_stack_audit_watch living script_stale republish"
+    },
+    {
+      "id": 36185373998,
+      "sha": "8c7c44a2",
+      "title": "Batch 351: inventory tip pin after Batch 350 idle"
+    },
+    {
+      "id": 36186096482,
+      "sha": "2b627979",
+      "title": "Batch 352: unfreeze last-resort batch defaults 351\u2192352"
+    },
+    {
+      "id": 36186018936,
+      "sha": "846b1dfd",
+      "title": "Batch 352: tip_sync_watch idle @e3cd7d4"
+    },
+    {
+      "id": 36185925832,
+      "sha": "9949a894",
+      "title": "Batch 352: inventory preserve_durable tip pin @e3cd7d4"
+    }
+  ],
+  "audit_early_fallback_present": true,
+  "audit_unit_isolate_present": true,
+  "note": "Batch 350 INV_TIP reds remediated by soften allowlist (green). EARLY_FALLBACK unit isolate intact. Tip stable @e3cd7d4. No new eng class.",
+  "coordinator_bcId": "bc-01a0cf1e"
+}
