@@ -1,0 +1,41 @@
+{
+  "batch": 322,
+  "action": "multi_agent_wake_and_assign",
+  "requested_by": "Dylan Roy",
+  "coordinator_bcId": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "coordinator_url": "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "utc": "2026-09-25T16:26:00Z",
+  "intent": {
+    "hardening_ref": "chatgpt/drive-github-hardening-20260919",
+    "base_tip_expected": "077464ef5e2859ce98cbb9307799d5867a820eaf",
+    "path_c": "IDLE@0019",
+    "lemma_closed": false,
+    "scientific_effect": "NONE",
+    "durable_write_target": "8/8"
+  },
+  "parent_blocker": {
+    "shell": "spawn /bin/bash ENOENT",
+    "note": "Coordinator VM missing bash; peer/cloud agents own git+shell work"
+  },
+  "woken_idle_internal_agents": [
+    {"bcId": "bc-9ab34e89-6e39-5c09-a4b7-0a09fd44fe4f", "name": "Verify tip move then sync", "assignment": "tip_sync_watch_vs_BASE_TIP_077464e"},
+    {"bcId": "bc-8cf6e1f9-eb21-5d4d-9203-26626ace93bc", "name": "Batch309 sibling and PR87", "assignment": "sibling_PR_and_grant_check"},
+    {"bcId": "bc-84eae3d1-e209-5f22-b6eb-98aad024a0d5", "name": "Batch310 tip CI siblings", "assignment": "CI_green_and_owner_header_assert"},
+    {"bcId": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf", "name": "generalPurpose", "assignment": "eng_defect_hunt_or_tip_sync"},
+    {"bcId": "bc-8e9d6a47-8c5f-590e-98de-267f8c926b6f", "name": "generalPurpose", "assignment": "pack_portable_and_grant_script_audit"},
+    {"bcId": "bc-7b9af4b8-88dd-5181-b728-49f4db1c6302", "name": "generalPurpose", "assignment": "tip_or_eng_defect"},
+    {"bcId": "bc-0035fc13-fa1a-5dfe-9c2f-e2bca4401596", "name": "generalPurpose", "assignment": "grant_check_and_open_PRs"}
+  ],
+  "spawned_cloud_agents": [
+    {"bcId": "bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e", "name": "Cloud tip-sync and Path C", "assignment": "tip_sync_or_one_eng_fix_on_healthy_VM", "url": "https://cursor.com/agents/bc-c86c329d-eb5b-56c0-b8d6-a78a3fc5581e"},
+    {"bcId": "bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec", "name": "Cloud multi-agent grant audit", "assignment": "grant_check_dual_vector_docs_inventory", "url": "https://cursor.com/agents/bc-9438bcca-d5c5-51cb-9e2b-a36f3e7619ec"},
+    {"bcId": "bc-32759b2b-24be-57a1-8b35-f01c48b16a20", "name": "Cloud research-guarded eng hunt", "assignment": "tooling_tests_eng_without_claim_promotion", "url": "https://cursor.com/agents/bc-32759b2b-24be-57a1-8b35-f01c48b16a20"}
+  ],
+  "messaging_limits": {
+    "cursor_cloud_mcp": "list/inspect only — no peer Create Run API",
+    "cursor_api_key": "NOT_SET in this env — cannot POST /v1/agents/{id}/runs to external peers",
+    "mechanism_used": "Task resume (idle internal) + Task environment=cloud (fresh VMs)"
+  },
+  "flipped_anything": false,
+  "lemma_closed": false
+}

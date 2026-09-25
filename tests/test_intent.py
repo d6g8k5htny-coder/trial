@@ -12909,3 +12909,14 @@ def test_batch324_print_owner_unblock_tip_drift_not_apply_ready() -> None:
     # Must not advertise APPLY_READY land (negation phrase "not APPLY_READY" is OK).
     assert "APPLY_READY on hardening" not in line
     assert "# APPLY_READY" not in line
+
+def test_batch322_multi_agent_wake() -> None:
+    """Batch 322: multi-agent wake+assign artifact; lemma_closed stays false."""
+    import json
+
+    path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH322.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("action") == "multi_agent_wake_and_assign"
+    assert data.get("lemma_closed") is False
+

@@ -35,11 +35,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 322 — MULTI_AGENT wake+assign (2026-09-25 ~16:26 UTC)
 
 - Dylan asked to message stopped agents and assign project-intent tasks.
-- Woke 7 IDLE internal Task agents + spawned 4 cloud agents on healthy VMs (parent coordinator `/bin/bash` ENOENT).
+- Woke 7 IDLE internal Task agents + spawned cloud peers on healthy VMs (parent coordinator `/bin/bash` ENOENT).
 - Tip live still `077464e` (match); Path C IDLE@0019; `lemma_closed=false`; scientific effect NONE; flipped_anything=false.
 - Mechanism: Task `resume` for IDLE internals + `environment=cloud` peers (Cursor Cloud MCP has no peer Create-Run; `CURSOR_API_KEY` unset).
-- Also tasked peer to `gh` comment eng assignments on main PRs #92/#93/#87/#36/#21/#12 (ManagePullRequest is trial-repo-scoped).
-- Artifact: `portable/MULTI_AGENT_WAKE_BATCH322.json`
+- Eng PR wake comments on main only: #92/#93/#87 crosswalk; #36/#21 @claude; #12 fail-closed OPEN/HOLD. Skipped research drafts #47/#46/#38/#8/#7.
+- App ghs cannot Issues:write (comment 403) → trial workflow `wake-batch322-pr-comments` + `MAIN_PUSH_TOKEN` (ManagePullRequest trial-scoped / cannot target `d6g8k5htny-coder/main`).
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH322.json`; trial PR https://github.com/d6g8k5htny-coder/trial/pull/112 (`cursor/multi-agent-wake-batch322-309a`).
 - action=`multi_agent_wake_and_assign`; next=`tip_sync_drift_watch @077464e`.
 
 ### Batch 321 — soften live tip Intent pins + refresh inventory (2026-09-25)
