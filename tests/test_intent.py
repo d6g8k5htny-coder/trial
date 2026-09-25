@@ -9352,3 +9352,140 @@ def test_batch267_when_writable_dual_daemon_status_race() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch268_pack_living_tag_validate_before_write() -> None:
+    """Batch 268: pack_portable does not dirty LIVING_PATH_C_RELEASE_TAG on fail-closed mismatch."""
+    import json
+    import tempfile
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "Batch 268" in pack
+    assert "validate-before-write" in pack
+    assert "living pin NOT written" in pack
+    # Derive must complete before oneshot/open_pr check; write is a separate stamp.
+    derive_idx = pack.find("Derive only")
+    validate_idx = pack.find("owner_path_c_oneshot.sh")
+    stamp_idx = pack.find("Stamp living pin only after fail-closed")
+    assert 0 <= derive_idx < validate_idx < stamp_idx
+
+    living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
+    verify = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+    tag = living.read_text(encoding="utf-8").strip()
+    assert tag == "batch241-path-c-bundle"
+    assert _living_release(tag)
+
+    verify_data = json.loads(verify.read_text(encoding="utf-8"))
+    assert verify_data.get("release") == tag
+    assert verify_data.get("lemma_closed") is False
+
+    # Repro: strip VERIFY.release so pack derives batch{N} from batch field;
+    # oneshot/open_pr :-defaults stay batch241 → exit 2 must leave pin intact.
+    living_before = living.read_text(encoding="utf-8")
+    verify_before = verify.read_text(encoding="utf-8")
+    try:
+        vd = dict(verify_data)
+        del vd["release"]
+        verify.write_text(json.dumps(vd, indent=2) + "\n", encoding="utf-8")
+        living.write_text(tag + "\n", encoding="utf-8")
+        out = Path(tempfile.mkdtemp(prefix="pack268-out-")) / "pack.tgz"
+        proc = subprocess.run(
+            ["bash", str(ROOT / "scripts" / "pack_portable.sh"), str(out)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc.returncode == 2, (proc.stderr or "") + (proc.stdout or "")
+        assert "living pin NOT written" in (proc.stderr or "")
+        assert living.read_text(encoding="utf-8").strip() == tag
+        assert f"batch{vd['batch']}-path-c-bundle" in (proc.stderr or "")
+    finally:
+        living.write_text(living_before, encoding="utf-8")
+        verify.write_text(verify_before, encoding="utf-8")
+
+    # Happy path still stamps living tag after validation.
+    with tempfile.TemporaryDirectory(prefix="pack268-ok-") as td:
+        out = Path(td) / "pack.tgz"
+        proc = subprocess.run(
+            ["bash", str(ROOT / "scripts" / "pack_portable.sh"), str(out)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+        assert f"living_tag={tag}" in (proc.stdout or "")
+        assert living.read_text(encoding="utf-8").strip() == tag
+        listing = subprocess.run(
+            ["tar", "-tzf", str(out)],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        assert "portable/LIVING_PATH_C_RELEASE_TAG" in listing
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH268_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "268"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "pack_living_tag_write_before_validate_race"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+    assert brief.get("pack_release") == tag
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH268_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "268"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+    assert "when_writable dual-daemon flock" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "path_c dry-run idle" in (hunt.get("avoided") or [])
+    assert "path_b dry-run idle" in (hunt.get("avoided") or [])
+    assert "Intent token scrub" in (hunt.get("avoided") or [])
+    assert "research-guard PACKET" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "long hygiene list" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH268_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 268" in log_md
+    assert "living-tag" in log_md.lower() or "LIVING_PATH_C_RELEASE_TAG" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 268)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 268)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 268" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 268" in unblock
+    assert "validate-before-write" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))

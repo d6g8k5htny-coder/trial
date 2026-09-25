@@ -1,0 +1,86 @@
+{
+  "batch": "268",
+  "generated_at_utc": "2026-09-25T03:15:00Z",
+  "status": "pack_living_tag_validate_before_write_fixed",
+  "waiting_ci": false,
+  "goal_complete": true,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "tip": "fa32d11",
+  "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
+  "base_tip": "fa32d11",
+  "default_tip": "72558a5b",
+  "default_tip_full": "72558a5b7ac90375264d5e4a538c3cd2ebb7c363",
+  "aligned": true,
+  "tip_moved": false,
+  "hardening_tip_moved": false,
+  "default_tip_moved": false,
+  "write": "WRITABLE",
+  "write_durable": true,
+  "merged_prs": [],
+  "research_hold_prs_skipped": [
+    73,
+    47,
+    46,
+    38,
+    36,
+    21,
+    12,
+    8,
+    7
+  ],
+  "defect_shipped": true,
+  "defect_id": "pack_living_tag_write_before_validate_race",
+  "patch_0020": false,
+  "path_c_0019_landed": true,
+  "path_c_landed": true,
+  "pack_release": "batch241-path-c-bundle",
+  "automation_improvement": "pack_portable derives living tag then fail-closed oneshot/open_pr :-default check BEFORE writing LIVING_PATH_C_RELEASE_TAG (atomic tmp+replace); mismatch exit 2 leaves prior pin intact — stops VERIFY.batch-without-release dirtying pin to batch250 while defaults stay batch241",
+  "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
+  "main_pr_or_null": null,
+  "when_writable_idle": "idle_path_c_done",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "refresh_dry_run": "tip_stable_fa32d11",
+  "green_eng_prs_merged": [],
+  "evidence": {
+    "before": {
+      "pack_order": "write_living_tag_then_validate_oneshot_open_pr",
+      "repro": "strip VERIFY.release (batch=250) → pack exit 2; living pin became batch250-path-c-bundle",
+      "readers_raced": [
+        "owner_path_c_oneshot.sh",
+        "write_path_c_status.py",
+        "republish_living_path_c_release.sh"
+      ]
+    },
+    "after": {
+      "pack_order": "derive_validate_then_atomic_write",
+      "repro": "same strip VERIFY.release → pack exit 2; living pin stays batch241-path-c-bundle; stderr notes pin NOT written",
+      "happy_path": "pack exit 0 living_tag=batch241-path-c-bundle"
+    },
+    "main_ci_recent_failures": 0,
+    "actionable_classic_tools_tests": 0,
+    "pack_vs_release": "local_newer_439973_vs_release_386608_deferred_avoid_republish",
+    "ci_tip_drift": "gate_ok_live_eq_base_eq_verify",
+    "watch_workflow": "recent_runs_success",
+    "sibling_grant": "durable_8_of_8_writable_app_sandbox_404_deferred"
+  },
+  "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish); App install add sandbox when Dylan relaunches",
+  "note": "Batch 268: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; pack_portable living-tag write-before-validate race fixed (validate-before-write + atomic stamp); lemma_closed=false; flipped nothing. Never printed tokens. Avoided when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "artifacts": [
+    "scripts/pack_portable.sh",
+    "scripts/print_owner_unblock.sh",
+    "portable/BATCH268_BRIEF.json",
+    "portable/BATCH268_HUNT.json",
+    "portable/BATCH268_RESEARCH_STACK_AUDIT.json",
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "docs/OWNER_ACTIONS_MAIN.md",
+    "portable/LAND.md",
+    "portable/OWNER_ONE_LINERS.md",
+    "tests/test_intent.py"
+  ],
+  "shipped": true,
+  "where": [
+    "trial"
+  ]
+}

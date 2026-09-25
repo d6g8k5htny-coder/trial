@@ -1,3 +1,7 @@
+## STATUS (Batch 268)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; pack_portable wrote living-tag pin before oneshot/open_pr fail-closed check → dirty pin on exit 2; validate-before-write + atomic stamp; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 267)
 
 tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; when_writable live+leftover --dry-run loop raced status JSON → daemon.lock flock + --once sidecar; lemma_closed=false; scientific effect NONE.
