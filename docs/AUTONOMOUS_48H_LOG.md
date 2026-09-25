@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 359 — tip_or_eng: inv tip re-pin + living script_stale republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged @`d3ddc18` after research-audit land — PRESERVE_DURABLE re-pin→HEAD; living `script_stale=1` → republish `--force`.
+- Artifacts: `BATCH359_TIP_ENG_*`, `BATCH359_REPUBLISH_*`. NEVER flip research.
+
 ### Batch 359 — research_stack_audit_watch_no_promotion (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
