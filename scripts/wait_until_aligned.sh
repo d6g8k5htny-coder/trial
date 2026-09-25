@@ -3,8 +3,11 @@
 #
 # Exit codes:
 #   0 — ALIGNED (optionally after VERIFY_AFTER_MERGE.sh when --verify)
-#   1 — still MISALIGNED when max wait elapsed
-#   2 — transport errors exhausted retries
+#   1 — still MISALIGNED when max wait elapsed (saw MISALIGNED; not mid-transport)
+#   2 — transport errors exhausted retries OR max-wait hit while only
+#       TRANSPORT_ERROR polls were observed (Batch 258: do not misreport as
+#       MISALIGNED — that flake sent Path B / "still red" automation down the
+#       wrong path under API rate-limits)
 #
 # Scientific effect: NONE. Read-only polling of d6g8k5htny-coder/main.
 #
@@ -65,7 +68,8 @@ Options:
   --verify           After ALIGNED, run VERIFY_AFTER_MERGE.sh if present
   -h, --help         Show this help
 
-Exit: 0=ALIGNED, 1=timeout still MISALIGNED, 2=transport after retries
+Exit: 0=ALIGNED, 1=timeout still MISALIGNED, 2=transport (retries or
+     max-wait with only TRANSPORT_ERROR polls — never lie as MISALIGNED)
 Scientific effect: NONE
 EOF
 }
@@ -128,17 +132,36 @@ started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 start_epoch="$(date +%s)"
 poll=0
 transport_streak=0
+saw_misaligned=0
 tmp_json="$(mktemp)"
 tmp_err="$(mktemp)"
 trap 'rm -f "$tmp_json" "$tmp_err"' EXIT
+
+# Batch 258: max-wait during a pure TRANSPORT_ERROR streak must exit 2, not
+# pretend the tip is still MISALIGNED (exit 1). Callers that treat exit 1 as
+# "run Path B / tip is red" flake under API rate-limits while tip is ALIGNED.
+timeout_exit() {
+  local elapsed_now="$1"
+  # Pure or trailing transport under max-wait → exit 2 (never lie as MISALIGNED).
+  if [[ "$transport_streak" -gt 0 ]]; then
+    if [[ "$saw_misaligned" -eq 0 ]]; then
+      echo "wait_until_aligned: TIMEOUT after ${elapsed_now}s (max_wait=${MAX_WAIT}s) — TRANSPORT_ERROR (no MISALIGNED poll; not exit 1)"
+    else
+      echo "wait_until_aligned: TIMEOUT after ${elapsed_now}s (max_wait=${MAX_WAIT}s) — TRANSPORT_ERROR after earlier MISALIGNED (exit 2)"
+    fi
+    echo "scientific_effect=NONE"
+    exit 2
+  fi
+  echo "wait_until_aligned: TIMEOUT after ${elapsed_now}s (max_wait=${MAX_WAIT}s) — still MISALIGNED"
+  echo "scientific_effect=NONE"
+  exit 1
+}
 
 while true; do
   now_epoch="$(date +%s)"
   elapsed=$((now_epoch - start_epoch))
   if [[ "$elapsed" -ge "$MAX_WAIT" && "$poll" -gt 0 ]]; then
-    echo "wait_until_aligned: TIMEOUT after ${elapsed}s (max_wait=${MAX_WAIT}s) — still MISALIGNED"
-    echo "scientific_effect=NONE"
-    exit 1
+    timeout_exit "$elapsed"
   fi
 
   poll=$((poll + 1))
@@ -193,25 +216,30 @@ except Exception as e:
       echo "scientific_effect=NONE"
       exit 2
     fi
+    status_line="TRANSPORT_ERROR"
   else
     transport_streak=0
+    if [[ "$state" == "MISALIGNED" || "$watch_ec" -eq 1 ]]; then
+      saw_misaligned=1
+      status_line="MISALIGNED"
+    else
+      status_line="$state"
+    fi
   fi
 
-  # Still MISALIGNED (or transient parse issue): check time budget before sleeping
+  # Still waiting (MISALIGNED or transient transport): check time budget before sleeping
   now_epoch="$(date +%s)"
   elapsed=$((now_epoch - start_epoch))
   remaining=$((MAX_WAIT - elapsed))
   if [[ "$remaining" -le 0 ]]; then
-    echo "wait_until_aligned: TIMEOUT after ${elapsed}s (max_wait=${MAX_WAIT}s) — still MISALIGNED"
-    echo "scientific_effect=NONE"
-    exit 1
+    timeout_exit "$elapsed"
   fi
 
   sleep_for="$INTERVAL"
   if [[ "$sleep_for" -gt "$remaining" ]]; then
     sleep_for="$remaining"
   fi
-  echo "status=MISALIGNED next_poll_in=${sleep_for}s remaining≈${remaining}s scientific_effect=NONE"
+  echo "status=${status_line} next_poll_in=${sleep_for}s remaining≈${remaining}s scientific_effect=NONE"
   echo
   sleep "$sleep_for"
 done

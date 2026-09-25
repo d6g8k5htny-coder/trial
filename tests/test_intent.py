@@ -7907,9 +7907,9 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "PATH_C_STATUS.json" in unblock
     assert "write_state" in unblock
-    assert "Batch 257" in unblock
-    assert 'echo "=== Batch 257 — PERMANENT window' in unblock
-    # Must not hardcode stale Batch 169 / 1c6e74b as the live header.
+    # Batch 258+ may supersede the live header number; keep PATH_C_STATUS wiring.
+    assert "Batch 257" in unblock or "Batch 258" in unblock
+    assert "PERMANENT window" in unblock
     assert "Batch 169 — PERMANENT window; ALIGNED @ 1c6e74b" not in unblock
     assert "write ${WRITE_STATE}" in unblock or "write_state=${WRITE_STATE}" in unblock
 
@@ -8072,6 +8072,150 @@ def test_batch255_republish_living_path_c_release_assets() -> None:
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 255)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+
+def test_batch258_wait_until_aligned_transport_timeout_flake() -> None:
+    """Batch 258: wait_until_aligned transport max-wait exits 2 not MISALIGNED; no flip."""
+    import json
+    import os
+    import shutil
+    import stat
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    wait = ROOT / "scripts" / "wait_until_aligned.sh"
+    assert wait.is_file()
+    mode = wait.stat().st_mode
+    assert mode & stat.S_IXUSR
+    text = wait.read_text(encoding="utf-8")
+    assert "timeout_exit" in text
+    assert "saw_misaligned" in text
+    assert "TRANSPORT_ERROR (no MISALIGNED poll; not exit 1)" in text
+    assert "status=${status_line}" in text
+    assert "Batch 258" in text or "not mid-transport" in text
+
+    with tempfile.TemporaryDirectory() as td:
+        fake_root = Path(td)
+        scripts = fake_root / "scripts"
+        scripts.mkdir(parents=True)
+        shutil.copy2(wait, scripts / "wait_until_aligned.sh")
+        (scripts / "watch_main_alignment.py").write_text(
+            "#!/usr/bin/env python3\n"
+            "import json,sys\n"
+            'print(json.dumps({"state":"TRANSPORT_ERROR","scientific_effect":"NONE"}))\n'
+            "sys.exit(2)\n",
+            encoding="utf-8",
+        )
+        (scripts / "watch_main_alignment.py").chmod(0o755)
+        env = os.environ.copy()
+        env.pop("CHECK_AUTONOMOUS_WINDOW", None)
+        proc = subprocess.run(
+            [
+                "bash",
+                str(scripts / "wait_until_aligned.sh"),
+                "--interval",
+                "1",
+                "--max-wait",
+                "4",
+                "--transport-retries",
+                "10",
+            ],
+            cwd=str(fake_root),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        out = (proc.stdout or "") + (proc.stderr or "")
+        assert proc.returncode == 2, out
+        assert "TRANSPORT_ERROR (no MISALIGNED poll; not exit 1)" in out
+        assert "still MISALIGNED" not in out
+        assert "status=TRANSPORT_ERROR" in out
+
+        (scripts / "watch_main_alignment.py").write_text(
+            "#!/usr/bin/env python3\n"
+            "import json,sys\n"
+            'print(json.dumps({"state":"MISALIGNED","scientific_effect":"NONE"}))\n'
+            "sys.exit(1)\n",
+            encoding="utf-8",
+        )
+        proc2 = subprocess.run(
+            [
+                "bash",
+                str(scripts / "wait_until_aligned.sh"),
+                "--interval",
+                "1",
+                "--max-wait",
+                "3",
+                "--transport-retries",
+                "10",
+            ],
+            cwd=str(fake_root),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        out2 = (proc2.stdout or "") + (proc2.stderr or "")
+        assert proc2.returncode == 1, out2
+        assert "still MISALIGNED" in out2
+        assert "status=MISALIGNED" in out2
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH258_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "258"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "wait_until_aligned_transport_timeout_misaligned_lie"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH258_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "258"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "tip-fetch rate-limit" in (hunt.get("avoided") or [])
+    assert "tip-observe" in (hunt.get("avoided") or [])
+
+    audit_json = json.loads(
+        (ROOT / "portable" / "BATCH258_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit_json.get("lemma_closed") is False
+    assert audit_json.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 258" in log
+    assert "wait_until_aligned" in log
+    assert "TRANSPORT_ERROR" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 258)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 258)" in land
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 258" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

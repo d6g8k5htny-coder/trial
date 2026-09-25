@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 258 (wait_until_aligned transport timeout MISALIGNED lie) — 2026-09-25 ~01:00 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** `wait_until_aligned` with fake watch returning TRANSPORT_ERROR (exit 2) + `--max-wait 4 --transport-retries 10` → **exit 1** `TIMEOUT … still MISALIGNED` and `status=MISALIGNED` (never saw MISALIGNED). Pure MISALIGNED control correctly exit 1. Live tip ALIGNED exit 0.
+- **Defect shipped (avoid tip-observe…tip-fetch rate-limit / owner unblock / lander dispatch):** `timeout_exit` — max-wait during transport streak → **exit 2** with `TRANSPORT_ERROR (no MISALIGNED poll; not exit 1)`; `status=` line reports `TRANSPORT_ERROR` honestly; MISALIGNED-only timeout still exit 1.
+- Candidates deferred: grant `--check` App/ghs sandbox 404 while dylan token sees repo (sibling probe); pack newer than living release (avoid republish).
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 257 (refresh tip-fetch rate-limit fallback + print_owner_unblock WRITABLE) — 2026-09-25 ~00:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. `when_writable_land --once --dry-run` → **`idle_path_c_done`**. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

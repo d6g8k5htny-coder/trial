@@ -2,6 +2,16 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 258)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. `wait_until_aligned` max-wait during pure TRANSPORT_ERROR polls lied as MISALIGNED (exit 1). Fixed: exit 2 + honest `status=TRANSPORT_ERROR`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/wait_until_aligned.sh --interval 1 --max-wait 5   # ALIGNED → 0; transport-only timeout → 2
+./scripts/refresh_path_c_bundle.sh --dry-run                # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run            # idle_path_c_done
+```
+
 ## STATUS (Batch 257)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. Real CI Tip-drift dry-sim failed on unauthenticated tip-fetch HTTP 403 rate-limit. Shipped `refresh_path_c_bundle` rate-limit retries + `gh api` / `git ls-remote` fallbacks; `print_owner_unblock` reads live `PATH_C_STATUS.write_state` (no longer Batch 169 / DENIED); `owner_open_path_c_pr` idles on VERIFY tip match when ls-remote empty; land-path-c dispatch comment uses full JSON body. `lemma_closed=false`. Scientific effect: NONE.
