@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 329 (MULTI_AGENT wake verify+land; tip @077464e) — 2026-09-25 ~17:08 UTC
+- Verified `portable/MULTI_AGENT_WAKE_BATCH322.json` already on trial `main`.
+- Landed `portable/MULTI_AGENT_WAKE_BATCH329.json` (tiny: tip, wake329_on_main, action, lemma_closed=false).
+- Living tip_refresh assert: Intent `_living_tip` on wake329 tip; Path C IDLE@0019; NEVER flip research.
+- action=`multi_agent_wake_batch329`; next=`tip_sync_drift_watch @077464e`.
+
 ### Batch 328 — inventory INV_BATCH living stamp (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

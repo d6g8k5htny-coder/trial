@@ -13023,3 +13023,26 @@ def test_batch328_inventory_batch_living() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 328" in log_md
 
+
+def test_batch329_multi_agent_wake() -> None:
+    """Batch 329: wake329 artifact on main; living tip_refresh; lemma_closed false."""
+    import json
+
+    # Batch 322 already on trial main (prerequisite for this wake cycle).
+    wake322 = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH322.json"
+    assert wake322.is_file()
+    data322 = json.loads(wake322.read_text(encoding="utf-8"))
+    assert data322.get("lemma_closed") is False
+
+    path = ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH329.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("action") == "multi_agent_wake_batch329"
+    assert data.get("wake329_on_main") is True
+    assert data.get("lemma_closed") is False
+    # Living tip_refresh assert (no hard tip pin beyond _LIVING_TIPS).
+    assert _living_tip(str(data.get("tip") or ""))
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 329" in log_md
+
