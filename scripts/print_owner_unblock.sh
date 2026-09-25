@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 265 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 266 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -86,6 +86,7 @@ echo "  baseline: portable/BATCH70_RESEARCH_STACK_AUDIT.json or portable/STATUS_
 echo "  Batch 263: NO_PACKET vs shape-stripped HAS_PACKET → exit 2 (usage), not false promotions"
 echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_land_path_b --dry-run idles (no re-run-to-land lie)"
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
+echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  CI job: research-stack-status-guard (continue-on-error; artifact STATUS_GUARD_SNAPSHOT)"
 echo "Env write intent: .cursor/environment.json repositoryDependencies → main; relaunch Cloud Agent AFTER merge"
 echo "  snapshot: portable/ALIGNED_DRIFT_SNAPSHOT.json  |  release: batch241-path-c-bundle"
@@ -183,7 +184,7 @@ echo "# Path C — Batch 165 ONE-SHOT (token→open PR / land; else unblock menu
 echo "$ROOT/scripts/owner_path_c_oneshot.sh --dry-run"
 echo "$ROOT/scripts/owner_path_c_oneshot.sh"
 echo "$ROOT/scripts/owner_path_c_oneshot.sh --from-bundle"
-echo "# Path C — engineering: apply_all 0001–0004 + 0008–0017 on hardening tip:"
+echo "# Path C — engineering: apply_all 0001–0004 + 0008–0019 on hardening tip:"
 echo "$ROOT/scripts/owner_land_path_c.sh --dry-run"
 echo "$ROOT/scripts/owner_land_path_c.sh --from-bundle  # ONE-SHOT from release tarball"
 echo "$ROOT/scripts/owner_land_path_c.sh"

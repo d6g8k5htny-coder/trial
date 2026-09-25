@@ -227,11 +227,13 @@ def main() -> int:
             "apply_all": "0001-0004 + 0008-0019",
             "idle": path_c_idle,
             "idle_reason": (
-                "hardening tip unchanged vs BASE_TIP; no new 0017 unless residual RW hunt finds one"
+                "hardening tip unchanged vs BASE_TIP; no new 0020 unless residual RW hunt finds one"
                 if path_c_idle
                 else "BASE_TIP refreshed to live hardening; residual RW hunt may still be IDLE"
             ),
+            # Historical field kept for older Intent pins; living hunt gate is 0020.
             "new_0017": False,
+            "new_0020": False,
             "dry_run_certainty": "scripts/path_c_dry_run.py",
             "owner_script": "scripts/owner_land_path_c.sh",
             "dry_run_state": path_c_dry.get("state"),

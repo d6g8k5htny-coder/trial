@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 266 (path_c_dry_run write_required_to_land when IDLE) — 2026-09-25 ~02:52 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.
+- **Evidence:** `path_c_dry_run` → `state=IDLE_PATH_C_DONE` `already_on_tip=true` `apply_ready=false` but **`write_required_to_land=true`** (Batch 261 fixed apply_ready; left write_required hardcoded). `print_owner_unblock` Path C copy-paste still said stack **0008–0017** while living APPLY_STACK / land-path-c / VERIFY are through **0019**. `refresh_restore_plan` idle_reason still framed hunt as 0017.
+- **Defect shipped (avoid Intent GITHUB_TOKEN scrub / path_b dry-run land_needed / research-guard PACKET / probe durable file-token / path_c dry_run idle(apply_ready) / release republish / grant dual-vector / long hygiene):** (1) `path_c_dry_run` sets `write_required_to_land=false` on already_on_tip / IDLE; (2) print_owner_unblock living stack **0008–0019**; (3) restore plan `new_0020=false` + idle_reason 0020.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+- Scientific effect NONE.
+
 ### Batch 265 (Batch 262 live-ignore Actions GITHUB_TOKEN CI isolate) — 2026-09-25 ~02:42 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `fa32d11`: **tip_moved=false**. `refresh_path_c_bundle --dry-run` tip stable. Open main PRs: research-hold drafts only — **skipped**. No green eng merge candidates. 0020 hunt: negative.

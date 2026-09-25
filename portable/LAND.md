@@ -1,3 +1,7 @@
+## STATUS (Batch 266)
+
+tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; path_c_dry_run IDLE still advertised write_required_to_land=true → false; living stack prose 0017→0019 / new_0020; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 265)
 
 tip `fa32d11` tip_moved=false ALIGNED+WRITABLE; Path C idle; Batch 262 live-ignore Intent CI flake (Actions GITHUB_TOKEN → token_source under IGNORE) → scrub GH_TOKEN/GITHUB_TOKEN in live subprocess; lemma_closed=false; scientific effect NONE.

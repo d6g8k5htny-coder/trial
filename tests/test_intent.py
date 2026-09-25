@@ -9065,3 +9065,94 @@ def test_batch265_live_ignore_ci_isolate_github_token() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch266_path_c_dry_run_write_required_when_idle() -> None:
+    """Batch 266: path_c_dry_run IDLE must set write_required_to_land=false; no flip."""
+    import json
+    import subprocess
+
+    dry = ROOT / "scripts" / "path_c_dry_run.py"
+    src = dry.read_text(encoding="utf-8")
+    assert "Batch 266" in src
+    assert "write_required_to_land" in src
+
+    result = subprocess.run(
+        ["python3", str(dry), "--skip-rebase-probe"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data.get("scientific_effect") == "NONE"
+    assert data.get("state") == "IDLE_PATH_C_DONE"
+    assert data.get("already_on_tip") is True
+    assert data.get("apply_ready") is False
+    assert data.get("write_required_to_land") is False
+    assert data.get("apply_stack") == "0001-0004 + 0008-0019"
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 266" in unblock
+    assert "0008–0019" in unblock
+    assert "0008–0017 on hardening tip" not in unblock
+
+    plan_src = (ROOT / "scripts" / "refresh_restore_plan.py").read_text(encoding="utf-8")
+    assert "new_0020" in plan_src
+    assert "no new 0020" in plan_src
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH266_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "266"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "path_c_dry_run_write_required_when_idle"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH266_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "266"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "Intent GITHUB_TOKEN scrub" in (hunt.get("avoided") or [])
+    assert "path_b dry-run land_needed" in (hunt.get("avoided") or [])
+    assert "research-guard PACKET" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+    assert "path_c dry_run idle" in (hunt.get("avoided") or [])
+    assert "release republish" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+    assert "long hygiene list" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH266_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 266" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 266)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 266)" in land
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
