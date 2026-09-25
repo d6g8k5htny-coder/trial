@@ -1,0 +1,32 @@
+{
+  "batch": "355",
+  "generated_at_utc": "2026-09-25T20:59:10Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "hardening_tip_short": "e3cd7d4",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "assignment": "research_stack_audit_watch_no_promotion",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "status_guard_tip": "e3cd7d4",
+  "status_guard_tip_living": true,
+  "status_guard_tip_lag": false,
+  "status_guard_pass": true,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "paper_trail_tgz": true
+  },
+  "inventable_promoted": false,
+  "artifact": "portable/BATCH355_RESEARCH_STACK_AUDIT.json",
+  "coord_bc": "bc-01a0cf1e",
+  "note": "open stack confirmed without promotion; STATUS_GUARD tip living @e3cd7d4; script_stale=0"
+}
