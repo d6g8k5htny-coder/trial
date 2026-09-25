@@ -9809,3 +9809,139 @@ def test_batch270_when_writable_once_pid_liveness() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch271_probe_w3_dryrun_path_b_false_positive() -> None:
+    """Batch 271: W3a–W3e dry_run dispatch excluded from path_b_ready (W3f leftover)."""
+    import importlib.util
+    import json
+    import re
+
+    vectors_path = ROOT / "scripts" / "probe_main_write_vectors.py"
+    src = vectors_path.read_text(encoding="utf-8")
+    assert "Batch 271" in src
+    assert "_as_dry_run_dispatch_probe" in src
+    assert "w3_dry_run_false_positive" in src
+    m = re.search(r"path_b_keys = \((.*?)\)", src, re.S)
+    assert m is not None
+    keys_block = m.group(1)
+    for banned in (
+        "W3a_dispatch_trial",
+        "W3b_dispatch_main",
+        "W3c_api_dispatch_trial",
+        "W3d_dispatch_path_c_trial",
+        "W3e_api_dispatch_path_c_trial",
+        "W3f_repository_dispatch_path_c",
+    ):
+        assert banned not in keys_block
+    for required in (
+        "W1_git_refs",
+        "W2_contents_put",
+        "W4a_fork",
+        "W4b_graphql_createCommitOnBranch",
+        "W4c_pulls_create",
+    ):
+        assert required in keys_block
+
+    spec = importlib.util.spec_from_file_location(
+        "probe_main_write_vectors_batch271", vectors_path
+    )
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    annotated = mod._as_dry_run_dispatch_probe(
+        {"exit": 0, "state": "WRITABLE", "msg": "dispatched"},
+        target_repo="d6g8k5htny-coder/trial",
+        workflow="land-option-b-on-main.yml",
+        note="unit",
+    )
+    assert annotated["state"] == "DISPATCH_OK_DRY_RUN"
+    assert annotated["false_positive_for_main_write"] is True
+    assert annotated["path_b_capable"] is False
+    assert annotated["main_write"] is False
+
+    # Synthetic: dry_run-only WRITABLE must not imply path_b_ready.
+    path_b_keys = (
+        "W1_git_refs",
+        "W2_contents_put",
+        "W4a_fork",
+        "W4b_graphql_createCommitOnBranch",
+        "W4c_pulls_create",
+    )
+    synth = {
+        "W1_git_refs": {"state": "DENIED"},
+        "W2_contents_put": {"state": "DENIED"},
+        "W3a_dispatch_trial": {"state": "DISPATCH_OK_DRY_RUN"},
+        "W3c_api_dispatch_trial": {"state": "DISPATCH_OK_DRY_RUN"},
+        "W3d_dispatch_path_c_trial": {"state": "DISPATCH_OK_DRY_RUN"},
+        "W3e_api_dispatch_path_c_trial": {"state": "DISPATCH_OK_DRY_RUN"},
+        "W4a_fork": {"state": "DENIED"},
+        "W4b_graphql_createCommitOnBranch": {"state": "DENIED"},
+        "W4c_pulls_create": {"state": "DENIED"},
+    }
+    writable = [k for k in path_b_keys if synth.get(k, {}).get("state") == "WRITABLE"]
+    assert writable == []
+    assert not bool(writable)
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH271_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "271"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "probe_w3ae_dryrun_path_b_false_positive"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("8e359e5")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH271_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "271"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert "when_writable once pid-liveness" in (hunt.get("avoided") or [])
+    assert "VERIFY.batch release-align" in (hunt.get("avoided") or [])
+    assert "probe durable file-token" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH271_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 271" in log_md
+    assert "false_positive" in log_md or "W3a" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 271)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 271)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 271" in ones
+
+    gh = (ROOT / "portable" / "GH_DEVICE_LOGIN.md").read_text(encoding="utf-8")
+    assert "W3a–W3e" in gh or "W3a-W3e" in gh or "Batch 271" in gh
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 271" in unblock
+    assert "W3a" in unblock or "dry_run" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))

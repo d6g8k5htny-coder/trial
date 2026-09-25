@@ -5,6 +5,16 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 271 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; W3a–W3e dry_run path_b false_positive; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/refresh_path_c_bundle.sh --dry-run        # tip match @ 8e359e5
+> python3 scripts/probe_main_write_vectors.py 2>/dev/null | python3 -c 'import sys,json; d=json.load(sys.stdin); print(sorted(d.get("path_b_writable_vectors") or []), d.get("w3_dry_run_false_positive"))'
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: W3a–W3e dry_run dispatch counted as path_b_ready (Batch 141 W3f-only). No republish. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 270 — tip stable `8e359e5`; default ALIGNED `72558a5`; write WRITABLE; when_writable --once pid-liveness; release `batch241-path-c-bundle`**:
 >
 > ```bash
