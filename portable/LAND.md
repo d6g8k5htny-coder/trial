@@ -1,6 +1,6 @@
 ## STATUS (Batch 337)
 
-tip `eeebb28` tip_match=true; MULTI_AGENT wake assign; research stack audit open (lemma_closed=false); Path C IDLE@0019; durable 8/8; action=idle_no_commit_wake_assign; scientific effect NONE.
+tip `848aea2` tip_match=true TIP_OK after tip-sync; #101/#107/#102 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 336)
 

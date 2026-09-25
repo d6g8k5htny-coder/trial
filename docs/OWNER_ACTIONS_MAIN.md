@@ -4,7 +4,11 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 337)
 
-Hardening tip **stable** @ `eeebb28` tip_match=true. MULTI_AGENT wake assign; research stack audit (open stack; no promotion). Path C IDLE@0019; durable 8/8. action=`idle_no_commit_wake_assign`. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **synced** @ `848aea2` after #101/#107/#102 mid-cycle. Tip-sync keep-prior; REFRESH default 337; `_LIVING_TIPS += 848aea2`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
+```
 
 ## STATUS (Batch 336)
 

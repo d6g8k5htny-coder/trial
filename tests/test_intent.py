@@ -37,6 +37,7 @@ _LIVING_TIPS = (
     "077464e",
     "388a22c",
     "eeebb28",
+    "848aea2",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -13696,8 +13697,8 @@ def test_batch336_wake_intent_living_base_tip() -> None:
     assert "STATUS (Batch 336)" in owner
 
 
-def test_batch337_idle_wake_and_research_audit() -> None:
-    """Batch 337: tip-stable idle pulse; wake337; research audit open; lemma_closed false."""
+def test_batch337_tip_sync_after_main_101_107_102() -> None:
+    """Batch 337: tip-sync after main #101/#107/#102; inventable not promoted."""
     import json
 
     brief = json.loads(
@@ -13707,17 +13708,25 @@ def test_batch337_idle_wake_and_research_audit() -> None:
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
-    assert brief.get("action") == "idle_no_commit_wake_assign"
-    assert brief.get("tip_match") is True
+    assert brief.get("defect_id") == "tip_sync_eeebb28_to_848aea2_main_101_107_102"
+    assert brief.get("action") == "tip_sync_landed"
     assert brief.get("patch_0020") is False
+    assert brief.get("tip_match") is True or brief.get("aligned") is True
     assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("848aea2")
+    assert str(brief.get("prior_tip", "")).startswith("eeebb28")
+    assert 101 in (brief.get("merged_prs") or [])
+    assert 107 in (brief.get("merged_prs") or [])
+    assert 102 in (brief.get("merged_prs") or [])
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH337_HUNT.json").read_text(encoding="utf-8")
     )
     assert hunt.get("lemma_closed") is False
-    assert hunt.get("defect_found") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("defect_found") is True
     assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert hunt.get("defect_id") == "tip_sync_eeebb28_to_848aea2_main_101_107_102"
 
     audit = json.loads(
         (ROOT / "portable" / "BATCH337_RESEARCH_STACK_AUDIT.json").read_text(
@@ -13742,10 +13751,49 @@ def test_batch337_idle_wake_and_research_audit() -> None:
     assert _living_tip(str(wake.get("tip") or ""))
     assert len(wake.get("woken_idle_agents") or []) >= 3
 
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 337 shipped 848aea2.
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 337
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("lemma_closed") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 337)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 337)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert "848aea2" in _LIVING_TIPS
+    assert "eeebb28" in _LIVING_TIPS
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 337)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 337" in log_md
+    assert "848aea2" in log_md or "tip-sync" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 337)" in owner
+
+
+def test_batch337_no_frozen_live_tip_pins() -> None:
+    """Batch 337: tip-sync Intent uses _living_tip — not frozen startswith on BASE_TIP/VERIFY."""
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch337_tip_sync_after_main_101_107_102")
+    end = intent.index("def test_batch337_no_frozen_live_tip_pins")
+    body = intent[start:end]
+    assert "Live BASE_TIP supersedes across tip-sync; Batch 337 shipped 848aea2" in body
+    assert 'assert "848aea2" in base_tip' not in body
+    assert 'verify.get("base_tip_sha", "")).startswith("848aea2")' not in body
+    assert "848aea2" in _LIVING_TIPS
+    assert "eeebb28" in _LIVING_TIPS

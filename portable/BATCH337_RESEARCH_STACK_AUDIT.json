@@ -1,7 +1,7 @@
 {
   "batch": "337",
-  "generated_at_utc": "2026-09-25T18:04:17Z",
-  "tip_sha": "eeebb28eeab2452edc1103817d02ef7e3abbf5f2",
+  "generated_at_utc": "2026-09-25T18:08:30Z",
+  "tip_sha": "848aea2a874cbaa879ea2ece13accd94d1fca20d",
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
   "audit_kind": "research_stack_open",
   "lemma_closed": false,
@@ -14,5 +14,5 @@
   "open_questions": 16,
   "shape": "HAS_PACKET",
   "status_promotion": false,
-  "note": "Read-only audit via scripts/audit_research_stack_open.py on shallow hardening tip; no claim/lemma flips."
+  "note": "Post tip-sync guard pass @848aea2; inventable docs merged are documentation only — no claim/lemma flips."
 }
