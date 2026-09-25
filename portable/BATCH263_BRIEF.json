@@ -1,6 +1,6 @@
 {
   "batch": "263",
-  "generated_at_utc": "2026-09-25T02:14:00Z",
+  "generated_at_utc": "2026-09-25T02:18:03Z",
   "status": "research_guard_nopacket_shape_stripped_fixed",
   "waiting_ci": false,
   "goal_complete": true,
@@ -36,9 +36,9 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "guard_no_status_promotion recovers baseline shape (live_shape/nested/OPEN rows) so NO_PACKET checkout exits 2 usage error instead of false OPEN→ABSENT promotion FAIL; Batch 262 Intent unit env-scrubs App tokens for file-discovery assert",
+  "automation_improvement": "guard_no_status_promotion recovers baseline shape (live_shape/nested/OPEN rows) so NO_PACKET checkout exits 2 usage error instead of false OPEN\u2192ABSENT promotion FAIL; Batch 262 Intent unit env-scrubs App tokens for file-discovery assert",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 85,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -57,7 +57,7 @@
       "baseline_shape_recovered": "HAS_PACKET",
       "exit": 2,
       "violations": null,
-      "message": "checkout is NO_PACKET but baseline is HAS_PACKET — pass the hardening tip clone"
+      "message": "checkout is NO_PACKET but baseline is HAS_PACKET \u2014 pass the hardening tip clone"
     },
     "recovery_paths": [
       "inventory.shape",
@@ -65,13 +65,13 @@
       "hardening_tip_audit.shape",
       "infer_HAS_PACKET_from_nonempty_OPEN_rows"
     ],
-    "ci_fail_batch262_intent": "test_batch262_probe_file_token_discovery asserted file discovery without scrubbing ambient GITHUB_TOKEN → Actions returned ghs_* (env preferred); unit now pops MAIN_PUSH_TOKEN/GH_TOKEN/GITHUB_TOKEN for file-discovery assert only",
+    "ci_fail_batch262_intent": "test_batch262_probe_file_token_discovery asserted file discovery without scrubbing ambient GITHUB_TOKEN \u2192 Actions returned ghs_* (env preferred); unit now pops MAIN_PUSH_TOKEN/GH_TOKEN/GITHUB_TOKEN for file-discovery assert only",
     "main_ci_recent_failures": 2,
     "actionable_classic_tools_tests": 0,
     "pack_vs_release": "deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 263: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; research-guard NO_PACKET vs shape-stripped HAS_PACKET baseline falsely reported 19 promotions (exit 1) → recover shape + exit 2; also CI-isolate Batch 262 probe unit env; lemma_closed=false; flipped nothing. Never printed tokens. Avoided probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene / tip-observe.",
+  "note": "Batch 263: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; research-guard NO_PACKET vs shape-stripped HAS_PACKET baseline falsely reported 19 promotions (exit 1) \u2192 recover shape + exit 2; also CI-isolate Batch 262 probe unit env; lemma_closed=false; flipped nothing. Never printed tokens. Avoided probe durable file-token redesign / path_c dry_run idle / release republish / grant dual-vector / long hygiene / tip-observe. Trial main PR #85 squash merge @ 33bde2c.",
   "artifacts": [
     "scripts/guard_no_status_promotion.py",
     "tests/test_intent.py",
@@ -79,6 +79,11 @@
     "portable/BATCH263_BRIEF.json",
     "portable/BATCH263_HUNT.json",
     "portable/BATCH263_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/85",
+    "https://github.com/d6g8k5htny-coder/trial/commit/33bde2cf49da"
+  ],
+  "trial_main_land": "33bde2c",
+  "trial_main_land_full": "33bde2cf49da023944d990a0307c3fc0fdbcaff6",
+  "trial_main_land_method": "pr_85_squash_merge"
 }
