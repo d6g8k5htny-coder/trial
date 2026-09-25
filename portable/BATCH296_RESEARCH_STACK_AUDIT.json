@@ -1,0 +1,762 @@
+{
+  "root": "/tmp/main-tip",
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "lemma_closed": false,
+  "goal_complete": false,
+  "audit_kind": "research_stack_mechanical_open_list",
+  "shape": "HAS_PACKET",
+  "packet": {
+    "path": "docs/math_status/PACKET.json",
+    "disposition": "OPEN_HOLD",
+    "lemma_closed": false,
+    "prizes_solved": false,
+    "original_prize_closed": false,
+    "independence_credit": 0,
+    "bridge": "PROPOSED_NOT_DEPLOYED",
+    "freeze": false,
+    "authority": "NONE",
+    "base_branch": "chatgpt/drive-github-hardening-20260919",
+    "base_commit": "a89f9a703739aed9d290c94d68f80bf4e8bd9d62",
+    "as_of": "2026-09-23 ~14:19 CT"
+  },
+  "lemma_closed_confirmation": true,
+  "prizes_solved_confirmation": true,
+  "original_prize_closed_confirmation": true,
+  "packet_lemma_closed_raw": false,
+  "packet_prizes_solved_raw": false,
+  "packet_original_prize_closed_raw": false,
+  "open_obligations_packet": [
+    {
+      "id": "OBL-H5-JETMOD",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "freeze": false,
+      "extra": {
+        "grade": "display_only",
+        "discharges_OBL_H5_JETMOD": false
+      }
+    },
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "freeze": false,
+      "extra": {
+        "discharges_lemma": false,
+        "piece2_annulus_driver": "UNWRITTEN"
+      }
+    }
+  ],
+  "open_lemmas": [
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "status": "OPEN",
+      "lemma_closed": false,
+      "piece2_annulus_driver": "UNWRITTEN",
+      "discharges_lemma": false,
+      "source": "docs/math_status/PACKET.json"
+    }
+  ],
+  "claims_graph_as_of": "2026-09-18",
+  "open_premises": [
+    {
+      "id": "OBL-D1-PROMOTE",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2.md \u00a73/\u00a75; ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75,\u00a77"
+    },
+    {
+      "id": "OBL-H5-JETMOD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73; H5_PROMOTE_UPDATE_2026-09-15.md \u00a75"
+    },
+    {
+      "id": "OBL-H5-ZBAND",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75; H5_ZBAND_CONSUMPTION_2026-09-15.md"
+    },
+    {
+      "id": "OBL-H5-REMOTE-THRESHOLD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73"
+    },
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NOT_CLOSED",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "LANE_RN_UNIF.md; D1_ASSEMBLY_v2_2.md \u00a73"
+    },
+    {
+      "id": "PERC-DECAY",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "RESTATED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md; ADDENDUM-2 B4LOC_PERC_DECAY"
+    },
+    {
+      "id": "PD-CONN",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md"
+    },
+    {
+      "id": "OBL-B1-BRANCH(loop|B1)",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "REFINEMENT",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2_REGISTER_NOTE.md \u00a75"
+    },
+    {
+      "id": "B4.loc-damline",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "CLOSED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "B4LOC_DAMLINE.md; ADDENDUM-2"
+    },
+    {
+      "id": "H5-RIM",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H5-AXIS",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H-B3",
+      "track": "LOWER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "W8 v3 Lambda record"
+    },
+    {
+      "id": "LM013-JOINT-STACK",
+      "track": "P02_ADJACENCY",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "registers/json/easy_closure_queue.json row P02-LM-013 (Queue state, Remaining decisive work, Owner / next actor); registers/json/review_queue.json row RV-LM013-BOREL-GLOBALIZATION (Prior review / exposure)"
+    }
+  ],
+  "premises_all": [
+    {
+      "id": "OBL-D1-PROMOTE",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2.md \u00a73/\u00a75; ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75,\u00a77"
+    },
+    {
+      "id": "OBL-H5-JETMOD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73; H5_PROMOTE_UPDATE_2026-09-15.md \u00a75"
+    },
+    {
+      "id": "OBL-H5-ZBAND",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a75; H5_ZBAND_CONSUMPTION_2026-09-15.md"
+    },
+    {
+      "id": "OBL-H5-REMOTE-THRESHOLD",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "H5_PROMOTE.md \u00a73"
+    },
+    {
+      "id": "D3-LEMMA-RN-UNIF",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NOT_CLOSED",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "LANE_RN_UNIF.md; D1_ASSEMBLY_v2_2.md \u00a73"
+    },
+    {
+      "id": "PERC-DECAY",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "RESTATED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md; ADDENDUM-2 B4LOC_PERC_DECAY"
+    },
+    {
+      "id": "PD-CONN",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PERC_DECAY.md"
+    },
+    {
+      "id": "OBL-B1-BRANCH(loop|B1)",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "REFINEMENT",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "D1_ASSEMBLY_v2_2_REGISTER_NOTE.md \u00a75"
+    },
+    {
+      "id": "B4.loc-damline",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "CLOSED",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "B4LOC_DAMLINE.md; ADDENDUM-2"
+    },
+    {
+      "id": "H5-RIM",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H5-AXIS",
+      "track": "UPPER2D",
+      "status_frozen_v2_2": "NAMED_HYPOTHESIS",
+      "status_register_note": "NAMED_HYPOTHESIS",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "PKG-01 00_START_HERE"
+    },
+    {
+      "id": "H-B3",
+      "track": "LOWER2D",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "W8 v3 Lambda record"
+    },
+    {
+      "id": "LM013-JOINT-STACK",
+      "track": "P02_ADJACENCY",
+      "status_frozen_v2_2": "OPEN",
+      "status_register_note": "OPEN",
+      "mechanically_open_at_frozen_layer": true,
+      "source": "registers/json/easy_closure_queue.json row P02-LM-013 (Queue state, Remaining decisive work, Owner / next actor); registers/json/review_queue.json row RV-LM013-BOREL-GLOBALIZATION (Prior review / exposure)"
+    }
+  ],
+  "claims_inventory": [
+    {
+      "id": "Q0-C101-QUALITATIVE-RATE",
+      "track": "UPPER2D",
+      "grade": "LIVE_ROOT_THEOREM",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "Q0_MASTER.md Part I line 336 (Q0_C101_QUALITATIVE_RATE_THEOREM.md, sha prefix 8c2ded652973)"
+    },
+    {
+      "id": "Q0-C104-THEOREM-B",
+      "track": "UPPER2D",
+      "grade": "RETRACTED_TO_CANDIDATE",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "Q0_MASTER.md Part I line 2023 (Q0_C104_THEOREM_B_PACKAGE.md, sha prefix f592bc6ff628)"
+    },
+    {
+      "id": "D1-v2.2(1)",
+      "track": "UPPER2D",
+      "grade": "CERTIFIED_RUNG",
+      "depends_on": [
+        "H5-RIM",
+        "H5-AXIS",
+        "D3-LEMMA-RN-UNIF"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "D1_ASSEMBLY_v2_2.md (frozen body sha 490ad6b2f14176fe8cf5af363fb94dc73a8bc5523f608e5ab2a42ff749b235f6)"
+    },
+    {
+      "id": "D1-v2.2(2)",
+      "track": "UPPER2D",
+      "grade": "CONDITIONAL",
+      "depends_on": [
+        "OBL-D1-PROMOTE",
+        "D3-LEMMA-RN-UNIF",
+        "PERC-DECAY",
+        "OBL-B1-BRANCH(loop|B1)",
+        "B4.loc-damline"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "D1_ASSEMBLY_v2_2.md \u00a73/\u00a75; HOLD_OPEN_VALIDITY_PREMISES.md"
+    },
+    {
+      "id": "D1-v2.3-DRAFT(2)",
+      "track": "UPPER2D",
+      "grade": "PROPOSED",
+      "depends_on": [
+        "OBL-D1-PROMOTE",
+        "D3-LEMMA-RN-UNIF"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "D1_ASSEMBLY_v2_3_DRAFT.md"
+    },
+    {
+      "id": "RN3-FAR",
+      "track": "UPPER2D",
+      "grade": "AUTHOR_SIDE_CERTIFIED",
+      "depends_on": [
+        "H3-BAND-FLOOR"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "RN3-20260917-b9c2_RN_JOINT_PROOF.md (12,956 bytes, sha 0c9446b7cb49e6e1e45e43f84bb72ce680f022882e225fdff61c8e6edede1373)"
+    },
+    {
+      "id": "H3-BAND-FLOOR",
+      "track": "UPPER2D",
+      "grade": "FROZEN_CERTIFICATE",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "ADDENDUM_2026-09-15_H3_BAND_FLOOR.md \u00a72"
+    },
+    {
+      "id": "RN5-NEAR-POINT-CERTS",
+      "track": "UPPER2D",
+      "grade": "AUTHOR_SIDE_PARTIAL",
+      "depends_on": [
+        "H3-BAND-FLOOR"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "RN5_NEAR_MOMENT_REPAIR.md \u00a73-\u00a74"
+    },
+    {
+      "id": "LPW-QUALITATIVE",
+      "track": "LOWER2D",
+      "grade": "ACCEPTED_AT_REVIEW_SCOPE",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "LPW qualitative controlling record"
+    },
+    {
+      "id": "QC-RETURN03-FALLBACK",
+      "track": "LOWER2D",
+      "grade": "ACCEPTED_AT_REVIEW_SCOPE",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "QC-RETURN03 fallback record"
+    },
+    {
+      "id": "LPW-CONSTANT-DELIVERED",
+      "track": "LOWER2D",
+      "grade": "AMEND_REQUIRED",
+      "depends_on": [
+        "LPW-QUALITATIVE"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "LPW_CONSTANT as delivered record"
+    },
+    {
+      "id": "SIDE24-3D-AO48-OPR-045",
+      "track": "LIFETIME3D",
+      "grade": "RATIFIED_3D_ONLY",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/operator_decisions.json row AO48-OPR-045 (2026-09-18 xlsx export); AO48-OPR-045 record, Drive 1MfA94SaoYpnnAs7HYLNvowG9EHIR3Opk, 3,397 B, SHA-256 e48d7c271dff9c120316ee2129a303aed6f78b518c2e0c08337eb357bd60e2e8, mirrored byte-exact under drive/mirrors/2026-08-01-to-08-03 \u2014 SIDE24 RATIFICATION + P0.1 POST-RATIFICATION/; AO48-AUD-044 \u00a7C/\u00a7D; restated in ERRATA_AND_CLARIFICATIONS_2026-09-13 and PKG-05"
+    },
+    {
+      "id": "MATCHING-2D-UPPER",
+      "track": "UPPER2D",
+      "grade": "OPEN",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "Matching 2D upper record"
+    },
+    {
+      "id": "K3-THM-001",
+      "track": "LOWER2D",
+      "grade": "REFUTED_AS_WRITTEN",
+      "depends_on": [
+        "H-B3"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": null,
+      "source": "GP-LB-STAT-004 K3 partial-delivery hostile adjudication, raw carrier Drive 1lfH7g57LcshqpLfNbrx-H7gbJckpzPqr (13,399 B, sha256 26a9c7ef46b546acfdb0fda11f6ee8dd1e655752202d0add39e0011adf936a4c); the assembly's own carrier Drive 1VCDrxE5sp983c1uMTFCpmH4hJdDUw6Ut (9,760 B, sha256 715124dba1f089430594a3322b7d32c3508fbcb10c14f6591a432ff582f8854d); registers/json/open_questions.json OQ-016-U1 'K3-THM-001 REFUTED AS WRITTEN / LOWER HOLD'"
+    },
+    {
+      "id": "PR-TAL-003..008",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_PROOF_PRESENT",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": "CLAIM_REGISTRY_VERIFIED_INTAKE.json, Drive 1RTZ7rjQUzQdLtiPKatAUJs6qfZeTXv0a (15,814 B, sha256 fbea000df219921aa8ab915fc4f2f5136a25e9e588aa7446686120bc9707db94; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/CLAIM_REGISTRY_VERIFIED_INTAKE.json): PR-TAL-003..008 each 'declared_proof_grade': 'AUTHOR_SIDE_PROOF_PRESENT', 'verification_this_turn': 'proof derivation and exact finite companions'. Carrier Prize_Research_Phase05_Overlap_2026-09-16.zip sha e976271ba1a3822bddf6247d72b5d6131bfeabdcbc610982e816d812dd2e5a90, 98,175 B, 122 members (two byte-identical Drive copies: 1XB6HnA5YArrfN7QRYtLDIN0sTHF9fRXt, 1Z4RvtapE1NDsUCKmSQprneqP-z2IrvSK)"
+    },
+    {
+      "id": "P14-A..E",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "registry": "P14_CLAIM_REGISTRY.json, Drive 1iMJsX4j1DRsBy6CnPun4e65w2u1xK2qx (1,258 B, sha256 da7403a743933dc77369d876393a68298e059f9bf175ff338e85a677b608d3a4); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CLAIM_REGISTRY.json",
+        "current_state": "P14_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1Gc1ep25x1y3IS_9GDtQMQ1iZQsXELqfx (1,966 B, sha256 8bb20fe14a15d7558fb5e5d86080c1f99549abc068bef88a9a03ee0b455181f7); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "proof_bodies": "inside Prize_Research_P14_Fractional_20260917.zip (191 members; not opened here): proofs/01_SCALAR_SANDWICH_THEOREM.md b3c7ea04\u2026, 02_FRACTIONAL_RESOURCE_COVER.md a4a23b1e\u2026, 03_MANY_NECESSARY_ROWS_EXAMPLE.md b0dc6a4a\u2026, 04_LIMITATIONS_AND_HIERARCHY.md a9083363\u2026 (digests as the registry declares them)"
+      }
+    },
+    {
+      "id": "P15-A..D",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE_ARGUMENTS_WITH_EXACT_FINITE_COMPANIONS",
+      "depends_on": [
+        "P14-A..E"
+      ],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "current_state": "P15_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1r8weyHObFfHAp-_PfI8mlSXPZQC8Zoh1 (2,820 B, sha256 db873e57c760d5b16a32778ec9ce47cd7e00880dfa2f9fe7b49b03d4540f726c); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "registry": "P15_CLAIM_REGISTRY.json, Drive 1Ss_chTR4TF1NsAqZ2idkV4xKT8q7uldZ (2,164 B, sha256 1eae5148e90ede237a23896a35aafb29065470313c3fc8712b4a74342c45d191): 'automatic_scientific_promotion': false, 'external_independence_credit': 0, 'q0_changes': 0; each claim 'grade': 'AUTHOR_SIDE_COMPLETE', 'external_reviews': 0, 'prize_closed': false; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CLAIM_REGISTRY.json",
+        "proof_bodies": "inside Prize_Research_P15_Palette_20260917.zip (149 members; not opened here): proofs/01_CRITICAL_THRESHOLD_CROSSWALK.md 93e2ead4\u2026, 02_PALETTE_SEPARATED_LOCALIZATION.md 9b18b6e9\u2026, 03_CONNECTED_UNBOUNDED_WIDTH_FAMILY.md 357dd573\u2026, 04_COMPLETE_TRANSVERSAL_GRAPH_COMPOSITION.md ad2c55b8\u2026 (digests as the registry declares them)"
+      }
+    },
+    {
+      "id": "RV-LM003-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM003-MAIN; registers/json/easy_closure_queue.json row P02-LM-003"
+    },
+    {
+      "id": "RV-LM004-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "PASS_TECHNICAL",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM004-MAIN; registers/json/easy_closure_queue.json row P02-LM-004"
+    },
+    {
+      "id": "RV-LM006-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM006-MAIN; registers/json/easy_closure_queue.json row P02-LM-006"
+    },
+    {
+      "id": "RV-LM009-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "PASS_TECHNICAL",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM009-MAIN; registers/json/easy_closure_queue.json row P02-LM-009"
+    },
+    {
+      "id": "RV-LM010-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM010-MAIN; registers/json/easy_closure_queue.json row P02-LM-010"
+    },
+    {
+      "id": "RV-LM012-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM012-MAIN; registers/json/easy_closure_queue.json row P02-LM-012"
+    },
+    {
+      "id": "RV-LM013-BOREL-GLOBALIZATION",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [
+        "LM013-JOINT-STACK"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM013-BOREL-GLOBALIZATION; registers/json/easy_closure_queue.json row P02-LM-013"
+    },
+    {
+      "id": "RV-LM011-MAIN",
+      "track": "P02_ADJACENCY",
+      "grade": "NEEDS_RECONCILIATION",
+      "depends_on": [
+        "RV-LM003-MAIN",
+        "RV-LM004-MAIN",
+        "RV-LM006-MAIN",
+        "RV-LM009-MAIN",
+        "RV-LM010-MAIN",
+        "RV-LM012-MAIN",
+        "RV-LM013-BOREL-GLOBALIZATION",
+        "LM013-JOINT-STACK"
+      ],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-LM011-MAIN; registers/json/easy_closure_queue.json row P02-LM-011"
+    },
+    {
+      "id": "RV-RN5-MOMENT-REPAIR",
+      "track": "UPPER2D",
+      "grade": "READY",
+      "depends_on": [],
+      "original_prize_closed": null,
+      "independence_credit": 0,
+      "source": "registers/json/review_queue.json row RV-RN5-MOMENT-REPAIR (2026-09-18 xlsx export); no easy_closure_queue row exists for this route; packet https://drive.google.com/file/d/1LtnvNd0vAW-y3pzbyHLjgtF7Uw5sTph5/view"
+    }
+  ],
+  "open_prizes": [
+    {
+      "id": "PR-TAL-003..008",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_PROOF_PRESENT",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": "CLAIM_REGISTRY_VERIFIED_INTAKE.json, Drive 1RTZ7rjQUzQdLtiPKatAUJs6qfZeTXv0a (15,814 B, sha256 fbea000df219921aa8ab915fc4f2f5136a25e9e588aa7446686120bc9707db94; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/CLAIM_REGISTRY_VERIFIED_INTAKE.json): PR-TAL-003..008 each 'declared_proof_grade': 'AUTHOR_SIDE_PROOF_PRESENT', 'verification_this_turn': 'proof derivation and exact finite companions'. Carrier Prize_Research_Phase05_Overlap_2026-09-16.zip sha e976271ba1a3822bddf6247d72b5d6131bfeabdcbc610982e816d812dd2e5a90, 98,175 B, 122 members (two byte-identical Drive copies: 1XB6HnA5YArrfN7QRYtLDIN0sTHF9fRXt, 1Z4RvtapE1NDsUCKmSQprneqP-z2IrvSK)",
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    },
+    {
+      "id": "P14-A..E",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE",
+      "depends_on": [],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "registry": "P14_CLAIM_REGISTRY.json, Drive 1iMJsX4j1DRsBy6CnPun4e65w2u1xK2qx (1,258 B, sha256 da7403a743933dc77369d876393a68298e059f9bf175ff338e85a677b608d3a4); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CLAIM_REGISTRY.json",
+        "current_state": "P14_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1Gc1ep25x1y3IS_9GDtQMQ1iZQsXELqfx (1,966 B, sha256 8bb20fe14a15d7558fb5e5d86080c1f99549abc068bef88a9a03ee0b455181f7); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P14_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "proof_bodies": "inside Prize_Research_P14_Fractional_20260917.zip (191 members; not opened here): proofs/01_SCALAR_SANDWICH_THEOREM.md b3c7ea04\u2026, 02_FRACTIONAL_RESOURCE_COVER.md a4a23b1e\u2026, 03_MANY_NECESSARY_ROWS_EXAMPLE.md b0dc6a4a\u2026, 04_LIMITATIONS_AND_HIERARCHY.md a9083363\u2026 (digests as the registry declares them)"
+      },
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    },
+    {
+      "id": "P15-A..D",
+      "track": "NUMBER_THEORY",
+      "grade": "AUTHOR_SIDE_COMPLETE_ARGUMENTS_WITH_EXACT_FINITE_COMPANIONS",
+      "depends_on": [
+        "P14-A..E"
+      ],
+      "original_prize_closed": false,
+      "independence_credit": null,
+      "source": {
+        "current_state": "P15_CURRENT_STATE_AUTHOR_CANDIDATE.md, Drive 1r8weyHObFfHAp-_PfI8mlSXPZQC8Zoh1 (2,820 B, sha256 db873e57c760d5b16a32778ec9ce47cd7e00880dfa2f9fe7b49b03d4540f726c); mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CURRENT_STATE_AUTHOR_CANDIDATE.md",
+        "registry": "P15_CLAIM_REGISTRY.json, Drive 1Ss_chTR4TF1NsAqZ2idkV4xKT8q7uldZ (2,164 B, sha256 1eae5148e90ede237a23896a35aafb29065470313c3fc8712b4a74342c45d191): 'automatic_scientific_promotion': false, 'external_independence_credit': 0, 'q0_changes': 0; each claim 'grade': 'AUTHOR_SIDE_COMPLETE', 'external_reviews': 0, 'prize_closed': false; mirrored byte-exact at drive/mirrors/2026-09-16 \u2014 PRIZE PROBLEM RECONNAISSANCE \u2014 INDEPENDENT TRACK/00_CURRENT_STATE_AND_ROUTING/P15_CLAIM_REGISTRY.json",
+        "proof_bodies": "inside Prize_Research_P15_Palette_20260917.zip (149 members; not opened here): proofs/01_CRITICAL_THRESHOLD_CROSSWALK.md 93e2ead4\u2026, 02_PALETTE_SEPARATED_LOCALIZATION.md 9b18b6e9\u2026, 03_CONNECTED_UNBOUNDED_WIDTH_FAMILY.md 357dd573\u2026, 04_COMPLETE_TRANSVERSAL_GRAPH_COMPOSITION.md ad2c55b8\u2026 (digests as the registry declares them)"
+      },
+      "note": "FW-NO-PRIZE-CLOSURE: original_prize_closed must stay false"
+    }
+  ],
+  "d1_v2_2_validity_premises_still_named": [
+    "OBL-D1-PROMOTE",
+    "D3-LEMMA-RN-UNIF",
+    "PERC-DECAY",
+    "OBL-B1-BRANCH(loop|B1)",
+    "B4.loc-damline"
+  ],
+  "firewalls": [
+    "FW-2D-3D-COMPOSITION",
+    "FW-PRIZE-ISOLATION",
+    "FW-UNCONDITIONAL",
+    "FW-NO-PRIZE-CLOSURE",
+    "FW-DECIMAL-KILL",
+    "FW-LM011-PRECONDITION",
+    "FW-NO-RECEIPT-PROMOTION",
+    "FW-FLOAT-NOT-CERTIFIED",
+    "FW-RETRACTED-NOT-UNCONDITIONAL"
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-005",
+      "decision_class": "MATHEMATICAL / EXACT-LAW COMPOSITION",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 THIRTEEN-INTERFACE CHAIN / FIVE TERMINAL / EIGHT REVIEW-PENDING",
+      "live_state": "SCOPED COMPONENT CLOSURES PRESERVED / ORGANIZATIONALLY DISTINCT EXACT-OBJECT VERDICTS OPEN / P0.2 NONTERMINAL",
+      "next_decisive_action": "Use current LCR-REQ-051/052/053 routes and current v1.1 objects; obtain remaining exact-object verdicts and final synthesis. Do not repeat closed LM007 or satisfied LM013 parent/Carrier-A review. No parent promotion."
+    },
+    {
+      "id": "OQ-006",
+      "decision_class": "SCOPE / GOVERNANCE",
+      "priority": "Medium",
+      "register_status": "OPEN",
+      "live_state": "OPERATIVE READING PROPOSED",
+      "next_decisive_action": "Confirm kill list applies to measured/fitted constants and the Canon's named values, not exact mathematical rationals."
+    },
+    {
+      "id": "OQ-007",
+      "decision_class": "MATHEMATICAL / NUMERICAL",
+      "priority": "P1",
+      "register_status": "REBASED",
+      "live_state": "OPEN WITH NEW DESIGN",
+      "next_decisive_action": "Use exact critical sets and elder-rule pairs; estimate field-cluster design effect on 12\u201320 clean fields before freezing a test."
+    },
+    {
+      "id": "OQ-008",
+      "decision_class": "MATHEMATICAL / NUMERICAL",
+      "priority": "P1",
+      "register_status": "REBASED AFTER ROOT-CAUSE ERRATUM",
+      "live_state": "OPEN / PRIOR CONCLUSION WITHDRAWN",
+      "next_decisive_action": "Collect 12\u201320 planning fields, then target roughly 100\u2013150 usable fields or a calibrated alternative design."
+    },
+    {
+      "id": "OQ-009",
+      "decision_class": "MATHEMATICAL + INDEPENDENT REVIEW INTEGRATION",
+      "priority": "P0",
+      "register_status": "HOLD \u2014 v1.10 CURRENT / FOUNDATION TRUE / APPLICATION TRUE",
+      "live_state": "INDEPENDENCE FALSE / INTEGRITY FALSE / NOT PROMOTED; B0 evidence satisfied but state unchanged/fold-ready; C2 typed crosswalk pending.",
+      "next_decisive_action": "Use current overlay. A successor B0/PZ0 control fold must acknowledge LS-WO-001/CLWO-P01-001; A0/family distinction and integrity remain separate gates. Do not repeat stale v1.6/v1.9, E0/E2 or D0/I0 work."
+    },
+    {
+      "id": "OQ-010",
+      "decision_class": "ATTRIBUTION",
+      "priority": "Medium",
+      "register_status": "OPEN",
+      "live_state": "OPEN",
+      "next_decisive_action": "Relevant sessions claim or disclaim authorship; do not infer identity from model family."
+    },
+    {
+      "id": "OQ-011",
+      "decision_class": "MATHEMATICAL / CANON STATUS",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 UNCONDITIONAL `PROVEN-HERE` RETRACTED",
+      "live_state": "THEOREM B CANDIDATE / EXACT EXPONENT MECHANISM PROVED / POSITIVE FINITE C_* CANNOT VERIFY",
+      "next_decisive_action": "Execute TB-G1 through TB-G7: exact marked candidate process and multiplicity; compact-mark contact theorem; uniform selection; small/large-kappa tails; off-fold partition; independent reconstruction; clean continuum falsification."
+    },
+    {
+      "id": "OQ-012",
+      "decision_class": "MACHINE / MIGRATION / AUTONOMOUS REPLACEMENT",
+      "priority": "P1",
+      "register_status": "OPEN \u2014 DQ-007 IMPLEMENTATION REPLAYED / 1.2.2 SHAPE REPAIR CANDIDATE READY / INDEPENDENT ACCEPTANCE OPEN",
+      "live_state": "DQ-007 DIRECT REPAIR COMPLETE / NEW ADDITIVE CANDIDATE VALIDATED AUTHOR-SIDE / ACTIVE MACHINE UNCHANGED / ZERO ROOTS PROMOTED",
+      "next_decisive_action": "Review the exact 1.2.2 candidate and its rejection/report behavior through an organizationally distinct reviewer; retain the 1.2.1 frozen record. Complete declared migration, compatibility and adoption gates before active replacement."
+    },
+    {
+      "id": "OQ-013",
+      "decision_class": "FORMAL SOURCE / TOOLCHAIN / CI",
+      "priority": "P1",
+      "register_status": "OPEN \u2014 SOURCE RECOVERED / LEAN CI NOT RUN",
+      "live_state": "ORIGINAL PACKAGE UNRECONSTRUCTABLE / R1 STATIC PASS / NO MACHINE-CHECKED PROOF",
+      "next_decisive_action": "Freeze a Lean toolchain and exact Mathlib commit, publish lock files, compile GP-FOR-189 in a clean environment, preserve complete build logs, repair any elaboration errors without scope weakening, then obtain organizationally distinct statement/scope review."
+    },
+    {
+      "id": "OQ-014",
+      "decision_class": "ANALYTIC / KAC-RICE / UNIFORMITY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 MECHANISM REFUTED / QUANTITATIVE BOUND REPAIR REQUIRED",
+      "live_state": "WP OPEN / KIMI-THM-023 v1.0 AND v1.1 HOLD / NO BOOLEAN CHANGE",
+      "next_decisive_action": "Re-derive the exact event inclusion and minimal WP rate; then repair the inequality and provide rigorous quadrature/spatial enclosures or a different uniform typed pair-Palm proof; rerun mutations and independent review."
+    },
+    {
+      "id": "OQ-015",
+      "decision_class": "ANALYTIC / DYNAMICAL / GAUSSIAN TUBE",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 P-NMZ-gamma",
+      "live_state": "gamma-LOC(ii-c) CONDITIONAL / NO GATE EFFECT",
+      "next_decisive_action": "Certify the nominal third-saddle ascent tube on d\u22723 and a sub-Gaussian C1 scale with clearance ratio diverging faster than sqrt(2 log(1/r))."
+    },
+    {
+      "id": "OQ-016",
+      "decision_class": "THEOREM ASSEMBLY / COMPLETION / UNIFORMITY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 DER-027B AND THM-023 V1.1 INCOMPLETE",
+      "live_state": "LOWER-BOUND THEOREM HOLD / DRAFTS NONCONTROLLING",
+      "next_decisive_action": "Obtain hash-frozen W2/W3/W4 reports, sources, raw transcripts, exit receipts and mutations; then W12 blind adjudication. Separately settle WP\u2019s minimal event-level target, P-NMZ-gamma, DER-027b, eta_r, and theorem verifier defects."
+    },
+    {
+      "id": "OQ-014-U1",
+      "decision_class": "ANALYTIC / KAC-RICE / WEIGHTED PALM / UNIFORMITY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 MINIMAL TARGET o(1) IDENTIFIED / PROOF ABSENT",
+      "live_state": "WP OPEN / OLD UPPER CHAIN QUARANTINED / NO BOOLEAN CHANGE",
+      "next_decisive_action": "Prove an arch-uniform o(1) loss directly under the exact weighted triple-Palm law, or supply a rigorous RN transfer; enclose spatial, quadrature, tails, pin charts and continuum in r. Independently finish or formally close W3."
+    },
+    {
+      "id": "OQ-015-U1",
+      "decision_class": "ANALYTIC / DYNAMICAL / MINIMALITY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 DISCHARGED ONLY FOR ABSTRACT FORMS B/C/D UNDER OTHER UNPROVED LOSSES",
+      "live_state": "P-NMZ-gamma ROUTE-SPECIFIC / NO GATE EFFECT",
+      "next_decisive_action": "Choose the exact assembly route. For B/C/D, prove the terminal floor plus every remaining loss including exit o(1); for Form A, retain and prove the original Gamma-LOC/P0-floor premises."
+    },
+    {
+      "id": "OQ-016-U1",
+      "decision_class": "THEOREM ASSEMBLY / COMPLETION / UNIFORMITY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 K3-THM-001 REFUTED AS WRITTEN / LOWER HOLD",
+      "live_state": "LOWER-BOUND THEOREM OPEN / ALL DRAFTS NONCONTROLLING",
+      "next_decisive_action": "Do not mint a successor. Prove Lambda positive uniform constant, exact weighted-Palm losses, eta_r, exit o(1), H-Bonf, analytic DER-027a/027c uniformity; complete W8 receipts; then new blind review and final-tree clean-room replay."
+    },
+    {
+      "id": "OQ-016-U2",
+      "decision_class": "THEOREM ASSEMBLY / W8 RECEIPT RECOVERY",
+      "priority": "P0",
+      "register_status": "OPEN \u2014 W8 SOURCE RECOVERED / FINAL RECEIPTS ABSENT",
+      "live_state": "LOWER THEOREM OPEN / W8 NONCLOSED / K3-THM-001 REFUTED AS WRITTEN",
+      "next_decisive_action": "Prove an analytic H-B3 replacement or a different Lambda-side positive uniform constant; generate complete normal/-O transcripts, exit receipts, identity/hash manifest and mutation evidence from one final immutable delivery; then independent review."
+    }
+  ],
+  "counts": {
+    "open_premises_frozen_layer": 13,
+    "open_lemmas": 1,
+    "open_obligations_packet": 2,
+    "open_prizes": 3,
+    "claims_total": 26,
+    "open_questions": 16
+  },
+  "evidence_paths": [
+    "docs/math_status/PACKET.json",
+    "docs/math_status/STATUS.md",
+    "docs/math_status/STATUS_JETMOD.md",
+    "docs/math_status/STATUS_RN_UNIF.md",
+    "docs/math_status/math_console_snapshot.json",
+    "claims/graph.json",
+    "registers/json/open_questions.json"
+  ],
+  "tip_sha": "3a29f526da5108df173edc390a8ca2d1f3d887c9",
+  "batch": "296",
+  "audit_note": "Batch 296 mechanical OPEN inventory; no promotion; lemma_closed=false"
+}

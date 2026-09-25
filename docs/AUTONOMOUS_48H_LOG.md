@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 296 (permanent-watch IDLE — tip stable, MAIN eng while WRITABLE, idle_no_commit) — 2026-09-25 ~12:53 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
+- MAIN while writable: open PRs all **DRAFT** research HOLD / tip-observe / inventable — no ready non-draft eng to merge. New #87 Downstream RN crosswalk draft fails `math_status_check` (unexpected packet file) — research skip. Tip CI green (ci/nav/withdrawal @ `3a29f52`).
+- Tip hunt (/tmp/main-tip): no inventable CI path-missing refs; tip-observe honesty stale `3b3860d` fields → inventable #84 HOLD (not eng); README unmix clean on default + hardening faces; attestations+math_status problems=0; 0020 NEGATIVE.
+- Living release: tip_stale=0 script_stale=0; tgz_newer=1 from BATCH294 briefs only (not eng) — no republish. Guard+research: `lemma_closed=false`; `flipped_anything=false`.
+- action=`idle_no_commit`. next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+
 ### Batch 294 (permanent-watch IDLE — tip stable, no new eng beyond 273–293) — 2026-09-25 ~12:31 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).

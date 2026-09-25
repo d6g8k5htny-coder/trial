@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 296)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#87/#85/#84/…) — skipped (no ready non-draft eng). Tip CI green @ tip. Tip-observe fields still name `3b3860d` on tip `3a29f52` — inventable #84 HOLD only (not eng 0020). Living tip_stale=0 script_stale=0 (tgz_newer BATCH294 briefs only — no republish). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/assert_path_c_ready.sh
+gh pr list --repo d6g8k5htny-coder/main --state open --limit 20
+gh run list --repo d6g8k5htny-coder/main --branch chatgpt/drive-github-hardening-20260919 --limit 5
+```
+
 ## STATUS (Batch 294)
 
 Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#85/#84/…) — skipped. Living release tip_stale=0 script_stale=0 (tgz_newer from BATCH290/291/293 briefs only — not eng). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Permanent-watch hunt beyond 273–293 **NEGATIVE**. No tip-sync. No republish. Scientific effect: NONE.
