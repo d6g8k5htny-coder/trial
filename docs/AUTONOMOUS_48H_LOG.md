@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** keep-prior tip refresh stamped `VERIFY.batch=250` from stale `REFRESH_BATCH_TAG` default while `release=batch241-path-c-bundle`. Pack `release|batch` fallback would derive `batch250-path-c-bundle` if release stripped (Batch 268 only blocked dirty pin write).
 - **Defect shipped (avoid pack living-tag validate-before-write / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** `refresh_path_c_bundle` aligns `VERIFY.batch` to release digits; automation stamp → `refresh_batch`; default tag 269; heal VERIFY+MANIFEST.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- Trial eng land follow-on. Scientific effect NONE.
+- Trial eng **PR #98 squash merge** @ `7290bf9`. Scientific effect NONE.
 
 ### Batch 268 (pack living-tag race + tip refresh 8e359e5) — 2026-09-25 ~03:22 UTC (PERMANENT window; eng defect ship + tip refresh; scientific effect NONE; flipped nothing)
 
