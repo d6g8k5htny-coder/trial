@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — tip_or_eng: inv tip re-pin + living republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged after merge re-pin land; living `script_stale=1` (print_owner). PRESERVE_DURABLE re-pin→HEAD + living republish → script_stale=0.
+- Artifacts: `BATCH352_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+
 ### Batch 352 — inventory_preserve_durable_tip_pin re-pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (LIVE match); durable 8/8; grant `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→living HEAD; never demote 8/8 on writable=0.

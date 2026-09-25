@@ -1,3 +1,12 @@
+## STATUS (Batch 352 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lag + living print_owner `script_stale` after Batch 352 merge re-pin — preserve_durable re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.
+```bash
+INV_BATCH=352 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+./scripts/refresh_path_c_bundle.sh --dry-run
+```
+
 ## STATUS (Batch 352 wake)
 
 Hardening tip **stable** @ `e3cd7d4`. Dylan: message stopped agents — Task-resume 7 IDLE Path C peers (tip watch, eng hunt, grant, CI audit, inventory, tip/eng rewake, tip cloud). Evidence: `portable/MULTI_AGENT_WAKE_BATCH352.json`. `lemma_closed=false`. action=`multi_agent_wake_and_assign`. Goal OPEN.

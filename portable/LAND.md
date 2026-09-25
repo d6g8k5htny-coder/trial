@@ -1,3 +1,7 @@
+## STATUS (Batch 352 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 352 inv-preserve-tip-pin re-pin)
 
 tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 352; lemma_closed=false; goal OPEN; scientific effect NONE.
