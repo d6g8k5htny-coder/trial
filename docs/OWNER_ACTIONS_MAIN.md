@@ -12,6 +12,12 @@ python3 -m pytest tests/test_intent.py::test_batch341_soften_inv_batch_hard_pins
 
 ## STATUS (Batch 343)
 
+Hardening tip **synced** `f244312`→`fcad723` after main **#109** inventable (tip_match=true; Path C idle; BASE==LIVE after sync). Tip-sync keep-prior; REFRESH default 343; `_LIVING_TIPS += fcad723`. Inventable NOT promoted. Guard+research: `lemma_closed=false`. action=`tip_sync_landed`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move; WAKE340 tip pins already living @ `f244312` (Batch 342). Eng: living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` drift after Batch 341/342) — republish cleared. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash

@@ -1,18 +1,20 @@
 {
   "batch": "343",
-  "hunt": "tip_sync_watch",
+  "hunt": "tip_sync_after_main_109",
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "defect_shipped": true,
   "defect_found": true,
-  "defect_id": "living_release_script_stale_after_342",
-  "tip": "f244312",
-  "tip_moved": false,
+  "defect_id": "tip_sync_f244312_to_fcad723_main_109",
+  "avoided": [
+    "promote #109 inventable claim status",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "tip_moved": true,
+  "tip": "fcad723",
+  "prior_tip": "f244312",
   "hunt_0020": "NEGATIVE",
-  "candidates_checked": {
-    "refresh_dry_run": "match=1",
-    "wake340_tip": "already_living_f244312",
-    "living": "script_stale_FIXED"
-  }
+  "generated_at_utc": "2026-09-25T18:55:00Z"
 }

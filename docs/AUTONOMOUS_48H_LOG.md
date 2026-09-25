@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 — tip-sync after main #109 (2026-09-25)
+
+- Hardening LIVE moved `f244312`→`fcad723` (#109 inventable RN_SIDE24_CELL pointer MERGED into chatgpt/drive-github-hardening-20260919).
+- Tip-sync: `REFRESH_BATCH_TAG=343` keep-prior (focused 92 + claims/recovery 83); living tip_stale republish; `_LIVING_TIPS += fcad723`; REFRESH default 343.
+- **NEVER flip research:** inventable #109 NOT promoted; `lemma_closed=false`.
+- Prior Batch 343 living script_stale republish @f244312 superseded by tip move.
 ### Batch 343 (MULTI_AGENT wake_land_verify; tip @f244312) — 2026-09-25 ~18:53 UTC
 - Coordinator `bc-01a0cf1e`: IDLE agent resumed — `wake_land_verify_batch343`.
 - Verified WAKE340 tip pins living @ `f244312` tip_match=1; Path C IDLE@0019; goal OPEN; `lemma_closed=false`.
