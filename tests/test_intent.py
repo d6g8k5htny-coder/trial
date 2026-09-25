@@ -103,6 +103,20 @@ def _assert_print_owner_header_batch_at_least(unblock_text: str, min_batch: int)
     assert got >= min_batch, f"print_owner header Batch {got} < {min_batch}"
 
 
+
+def _living_tip_refresh(val) -> bool:
+    """True if VERIFY.tip_refresh is a living bool (Batch 329 remediation class).
+
+    Tip-sync sets tip_refresh=True; a later non-tip refresh_batch bump (tip still
+    living / TIP_MATCH) correctly sets tip_refresh=False. Freezing `is True` reds CI.
+    """
+    return val in (True, False)
+
+
+def _assert_living_tip_refresh(val) -> None:
+    assert _living_tip_refresh(val), f"VERIFY.tip_refresh not living bool: {val!r}"
+
+
 def test_readme_states_sandbox_boundary() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "research repository" in text.lower()
@@ -4271,7 +4285,7 @@ def test_batch180_path_c_status_json_schema() -> None:
     assert verify["lemma_closed"] is False
     assert _living_release(verify.get("release"))
     assert _living_tip(verify["base_tip_sha"])
-    assert verify.get("tip_refresh") in (True, False)
+    _assert_living_tip_refresh(verify.get("tip_refresh"))
 
     oneshot = ROOT / "scripts" / "owner_path_c_oneshot.sh"
     assert "batch180-path-c-bundle" in oneshot.read_text(encoding="utf-8") or "batch207-path-c-bundle" in oneshot.read_text(encoding="utf-8") or "-path-c-bundle" in oneshot.read_text(encoding="utf-8")
@@ -5182,7 +5196,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     )
     assert _living_release(verify.get("release"))
     assert verify.get("lemma_closed") is False
-    assert verify.get("tip_refresh") in (True, False)
+    _assert_living_tip_refresh(verify.get("tip_refresh"))
     assert _living_tip(verify.get("base_tip_sha"))
 
     status = json.loads(
@@ -11766,7 +11780,7 @@ def test_batch289_tip_sync_after_main_83() -> None:
     assert verify.get("lemma_closed") is False
     # Later non-tip refresh_batch bumps (e.g. Batch 327) set tip_refresh=False while
     # base_tip_sha stays living; do not freeze tip_refresh=True forever.
-    assert verify.get("tip_refresh") in (True, False)
+    _assert_living_tip_refresh(verify.get("tip_refresh"))
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 289)
@@ -13034,7 +13048,10 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     # Historical Batch 289 body must not freeze tip_refresh=True forever.
     assert "assert verify.get(\"tip_refresh\") is True" not in intent
-    assert "assert verify.get(\"tip_refresh\") in (True, False)" in intent
+    # Shared living helper covers Batch 180/202/289 (+329) VERIFY.tip_refresh siblings.
+    assert "_assert_living_tip_refresh" in intent
+    assert "_living_tip_refresh" in intent
+    assert intent.count("_assert_living_tip_refresh(") >= 4
 
     wake = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH329.json").read_text(encoding="utf-8")
@@ -13069,7 +13086,7 @@ def test_batch329_tip_refresh_living_and_wake() -> None:
             encoding="utf-8"
         )
     )
-    assert verify.get("tip_refresh") in (True, False)
+    _assert_living_tip_refresh(verify.get("tip_refresh"))
     assert _living_tip(str(verify.get("base_tip_sha", "")))
     assert verify.get("lemma_closed") is False
 
