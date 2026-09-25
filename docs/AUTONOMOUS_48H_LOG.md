@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 367 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 366→367 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged beyond parent after Batch 367 idle; last-resort + VERIFY.refresh_batch frozen at 366. PRESERVE_DURABLE re-pin→HEAD + unfreeze→367 + VERIFY→367 + living republish. Intent living >=N. Inventable skipped. NEVER flip research.
+
+
 ### Batch 367 — tip_sync_watch idle_no_commit @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

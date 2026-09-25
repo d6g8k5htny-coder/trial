@@ -20152,3 +20152,44 @@ def test_batch367_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 367 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 367" in log_md and "idle_no_commit" in log_md
+
+
+def test_batch367_tip_or_eng_continue() -> None:
+    """Batch 367: tip_or_eng — inv tip re-pin beyond parent + VERIFY/unfreeze + living."""
+    import json
+    import re
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert int(str(inv.get("batch") or "0")) >= 367
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial"))
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("7aaa68f")
+    brief = json.loads((ROOT / "portable" / "BATCH367_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "367" and brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("lag_beyond_parent") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH367_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH367_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert evidence.get("tip_match") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(str(verify.get("refresh_batch") or "0")) >= 367
+    assert verify.get("lemma_closed") is False
+    # Living >=367 helpers only (no REFRESH any() allowlists).
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 367)
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 367
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', poster.split("def batch_marker")[0])]
+    assert _wake_rets and max(_wake_rets) >= 367
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 367)
+    assert "STATUS (Batch 367 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 367 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

@@ -1,3 +1,12 @@
+## STATUS (Batch 367 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 367 idle; last-resort + VERIFY frozen at 366 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→367 + VERIFY→367 + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=367 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch367_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 367 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH367_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
