@@ -1,3 +1,7 @@
+## STATUS (Batch 273)
+
+tip `bfb7c38` tip_match=true; APPLY living-tip (== BASE_TIP) + VERIFY pytest keep-prior honesty after Batch 272 tip-refresh wipe; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 272)
 
 tip `8e359e5` tip_moved=false; deep 0020 NEGATIVE; land-workflows-dry-run Path C idle must grep path-c-dry-run.out alone (union grep only Path B ALREADY_ALIGNED); lemma_closed=false; scientific effect NONE.

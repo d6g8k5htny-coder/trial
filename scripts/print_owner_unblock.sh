@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 273: refresh keep-prior APPLY living-tip soft-update + VERIFY pytest preserve (Batch 272 left 542e6ec==(BASE_TIP) lie + focused 0)"
 echo "  Batch 272: land-workflows-dry-run Path C idle must match on path-c-dry-run.out alone (union grep only saw Path B ALREADY_ALIGNED)"
 echo "  Batch 271: probe_main_write_vectors W3a–W3e dry_run ⇒ DISPATCH_OK_DRY_RUN false_positive; path_b_keys=W1/W2/W4* only (Batch 141 W3f-only leftover)"
 echo "  Batch 270: when_writable --once pid-liveness when flock misses live lockfile pid= (sidecar; no shared-status clobber)"

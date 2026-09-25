@@ -1,6 +1,6 @@
 # Path C applied bundle — prefer `git fetch` of `.bundle` onto hardening @ BASE_TIP
 
-**Batch 244 (living tip / pack sync):** hardening tip **`542e6ec`** (== BASE_TIP; [PR #71](https://github.com/d6g8k5htny-coder/main/pull/71) 0019 attestations RW). Living release **`batch241-path-c-bundle`**. Patches **0001–0004+0008–0019** are **already on tip** — `owner_land_path_c.sh --from-bundle` dry-run exits 0 with `already_applied_on_tip=true` (`.bundle` ff-only may diverge; apply_all `--check` is the authority). Do **not** re-land Path C onto `542e6ec`. `when_writable_land` → `idle_path_c_done` (0018+0019 markers true). `lemma_closed=false`. Scientific effect: **NONE**.
+**Batch 244 (living tip / pack sync):** hardening tip **`bfb7c38`** (== BASE_TIP; [PR #71](https://github.com/d6g8k5htny-coder/main/pull/71) 0019 attestations RW @ `542e6ec`). Living release **`batch241-path-c-bundle`**. Patches **0001–0004+0008–0019** are **already on tip** — `owner_land_path_c.sh --from-bundle` dry-run exits 0 with `already_applied_on_tip=true` (`.bundle` ff-only may diverge; apply_all `--check` is the authority). Do **not** re-land Path C onto `bfb7c38`. `when_writable_land` → `idle_path_c_done` (0018+0019 markers true). `lemma_closed=false`. Scientific effect: **NONE**.
 
 **Batch 232 (tip refresh):** hardening tip **`93a4ecd`→`377201c`** ([PR #62](https://github.com/d6g8k5htny-coder/main/pull/62) inventable campaign; PACKET kept; flags unflipped). Path C eng stack **already on tip** (ancestor [PR #64](https://github.com/d6g8k5htny-coder/main/pull/64)). Historical `.bundle`+`.patch` retained for pre-land tips. `lemma_closed=false`. Scientific effect: **NONE**.
 
@@ -22,7 +22,7 @@ mkdir -p /tmp/path-c-land && tar -xzf trial-portable-main-fixes.tgz -C /tmp/path
 # or: /tmp/path-c-land/scripts/owner_land_path_c.sh --from-bundle
 ```
 
-On tip **`542e6ec`** expect dry-run / land to report **`already_applied_on_tip=true`** (no new commits). Prior release tags (`batch239` / `batch218` / `batch207` / …) are historical only — do not download them for new lands.
+On tip **`bfb7c38`** expect dry-run / land to report **`already_applied_on_tip=true`** (no new commits). Prior release tags (`batch239` / `batch218` / `batch207` / …) are historical only — do not download them for new lands.
 
 Prerequisites: `git`, `python3`, `gh auth login` (Contents:Write + PullRequests:Write on `d6g8k5htny-coder/main`).
 
@@ -46,7 +46,7 @@ git push -u origin HEAD
 
 Then open a PR into `chatgpt/drive-github-hardening-20260919`. Do **not** apply on post-#41 default `main` (no `PACKET.json`).
 
-**Living tip note:** at `542e6ec` the merge may refuse ff-only (historical applied range diverged); that is expected — patches are already on tip. Prefer `apply_all.sh --check` / `owner_land_path_c.sh --from-bundle --dry-run`.
+**Living tip note:** at `bfb7c38` the merge may refuse ff-only (historical applied range diverged); that is expected — patches are already on tip. Prefer `apply_all.sh --check` / `owner_land_path_c.sh --from-bundle --dry-run`.
 
 **Batch 170 E2E:** shallow clone @ `8ea3b5f` → `git fetch` `.bundle` → `merge --ff-only` → HEAD `81c09d6`; `math_status_check` problems=0 / OPEN_HOLD / **lemma_closed=false**; focused pytest **90** passed.
 

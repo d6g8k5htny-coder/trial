@@ -1,0 +1,55 @@
+{
+  "batch": "273",
+  "hunt": "apply_verify_honesty_keep_prior_living_tip_and_pytest",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "apply_verify_honesty_keep_prior_living_tip_and_pytest",
+  "bugs_fixed": [
+    "APPLY.md living tip still claimed 542e6ec (== BASE_TIP) after tip-refresh to bfb7c38",
+    "refresh_path_c_bundle soft-update missed hardening tip / On tip / Living tip note patterns",
+    "keep-prior VERIFY pytest wiped 90/83 → 0/0 when FOCUSED_PASS=0"
+  ],
+  "avoided": [
+    "main draft #81 inventable README unmix (research-adjacent; not tip-observe HOLD)",
+    "research HOLD drafts",
+    "land-workflows Path C idle (just shipped 272)",
+    "probe_main_write_vectors dry_run DISPATCH_OK",
+    "when_writable once pid-liveness",
+    "VERIFY.batch release-align",
+    "pack living-tag validate-before-write",
+    "when_writable flock",
+    "path_c dry-run idle",
+    "path_b dry-run idle",
+    "release republish",
+    "grant dual-vector",
+    "long hygiene list"
+  ],
+  "candidates_checked": {
+    "tip_vs_bfb7c38": "stable tip_match=true refresh_dry_run_ok",
+    "patch_0020": "NEGATIVE_classic_assign_open_0_apply_all_already_on_tip",
+    "main_pr_81": "real_eng_docs_unmix_not_tip_observe_HOLD_skipped",
+    "main_ci_36098032016": "success",
+    "apply_living_tip_vs_base": "reproduced_542e6ec_eq_BASE_TIP_lie_fixed",
+    "verify_pytest_wipe": "reproduced_90_to_0_keep_prior_fixed",
+    "pack_portable_race": "already_fixed_268_validate_before_write",
+    "when_writable_noop": "idle_path_c_done_ok",
+    "ci_land_workflows_path_c_idle": "avoided_just_shipped_272"
+  },
+  "tip": "bfb7c38",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "resource_warnings": true,
+    "bare_open_actionable": true,
+    "note": "deep tip hunt clean; eng defect was APPLY/VERIFY honesty leftover after Batch 272 keep-prior tip-refresh"
+  }
+}

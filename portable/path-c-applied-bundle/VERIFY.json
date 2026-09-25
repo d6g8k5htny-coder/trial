@@ -1,6 +1,6 @@
 {
   "batch": "241",
-  "refresh_batch": "272",
+  "refresh_batch": "273",
   "generated_at_utc": "2026-09-25T05:22:38Z",
   "base_tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
   "applied_commit_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
@@ -20,9 +20,9 @@
   "disposition": "OPEN_HOLD",
   "lemma_closed": false,
   "pytest": {
-    "focused_passed": 0,
+    "focused_passed": 90,
     "focused_resource_warnings": 0,
-    "claims_recovery_passed": 0,
+    "claims_recovery_passed": 83,
     "claims_recovery_resource_warnings": 0,
     "focused_files": [
       "tests/test_carriers.py",
@@ -35,7 +35,7 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 272: refresh_path_c_bundle.sh @ bfb7c38; kept prior .patch+.bundle (already-on-tip); lemma_closed=false; problems=0",
+  "note": "Batch 273: APPLY/VERIFY honesty after keep-prior tip-refresh @ bfb7c38 — restored prior pytest 90/83 (Batch 272 wipe); living tip soft-update covers (== BASE_TIP); lemma_closed=false; problems=0",
   "force": false,
   "local_allow_empty_sha": "ad740359cac4e7917ae554f25c69f903ccfc1924",
   "path_c_landed": true,

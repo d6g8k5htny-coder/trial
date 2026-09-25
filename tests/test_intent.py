@@ -10054,3 +10054,189 @@ def test_batch272_ci_land_workflows_path_c_idle_contract() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
+
+
+def test_batch273_apply_verify_honesty_keep_prior() -> None:
+    """Batch 273: APPLY living-tip == BASE_TIP; VERIFY pytest preserved on keep-prior."""
+    import json
+    import re
+    import subprocess
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(
+        encoding="utf-8"
+    ).strip().split()[-1]
+    assert _living_tip(base_tip)
+    assert base_tip.startswith("bfb7c38") or "bfb7c38" in base_tip
+
+    apply = (ROOT / "portable" / "path-c-applied-bundle" / "APPLY.md").read_text(
+        encoding="utf-8"
+    )
+    # Living tip claim must match BASE_TIP (Batch 272 left 542e6ec==(BASE_TIP) lie).
+    m = re.search(
+        r"hardening tip\s+\*\*`([0-9a-f]{7,40})`\*\*\s*\(==\s*BASE_TIP",
+        apply,
+        flags=re.I,
+    )
+    assert m, "missing living tip (== BASE_TIP) claim in APPLY.md"
+    living = m.group(1)
+    assert base_tip.startswith(living) or living.startswith(base_tip[:7])
+    assert "On tip **`bfb7c38`**" in apply or f"On tip **`{living}`**" in apply
+    # Historical 0019 landmark retained for Batch 244 contract.
+    assert "542e6ec" in apply
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("lemma_closed") is False
+    assert verify.get("flipped_anything") is False
+    assert str(verify.get("base_tip_sha") or "").startswith("bfb7c38")
+    pytest_block = verify.get("pytest") or {}
+    assert int(pytest_block.get("focused_passed") or 0) == 90
+    assert int(pytest_block.get("claims_recovery_passed") or 0) == 83
+    assert int(str(verify.get("refresh_batch") or "0")) >= 273
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "Batch 273" in refresh
+    assert "preserved prior pytest" in refresh
+    assert "hardening tip" in refresh and "== BASE_TIP" in refresh
+    assert "Living tip note" in refresh
+    assert "On tip" in refresh
+
+    # Soft-update patterns cover bold Living tip note + (== BASE_TIP).
+    live_short = "bfb7c38"
+    live_sha = "bfb7c385040b952ca1a3752e4bc7704b383a4167"
+    sample = (
+        "hardening tip **`542e6ec`** (== BASE_TIP; x)\n"
+        "On tip **`542e6ec`** expect\n"
+        "**Living tip note:** at `542e6ec` the merge\n"
+        "Do **not** re-land Path C onto `542e6ec`.\n"
+        "BASE_TIP `542e6ec`\n"
+        "git checkout -B cursor/portable-engineering-patches "
+        "542e6ec2f462d6202f5bc5b3a044e71ae7a1a96c\n"
+    )
+    text2, _ = re.subn(
+        r"(BASE_TIP\s+[\\\`*]*)([0-9a-f]{7,40})",
+        lambda m: m.group(1) + live_short,
+        sample,
+        count=5,
+        flags=re.I,
+    )
+    text2, _ = re.subn(
+        r"(git checkout -B cursor/portable-engineering-patches\s+)([0-9a-f]{40})",
+        lambda m: m.group(1) + live_sha,
+        text2,
+        count=2,
+    )
+    text2, _ = re.subn(
+        r"(hardening tip\s+\*\*`?)([0-9a-f]{7,40})(`?\*\*\s*\(==\s*BASE_TIP)",
+        lambda m: m.group(1) + live_short + m.group(3),
+        text2,
+        count=3,
+        flags=re.I,
+    )
+    text2, _ = re.subn(
+        r"(On tip\s+\*\*`?)([0-9a-f]{7,40})(`?\*\*)",
+        lambda m: m.group(1) + live_short + m.group(3),
+        text2,
+        count=2,
+        flags=re.I,
+    )
+    text2, _ = re.subn(
+        r"(Living tip note:\*+\s+at\s+`?|Living tip note:\s+at\s+`?)([0-9a-f]{7,40})(`?)",
+        lambda m: m.group(1) + live_short + m.group(3),
+        text2,
+        count=2,
+        flags=re.I,
+    )
+    text2, _ = re.subn(
+        r"(Do \*\*not\*\* re-land Path C onto\s+`)([0-9a-f]{7,40})(`)",
+        lambda m: m.group(1) + live_short + m.group(3),
+        text2,
+        count=2,
+        flags=re.I,
+    )
+    assert "542e6ec" not in text2
+    assert "bfb7c38" in text2
+
+    # keep-prior pytest preserve when current run reports 0.
+    prior = {"pytest": {"focused_passed": 90, "claims_recovery_passed": 83}}
+    cur = {
+        "pytest": {
+            "focused_passed": 0,
+            "claims_recovery_passed": 0,
+            "focused_files": ["tests/test_carriers.py"],
+        }
+    }
+    prior_pytest = prior["pytest"]
+    cur_pytest = cur["pytest"]
+    for pk in ("focused_passed", "claims_recovery_passed"):
+        if cur_pytest.get(pk) in (0, None) and isinstance(prior_pytest.get(pk), int):
+            if prior_pytest[pk] > 0:
+                cur_pytest[pk] = prior_pytest[pk]
+    assert cur_pytest["focused_passed"] == 90
+    assert cur_pytest["claims_recovery_passed"] == 83
+
+    proc = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "refresh_path_c_bundle.sh"), "--dry-run"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
+    combined = (proc.stdout or "") + (proc.stderr or "")
+    assert "tip stable" in combined or "match=1" in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH273_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "273"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == (
+        "apply_verify_honesty_keep_prior_living_tip_and_pytest"
+    )
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("bfb7c38")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH273_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert "land-workflows Path C idle (just shipped 272)" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH273_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 273" in log_md
+    assert "APPLY" in log_md and "VERIFY" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 273)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 273)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 273" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 273" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"

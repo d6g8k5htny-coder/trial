@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 273)
+
+Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 272 keep-prior tip-refresh left APPLY living tip at `542e6ec (== BASE_TIP)` and wiped VERIFY pytest 90/83→0. Fixed: living-tip soft-update + keep-prior pytest preserve. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 -c 'import json,re; from pathlib import Path; a=Path("portable/path-c-applied-bundle/APPLY.md").read_text(); b=Path("portable/patches/BASE_TIP.txt").read_text().split()[-1]; m=re.search(r"hardening tip \*\*`([0-9a-f]+)`\*\* \(== BASE_TIP", a); assert m and b.startswith(m.group(1)); v=json.load(open("portable/path-c-applied-bundle/VERIFY.json")); assert v["pytest"]["focused_passed"]==90'
+./scripts/refresh_path_c_bundle.sh --dry-run                      # tip match @ bfb7c38
+```
+
 ## STATUS (Batch 272)
 
 Hardening tip **stable** @ `8e359e5` (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Path C `IDLE_PATH_C_DONE`. Deep 0020 hunt NEGATIVE. `land-workflows-dry-run` union grep only Path B `ALREADY_ALIGNED` could satisfy while Path C idle (`IDLE_PATH_C_DONE` / `already_on_tip`) never matched alone. Fixed: per-path greps + `validate_land_workflows` guard. No republish. `lemma_closed=false`. Scientific effect: NONE.

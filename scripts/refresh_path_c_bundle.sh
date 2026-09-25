@@ -472,6 +472,29 @@ verify = {
 }
 if keep_prior:
     verify["local_allow_empty_sha"] = "$LOCAL_ALLOW_EMPTY_SHA"
+    # Batch 273: keep-prior tip refresh must not wipe recorded pytest counts to 0
+    # when --skip-pytest (or a parse miss) leaves FOCUSED_PASS/CLAIMS_PASS at 0.
+    # Same honesty class as Batch 250 applied_commit_sha (kept bundle head).
+    prior_pytest = prior.get("pytest") if isinstance(prior.get("pytest"), dict) else {}
+    cur_pytest = verify.get("pytest") if isinstance(verify.get("pytest"), dict) else {}
+    for _pk in ("focused_passed", "claims_recovery_passed"):
+        cur_v = cur_pytest.get(_pk)
+        prior_v = prior_pytest.get(_pk)
+        if cur_v in (0, None) and isinstance(prior_v, int) and prior_v > 0:
+            cur_pytest[_pk] = prior_v
+    for _wk in ("focused_resource_warnings", "claims_recovery_resource_warnings"):
+        if cur_pytest.get(_wk) in (None,) and isinstance(prior_pytest.get(_wk), int):
+            cur_pytest[_wk] = prior_pytest[_wk]
+    if prior_pytest.get("focused_files") and not cur_pytest.get("focused_files"):
+        cur_pytest["focused_files"] = prior_pytest["focused_files"]
+    verify["pytest"] = cur_pytest
+    if int("$FOCUSED_PASS") == 0 and isinstance(prior_pytest.get("focused_passed"), int) and prior_pytest["focused_passed"] > 0:
+        print(
+            "refresh_path_c_bundle: VERIFY honesty — preserved prior pytest "
+            f"focused_passed={prior_pytest.get('focused_passed')} "
+            f"claims_recovery_passed={prior_pytest.get('claims_recovery_passed')} "
+            "(keep-prior; current run reported 0)"
+        )
 # Preserve land evidence (PR #64 @ 93a4ecd) when tip moves past Path C land.
 for key in (
     "path_c_landed",
@@ -531,16 +554,21 @@ print(
 PY
 
 # Keep APPLY.md tip SHA current without rewriting the whole playbook.
+# Batch 273: also soft-update living-tip claims (`hardening tip **SHA** (== BASE_TIP)`,
+# `On tip **SHA**`, `Living tip note: at SHA`) — Batch 272 tip-refresh left those
+# pinned at 542e6ec while BASE_TIP/checkout moved to bfb7c38 (APPLY honesty lie).
 if [[ -f "$APPLY_MD" ]]; then
   python3 - <<PY
 from pathlib import Path
 import re
 p = Path("$APPLY_MD")
 text = p.read_text(encoding="utf-8")
+live_short = "${LIVE_SHORT}"
+live_sha = "${LIVE_SHA}"
 # Soft-update BASE_TIP / checkout SHA mentions; leave narrative intact.
 text2, n = re.subn(
     r"(BASE_TIP\s+[\\\`*]*)([0-9a-f]{7,40})",
-    lambda m: m.group(1) + "${LIVE_SHORT}",
+    lambda m: m.group(1) + live_short,
     text,
     count=5,
     flags=re.I,
@@ -548,13 +576,49 @@ text2, n = re.subn(
 # Also refresh the explicit checkout SHA used in Manual section when present.
 text2, n2 = re.subn(
     r"(git checkout -B cursor/portable-engineering-patches\s+)([0-9a-f]{40})",
-    r"\g<1>${LIVE_SHA}",
+    lambda m: m.group(1) + live_sha,
     text2,
     count=2,
 )
-if n or n2:
+# Living tip header: hardening tip **`SHA`** (== BASE_TIP
+text2, n3 = re.subn(
+    r"(hardening tip\s+\*\*`?)([0-9a-f]{7,40})(`?\*\*\s*\(==\s*BASE_TIP)",
+    lambda m: m.group(1) + live_short + m.group(3),
+    text2,
+    count=3,
+    flags=re.I,
+)
+# ONE-SHOT expect line: On tip **`SHA`**
+text2, n4 = re.subn(
+    r"(On tip\s+\*\*`?)([0-9a-f]{7,40})(`?\*\*)",
+    lambda m: m.group(1) + live_short + m.group(3),
+    text2,
+    count=2,
+    flags=re.I,
+)
+# Living tip note: at `SHA` (markdown may bold the label: **Living tip note:**)
+text2, n5 = re.subn(
+    r"(Living tip note:\*+\s+at\s+`?|Living tip note:\s+at\s+`?)([0-9a-f]{7,40})(`?)",
+    lambda m: m.group(1) + live_short + m.group(3),
+    text2,
+    count=2,
+    flags=re.I,
+)
+# "Do not re-land Path C onto `SHA`" when SHA was the prior living tip claim.
+text2, n6 = re.subn(
+    r"(Do \*\*not\*\* re-land Path C onto\s+`)([0-9a-f]{7,40})(`)",
+    lambda m: m.group(1) + live_short + m.group(3),
+    text2,
+    count=2,
+    flags=re.I,
+)
+n_total = n + n2 + n3 + n4 + n5 + n6
+if n_total:
     p.write_text(text2, encoding="utf-8")
-    print(f"refresh_path_c_bundle: soft-updated APPLY.md tip mentions (n={n}+{n2})")
+    print(
+        "refresh_path_c_bundle: soft-updated APPLY.md tip mentions "
+        f"(n={n}+{n2}+living={n3}+{n4}+{n5}+{n6})"
+    )
 else:
     print("refresh_path_c_bundle: APPLY.md tip mentions unchanged (manual review OK)")
 PY
