@@ -10627,7 +10627,7 @@ def test_batch278_pack_portable_help_not_out() -> None:
     # Living default advances each tip-sync batch (278→279+).
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282")
     )
 
     living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
@@ -10873,8 +10873,11 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     assert refs_idx >= 0 and put_idx > refs_idx
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    # Batch 281 advances default tag; 280 stamp may be historical only.
-    assert "REFRESH_BATCH_TAG:-280" in refresh or "REFRESH_BATCH_TAG:-281" in refresh
+    # Batch 281+ advances default tag; 280 stamp may be historical only.
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert any(
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282")
+    )
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH280_BRIEF.json").read_text(encoding="utf-8")
