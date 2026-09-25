@@ -251,12 +251,19 @@ def main() -> int:
             "do_not_set_path_c_base_main": path_c_dry.get("do_not_set_path_c_base_main"),
             "do_not_set_path_c_rebase_onto_main": True,
             "post_aligned_keep_hardening": bool(
-                path_c_dry.get("state") == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
+                path_c_dry.get("state")
+                in (
+                    "APPLY_READY_POST_ALIGNED_KEEP_HARDENING",
+                    "IDLE_PATH_C_DONE",
+                )
                 or (
                     audit_ec == 0
                     and path_c_dry.get("default_path_c_shape", {}).get("accepts") is False
                 )
             ),
+            "already_on_tip": path_c_dry.get("already_on_tip"),
+            "idle_status": path_c_dry.get("idle_status"),
+            "apply_check_ok": path_c_dry.get("apply_check_ok"),
         },
         "write_vectors": {
             "state": vectors.get("state"),

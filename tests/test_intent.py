@@ -826,7 +826,7 @@ def test_validate_land_workflows_no_token() -> None:
 
 
 def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
-    """Path C certainty: apply_ready on hardening; default tip ALIGNED but not Path-C shaped."""
+    """Path C certainty: apply check OK; landed tip → idle (not APPLY_READY land advert)."""
     path_c = ROOT / "scripts" / "path_c_dry_run.py"
     owner_c = ROOT / "scripts" / "owner_land_path_c.sh"
     assert path_c.is_file()
@@ -848,13 +848,21 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert result.returncode == 0, result.stderr + result.stdout
     data = __import__("json").loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
-    assert data["apply_ready"] is True
     assert data["tip_matches_base"] is True
     assert data["default_aligned"] is True
     assert data["default_path_c_shape"]["accepts"] is False
     assert data["hardening_path_c_shape"]["accepts"] is True
     assert data["do_not_set_path_c_base_main"] is True
-    assert data["state"] == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
+    assert data.get("apply_check_ok") is True
+    # Batch 261: path_c_landed + tip match → IDLE (not APPLY_READY land advert).
+    if data.get("path_c_landed") is True:
+        assert data["state"] == "IDLE_PATH_C_DONE"
+        assert data["apply_ready"] is False
+        assert data.get("already_on_tip") is True
+        assert data.get("idle_status") == "IDLE_PATH_C_DONE"
+    else:
+        assert data["apply_ready"] is True
+        assert data["state"] == "APPLY_READY_POST_ALIGNED_KEEP_HARDENING"
     # owner wrapper --dry-run
     wrap = subprocess.run(
         ["bash", str(owner_c), "--dry-run"],
@@ -866,7 +874,8 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     )
     assert wrap.returncode == 0, wrap.stderr + wrap.stdout
     combined = wrap.stdout + wrap.stderr
-    assert "APPLY_READY" in combined or "dry-run OK" in combined
+    assert "already-on-tip idle" in combined or "dry-run OK" in combined
+    assert "apply_ready on hardening BASE_TIP" not in combined
 
 
 def test_path_c_rebase_helper_dry_run() -> None:
@@ -8420,8 +8429,109 @@ def test_batch260_republish_living_pack_stale_post_255() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 260)" in land
 
+    # Living STATUS header advances each batch (Batch 261+).
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    assert "Batch 260" in unblock
+    assert "Batch 260" in unblock or "Batch 26" in unblock or "PERMANENT" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+
+
+def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
+    """Batch 261: path_c_dry_run IDLE when landed+tip match; no APPLY_READY land advert."""
+    import json
+    import subprocess
+
+    dry_py = ROOT / "scripts" / "path_c_dry_run.py"
+    text = dry_py.read_text(encoding="utf-8")
+    assert "IDLE_PATH_C_DONE" in text
+    assert "already_on_tip" in text
+    assert "Batch 261" in text
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 261" in unblock
+    assert "already-on-tip idle" in unblock
+
+    restore = (ROOT / "scripts" / "refresh_restore_plan.py").read_text(encoding="utf-8")
+    assert "IDLE_PATH_C_DONE" in restore
+    assert "already_on_tip" in restore
+
+    result = subprocess.run(
+        [sys.executable, str(dry_py), "--skip-rebase-probe"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data["scientific_effect"] == "NONE"
+    assert data.get("path_c_landed") is True
+    assert data.get("tip_matches_base") is True
+    assert data["state"] == "IDLE_PATH_C_DONE"
+    assert data["apply_ready"] is False
+    assert data.get("already_on_tip") is True
+    assert data.get("apply_check_ok") is True
+    assert data.get("idle_status") == "IDLE_PATH_C_DONE"
+
+    wrap = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "owner_land_path_c.sh"), "--dry-run"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+        cwd=str(ROOT),
+    )
+    assert wrap.returncode == 0, wrap.stderr + wrap.stdout
+    combined = wrap.stdout + wrap.stderr
+    assert "already-on-tip idle" in combined or "already_on_tip=true" in combined
+    assert "apply_ready on hardening BASE_TIP" not in combined
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH261_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief["batch"] == "261"
+    assert brief["lemma_closed"] is False
+    assert brief["flipped_anything"] is False
+    assert brief["scientific_effect"] == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "path_c_dry_run_apply_ready_when_already_on_tip"
+    assert brief.get("patch_0020") is False
+    assert brief.get("tip_moved") is False
+    assert str(brief.get("tip", "")).startswith("fa32d11")
+    assert brief.get("aligned") is True
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("green_eng_prs_merged") == []
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH261_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt["batch"] == "261"
+    assert hunt["lemma_closed"] is False
+    assert hunt["flipped_anything"] is False
+    assert "release republish churn" in (hunt.get("avoided") or [])
+    assert "grant dual-vector" in (hunt.get("avoided") or [])
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH261_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 261" in log
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 261)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 261)" in land
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
