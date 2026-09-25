@@ -1,6 +1,6 @@
 {
   "batch": "253",
-  "generated_at_utc": "2026-09-25T00:06:19Z",
+  "generated_at_utc": "2026-09-25T00:12:47Z",
   "status": "when_writable_token_install_fallback_and_land_dry_run_idle",
   "waiting_ci": false,
   "goal_complete": true,
@@ -48,7 +48,9 @@
     "before_names": [],
     "before_probe": "WRITABLE",
     "after_install_has_main": false,
-    "after_names": ["d6g8k5htny-coder/trial"],
+    "after_names": [
+      "d6g8k5htny-coder/trial"
+    ],
     "after_install_query_mode": "gh_app_fallback_after_user_token_403",
     "user_token_install_http_status": 403,
     "land_dry_run_before": "apply_ready on hardening BASE_TIP",
@@ -65,5 +67,7 @@
     "portable/BATCH253_RESEARCH_STACK_AUDIT.json",
     "docs/AUTONOMOUS_48H_LOG.md"
   ],
-  "trial_main_land_method": "direct_push_device_auth"
+  "trial_main_land_method": "direct_push_device_auth",
+  "trial_main_land": "f07bae0",
+  "trial_main_land_full": "f07bae0c7ffe3aa3a9c71800a7a9b2f10adad78d"
 }
