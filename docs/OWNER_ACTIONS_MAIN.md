@@ -18,6 +18,15 @@ Hardening tip **synced** @ `f244312` after main #108 inventable tip-observe. Tip
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ f244312
 ```
 
+## STATUS (Batch 341 research audit)
+
+Hardening tip **stable** @ `f244312`. Research stack audit WITHOUT promotion (`portable/BATCH341_RESEARCH_STACK_AUDIT.json`): open_premises=13, open_lemmas=1, open_prizes=3, packet disposition=OPEN_HOLD. Inventable/research drafts skipped; eng-only #36/#21/#12 noted (not promoted). Guard pass. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+python3 scripts/audit_research_stack_open.py /path/to/hardening-tip
+python3 scripts/guard_no_status_promotion.py /path/to/hardening-tip
+```
+
 ## STATUS (Batch 341)
 
 Hardening tip **stable** @ `f244312`. Eng: soften Batch 340 tip-sync Intent live BASE_TIP pin (`"f244312" in base_tip`); living pack republish (tgz_newer after tip-sync). Guard+research: `lemma_closed=false`. Scientific effect: NONE.
