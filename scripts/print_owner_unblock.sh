@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 356 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 356: tip_or_eng inv tip re-pin + living script_stale republish @e3cd7d4"
 echo " Batch 356: idle_no_commit tip-stable align watch @e3cd7d4 (post-path-c-align-watch; living tip/script current)"
 echo " Batch 355: ci_audit_watch idle — CI green @e3cd7d4 (unfreeze living ≥352 incl 355)"
 echo " Batch 355: eng living script_stale republish after wake+assign (batch241; script_stale 1→0)"
