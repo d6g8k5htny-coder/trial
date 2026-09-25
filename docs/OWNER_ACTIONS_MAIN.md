@@ -1,3 +1,12 @@
+## STATUS (Batch 353 research-audit-watch)
+
+Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: open_premises=13 open_lemmas=1 open_prizes=3 WITHOUT promotion; STATUS_GUARD tip living; script_stale=0; `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py /tmp/hardening-e3cd353 --tip-sha e3cd7d4873c51e69529616e9efe5d20286ef9d11
+python3 -m pytest tests/test_intent.py::test_batch353_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 353 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch_vs_BASE_TIP: no tip move; living tip_stale=0 script_stale=0; paper-trail living tgz. Evidence: `portable/BATCH353_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

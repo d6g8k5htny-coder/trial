@@ -48,8 +48,8 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 353 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 353: research_stack_audit_watch — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no promotion"
 echo " Batch 353: tip_sync_watch idle @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
-
 echo " Batch 353: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
 echo " Batch 352: ci_audit_watch idle — CI green @e3cd7d4 (INV_TIP soften + EARLY_FALLBACK isolate)"
 echo " Batch 352: tip_or_eng inv tip re-pin + living script_stale republish @e3cd7d4"
