@@ -1,0 +1,14 @@
+{
+  "batch": "359",
+  "generated_at_utc": "2026-09-25T21:51:50Z",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "defect_id": "intent_batch357_tip_or_eng_frozen_action_research_stack",
+  "action": "eng_soften_357_tip_or_eng_action_allowlist",
+  "defect_shipped": true
+}
