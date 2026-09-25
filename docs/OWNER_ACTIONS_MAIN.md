@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 285)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `owner_grant_ai_agent_access.sh --check` under a user/PAT/device token called `GET /installation/repositories`, which returns HTTP 403 **with a JSON error body**. Pre-285 treated any non-empty stdout as an install listing → `names=[]`, `install_has_*=false`, `install_missing_from_deps=<all 8>` while dual-vector probes were **8/8 WRITABLE** (false App-scope alarm). Fixed: require a real `repositories` array; otherwise print `installation: unavailable` + `installation_note`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check   # installation: unavailable (…403) — not install_missing=all8
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 283)
 
 Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. After Batch 282 tip-sync + pack-include-grant, living release `trial-portable-main-fixes.tgz` still carried `BASE_TIP` `3b3860d` and omitted `owner_grant` while `refresh --dry-run` / `assert_path_c_ready` stayed green. `republish` used byte-growth-only for `TGZ_NEWER` (tip-only drift could miss). Fixed: compare release-pack `BASE_TIP` vs local (`tip_stale=1` ⇒ `need_upload`); republish living assets. `lemma_closed=false`. Scientific effect: NONE.

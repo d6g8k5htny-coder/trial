@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 285 (grant --check install 403 JSON false-missing) — 2026-09-25 ~10:10 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Trial open PRs: none. Tip CI: success. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: install endpoint unavailable under user token; dylan durable **8/8 WRITABLE** / ls_remote=ok.
+- **Evidence:** `owner_grant_ai_agent_access.sh --check` with user/PAT/device `GH_TOKEN`: `gh api /installation/repositories` → HTTP 403 JSON body (`message`: must authenticate with installation access token). Pre-285 `[[ -n "$install_json" ]]` treated that body as a listing → `names=[]` `install_missing_from_deps=<all 8>` while active+durable vectors were **8/8 WRITABLE**.
+- **Defect shipped (avoid inventable tip-observe / research HOLDs / App_install_add_sandbox owner UI / pack-vs-release timestamp thrash / tip_stale 283 / pack omit grant 282 / grant ls-remote 281 / W2 contents-ref 280 / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** require `repositories` array before listing; else `installation: unavailable` + `installation_note`; `REFRESH_BATCH_TAG` default 285.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 283 (republish tip_stale + living release lag after 282 tip-sync) — 2026-09-25 ~09:45 UTC (PERMANENT window; eng defect ship + living republish; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `7d13a88`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable **WRITABLE** / ls_remote=ok.
