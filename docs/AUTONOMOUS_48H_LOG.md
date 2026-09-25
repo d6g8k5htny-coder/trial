@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 355 — ci_audit_watch idle (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Older Batch 353 Intent reds: hard-pin `return "352"` in `test_batch352_unfreeze_last_resort` — living allowlist ≥352 (through 355) on HEAD; empty-tree fallback returns 355.
+- CI green evidence: runs 36188494853 (bf70fdb7), 36188446106 (c723e591), 36188265439 (6397117f).
+- action=`idle_no_commit`. NEVER flip research. Goal OPEN.
+
+
 ### Batch 355 — eng living script_stale republish after wake+assign (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

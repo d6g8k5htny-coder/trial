@@ -18014,3 +18014,50 @@ def test_batch355_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 355 tip-eng)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 355 tip-eng)" in owner
+
+
+
+
+def test_batch355_ci_audit_watch_idle() -> None:
+    """Batch 355: ci_audit_watch idle with green CI; unfreeze living; lemma_closed false."""
+    import json
+
+    art = json.loads(
+        (ROOT / "portable" / "BATCH355_CI_AUDIT_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert art.get("batch") == "355"
+    assert art.get("action") == "idle_no_commit"
+    assert art.get("ci_status") == "green"
+    assert art.get("lemma_closed") is False
+    assert art.get("flipped_anything") is False
+    assert art.get("scientific_effect") == "NONE"
+    assert art.get("goal") == "OPEN"
+    assert art.get("tip_match") is True
+    assert len(art.get("ci_green_runs") or []) >= 2
+    assert _living_tip(str(art.get("hardening_tip") or art.get("tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH355_CI_AUDIT_IDLE_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("ci_status") == "green"
+    assert brief.get("lemma_closed") is False
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    assert any(f'return "{n}"' in helper for n in ("352", "353", "354", "355"))
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch352_unfreeze_last_resort")
+    end = intent.index("def test_", start + len("def test_batch352_unfreeze_last_resort"))
+    body = intent[start:end]
+    assert "Living last-resort" in body
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 355)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 355 ci-audit-watch)" in land
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
