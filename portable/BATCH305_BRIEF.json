@@ -102,7 +102,8 @@
     "main_tip_ci": "success ci+nav+withdrawal @077464e (post #89)",
     "guard_research": "pass lemma_closed=false flipped_anything=false violations=0 @077464e",
     "validate_land": "OK dry_run defaults + ci.yml parse",
-    "living_release": "script_stale=1\u21920 after republish; tip_stale=0; pack sha b0eceda3\u2026"
+    "living_release": "script_stale=1\u21920 after republish; tip_stale=0; pack sha b0eceda3\u2026",
+    "pr": "gh pr create 403 Resource not accessible by integration; ManagePullRequest tool absent from this run catalog; branch pushed"
   },
   "next_focus": "tip_sync_drift_watch @077464e; keep Path C idle; skip research HOLD drafts #87/#92/#93; App install add sandbox when Dylan relaunches",
   "note": "Batch 305: tip moved via main #85+#89 \u2192 tip-sync 077464e + keep-prior abort fix (bundle verify on trial ROOT); lemma_closed=false; flipped nothing.",
@@ -123,5 +124,10 @@
     "docs/AUTONOMOUS_48H_LOG.md",
     "scripts/print_owner_unblock.sh",
     "tests/test_intent.py"
-  ]
+  ],
+  "trial_pr_url": null,
+  "trial_pr_create": "blocked_integration_403_no_ManagePullRequest",
+  "trial_branch": "cursor/batch305-tip-sync-309a",
+  "trial_sha": "c8f2a9b5a59c0fd2ab8cbf74ee13dada2b54b0bd",
+  "compare_url": "https://github.com/d6g8k5htny-coder/trial/compare/main...cursor/batch305-tip-sync-309a?expand=1"
 }
