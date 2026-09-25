@@ -49,6 +49,8 @@ fi
 
 echo "=== Batch 355 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 355: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current; no tip-pin treadmill)"
+
+echo " Batch 355: inventory_preserve_durable_tip_pin @e3cd7d4 (trial→HEAD; never demote 8/8 on writable=0 DENIED)"
 echo " Batch 354: soften INV tip-pin Intent live BASE_TIP pin (e3cd7d4→_living_tip)"
 echo " Batch 354: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; paper-trail tgz)"
 
