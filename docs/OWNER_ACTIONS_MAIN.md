@@ -22,6 +22,15 @@ Hardening tip **synced** `f244312`→`fcad723` after main **#109** (tip_match=tr
 
 ## STATUS (Batch 343)
 
+Hardening tip **stable** @ `fcad723`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`14bba11`; coverage 8/8_WRITABLE; `BATCH343_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+# INV_BATCH=343 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+```
+
+## STATUS (Batch 343 tip-sync landed)
+
 Hardening tip **synced** `f244312`→`fcad723` after main **#109** (tip_match=true; Path C idle; BASE==LIVE after sync). Inventable claim NOT promoted. Tip-sync: refresh keep-prior + living tip_stale republish + REFRESH default 343 + `_LIVING_TIPS+=fcad723`. `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.
 
 ## STATUS (Batch 341 inv-batch-pin)
