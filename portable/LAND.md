@@ -1,3 +1,7 @@
+## STATUS (Batch 346 grant)
+
+tip `e3cd7d4` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→40d6f27; coverage 8/8_WRITABLE; BATCH346_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346)
 
 tip `e3cd7d4` tip_match=true; eng: soften Batch 345 tip_sync_watch Intent live BASE_TIP pin (`e3cd7d4` in base would re-red next tip-sync); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

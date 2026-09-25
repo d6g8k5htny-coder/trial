@@ -15878,3 +15878,55 @@ def test_batch346_soften_tip_sync_watch_live_tip_pin() -> None:
     assert "Batch 346" in log_md and "soften" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346)" in owner
+
+
+def test_batch346_grant_inventory_refresh() -> None:
+    """Batch 346: inventory batch >=346 + durable 8/8; grant skip source=none."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 346
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    assert inv.get("sandbox", {}).get("readable") is True
+    assert inv.get("sandbox", {}).get("write") == "WRITABLE"
+    for d in inv.get("details") or []:
+        assert d.get("push") is True, d
+        assert d.get("write") == "WRITABLE", d
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH346_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "346"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert tiny.get("durable") == "8/8"
+    assert tiny.get("action") == "grant_inventory_refresh_batch346"
+    assert tiny.get("assignment") == "grant_check_dual_vector_8of8"
+    assert tiny.get("tip_match") is True
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("goal") == "OPEN"
+    assert _living_tip(str(tiny.get("tip", "")))
+    assert _living_tip(str(tiny.get("hardening_tip", "")))
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 grant)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "BATCH346_GRANT" in log_md or "grant_inventory_refresh_batch346" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 346 grant)" in owner
