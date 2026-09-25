@@ -15075,7 +15075,6 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     # Living ultimate fallback supersedes; Batch 343 shipped 343 (346+ ok).
     assert 'return "340"' not in helper
     assert 'return "336"' not in helper
-    assert 'return "340"' not in helper
     # Living ultimate fallback supersedes; Batch 343 shipped "343".
     m_fb = re.search(r'return "(\d+)"', helper)
     assert m_fb is not None
@@ -16055,4 +16054,86 @@ def test_batch346_multi_agent_wake_assign() -> None:
     m_inv = re.search(r'return "(\d+)"', helper)
     assert m_inv is not None
     assert int(m_inv.group(1)) >= 346
+
+def test_batch346_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 346: preserve_durable tip pin; ultimate fallback >=346; 8/8 retained."""
+    import importlib.util
+    import json
+    import re
+    import sys
+    import tempfile
+    from pathlib import Path
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 346
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    assert not str(trial.get("tip_sha") or "").startswith("840de46")
+    assert not str(trial.get("tip_sha") or "").startswith("6ab1a23")
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH346_INV_PRESERVE_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("assignment") == "inventory_preserve_durable_tip_pin"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("goal") == "OPEN"
+    assert evidence.get("preserve_durable_writable0_denied") is True
+    assert str(evidence.get("ultimate_fallback")) == "346"
+    assert evidence.get("coverage") == "8/8_WRITABLE"
+
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    m_fb = re.search(r'return "(\d+)"', helper)
+    assert m_fb is not None
+    assert int(m_fb.group(1)) >= 346
+
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
+    assert m is not None
+    assert int(m.group(1)) >= 346
+
+    spec = importlib.util.spec_from_file_location(
+        "refresh_inv_346", ROOT / "scripts" / "refresh_ai_agent_access_inventory.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod._no_durable_probe(0, "404", "DENIED") is True
+    with tempfile.TemporaryDirectory() as td:
+        path = Path(td) / "inv.json"
+        path.write_text(json.dumps(inv, indent=2) + "\n", encoding="utf-8")
+        result = mod.refresh(
+            str(path),
+            [d["name"] for d in inv["details"]],
+            durable_writable=0,
+            durable_sandbox_read="404",
+            durable_sandbox_write="DENIED",
+            active_sandbox_read="404",
+            batch="346",
+        )
+        assert result.get("preserve_durable") is True
+        out = json.loads(path.read_text(encoding="utf-8"))
+        assert out.get("durable_sibling_coverage") == "8/8_WRITABLE"
+        assert out.get("sandbox", {}).get("readable") is True
+        for d in out.get("details") or []:
+            assert d.get("push") is True, d
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 346)
+    assert "inventory_preserve_durable_tip_pin" in unblock
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "inventory_preserve_durable_tip_pin" in log_md
 

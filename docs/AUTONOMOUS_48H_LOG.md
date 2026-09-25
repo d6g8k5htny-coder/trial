@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 346 — inventory_preserve_durable_tip_pin @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Assignment `inventory_preserve_durable_tip_pin`: preserve_durable tip refresh trial→HEAD; ultimate fallback/INV_BATCH **346** (was 345); never demote 8/8 on writable=0 DENIED.
+- Evidence: `BATCH346_INV_PRESERVE_EVIDENCE.json`. NEVER flip research.
+
+
 ### Batch 346 — STATUS_GUARD tip refresh fcad723→e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

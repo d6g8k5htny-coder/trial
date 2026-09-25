@@ -55,6 +55,8 @@ def _living_inventory_batch(root: str) -> str:
     (same class as 336→340).
     Batch 345: last-resort bumped off frozen "343" after tip-sync REFRESH default 345.
     Batch 346: last-resort bumped off frozen "345" after WAKE346 print_owner header.
+    Batch 346: last-resort bumped off frozen "345" so empty-tree fallback cannot lag
+    living print_owner Batch 346 (inventory_preserve_durable_tip_pin).
     """
     unblock = os.path.join(root, "scripts", "print_owner_unblock.sh")
     try:

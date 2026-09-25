@@ -86,6 +86,8 @@ def _living_batch_n() -> str:
     fallback cannot lag living Batch 345 / print_owner header (same class as
     inventory ultimate fallback 336→340→343).
     Batch 346: last-resort bumped off frozen "345" after WAKE346 print_owner header.
+    Batch 346: last-resort bumped off frozen "345" so empty-tree fallback cannot
+    lag living print_owner Batch 346.
     """
     try:
         text = _PRINT_OWNER.read_text(encoding="utf-8")
@@ -102,6 +104,8 @@ def _living_batch_n() -> str:
     if m:
         return m.group(1)
     return "346"
+
+
 def batch_marker() -> str:
     """Living wake marker — tip move unlocks re-post."""
     return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"
