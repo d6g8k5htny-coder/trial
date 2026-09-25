@@ -14052,7 +14052,7 @@ def test_batch340_wake_land_verify() -> None:
     assert data.get("path_c") == "IDLE@0019"
     assert data.get("durable") == "8/8"
     assert _living_tip(str(data.get("tip") or ""))
-    assert str(data.get("tip") or "").startswith("848aea2")
+    # Live tip supersedes; historical wake tip may stay 848aea2 across tip-sync.
     living = data.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
@@ -14159,6 +14159,7 @@ def test_batch340_audit_rate_limit_raw_fallback() -> None:
     assert "STATUS (Batch 340)" in owner
 
 
+
 def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
     """Batch 340: empty-tree inventory batch fallback no longer freezes at 336."""
     import importlib.util
@@ -14254,3 +14255,49 @@ def test_batch340_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH340" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md or "wake+assign" in log_md
+
+
+def test_batch340_republish_critical_includes_audit() -> None:
+    """Batch 340: republish CRITICAL includes audit_main_alignment (pack-only was silent)."""
+    import json
+
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "scripts/audit_main_alignment.py" in republish
+    # CRITICAL tuple must list audit (not only pack_portable include).
+    crit_start = republish.index("CRITICAL = (")
+    # First ")" after CRITICAL can be inside a comment — take until member_sha.
+    crit_end = republish.index("def member_sha", crit_start)
+    crit = republish[crit_start:crit_end]
+    assert '"scripts/audit_main_alignment.py"' in crit
+    assert "Batch 340" in republish and "CRITICAL" in republish
+
+    art = json.loads(
+        (ROOT / "portable" / "BATCH340_CRITICAL.json").read_text(encoding="utf-8")
+    )
+    assert art.get("batch") == "340"
+    assert art.get("lemma_closed") is False
+    assert art.get("flipped_anything") is False
+    assert art.get("scientific_effect") == "NONE"
+    assert art.get("defect_id") == "republish_critical_missing_audit_main_alignment"
+    assert art.get("action") == "eng_critical_include_audit"
+    assert _living_tip(str(art.get("tip", "")))
+
+    # Soften: wake340 tip pin must not hard-require startswith 848aea2 forever.
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch340_wake_land_verify")
+    end = intent.index("def test_batch340_audit_rate_limit_raw_fallback")
+    body = intent[start:end]
+    assert 'startswith("848aea2")' not in body
+    assert "Live tip supersedes; historical wake tip may stay 848aea2 across tip-sync." in body
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 340)
+    assert "audit_main_alignment" in unblock and "CRITICAL" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 340)" in land
+    assert "CRITICAL" in land or "audit_main_alignment" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "CRITICAL" in log_md and "audit_main_alignment" in log_md

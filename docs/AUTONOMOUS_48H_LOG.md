@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 340 — republish CRITICAL includes audit_main_alignment (2026-09-25)
+
+- Tip stable @ `848aea2` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: Batch 340 audit rate-limit/backoff + raw fallback was pack-included but absent from `republish_living_path_c_release` CRITICAL — audit-only drift left living `script_stale=0` (same class as when_writable 288 / print_owner 329). Soften wake340 Intent tip `startswith("848aea2")` hard pin.
+- NEVER flip research.
+
+
+
 ### Batch 340 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
 
 - Dylan ask: message stopped agents + assign Path C intent tasks.

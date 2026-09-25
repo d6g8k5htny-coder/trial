@@ -1,6 +1,6 @@
 ## STATUS (Batch 340)
 
-tip `848aea2` tip_match=true; MULTI_AGENT wake+assign stopped agents (Task resume IDLE + cloud peer); eng: inventory ultimate fallback return "340" + REFRESH default 340; audit_main_alignment 403 rate-limit backoff + raw/ls-remote fallback + CI soft-continue; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+tip `848aea2` tip_match=true; eng: republish CRITICAL += `audit_main_alignment.py` (was pack-only); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 339)
 

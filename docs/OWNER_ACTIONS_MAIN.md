@@ -4,11 +4,15 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 340)
 
-Hardening tip **stable** @ `848aea2` (tip_match=true; Path C IDLE@0019). Dylan ask: message stopped agents + assign Path C intent → `portable/MULTI_AGENT_WAKE_BATCH340.json` (Task resume IDLE + cloud peer). Durable 8/8. `lemma_closed=false`. Scientific effect: NONE.
+Wake artifact: `portable/MULTI_AGENT_WAKE_BATCH340.json`.
+
+Hardening tip **stable** @ `848aea2` (tip_match=true; Path C idle; BASE==LIVE). Eng: republish CRITICAL += `audit_main_alignment.py` (pack-only left living `script_stale=0` on audit-only drift); soften wake340 tip hard pin; MULTI_AGENT wake+assign; inventory ultimate batch fallback unfrozen; audit rate-limit/raw fallback. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/owner_grant_ai_agent_access.sh --check
-python3 -c "import json; print(json.load(open('portable/MULTI_AGENT_WAKE_BATCH340.json'))['action'])"
+./scripts/republish_living_path_c_release.sh --dry-run   # CRITICAL includes audit
+AUDIT_TRANSPORT_RETRIES=6 python3 scripts/audit_main_alignment.py
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 848aea2
+```
 ```
 
 ## STATUS (Batch 339)

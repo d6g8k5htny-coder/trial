@@ -40,6 +40,9 @@
 # the pre-287 or [] false-empty install. Include when_writable in CRITICAL.
 # Also living release still lacked the 287 probe/refresh bytes (script_stale=1).
 #
+# Batch 340: audit_main_alignment rate-limit/backoff + raw fallback is packed
+# but was absent from CRITICAL — audit-only eng leaves living script_stale=0.
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -295,6 +298,10 @@ CRITICAL = (
     # CRITICAL could not detect when_writable-only drift.
     "scripts/when_writable_land.py",
     "scripts/republish_living_path_c_release.sh",
+    # Batch 340: audit_main_alignment rate-limit/backoff + raw/ls-remote fallback
+    # is pack-included but was absent from CRITICAL — audit-only drift left
+    # living release script_stale=0 (same class as when_writable 288 / print_owner 329).
+    "scripts/audit_main_alignment.py",
 )
 
 def member_sha(tgz: str, name: str) -> str:
