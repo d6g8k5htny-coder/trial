@@ -17104,3 +17104,60 @@ def test_batch352_grant_inventory_refresh() -> None:
     assert "BATCH352_GRANT" in log_md or "grant_inventory_refresh_batch352" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 352 grant)" in owner
+
+
+def test_batch352_inventory_tip_repin() -> None:
+    """Batch 352: inventory trial tip re-pinned to HEAD after grant land lag."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 352
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(
+        d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial")
+    )
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("20d1d08") and not tip.startswith("bf93032")
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH352_INV_TIP_REPIN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "352"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("action") == "inventory_tip_repin_after_land_head"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH352_INV_TIP_REPIN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("defect_id") == "inventory_trial_tip_lag_after_352_grant_land"
+    assert hunt.get("defect_shipped") is True
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH352_INV_TIP_REPIN_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "inventory_tip_repin_after_land_head"
+    assert evidence.get("trial_tip_matches_live_head") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 352)
+    assert "inventory tip re-pin" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 352 inv-tip-repin)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 352 inv-tip-repin)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "re-pin" in log_md.lower() and "Batch 352" in log_md

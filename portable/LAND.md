@@ -1,3 +1,7 @@
+## STATUS (Batch 352 inv-tip-repin)
+
+tip `e3cd7d4` tip_match=true; eng: inventory trial tip re-pin after grant land (→HEAD); preserve_durable 8/8; living script_stale republish; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 352 grant)
 
 tip `e3cd7d4` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→20d1d08; coverage 8/8_WRITABLE; BATCH352_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.

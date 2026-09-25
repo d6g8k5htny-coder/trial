@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — inventory tip re-pin after grant land HEAD (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: peer grant+pin left trial tip @`20d1d08` / `@bf93032` while HEAD moved — `PRESERVE_DURABLE=1` re-pin trial→`564956e`; also living `script_stale=1` (print_owner) republished →0.
+- Artifacts: `BATCH352_INV_TIP_REPIN_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+
 ### Batch 352 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

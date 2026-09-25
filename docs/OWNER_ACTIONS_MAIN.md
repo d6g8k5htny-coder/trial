@@ -1,3 +1,12 @@
+## STATUS (Batch 352 inv-tip-repin)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after grant land — `INV_BATCH=352 PRESERVE_DURABLE=1` re-pin→HEAD; living print_owner drift republished. `lemma_closed=false`. Goal OPEN.
+```bash
+INV_BATCH=352 PRESERVE_DURABLE=1 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 352 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`20d1d08`; INV_BATCH→352; coverage 8/8_WRITABLE; `BATCH352_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
