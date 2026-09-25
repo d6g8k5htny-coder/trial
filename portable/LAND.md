@@ -1,3 +1,7 @@
+## STATUS (Batch 297)
+
+tip `3a29f52` tip_match=true TIP_OK; permanent-watch IDLE — #84/#85/#87 still DRAFT unmerged; eng hunt federation/MULTI_AGENT/grant/living/VALIDATE no concrete repro; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 296)
 
 tip `3a29f52` tip_match=true TIP_OK; permanent-watch IDLE — MAIN eng while WRITABLE: no ready non-draft eng; #87 draft research CI-fail skipped; tip-observe honesty inventable #84 HOLD; 0020 NEGATIVE; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

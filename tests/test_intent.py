@@ -12086,3 +12086,92 @@ def test_batch296_permanent_watch_idle() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
+
+
+def test_batch297_permanent_watch_idle() -> None:
+    """Batch 297: permanent-watch IDLE — #84/#85/#87 DRAFT; eng hunt NEGATIVE."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH297_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "297"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is False
+    assert brief.get("defect_found") is False
+    assert brief.get("defect_id") is None
+    assert brief.get("route_now") == "IDLE"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert brief.get("tip_moved") is False
+    assert brief.get("write") == "WRITABLE"
+    assert brief.get("aligned") is True
+    assert brief.get("any_undrafted_or_merged_84_85_87") is False
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("3a29f52")
+    assert 87 in (brief.get("research_hold_prs_skipped") or [])
+    assert 84 in (brief.get("research_hold_prs_skipped") or [])
+    assert 85 in (brief.get("research_hold_prs_skipped") or [])
+    for key in ("main_pr_84", "main_pr_85", "main_pr_87"):
+        pr = brief.get(key) or {}
+        assert pr.get("state") == "OPEN"
+        assert pr.get("isDraft") is True
+        assert pr.get("mergedAt") is None
+    evidence = brief.get("evidence") or {}
+    assert "federation" in (evidence.get("eng_federation") or "")
+    assert "validate_land" in evidence
+    assert "tip_stale=0" in (evidence.get("living_release") or "")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH297_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is False
+    assert hunt.get("defect_found") is False
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert hunt.get("tip_moved") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get("new_eng_not_273_296") is True
+    assert (hunt.get("HUNT_NEGATIVE") or {}).get(
+        "federation_multi_agent_living_validate"
+    ) is True
+    checked = hunt.get("candidates_checked") or {}
+    assert checked.get("ready_non_draft_eng") == "none"
+    assert checked.get("validate_land_workflows") == "OK_dry_run_defaults_ci_yml_parse"
+    assert "passed" in (checked.get("federation_replay") or "")
+    assert any(
+        "84" in a or "87" in a or "federation" in a for a in (hunt.get("avoided") or [])
+    )
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH297_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+    assert audit.get("shape") == "HAS_PACKET"
+    assert audit.get("batch") == "297"
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 297" in log_md
+    assert "idle_no_commit" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 297)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 297)" in owner
+
+    # Keep living REFRESH default from last eng ship (289); idle does not bump.
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 289)
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("lemma_closed") is False
+    assert status.get("write_state") == "WRITABLE"

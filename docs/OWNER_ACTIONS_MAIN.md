@@ -2,6 +2,18 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 297)
+
+Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE; no tip-sync; BLOCK CI N/A). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Main **#84/#85/#87** all still **OPEN+DRAFT** — none undrafted, none merged (#87 verify FAILURE). Eng hunt: `federation/replay.py` passed; MULTI_AGENT 8-repo list matches `owner_grant --check`; living tip_stale=0 script_stale=0 (tgz_newer BATCH296 briefs only — no republish); `validate_land_workflows` OK. Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3a29f52
+./scripts/assert_path_c_ready.sh
+python3 scripts/validate_land_workflows.py
+./scripts/republish_living_path_c_release.sh --dry-run   # tip_stale=0 script_stale=0
+gh pr view 84 85 87 --repo d6g8k5htny-coder/main --json number,isDraft,state,mergedAt
+```
+
 ## STATUS (Batch 296)
 
 Hardening tip **stable** @ `3a29f52` (tip_match=true; Path C idle; BASE==LIVE). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan 8/8). Open main PRs all **DRAFT** research HOLD / tip-observe / inventable (#87/#85/#84/…) — skipped (no ready non-draft eng). Tip CI green @ tip. Tip-observe fields still name `3b3860d` on tip `3a29f52` — inventable #84 HOLD only (not eng 0020). Living tip_stale=0 script_stale=0 (tgz_newer BATCH294 briefs only — no republish). Guard+research: `lemma_closed=false`; `flipped_anything=false`. Hunt **NEGATIVE**. action=`idle_no_commit`. Scientific effect: NONE.

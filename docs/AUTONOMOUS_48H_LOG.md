@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 297 (permanent-watch IDLE — tip stable, #84/#85/#87 DRAFT, eng hunt NEGATIVE, idle_no_commit) — 2026-09-25 ~13:09 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`; no tip-sync; tip CI green — BLOCK CI N/A). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
+- Main **#84/#85/#87**: all still OPEN+DRAFT; none undrafted; none merged. #87 verify FAILURE (research skip).
+- Eng hunt (concrete repro only): `federation/replay.py` → `passed=true` (pin freeze @f314717 intentional; local `test_federation` 5192 from 3aeea01 — no failure). `MULTI_AGENT_ACCESS.md` 8-repo list matches `owner_grant --check` + environment.json; dual-vector App trial-only / durable 8/8 already documented. Living tip_stale=0 script_stale=0; tgz_newer=1 BATCH296 briefs only — no republish. `validate_land_workflows` OK.
+- assert+align+probe+guard: `lemma_closed=false`; `flipped_anything=false`; violations=0.
+- action=`idle_no_commit`. next_focus=`tip_sync_drift_watch @3a29f52`; keep Path C idle; skip research HOLD / tip-observe / inventable; App install add sandbox when Dylan relaunches.
+
 ### Batch 296 (permanent-watch IDLE — tip stable, MAIN eng while WRITABLE, idle_no_commit) — 2026-09-25 ~12:53 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `3a29f52` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings).
