@@ -6,7 +6,9 @@ use for Option-B / ALIGNED restore, and reports a single JSON dashboard.
 
 Vectors (non-destructive where possible):
   W1  git_refs create+delete (same as probe_main_write.py)
-  W2  contents PUT on a throwaway branch path (cleaned up if it lands)
+  W2  contents PUT on a throwaway branch (Batch 280: create ref first —
+      Contents API does not auto-create branches; pre-280 PUT-only → false
+      DENIED 404 "Branch … not found" while W1 refs stayed WRITABLE)
   W3a workflow_dispatch land-option-b-on-main on trial (dry_run)
   W3b workflow_dispatch land-option-b-on-main on main (dry_run)
   W3c Actions API dispatch on trial (dry_run)
@@ -273,39 +275,65 @@ def main() -> int:
             w1["state"] = "WRITABLE"
         vectors["W1_git_refs"] = w1
 
-        # W2 — contents PUT on throwaway branch (may create branch)
+        # W2 — contents PUT on throwaway branch.
+        # Batch 280: GitHub Contents API does not auto-create branches. Pre-280
+        # PUT with only "branch": <new> returned 404 "Branch … not found" →
+        # false DENIED while W1 git refs proved WRITABLE. Create the ref first
+        # (same tip sha), then PUT, then best-effort cleanup.
         branch = f"cursor-wvec-contents-{ts}"
         content_b64 = "YmF0Y2g1NSBwcm9iZSBOT05FLWNsYWltCg=="  # "batch55 probe NONE-claim\n"
-        put_status, put_body = _request(
-            "PUT",
-            f"{API}/contents/.cursor-write-probe-b55.txt",
-            {
-                "message": "batch55 multi-vector probe (safe to delete)",
-                "content": content_b64,
-                "branch": branch,
-            },
+        w2_ref = f"refs/heads/{branch}"
+        w2_ref_status, w2_ref_body = _request(
+            "POST", f"{API}/git/refs", {"ref": w2_ref, "sha": sha}
         )
-        w2 = {
-            "http_status": put_status,
-            "msg": _short(put_body),
-            "state": _classify(put_status, put_body),
+        w2: dict = {
             "branch": branch,
+            "ref_create_http_status": w2_ref_status,
+            "ref_create_msg": _short(w2_ref_body),
+            "note": (
+                "Batch 280: create throwaway ref before contents PUT "
+                "(Contents API does not auto-create branches)."
+            ),
         }
-        if put_status in (200, 201):
-            # Best-effort cleanup: delete file then try delete branch ref.
-            file_sha = put_body.get("content", {}).get("sha") if isinstance(put_body, dict) else None
-            if file_sha:
-                _request(
-                    "DELETE",
-                    f"{API}/contents/.cursor-write-probe-b55.txt",
-                    {
-                        "message": "batch55 probe cleanup",
-                        "sha": file_sha,
-                        "branch": branch,
-                    },
+        if w2_ref_status not in (200, 201):
+            w2["http_status"] = w2_ref_status
+            w2["msg"] = _short(w2_ref_body)
+            w2["state"] = _classify(w2_ref_status, w2_ref_body)
+        else:
+            put_status, put_body = _request(
+                "PUT",
+                f"{API}/contents/.cursor-write-probe-b55.txt",
+                {
+                    "message": "batch55 multi-vector probe (safe to delete)",
+                    "content": content_b64,
+                    "branch": branch,
+                },
+            )
+            w2["http_status"] = put_status
+            w2["msg"] = _short(put_body)
+            w2["state"] = _classify(put_status, put_body)
+            if put_status in (200, 201):
+                # Best-effort cleanup: delete file then delete branch ref.
+                file_sha = (
+                    put_body.get("content", {}).get("sha")
+                    if isinstance(put_body, dict)
+                    else None
                 )
-            _request("DELETE", f"{API}/git/refs/heads/{branch}")
-            w2["state"] = "WRITABLE"
+                if file_sha:
+                    _request(
+                        "DELETE",
+                        f"{API}/contents/.cursor-write-probe-b55.txt",
+                        {
+                            "message": "batch55 probe cleanup",
+                            "sha": file_sha,
+                            "branch": branch,
+                        },
+                    )
+                w2["state"] = "WRITABLE"
+            # Always try to drop the throwaway ref we created (even on PUT fail).
+            d_status, d_body = _request("DELETE", f"{API}/git/refs/heads/{branch}")
+            w2["ref_delete_http_status"] = d_status
+            w2["ref_delete_msg"] = _short(d_body)
         vectors["W2_contents_put"] = w2
 
         # W3a — workflow_dispatch trial (gh CLI preferred for dispatch ergonomics).

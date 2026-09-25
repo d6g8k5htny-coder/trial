@@ -1,3 +1,7 @@
+## STATUS (Batch 280)
+
+tip `3b3860d` tip_match=true; probe W2 contents PUT lacked git-ref create (false DENIED 404 while W1 WRITABLE); create throwaway ref before PUT; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 279)
 
 tip `3b3860d` tip_match=true; republish `--out` basename leaked as release asset (living pack stale + false "uploaded OK"); stage canonical trial-portable-main-fixes.tgz + post-upload verify; lemma_closed=false; scientific effect NONE.

@@ -10755,7 +10755,11 @@ def test_batch279_republish_canonical_basename() -> None:
     assert "gh-dylan-auth/access_token" in text
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-279" in refresh
+    # Living default advances each batch; 279 introduced the stamp at 279.
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert any(
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282")
+    )
 
     with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
         out = P(td) / "wrong-name.tgz"
@@ -10841,6 +10845,79 @@ def test_batch279_republish_canonical_basename() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 279" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch280_probe_w2_contents_ref_first() -> None:
+    """Batch 280: W2 contents PUT creates throwaway git ref before PUT."""
+    import json
+
+    script = ROOT / "scripts" / "probe_main_write_vectors.py"
+    text = script.read_text(encoding="utf-8")
+    assert "Batch 280" in text
+    assert "create throwaway ref before contents PUT" in text
+    # Must create ref before PUT (pre-280 PUT-only → false DENIED 404).
+    ref_idx = text.find("W2 — contents PUT")
+    assert ref_idx > 0
+    w2_block = text[ref_idx : ref_idx + 2500]
+    assert "git/refs" in w2_block
+    assert "w2_ref_status" in w2_block or "ref_create_http_status" in w2_block
+    put_idx = w2_block.find("/contents/.cursor-write-probe-b55.txt")
+    refs_idx = w2_block.find("git/refs")
+    assert refs_idx >= 0 and put_idx > refs_idx
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-280" in refresh
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH280_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "280"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "probe_w2_contents_put_missing_git_ref"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("3b3860d")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH280_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "probe_w2_contents_put_missing_git_ref"
+    assert any("279" in a or "basename" in a for a in (hunt.get("avoided") or []))
+    assert any("pack_portable --help" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH280_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 280" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 280)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 280)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 280" in ones
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 280" in unblock
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

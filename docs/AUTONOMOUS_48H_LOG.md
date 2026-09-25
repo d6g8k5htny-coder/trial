@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 280 (probe W2 contents PUT missing git-ref create → false DENIED) — 2026-09-25 ~08:25 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable token **WRITABLE** (known).
+- **Evidence:** `probe_main_write_vectors` W1_git_refs **WRITABLE**; W2_contents_put **DENIED** HTTP 404 `Branch cursor-wvec-contents-… not found`. Contents API does **not** auto-create branches; pre-280 PUT with only `"branch": <new>` never created the ref.
+- **Defect shipped (avoid tip-observe / research HOLDs / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** create throwaway git ref at tip sha before contents PUT; always cleanup ref; W2 WRITABLE when Contents:Write present.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 279 (republish --out basename leak + living pack stale) — 2026-09-25 ~07:48 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD — **skipped**. Deep 0020 hunt: **NEGATIVE**.

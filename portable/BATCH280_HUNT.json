@@ -1,0 +1,52 @@
+{
+  "batch": "280",
+  "hunt": "probe_w2_contents_put_missing_git_ref",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "probe_w2_contents_put_missing_git_ref",
+  "bugs_fixed": [
+    "W2 contents PUT used throwaway branch name without creating git ref → false DENIED 404 Branch not found while W1 WRITABLE",
+    "path_b_writable_vectors omitted W2 despite Contents:Write present"
+  ],
+  "avoided": [
+    "tip-observe inventable README LOCK advance",
+    "research HOLD drafts",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_3b3860d": "TIP_OK",
+    "pack_portable_help": "already_fixed_278",
+    "republish_basename": "already_fixed_279",
+    "owner_verify_release_first": "already_fixed_277",
+    "when_writable_once": "already_fixed_270",
+    "land_workflows_idle": "already_fixed_272",
+    "patch_0020": "NEGATIVE",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE",
+    "w2_without_ref": "reproduced_404_Branch_not_found",
+    "w2_with_ref_first": "reproduced_201_WRITABLE"
+  },
+  "tip": "3b3860d",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was probe W2 contents PUT missing git-ref create"
+  }
+}
