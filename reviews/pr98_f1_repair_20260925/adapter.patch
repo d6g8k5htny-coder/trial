@@ -1,0 +1,150 @@
+diff --git a/tools/claims_gate_adapter.py b/tools/claims_gate_adapter.py
+index 9b7cf55..1eace6e 100644
+--- a/tools/claims_gate_adapter.py
++++ b/tools/claims_gate_adapter.py
+@@ -223,6 +223,11 @@ def claims_to_gate_graph(
+             "source_grade": record.get("grade"),
+             "source_status": record.get("status_frozen_v2_2")
+             or record.get("status_register_note"),
++            # Keep every source-status channel: `or` must not hide a claim
++            # of controlling use behind another, noncontrolling field.
++            "source_statuses": [record.get(key) for key in
++                                ("status_frozen_v2_2", "status_register_note",
++                                 "scientific_status")],
+             "source_reference": record.get("source") or record.get("canon_source"),
+             "semantic_digest": sem,
+             "evidence_digest": evid,
+@@ -571,7 +576,9 @@ def compare_claims_files(
+     new_g = claims_to_gate_graph(new_claims, crosswalk=crosswalk, authority_map=authority_map)
+     impact = reverse_impact_between(old_g, new_g)
+     holds = aggregate_hold_proposals(new_g)
++    enforcement = _source_transition_enforcement(old_g, new_g, impact, holds)
+     return {
++        **enforcement,
+         "reverse_impact": impact,
+         "hold_proposals": holds,
+         "promotion_permission": False,
+@@ -629,6 +636,65 @@ SOURCE_CONTROLLING_HINTS = frozenset(
+ )
+ 
+ 
++def _source_is_controlling(node: dict[str, Any]) -> bool:
++    """Interpret all observed source channels without awarding acceptance.
++
++    Explicit false does not override a simultaneously controlling grade/status.
++    A demotion must consistently remove the source's claims of controlling use.
++    """
++    if node.get("source_controlling") is True:
++        return True
++    statuses = [node.get("source_grade"), node.get("source_status")]
++    statuses.extend(node.get("source_statuses") or [])
++    return any(isinstance(value, str) and
++               value.strip().upper() in SOURCE_CONTROLLING_HINTS
++               for value in statuses)
++
++
++def _source_transition_enforcement(
++    old_graph: dict[str, Any], new_graph: dict[str, Any],
++    impact: dict[str, Any], holds: dict[str, Any],
++) -> dict[str, Any]:
++    """Loss-only refusal, not a positive mathematical admission mechanism.
++
++    This pilot has no authenticated acceptance/revalidation importer. Therefore
++    no newly controlling source, or impacted source still used as controlling,
++    can be admitted here merely by attaching a proposed HOLD to a cloned graph.
++    Unchanged legacy statuses remain visible; they are not retroactively accepted
++    or treated as a new transition. Corrective edits with consistent demotion are
++    allowed, and all required-premise HOLD reports are retained.
++    """
++    old_controls = {nid for nid, node in old_graph["nodes"].items()
++                    if _source_is_controlling(node)}
++    new_controls = {nid for nid, node in new_graph["nodes"].items()
++                    if _source_is_controlling(node)}
++    newly_controlling = new_controls - old_controls
++    retained_impacted = new_controls.intersection(impact["impacted"])
++    errors = []
++    for nid in sorted(newly_controlling | retained_impacted):
++        reasons = []
++        if nid in newly_controlling:
++            reasons.append("UNSUPPORTED_CONTROLLING_PROMOTION")
++        if nid in retained_impacted:
++            reasons.append("CONTROLLING_SOURCE_REQUIRES_REVALIDATION")
++        if nid in holds:
++            reasons.append("UNSATISFIED_REQUIRED_PREMISE")
++        errors.append({"node": nid, "reasons": reasons,
++                       "required_hold": holds.get(nid),
++                       "promotion_permission": False})
++    return {
++        "transition_ok": not errors,
++        "transition_errors": errors,
++        "source_controlling_after": sorted(new_controls),
++        "unchanged_controlling_holds": sorted((new_controls - retained_impacted)
++                                                .intersection(holds)),
++        "enforcement_scope": (
++            "loss-only source transition over the detected impact graph; "
++            "not positive admission, complete source coverage, or legacy acceptance"
++        ),
++    }
++
++
+ def _sha256_bytes(data: bytes) -> str:
+     return hashlib.sha256(data).hexdigest()
+ 
+@@ -856,24 +922,19 @@ def compare_claims_refs(
+         old_g, new_g, old_sources=old_sources, new_sources=new_sources
+     )
+     holds = aggregate_hold_proposals(new_g)
++    enforcement = _source_transition_enforcement(old_g, new_g, impact, holds)
+     # Attention flags from *source* grades/status — projection controlling stays false.
+     controlling_impacted = []
+     unresolved_controlling = []
+     for nid in impact["impacted"]:
+         node = new_g["nodes"][nid]
+-        grade = str(node.get("source_grade") or "")
+-        status = str(node.get("source_status") or "")
+-        hinted = (
+-            node.get("source_controlling") is True
+-            or grade in SOURCE_CONTROLLING_HINTS
+-            or status in SOURCE_CONTROLLING_HINTS
+-        )
+-        if hinted:
++        if _source_is_controlling(node):
+             controlling_impacted.append(nid)
+             src = new_sources.get(nid) or {}
+             if src.get("kind") not in {"blob", "tree"}:
+                 unresolved_controlling.append(nid)
+     report = {
++        **enforcement,
+         "mode": "ref_compare",
+         "base_commit": before_ref,
+         "head_commit": after_ref,
+@@ -969,11 +1030,13 @@ def event_compare(
+     report = compare_claims_refs(before_ref, after_ref, root=root or ROOT)
+     report["mode"] = "event_compare"
+     report["event_name"] = event_name
+-    # Impact is expected for corrective edits; only promotion_permission is fatal.
+-    report["transition_ok"] = report.get("promotion_permission") is False
++    # Preserve the source-transition verdict. The constant permission=false
++    # alone cannot certify the actual before/after source-status transition.
++    report["transition_ok"] = (report.get("transition_ok") is True and
++                               report.get("promotion_permission") is False)
+     report["meaning"] = (
+-        "event-derived immutable base→head compare; REVALIDATION/HOLD proposals "
+-        "do not block corrective edits; never promotion permission"
++        "event-derived base→head compare; unsupported source promotion or "
++        "affected controlling use is refused; consistent demotion remains allowed"
+     )
+     return report
+ 
+@@ -1095,7 +1158,10 @@ def main(argv: list[str] | None = None) -> int:
+         )
+ 
+     print(json.dumps(report, indent=2, sort_keys=True))
+-    # Impact/HOLD proposals are not failures. Only promotion or hard errors fail.
++    # Diagnostics may propose HOLD without failing. Transition modes must also
++    # refuse unsafe actual source status; missing enforcement fails closed.
++    if args.command != "tip-health" and report.get("transition_ok") is not True:
++        return 1
+     if report.get("promotion_permission") is True:
+         return 1
+     if report.get("problems"):
