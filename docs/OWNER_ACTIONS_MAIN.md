@@ -1,3 +1,11 @@
+## STATUS (Batch 367 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH367_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+```
+
 ## STATUS (Batch 367 inv-tip-pin)
 
 PRESERVE_DURABLE inv tip pin after Batch 367 research audit. Goal OPEN.

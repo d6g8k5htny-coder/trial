@@ -1,3 +1,7 @@
+## STATUS (Batch 367 idle)
+
+tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 367 inv-tip-pin)
 
 inv tip re-pin beyond parent after research_stack_audit_watch; tip `e3cd7d4`; durable 8/8; lemma_closed=false.
