@@ -1,6 +1,9 @@
 ## STATUS (Batch 350 soften-inv-tip-pin)
 
 tip `e3cd7d4` tip_match=true; eng: soften INV_TIP_PIN Intent action allowlist after peer re-pin rename; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+## STATUS (Batch 351 inv-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory tip pin after Batch 350 idle (batch322-soon timer); preserve_durable 8/8; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 350 idle)
 
