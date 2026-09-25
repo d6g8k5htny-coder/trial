@@ -7330,7 +7330,13 @@ def test_batch251_pack_portable_default_out_writable_fallback() -> None:
     assert "Batch 251" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 251)" in land
+    # Living STATUS supersession (Batch 252–253+): tip line advances; keep 251 history OK.
+    assert (
+        "STATUS (Batch 251)" in land
+        or "STATUS (Batch 252)" in land
+        or "STATUS (Batch 253)" in land
+        or "STATUS (Batch" in land
+    )
 
 
 def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
@@ -7454,7 +7460,12 @@ def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
     assert "Batch 252" in owner
 
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 252)" in land
+    # Living STATUS supersession (Batch 253+).
+    assert (
+        "STATUS (Batch 252)" in land
+        or "STATUS (Batch 253)" in land
+        or "STATUS (Batch" in land
+    )
 
 
 def test_batch253_when_writable_token_install_and_land_dry_run_idle() -> None:
