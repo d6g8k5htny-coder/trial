@@ -1,0 +1,18 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "eng_living_script_stale_republish",
+  "flipped_anything": false,
+  "batch": "352",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "aligned": true,
+  "write": "WRITABLE",
+  "tip_stale_post": 0,
+  "script_stale_post": 0,
+  "refresh_default": "352",
+  "generated_at_utc": "2026-09-25T20:29:08Z"
+}

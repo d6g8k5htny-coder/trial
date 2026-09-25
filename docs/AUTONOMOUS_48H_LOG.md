@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — living script_stale republish + REFRESH 352 @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: living `batch241-path-c-bundle` `script_stale=1` after Batch 352 inv-pin / unfreeze (CRITICAL drift: inventory/print_owner/wake/refresh). Republish `--clobber` → tip_stale=0 script_stale=0; REFRESH confirmed 352.
+- Artifacts: `BATCH352_REPUBLISH_{BRIEF,HUNT,EVIDENCE}.json`. NEVER flip research.
+
 ### Batch 352 — unfreeze last-resort 351→352 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
