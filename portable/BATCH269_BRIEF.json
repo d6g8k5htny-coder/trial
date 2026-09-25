@@ -1,6 +1,6 @@
 {
   "batch": "269",
-  "generated_at_utc": "2026-09-25T03:52:00Z",
+  "generated_at_utc": "2026-09-25T04:07:48Z",
   "status": "verify_batch_release_align_shipped",
   "waiting_ci": false,
   "goal_complete": true,
@@ -31,7 +31,7 @@
     8,
     7
   ],
-  "note_main_pr_80": "tip-observe draft green+MERGEABLE observing already-current tip; skipped (research-hold/draft queue; tip-observe avoided this batch — tip stable)",
+  "note_main_pr_80": "tip-observe draft green+MERGEABLE observing already-current tip; skipped (research-hold/draft queue; tip-observe avoided this batch \u2014 tip stable)",
   "defect_shipped": true,
   "defect_id": "verify_batch_divergent_from_release_after_keep_prior_refresh",
   "patch_0020": false,
@@ -39,9 +39,9 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "refresh_path_c_bundle aligns VERIFY.batch to release; automation stamp → refresh_batch; default REFRESH_BATCH_TAG 269",
+  "automation_improvement": "refresh_path_c_bundle aligns VERIFY.batch to release; automation stamp \u2192 refresh_batch; default REFRESH_BATCH_TAG 269",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 98,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_8e359e5",
@@ -67,7 +67,7 @@
     "ci_tip_drift": "stable_live_eq_base_eq_verify"
   },
   "next_focus": "tip_sync_drift_watch @8e359e5; keep Path C idle until next tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish)",
-  "note": "Batch 269: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80 + research HOLDs skipped). NEW eng: refresh keep-prior stamped VERIFY.batch=250 (stale REFRESH_BATCH_TAG default) while release=batch241 — pack fallback landmine. Fixed: release-align VERIFY.batch + refresh_batch field. lemma_closed=false; flipped nothing. Never printed tokens. Avoided pack living-tag validate-before-write / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 269: tip stable @8e359e5; deep 0020 hunt NEGATIVE; no green eng merges (draft tip-observe #80 + research HOLDs skipped). NEW eng: refresh keep-prior stamped VERIFY.batch=250 (stale REFRESH_BATCH_TAG default) while release=batch241 \u2014 pack fallback landmine. Fixed: release-align VERIFY.batch + refresh_batch field. lemma_closed=false; flipped nothing. Never printed tokens. Avoided pack living-tag validate-before-write / when_writable flock / path_c/path_b dry-run / Intent scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene. Trial eng PR #98 squash merge @7290bf9.",
   "artifacts": [
     "scripts/refresh_path_c_bundle.sh",
     "portable/path-c-applied-bundle/VERIFY.json",
@@ -80,10 +80,15 @@
     "portable/LAND.md",
     "portable/OWNER_ONE_LINERS.md",
     "scripts/print_owner_unblock.sh",
-    "tests/test_intent.py"
+    "tests/test_intent.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/98",
+    "https://github.com/d6g8k5htny-coder/trial/commit/7290bf91fb61"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "7290bf9",
+  "trial_main_land_method": "pr_98_squash_merge",
+  "trial_main_land_full": "7290bf91fb611a3c7a4dcaa2e1914bc09543470f"
 }

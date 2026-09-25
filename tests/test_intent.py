@@ -9585,6 +9585,10 @@ def test_batch269_verify_batch_release_align() -> None:
     assert brief.get("write") == "WRITABLE"
     assert brief.get("green_eng_prs_merged") == []
     assert brief.get("pack_release") == "batch241-path-c-bundle"
+    assert brief.get("main_pr_or_null") in (None, 98)
+    assert str(brief.get("trial_main_land", "")).startswith("7290bf9") or brief.get(
+        "main_pr_or_null"
+    ) in (None, 98)
 
     hunt = json.loads(
         (ROOT / "portable" / "BATCH269_HUNT.json").read_text(encoding="utf-8")
