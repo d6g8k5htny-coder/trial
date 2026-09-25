@@ -7,7 +7,7 @@ python3 scripts/guard_no_status_promotion.py --tip-sha e3cd7d4873c51e69529616e9e
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
 ## STATUS (Batch 346 grant)
 
-Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`40d6f27`; INV_BATCH→346; coverage 8/8_WRITABLE; `BATCH346_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`840de46`; INV_BATCH→346; coverage 8/8_WRITABLE; `BATCH346_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
 ./scripts/owner_grant_ai_agent_access.sh --check
