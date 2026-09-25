@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "probe_main_write(+vectors) discover durable file tokens (parity with when_writable); print_owner_unblock live probes match PATH_C_STATUS WRITABLE; token_source label never prints secrets",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 83,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -49,7 +49,7 @@
       "state": "DENIED",
       "create_http_status": 403,
       "token_source": null,
-      "note": "App/ghs only — same as pre-Batch-262 ambient print_owner_unblock live probe"
+      "note": "App/ghs only \u2014 same as pre-Batch-262 ambient print_owner_unblock live probe"
     },
     "after": {
       "PATH_C_IGNORE_FILE_TOKENS": "unset",
@@ -64,7 +64,7 @@
     "pack_vs_release": "newer_deferred_avoid_republish"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 262: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; probe_main_write(+vectors) missed durable file tokens → live DENIED while PATH_C_STATUS WRITABLE — file discovery + token_source; lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_c dry_run idle / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 262: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; probe_main_write(+vectors) missed durable file tokens \u2192 live DENIED while PATH_C_STATUS WRITABLE \u2014 file discovery + token_source; lemma_closed=false; flipped nothing. Never printed tokens. Avoided path_c dry_run idle / release republish / grant dual-vector / long hygiene. Trial main PR #83 squash merge @ 5450bdb.",
   "artifacts": [
     "scripts/probe_main_write.py",
     "scripts/probe_main_write_vectors.py",
@@ -72,6 +72,11 @@
     "portable/BATCH262_BRIEF.json",
     "portable/BATCH262_HUNT.json",
     "portable/BATCH262_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/83",
+    "https://github.com/d6g8k5htny-coder/trial/commit/5450bdb12446"
+  ],
+  "trial_main_land": "5450bdb",
+  "trial_main_land_full": "5450bdb12446bdbd9a08930c65030be20f41799b",
+  "trial_main_land_method": "pr_83_squash_merge"
 }
