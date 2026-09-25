@@ -1,0 +1,25 @@
+{
+  "batch": "365",
+  "utc": "2026-09-25T22:48:49Z",
+  "hardening_tip": "e3cd7d4",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_living_script_stale_republish",
+  "goal_complete": false,
+  "inventable_promoted": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "write": "8/8",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0,
+    "refresh_batch": "364"
+  },
+  "defect_id": "living_verify_refresh_batch_lag_363_vs_364",
+  "pulse": "goal_continue",
+  "woken_peers": 4
+}

@@ -1,0 +1,16 @@
+{
+  "batch": "365",
+  "utc": "2026-09-25T22:48:49Z",
+  "action": "eng_living_script_stale_republish",
+  "lemma_closed": false,
+  "tip_match": true,
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "durable": "8/8",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "refresh_batch": "364"
+  }
+}

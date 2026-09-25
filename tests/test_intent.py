@@ -19785,3 +19785,35 @@ def test_batch364_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 364)
     assert "STATUS (Batch 364 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 364 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+
+def test_batch365_tip_or_eng_continue() -> None:
+    """Batch 365: tip_or_eng living script_stale republish VERIFY refresh_batch 363→364."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH365_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "365"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("tip_match") is True
+    assert brief.get("goal") == "OPEN"
+    assert brief.get("defect_id") == "living_verify_refresh_batch_lag_363_vs_364"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH365_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH365_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_living_script_stale_republish"
+    assert evidence.get("tip_match") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(str(verify.get("refresh_batch") or "0")) >= 364
+    assert verify.get("lemma_closed") is False
+    tiny = json.loads((ROOT / "portable" / "BATCH365_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("action") == "eng_living_script_stale_republish"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("tip_match") is True
+    living = tiny.get("living") or {}
+    assert living.get("script_stale") == 0
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 365)
+    assert "STATUS (Batch 365 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 365 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

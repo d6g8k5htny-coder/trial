@@ -1,3 +1,7 @@
+## STATUS (Batch 365 tip-eng)
+
+living VERIFY refresh_batch lag 363→364 republish; tip `e3cd7d4` tip_match; inv parent-pinned; durable 8/8; lemma_closed=false; action=eng_living_script_stale_republish.
+
 ## STATUS (Batch 364 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-resort 363→364 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

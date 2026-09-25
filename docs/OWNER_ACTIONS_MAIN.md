@@ -1,3 +1,7 @@
+## STATUS (Batch 365 tip-eng)
+
+Living `VERIFY.json` refresh_batch lagged at 363 after Batch 364 last-resort bump. Republished → refresh_batch=364. Tip stable @ `e3cd7d4`. Evidence: `portable/BATCH365_TIP_ENG_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 364 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged 2 commits after Batch 364 idle; last-resort frozen 363 — PRESERVE_DURABLE re-pin→HEAD + unfreeze→364 + living republish; Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
