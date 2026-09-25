@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 288 (when_writable CRITICAL + living republish — 287 leftover) — 2026-09-25 ~11:05 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `7d13a88` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan).
+- Open main PRs: all **DRAFT** research HOLD / tip-observe — skipped (no green eng merge).
+- **Defect:** Batch 287 fixed `when_writable_land` repositories-list gate, but republish `CRITICAL` omitted `when_writable_land.py` (when_writable-only drift invisible to `script_stale`). Living release also still lacked 287 probe/refresh (`script_stale=1` / `need_upload=1`). Fixed: add `when_writable_land.py` to `CRITICAL`; republish living pack; bump `REFRESH_BATCH_TAG` default → 288; unblock header Batch 288.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. No 0020. Remaining install-list `or []` collapses: comments only (grant/probe/when_writable executable gates already isinstance(list)).
+- next_focus=`tip_sync_drift_watch @7d13a88`; skip research HOLD drafts; App install add sandbox when Dylan relaunches.
+
 ### Batch 287 (probe/when_writable repositories list — 286 grant leftover) — 2026-09-25 ~10:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `7d13a88` (TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan).

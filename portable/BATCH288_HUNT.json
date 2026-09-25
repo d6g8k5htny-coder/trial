@@ -1,0 +1,60 @@
+{
+  "batch": "288",
+  "hunt": "when_writable_critical_living_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "when_writable_critical_living_republish",
+  "bugs_fixed": [
+    "republish CRITICAL omitted when_writable_land.py after Batch 287 lander list-gate (when_writable-only drift invisible to script_stale)",
+    "living release still lacked Batch 287 probe_main_write + refresh_path_c_bundle (script_stale=1 need_upload=1)",
+    "print_owner_unblock / REFRESH_BATCH_TAG still said Batch 287 after 287 ship"
+  ],
+  "avoided": [
+    "research HOLD drafts (83/47/46/38/36/21/12/8/7)",
+    "tip-observe inventable content",
+    "App_install_add_sandbox owner UI (deferred; not code)",
+    "probe/when_writable repositories list (287)",
+    "grant list + script_stale + REFRESH durable (286)",
+    "grant 403 key-only (285)",
+    "republish tip_stale (283)",
+    "pack omit grant (282)",
+    "grant ls-remote auth (281)",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_7d13a88": "TIP_OK",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "trial_open_prs": "none",
+    "living_release": "tip_stale=0_script_stale=1_need_upload=1_pre_ship",
+    "install_list_or_empty_remaining": "comments_only_executable_gates_ok",
+    "when_writable_critical": "MISSING_pre288_added",
+    "land_workflows": "OK_already_272",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "siblings_writable": "8_of_8_durable_WRITABLE",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "7d13a88",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was CRITICAL omit when_writable + living script_stale after 287"
+  }
+}

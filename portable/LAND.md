@@ -1,3 +1,7 @@
+## STATUS (Batch 288)
+
+tip `7d13a88` tip_match=true; republish CRITICAL +when_writable (287 leftover); living script_stale cleared; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 287)
 
 tip `7d13a88` tip_match=true; probe/when_writable repositories null/non-list false-empty (286 grant-only leftover); isinstance(list) + repositories_unavailable; REFRESH default 287; lemma_closed=false; scientific effect NONE.

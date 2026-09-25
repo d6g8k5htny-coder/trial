@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 287 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 288 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 288: republish CRITICAL includes when_writable_land.py (287 fixed lander list-gate but CRITICAL could not detect when_writable-only drift; living release also still lacked 287 probe/refresh → script_stale=1); REFRESH default 288"
 echo "  Batch 287: probe_main_write / when_writable require isinstance(repositories, list) (Batch 286 fixed grant only; null/non-list still collapsed via or [] → false empty install_has_main); REFRESH default 287"
 echo "  Batch 286: grant --check requires isinstance(repositories, list) (null/non-list ≠ empty install); republish script_stale compares critical script sha256 vs living pack (post-285 tip_match left release without grant fix); Intent REFRESH_BATCH_TAG uses >= not allowlist"
 echo "  Batch 285: grant --check treats user-token 403 JSON on /installation/repositories as unavailable (pre-285 empty listing → false install_missing_from_deps=all8 while 8/8 WRITABLE)"

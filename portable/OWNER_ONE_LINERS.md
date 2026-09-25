@@ -5,6 +5,15 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 288 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; when_writable in republish CRITICAL + living republish; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/republish_living_path_c_release.sh --dry-run  # CRITICAL includes when_writable; script_stale=0 after ship
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: Batch 287 fixed when_writable repositories list but CRITICAL omitted it; living release also still lacked 287 probe/refresh (script_stale=1). No research flip. No 0020.
+
 > **Batch 287 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; probe/when_writable repositories list; release `batch241-path-c-bundle`**:
 >
 > ```bash

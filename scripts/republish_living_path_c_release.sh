@@ -34,6 +34,12 @@
 # requires isinstance(repositories, list) so null/non-list is not an empty
 # install listing.
 #
+# Batch 288: Batch 287 fixed when_writable_land repositories-list parity with
+# probe, but CRITICAL omitted when_writable_land.py — so a when_writable-only
+# fix would leave living release script_stale=0 while the lander still shipped
+# the pre-287 or [] false-empty install. Include when_writable in CRITICAL.
+# Also living release still lacked the 287 probe/refresh bytes (script_stale=1).
+#
 # Scientific effect: NONE. Never flips lemma_closed / research status.
 # Never prints tokens / secrets.
 #
@@ -256,6 +262,9 @@ CRITICAL = (
     "scripts/pack_portable.sh",
     "scripts/probe_main_write.py",
     "scripts/probe_main_write_vectors.py",
+    # Batch 288: peer of probe install-list gate — 287 fixed when_writable but
+    # CRITICAL could not detect when_writable-only drift.
+    "scripts/when_writable_land.py",
     "scripts/republish_living_path_c_release.sh",
 )
 

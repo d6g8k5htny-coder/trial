@@ -2,6 +2,15 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 288)
+
+Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 287 fixed `when_writable_land` repositories-list parity with probe, but republish `CRITICAL` omitted `when_writable_land.py` — a when_writable-only fix would leave living release `script_stale=0` while the lander still shipped the pre-287 `or []` false-empty install. Living release also still lacked the 287 probe/refresh bytes (`script_stale=1`). Fixed: add `when_writable_land.py` to `CRITICAL`; republish living pack; bump `REFRESH_BATCH_TAG` default to 288. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run   # CRITICAL includes when_writable; script_stale=0 after ship
+./scripts/assert_path_c_ready.sh
+```
+
 ## STATUS (Batch 287)
 
 Hardening tip **stable** @ `7d13a88` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Batch 286 required `isinstance(repositories, list)` in **grant --check** only; `probe_main_write._parse_installation_repos_body` and `when_writable_land` fallback still used `(repositories or [])` → `null` / non-list looked like an empty App install (`names=[]`, `install_has_main=false`). Fixed: require a real list; else `install_query_mode=repositories_unavailable`. Also bumped `REFRESH_BATCH_TAG` default to 287 and unblocked header. `lemma_closed=false`. Scientific effect: NONE.

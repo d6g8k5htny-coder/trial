@@ -11551,7 +11551,8 @@ def test_batch287_probe_install_repositories_list() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 287" in unblock
-    assert "=== Batch 287" in unblock
+    # Header advances each batch; history line must retain Batch 287 note.
+    assert "probe_main_write / when_writable require isinstance(repositories, list)" in unblock
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH287_BRIEF.json").read_text(encoding="utf-8")
@@ -11603,3 +11604,79 @@ def test_batch287_probe_install_repositories_list() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch288_when_writable_critical_living_republish() -> None:
+    """Batch 288: CRITICAL includes when_writable; living republish; REFRESH 288."""
+    import json
+
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 288" in republish
+    # Extract CRITICAL tuple members via quoted paths after CRITICAL = (
+    import re
+
+    crit_m = re.search(
+        r"CRITICAL\s*=\s*\((.*?)\)\s*\n\s*\ndef member_sha",
+        republish,
+        flags=re.S,
+    )
+    assert crit_m is not None, "CRITICAL tuple not found in republish script"
+    crit_block = crit_m.group(1)
+    assert '"scripts/when_writable_land.py"' in crit_block
+    assert '"scripts/probe_main_write.py"' in crit_block
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 288)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 288" in unblock
+    assert "=== Batch 288" in unblock
+    assert "when_writable" in unblock
+
+    for rel in (
+        "scripts/probe_main_write.py",
+        "scripts/when_writable_land.py",
+        "scripts/owner_grant_ai_agent_access.sh",
+    ):
+        src = (ROOT / rel).read_text(encoding="utf-8")
+        assert 'repos = body.get("repositories") or []' not in src
+        assert 'repos = d.get("repositories") or []' not in src
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH288_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "288"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "when_writable_critical_living_republish"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH288_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "when_writable_critical_living_republish"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert any("287" in a or "repositories" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH288_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 288" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 288)" in land
