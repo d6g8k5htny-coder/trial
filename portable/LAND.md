@@ -1,6 +1,6 @@
 ## STATUS (Batch 278)
 
-tip `bfb7c38` tip_match=true; pack_portable treated `--help` as OUT.tgz (wrote `--help` tarball + stamped living pin); -h/--help usage + refuse dash-options; lemma_closed=false; scientific effect NONE.
+tip `3b3860d` tip_match=true (synced from `bfb7c38` after main #81); pack `--help` not OUT; refresh APPLY soft-update quoted heredoc (Batch 273 leftover); lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 277)
 

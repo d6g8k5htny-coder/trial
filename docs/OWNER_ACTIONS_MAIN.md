@@ -4,12 +4,12 @@ Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portabl
 
 ## STATUS (Batch 278)
 
-Hardening tip **stable** @ `bfb7c38` (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. `pack_portable.sh` treated argv[1] as OUT with no option parse — `./scripts/pack_portable.sh --help` wrote a ~480KB `--help` tarball and stamped the living pin. Fixed: `-h|--help` usage exit 0; other dash-options exit 2; positional OUT unchanged. `lemma_closed=false`. Scientific effect: NONE.
+Hardening tip **synced** `bfb7c38`→`3b3860d` after main #81 (tip_match=true; Path C idle). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE. Shipped: (1) `pack_portable` `-h|--help` not OUT; (2) `refresh_path_c_bundle` APPLY soft-update `<<'PY'` (Batch 273 unquoted-heredoc leftover aborted before MANIFEST on first tip move). `lemma_closed=false`. Scientific effect: NONE.
 
 ```bash
-./scripts/pack_portable.sh --help                 # usage only; no OUT file
-./scripts/pack_portable.sh --force; echo $?       # exit 2
-./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
+./scripts/pack_portable.sh --help
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3b3860d
+./scripts/assert_path_c_ready.sh
 ```
 
 ## STATUS (Batch 277)

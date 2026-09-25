@@ -5,15 +5,15 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
-> **Batch 278 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; pack `--help` not OUT; release `batch241-path-c-bundle`**:
+> **Batch 278 — tip `3b3860d` tip_match (synced from `bfb7c38`); default ALIGNED `72558a5`; write WRITABLE; pack help + refresh heredoc; release `batch241-path-c-bundle`**:
 >
 > ```bash
-> ./scripts/pack_portable.sh --help                 # usage; no --help file
-> ./scripts/pack_portable.sh --force; echo $?       # exit 2
-> ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
+> ./scripts/pack_portable.sh --help
+> ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 3b3860d
+> ./scripts/assert_path_c_ready.sh
 > ```
 >
-> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: pack treated `--help` as OUT.tgz (wrote tarball + stamped living pin). Fixed help + refuse dash-options. Asset --clobber deferred. No 0020.
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defects: pack `--help` as OUT; refresh APPLY unquoted heredoc (Batch 273 leftover). Tip-sync after main #81. No research flip. No 0020.
 > `lemma_closed=false`. Scientific effect: **NONE**.
 
 > **Batch 277 — tip `bfb7c38` tip_match; default ALIGNED `72558a5`; write WRITABLE; owner VERIFY.release-first; release `batch241-path-c-bundle`**:

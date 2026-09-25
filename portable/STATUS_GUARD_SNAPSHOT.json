@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-09-25T06:51:16Z",
+  "generated_at_utc": "2026-09-25T07:21:55Z",
   "guard": "no_status_promotion",
   "scientific_effect": "NONE",
   "goal_complete": false,
   "lemma_closed": false,
   "flipped_anything": false,
-  "tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
+  "tip_sha": "3b3860da7336528a9517ae198f09c83f68fa137a",
   "baseline_path": "/workspace/portable/STATUS_GUARD_SNAPSHOT.json",
-  "baseline_tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
+  "baseline_tip_sha": "3b3860da7336528a9517ae198f09c83f68fa137a",
   "pass": true,
   "violations": [],
   "new_open_only": {
@@ -16,7 +16,7 @@
     "prizes": []
   },
   "inventory": {
-    "tip_sha": "bfb7c385040b952ca1a3752e4bc7704b383a4167",
+    "tip_sha": "3b3860da7336528a9517ae198f09c83f68fa137a",
     "shape": "HAS_PACKET",
     "packet_lemma_closed": false,
     "packet_prizes_solved": false,

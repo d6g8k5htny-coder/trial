@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-275}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-278}"
 
 usage() {
   cat <<'EOF'
@@ -49,7 +49,7 @@ Options:
 
 Env:
   HARDENING_REF MAIN_REPO BASE_TIP_FILE APPLY_ALL BUNDLE_DIR PATH_C_BRANCH
-  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 275)
+  REFRESH_BATCH_TAG   automation stamp → VERIFY.refresh_batch (default 278)
   GITHUB_TOKEN / GH_TOKEN / MAIN_PUSH_TOKEN  optional tip-fetch + clone auth (never printed)
   REFRESH_TIP_FETCH_RETRIES   API retries on 429 / rate-limit 403 (default 3)
   REFRESH_TIP_FETCH_SLEEP_S   base sleep between tip-fetch retries (default 2)
@@ -557,17 +557,22 @@ PY
 # Batch 273: also soft-update living-tip claims (`hardening tip **SHA** (== BASE_TIP)`,
 # `On tip **SHA**`, `Living tip note: at SHA`) — Batch 272 tip-refresh left those
 # pinned at 542e6ec while BASE_TIP/checkout moved to bfb7c38 (APPLY honesty lie).
+# Batch 278: quote the Python heredoc. Pre-278 used <<PY so backticks inside the
+# living-tip regexes were shell command-substitutions → APPLY soft-update aborted
+# under set -e before MANIFEST update (first tip move after Batch 273).
 if [[ -f "$APPLY_MD" ]]; then
-  python3 - <<PY
+  APPLY_MD="$APPLY_MD" LIVE_SHORT="$LIVE_SHORT" LIVE_SHA="$LIVE_SHA" python3 - <<'PY'
 from pathlib import Path
+import os
 import re
-p = Path("$APPLY_MD")
+
+p = Path(os.environ["APPLY_MD"])
 text = p.read_text(encoding="utf-8")
-live_short = "${LIVE_SHORT}"
-live_sha = "${LIVE_SHA}"
+live_short = os.environ["LIVE_SHORT"]
+live_sha = os.environ["LIVE_SHA"]
 # Soft-update BASE_TIP / checkout SHA mentions; leave narrative intact.
 text2, n = re.subn(
-    r"(BASE_TIP\s+[\\\`*]*)([0-9a-f]{7,40})",
+    r"(BASE_TIP\s+[\\`*]*)([0-9a-f]{7,40})",
     lambda m: m.group(1) + live_short,
     text,
     count=5,

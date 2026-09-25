@@ -21,11 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
-### Batch 278 (pack_portable --help treated as OUT path) — 2026-09-25 ~07:09 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+### Batch 278 (pack --help OUT + tip-sync refresh APPLY heredoc) — 2026-09-25 ~07:20 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
-- Tip vs BASE_TIP `bfb7c38`: **tip_match=true** (ALIGNED Path C idle). Batch 277 already on trial main @ `4c7fa69`. Draft main #81 + research HOLD drafts skipped. Deep 0020 hunt: **NEGATIVE**.
-- **Evidence:** `pack_portable.sh` took argv[1] as OUT with no option parse. `./scripts/pack_portable.sh --help` wrote a ~480KB tarball named `--help` and stamped `LIVING_PATH_C_RELEASE_TAG` (Batch 268 side-effect on a help probe).
-- **Defect shipped (avoid tip-observe / research HOLDs / owner VERIFY 277 / republish 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270 / VERIFY.batch 269 / pack validate-before-write 268 / asset --clobber churn):** `-h|--help` prints usage exit 0; other dash-options exit 2; positional OUT still packs. Pack-vs-release newer deferred.
+- Tip vs BASE_TIP: started **tip_match @ bfb7c38**; mid-cycle main **#81** merged → live **`3b3860d`** (TIP_MOVED). Tip-sync refresh + land. Research HOLD drafts skipped at cycle start. Deep 0020 hunt: **NEGATIVE**.
+- **Evidence (1):** `pack_portable.sh` treated argv[1] as OUT — `./scripts/pack_portable.sh --help` wrote `./--help` tarball + stamped living pin.
+- **Evidence (2):** first tip move after Batch 273 — APPLY soft-update used unquoted `<<PY`; backticks in living-tip regexes aborted under `set -e` before MANIFEST update (left `refresh_batch=275`).
+- **Defect shipped:** pack `-h|--help` + refuse dash-options; refresh APPLY `<<'PY'` quoted heredoc; tip-sync BASE_TIP/VERIFY/APPLY/MANIFEST/PATH_C `bfb7c38→3b3860d`; `REFRESH_BATCH_TAG` default 278. No research flip on #81.
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
 
 ### Batch 277 (owner oneshot/open_pr VERIFY.release-first leftover) — 2026-09-25 ~06:51 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)

@@ -90,7 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
-echo "  Batch 278: pack_portable -h/--help usage (pre-278 --help wrote OUT tarball named --help + stamped living pin)"
+echo "  Batch 278: pack_portable -h/--help not OUT; refresh APPLY soft-update <<'PY' (Batch 273 leftover); tip-sync bfb7c38→3b3860d"
 echo "  Batch 277: owner oneshot/open_pr VERIFY.release-first (Batch 276 leftover preferred dirty living pin → wrong PR release URL)"
 echo "  Batch 276: republish living-tag post-pack (pre-pack stale pin → wrong upload target); write_path_c_status VERIFY.release-first"
 echo "  Batch 275: refresh MANIFEST.verified_batch release-align from VERIFY.batch (Batch 269 leftover stamped BATCH_TAG); refresh_batch=automation; default tag 275"
