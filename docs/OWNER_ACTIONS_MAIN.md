@@ -2,6 +2,14 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 333)
+
+Hardening tip **stable** @ `388a22c`. Eng: living republish retries `gh release view` under rate-limit (dry-run soft-continues); STATUS_GUARD_SNAPSHOT tip_sha refreshed. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 332)
 
 Hardening tip **synced** @ `388a22c` (tip_match=true after #97 inventable mid-cycle). Tip-sync keep-prior; REFRESH default 332; `_LIVING_TIPS += 388a22c`. Inventable NOT promoted. Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`tip_sync_landed`. Scientific effect: NONE.

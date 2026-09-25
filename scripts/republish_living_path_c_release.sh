@@ -150,10 +150,30 @@ patch_sha=""
 echo "republish_living_path_c_release: local pack bytes=${pack_bytes} sha256=${pack_sha}"
 
 # Fetch live release asset metadata (no tokens printed).
-REL_JSON="$(gh release view "$TAG" --repo "$REPO" --json tagName,assets 2>/dev/null)" || {
-  echo "republish_living_path_c_release: cannot view release ${TAG} on ${REPO}" >&2
-  exit 1
-}
+# Batch 333: retry release-view under GH secondary rate-limit / transient 403
+# (push-storm CI flakes: "cannot view release batch241…" was a hard exit 1).
+REL_JSON=""
+_REL_VIEW_TRIES="${REPUBLISH_RELEASE_VIEW_RETRIES:-4}"
+_REL_VIEW_SLEEP="${REPUBLISH_RELEASE_VIEW_SLEEP_S:-3}"
+_rel_i=1
+while [[ "${_rel_i}" -le "${_REL_VIEW_TRIES}" ]]; do
+  if REL_JSON="$(gh release view "$TAG" --repo "$REPO" --json tagName,assets 2>/dev/null)"; then
+    break
+  fi
+  echo "republish_living_path_c_release: release-view attempt ${_rel_i}/${_REL_VIEW_TRIES} failed; sleep ${_REL_VIEW_SLEEP}s" >&2
+  sleep "${_REL_VIEW_SLEEP}"
+  _rel_i=$((_rel_i + 1))
+done
+if [[ -z "${REL_JSON}" ]]; then
+  echo "republish_living_path_c_release: cannot view release ${TAG} on ${REPO} after ${_REL_VIEW_TRIES} tries" >&2
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "republish_living_path_c_release: dry-run continues with empty release metadata (assume upload needed)" >&2
+    REL_JSON='{"tagName":"'"$TAG"'","assets":[]}'
+  else
+    exit 1
+  fi
+fi
+unset _rel_i _REL_VIEW_TRIES _REL_VIEW_SLEEP || true
 
 eval "$(
   REL_JSON="$REL_JSON" python3 - <<'PY'

@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 333 — republish release-view retry + STATUS_GUARD tip (2026-09-25)
+
+- Tip stable @ `388a22c` (match=1); Path C IDLE@0019; `lemma_closed=false`.
+- Eng: `republish_living_path_c_release.sh` hard-exited on transient `gh release view` failures (CI push-storm rate-limit / secondary 403). Retry N times; dry-run continues with empty metadata.
+- Hygiene: `STATUS_GUARD_SNAPSHOT` tip_sha → live `388a22c` (guard pass; no promotion). Inventory tip refresh.
+- NEVER flip research. Open main PRs all draft inventable — skipped.
+
+
 ### Batch 332 — tip-sync after main #97 (2026-09-25)
 
 - Hardening LIVE moved `077464e`→`388a22c` (PR #97 inventable RN crosswalk MERGED into chatgpt/drive-github-hardening-20260919).

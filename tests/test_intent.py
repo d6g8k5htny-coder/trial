@@ -13333,4 +13333,36 @@ def test_batch332_tip_sync_after_main_97() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 332" in log_md
 
+def test_batch333_republish_release_view_retry() -> None:
+    """Batch 333: republish retries release-view; STATUS_GUARD tip living."""
+    import json
+    import re
+
+    republish = (ROOT / "scripts" / "republish_living_path_c_release.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "Batch 333" in republish
+    assert "REPUBLISH_RELEASE_VIEW_RETRIES" in republish
+    assert "release-view attempt" in republish
+    assert "dry-run continues with empty release metadata" in republish
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("flipped_anything") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha", "")))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 333
+    _assert_print_owner_header_batch_at_least(unblock, 333)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 333)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 333" in log_md
+
 
