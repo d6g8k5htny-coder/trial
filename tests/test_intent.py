@@ -11491,3 +11491,115 @@ print("install_missing_from_deps:", ["x"] if not names else [])
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch287_probe_install_repositories_list() -> None:
+    """Batch 287: probe/when_writable require repositories list (286 grant leftover)."""
+    import importlib.util
+    import json
+
+    probe_path = ROOT / "scripts" / "probe_main_write.py"
+    probe_txt = probe_path.read_text(encoding="utf-8")
+    assert "Batch 287" in probe_txt
+    assert "repositories_not_list" in probe_txt
+    assert "repositories_unavailable" in probe_txt
+    # Docstring may mention pre-287 ``or []``; executable assignment must be gone.
+    assert 'repos = body.get("repositories") or []' not in probe_txt
+
+    ww = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
+    assert "Batch 287" in ww
+    assert "repositories_unavailable" in ww
+    assert 'repos = body.get("repositories") or []' not in ww
+    assert "isinstance(repos, list)" in ww
+    spec = importlib.util.spec_from_file_location("probe_main_write_b287", probe_path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    for body in (
+        {"repositories": None, "total_count": 0},
+        {"repositories": "nope"},
+        {"repositories": {"full_name": "x"}},
+        {},
+    ):
+        names, total, selection, err = mod._parse_installation_repos_body(body)
+        assert err == "repositories_not_list"
+        assert names is None
+        assert total is None
+        assert selection is None
+
+    names_ok, total_ok, sel_ok, err_ok = mod._parse_installation_repos_body(
+        {
+            "total_count": 1,
+            "repository_selection": "selected",
+            "repositories": [{"full_name": "d6g8k5htny-coder/main"}],
+        }
+    )
+    assert err_ok is None
+    assert names_ok == ["d6g8k5htny-coder/main"]
+    assert total_ok == 1
+    assert sel_ok == "selected"
+
+    empty_names, _, _, empty_err = mod._parse_installation_repos_body(
+        {"repositories": [], "total_count": 0}
+    )
+    assert empty_err is None
+    assert empty_names == []
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 287)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 287" in unblock
+    assert "=== Batch 287" in unblock
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH287_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "287"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "probe_install_repositories_list"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("7d13a88")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH287_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "probe_install_repositories_list"
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("flipped_anything") is False
+    assert any("286" in a or "grant" in a for a in (hunt.get("avoided") or []))
+    assert hunt.get("tip_moved") is False
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH287_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 287" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 287)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 287)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 287" in ones
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"

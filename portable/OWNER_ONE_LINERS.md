@@ -5,6 +5,15 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 287 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; probe/when_writable repositories list; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> python3 -c "from importlib.util import *; s=spec_from_file_location('p','scripts/probe_main_write.py'); m=module_from_spec(s); s.loader.exec_module(m); print(m._parse_installation_repos_body({'repositories': None}))"  # → repositories_not_list (not false empty)
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: Batch 286 fixed grant `--check` list gate only; probe + when_writable fallback still collapsed `repositories: null`/non-list via `or []` into false empty install. No research flip. No 0020.
+
 > **Batch 286 — tip `7d13a88` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant list+script_stale+REFRESH durable; release `batch241-path-c-bundle`**:
 >
 > ```bash

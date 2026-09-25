@@ -1,0 +1,61 @@
+{
+  "batch": "287",
+  "hunt": "probe_install_repositories_list",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "probe_install_repositories_list",
+  "bugs_fixed": [
+    "probe_main_write _parse_installation_repos_body used repositories or [] so null/non-list looked like empty App install (Batch 286 fixed grant only)",
+    "when_writable_land fallback gh api path same or [] collapse → false empty names=[] / install_has_main=False",
+    "print_owner_unblock header still said Batch 285 after 286 ship"
+  ],
+  "avoided": [
+    "research HOLD drafts (83/47/46/38/36/21/12/8/7)",
+    "tip-observe inventable content",
+    "App_install_add_sandbox owner UI (deferred; not code)",
+    "grant list + script_stale + REFRESH durable (286)",
+    "grant 403 key-only (285)",
+    "republish tip_stale (283)",
+    "pack omit grant (282)",
+    "grant ls-remote auth (281)",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_7d13a88": "TIP_OK",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "trial_open_prs": "none",
+    "living_release": "tip_stale=0_script_stale=0_STATUS_GUARD_only_byte_drift",
+    "grant_repositories_null": "already_286",
+    "probe_repositories_null": "reproduced_false_empty_install",
+    "when_writable_fallback_or_empty": "same_false_empty",
+    "print_owner_unblock_header": "stale_Batch_285",
+    "land_workflows": "OK_already_272",
+    "path_c_idle": "IDLE_PATH_C_DONE",
+    "siblings_writable": "8_of_8_durable_WRITABLE",
+    "patch_0020": "NEGATIVE"
+  },
+  "tip": "7d13a88",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was probe/when_writable repositories list leftover from Batch 286 grant-only fix"
+  }
+}

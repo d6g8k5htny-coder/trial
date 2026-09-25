@@ -37,6 +37,11 @@ Batch 253 — install_has_main under user-token load:
   when_writable no longer records install_has_main=None / names=[] while
   probe=WRITABLE. Never prints tokens.
 
+Batch 287 — repositories must be a list (parity with probe + grant):
+  Fallback ``gh api`` path used ``body.get("repositories") or []`` so
+  ``null`` / non-list looked like an empty App selection. Now marks
+  ``repositories_unavailable`` instead of false empty names=[].
+
 Batch 140 — repository_dispatch when token file appears:
   Well-known MAIN_PUSH_TOKEN file paths (drop a PAT here; value never logged):
     /cursor/stores/self/MAIN_PUSH_TOKEN
@@ -1023,7 +1028,18 @@ def check_installation_repositories(
         detail["error"] = "json_decode"
         detail["raw_tail"] = raw[-500:]
         return None, detail
-    repos = body.get("repositories") or []
+    # Batch 287: require repositories list (parity with probe_main_write /
+    # grant --check). Pre-287 ``or []`` treated null/non-list as empty install.
+    repos = body.get("repositories") if isinstance(body, dict) else None
+    if not isinstance(body, dict) or not isinstance(repos, list):
+        detail["http_status"] = 200
+        detail["install_has_main"] = False
+        detail["names"] = []
+        detail["install_query_mode"] = "repositories_unavailable"
+        detail["installation_note"] = (
+            "repositories null or non-list (not an install listing)"
+        )
+        return False, detail
     names = [
         str(r.get("full_name"))
         for r in repos

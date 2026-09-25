@@ -7,6 +7,11 @@ then deletes it on success. Never touches default ``main`` contents.
 Also queries ``GET /installation/repositories`` and reports ``install_has_main``
 (true when ``d6g8k5htny-coder/main`` is in the App installation selection).
 
+Batch 287 — ``repositories`` must be a list: ``null`` / non-list used to
+collapse via ``or []`` into a false empty install selection (same class of
+bug Batch 286 fixed in grant ``--check``). Now reports
+``install_query_mode=repositories_unavailable`` instead.
+
 Batch 262 — token resolution order (never printed):
   1. env MAIN_PUSH_TOKEN / GH_TOKEN / GITHUB_TOKEN
   2. durable files: /cursor/stores/self/MAIN_PUSH_TOKEN,
@@ -190,8 +195,20 @@ def _create_body_already_exists(body: dict | str | None) -> bool:
 
 def _parse_installation_repos_body(
     body: dict,
-) -> tuple[list[str], int | None, str | None]:
-    repos = body.get("repositories") or []
+) -> tuple[list[str] | None, int | None, str | None, str | None]:
+    """Parse GET /installation/repositories JSON body.
+
+    Batch 287: require ``repositories`` to be a real list. Pre-287 used
+    ``body.get("repositories") or []``, so ``null`` / non-list collapsed to an
+    empty listing → ``names=[]`` + ``install_has_main=False`` (looked like an
+    App with zero repos). Same class of false-empty Batch 286 fixed in
+    ``owner_grant_ai_agent_access --check``. Returns
+    ``(names, total, selection, error)``; ``error`` is set when the body is not
+    a valid install listing (caller must not treat names=[] as authoritative).
+    """
+    repos = body.get("repositories") if isinstance(body, dict) else None
+    if not isinstance(repos, list):
+        return None, None, None, "repositories_not_list"
     names: list[str] = []
     for repo in repos:
         if isinstance(repo, dict):
@@ -204,6 +221,7 @@ def _parse_installation_repos_body(
         names,
         int(total) if isinstance(total, int) else None,
         str(selection) if selection is not None else None,
+        None,
     )
 
 
@@ -276,22 +294,44 @@ def check_installation_repositories() -> dict:
             out["install_has_main"] = False
             out["install_query_mode"] = "user_token_not_installation"
             return out
-        names, total, selection = _parse_installation_repos_body(fb_body)
+        names, total, selection, parse_err = _parse_installation_repos_body(fb_body)
+        if parse_err is not None:
+            # Batch 287: null/non-list ≠ empty App selection.
+            out["http_status"] = 200
+            out["install_has_main"] = False
+            out["names"] = []
+            out["install_query_mode"] = "repositories_unavailable"
+            out["installation_note"] = (
+                "repositories null or non-list (not an install listing)"
+            )
+            out["parse_error"] = parse_err
+            out["body"] = fb_body
+            return out
         out["http_status"] = 200
         out["total_count"] = total
         out["repository_selection"] = selection
-        out["names"] = names
-        out["install_has_main"] = MAIN_FULL in names
+        out["names"] = names or []
+        out["install_has_main"] = MAIN_FULL in (names or [])
         out["install_query_mode"] = "gh_app_fallback_after_user_token_403"
         return out
     if status != 200 or not isinstance(body, dict):
         out["body"] = body if isinstance(body, dict) else {"raw": str(body)[:500]}
         return out
-    names, total, selection = _parse_installation_repos_body(body)
+    names, total, selection, parse_err = _parse_installation_repos_body(body)
+    if parse_err is not None:
+        out["install_has_main"] = False
+        out["names"] = []
+        out["install_query_mode"] = "repositories_unavailable"
+        out["installation_note"] = (
+            "repositories null or non-list (not an install listing)"
+        )
+        out["parse_error"] = parse_err
+        out["body"] = body
+        return out
     out["total_count"] = total
     out["repository_selection"] = selection
-    out["names"] = names
-    out["install_has_main"] = MAIN_FULL in names
+    out["names"] = names or []
+    out["install_has_main"] = MAIN_FULL in (names or [])
     out["install_query_mode"] = "direct"
     return out
 
