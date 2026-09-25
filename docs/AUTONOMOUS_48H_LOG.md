@@ -21,6 +21,15 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 326 — keep-prior land + research open-list audit (2026-09-25)
+
+- Tip stable @ `077464e` (match=1); Path C IDLE@0019; durable write 8/8; `lemma_closed=false`.
+- Landed keep-prior WORKDIR verify fix on trial `main` @ `10ac11c` (closed draft #113 after direct land).
+- Research audit: `portable/BATCH326_RESEARCH_STACK_AUDIT.json` — mechanical OPEN list only; guard pass; flipped_anything=false.
+- Inventory tip refresh → trial `10ac11c`; STATUS_GUARD_SNAPSHOT tip_sha → live hardening tip.
+- NEVER flip research.
+
+
 ### Batch 325 — keep-prior bundle verify WORKDIR (2026-09-25)
 
 - Tip stable @ `077464e` (match=1); Path C IDLE@0019; `lemma_closed=false`.

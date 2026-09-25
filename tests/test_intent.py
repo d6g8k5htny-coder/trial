@@ -12932,3 +12932,21 @@ def test_batch325_keep_prior_bundle_verify_workdir() -> None:
     assert "Batch 325" in log_md
     assert "keep-prior" in log_md.lower() or "WORKDIR" in log_md
 
+
+def test_batch326_research_audit_no_promotion() -> None:
+    """Batch 326: research open-list audit artifact; lemma_closed stays false."""
+    import json
+
+    path = ROOT / "portable" / "BATCH326_RESEARCH_STACK_AUDIT.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data.get("lemma_closed") is False
+    assert data.get("flipped_anything") is False
+    assert data.get("scientific_effect") == "NONE"
+    assert str(data.get("batch")) == "326"
+    assert data.get("audit_kind") == "research_stack_mechanical_open_list"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "Batch 325: verify against WORKDIR" in refresh
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 326" in log_md
+
