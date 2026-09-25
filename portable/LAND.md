@@ -1,3 +1,7 @@
+## STATUS (Batch 352 inv-preserve-tip-pin)
+
+tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; durable 8/8; batch 352; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 351 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
