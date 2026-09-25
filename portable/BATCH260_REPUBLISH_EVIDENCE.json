@@ -27,8 +27,10 @@
   "scientific_effect": "NONE",
   "generated_at_utc": "2026-09-25T01:22:14Z",
   "helper": "scripts/republish_living_path_c_release.sh",
-  "release_tgz_bytes_after": 380287,
-  "release_tgz_sha256_after": "134d24d429645d9e155191d4f814cfd8d0e98dccee5fb6945c02b14985192734",
-  "uploaded_at_utc": "2026-09-25T01:22:14Z",
-  "upload_ok": true
+  "release_tgz_bytes_after": 386431,
+  "release_tgz_sha256_after": "7aad9d5d1b3811deddbdaff58041cc7054ca7c09bc0ecd0e88dd2f1a9d58c172",
+  "uploaded_at_utc": "2026-09-25T01:26:40Z",
+  "upload_ok": true,
+  "release_tgz_bytes_after_scripts": 380287,
+  "release_tgz_sha256_after_scripts": "134d24d429645d9e155191d4f814cfd8d0e98dccee5fb6945c02b14985192734"
 }

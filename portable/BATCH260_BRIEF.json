@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "republish_living_path_c_release clobber upload after Batch 259 deferred stale pair; living-tolerant intent asserts for unblock/LAND STATUS headers",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 79,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -58,18 +58,19 @@
       "scripts/owner_set_main_push_token.sh (Batch 259)",
       "scripts/aligned_drift_watch.py / audit_main_alignment.py (Batch 256)"
     ],
-    "release_tgz_bytes_after": 380287,
-    "release_tgz_sha256_after": "134d24d429645d9e155191d4f814cfd8d0e98dccee5fb6945c02b14985192734",
+    "release_tgz_bytes_after": 386431,
+    "release_tgz_sha256_after": "7aad9d5d1b3811deddbdaff58041cc7054ca7c09bc0ecd0e88dd2f1a9d58c172",
     "upload_ok": true,
     "batch259_deferred": "373392_vs_351458",
     "main_ci_recent_failures": 0,
     "living_header_ci_flake_runs": [
       "36080808841",
       "36080755890"
-    ]
+    ],
+    "release_tgz_bytes_after_scripts": 380287
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 260: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; living release pack stale (351458→380287) — republished batch241-path-c-bundle; living-tolerant intent asserts; lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 260: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; living release pack stale (351458\u2192380287 scripts, final pack 386431 with Batch260 artifacts) \u2014 republished batch241-path-c-bundle; living-tolerant intent asserts; lemma_closed=false; flipped nothing. Never printed tokens.",
   "artifacts": [
     "scripts/republish_living_path_c_release.sh",
     "scripts/print_owner_unblock.sh",
@@ -77,10 +78,15 @@
     "portable/BATCH260_HUNT.json",
     "portable/BATCH260_RESEARCH_STACK_AUDIT.json",
     "portable/BATCH260_REPUBLISH_EVIDENCE.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/79",
+    "https://github.com/d6g8k5htny-coder/trial/commit/a1bb8b1c2cb91e2fd755345ba6be1a31b29aed15"
   ],
-  "release_tgz_bytes_after": 380287,
-  "release_tgz_sha256_after": "134d24d429645d9e155191d4f814cfd8d0e98dccee5fb6945c02b14985192734",
-  "uploaded_at_utc": "2026-09-25T01:22:14Z",
-  "upload_ok": true
+  "release_tgz_bytes_after": 386431,
+  "release_tgz_sha256_after": "7aad9d5d1b3811deddbdaff58041cc7054ca7c09bc0ecd0e88dd2f1a9d58c172",
+  "uploaded_at_utc": "2026-09-25T01:26:40Z",
+  "upload_ok": true,
+  "trial_main_land": "a1bb8b1",
+  "trial_main_land_full": "a1bb8b1c2cb91e2fd755345ba6be1a31b29aed15",
+  "trial_main_land_method": "pr_79_squash_merge"
 }
