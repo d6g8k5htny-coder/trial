@@ -2,6 +2,17 @@ See also the consolidated land sheet: [`../portable/LAND.md`](../portable/LAND.m
 Relaunch / scope unblock: [`../portable/RELAUNCH_WITH_MAIN_SCOPE.md`](../portable/RELAUNCH_WITH_MAIN_SCOPE.md).
 
 
+## STATUS (Batch 259)
+
+Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. `owner_grant_ai_agent_access --check` only probed App/ghs → sandbox 404 looked like durable failure while MAIN_PUSH_TOKEN was 8/8 WRITABLE. Fixed: dual-vector probe + `owner_set_main_push_token` uses discovered-token auth + `--also-sandbox`. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check            # dual-vector; App 404 ≠ durable DENIED
+./scripts/owner_set_main_push_token.sh --also-sandbox       # durable Actions secret on trial+sandbox
+./scripts/refresh_path_c_bundle.sh --dry-run                # tip match @ fa32d11
+./scripts/when_writable_land.py --once --dry-run            # idle_path_c_done
+```
+
 ## STATUS (Batch 258)
 
 Hardening tip `fa32d11` stable (tip_moved=false). Default tip ALIGNED @ `72558a5`. WRITE WRITABLE (device-auth). Path C `IDLE_PATH_C_DONE`. `wait_until_aligned` max-wait during pure TRANSPORT_ERROR polls lied as MISALIGNED (exit 1). Fixed: exit 2 + honest `status=TRANSPORT_ERROR`. `lemma_closed=false`. Scientific effect: NONE.

@@ -8,6 +8,11 @@
 #   ./scripts/owner_grant_ai_agent_access.sh              # dry-run (default)
 #   ./scripts/owner_grant_ai_agent_access.sh --dry-run     # same
 #   ./scripts/owner_grant_ai_agent_access.sh --check       # probe install + pulls
+#       # Batch 259: dual-vector — active gh token AND durable MAIN_PUSH_TOKEN
+#       # (env / well-known files) across ALL repositoryDependencies (8 incl.
+#       # sandbox). App/ghs often 404s private sandbox while device /
+#       # MAIN_PUSH_TOKEN is 8/8 WRITABLE; report both so App 404 is not
+#       # mistaken for durable-write failure. Never prints tokens.
 #   ./scripts/owner_grant_ai_agent_access.sh --invite-collaborators
 #       # only if AI_COLLAB_USERNAMES env lists real logins (comma-separated)
 #   ./scripts/owner_grant_ai_agent_access.sh --help
@@ -19,6 +24,13 @@ ENV_JSON="${ENV_JSON:-$ROOT/.cursor/environment.json}"
 DRY_RUN=1
 DO_CHECK=0
 DO_INVITE=0
+# Batch 259: well-known durable MAIN_PUSH_TOKEN drops (same order as
+# when_writable_land / owner_set_main_push_token). Values never printed.
+DURABLE_TOKEN_PATHS=(
+  "/cursor/stores/self/MAIN_PUSH_TOKEN"
+  "/workspace/.secrets/MAIN_PUSH_TOKEN"
+  "/tmp/gh-dylan-auth/access_token"
+)
 
 die() { echo "owner_grant_ai_agent_access: ERROR: $*" >&2; exit 1; }
 
@@ -32,10 +44,12 @@ Usage: owner_grant_ai_agent_access.sh [--dry-run] [--check] [--invite-collaborat
       the Grok/xAI PAT fallback. No mutations.
 
   --check
-      Probe current token: /installation/repositories, contents read, and
-      create-ref write (probe refs deleted). Lists ALL repositoryDependencies
-      (expect 8 including sandbox). Prints App install URLs with clear
-      "select ALL repositories including sandbox". Never prints tokens.
+      Probe active gh token AND durable MAIN_PUSH_TOKEN (env / well-known
+      files; Batch 259 dual-vector). /installation/repositories, contents
+      read, and create-ref write (probe refs deleted). Lists ALL
+      repositoryDependencies (expect 8 including sandbox). Prints App
+      install URLs with clear "select ALL repositories including sandbox".
+      Never prints tokens.
 
   --invite-collaborators
       Invite collaborators ONLY when AI_COLLAB_USERNAMES is set to a
@@ -215,9 +229,111 @@ echo "  Trial secret: ./scripts/owner_set_main_push_token.sh --dry-run"
 echo "  Path C after write: ./scripts/owner_path_c_oneshot.sh --from-bundle"
 echo
 
+# Batch 259: probe one auth vector across all deps. Never prints token values.
+# Args: vector_label  probe_ref_suffix
+# Uses ambient GH_TOKEN / gh auth. Prints one line per repo + summary vars via
+# globals: _PROBE_WRITABLE_COUNT _PROBE_SANDBOX_READ _PROBE_SANDBOX_WRITE
+probe_repos_vector() {
+  local vector_label="$1"
+  local ref_suffix="$2"
+  local r read_http tip tip_short def ls_remote write
+  _PROBE_WRITABLE_COUNT=0
+  _PROBE_SANDBOX_READ="?"
+  _PROBE_SANDBOX_WRITE="DENIED"
+  echo "Per-repo probe vector=${vector_label} (all ${#REPOS[@]} deps; secrets redacted):"
+  for r in "${REPOS[@]}"; do
+    # Avoid SIGPIPE under pipefail: do not pipe gh into head.
+    read_http="$(gh api -i "/repos/$r/contents/README.md" 2>/dev/null | awk 'NR==1{print $2; exit}' || true)"
+    tip="$(gh api "/repos/$r/git/ref/heads/main" --jq .object.sha 2>/dev/null || true)"
+    # Reject non-SHA junk (e.g. JSON error bodies when repo is 404)
+    if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
+      tip=""
+    fi
+    if [[ -z "$tip" ]]; then
+      def="$(gh api "/repos/$r" --jq .default_branch 2>/dev/null || echo main)"
+      tip="$(gh api "/repos/$r/git/ref/heads/$def" --jq .object.sha 2>/dev/null || true)"
+      if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
+        tip=""
+      fi
+    fi
+    # Also try ls-remote readability for private/out-of-scope (no token printed)
+    ls_remote="ok"
+    if ! git ls-remote "https://github.com/$r.git" HEAD >/dev/null 2>&1; then
+      ls_remote="not_found_or_denied"
+    fi
+    write="DENIED"
+    if [[ -n "$tip" ]]; then
+      # Unique per-repo probe ref (Batch 259) — avoids cross-repo reuse collisions
+      # under concurrent sibling grant --check runs.
+      local probe_ref="cursor-grant-probe-${ref_suffix}-${r##*/}"
+      # GitHub ref names: strip trailing hyphens from short repo names like "governance-"
+      probe_ref="${probe_ref%-}"
+      if gh api -X POST "/repos/$r/git/refs" -f "ref=refs/heads/${probe_ref}" -f "sha=$tip" >/dev/null 2>&1; then
+        write="WRITABLE"
+        gh api -X DELETE "/repos/$r/git/refs/heads/${probe_ref}" >/dev/null 2>&1 || true
+        _PROBE_WRITABLE_COUNT=$((_PROBE_WRITABLE_COUNT + 1))
+      fi
+    fi
+    tip_short="${tip:0:7}"
+    [[ -z "$tip_short" ]] && tip_short="?"
+    echo "repo=$r read_http=${read_http:-?} write=$write tip=$tip_short ls_remote=$ls_remote"
+    if [[ "$r" == "$OWNER/sandbox" ]]; then
+      _PROBE_SANDBOX_READ="${read_http:-?}"
+      _PROBE_SANDBOX_WRITE="$write"
+    fi
+  done
+  echo "vector_summary=${vector_label} writable_count=${_PROBE_WRITABLE_COUNT}/${#REPOS[@]} sandbox_read=${_PROBE_SANDBOX_READ} sandbox_write=${_PROBE_SANDBOX_WRITE}"
+}
+
+discover_durable_main_push_token() {
+  # Sets DURABLE_TOKEN / DURABLE_TOKEN_SOURCE. Never echoes token value.
+  DURABLE_TOKEN=""
+  DURABLE_TOKEN_SOURCE="none"
+  if [[ -n "${MAIN_PUSH_TOKEN:-}" ]]; then
+    DURABLE_TOKEN="$MAIN_PUSH_TOKEN"
+    DURABLE_TOKEN_SOURCE="env:MAIN_PUSH_TOKEN"
+    return 0
+  fi
+  if [[ -n "${GH_TOKEN:-}" ]]; then
+    # Only treat GH_TOKEN as durable when it is not the Cursor App ghs token
+    # that --check already used as the active vector.
+    case "${GH_TOKEN}" in
+      ghs_*) ;;
+      *)
+        DURABLE_TOKEN="$GH_TOKEN"
+        DURABLE_TOKEN_SOURCE="env:GH_TOKEN"
+        return 0
+        ;;
+    esac
+  fi
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    case "${GITHUB_TOKEN}" in
+      ghs_*) ;;
+      *)
+        DURABLE_TOKEN="$GITHUB_TOKEN"
+        DURABLE_TOKEN_SOURCE="env:GITHUB_TOKEN"
+        return 0
+        ;;
+    esac
+  fi
+  local path
+  for path in "${DURABLE_TOKEN_PATHS[@]}"; do
+    if [[ -f "$path" ]]; then
+      # strip trailing whitespace/newlines only; never echo
+      DURABLE_TOKEN="$(tr -d '\r' <"$path" | sed -e 's/[[:space:]]*$//' )"
+      if [[ -n "$DURABLE_TOKEN" ]]; then
+        DURABLE_TOKEN_SOURCE="file:$path"
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
 if [[ "$DO_CHECK" -eq 1 ]]; then
   need_cmd gh
-  echo "=== --check probe (current gh token; no secrets printed) ==="
+  need_cmd git
+  echo "=== --check probe (dual-vector; no secrets printed) ==="
   echo "Expected repos (${#REPOS[@]}):"
   n=0
   for r in "${REPOS[@]}"; do
@@ -250,41 +366,62 @@ print("install_missing_from_deps:", missing)'
   fi
   TS="$(date +%s)"
   echo
-  echo "Per-repo probe (all ${#REPOS[@]} deps):"
-  for r in "${REPOS[@]}"; do
-    # Avoid SIGPIPE under pipefail: do not pipe gh into head.
-    read_http="$(gh api -i "/repos/$r/contents/README.md" 2>/dev/null | awk 'NR==1{print $2; exit}' || true)"
-    tip="$(gh api "/repos/$r/git/ref/heads/main" --jq .object.sha 2>/dev/null || true)"
-    # Reject non-SHA junk (e.g. JSON error bodies when repo is 404)
-    if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
-      tip=""
-    fi
-    if [[ -z "$tip" ]]; then
-      def="$(gh api "/repos/$r" --jq .default_branch 2>/dev/null || echo main)"
-      tip="$(gh api "/repos/$r/git/ref/heads/$def" --jq .object.sha 2>/dev/null || true)"
-      if [[ ! "$tip" =~ ^[0-9a-f]{7,40}$ ]]; then
-        tip=""
-      fi
-    fi
-    # Also try ls-remote readability for private/out-of-scope (no token printed)
-    ls_remote="ok"
-    if ! git ls-remote "https://github.com/$r.git" HEAD >/dev/null 2>&1; then
-      ls_remote="not_found_or_denied"
-    fi
-    write="DENIED"
-    if [[ -n "$tip" ]]; then
-      if gh api -X POST "/repos/$r/git/refs" -f "ref=refs/heads/cursor-grant-probe-$TS" -f "sha=$tip" >/dev/null 2>&1; then
-        write="WRITABLE"
-        gh api -X DELETE "/repos/$r/git/refs/heads/cursor-grant-probe-$TS" >/dev/null 2>&1 || true
-      fi
-    fi
-    tip_short="${tip:0:7}"
-    [[ -z "$tip_short" ]] && tip_short="?"
-    echo "repo=$r read_http=${read_http:-?} write=$write tip=$tip_short ls_remote=$ls_remote"
-  done
+  echo "--- vector 1: active gh auth (often Cursor App ghs / trial-only) ---"
+  probe_repos_vector "active_gh" "${TS}-a"
+  ACTIVE_WRITABLE="$_PROBE_WRITABLE_COUNT"
+  ACTIVE_SANDBOX_READ="$_PROBE_SANDBOX_READ"
+  ACTIVE_SANDBOX_WRITE="$_PROBE_SANDBOX_WRITE"
+
+  echo
+  echo "--- vector 2: durable MAIN_PUSH_TOKEN (env / well-known files) ---"
+  DURABLE_TOKEN=""
+  DURABLE_TOKEN_SOURCE="none"
+  if discover_durable_main_push_token; then
+    echo "durable_token_source=${DURABLE_TOKEN_SOURCE} durable_token_present=1"
+    # Prefer durable token for this vector only; App hosts.yml returns after unset.
+    _PREV_GH_TOKEN="${GH_TOKEN:-}"
+    _PREV_MAIN_PUSH_TOKEN="${MAIN_PUSH_TOKEN:-}"
+    _PREV_GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+    export GH_TOKEN="$DURABLE_TOKEN"
+    export MAIN_PUSH_TOKEN="$DURABLE_TOKEN"
+    export GITHUB_TOKEN="$DURABLE_TOKEN"
+    probe_repos_vector "durable_MAIN_PUSH_TOKEN" "${TS}-d"
+    DURABLE_WRITABLE="$_PROBE_WRITABLE_COUNT"
+    DURABLE_SANDBOX_READ="$_PROBE_SANDBOX_READ"
+    DURABLE_SANDBOX_WRITE="$_PROBE_SANDBOX_WRITE"
+    # Drop durable token from this shell after probe; restore prior env if any.
+    unset GH_TOKEN MAIN_PUSH_TOKEN GITHUB_TOKEN DURABLE_TOKEN || true
+    [[ -n "${_PREV_GH_TOKEN}" ]] && export GH_TOKEN="${_PREV_GH_TOKEN}"
+    [[ -n "${_PREV_MAIN_PUSH_TOKEN}" ]] && export MAIN_PUSH_TOKEN="${_PREV_MAIN_PUSH_TOKEN}"
+    [[ -n "${_PREV_GITHUB_TOKEN}" ]] && export GITHUB_TOKEN="${_PREV_GITHUB_TOKEN}"
+    unset _PREV_GH_TOKEN _PREV_MAIN_PUSH_TOKEN _PREV_GITHUB_TOKEN || true
+  else
+    echo "durable_token_source=none durable_token_present=0"
+    echo "durable_probe=skipped (no env MAIN_PUSH_TOKEN / GH_TOKEN / well-known file)"
+    echo "well_known_paths: ${DURABLE_TOKEN_PATHS[*]}"
+    DURABLE_WRITABLE=0
+    DURABLE_SANDBOX_READ="n/a"
+    DURABLE_SANDBOX_WRITE="n/a"
+  fi
+
+  echo
+  echo "=== dual-vector summary (Batch 259) ==="
+  echo "active_writable=${ACTIVE_WRITABLE}/${#REPOS[@]} active_sandbox_read=${ACTIVE_SANDBOX_READ} active_sandbox_write=${ACTIVE_SANDBOX_WRITE}"
+  echo "durable_writable=${DURABLE_WRITABLE}/${#REPOS[@]} durable_sandbox_read=${DURABLE_SANDBOX_READ} durable_sandbox_write=${DURABLE_SANDBOX_WRITE} durable_token_source=${DURABLE_TOKEN_SOURCE}"
+  if [[ "$ACTIVE_SANDBOX_READ" == "404" && "$DURABLE_SANDBOX_WRITE" == "WRITABLE" ]]; then
+    echo "NOTE: App/ghs sandbox 404 while durable MAIN_PUSH_TOKEN sandbox WRITABLE — install lacks sandbox; durable write is OK. Do not treat App 404 as Path C / sibling DENIED."
+  fi
+  if [[ "$DURABLE_WRITABLE" -eq "${#REPOS[@]}" ]]; then
+    echo "durable_sibling_coverage=8/8_WRITABLE"
+  elif [[ "$DURABLE_TOKEN_SOURCE" != "none" ]]; then
+    echo "durable_sibling_coverage=${DURABLE_WRITABLE}/${#REPOS[@]}"
+  else
+    echo "durable_sibling_coverage=no_token"
+  fi
   echo
   echo "Apps are not enumerable from a ghs installation token without owner OAuth."
   echo "After installing each App (ALL repos including sandbox), re-run --check from an owner laptop gh session."
+  echo "Durable Actions secret: ./scripts/owner_set_main_push_token.sh [--also-sandbox] (never prints token)."
   echo
 fi
 

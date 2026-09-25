@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-09-24T20:05:30Z",
-  "batch": "240",
+  "generated_at_utc": "2026-09-25T01:08:25Z",
+  "batch": "259",
   "install_has_main": false,
   "install_repos": [
     "d6g8k5htny-coder/trial"
@@ -133,7 +133,11 @@
   "sandbox": {
     "readable": true,
     "write": "WRITABLE",
-    "has_agents": true
+    "has_agents": true,
+    "tip": "49ae345",
+    "app_read_http": 404,
+    "durable_read_http": 200,
+    "main_push_token_secret": true
   },
   "apps_documented": [
     "cursor",
@@ -197,7 +201,7 @@
   "repository_selection": "selected",
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
   "script": "scripts/owner_grant_ai_agent_access.sh",
-  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret",
+  "token_vector": "device_auth_file+MAIN_PUSH_TOKEN_secret_trial_main_sandbox",
   "gh_api_inventory": [
     {
       "name": "google-drive",
@@ -304,5 +308,6 @@
       }
     }
   ],
-  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W"
+  "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
+  "durable_sibling_coverage": "8/8_WRITABLE"
 }

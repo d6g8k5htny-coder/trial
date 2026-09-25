@@ -4,7 +4,7 @@
   "base_tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
   "device_auth": "SUCCESS",
   "device_code": "B4B5-42FE",
-  "generated_at": "2026-09-25T01:01:18Z",
+  "generated_at": "2026-09-25T01:08:25Z",
   "goal_complete": true,
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
   "has_token": true,
@@ -13,7 +13,8 @@
   "main_push_token_set": true,
   "main_push_token_set_repos": [
     "d6g8k5htny-coder/trial",
-    "d6g8k5htny-coder/main"
+    "d6g8k5htny-coder/main",
+    "d6g8k5htny-coder/sandbox"
   ],
   "path_c_0018_landed": true,
   "path_c_0018_via": "main_pr_70_merge_62f955a",
@@ -39,7 +40,7 @@
   "tip_full": "fa32d1168ab5245090d6ff3324f4ee9e8124d95a",
   "tip_match": true,
   "write_durable": true,
-  "write_durable_via": "trial_actions_secret_MAIN_PUSH_TOKEN+device_auth_file",
+  "write_durable_via": "trial_actions_secret_MAIN_PUSH_TOKEN+sandbox_actions_secret+device_auth_file",
   "write_state": "WRITABLE",
   "write_vector": "device_auth_create_ref+git_push_dylan_token"
 }
