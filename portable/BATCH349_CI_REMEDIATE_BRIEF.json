@@ -1,0 +1,15 @@
+{
+  "batch": "349",
+  "utc": "2026-09-25T19:56:21Z",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "eng_ci_intent_early_fallback_unit_test_isolate",
+  "defects": [
+    "AUDIT_TRANSPORT_EARLY_FALLBACK=1 in CI Intent broke rate-limit unit backoff tests",
+    "test_batch345_grant_inventory_refresh frozen action grant_inventory_refresh_batch345"
+  ],
+  "goal": "OPEN"
+}

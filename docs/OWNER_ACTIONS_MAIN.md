@@ -1,3 +1,7 @@
+## STATUS (Batch 349 ci-remediate)
+
+CI Intent red: `AUDIT_TRANSPORT_EARLY_FALLBACK=1` broke Batch 256/340 rate-limit unit backoff; force `_TRANSPORT_EARLY_FALLBACK=False` in those unit tests. Soften `BATCH345_GRANT` action allowlist. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 348 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. research_stack_audit_watch: lemma_closed=false; STATUS_GUARD tip==LIVE no lag; eng: living `batch241` script_stale republish after idle print_owner drift + inventory tip pin→HEAD. action=`living_script_stale_republish`. Goal OPEN.

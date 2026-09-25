@@ -1,0 +1,19 @@
+{
+  "batch": "349",
+  "utc": "2026-09-25T19:56:21Z",
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "action": "eng_ci_intent_early_fallback_unit_test_isolate",
+  "ci_failed_runs": [
+    36181817560,
+    36181480085
+  ],
+  "goal": "OPEN",
+  "inventory_trial_tip": "33dda3b6a10b8c41bc57e79d5ae9fd62710f5acb"
+}

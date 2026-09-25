@@ -1,3 +1,7 @@
+## STATUS (Batch 349 ci-remediate)
+
+tip `e3cd7d4` tip_match=true; eng: CI Intent EARLY_FALLBACK isolate in rate-limit unit tests + soften GRANT345 action allowlist; inventory tip pin; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 348 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch: lemma_closed=false; STATUS_GUARD no tip lag; eng: living script_stale republish + inventory tip pin→HEAD; action=living_script_stale_republish; scientific effect NONE.

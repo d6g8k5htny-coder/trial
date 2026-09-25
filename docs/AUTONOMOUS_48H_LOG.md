@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 349 — CI Intent EARLY_FALLBACK unit-test isolate + GRANT345 soften (2026-09-25)
+
+- Tip **stable** @ `e3cd7d4`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- CI red on main (e.g. 36181817560): Intent suite with `AUDIT_TRANSPORT_EARLY_FALLBACK=1` raised `RateLimitExhausted` in Batch 256/340 unit backoff tests; also frozen `BATCH345_GRANT.action`.
+- Eng: force early-fallback off in those unit tests; soften grant345 action allowlist; inventory tip pin→HEAD.
+- Goal OPEN. NEVER flip research.
+
 ### Batch 348 — research_stack_audit_watch + living script_stale (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
