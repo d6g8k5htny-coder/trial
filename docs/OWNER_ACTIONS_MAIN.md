@@ -1,3 +1,12 @@
+## STATUS (Batch 358 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: inventory trial tip lagged after Batch 357/358 lands — preserve_durable re-pin→HEAD. `lemma_closed=false`. Goal OPEN. action=`inventory_tip_repin_after_land_head`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=358 python3 scripts/refresh_ai_agent_access_inventory.py
+python3 -m pytest tests/test_intent.py::test_batch358_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 358 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_or_eng: no tip move; living tip/script current. Evidence: `portable/BATCH358_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
