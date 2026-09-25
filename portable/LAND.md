@@ -1,3 +1,11 @@
+## STATUS (Batch 362 tip-eng)
+
+tip `e3cd7d4` tip_match=true; eng: living script_stale republish + REFRESH/last-resort 361→362; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
+## STATUS (Batch 362 idle)
+
+tip `e3cd7d4` tip_match=true; tip_or_eng watch idle; living tip_stale=0 script_stale=0; parent-pin tip lag skipped; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 361 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-resort 360→361 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

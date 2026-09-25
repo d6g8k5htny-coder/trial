@@ -19409,10 +19409,70 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH361_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
-    assert "REFRESH_BATCH_TAG:-361" in (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert 'return "361"' in (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert ("REFRESH_BATCH_TAG:-361" in refresh) or ("REFRESH_BATCH_TAG:-362" in refresh)
+    inv_src = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    assert ('return "361"' in inv_src) or ('return "362"' in inv_src)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 361)
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+def test_batch362_idle_tip_sync_watch() -> None:
+    """Batch 362: tip stable @e3cd7d4; idle_no_commit tip_or_eng evidence."""
+    import json
+    tiny = json.loads((ROOT / "portable" / "BATCH362_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "362"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    evidence = json.loads((ROOT / "portable" / "BATCH362_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+    brief = json.loads((ROOT / "portable" / "BATCH362_IDLE_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "362"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("living_tip_stale") == 0
+    assert brief.get("living_script_stale") == 0
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 362)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 362" in log_md and "idle_no_commit" in log_md
+
+def test_batch362_tip_or_eng_continue() -> None:
+    """Batch 362: tip_or_eng — living script_stale republish + last-resort unfreeze."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "362" and brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("goal") == "OPEN" and brief.get("flipped_anything") is False
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_living_script_stale_republish" and evidence.get("tip_match") is True
+    assert "REFRESH_BATCH_TAG:-362" in (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert 'return "362"' in (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 362)
+    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 

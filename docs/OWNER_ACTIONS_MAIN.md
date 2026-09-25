@@ -1,3 +1,21 @@
+## STATUS (Batch 362 tip-eng)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: living script_stale after Batch 362 header; last-resort frozen 361 — living republish + unfreeze→362. Parent-pin tip lag skipped. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch362_tip_or_eng_continue -q
+```
+
+## STATUS (Batch 362 idle)
+
+Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_or_eng: no tip move; living tip/script current; inv tip lag equals parent only — skip tip-pin treadmill. Evidence: `portable/BATCH362_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 361 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 361 idle/research; last-resort frozen 360; living script_stale — preserve_durable re-pin→HEAD + unfreeze→361 + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.

@@ -47,7 +47,9 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 361 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 362 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 362: tip_or_eng living script_stale republish + last-resort 361→362 @e3cd7d4"
+echo " Batch 362: idle_no_commit tip-stable watch @e3cd7d4 (tip_match; living tip/script current; parent-pin tip lag skipped)"
 echo " Batch 361: tip_or_eng inv tip re-pin (beyond parent) + last-resort 360→361 + living republish @e3cd7d4"
 echo " Batch 361: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @e3cd7d4; no delta vs 359"
 echo " Batch 361: tip_sync_watch idle_no_commit @e3cd7d4 (tip_match; living tip/script current)"

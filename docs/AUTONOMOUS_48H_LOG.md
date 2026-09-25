@@ -21,6 +21,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 362 — tip_or_eng: living script_stale republish + last-resort 361→362 (2026-09-25)
+
+- Tip stable @ `e3cd7d4`; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: living script_stale=1 after Batch 362 header; last-resort frozen 361 — living republish + unfreeze→362. Parent-pin tip lag skipped. NEVER flip research.
+
+### Batch 362 — tip_or_eng idle_no_commit @e3cd7d4 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_or_eng: no tip move; living current; inv tip lag equals parent only — skip tip-pin treadmill. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 361 — tip_or_eng: inv tip re-pin beyond parent + last-resort 360→361 + living republish (2026-09-25)
 
 - Tip stable @ `e3cd7d4`; durable 8/8; `lemma_closed=false`; goal OPEN.

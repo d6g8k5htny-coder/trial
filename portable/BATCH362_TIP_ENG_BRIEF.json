@@ -1,0 +1,22 @@
+{
+  "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
+  "tip": "e3cd7d4",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_living_script_stale_republish",
+  "batch": "362",
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "generated_at_utc": "2026-09-25T22:19:21Z",
+  "defect_id": "living_script_stale_after_batch362_header",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e",
+  "script_stale_before": 1,
+  "script_stale_after": 0,
+  "living_tag": "batch241-path-c-bundle",
+  "also_unfroze_last_resort": "361\u2192362",
+  "note": "parent-pin tip lag skipped; living script_stale after Batch 362 header"
+}
