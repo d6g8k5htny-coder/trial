@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 362 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 361→362 (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged 4 commits after Batch 362 idle/research; last-resort frozen 361; living script drift after unfreeze — PRESERVE_DURABLE re-pin→HEAD + unfreeze→362 + living republish.
+- Artifacts: `BATCH362_TIP_ENG_{BRIEF,HUNT,EVIDENCE}.json`, `BATCH362_INV_TIP_PIN_*.json`, `BATCH362_UNFREEZE_BRIEF.json`. NEVER flip research.
+
 ### Batch 362 — research_stack_audit_watch_no_promotion (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

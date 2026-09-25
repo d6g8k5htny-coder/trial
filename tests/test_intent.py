@@ -19547,3 +19547,30 @@ def test_batch362_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 362 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 362" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch362_tip_or_eng_continue() -> None:
+    """Batch 362: tip_or_eng — inv tip re-pin beyond parent + living republish."""
+    import json
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert int(str(inv.get("batch") or "0")) >= 362
+    assert inv.get("lemma_closed") is False
+    trial = next(d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial"))
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("36b877a") and not tip.startswith("567f562")
+    brief = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "362" and brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert brief.get("trial_tip_matches_live_head") is True and brief.get("goal") == "OPEN"
+    assert brief.get("lag_beyond_parent") is True
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH362_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish" and evidence.get("tip_match") is True
+    assert "REFRESH_BATCH_TAG:-362" in (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert 'return "362"' in (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 362)
+    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
