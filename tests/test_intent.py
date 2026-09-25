@@ -15541,3 +15541,52 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH345" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 345" in log_md
+
+
+def test_batch345_grant_inventory_refresh() -> None:
+    """Batch 345: inventory batch >=345 + durable 8/8; grant skip source=none."""
+    import json
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 345
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert inv.get("scientific_effect") == "NONE"
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert int(inv.get("sibling_write_count") or 0) == 8
+    assert inv.get("sandbox", {}).get("readable") is True
+    assert inv.get("sandbox", {}).get("write") == "WRITABLE"
+    for d in inv.get("details") or []:
+        assert d.get("push") is True, d
+        assert d.get("write") == "WRITABLE", d
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH345_GRANT.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "345"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("coverage") == "8/8_WRITABLE"
+    assert tiny.get("action") == "grant_inventory_refresh_batch345"
+    assert tiny.get("assignment") == "grant_check_dual_vector_8of8"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("goal") == "OPEN"
+    assert _living_tip(str(tiny.get("tip", "")))
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert 'DURABLE_TOKEN_SOURCE" == "none"' in grant
+    assert 'DURABLE_TOKEN_SOURCE" == "none" || "$DURABLE_WRITABLE" -eq 0' not in grant
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 345)
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 grant)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "BATCH345_GRANT" in log_md or "grant_inventory_refresh_batch345" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 grant)" in owner

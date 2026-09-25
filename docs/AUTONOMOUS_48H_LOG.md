@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
+
+- Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Dual-vector `--check` → `durable_token_source=none` → skip App-corrupt; preserve_durable tip refresh trial→`2364c36` (living HEAD); INV_BATCH→345; coverage 8/8_WRITABLE.
+- Artifact `portable/BATCH345_GRANT.json`. NEVER flip research.
+
 ### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
