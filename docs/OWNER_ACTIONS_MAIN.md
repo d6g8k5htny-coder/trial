@@ -1,3 +1,11 @@
+## STATUS (Batch 352 grant)
+
+Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`bf93032`; INV_BATCH→352; coverage 8/8_WRITABLE; `BATCH352_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.
+
+```bash
+./scripts/owner_grant_ai_agent_access.sh --check
+```
+
 ## STATUS (Batch 352 republish)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: living `batch241-path-c-bundle` lagged CRITICAL scripts after Batch 352 inv tip-pin — `republish_living_path_c_release.sh --force` cleared `script_stale` (1→0). `lemma_closed=false`. Goal OPEN.
