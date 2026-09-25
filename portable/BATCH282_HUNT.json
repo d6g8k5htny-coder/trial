@@ -1,0 +1,57 @@
+{
+  "batch": "282",
+  "hunt": "pack_portable_omits_owner_grant_script",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": true,
+  "defect_found": true,
+  "defect_id": "pack_portable_omits_owner_grant_script",
+  "bugs_fixed": [
+    "pack tarball omitted owner_grant_ai_agent_access.sh while OWNER_ONE_LINERS referenced it 8× (Batch 281 fix unreachable from release extract)",
+    "print_owner_unblock VERIFY focused hardcoded 90/0 vs living 92/0"
+  ],
+  "avoided": [
+    "tip-observe inventable README LOCK advance",
+    "research HOLD drafts",
+    "grant ls-remote auth (281)",
+    "probe W2 contents-ref (280)",
+    "republish --out basename (279)",
+    "pack_portable --help OUT (278)",
+    "owner VERIFY.release-first (277)",
+    "republish living-tag post-pack race (276)",
+    "MANIFEST verified_batch release-align (275)",
+    "APPLY/VERIFY honesty (273)",
+    "land-workflows Path C idle (272)",
+    "probe W3 dry_run false-positives (271)",
+    "when_writable once pid-liveness (270)"
+  ],
+  "candidates_checked": {
+    "tip_vs_3b3860d": "TIP_OK",
+    "grant_durable_ls_remote": "already_fixed_281",
+    "probe_w2_ref_first": "already_fixed_280",
+    "republish_basename": "already_fixed_279",
+    "pack_portable_help": "already_fixed_278",
+    "owner_verify_release_first": "already_fixed_277",
+    "when_writable_once": "already_fixed_270",
+    "land_workflows_idle": "already_fixed_272",
+    "living_pack_vs_release": "bytes_near_parity_need_upload_0",
+    "patch_0020": "NEGATIVE",
+    "open_main_prs": "all_DRAFT_research_HOLD_tip_observe_skipped",
+    "sibling_sandbox": "App_ambient_gh_404_dylan_durable_WRITABLE",
+    "pack_missing_grant": "reproduced_absent_from_tgz",
+    "unblock_focused_90": "reproduced_hardcoded_vs_VERIFY_92"
+  },
+  "tip": "3b3860d",
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "patch_0020": false,
+  "patch_0020_ready": false,
+  "hunt_0020": "NEGATIVE",
+  "actionable_classic_tools_tests": 0,
+  "HUNT_NEGATIVE": {
+    "patch_0020": true,
+    "note": "eng defect was pack_portable omitting owner_grant after Batch 281"
+  }
+}

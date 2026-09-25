@@ -1,3 +1,7 @@
+## STATUS (Batch 282)
+
+tip `3b3860d` tip_match=true; pack_portable omitted owner_grant_ai_agent_access.sh (+ inventory) while OWNER_ONE_LINERS referenced grant 8×; include in tarball; VERIFY-driven focused N/M; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 281)
 
 tip `3b3860d` tip_match=true; grant --check durable ls-remote bare HTTPS → private sandbox false not_found while write WRITABLE; authenticate ls-remote when token set; lemma_closed=false; scientific effect NONE.

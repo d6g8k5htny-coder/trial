@@ -10943,7 +10943,11 @@ def test_batch281_grant_durable_ls_remote_auth() -> None:
     assert "_ls_tok" in text
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
-    assert "REFRESH_BATCH_TAG:-281" in refresh
+    # Batch 281 introduced authenticated stamp default; Batch 282+ may bump TAG.
+    assert "REFRESH_BATCH_TAG:-" in refresh
+    assert "x-access-token" in (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH281_BRIEF.json").read_text(encoding="utf-8")
@@ -10988,6 +10992,96 @@ def test_batch281_grant_durable_ls_remote_auth() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "Batch 281" in unblock
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+
+
+def test_batch282_pack_portable_includes_owner_grant() -> None:
+    """Batch 282: pack_portable includes owner_grant (+ inventory); VERIFY-driven focused."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+
+    pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
+    assert "owner_grant_ai_agent_access.sh" in pack
+    assert "AI_AGENT_ACCESS_INVENTORY.json" in pack
+
+    grant = ROOT / "scripts" / "owner_grant_ai_agent_access.sh"
+    assert grant.is_file()
+    inv = ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json"
+    assert inv.is_file()
+
+    with tempfile.TemporaryDirectory() as td:
+        out = os.path.join(td, "pack.tgz")
+        subprocess.run(
+            [str(ROOT / "scripts" / "pack_portable.sh"), out],
+            check=True,
+            timeout=90,
+        )
+        listing = subprocess.run(
+            ["tar", "-tzf", out],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout
+        assert "scripts/owner_grant_ai_agent_access.sh" in listing
+        assert "portable/AI_AGENT_ACCESS_INVENTORY.json" in listing
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "Batch 282" in unblock
+    assert "VERIFY_FOCUSED" in unblock
+    assert "focused 90/0" not in unblock
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    assert "REFRESH_BATCH_TAG:-282" in refresh
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH282_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "282"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_shipped") is True
+    assert brief.get("defect_id") == "pack_portable_omits_owner_grant_script"
+    assert brief.get("patch_0020") is False
+    assert brief.get("hunt_0020") == "NEGATIVE"
+    assert str(brief.get("tip", "")).startswith("3b3860d")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH282_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("defect_id") == "pack_portable_omits_owner_grant_script"
+    assert any("281" in a or "ls-remote" in a for a in (hunt.get("avoided") or []))
+    assert any("280" in a or "contents-ref" in a for a in (hunt.get("avoided") or []))
+
+    audit = json.loads(
+        (ROOT / "portable" / "BATCH282_RESEARCH_STACK_AUDIT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert audit.get("lemma_closed") is False
+    assert audit.get("flipped_anything") is False
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 282" in log_md
+
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 282)" in owner
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 282)" in land
+
+    ones = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
+    assert "Batch 282" in ones
 
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")

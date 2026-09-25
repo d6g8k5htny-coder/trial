@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 282 (pack_portable omits owner_grant after Batch 281 → release extract missing fix) — 2026-09-25 ~09:05 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
+
+- Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable token **WRITABLE** / ls_remote=ok (post-281).
+- **Evidence:** `tar -tzf` living/local pack had **no** `scripts/owner_grant_ai_agent_access.sh` while `portable/OWNER_ONE_LINERS.md` (in-pack) referenced grant **8×**; extract → script missing. `print_owner_unblock` hardcoded VERIFY focused **90/0** while VERIFY.json living recount is **92/0**.
+- **Defect shipped (avoid tip-observe / research HOLDs / grant ls-remote 281 / W2 contents-ref 280 / republish basename 279 / pack --help 278 / VERIFY.release-first 277 / living-tag race 276 / MANIFEST 275 / APPLY-VERIFY 273 / land-workflows 272 / probe W3 271 / when_writable pid 270):** include `owner_grant_ai_agent_access.sh` + `AI_AGENT_ACCESS_INVENTORY.json` in `pack_portable`; VERIFY-driven focused line in `print_owner_unblock`; `REFRESH_BATCH_TAG` default 282.
+- Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
+
 ### Batch 281 (grant --check durable ls-remote unauthenticated → false not_found on private sandbox) — 2026-09-25 ~08:50 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
 - Tip vs BASE_TIP `3b3860d`: **tip_match=true** (ALIGNED Path C idle). Open main PRs: all DRAFT research HOLD / tip-observe / nav — **skipped**. Deep 0020 hunt: **NEGATIVE**. Sibling sandbox: App ambient `gh` 404; dylan durable token **WRITABLE**.

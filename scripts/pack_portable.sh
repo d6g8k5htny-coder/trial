@@ -222,6 +222,7 @@ tar -czf "$OUT" -C "$ROOT" \
   portable/PATH_C_STATUS.json \
   portable/LIVING_PATH_C_RELEASE_TAG \
   portable/GH_DEVICE_LOGIN.md \
+  portable/AI_AGENT_ACCESS_INVENTORY.json \
   "${rel_restore[@]}" \
   "${rel_tokens[@]}" \
   ${rel_rebase[@]+"${rel_rebase[@]}"} \
@@ -260,6 +261,7 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/owner_open_path_c_pr.sh \
   scripts/owner_path_c_oneshot.sh \
   scripts/owner_set_main_push_token.sh \
+  scripts/owner_grant_ai_agent_access.sh \
   scripts/assert_path_c_ready.sh \
   scripts/write_path_c_status.py \
   scripts/refresh_path_c_bundle.sh \

@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 281 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 282 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo "Owner: NO restrictions; agents decide. HOLD on PR #2 is VOID."
 echo "Dylan: 48h extended permanently until he intervenes — no 48h finale."
 echo "Live PATH_C_STATUS: write_state=${WRITE_STATE} tip=${STATUS_TIP} base_tip=${BASE_TIP_SHORT}${STATUS_GEN:+ generated_at=${STATUS_GEN}} (see portable/PATH_C_STATUS.json; never print tokens)"
@@ -90,6 +90,7 @@ echo "  Batch 264: Path B dry-run ALREADY_ALIGNED ⇒ land_needed=false; owner_l
 echo "  Batch 265: Batch 262 live-ignore Intent CI-isolates Actions GITHUB_TOKEN (token_source≠env:GITHUB_TOKEN flake)"
 echo "  Batch 266: path_c_dry_run IDLE ⇒ write_required_to_land=false; living stack prose 0008–0019 (not stale 0017)"
 echo "  Batch 267: when_writable dual-daemon status race → daemon.lock flock + --once sidecar (no leftover --dry-run loop)"
+echo "  Batch 282: pack_portable includes owner_grant_ai_agent_access.sh + AI_AGENT_ACCESS_INVENTORY.json (OWNER_ONE_LINERS referenced grant 8× but tarball omitted it post-281)"
 echo "  Batch 281: grant --check durable ls-remote uses token (pre-281 bare https → private sandbox ls_remote=not_found_or_denied while write=WRITABLE)"
 echo "  Batch 280: probe_main_write_vectors W2 contents PUT creates throwaway ref first (pre-280 PUT-only → false DENIED 404 Branch not found while W1 WRITABLE)"
 echo "  Batch 279: republish stages canonical trial-portable-main-fixes.tgz basename + post-upload size/sha verify (pre-279 --out foo.tgz left living pack stale while printing uploaded OK)"
@@ -117,7 +118,24 @@ echo "Path C owner git am (no agent write token): $ROOT/portable/path-c-applied-
 echo "  patch: $ROOT/portable/path-c-applied-bundle/path-c-on-hardening.patch"
 echo "  git bundle (Batch 169 preferred): $ROOT/portable/path-c-applied-bundle/path-c-on-hardening.bundle"
 echo "    git fetch …/path-c-on-hardening.bundle cursor/portable-engineering-patches && git merge --ff-only FETCH_HEAD"
-echo "  verify: $ROOT/portable/path-c-applied-bundle/VERIFY.json  # problems=0 lemma_closed=false focused 90/0"
+# Batch 282: focused count from VERIFY.json (pre-282 hardcoded 90/0 while living tip recount is 92).
+VERIFY_FOCUSED="?"
+VERIFY_JSON="$ROOT/portable/path-c-applied-bundle/VERIFY.json"
+if [[ -f "$VERIFY_JSON" ]]; then
+  VERIFY_FOCUSED="$(
+    python3 -c '
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+p = d.get("pytest") or {}
+fp = p.get("focused_passed")
+rw = p.get("focused_resource_warnings")
+fp_s = "?" if fp is None else str(fp)
+rw_s = "?" if rw is None else str(rw)
+print(f"{fp_s}/{rw_s}")
+' "$VERIFY_JSON" 2>/dev/null || echo '?/?'
+  )"
+fi
+echo "  verify: $ROOT/portable/path-c-applied-bundle/VERIFY.json  # problems=0 lemma_closed=false focused ${VERIFY_FOCUSED}"
 # Batch 261: do not hardcode APPLY_READY when PATH_C_STATUS already idle.
 if [[ "${IDLE_STATUS}" == "IDLE_PATH_C_DONE" ]]; then
   echo "Path C: $ROOT/scripts/owner_land_path_c.sh --dry-run  # already-on-tip idle (IDLE_PATH_C_DONE) @ ${BASE_TIP_SHORT}; path_c_dry_run → idle not APPLY_READY"

@@ -5,6 +5,17 @@ Copy-paste from a machine or Actions runner that **can write** to
 device-auth / `MAIN_PUSH_TOKEN` can be **WRITABLE** (never print tokens). See
 `portable/PATH_C_STATUS.json` `write_state`.
 
+> **Batch 282 — tip `3b3860d` tip_match; default ALIGNED `72558a5`; write WRITABLE; pack includes grant script; release `batch241-path-c-bundle`**:
+>
+> ```bash
+> ./scripts/pack_portable.sh /tmp/trial-portable-main-fixes.tgz
+> tar -tzf /tmp/trial-portable-main-fixes.tgz | grep owner_grant_ai_agent_access
+> ./scripts/assert_path_c_ready.sh
+> ```
+>
+> Docs: `portable/LAND.md` | `docs/OWNER_ACTIONS_MAIN.md`. Defect: living/local pack tarball omitted `scripts/owner_grant_ai_agent_access.sh` (+ `portable/AI_AGENT_ACCESS_INVENTORY.json`) while this file referenced grant 8× — Batch 281 ls-remote auth fix unreachable from release extract. Also `print_owner_unblock` hardcoded VERIFY focused 90/0 vs living 92/0. No research flip. No 0020.
+> `lemma_closed=false`. Scientific effect: **NONE**.
+
 > **Batch 281 — tip `3b3860d` tip_match; default ALIGNED `72558a5`; write WRITABLE; grant durable ls-remote auth; release `batch241-path-c-bundle`**:
 >
 > ```bash
