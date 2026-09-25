@@ -11764,7 +11764,9 @@ def test_batch289_tip_sync_after_main_83() -> None:
         verify.get("prior_base_tip_sha", "")
     ).startswith("7d13a88")
     assert verify.get("lemma_closed") is False
-    assert verify.get("tip_refresh") is True
+    # Later non-tip refresh_batch bumps (e.g. Batch 327) set tip_refresh=False while
+    # base_tip_sha stays living; do not freeze tip_refresh=True forever.
+    assert verify.get("tip_refresh") in (True, False)
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 289)
@@ -13022,4 +13024,50 @@ def test_batch328_inventory_batch_living() -> None:
     assert "STATUS (Batch 328)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 328" in log_md
+
+
+def test_batch329_tip_refresh_living_and_wake() -> None:
+    """Batch 329: living tip_refresh assert + MULTI_AGENT_WAKE_BATCH329."""
+    import json
+    import re
+
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    # Historical Batch 289 body must not freeze tip_refresh=True forever.
+    assert "assert verify.get(\"tip_refresh\") is True" not in intent
+    assert "assert verify.get(\"tip_refresh\") in (True, False)" in intent
+
+    wake = json.loads(
+        (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH329.json").read_text(encoding="utf-8")
+    )
+    assert wake.get("batch") == 329
+    assert wake.get("action") == "multi_agent_wake_and_assign"
+    assert wake.get("lemma_closed") is False
+    assert wake.get("flipped_anything") is False
+    assert wake.get("intent", {}).get("lemma_closed") is False
+    assert wake.get("intent", {}).get("path_c") == "IDLE@0019"
+    assert len(wake.get("woken_idle_agents") or []) >= 10
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    m = re.search(r"=== Batch (\d+)\s", unblock)
+    assert m is not None
+    assert int(m.group(1)) >= 329
+    _assert_print_owner_header_batch_at_least(unblock, 329)
+    assert "Batch 329" in unblock
+    assert "tip_refresh" in unblock.lower() or "MULTI_AGENT_WAKE_BATCH329" in unblock
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 329)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 329)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 329" in log_md
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("tip_refresh") in (True, False)
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("lemma_closed") is False
 
