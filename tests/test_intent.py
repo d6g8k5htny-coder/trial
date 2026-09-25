@@ -15680,44 +15680,61 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     m = re.search(r'(?m)^    return "(\d+)"\s*$', poster)
     assert m is not None
     assert int(m.group(1)) >= 345
+
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 345)
     # Single living === header (no dual 344-first trap).
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers, "missing print_owner Batch header"
     assert int(headers[0]) >= 345
+
     sys.path.insert(0, str(ROOT / "scripts"))
     import post_batch322_wake_comments as wake  # type: ignore
+
     n = wake._living_batch_n()
     assert n.isdigit()
     assert int(n) >= 345
+
     brief = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_BRIEF.json").read_text(
             encoding="utf-8"
         )
+    )
     assert brief.get("batch") == "345"
     assert brief.get("lemma_closed") is False
     assert brief.get("flipped_anything") is False
     assert brief.get("scientific_effect") == "NONE"
     assert brief.get("defect_id") == (
         "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
+    )
     assert brief.get("action") == "eng_wake_ultimate_fallback_unfreeze"
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip", "")))
     assert brief.get("tip_match") is True
+
     hunt = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
     assert hunt.get("defect_id") == (
+        "wake_ultimate_fallback_frozen_341_and_print_owner_dual_header_344"
+    )
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
     assert hunt.get("defect_shipped") is True
+
     evidence = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_FALLBACK_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
     assert evidence.get("lemma_closed") is False
     assert evidence.get("path_c") == "IDLE@0019"
     assert evidence.get("action") == "eng_wake_ultimate_fallback_unfreeze"
     assert _living_tip(str(evidence.get("hardening_tip", "")))
+
     assert "ultimate fallback" in unblock and "345" in unblock
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake-fallback)" in land
@@ -15725,20 +15742,72 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     assert "wake ultimate fallback" in log_md.lower() or "341→345" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake-fallback)" in owner
+
+
 def test_batch345_tip_sync_e3cd7d4() -> None:
-    """Batch 345: tip-sync fcad723→e3cd7d4; inventable not promoted."""
+    """Batch 345: tip-sync fcad723→e3cd7d4 after main #105; docs not promoted."""
+    import json
+
+    brief = json.loads(
         (ROOT / "portable" / "BATCH345_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "345"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
     assert brief.get("action") == "tip_sync_landed"
-    assert brief.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4"
-    assert brief.get("keep_prior") is True
+    assert brief.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4_main_105"
+    assert brief.get("inventable_promoted") is False
+    assert 105 in (brief.get("merged_prs") or [])
+    assert _living_tip(str(brief.get("tip", "")))
+    assert str(brief.get("tip", "")).startswith("e3cd7d4")
     assert str(brief.get("prior_tip", "")).startswith("fcad723")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH345_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == "tip_sync_fcad723_to_e3cd7d4_main_105"
+    assert hunt.get("lemma_closed") is False
+    assert any("105" in a or "inventable" in a or "docs" in a for a in (hunt.get("avoided") or []))
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH345_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("aligned") is True
+    assert evidence.get("action") == "tip_sync_landed"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert str(evidence.get("write", "")).upper() == "WRITABLE"
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    # Live BASE_TIP supersedes across tip-sync; Batch 345 shipped e3cd7d4.
+    # Do not hard-pin the live tip SHA in BASE_TIP (Batch 341/344 class).
+    assert _living_tip(base_tip)
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(str(verify.get("refresh_batch") or "0")) >= 345
+    assert _living_tip(str(verify.get("base_tip_sha", "")))
+    assert verify.get("keep_prior_bundle") is True
+    assert verify.get("lemma_closed") is False
     assert "e3cd7d4" in _LIVING_TIPS
     assert "fcad723" in _LIVING_TIPS
-    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base)
-    status = json.loads(
-        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
-    assert _living_tip(str(status.get("base_tip") or ""))
-    assert status.get("lemma_closed") is False
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 345)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 345)
     assert "e3cd7d4" in unblock or "tip-sync" in unblock.lower()
-    assert "e3cd7d4" in land or "STATUS (Batch 345 tip-sync)" in land
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in land
+    assert "e3cd7d4" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 345 tip-sync" in log_md
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 tip-sync)" in owner
