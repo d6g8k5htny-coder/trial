@@ -1,0 +1,14 @@
+{
+  "batch": "343",
+  "hunt": "tip_sync_or_eng_idle",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "defect_shipped": false,
+  "defect_found": false,
+  "tip_moved": false,
+  "tip": "fcad723",
+  "hunt_0020": "NEGATIVE",
+  "action": "idle_no_commit",
+  "generated_at_utc": "2026-09-25T18:59:47Z"
+}

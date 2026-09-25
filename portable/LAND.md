@@ -4,6 +4,8 @@ tip `f244312` tip_match=true; eng: soften Batch 340 Intent living INV_BATCH hard
 
 ## STATUS (Batch 343)
 
+tip `fcad723` tip_match=true; tip_sync_or_eng pulse — peer tip-sync already landed; living tip/script clean; action=idle_no_commit; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 tip `fcad723` tip_match=true TIP_OK after tip-sync; #109 MERGED into hardening → refresh keep-prior + living tip_stale republish; inventable NOT promoted; prior script_stale pulse superseded; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 343 script_stale)

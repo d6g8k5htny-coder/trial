@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 343 — idle_no_commit after peer tip-sync @fcad723 (2026-09-25)
+
+- Tip stable @ `fcad723` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Peer already tip-synced `f244312`→`fcad723` (#109 inventable not promoted). Fresh pulse: refresh --dry-run match=1; assert IDLE_PATH_C_DONE; living tip_stale=0 script_stale=0 (paper-trail tgz republish).
+- No further eng; inventable drafts skipped. action=`idle_no_commit`.
+
 ### Batch 343 — tip-sync after main #109 (2026-09-25)
 ### Batch 343 — grant inventory tip refresh (2026-09-25)
 

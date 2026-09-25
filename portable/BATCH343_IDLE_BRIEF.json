@@ -1,0 +1,29 @@
+{
+  "batch": "343",
+  "generated_at_utc": "2026-09-25T18:59:47Z",
+  "status": "idle_no_commit_after_peer_tip_sync",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip": "fcad723",
+  "tip_full": "fcad72366743f5244eb26a0164e106419de78137",
+  "tip_match": true,
+  "tip_moved": false,
+  "aligned": true,
+  "write": "WRITABLE",
+  "durable": "8/8",
+  "path_c": "IDLE@0019",
+  "idle_status": "IDLE_PATH_C_DONE",
+  "action": "idle_no_commit",
+  "route_now": "IDLE",
+  "goal": "OPEN",
+  "evidence": {
+    "refresh_dry_run": "BASE_TIP=fcad723 live=fcad723 match=1",
+    "assert_path_c_ready": "OK IDLE_PATH_C_DONE stack_end=0019 lemma_closed=false",
+    "living": "tip_stale=0 script_stale=0 (republish cleared paper-trail tgz_newer)",
+    "peer_tip_sync": "de2f74d / e7898f5 / c9b7a36 already landed f244312\u2192fcad723",
+    "open_undrafted_main_eng_prs": [],
+    "inventable": "skipped_not_promoted"
+  },
+  "note": "Batch 343 tip_sync_or_eng pulse: tip already synced by peer; no remaining eng; idle_no_commit; goal OPEN."
+}
