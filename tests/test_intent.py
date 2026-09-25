@@ -10628,7 +10628,7 @@ def test_batch278_pack_portable_help_not_out() -> None:
     # Living default advances each tip-sync batch (278→279+).
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282", "283")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("278", "279", "280", "281", "282", "283", "284", "285")
     )
 
     living = ROOT / "portable" / "LIVING_PATH_C_RELEASE_TAG"
@@ -10759,7 +10759,7 @@ def test_batch279_republish_canonical_basename() -> None:
     # Living default advances each batch; 279 introduced the stamp at 279.
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282", "283")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("279", "280", "281", "282", "283", "284", "285")
     )
 
     with tempfile.TemporaryDirectory(prefix="b279-intent-") as td:
@@ -10877,7 +10877,7 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     # Batch 281+ advances default tag; 280 stamp may be historical only.
     assert "REFRESH_BATCH_TAG:-" in refresh
     assert any(
-        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282", "283")
+        f"REFRESH_BATCH_TAG:-{n}" in refresh for n in ("280", "281", "282", "283", "284", "285")
     )
 
     brief = json.loads(
