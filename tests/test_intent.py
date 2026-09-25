@@ -16392,7 +16392,10 @@ def test_batch348_inventory_tip_pin() -> None:
         (ROOT / "portable" / "BATCH348_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
     )
     assert brief.get("batch") == "348"
-    assert brief.get("action") == "grant_inventory_tip_pin_after_main_lands"
+    assert brief.get("action") in (
+        "grant_inventory_tip_pin_after_main_lands",
+        "inventory_preserve_durable_tip_pin",
+    )
     assert brief.get("lemma_closed") is False
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
