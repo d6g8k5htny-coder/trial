@@ -18116,6 +18116,9 @@ def test_batch356_idle_tip_sync_watch() -> None:
 
 def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     """Batch 356: preserve_durable tip pin; 8/8; lemma open."""
+
+def test_batch356_inventory_preserve_durable_tip_pin() -> None:
+    """Batch 356: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
     import json
     import re
 
@@ -18123,6 +18126,9 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
     )
     assert int(str(inv.get("batch") or "0")) >= 356
+
+
+    assert inv.get("durable_writable") == "8/8"
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     assert inv.get("lemma_closed") is False
     assert inv.get("flipped_anything") is False
@@ -18132,6 +18138,8 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     )
     tip = str(trial.get("tip_sha") or "")
     assert tip and not tip.startswith("3eba995")
+
+
 
     evidence = json.loads(
         (ROOT / "portable" / "BATCH356_INV_TIP_PIN_EVIDENCE.json").read_text(encoding="utf-8")
@@ -18144,6 +18152,10 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     assert evidence.get("tip_match") is True
     assert evidence.get("defect_id") == "inventory_trial_tip_lag_after_lands"
     assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    assert evidence.get("scientific_effect") == "NONE"
+    assert str(evidence.get("hardening_tip", "")).startswith("e3cd7d4")
+    assert evidence.get("trial_tip_matches_live_head") is True
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH356_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8")
@@ -18160,12 +18172,14 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r"=== Batch (\d+)\s", unblock)
     assert headers and int(headers[0]) >= 356 and len(headers) == 1
     assert "inventory_preserve_durable_tip_pin" in unblock
 
     base_tip = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base_tip)
-
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 356 inv-preserve-tip-pin)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
@@ -18173,3 +18187,9 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 356" in log_md and "inventory_preserve_durable_tip_pin" in log_md
 
+    assert "e3cd7d4" in base_tip
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 356 inv-preserve-tip-pin)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 356" in log_md and "inventory_preserve_durable_tip_pin" in log_md

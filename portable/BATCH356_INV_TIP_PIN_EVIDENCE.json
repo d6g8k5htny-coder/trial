@@ -1,6 +1,6 @@
 {
   "batch": "356",
-  "generated_at_utc": "2026-09-25T21:12:51Z",
+  "generated_at_utc": "2026-09-25T21:12:48Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -17,7 +17,7 @@
   "trial_tip_sha": "2a096ccb69e5d53308bbdb3d1d7b835c9c85c51e",
   "live_trial_head": "2a096ccb69e5d53308bbdb3d1d7b835c9c85c51e",
   "trial_tip_matches_live_head": true,
-  "prior_trial_tip_sha": "3eba995c8221",
+  "prior_trial_tip_sha": "2a096ccb69e5",
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
@@ -29,7 +29,5 @@
     "trial": "2a096cc"
   },
   "preserve_durable_writable0_denied": true,
-  "coordinator_bcId": "bc-01a0cf1e",
-  "defect_id": "inventory_trial_tip_lag_after_lands",
-  "bc_id": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf"
+  "coordinator_bcId": "bc-01a0cf1e"
 }
