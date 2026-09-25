@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 303 (ALIGN REPOS — MULTI_AGENT dual-vector docs fix; tip stable @02cfbfd) — 2026-09-25 ~14:02 UTC (PERMANENT window; eng align fix; scientific effect NONE; flipped nothing)
+
+- Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; no tip-sync). Default ALIGNED @ `72558a5` (workspace-landing success). Path C `IDLE_PATH_C_DONE`. WRITE durable dylan **8/8**; App ambient **1/8** trial-only (`install_has_main=false`, sandbox App 404).
+- Sibling probe (env 8 deps): gh API OK via durable; MAIN_PUSH_TOKEN Actions secrets on trial+main+sandbox only. Tooling `google-drive`/`governance-`/`query-`/`sandbox` missing `.github/workflows` — **ruled_out** (AGENTS/README-only roots). Math/meta tip CI absent on `main` push — **ruled_out** (branch-scoped `on.push` + PR path filters; PR heads green).
+- **Defect shipped:** `docs/MULTI_AGENT_ACCESS.md` capability table was App-only (`push main=no`, `device=pending`) while `owner_grant_ai_agent_access.sh --check` reports durable **8/8 WRITABLE** + device SUCCESS — rewritten to dual-vector matching grant script.
+- Guard+research: `lemma_closed=false`; `flipped_anything=false`. action=`docs_multi_agent_capability_dual_vector`. next=`tip_sync_drift_watch @02cfbfd`; App install add all 8 when Dylan relaunches.
+
 ### Batch 299 (permanent-watch IDLE — tip stable @02cfbfd, MAIN #85/#87/#88 status, idle_no_commit) — 2026-09-25 ~13:48 UTC (PERMANENT window; idle paper trail; scientific effect NONE; flipped nothing)
 
 - Tip **stable** @ `02cfbfd` (BASE==LIVE; TIP_OK; Path C `IDLE_PATH_C_DONE`). Default ALIGNED @ `72558a5`. WRITE WRITABLE (durable dylan; 8/8 siblings). Tip CI green (ci/nav/withdrawal @ `02cfbfd`).

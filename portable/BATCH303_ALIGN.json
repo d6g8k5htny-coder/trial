@@ -1,0 +1,36 @@
+{
+  "batch": "303",
+  "generated_at_utc": "2026-09-25T14:02:00Z",
+  "tip": "02cfbfd",
+  "tip_full": "02cfbfdf3ddc3120ddde6b67b0ff927115de6c4c",
+  "tip_match": true,
+  "aligned": true,
+  "default_tip": "72558a5",
+  "lemma_closed": false,
+  "write": "WRITABLE",
+  "write_durable": "8/8",
+  "write_app_ambient": "1/8_trial_only",
+  "path_c": "IDLE_PATH_C_DONE",
+  "action": "docs_multi_agent_capability_dual_vector",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "siblings": {
+    "env_deps": 8,
+    "gh_api": "8/8_ok_via_durable",
+    "missing_ci_tooling": ["google-drive", "governance-", "query-", "sandbox"],
+    "missing_ci_ruled_out": "docs-only AGENTS/README roots; no test surface to wire",
+    "math_meta_tip_ci": "branch_scoped_PR_green_main_push_not_in_on_push_by_design",
+    "main_default_ci": "workspace-landing_success@72558a5",
+    "MAIN_PUSH_TOKEN_secrets": ["trial", "main", "sandbox"],
+    "install_has_main": false,
+    "install_has_sandbox": false
+  },
+  "fix": "docs/MULTI_AGENT_ACCESS.md capability table was App-only (push main=no, device=pending) while grant --check dual-vector durable 8/8 WRITABLE + device_auth SUCCESS",
+  "ruled_out": [
+    "tip_sync (BASE==LIVE @02cfbfd)",
+    "fix_ci_yaml tooling siblings (no code/tests)",
+    "connect_token remaining 5 (Path C landers already have trial+main+sandbox; agent write is device file not Actions secret)",
+    "App_install_add_sandbox (owner UI; cannot finish from agent)"
+  ],
+  "next": "tip_sync_drift_watch @02cfbfd; App install add all 8 incl sandbox when Dylan relaunches; skip research inventable"
+}

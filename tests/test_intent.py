@@ -12179,6 +12179,62 @@ def test_batch299_permanent_watch_idle() -> None:
     assert status.get("write_state") == "WRITABLE"
 
 
+def test_batch303_align_repos_multi_agent_dual_vector() -> None:
+    """Batch 303: ALIGN REPOS — MULTI_AGENT capability table matches grant dual-vector."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH303_ALIGN.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "303"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("aligned") is True
+    assert tiny.get("write") == "WRITABLE"
+    assert tiny.get("path_c") == "IDLE_PATH_C_DONE"
+    assert tiny.get("tip_match") is True
+    assert str(tiny.get("tip", "")).startswith("02cfbfd")
+    assert tiny.get("action") == "docs_multi_agent_capability_dual_vector"
+    assert tiny.get("write_durable") == "8/8"
+    siblings = tiny.get("siblings") or {}
+    assert siblings.get("env_deps") == 8
+    assert siblings.get("install_has_main") is False
+    assert "docs_multi_agent" in str(tiny.get("fix", "")) or "dual" in str(
+        tiny.get("fix", "")
+    ).lower()
+
+    doc = (ROOT / "docs" / "MULTI_AGENT_ACCESS.md").read_text(encoding="utf-8")
+    assert "Dual-vector" in doc
+    assert "8/8 WRITABLE" in doc
+    assert "device_auth" in doc.lower() or "Device-flow user token" in doc
+    assert "**SUCCESS**" in doc
+    # Stale App-only single-column table must not return.
+    assert "Device-flow user token | pending" not in doc
+    assert "| Push `main` / other owner repos | **no**" not in doc
+
+    grant = (ROOT / "scripts" / "owner_grant_ai_agent_access.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "durable" in grant.lower()
+    assert "sandbox" in grant
+
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 303" in log_md
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 303)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 303)" in owner
+
+    status = json.loads(
+        (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
+    assert status.get("lemma_closed") is False
+    assert _living_tip(status.get("tip"))
+    assert status.get("idle_status") == "IDLE_PATH_C_DONE"
+    assert status.get("write_state") == "WRITABLE"
+
+
 def test_batch298_permanent_watch_idle() -> None:
     """Batch 298: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
     import json

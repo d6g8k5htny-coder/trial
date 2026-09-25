@@ -1,3 +1,7 @@
+## STATUS (Batch 303)
+
+tip `02cfbfd` tip_match=true TIP_OK; ALIGN REPOS — default ALIGNED @72558a5; durable write 8/8; App trial-only; fixed MULTI_AGENT_ACCESS capability table to dual-vector (was stale App-only pending); tooling missing-CI ruled_out; action=docs_multi_agent_capability_dual_vector; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 299)
 
 tip `02cfbfd` tip_match=true TIP_OK; permanent-watch IDLE — BASE==LIVE; #85 OPEN undrafted CI-green inventable skipped; #87 DRAFT CI-fail skipped; #88 tip-observe draft skipped; 0020 NEGATIVE; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

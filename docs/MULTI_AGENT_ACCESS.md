@@ -150,18 +150,26 @@ export AI_COLLAB_USERNAMES='login1,login2'   # owner-supplied only
 
 ## Current agent capability (this Cloud run)
 
-| Capability | Status |
-|------------|--------|
-| Push `trial` | yes |
-| Push `main` / other owner repos | **no** (403; install trial-only) |
-| Read / clone `sandbox` | **no** (404 with current App token; not in install) |
-| Topics / collaborators admin APIs | **no** (403 integration) |
-| Device-flow user token | pending — see `portable/GH_DEVICE_LOGIN.md` |
+Dual-vector — same split as `./scripts/owner_grant_ai_agent_access.sh --check`
+(Batch 259+). Do **not** collapse App/ghs DENIED into durable-write failure.
 
-Agents **cannot** finish App installs for you. The durable unblock is: run
+| Capability | App / ghs (ambient install) | Durable device / `MAIN_PUSH_TOKEN` |
+|------------|-----------------------------|------------------------------------|
+| Push `trial` | yes | yes |
+| Push `main` + other `repositoryDependencies` | **no** (403; install trial-only) | **yes** (live `--check`: **8/8 WRITABLE**) |
+| Read / clone `sandbox` | **no** (404; not in install) | **yes** (HTTP 200) |
+| Topics / collaborators admin APIs | **no** (403 integration) | owner/admin as granted |
+| Device-flow user token | n/a | **SUCCESS** — see `portable/GH_DEVICE_LOGIN.md` |
+
+Live Cursor install today: `repository_selection=selected` → **`trial` only**
+(`install_has_main=false`, `install_has_sandbox=false`). App sandbox 404 while
+durable write is WRITABLE is expected until the install adds all eight repos.
+
+Agents **cannot** finish App installs for you. Owner path: run
 `./scripts/owner_grant_ai_agent_access.sh`, complete each App UI selecting
-**ALL repositories including sandbox**, then relaunch Cursor and reconnect
-ChatGPT/Claude/Grok.
+**ALL repositories including sandbox**, keep durable secret via
+`./scripts/owner_set_main_push_token.sh --also-sandbox --also-main`, then
+relaunch Cursor and reconnect ChatGPT/Claude/Grok.
 
 ---
 
