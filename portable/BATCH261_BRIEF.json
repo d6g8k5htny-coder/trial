@@ -38,7 +38,7 @@
   "pack_release": "batch241-path-c-bundle",
   "automation_improvement": "path_c_dry_run reports IDLE_PATH_C_DONE/already_on_tip/apply_ready=false when landed+tip match; print_owner_unblock Path C line follows idle; refresh_restore_plan recognizes idle state",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 81,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -68,7 +68,7 @@
     "pack_vs_release": "current_no_upload (avoid republish)"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; App install add sandbox when Dylan relaunches",
-  "note": "Batch 261: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; path_c_dry_run APPLY_READY land advert while already-on-tip \u2192 IDLE_PATH_C_DONE; lemma_closed=false; flipped nothing. Never printed tokens.",
+  "note": "Batch 261: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; path_c_dry_run APPLY_READY land advert while already-on-tip \u2192 IDLE_PATH_C_DONE; lemma_closed=false; flipped nothing. Never printed tokens. Trial main PR #81 squash merge @ d3a1d13.",
   "artifacts": [
     "scripts/path_c_dry_run.py",
     "scripts/print_owner_unblock.sh",
@@ -76,6 +76,11 @@
     "portable/BATCH261_BRIEF.json",
     "portable/BATCH261_HUNT.json",
     "portable/BATCH261_RESEARCH_STACK_AUDIT.json",
-    "docs/AUTONOMOUS_48H_LOG.md"
-  ]
+    "docs/AUTONOMOUS_48H_LOG.md",
+    "https://github.com/d6g8k5htny-coder/trial/pull/81",
+    "https://github.com/d6g8k5htny-coder/trial/commit/d3a1d13e3a738167cc7349ec139d4fea937adcae"
+  ],
+  "trial_main_land": "d3a1d13",
+  "trial_main_land_full": "d3a1d13e3a738167cc7349ec139d4fea937adcae",
+  "trial_main_land_method": "pr_81_squash_merge"
 }
