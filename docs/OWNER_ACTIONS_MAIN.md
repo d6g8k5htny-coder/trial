@@ -1,3 +1,12 @@
+## STATUS (Batch 352 wake)
+
+Hardening tip **stable** @ `e3cd7d4`. Dylan: message stopped agents — Task-resume 7 IDLE Path C peers (tip watch, eng hunt, grant, CI audit, inventory, tip/eng rewake, tip cloud). Evidence: `portable/MULTI_AGENT_WAKE_BATCH352.json`. `lemma_closed=false`. action=`multi_agent_wake_and_assign`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ e3cd7d4
+python3 -m pytest tests/test_intent.py::test_batch352_multi_agent_wake_assign -q
+```
+
 ## STATUS (Batch 352 grant)
 
 Hardening tip **stable** @ `e3cd7d4`. Assignment `grant_check_dual_vector_8of8`: `--check` → `durable_token_source=none` skip App-corrupt; preserve_durable tip refresh trial→`20d1d08`; INV_BATCH→352; coverage 8/8_WRITABLE; `BATCH352_GRANT.json`. Goal OPEN. `lemma_closed=false`. Scientific effect: NONE.

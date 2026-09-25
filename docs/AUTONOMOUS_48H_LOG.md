@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 352 — MULTI_AGENT wake+assign stopped Path C agents (2026-09-25)
+
+- Dylan asked to message stopped agents and assign Path C intent tasks.
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0.
+- Task-resume 7 IDLE peers: tip watch, eng hunt, grant dual-vector, CI audit, inventory, tip/eng rewake, tip cloud.
+- Wake/inventory ultimate fallback + REFRESH default already at 352 (peer unfreeze). `lemma_closed=false`; scientific effect NONE.
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH352.json`. Goal OPEN. NEVER flip research.
+
 ### Batch 352 — grant_check_dual_vector_8of8 tip refresh (2026-09-25)
 
 - Tip stable @ `e3cd7d4` (match=1); Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
