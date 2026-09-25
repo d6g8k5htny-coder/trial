@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 345 — print_owner single living header (2026-09-25)
+
+- Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: `print_owner_unblock.sh` had dual `=== Batch 344` + `=== Batch 345` headers — first-match parse stuck at 344 (inventory INV_BATCH / Intent header). Collapsed to single living Batch 345 header.
+- NEVER flip research; inventable skipped. Goal OPEN.
+
 ### Batch 343 — audit Intent timeout early-fallback (2026-09-25)
 
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

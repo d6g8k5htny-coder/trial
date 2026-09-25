@@ -1,3 +1,7 @@
+## STATUS (Batch 345 print-owner-header)
+
+tip `fcad723` tip_match=true; eng: print_owner single living `=== Batch 345` header (was dual 344+345; first-match inventory/header parse stuck at 344); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 343 audit-timeout)
 
 tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.

@@ -15416,6 +15416,7 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert "36176016910" in audit_src or "TimeoutExpired" in audit_src
     # Misalignment predicate unchanged.
     assert "misaligned = bool(complexity_hits)" in audit_src
+
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "AUDIT_TRANSPORT_EARLY_FALLBACK" in ci
     # Intent suite must enable early-fallback (timeout class).
@@ -15423,16 +15424,19 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     audit_idx = ci.index("Alignment audit", intent_idx)
     intent_block = ci[intent_idx:audit_idx]
     assert 'AUDIT_TRANSPORT_EARLY_FALLBACK: "1"' in intent_block
+
     spec = importlib.util.spec_from_file_location("audit343early", audit_path)
     assert spec is not None and spec.loader is not None
     audit = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(audit)
+
     audit._TRANSPORT_EARLY_FALLBACK = True
     audit._TRANSPORT_SLEEP_S = 0.0
     audit._TRANSPORT_RETRIES = 6
     audit._TRANSPORT_SLEEP_CAP_S = 60.0
     calls = {"n": 0}
     slept = {"s": 0.0}
+
     def fake_urlopen(req, timeout=60):
         calls["n"] += 1
         raise urllib.error.HTTPError(
@@ -15444,8 +15448,10 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
                 b'{"message":"API rate limit exceeded for installation."}'
             ),
         )
+
     def fake_sleep(sec):
         slept["s"] += float(sec)
+
     with mock.patch("urllib.request.urlopen", fake_urlopen), mock.patch(
         "time.sleep", fake_sleep
     ):
@@ -15457,9 +15463,11 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert isinstance(raised, audit.RateLimitExhausted)
     assert calls["n"] == 1
     assert slept["s"] == 0.0
+
     brief = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_BRIEF.json").read_text(
             encoding="utf-8"
+        )
     )
     assert brief.get("batch") == "343"
     assert brief.get("lemma_closed") is False
@@ -15467,15 +15475,23 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert brief.get("scientific_effect") == "NONE"
     assert brief.get("defect_id") == (
         "audit_intent_timeout_under_ratelimit_reset_sleep"
+    )
     assert brief.get("action") == "eng_audit_early_fallback_intent_timeout"
     assert brief.get("inventable_promoted") is False
     assert brief.get("goal_complete") is False
     assert _living_tip(str(brief.get("tip", "")))
+
     hunt = json.loads(
         (ROOT / "portable" / "BATCH343_AUDIT_TIMEOUT_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
     assert hunt.get("defect_id") == (
+        "audit_intent_timeout_under_ratelimit_reset_sleep"
+    )
     assert hunt.get("lemma_closed") is False
     assert hunt.get("hunt_0020") == "NEGATIVE"
+
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 343)
     assert "early-fallback" in unblock.lower() or "Intent timeout" in unblock
@@ -15487,11 +15503,17 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     assert "STATUS (Batch 343 audit-timeout)" in owner or "early-fallback" in owner
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
+    )
     assert status.get("lemma_closed") is False
+
+
 def test_batch345_multi_agent_wake_assign() -> None:
     """Batch 345: Dylan/timer wake stopped agents + assign Path C intent tasks."""
+    import json
+
     wake = json.loads(
         (ROOT / "portable" / "MULTI_AGENT_WAKE_BATCH345.json").read_text(encoding="utf-8")
+    )
     assert wake.get("batch") == 345
     assert wake.get("wake345_on_main") is True
     assert wake.get("lemma_closed") is False
@@ -15502,11 +15524,78 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
     assert _living_tip(str(wake.get("tip") or ""))
+
+    brief = json.loads(
         (ROOT / "portable" / "BATCH345_WAKE_BRIEF.json").read_text(encoding="utf-8")
+    )
     assert brief.get("batch") == "345"
     assert brief.get("action") == "multi_agent_wake_and_assign"
+    assert brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 345)
     assert "WAKE345" in unblock or "MULTI_AGENT wake" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "MULTI_AGENT_WAKE_BATCH345" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 345" in log_md
+
+
+def test_batch345_print_owner_single_living_header() -> None:
+    """Batch 345: print_owner must emit exactly one === Batch N living header."""
+    import json
+    import re
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r'echo "=== Batch (\d+)', unblock)
+    assert headers, "missing print_owner === Batch N header echo"
+    assert len(headers) == 1, f"dual living headers {headers} — first-match stuck"
+    assert int(headers[0]) >= 345
+    _assert_print_owner_header_batch_at_least(unblock, 345)
+    assert "single living header" in unblock or "dual" in unblock.lower()
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH345_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "345"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert brief.get("defect_id") == (
+        "print_owner_dual_batch_header_344_345_first_match_stuck_344"
+    )
+    assert brief.get("action") == "eng_print_owner_single_living_header"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("goal_complete") is False
+    assert _living_tip(str(brief.get("tip", "")))
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH345_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_id") == (
+        "print_owner_dual_batch_header_344_345_first_match_stuck_344"
+    )
+    assert hunt.get("lemma_closed") is False
+    assert hunt.get("hunt_0020") == "NEGATIVE"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH345_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("tip_match") is True
+    assert evidence.get("aligned") is True
+    assert evidence.get("action") == "eng_print_owner_single_living_header"
+    assert evidence.get("path_c") == "IDLE@0019"
+    assert str(evidence.get("write", "")).upper() == "WRITABLE"
+    assert evidence.get("goal_complete") is False
+    assert _living_tip(str(evidence.get("hardening_tip", "")))
+
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 print-owner-header)" in land
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "single living header" in log_md.lower() or "dual" in log_md.lower()
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 345 print-owner-header)" in owner

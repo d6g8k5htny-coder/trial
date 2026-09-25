@@ -1,3 +1,12 @@
+## STATUS (Batch 345 print-owner-header)
+
+Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: `print_owner_unblock.sh` emitted dual `=== Batch 344` + `=== Batch 345` headers — first-match parse stuck at 344 for inventory INV_BATCH / Intent header gates. Single living header Batch 345. Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.
+
+```bash
+./scripts/print_owner_unblock.sh | head -1   # === Batch 345 —
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
+```
+
 ## STATUS (Batch 343 audit-timeout)
 
 Hardening tip **stable** @ `fcad723` (tip_match=true; Path C idle; BASE==LIVE). Eng: Intent audit timeout under rate-limit reset sleep — `AUDIT_TRANSPORT_EARLY_FALLBACK=1` → raw/ls-remote inside 60s budget (CI 36176016910). Guard+research: `lemma_closed=false`. Scientific effect: NONE. Goal OPEN.

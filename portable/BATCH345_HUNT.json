@@ -1,0 +1,30 @@
+{
+  "batch": "345",
+  "hunt": "tip_sync_or_eng_on_healthy_VM",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "defect_shipped": true,
+  "defect_id": "print_owner_dual_batch_header_344_345_first_match_stuck_344",
+  "tip": "fcad723",
+  "tip_moved": false,
+  "tip_match": true,
+  "action": "eng_print_owner_single_living_header",
+  "hunt_0020": "NEGATIVE",
+  "avoided": [
+    "duplicate tip-sync",
+    "promote inventable",
+    "flip lemma_closed",
+    "invent 0020"
+  ],
+  "candidates_checked": {
+    "tip_dry_run": "stable_fcad723_match=1",
+    "intent_frozen_base_tip": "already_softened_344",
+    "print_owner_dual_header": "shipped",
+    "inv_ultimate_fallback_343": "deferred_header_fix_first",
+    "living_script_stale": "republish_after_ship"
+  },
+  "generated_at_utc": "2026-09-25T19:16:00Z",
+  "bugs_fixed": [
+    "WAKE345 Intent SyntaxError repair (truncated json.loads/read_text)"
+  ]
+}
