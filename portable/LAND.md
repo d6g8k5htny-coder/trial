@@ -1,3 +1,7 @@
+## STATUS (Batch 362 tip-eng-post-soften)
+
+tip `e3cd7d4` tip_match=true; eng: post-soften inv tip re-pin→HEAD + living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 362 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-resort 361→362 + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.

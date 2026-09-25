@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 362 — tip_or_eng: post-soften inv tip re-pin + living republish (2026-09-25)
+
+- Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: after Intent soften land, trial tip lagged + living `script_stale=1` — PRESERVE_DURABLE re-pin→HEAD + batch241 `--force`.
+- Artifacts: updated `BATCH362_TIP_ENG_*.json`, `BATCH362_INV_TIP_PIN_*.json`, `BATCH362_REPUBLISH_*.json`. NEVER flip research.
+
 ### Batch 362 — tip_or_eng: inv tip re-pin beyond parent + unfreeze 361→362 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

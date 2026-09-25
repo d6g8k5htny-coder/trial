@@ -1,6 +1,6 @@
 {
   "batch": "362",
-  "generated_at_utc": "2026-09-25T22:16:02Z",
+  "generated_at_utc": "2026-09-25T22:21:13Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -14,10 +14,10 @@
   "action": "inventory_preserve_durable_tip_pin",
   "durable": "8/8_WRITABLE",
   "coverage": "8/8_WRITABLE",
-  "trial_tip_sha": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
-  "live_trial_head": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
+  "trial_tip_sha": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
+  "live_trial_head": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
   "trial_tip_matches_live_head": true,
-  "prior_trial_tip_sha": "36b877a8ae78438f67ac5f65277c7f9c46d129e3",
+  "prior_trial_tip_sha": "590928e8d25f",
   "lag_before": 4,
   "tip_pins": {
     "google-drive": "ea55c6e",
@@ -27,8 +27,10 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "590928e"
+    "trial": "6f225f7"
   },
   "preserve_durable_writable0_denied": true,
-  "inventory_batch": "362"
+  "inventory_batch": "362",
+  "peer_bcId": "bc-0521f95c-2069-5eaf-9b1c-8f1a4613b877",
+  "assignment": "tip_or_eng_cloud_peer"
 }

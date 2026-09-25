@@ -1,6 +1,6 @@
 {
   "batch": "362",
-  "generated_at_utc": "2026-09-25T22:16:02Z",
+  "generated_at_utc": "2026-09-25T22:21:13Z",
   "hardening_tip": "e3cd7d4873c51e69529616e9efe5d20286ef9d11",
   "tip": "e3cd7d4",
   "tip_match": true,
@@ -10,18 +10,21 @@
   "goal": "OPEN",
   "inventable_promoted": false,
   "coordinator_bcId": "bc-01a0cf1e",
-  "defect_id": "inventory_tip_lag_beyond_parent_after_batch362_idle",
+  "peer_bcId": "bc-0521f95c-2069-5eaf-9b1c-8f1a4613b877",
+  "defect_id": "inv_tip_lag_and_living_script_stale_after_362_soften",
   "action": "eng_inv_tip_repin_and_living_republish",
-  "aligned": true,
-  "durable": "8/8_WRITABLE",
-  "write": "WRITABLE",
-  "path_c": "IDLE@0019",
-  "trial_tip_sha": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
-  "live_trial_head": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
+  "trial_tip_sha": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
+  "live_trial_head": "6f225f75e734b6498c002fe7e79f85cee1f516c0",
   "trial_tip_matches_live_head": true,
-  "prior_trial_tip_sha": "36b877a8ae78438f67ac5f65277c7f9c46d129e3",
-  "lag_before": 4,
   "lag_beyond_parent": true,
+  "lag_before": 1,
+  "prior_trial_tip_sha": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
+  "prior_trial_tip": "590928e8d25fb86214bb852c7c720926f5d7a3b7",
+  "script_stale_pre": 1,
+  "script_stale_post": 0,
+  "durable": "8/8_WRITABLE",
+  "coverage": "8/8_WRITABLE",
+  "path_c": "IDLE@0019",
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "ec84613",
@@ -30,6 +33,8 @@
     "meta-framework": "14f6836",
     "query-": "a61656f",
     "sandbox": "49ae345",
-    "trial": "590928e"
-  }
+    "trial": "6f225f7"
+  },
+  "bc_id": "bc-0521f95c-2069-5eaf-9b1c-8f1a4613b877",
+  "upload_ok": true
 }

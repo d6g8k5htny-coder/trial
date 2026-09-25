@@ -1,3 +1,13 @@
+## STATUS (Batch 362 tip-eng-post-soften)
+
+Hardening tip **stable** @ `e3cd7d4`. Eng: post-soften inv tip lag + living script_stale — PRESERVE_DURABLE re-pin→HEAD + living republish. `lemma_closed=false`. Goal OPEN.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=362 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch362_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 362 tip-eng)
 
 Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Batch 362 idle/research (lag=4); last-resort frozen 361 — preserve_durable re-pin→HEAD + unfreeze→362 + living republish. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
