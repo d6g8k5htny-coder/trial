@@ -1,6 +1,6 @@
 {
   "batch": "268",
-  "generated_at_utc": "2026-09-25T03:15:00Z",
+  "generated_at_utc": "2026-09-25T03:16:45Z",
   "status": "pack_living_tag_validate_before_write_fixed",
   "waiting_ci": false,
   "goal_complete": true,
@@ -36,9 +36,9 @@
   "path_c_0019_landed": true,
   "path_c_landed": true,
   "pack_release": "batch241-path-c-bundle",
-  "automation_improvement": "pack_portable derives living tag then fail-closed oneshot/open_pr :-default check BEFORE writing LIVING_PATH_C_RELEASE_TAG (atomic tmp+replace); mismatch exit 2 leaves prior pin intact — stops VERIFY.batch-without-release dirtying pin to batch250 while defaults stay batch241",
+  "automation_improvement": "pack_portable derives living tag then fail-closed oneshot/open_pr :-default check BEFORE writing LIVING_PATH_C_RELEASE_TAG (atomic tmp+replace); mismatch exit 2 leaves prior pin intact \u2014 stops VERIFY.batch-without-release dirtying pin to batch250 while defaults stay batch241",
   "math_status": "problems=0 disposition=OPEN_HOLD lemma_closed=false",
-  "main_pr_or_null": null,
+  "main_pr_or_null": 96,
   "when_writable_idle": "idle_path_c_done",
   "idle_status": "IDLE_PATH_C_DONE",
   "refresh_dry_run": "tip_stable_fa32d11",
@@ -46,7 +46,7 @@
   "evidence": {
     "before": {
       "pack_order": "write_living_tag_then_validate_oneshot_open_pr",
-      "repro": "strip VERIFY.release (batch=250) → pack exit 2; living pin became batch250-path-c-bundle",
+      "repro": "strip VERIFY.release (batch=250) \u2192 pack exit 2; living pin became batch250-path-c-bundle",
       "readers_raced": [
         "owner_path_c_oneshot.sh",
         "write_path_c_status.py",
@@ -55,7 +55,7 @@
     },
     "after": {
       "pack_order": "derive_validate_then_atomic_write",
-      "repro": "same strip VERIFY.release → pack exit 2; living pin stays batch241-path-c-bundle; stderr notes pin NOT written",
+      "repro": "same strip VERIFY.release \u2192 pack exit 2; living pin stays batch241-path-c-bundle; stderr notes pin NOT written",
       "happy_path": "pack exit 0 living_tag=batch241-path-c-bundle"
     },
     "main_ci_recent_failures": 0,
@@ -66,7 +66,7 @@
     "sibling_grant": "durable_8_of_8_writable_app_sandbox_404_deferred"
   },
   "next_focus": "tip_sync_drift_watch; keep Path C idle until tip move or 0020; skip research HOLD drafts; deferred pack-vs-release newer (no republish); App install add sandbox when Dylan relaunches",
-  "note": "Batch 268: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; pack_portable living-tag write-before-validate race fixed (validate-before-write + atomic stamp); lemma_closed=false; flipped nothing. Never printed tokens. Avoided when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene.",
+  "note": "Batch 268: tip fa32d11 tip_moved=false ALIGNED+WRITABLE; no green eng PRs; 0020 hunt negative; pack_portable living-tag write-before-validate race fixed (validate-before-write + atomic stamp); lemma_closed=false; flipped nothing. Never printed tokens. Avoided when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene. Trial main PR #96 squash merge @ 20241af.",
   "artifacts": [
     "scripts/pack_portable.sh",
     "scripts/print_owner_unblock.sh",
@@ -77,10 +77,15 @@
     "docs/OWNER_ACTIONS_MAIN.md",
     "portable/LAND.md",
     "portable/OWNER_ONE_LINERS.md",
-    "tests/test_intent.py"
+    "tests/test_intent.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/96",
+    "https://github.com/d6g8k5htny-coder/trial/commit/20241afdaf9d"
   ],
   "shipped": true,
   "where": [
     "trial"
-  ]
+  ],
+  "trial_main_land": "20241af",
+  "trial_main_land_method": "pr_96_squash_merge",
+  "trial_main_land_full": "20241afdaf9d355d5753a0963314dba59eb0654d"
 }

@@ -27,7 +27,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - **Evidence:** `pack_portable.sh` wrote `portable/LIVING_PATH_C_RELEASE_TAG` **before** fail-closed oneshot/open_pr `:-default` check. Strip `VERIFY.release` (batch=250) → pack exit 2 left pin dirty as `batch250-path-c-bundle` while defaults stay `batch241` — raced oneshot / `write_path_c_status` / republish readers. Pack tgz newer than living release deferred (**no republish**).
 - **Defect shipped (avoid when_writable dual-daemon flock / path_c/path_b dry-run idle / Intent token scrub / research-guard PACKET / probe durable file-token / release republish / grant dual-vector / long hygiene):** derive living tag → validate oneshot/open_pr defaults → **then** atomic write pin; mismatch exit 2 leaves prior pin intact (`living pin NOT written`).
 - Research: `lemma_closed=false`; flipped nothing. Never printed tokens.
-- CI tip-drift / watch / sibling checked OK or deferred. Scientific effect NONE.
+- CI tip-drift / watch / sibling checked OK or deferred. Trial main **PR #96 squash merge** @ `20241af`. Scientific effect NONE.
 
 ### Batch 267 (when_writable dual-daemon status race leftover) — 2026-09-25 ~03:01 UTC (PERMANENT window; eng defect ship; scientific effect NONE; flipped nothing)
 
