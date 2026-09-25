@@ -1,0 +1,13 @@
+{
+  "batch": "343",
+  "utc": "2026-09-25T18:56:21Z",
+  "status": "multi_agent_wake_and_assign",
+  "tip": "f244312",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "multi_agent_wake_and_assign",
+  "woken": 10,
+  "spawned_cloud": 1,
+  "artifact": "portable/MULTI_AGENT_WAKE_BATCH343.json"
+}

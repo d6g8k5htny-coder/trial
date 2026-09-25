@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 343 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 343: living script_stale republish after tip-stable watch @f244312"
+echo " Batch 343: MULTI_AGENT wake+assign stopped agents (WAKE343)"
 echo " Batch 342: inventory tip refresh batch 342 + soften wake-token Intent live tip pin"
 echo " Batch 341: soften Batch 340 Intent living INV_BATCH hard pin after Batch 342 tip-refresh (CI red == \"340\" vs living 342)"
 echo " Batch 341: grant inventory tip refresh @f244312 (BATCH341_GRANT; preserve_durable)"

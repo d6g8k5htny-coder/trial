@@ -26,6 +26,10 @@ ghs often lacks Issues:write; durable Path C write uses well-known
 MAIN_PUSH_TOKEN file drops (grant / when_writable_land order). Prefer
 MAIN_PUSH_TOKEN then file drops so living-tip re-posts fire locally/agents.
 
+Batch 343: also wake open *trial* eng PRs (not inventable/research). When
+trial has no eng PRs, main() reports idle_no_commit evidence. Historical
+main eng lanes remain #36/#21/#12.
+
 Scientific effect: NONE. lemma_closed stays false.
 """
 from __future__ import annotations
@@ -39,6 +43,7 @@ import urllib.request
 from pathlib import Path
 
 REPO = "d6g8k5htny-coder/main"
+TRIAL = "d6g8k5htny-coder/trial"
 COORD = "https://cursor.com/agents/bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a"
 TRIAL_REPO = "https://github.com/d6g8k5htny-coder/trial"
 _ROOT = Path(__file__).resolve().parents[1]
@@ -168,9 +173,18 @@ TASKS: dict[int, str] = {
     ),
 }
 
-# Batch 340: ladder / admission / fail-closed OPEN/HOLD only.
+# Batch 340: ladder / admission / fail-closed OPEN/HOLD only (main).
 ENG = (36, 21, 12)
 SKIP_DRAFTS = (110, 109, 108, 106, 105, 103, 98, 46, 38, 8, 7)
+
+# Batch 343: trial eng-only wake targets (grant/land hygiene — not inventable).
+TRIAL_ENG_TASKS: dict[int, str] = {
+    114: (
+        "Resume eng (Batch 343): land `portable/BATCH341_GRANT.json` onto trial "
+        "main (tip-aligned @ living BASE_TIP). Undraft when CI green; additive-only; "
+        "no lemma_closed flip; no claim/research promotion; durable write 8/8 preserved."
+    ),
+}
 
 
 def resolve_wake_token(
@@ -226,7 +240,7 @@ def api(method: str, path: str, body: dict | None = None) -> object:
         headers={
             "Authorization": f"Bearer {token()}",
             "Accept": "application/vnd.github+json",
-            "User-Agent": "trial-batch340-wake",
+            "User-Agent": "trial-batch343-wake",
             "X-GitHub-Api-Version": "2022-11-28",
         },
     )
@@ -241,13 +255,14 @@ def api(method: str, path: str, body: dict | None = None) -> object:
         raise SystemExit(f"HTTP {e.code} {path}: {err[:400]}") from e
 
 
-def list_comments(n: int) -> list[dict]:
+def list_comments(n: int, *, repo: str | None = None) -> list[dict]:
+    repo = repo or REPO
     out: list[dict] = []
     page = 1
     while True:
         chunk = api(
             "GET",
-            f"/repos/{REPO}/issues/{n}/comments?per_page=100&page={page}",
+            f"/repos/{repo}/issues/{n}/comments?per_page=100&page={page}",
         )
         assert isinstance(chunk, list)
         out.extend(chunk)
@@ -257,8 +272,47 @@ def list_comments(n: int) -> list[dict]:
     return out
 
 
-def wake_body(n: int) -> str:
+def list_open_trial_eng_prs() -> list[int]:
+    """Open trial eng PRs — exclude inventable/research by known skip set + title heuristics."""
+    data = api(
+        "GET",
+        f"/repos/{TRIAL}/pulls?state=open&per_page=100",
+    )
+    assert isinstance(data, list)
+    out: list[int] = []
+    for pr in data:
+        n = int(pr.get("number") or 0)
+        if not n or n in SKIP_DRAFTS:
+            continue
+        title = (pr.get("title") or "").lower()
+        # Skip inventable / research / tip-observe drafts on trial.
+        if any(
+            k in title
+            for k in (
+                "inventable",
+                "tip-observe",
+                "research",
+                "claim",
+                "lemma",
+                "prize",
+            )
+        ):
+            continue
+        out.append(n)
+    return sorted(out)
+
+
+def wake_body(n: int, *, repo: str | None = None) -> str:
     marker = batch_marker()
+    repo = repo or REPO
+    if repo == TRIAL:
+        task = TRIAL_ENG_TASKS.get(
+            n,
+            "Resume Path C eng advance on this trial PR — additive-only; "
+            "no lemma_closed flip; no claim/research promotion.",
+        )
+    else:
+        task = TASKS[n]
     return (
         f"**{marker}** — project-intent eng resume (not research flip)\n"
         "\n"
@@ -266,7 +320,7 @@ def wake_body(n: int) -> str:
         "\n"
         f"{intent_line()}\n"
         "\n"
-        f"**Eng resume task:** {TASKS[n]}\n"
+        f"**Eng resume task:** {task}\n"
         "\n"
         "Path C intent advance only. Tip-align if base drifted; additive-only; "
         "never promote claims/premises/prizes/lemmas; no lemma_closed flip. "
@@ -275,61 +329,117 @@ def wake_body(n: int) -> str:
     )
 
 
+def _post_or_skip(
+    n: int,
+    *,
+    repo: str,
+    tip: str,
+    marker: str,
+    commented: list[dict],
+    skipped: list[dict],
+    urls: list[str],
+) -> None:
+    comments = list_comments(n, repo=repo)
+    existing = [
+        c for c in comments if _wake_body_has_living_tip(c.get("body") or "", tip)
+    ]
+    if existing:
+        print(f"SKIP {repo}#{n}: living tip @{tip} already present in wake comment")
+        for c in existing:
+            u = c.get("html_url") or ""
+            print(u)
+            if u:
+                urls.append(u)
+        skipped.append(
+            {
+                "repo": repo,
+                "pr": n,
+                "reason": "identical_living_tip_wake",
+                "tip": tip,
+                "urls": [c.get("html_url") for c in existing if c.get("html_url")],
+            }
+        )
+        return
+    print(f"POST {repo}#{n} marker={marker}...")
+    created = api(
+        "POST",
+        f"/repos/{repo}/issues/{n}/comments",
+        {"body": wake_body(n, repo=repo)},
+    )
+    assert isinstance(created, dict)
+    u = created.get("html_url") or ""
+    print(u)
+    if u:
+        urls.append(u)
+    commented.append({"repo": repo, "pr": n, "url": u})
+
+
 def main() -> int:
     commented: list[dict] = []
     skipped: list[dict] = []
     tip = _living_tip_short()
     marker = batch_marker()
-
-    for n in SKIP_DRAFTS:
-        skipped.append({"pr": n, "reason": "research_or_inventable_draft"})
-
     urls: list[str] = []
-    for n in ENG:
-        comments = list_comments(n)
-        existing = [
-            c for c in comments if _wake_body_has_living_tip(c.get("body") or "", tip)
-        ]
-        if existing:
-            print(f"SKIP #{n}: living tip @{tip} already present in wake comment")
-            for c in existing:
-                u = c.get("html_url") or ""
-                print(u)
-                if u:
-                    urls.append(u)
-            skipped.append(
-                {
-                    "pr": n,
-                    "reason": "identical_living_tip_wake",
-                    "tip": tip,
-                    "urls": [
-                        c.get("html_url") for c in existing if c.get("html_url")
-                    ],
-                }
-            )
-            continue
-        print(f"POST #{n} marker={marker}...")
-        created = api(
-            "POST",
-            f"/repos/{REPO}/issues/{n}/comments",
-            {"body": wake_body(n)},
+
+    # Batch 343: trial eng-only first (assignment scope).
+    trial_eng = list_open_trial_eng_prs()
+    print(f"trial_open_eng_prs={trial_eng}")
+    if not trial_eng:
+        print("idle_no_commit: no open eng-only PRs on d6g8k5htny-coder/trial")
+        result = {
+            "batch": int(_living_batch_n()),
+            "marker": marker,
+            "tip": tip,
+            "action": "idle_no_commit",
+            "trial_open_eng_prs": [],
+            "commented": [],
+            "skipped": [{"reason": "no_open_trial_eng_prs"}],
+            "lemma_closed": False,
+            "flipped_anything": False,
+            "scientific_effect": "NONE",
+            "goal": "open",
+        }
+        print("=== RESULT JSON ===")
+        print(json.dumps(result, indent=2))
+        return 0
+
+    for n in trial_eng:
+        _post_or_skip(
+            n,
+            repo=TRIAL,
+            tip=tip,
+            marker=marker,
+            commented=commented,
+            skipped=skipped,
+            urls=urls,
         )
-        assert isinstance(created, dict)
-        u = created.get("html_url") or ""
-        print(u)
-        if u:
-            urls.append(u)
-        commented.append({"pr": n, "url": u})
+
+    # Historical main eng lanes — tip-sync wake when living tip moved.
+    for n in SKIP_DRAFTS:
+        skipped.append({"repo": REPO, "pr": n, "reason": "research_or_inventable_draft"})
+    for n in ENG:
+        _post_or_skip(
+            n,
+            repo=REPO,
+            tip=tip,
+            marker=marker,
+            commented=commented,
+            skipped=skipped,
+            urls=urls,
+        )
 
     result = {
         "batch": int(_living_batch_n()),
         "marker": marker,
         "tip": tip,
+        "action": "post_eng_pr_wake_comments",
+        "trial_open_eng_prs": trial_eng,
         "commented": commented,
         "skipped": skipped,
         "lemma_closed": False,
         "flipped_anything": False,
         "scientific_effect": "NONE",
+        "goal": "open",
     }
     print("=== RESULT JSON ===")
     print(json.dumps(result, indent=2))

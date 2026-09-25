@@ -18,6 +18,12 @@ Hardening tip **synced** @ `fcad723` after main #109 inventable. Tip-sync keep-p
 ./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ fcad723
 ```
 
+## STATUS (Batch 343 wake)
+
+Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`.
+
+Hardening tip **stable** @ `f244312`. MULTI_AGENT wake+assign; full BATCH341_GRANT on main. Guard+research: `lemma_closed=false`. Scientific effect: NONE.
+
 ## STATUS (Batch 343)
 
 Hardening tip **stable** @ `f244312` (tip_match=true; Path C idle). Tip-sync watch: no tip move; WAKE340 tip pins already living @ `f244312` (Batch 342). Eng: living `batch241-path-c-bundle` `script_stale=1` (`print_owner_unblock.sh` drift after Batch 341/342) — republish cleared. `lemma_closed=false`. Scientific effect: NONE.

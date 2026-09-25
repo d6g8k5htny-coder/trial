@@ -27,6 +27,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip-sync keep-prior; living tip_stale republish; inventable NOT promoted.
 - `lemma_closed=false`; scientific effect NONE.
 
+### Batch 343 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
+
+- Dylan ask: message stopped agents + assign Path C intent tasks.
+- Tip **stable** @ `f244312` (tip_match=1). Path C IDLE@0019; durable 8/8; living `script_stale=0 tip_stale=0`.
+- Woke 10 IDLE agents via Task resume + spawned 1 cloud peer; action=`multi_agent_wake_and_assign`.
+- Also completed full `BATCH341_GRANT.json` land @`20d6003a` (peer stub merged).
+- Artifact: `portable/MULTI_AGENT_WAKE_BATCH343.json`; `lemma_closed=false`; NEVER flip research.
+
 ### Batch 343 (MULTI_AGENT wake_land_verify; tip @f244312) — 2026-09-25 ~18:53 UTC
 - Coordinator `bc-01a0cf1e`: IDLE agent resumed — `wake_land_verify_batch343`.
 - Verified WAKE340 tip pins living @ `f244312` tip_match=1; Path C IDLE@0019; goal OPEN; `lemma_closed=false`.
