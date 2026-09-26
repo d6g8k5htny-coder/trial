@@ -1,3 +1,7 @@
+## STATUS (Batch 480 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 478/477/476/475/474; STATUS_GUARD pass; stamps@480; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 480 tip-eng-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale republish + unfreeze 479→480; inv parent-pin; VERIFY 480; durable 8/8; lemma_closed=false; goal OPEN.
