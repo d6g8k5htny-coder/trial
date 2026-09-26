@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 370 — eng repair Batch369 tip_eng JSON + wake last-resort 369→370 @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: conflict-mangled Batch 369 tip_eng/inv-pin JSON still broke Intent; wake last-resort lagging header 370. Rewrote JSON; wake unfreeze→370. Intent living >=N. Inventable skipped. NEVER flip research.
+
 ### Batch 370 — tip_or_eng inv tip re-pin + living republish @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

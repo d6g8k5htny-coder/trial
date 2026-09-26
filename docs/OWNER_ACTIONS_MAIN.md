@@ -1,3 +1,11 @@
+## STATUS (Batch 370 tip-eng-json-wake)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: mangled `BATCH369_TIP_ENG_*.json` still broke Intent after Batch 369 tip_or_eng race; wake last-resort frozen at 369 vs header 370 — rewrite JSON + wake unfreeze→370. Intent living >=N. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch369_tip_or_eng_continue tests/test_intent.py::test_batch369_tip_or_eng_wake_inv_living -q
+```
+
 ## STATUS (Batch 370 tip-eng)
 
 Hardening tip **stable** @ `1ae02b9`. Trial inv tip lagged beyond parent after peer research/tip-eng merges; living script_stale. PRESERVE_DURABLE re-pin + batch241 republish; unfreeze 369→370. Evidence: `portable/BATCH370_TIP_ENG_*.json`. `lemma_closed=false`. Goal OPEN.

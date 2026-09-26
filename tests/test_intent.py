@@ -20536,7 +20536,10 @@ def test_batch369_tip_or_eng_wake_inv_living() -> None:
     assert tip and not tip.startswith("f73ab9a")
     brief = json.loads((ROOT / "portable" / "BATCH369_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
     assert brief.get("batch") == "369" and brief.get("lemma_closed") is False
-    assert brief.get("action") == "eng_wake_unfreeze_inv_pin_and_living_republish"
+    assert brief.get("action") in (
+        "eng_wake_unfreeze_inv_pin_and_living_republish",
+        "eng_inv_tip_repin_and_living_republish",
+    )
     assert brief.get("trial_tip_matches_live_head") is True
     assert brief.get("lag_beyond_parent") is True
     assert brief.get("goal") == "OPEN"

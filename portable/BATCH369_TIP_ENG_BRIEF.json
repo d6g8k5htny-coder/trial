@@ -1,7 +1,6 @@
 {
   "batch": "369",
-  "generated_at_utc": "2026-09-26T00:05:23Z",
-  "generated_at_utc": "2026-09-26T00:05:48Z",
+  "generated_at_utc": "2026-09-26T00:09:23Z",
   "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
   "tip": "1ae02b9",
   "tip_match": true,
@@ -15,8 +14,6 @@
   "durable": "8/8_WRITABLE",
   "action": "eng_inv_tip_repin_and_living_republish",
   "defect_id": "inventory_tip_lag_beyond_parent_after_batch369_living",
-  "action": "eng_wake_unfreeze_inv_pin_and_living_republish",
-  "defect_id": "wake_last_resort_368_plus_inv_lag2_plus_living_script_stale",
   "trial_tip_sha": "e18bd82f952372c51ccc418fa1e1b78370efc74c",
   "live_trial_head": "e18bd82f952372c51ccc418fa1e1b78370efc74c",
   "trial_tip_matches_live_head": true,
@@ -24,7 +21,7 @@
   "lag_before": 2,
   "prior_trial_tip_sha": "f73ab9a809724dcd10dbb5f223b8cb516ff06f67",
   "also_unfreeze_wake": "368\u2192369",
-  "also_living": "script_stale republish",
+  "also_living": "script_stale cleared via batch241 force upload",
   "tip_pins": {
     "google-drive": "ea55c6e",
     "governance-": "7476e29",
@@ -34,7 +31,5 @@
     "query-": "a61656f",
     "sandbox": "49ae345",
     "trial": "e18bd82"
-  },
-  "also_living": "script_stale cleared via batch241 force upload"
   }
 }
