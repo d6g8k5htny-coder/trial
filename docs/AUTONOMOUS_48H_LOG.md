@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 390 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch390 tip_or_eng soften already on main (389→390).
+- Living `script_stale=1` → force republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 390 — tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze 389→390 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

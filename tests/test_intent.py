@@ -23488,3 +23488,15 @@ def test_batch390_tip_or_eng_soften() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 390)
     assert "STATUS (Batch 390 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch390_post_soften_living() -> None:
+    """Batch 390: living script_stale republish after tip_or_eng soften @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH390_POST_SOFTEN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "390"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_or_eng_soften"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

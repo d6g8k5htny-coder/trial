@@ -1,3 +1,7 @@
+## STATUS (Batch 390 post-soften-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch390 soften land; republish batch241. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 390 tip-eng-soften)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch388_research` eq-froze inventory tip_sha to pin brief → soften; living script_stale; inv parent-pin; unfreeze 389→390. `lemma_closed=false`. Goal OPEN.
