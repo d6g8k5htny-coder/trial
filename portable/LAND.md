@@ -1,6 +1,9 @@
 ## STATUS (Batch 373 living-republish)
 
 tip `1ae02b9` tip_match=true; eng: living script_stale republish after inv-tip-pin/unfreeze; durable 8/8; lemma_closed=false; goal OPEN.
+## STATUS (Batch 373 eng-hunt-idle)
+
+tip `1ae02b9` tip_match=true; eng_defect_hunt idle after peer tip_or_eng; living tip_stale=0 script_stale=0; inv lag=1 skip; stamps@373; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 373 inv-tip-pin)
 

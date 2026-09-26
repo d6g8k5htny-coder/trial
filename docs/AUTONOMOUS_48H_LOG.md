@@ -26,6 +26,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
 - Peer inv tip re-pin + unfreeze 372→373 left living `script_stale=1` (print_owner drift). Real upload → script_stale=0 tip_stale=0. Living >=N. Inventable skipped. NEVER flip research.
 
+### Batch 373 — eng_defect_hunt idle_no_commit @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; inv lag=1 skip; VERIFY/last-resort=header 373; `lemma_closed=false`.
+- Peer tip_or_eng already on main (`db85ba5`). eng_defect_hunt: no further shippable eng. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 ### Batch 373 — inv tip re-pin after tip_sync idle + unfreeze 372→373 @1ae02b9 (2026-09-26)
 

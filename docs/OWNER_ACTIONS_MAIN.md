@@ -1,6 +1,13 @@
 ## STATUS (Batch 373 living-republish)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: living release `script_stale=1` (print_owner drift) after inv-tip-pin/unfreeze — real upload → `script_stale=0`. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
+## STATUS (Batch 373 eng-hunt-idle)
+
+Hardening tip **stable** @ `1ae02b9`. eng_defect_hunt after peer inv tip re-pin + unfreeze 372→373: inv lag=1 skip; living tip/script current; stamps match header 373. Evidence: `portable/BATCH373_ENG_HUNT_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch373_eng_hunt_idle -q
+```
 
 ## STATUS (Batch 373 inv-tip-pin)
 
