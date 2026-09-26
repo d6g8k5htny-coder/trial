@@ -1,3 +1,7 @@
+## STATUS (Batch 431 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch427 tip_sync living; republish batch241; unfreeze 430→431; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 427 tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish; parent-pin inv. Evidence: `portable/BATCH427_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
