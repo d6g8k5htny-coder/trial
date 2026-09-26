@@ -1,3 +1,7 @@
+## STATUS (Batch 372 inv-tip-pin)
+
+tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after research/tip-eng; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 372 tip-eng)
 
 tip `1ae02b9` tip_match=true; eng: wake last-resort 370→372 lag vs print_owner; durable 8/8; lemma_closed=false; goal OPEN.

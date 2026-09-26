@@ -21035,3 +21035,22 @@ def test_batch372_tip_or_eng_wake_last_resort() -> None:
     assert "STATUS (Batch 372 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 372 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_batch372_inv_tip_pin_after_research() -> None:
+    """Batch 372: inv tip re-pin beyond parent after research/tip-eng."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH372_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "372"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin"
+    assert brief.get("tip_match") is True
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH372_INV_TIP_PIN_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert int(str(inv.get("batch") or "0")) >= 372
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 372)
+    assert "STATUS (Batch 372 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

@@ -1,3 +1,7 @@
+## STATUS (Batch 372 inv-tip-pin)
+
+Hardening tip **stable** @ `1ae02b9`. After research audit + tip_or_eng wake lands, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH372_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 372 tip-eng)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: wake `_living_batch_n` last-resort frozen at 370 while print_owner/VERIFY/inventory at 372 — bump 370→372. `lemma_closed=false`. Goal OPEN. action=`eng_wake_last_resort_unfreeze`.

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 372 — inv tip re-pin beyond parent after research/tip-eng @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research audit + tip_or_eng wake left inv tip lagging beyond parent — PRESERVE_DURABLE re-pin→HEAD. Goal OPEN.
+
+
 ### Batch 372 — tip_or_eng: wake last-resort 370→372 vs print_owner @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
