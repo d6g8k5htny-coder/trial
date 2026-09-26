@@ -1,3 +1,7 @@
+## STATUS (Batch 437 tip-sync-living)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch living script_stale/tgz_newer republish; action=idle_no_commit after republish; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 437 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 436/435/434/433; STATUS_GUARD pass; stamps@437; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
