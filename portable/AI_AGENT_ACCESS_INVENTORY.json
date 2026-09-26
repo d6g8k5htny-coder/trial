@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 462,
+  "batch": "463",
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T08:28:40Z",
-      "tip_sha": "47f08a7f2fd1499c1f726ddb861185371404b639",
+      "pushed_at": "2026-09-26T08:30:23Z",
+      "tip_sha": "0fcae3778fc54aa4f670d94494cfd84264919db5",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T08:28:40Z",
+  "generated_at_utc": "2026-09-26T08:30:23Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 462: inventory tip @47f08a7 (tip_sync_watch parent-pin precommit @2f7a5a9); durable 8/8; lemma_closed=false.",
+  "note": "Batch 463: tip_or_eng idle_no_commit hunt-negative + unfreeze 462\u2192463; inv tip @0fcae37; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
