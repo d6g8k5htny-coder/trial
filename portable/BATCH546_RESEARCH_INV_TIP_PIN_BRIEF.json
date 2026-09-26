@@ -1,0 +1,13 @@
+{
+  "batch": "546",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "848329b662d7a86a07d74d7046b9ece6ef32d85e",
+  "generated_at_utc": "2026-09-26T16:34:59Z",
+  "note": "parent-pin trial tip_sha=precommit HEAD after research_stack_audit_watch land @2f7a5a9"
+}
