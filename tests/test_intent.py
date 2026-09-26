@@ -27743,3 +27743,29 @@ def test_batch431_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 431 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 431" in log_md and "research_stack_audit_watch" in log_md
+
+def test_batch433_tip_or_eng_living_script() -> None:
+    """Batch 433: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH433_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "433"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "living_script_stale_unfreeze"
+    assert brief.get("flipped_anything") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH433_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    assert living.get("uploaded") is True
+    unf = json.loads((ROOT / "portable" / "BATCH433_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unf.get("to_batch") == "433"
+    pin = json.loads((ROOT / "portable" / "BATCH433_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 433)
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 433
+    assert "STATUS (Batch 433 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 433)
+
