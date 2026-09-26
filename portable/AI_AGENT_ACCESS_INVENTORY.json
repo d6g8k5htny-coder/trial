@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 448,
+  "batch": "448",
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -76,7 +76,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T03:04:32Z",
+      "pushed_at": "2026-09-26T06:44:45Z",
       "tip_sha": "7476e29c65ce82d23e0b39e7f7d98741a875a8ff",
       "has_agents": true,
       "write": "WRITABLE"
@@ -86,7 +86,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T03:22:54Z",
+      "pushed_at": "2026-09-26T07:06:08Z",
       "tip_sha": "4a72a5ab381ce44523f2fafe922dc8c3a7e03f21",
       "has_agents": true,
       "write": "WRITABLE"
@@ -106,7 +106,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T03:12:06Z",
+      "pushed_at": "2026-09-26T06:31:14Z",
       "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
@@ -126,7 +126,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T01:38:50Z",
+      "pushed_at": "2026-09-26T07:06:19Z",
       "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
       "has_agents": true,
       "write": "WRITABLE"
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T07:04:32Z",
-      "tip_sha": "d4ec03bb6b0cb60c0c8cf8713dca099a355329fe",
+      "pushed_at": "2026-09-26T07:08:44Z",
+      "tip_sha": "0dd82e73d679783d61d96490bc6e2922a4f4ffad",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T07:04:32Z",
+  "generated_at_utc": "2026-09-26T07:08:44Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 448: inventory tip @d4ec03b (research_stack_audit_watch parent-pin precommit @2f7a5a9); durable 8/8; lemma_closed=false.",
+  "note": "Batch 448: inventory tip @0dd82e7 (intent_soften parent-pin precommit @2f7a5a9); durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
