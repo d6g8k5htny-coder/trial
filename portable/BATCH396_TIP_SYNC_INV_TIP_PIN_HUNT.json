@@ -1,0 +1,10 @@
+{
+  "batch": "396",
+  "defect_id": "inv_json_trailing_backslash_n_after_tip_or_eng_idle",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "generated_at_utc": "2026-09-26T03:13:24Z"
+}

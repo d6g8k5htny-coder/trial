@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 396 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; fixed inventory trailing literal `\\n` from tip_or_eng idle; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+
 ### Batch 397 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv==HEAD^; Intent green; `lemma_closed=false`.
