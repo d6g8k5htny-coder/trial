@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 378 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
+
+- Tip stable @ `ebedb78` tip_match=true after tip-sync; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH377; STATUS_GUARD living; no full AUDIT re-copy. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN.
+
 ### Batch 378 — STATUS_GUARD tip refresh 1ae02b9→ebedb780 (2026-09-26)
 
 - After tip-sync, STATUS_GUARD tip_sha lagged at `1ae02b9`. Ran `guard_no_status_promotion` @ `ebedb780` → pass; tip→`ebedb780`; baseline→`1ae02b9`; open 13/1/3; no promotion.
@@ -527,6 +532,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
 - tip_sync_watch: no tip move; living current — skip tip-pin treadmill. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 357 — research_stack_audit_watch_no_promotion @e3cd7d4 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
@@ -710,6 +716,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Eng: after peer Batch 352 inventory tip-pin, living release `script_stale=1` (print_owner / wake / inventory / refresh CRITICAL drift). `republish_living_path_c_release.sh --force` → `script_stale=0 tip_stale=0`.
 - Artifacts: `BATCH352_REPUBLISH_{BRIEF,HUNT,EVIDENCE}.json`. Inventable skipped. Goal OPEN.
+
 ### Batch 352 — unfreeze last-resort 351→352 (2026-09-25)
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
@@ -797,6 +804,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 - Tip stable @ `e3cd7d4` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - tip_sync_or_eng: no tip move; Intent softens / inv tip pin / research audit already on main. Paper-trail living tgz. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 348 — inventory_preserve_durable_tip_pin (2026-09-25)
 
 - Tip stable @ `e3cd7d4`; durable 8/8; trial tip lagged after lands → preserve_durable pin; never demote 8/8 on writable=0 DENIED.
@@ -886,6 +894,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip **moved** mid-cycle: main #105 CONTRIBUTION_PLAN retire docs → `e3cd7d4`.
 - Tip-sync keep-prior Path C; REFRESH 345; `_LIVING_TIPS += e3cd7d4`; inventory ultimate fallback 343→345.
 - Inventable/docs NOT promoted; `lemma_closed=false`; scientific effect NONE. Goal OPEN.
+
 ### Batch 345 — wake ultimate fallback unfreeze 341→345 + print_owner header (2026-09-25)
 - Tip stable @ `fcad723` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Eng: `post_batch322_wake_comments._living_batch_n` last-resort `return "341"` lagged living Batch 345 (same class as inventory ultimate fallback). Print_owner dual `=== Batch` headers left first-match stuck at 344 after WAKE345 — collapsed to single living header @345. Also repaired Intent syntax broken by peer WAKE345 land (audit/wake345 tests).
@@ -906,6 +915,7 @@ Path C dry-run ready on hardening; permanent window recorded.
 - New CI class after tip-sync: Intent `audit_main_alignment` / watch probes `TimeoutExpired` at 60s while Batch 340 backoff honored `x-ratelimit-reset` up to SLEEP_CAP=60 (runs 36176016910 / 36176143525) — raw fallback never reached inside budget.
 - Eng: `AUDIT_TRANSPORT_EARLY_FALLBACK=1` escalates to `RateLimitExhausted` → raw/ls-remote immediately; CI Intent + Alignment audit steps enable it. Misalignment predicate unchanged.
 - NEVER flip research; inventable skipped. Goal OPEN.
+
 ### Batch 345 — MULTI_AGENT wake+assign stopped agents (2026-09-25)
 - Timer pulse (batch329-tip-eng-watch). Tip **stable** @ `fcad723` tip_match=1. Path C IDLE@0019; durable 8/8; living clean.
 - Woke 5 IDLE agents via Task resume; action=`multi_agent_wake_and_assign`.

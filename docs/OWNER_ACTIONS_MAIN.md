@@ -1,3 +1,11 @@
+## STATUS (Batch 378 research-audit-watch)
+
+Hardening tip **stable** @ `ebedb78`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH377; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH378_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha ebedb7802024fa557e9071e4c9cec7cddc474b89
+python3 -m pytest tests/test_intent.py::test_batch378_research_stack_audit_watch -q
+```
 ## STATUS (Batch 378 status-guard tip refresh)
 
 Hardening tip **moved** 1ae02b9→`ebedb780` (main #98). STATUS_GUARD tip refreshed to living tip; open stack 13/1/3 unchanged; no promotion. Evidence: `portable/BATCH378_STATUS_GUARD_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
@@ -405,6 +413,7 @@ Hardening tip **stable** @ `e3cd7d4`. Eng: inv tip lagged beyond parent after Ba
 ## STATUS (Batch 361 research-audit-watch)
 
 Hardening tip **stable** @ `e3cd7d4`. Research stack audit watch no-promotion: open 13/1/3 unchanged; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH361_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
 ## STATUS (Batch 361 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH361_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
@@ -782,6 +791,7 @@ Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE). 
 ## STATUS (Batch 352 inv-preserve-tip-pin)
 
 Inventory preserve_durable tip pin after Batch 351. Tip stable @`e3cd7d4`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 351 idle)
 
 Hardening tip **stable** @ `e3cd7d4` (tip_match=true; Path C idle; BASE==LIVE; NOT stale `077464e`). tip_sync_or_eng: no tip move; peers already shipped 351 inv pin/preserve + research_audit living republish. Paper-trail living tgz. Evidence: `portable/BATCH351_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

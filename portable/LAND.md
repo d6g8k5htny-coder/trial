@@ -1,3 +1,7 @@
+## STATUS (Batch 378 research-audit-watch)
+
+tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 378 status-guard tip refresh)
 
 tip `ebedb780` tip_match=true; STATUS_GUARD tip 1ae02b9→ebedb780; open 13/1/3; no promotion; durable 8/8; lemma_closed=false; goal OPEN.
@@ -214,6 +218,7 @@ tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 scr
 ## STATUS (Batch 365 unfreeze-verify)
 
 tip `e3cd7d4` tip_match=true; eng: last-resort + VERIFY.refresh_batch 364→365; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 365 post-research-inv-pin)
 
 inv tip re-pin beyond parent after research_stack_audit_watch land; tip `e3cd7d4`; durable 8/8; lemma_closed=false; no status promotion.
@@ -277,6 +282,7 @@ tip `e3cd7d4` tip_match=true; eng: inv tip re-pin beyond parent + REFRESH/last-r
 ## STATUS (Batch 361 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 361 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
@@ -348,6 +354,7 @@ tip `e3cd7d4` tip_match=true; tip_sync_or_eng watch idle; living tip_stale=0 scr
 ## STATUS (Batch 357 tip-eng)
 
 tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD after Batch 356/357 lands; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 357 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
@@ -359,6 +366,7 @@ tip `e3cd7d4` tip_match=true; eng: unfreeze wake/inv/REFRESH last-resort 356→3
 ## STATUS (Batch 357 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 357 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
@@ -392,6 +400,7 @@ tip `e3cd7d4` tip_match=true; eng: inv tip re-pin→HEAD + living script_stale r
 ## STATUS (Batch 355 research-audit-watch)
 
 tip `e3cd7d4` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; script_stale=0; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 355 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living script_stale republish after Batch 355 lands; lemma_closed=false; scientific effect NONE.
@@ -483,6 +492,7 @@ tip `e3cd7d4` tip_match=true; grant_check_dual_vector_8of8 — durable_token_sou
 ## STATUS (Batch 352 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living batch241 script_stale republish after Batch 352 inv tip-pin (script_stale 1→0); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 352)
 
 tip `e3cd7d4` tip_match=true; eng: unfreeze last-resort batch defaults 351→352 (print_owner/REFRESH/inventory/wake); lemma_closed=false; scientific effect NONE.
@@ -510,6 +520,7 @@ tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin trial→HEAD; d
 ## STATUS (Batch 350 soften-inv-tip-pin)
 
 tip `e3cd7d4` tip_match=true; eng: soften INV_TIP_PIN Intent action allowlist after peer re-pin rename; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 351 inv-tip-pin)
 
 tip `e3cd7d4` tip_match=true; inventory tip pin after Batch 350 idle (batch322-soon timer); preserve_durable 8/8; lemma_closed=false; scientific effect NONE.
@@ -545,6 +556,7 @@ tip `e3cd7d4` tip_match=true; inventory trial tip pin→`f00459d`; research stac
 ## STATUS (Batch 347 soften-wake-pin)
 
 tip `e3cd7d4` tip_match=true; eng: soften Batch 346 wake Intent live tip pin (`startswith("e3cd7d4")` → `_living_tip`); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 347 idle)
 
 tip `e3cd7d4` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
@@ -556,6 +568,7 @@ tip `e3cd7d4` tip_match=true; inventory trial tip pin after Batch 346 lands (pre
 ## STATUS (Batch 346 republish)
 
 tip `e3cd7d4` tip_match=true; eng: living batch241 script_stale republish after fallback 346 (script_stale 1→0); Path C IDLE@0019; durable 8/8; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346 ci-audit-watch)
 
 tip `e3cd7d4` tip_match=true; early-fallback+backoff intact; CI watch idle_no_commit; Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
@@ -567,9 +580,11 @@ tip `e3cd7d4` tip_match=true; inventory_preserve_durable_tip_pin — trial→liv
 ## STATUS (Batch 346 status-guard)
 
 tip `e3cd7d4` tip_match=true; eng: STATUS_GUARD tip_sha + inventory.tip_sha refreshed fcad723→e3cd7d4 (baseline→fcad723; guard pass violations=0; no promotion); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346 grant)
 
 tip `e3cd7d4` tip_match=true; grant_check_dual_vector_8of8 — durable_token_source=none skip App-corrupt; preserve_durable tip refresh trial→840de46; coverage 8/8_WRITABLE; BATCH346_GRANT; goal OPEN; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 346 wake)
 
 tip `e3cd7d4` tip_match=true; MULTI_AGENT wake+assign 7 IDLE Path C peers (Dylan message-stopped-agents); lemma_closed=false; scientific effect NONE.
@@ -589,6 +604,7 @@ tip `e3cd7d4` tip_match=true; tip_sync_watch confirm; fixed BATCH345_TIP_SYNC JS
 ## STATUS (Batch 345 tip-sync)
 
 tip `e3cd7d4` tip_match=true TIP_OK after tip-sync; #105 MERGED into hardening → refresh keep-prior; CONTRIBUTION_PLAN retire docs NOT promoted; 0020 NEGATIVE; action=tip_sync_landed; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 wake-fallback)
 
 tip `fcad723` tip_match=true; eng: wake ultimate fallback return `"345"` (was frozen `"341"`); print_owner single living header @345 (was dual 344+345); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
@@ -601,6 +617,7 @@ tip `fcad723` tip_match=true; grant_check_dual_vector_8of8 — durable_token_sou
 ## STATUS (Batch 343 audit-timeout)
 
 tip `fcad723` tip_match=true; eng: audit Intent timeout early-fallback (rate-limit reset sleep→raw; CI 36176016910/36176143525); Path C IDLE@0019; durable 8/8; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 345 wake)
 tip `fcad723` tip_match=true; MULTI_AGENT wake+assign 5 IDLE (batch329 timer); lemma_closed=false; scientific effect NONE.
 
@@ -615,6 +632,7 @@ tip `fcad723` tip_match=true; eng: STATUS_GUARD tip_sha + inventory.tip_sha refr
 ## STATUS (Batch 344 idle)
 
 tip `fcad723` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0 + paper-trail tgz; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 344 idle)
 tip `fcad723` tip_match=true; idle_no_commit after tip-stable watch; living clean; lemma_closed=false; scientific effect NONE.
 

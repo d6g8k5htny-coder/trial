@@ -1,0 +1,38 @@
+{
+  "batch": "378",
+  "generated_at_utc": "2026-09-26T01:21:10Z",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "hardening_tip_short": "ebedb78",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "assignment": "research_stack_audit_watch_no_promotion",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "status_guard_tip": "ebedb78",
+  "status_guard_tip_living": true,
+  "status_guard_tip_lag": false,
+  "status_guard_pass": true,
+  "audit_delta_needed": false,
+  "delta_vs_batch377": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "prior_audit_artifact": "portable/BATCH377_RESEARCH_AUDIT_WATCH.json",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "inventable_promoted": false,
+  "full_audit_recopy": false,
+  "coord_bc": "bc-3fb93461",
+  "note": "no-promotion watch @ebedb78 after tip-sync: open stack unchanged 13/1/3 vs BATCH377; STATUS_GUARD living; lemma_closed=false"
+}
