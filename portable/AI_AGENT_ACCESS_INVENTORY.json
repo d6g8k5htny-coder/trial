@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T14:37:45Z",
-      "tip_sha": "5ae3e7d8fc1d2c79f29bd15596f8ef88111a4f30",
+      "pushed_at": "2026-09-26T14:40:03Z",
+      "tip_sha": "cccf2a320bc3c78360e16d34932a2064a29af6bf",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T14:34:38Z",
+  "generated_at_utc": "2026-09-26T14:40:03Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 525: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 524→525; inv tip @5ae3e7d8; durable 8/8; lemma_closed=false.",
+  "note": "Batch 525: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 524\u2192525; inv tip @5ae3e7d8; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
