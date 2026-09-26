@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 500,
+  "batch": 499,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T12:07:44Z",
-      "tip_sha": "44e806e9129894b2d27ae6fe4d928c58bd24bda4",
+      "pushed_at": "2026-09-26T12:08:52Z",
+      "tip_sha": "82a593f504114e0d2882260b5fc5bfb9e7f855cf",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T12:07:44Z",
+  "generated_at_utc": "2026-09-26T12:08:52Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
