@@ -1,3 +1,7 @@
+## STATUS (Batch 400 tip-eng-living-refresh)
+
+tip  tip_match=true; living script_stale republish after tip_or_eng land; parent_pin preserved; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 400 tip-eng-inv-living)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin; living tgz republish; unfreeze 399→400; durable 8/8; lemma_closed=false; goal OPEN.

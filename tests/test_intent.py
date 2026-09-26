@@ -24344,3 +24344,19 @@ def test_batch400_tip_or_eng_inv_living() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 400)
     assert "STATUS (Batch 400 tip-eng-inv-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch400_tip_eng_living_refresh() -> None:
+    """Batch 400: living script_stale republish after tip_or_eng land @2f7a5a9."""
+    import json
+    living = json.loads(
+        (ROOT / "portable" / "BATCH400_TIP_ENG_LIVING_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert living.get("batch") == "400"
+    assert living.get("lemma_closed") is False
+    assert living.get("flipped_anything") is False
+    assert living.get("uploaded") is True
+    assert living.get("action") == "living_script_stale_republish_after_tip_or_eng_land"
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 400 tip-eng-living-refresh)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")

@@ -1,3 +1,7 @@
+## STATUS (Batch 400 tip-eng-living-refresh)
+
+Hardening tip **stable** @ . Living script_stale after Batch400 tip_or_eng land; republish batch241. . Goal OPEN.
+
 ## STATUS (Batch 400 tip-eng-inv-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: inv tip lag + living tgz_newer after tip_sync living; re-pin; republish; unfreeze 399→400. `lemma_closed=false`. Goal OPEN.
