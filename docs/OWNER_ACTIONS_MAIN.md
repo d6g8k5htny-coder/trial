@@ -1,3 +1,7 @@
+## STATUS (Batch 418 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 417→418. Evidence: `portable/BATCH418_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 416 tip-sync-idle)
 
 Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH416_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
