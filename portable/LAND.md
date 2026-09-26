@@ -1,3 +1,7 @@
+## STATUS (Batch 410 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch409 tip_sync pin; living current; inv parent-pin; VERIFY 410; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 409 post-tip-sync-inv-pin)
 
 tip `2f7a5a9` tip_match=true; inv parent-pin after tip_sync living @899e8cb; durable 8/8; lemma_closed=false; goal OPEN.

@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 410 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 410; `lemma_closed=false`.
+- Peer Batch409 tip_sync pin already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
 ### Batch 409 — post tip_sync living inv parent-pin @2f7a5a9 (2026-09-26)
 
 - After tip_sync living : inv tip lagged at Batch409 precommit; re-pinned parent_pin; tip_match; living current; . Goal OPEN.

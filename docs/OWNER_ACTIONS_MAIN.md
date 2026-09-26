@@ -1,3 +1,7 @@
+## STATUS (Batch 410 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch409 tip_sync pin; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 409 post-tip-sync-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living inv parent-pin (lag cleared). `lemma_closed=false`. Goal OPEN.
