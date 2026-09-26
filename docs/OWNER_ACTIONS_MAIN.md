@@ -1,3 +1,7 @@
+## STATUS (Batch 407 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch406 living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 406 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living `trial-portable-main-fixes.tgz` missing from release after Batch 405 research; republish; unfreeze 405→406; inv parent-pin. `lemma_closed=false`. Goal OPEN.
