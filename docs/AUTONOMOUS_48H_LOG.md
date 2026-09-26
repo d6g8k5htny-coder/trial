@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 462 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @47f08a7. Inventable skipped. Goal OPEN. NEVER flip research.
+
 ### Batch 462 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 461/460/459/458/457 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
