@@ -1,3 +1,13 @@
+## STATUS (Batch 516 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch516_tip_sync_watch_keep_prior_parent_pin -q
+```
+
 ## STATUS (Batch 517 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH516/515/514/513/512 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH517_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
