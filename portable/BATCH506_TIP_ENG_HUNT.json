@@ -1,0 +1,19 @@
+{
+  "batch": "506",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "defect_id": null,
+  "defect_found": false,
+  "defect_shipped": false,
+  "goal": "OPEN",
+  "living_need_upload": 0,
+  "inventable_skipped": true,
+  "verify_unfreeze": "505\u2192506",
+  "inv_parent_pin": true,
+  "soft_intent_single_header": true,
+  "generated_at_utc": "2026-09-26T12:37:18Z",
+  "note": "hunt-negative: tip_match; living current; VERIFY lag + inv parent_pin after research505@9ce64f1"
+}
