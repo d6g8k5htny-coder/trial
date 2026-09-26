@@ -1,3 +1,7 @@
+## STATUS (Batch 392 tip-eng-unfreeze)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: unfreeze last-resort/VERIFY/wake 391→392; living script_stale republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 391 post-tip-sync-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after Batch390 tip_sync living. `lemma_closed=false`. Goal OPEN.

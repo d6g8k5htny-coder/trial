@@ -1,3 +1,7 @@
+## STATUS (Batch 392 tip-eng-unfreeze)
+
+tip `2f7a5a9` tip_match=true; unfreeze 391→392 + living script_stale; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 391 post-tip-sync-inv-pin)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin after tip_sync living; living current; durable 8/8; lemma_closed=false; goal OPEN.
