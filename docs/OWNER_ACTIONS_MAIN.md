@@ -1,3 +1,7 @@
+## STATUS (Batch 374 research-audit)
+
+Hardening tip **stable** @ `1ae02b9`. Research stack audit watch — open 13/1/3; delta vs Batch 372 = 0. No promotion. Unfreeze 373→374. Evidence: `portable/BATCH374_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 373 post-living-inv-tip-pin)
 
 Hardening tip **stable** @ `1ae02b9`. After tip/eng living republish + eng-hunt idle, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH373_POST_LIVING_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.

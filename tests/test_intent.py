@@ -21198,3 +21198,40 @@ def test_batch373_post_living_inv_tip_pin() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 373)
     assert "STATUS (Batch 373 post-living-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch374_research_stack_audit_watch() -> None:
+    """Batch 374: research_stack_audit_watch no promotion @1ae02b9."""
+    import json
+    watch = json.loads((ROOT / "portable" / "BATCH374_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "374"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("open_premises") == 13
+    assert watch.get("open_lemmas") == 1
+    assert watch.get("open_prizes") == 3
+    delta = watch.get("delta_vs_batch372") or {}
+    assert delta.get("open_premises") == 0
+    assert delta.get("open_lemmas") == 0
+    assert delta.get("open_prizes") == 0
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    brief = json.loads((ROOT / "portable" / "BATCH374_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH374_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "374"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 374)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 374
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 374
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 374
+    assert verify.get("lemma_closed") is False
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 374)
+    assert "STATUS (Batch 374 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

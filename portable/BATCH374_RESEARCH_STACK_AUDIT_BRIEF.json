@@ -1,0 +1,19 @@
+{
+  "batch": "374",
+  "action": "research_stack_audit_watch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "tip_match": true,
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "delta_vs_batch372": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "generated_at_utc": "2026-09-26T00:50:29Z"
+}
