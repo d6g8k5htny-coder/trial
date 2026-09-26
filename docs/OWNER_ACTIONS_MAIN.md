@@ -7,6 +7,10 @@ python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 1ae02b9ab
 python3 -m pytest tests/test_intent.py::test_batch375_research_stack_audit_watch -q
 ```
 
+## STATUS (Batch 375 tip-eng-idle)
+
+Hardening tip **stable** @ `1ae02b9`. tip_or_eng continue: peer already shipped idle+living+unfreeze@375; hunt negative (parent-pin / stamps@375 / living need_upload=0). Evidence: `portable/BATCH375_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 375 idle-living-unfreeze)
 
 Hardening tip **stable** @ `1ae02b9`. Batch 375 idle + living pack content-delta republish + unfreeze 374→375. Evidence: `portable/BATCH375_IDLE.json`, `portable/BATCH375_LIVING_REPUBLISH_BRIEF.json`. `lemma_closed=false`. Goal OPEN.

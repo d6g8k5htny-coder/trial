@@ -21397,6 +21397,43 @@ def test_batch375_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 375 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
 
+def test_batch375_tip_or_eng_idle() -> None:
+    """Batch 375: tip_or_eng idle after peer idle+living+unfreeze; hunt negative."""
+    import json
+    import re
+    tiny = json.loads((ROOT / "portable" / "BATCH375_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "375"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    brief = json.loads((ROOT / "portable" / "BATCH375_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("action") == "idle_no_commit"
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_or_eng_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+    hunt = json.loads((ROOT / "portable" / "BATCH375_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH375_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("inv_lag_beyond_parent") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 375)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 375
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 375)
+    assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
 def test_batch375_research_stack_audit_watch() -> None:
     """Batch 375: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 374."""
     import json
