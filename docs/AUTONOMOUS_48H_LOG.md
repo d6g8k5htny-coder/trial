@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 568 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 567→568 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 567→568; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng567 living script_stale; Soft Intent single === header →568; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 567 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 566→567 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 566→567; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
