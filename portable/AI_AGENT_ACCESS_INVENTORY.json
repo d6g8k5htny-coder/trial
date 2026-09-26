@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T03:13:24Z",
-      "tip_sha": "2d15fa334d3c190676f830a8292ccdf54a3b27b0",
+      "pushed_at": "2026-09-26T03:15:16Z",
+      "tip_sha": "b6782cf58915b082a92014ba18295ceae4c22642",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T03:13:24Z",
+  "generated_at_utc": "2026-09-26T03:15:16Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 396: inventory tip @2d15fa3 (tip_sync_watch parent-pin precommit; fixed trailing literal backslash-n); durable 8/8; lemma_closed=false.",
+  "note": "Batch 396: tip_or_eng inv tip re-pin @ b6782cf (post tip_sync living lag); durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {

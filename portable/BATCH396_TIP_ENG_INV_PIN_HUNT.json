@@ -1,0 +1,20 @@
+{
+  "batch": "396",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "inv_tip_pin_living",
+  "defect_found": true,
+  "defect_shipped": true,
+  "goal": "OPEN",
+  "defect_id": "inv_tip_lag_beyond_parent_after_tip_sync_living",
+  "generated_at_utc": "2026-09-26T03:15:16Z",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0
+  },
+  "inv_parent_pin": true,
+  "verify_refresh_batch": 396
+}

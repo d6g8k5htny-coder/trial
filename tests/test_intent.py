@@ -24140,3 +24140,27 @@ def test_batch396_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 396)
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch396_post_tip_sync_pin_living() -> None:
+    """Batch 396: tip_or_eng inv tip pin + living after tip_sync @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH396_POST_TIP_SYNC_PIN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "396"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "post_tip_sync_inv_tip_pin_living"
+    assert brief.get("parent_pin") is True
+    assert brief.get("flipped_anything") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH396_TIP_ENG_INV_PIN_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    assert hunt.get("action") == "inv_tip_pin_living"
+    eng = json.loads((ROOT / "portable" / "BATCH396_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert eng.get("defect_shipped") is True
+    assert eng.get("flipped_anything") is False
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert inv.get("lemma_closed") is False
+    assert inv.get("flipped_anything") is False
+    assert "STATUS (Batch 396 post-tip-sync-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 396)
