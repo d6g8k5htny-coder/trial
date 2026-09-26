@@ -1,3 +1,7 @@
+## STATUS (Batch 512 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 511→512; inv parent-pin; VERIFY 512; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 511 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 510/508/507/506/505; STATUS_GUARD pass; stamps@511; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
