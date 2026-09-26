@@ -1,0 +1,21 @@
+{
+  "batch": "372",
+  "generated_at_utc": "2026-09-26T00:39:14Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "eng_wake_last_resort_unfreeze",
+  "defect_id": "wake_last_resort_lag_370_vs_print_owner_372",
+  "defect_found": true,
+  "defect_shipped": true,
+  "skipped": [
+    "tip-sync (BASE==LIVE @1ae02b9)",
+    "inv tip lag (parent-pin only)",
+    "VERIFY/REFRESH already 372",
+    "living script_stale (0)",
+    "Intent STATUS_GUARD already softened",
+    "inventable"
+  ],
+  "goal": "OPEN"
+}

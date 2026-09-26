@@ -21003,3 +21003,35 @@ def test_batch372_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 372)
     assert "STATUS (Batch 372 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 372 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch372_tip_or_eng_wake_last_resort() -> None:
+    """Batch 372: tip_or_eng — wake last-resort 370→372 vs print_owner."""
+    import json
+    import re
+    brief = json.loads((ROOT / "portable" / "BATCH372_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "372"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_wake_last_resort_unfreeze"
+    assert brief.get("tip_match") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH372_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH372_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_wake_last_resort_unfreeze"
+    assert evidence.get("wake_after") == "372"
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in re.findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 372
+    assert 'return "370"' not in wake.split('def _living_batch_n')[1].split('def batch_marker')[0]
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 372)
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 372
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 372)
+    assert "STATUS (Batch 372 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 372 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+

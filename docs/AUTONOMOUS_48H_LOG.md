@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 372 — tip_or_eng: wake last-resort 370→372 vs print_owner @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Peer research audit already unfroze inventory/VERIFY/REFRESH 371→372 but left wake last-resort frozen at 370. Soften via return "372". Living >=N. Inventable skipped. NEVER flip research.
+
+
 ### Batch 372 — research_stack_audit_watch no-promotion @1ae02b9 (2026-09-26)
 
 - Tip stable tip_match=1; Path C IDLE@0019; durable 8/8; open stack 13 premises / 1 lemma / 3 prizes; delta vs Batch 369 = 0.

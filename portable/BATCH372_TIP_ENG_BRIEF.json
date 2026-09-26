@@ -1,0 +1,18 @@
+{
+  "batch": "372",
+  "generated_at_utc": "2026-09-26T00:39:14Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "eng_wake_last_resort_unfreeze",
+  "defect_id": "wake_last_resort_lag_370_vs_print_owner_372",
+  "from_batch": "370",
+  "to_batch": "372"
+}

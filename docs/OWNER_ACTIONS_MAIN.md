@@ -1,3 +1,7 @@
+## STATUS (Batch 372 tip-eng)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: wake `_living_batch_n` last-resort frozen at 370 while print_owner/VERIFY/inventory at 372 — bump 370→372. `lemma_closed=false`. Goal OPEN. action=`eng_wake_last_resort_unfreeze`.
+
 ## STATUS (Batch 372 research-audit)
 
 Hardening tip **stable** @ `1ae02b9`. Research stack audit watch — open 13 premises / 1 lemma / 3 prizes; delta vs Batch 369 = 0. No status/lemma/prize promotion. Unfreeze 371→372. Evidence: `portable/BATCH372_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.
