@@ -4,6 +4,11 @@ Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PER
 
 # Autonomous 48h work log
 
+### Batch 575 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @576 (never harden/stack); soft tip_sync575 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `9f41c7df`; tip/eng576 @`266b8b12` Soft Intent n=1 @576; Soft Intent RESTORE @`9f41c7df`; tip/eng575 @`97e32b19` Soft Intent n=1 @575; research575 @`b24820d7`; tip_sync574 @`fa234685`; tip/eng574 @`ba8792dc` Soft Intent n=1 @574; tip_sync573 @`46b77b3d`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH575_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch575_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
 ### Batch 576 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 575→576 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 575→576; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
