@@ -1,3 +1,7 @@
+## STATUS (Batch 474 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 473/472/471/470/469; STATUS_GUARD pass; stamps@474; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 474 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 473→474; inv parent-pin; VERIFY 474; durable 8/8; lemma_closed=false; goal OPEN.
