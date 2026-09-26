@@ -21,12 +21,18 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 441 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 440/438/437/436 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH441_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@441; inv parent-pin @f1fabe1. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 441 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
 ### Batch 443 — tip_or_eng living script_stale republish + unfreeze 442→443 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 442→443; `lemma_closed=false`.
 - Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
-
-
 ### Batch 442 — tip_or_eng living tgz_newer republish + unfreeze 441→442 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 441→442; `lemma_closed=false`.
