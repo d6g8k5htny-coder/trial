@@ -1,3 +1,12 @@
+## STATUS (Batch 376 research-audit-watch)
+
+Hardening tip **stable** @ `1ae02b9`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH375; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH376_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5
+python3 -m pytest tests/test_intent.py::test_batch376_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 376 idle-living-unfreeze)
 
 Hardening tip **stable** @ `1ae02b9`. Batch 376 idle + living pack content-delta republish + unfreeze 375→376. Evidence: `portable/BATCH376_IDLE.json`. `lemma_closed=false`. Goal OPEN.
