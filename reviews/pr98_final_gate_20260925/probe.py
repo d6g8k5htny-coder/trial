@@ -1,4 +1,4 @@
-"""Independent final boundary review of main PR98 gate successor 2d3374c (E6 successor).
+"""Independent final boundary review of main PR98 gate successor feea1df (E6 + binding-order canonicalization successor).
 
 Green means the listed safety properties reproduced on the exact immutable source.
 It is engineering evidence only, never mathematical/scientific acceptance.
@@ -6,8 +6,8 @@ It is engineering evidence only, never mathematical/scientific acceptance.
 from pathlib import Path
 import argparse, hashlib, json, os, subprocess, sys, tempfile
 
-SUBJECT="2d3374c5827650f5c9b462a77b29e17b998dbd96"
-ADAPTER_SHA256="3ebcbb8a7f9822763bc6e75ac2402741144410d5d0dfdc636d34216cd0665420"
+SUBJECT="feea1df7726f3b8a57f3de9bfe5d56e7377b8bc0"
+ADAPTER_SHA256="6bf3ab15e111b09ba5068605ad3d0e04794eca7d45838613329c47f320c15435"
 
 def git(root,*args,ok=True):
     p=subprocess.run(["git","-C",str(root),*args],capture_output=True,text=True,timeout=30)
@@ -190,6 +190,28 @@ def c_precision_upgrade_semantic_change(subject,opt):
                 and "T" in (r.get("controlling_impacted") or [])
                 and "T" not in (r.get("coverage_repairs") or []))
 
+
+def c_binding_order_permutation(subject,opt):
+    """Same binding set in different list order is not a scientific change."""
+    with tempfile.TemporaryDirectory() as d:
+        root=Path(d);g=graph(controlling_p=True);g["premises"]["P"].pop("source")
+        body1=b"proof v1\n";body2=b"extra v1\n"
+        g["premises"]["P"]["source_bindings"]=[
+            bind("proof.md",role="scientific_object",extraction_rule="whole_file",
+                 expected_sha256=fresh_expected(body1),mirror_freshness="external_sync_obligation"),
+            bind("extra.md",role="scientific_object",extraction_rule="whole_file",
+                 expected_sha256=fresh_expected(body2),mirror_freshness="external_sync_obligation"),
+        ]
+        before=init(root,g)
+        g2=json.loads((root/"claims/graph.json").read_text())
+        g2["premises"]["P"]["source_bindings"]=list(reversed(g2["premises"]["P"]["source_bindings"]))
+        write(root/"claims/graph.json",g2)
+        after=commit(root,"binding order only")
+        rc,r=run(subject,root,before,after,opt)
+        return (rc==0 and r.get("transition_ok") is True
+                and "P" not in imp(r)
+                and "P" not in (r.get("controlling_impacted") or []))
+
 CASES=[
  ("owner_propagation",c_owner_propagation),("owner_controlling_refusal",c_owner_controlling),
  ("malformed_old_crosswalk",c_malformed_old_crosswalk),("cross_repo_refusal",c_cross_repo_refusal),
@@ -198,6 +220,7 @@ CASES=[
  ("informational_carrier_noise",c_informational_noise),("stale_freshness",c_stale_freshness),
  ("precision_upgrade",c_precision_upgrade),
  ("precision_upgrade_semantic_change",c_precision_upgrade_semantic_change),
+ ("binding_order_permutation",c_binding_order_permutation),
 ]
 
 def main():
