@@ -23305,3 +23305,287 @@ def test_batch388_post_soften_living() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 388 post-soften-living)" in owner
 
+def test_batch388_research_stack_audit_watch() -> None:
+    """Batch 388: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 387."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH388_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "388"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    delta = watch.get("delta_vs_batch387") or {}
+    assert int(delta.get("open_premises") or 0) == 0
+    assert int(delta.get("open_lemmas") or 0) == 0
+    assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH388_RESEARCH_STACK_AUDIT.json").exists()
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH388_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "388"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "research_stack_audit_watch"
+    assert brief.get("audit_delta_needed") is False
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH388_RESEARCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("batch") == "388"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "research_stack_audit_watch"
+    assert evidence.get("goal") == "OPEN"
+    assert evidence.get("status_guard_pass") is True
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH388_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("parent_pin") is True
+    assert pin.get("lemma_closed") is False
+    assert str(pin.get("hardening_tip") or "").startswith("2f7a5a9")
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    # This receipt records Batch 388's parent, independently of current inventory.
+    assert pin.get("tip_sha") == "9a1ee5905d7a4671badf545e42d3872c6e17f42c"
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 388)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 388
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 388
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(verify.get("refresh_batch") or 0) >= 388
+    assert _living_tip(str(verify.get("base_tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 388)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 388" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch389_idle_tip_sync_watch() -> None:
+    """Batch 389: idle tip-stable + unfreeze @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH389_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "389"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    unfreeze = json.loads((ROOT / "portable" / "BATCH389_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "389"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 389)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 389
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 389
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 389
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 389)
+    assert "STATUS (Batch 389 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch389_post_idle_living() -> None:
+    """Batch 389: living script_stale republish after idle @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH389_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "389"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_idle"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 389 post-idle-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+def test_batch390_tip_or_eng_soften() -> None:
+    """Batch 390: tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH390_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "390"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "soften_intent_inv_tip_sha_eq_freeze"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH390_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("tip_match") is True
+    pin = json.loads((ROOT / "portable" / "BATCH390_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    living = json.loads((ROOT / "portable" / "BATCH390_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH390_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "390"
+    # Validate the historical receipt contract independently of assertion spelling.
+    test_batch388_research_stack_audit_watch()
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 390)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 390
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 390
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 390
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 390)
+    assert "STATUS (Batch 390 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch390_post_soften_living() -> None:
+    """Batch 390: living script_stale republish after tip_or_eng soften @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH390_POST_SOFTEN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "390"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_or_eng_soften"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch391_tip_or_eng_idle() -> None:
+    """Batch 391: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH391_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "391"
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("flipped_anything") is False
+    assert idle.get("lemma_closed") is False
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = idle.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    assert "STATUS (Batch 391 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+def test_batch389_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 389: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "389"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("parent_pin") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1]) or "2f7a5a9" in _asg
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("lemma_closed") is False
+    assert pin.get("parent_pin") is True
+
+    living_brief = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living_brief.get("uploaded") is True
+    assert living_brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 389)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 389 tip-sync-idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 389 tip-sync-idle)" in owner
+
+
+def test_batch391_post_idle_pin_living() -> None:
+    """Batch 391: post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH391_POST_IDLE_PIN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "391"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "post_idle_inv_tip_pin_living_unfreeze"
+    assert brief.get("parent_pin") is True
+    assert brief.get("unfreeze") == "390→391"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-idle-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 391)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 391)
+

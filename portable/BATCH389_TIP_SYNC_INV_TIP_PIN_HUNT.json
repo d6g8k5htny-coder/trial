@@ -1,0 +1,11 @@
+{
+  "batch": "389",
+  "defect_id": "inv_tip_parent_pin_after_tip_sync_idle",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "generated_at_utc": "2026-09-26T02:41:33Z",
+  "note": null
+}

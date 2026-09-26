@@ -1,3 +1,35 @@
+## STATUS (Batch 391 post-idle-pin-living)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin + living script_stale republish + unfreeze 390→391; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 389 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 391 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch390 soften+living; inv==HEAD^; living current; durable 8/8; lemma_closed=false; action=idle_no_commit; goal OPEN.
+
+## STATUS (Batch 390 post-soften-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale after tip_or_eng soften; republish; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 390 tip-eng-soften)
+
+tip `2f7a5a9` tip_match=true; soften Intent inv tip_sha eq-freeze; living script_stale; unfreeze 389→390; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 389 post-idle-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale republish after idle; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 389 idle-unfreeze)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle tip-stable; unfreeze 388→389; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 388 research-audit-watch)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion open 13/1/3 delta 0 vs 387; STATUS_GUARD living; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 388 post-soften-living)
 
 tip `2f7a5a9f` tip_match=true; living script_stale republish after tip_or_eng soften; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.

@@ -21,6 +21,61 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 391 — post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 after Batch391 tip/eng idle + Batch389 tip_sync peer.
+- Living `script_stale=1` → force republish; inv parent-pin; unfreeze 390→391. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 389 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1 after Batch389 idle+unfreeze / Batch390–391 peers; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @2a2c53b; `lemma_closed=false`.
+- Assignment: `tip_sync_watch_vs_BASE_TIP_2f7a5a9`. No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 391 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv==HEAD^; Intent green; `lemma_closed=false`.
+- Peers Batch390 soften+living already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 390 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch390 tip_or_eng soften already on main (389→390).
+- Living `script_stale=1` → force republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 390 — tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze 389→390 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: peer Batch389 idle left Intent `test_batch388_research` eq-freezing inventory tip_sha to pin brief → soften; living script_stale; inv parent-pin; unfreeze 389→390. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 389 — living script_stale republish after idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch389 idle+unfreeze already on main.
+- Living `script_stale=1` → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 389 — idle tip-stable + unfreeze 388→389 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent_pin; `lemma_closed=false`.
+- Unfreeze last-resort + VERIFY + wake 388→389. Hunt negative (no live Intent tip pins). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 388 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research audit watch: open 13/1/3; delta 0 vs BATCH387; STATUS_GUARD living. Evidence only (peer branch diverged — land artifacts). Inventable skipped. Goal OPEN.
+
+
+
 ### Batch 388 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; tip_or_eng soften already on main with parent_pin.

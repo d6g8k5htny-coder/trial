@@ -1,0 +1,15 @@
+{
+  "batch": "389",
+  "action": "idle_no_commit",
+  "assignment": "tip_or_eng_idle_tip_stable",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T02:34:27Z",
+  "note": "timer tip_or_eng (batch373 pulse): tip stable @2f7a5a9; living current; parent_pin; unfreeze 388\u2192389"
+}

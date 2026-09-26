@@ -1,3 +1,39 @@
+## STATUS (Batch 391 post-idle-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living republish + unfreeze 390→391. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 389 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after Batch389 idle+unfreeze / Batch390–391 peers; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH389_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 391 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peers Batch390 soften+living; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH391_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 390 post-soften-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch390 soften land; republish batch241. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 390 tip-eng-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch388_research` eq-froze inventory tip_sha to pin brief → soften; living script_stale; inv parent-pin; unfreeze 389→390. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch390_tip_or_eng_soften -q
+```
+
+## STATUS (Batch 389 post-idle-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after idle land; republish batch241. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 389 idle-unfreeze)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit; unfreeze last-resort/VERIFY/wake 388→389. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 388 research-audit-watch)
+
+Hardening tip **stable** @ `2f7a5a9`. Research audit watch no-promotion: open 13/1/3; delta 0 vs BATCH387; STATUS_GUARD living. Landed after tip_or_eng peers. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 388 post-soften-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_or_eng soften land; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
