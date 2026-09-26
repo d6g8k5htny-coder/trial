@@ -1,3 +1,7 @@
+## STATUS (Batch 369 research-audit-watch)
+
+tip `1ae02b9` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 369 idle)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch idle_no_commit; living tip/script current; durable 8/8; lemma_closed=false; goal OPEN; woke tip/eng/research peers.
