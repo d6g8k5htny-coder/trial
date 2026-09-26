@@ -21962,13 +21962,12 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert brief.get("keep_prior") is True
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
-    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert brief.get("hardening_tip") == "ebedb7802024fa557e9071e4c9cec7cddc474b89"
     hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "tip_sync_landed"
-    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base)  # Batch 386: tip moved ebedb78→7caac25
+    assert evidence.get("hardening_tip") == brief["hardening_tip"]
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied (semantic)" in apply_all
     assert 'grep -q \'"attestations"\'' in apply_all or '"attestations"' in apply_all
@@ -21982,6 +21981,17 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_current_path_c_base_matches_bundle() -> None:
+    """Current readiness metadata must agree independently of historical receipts."""
+    import json
+    import re
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8").split()
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert re.fullmatch(r"[0-9a-f]{40}", str(verify.get("base_tip_sha") or ""))
+    assert base == [verify["hardening_ref"], verify["base_tip_sha"]]
 
 
 def test_batch378_research_stack_audit_watch() -> None:
