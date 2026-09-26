@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 385 — inv tip re-pin + living after tip_or_eng idle @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1; tip_or_eng idle broke parent_pin (tip lagged at research land).
+- Re-pin tip_sha=precommit HEAD; living script_stale republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 385 — tip_or_eng idle_no_commit hunt-negative after peers @7caac25 (2026-09-26)
 
 - Tip stable @ `7caac254` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; stamps@385; `lemma_closed=false`.

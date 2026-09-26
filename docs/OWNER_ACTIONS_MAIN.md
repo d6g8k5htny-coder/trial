@@ -1,3 +1,7 @@
+## STATUS (Batch 385 post-eng-inv-pin)
+
+Hardening tip **stable** @ `7caac254`. Inv parent_pin restored after tip_or_eng idle; living script_stale republish. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 385 tip-eng-idle)
 
 Hardening tip **stable** @ `7caac254`. tip_or_eng continue: peers tip-sync+STATUS_GUARD+research+living already landed; hunt negative (parent-pin / stamps@385 / living need_upload=0). Evidence: `portable/BATCH385_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

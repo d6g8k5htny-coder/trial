@@ -22914,3 +22914,22 @@ def test_batch385_tip_or_eng_idle_after_peers() -> None:
     ).read_text(encoding="utf-8")
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert "7caac25" in base
+
+
+def test_batch385_post_eng_inv_tip_pin() -> None:
+    """Batch 385: inv tip re-pin + living after tip_or_eng idle @7caac25."""
+    import json
+    pin = json.loads((ROOT / "portable" / "BATCH385_POST_ENG_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("batch") == "385"
+    assert pin.get("lemma_closed") is False
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("parent_pin") is True
+    assert _living_tip(str(pin.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH385_POST_ENG_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish_after_tip_eng_idle"
+    idle = json.loads((ROOT / "portable" / "BATCH385_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("lemma_closed") is False
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 385 post-eng-inv-pin)" in land
+
