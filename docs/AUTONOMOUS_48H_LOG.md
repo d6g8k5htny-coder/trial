@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 509 — tip_or_eng living tgz_newer republish + unfreeze 508→509 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 508→509; living tgz_newer+bundle/patch need_upload=1; Soft Intent n=1 header replace; republish batch241; `lemma_closed=false`.
+- Hunt living positive after idle508; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
 
 ### Batch 508 — tip_or_eng idle_no_commit hunt-negative + unfreeze 507→508 @2f7a5a9 (2026-09-26)
 
