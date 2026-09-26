@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 369 — living script_stale republish after unfreeze idle @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; inv parent-pinned; `lemma_closed=false`.
+- Living CRITICAL scripts drifted after Batch 369 unfreeze idle — republished batch241 (real script_stale, not 1-byte thrash). Inventable skipped. Goal OPEN.
+
+
 ### Batch 369 — idle_no_commit tip-stable watch @1ae02b9 (2026-09-25)
 
 - Batch359 tip-eng-watch timer pulse. Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; `lemma_closed=false`.

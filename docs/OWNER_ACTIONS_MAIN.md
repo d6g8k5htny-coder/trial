@@ -1,3 +1,7 @@
+## STATUS (Batch 369 living-republish)
+
+Hardening tip **stable** @ `1ae02b9`. Living `script_stale=1` after unfreeze idle (refresh/print_owner CRITICAL drift) — batch241 republish. Not 1-byte thrash. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
+
 ## STATUS (Batch 369 idle)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true). tip_sync_watch: no tip move; living tip/script current (ignore 1-byte pack thrash). Unfreeze last-resort + VERIFY refresh_batch 368→369. Woke tip/eng/research peers. Evidence: `portable/BATCH369_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

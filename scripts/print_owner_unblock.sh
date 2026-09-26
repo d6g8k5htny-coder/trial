@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 369 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 369: living script_stale republish after unfreeze idle @1ae02b9"
 echo " Batch 369: idle_no_commit tip-stable watch @1ae02b9 (tip_match; living tip/script current; woke peers)"
 echo " Batch 369: unfreeze last-resort 368→369 + VERIFY refresh_batch 368→369 @1ae02b9"
 echo " Batch 368: living upload confirm + Intent 276/279 --force soften + inv tip pin @1ae02b9"

@@ -1,0 +1,24 @@
+{
+  "batch": "369",
+  "generated_at_utc": "2026-09-26T00:03:41Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "eng_living_script_stale_republish",
+  "defect_id": "living_script_stale_after_batch369_unfreeze_idle",
+  "script_stale_before": 1,
+  "script_stale_after": 0,
+  "script_drifts": [
+    "script_drift scripts/print_owner_unblock.sh after Batch 369 living-republish STATUS line"
+  ],
+  "note": "real CRITICAL script sha drift after unfreeze idle (not 1-byte pack thrash)",
+  "upload": "batch241 --clobber"
+}
