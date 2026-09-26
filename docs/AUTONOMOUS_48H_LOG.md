@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 569 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @570 (never harden/stack); soft tip_sync569 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `1aba321e`; tip/eng569 @`4920c665` Soft Intent n=1 @569; tip_sync566 @`0904a834`; tip_sync568 @`1aba321e` landed; tip/eng570+research569 raced; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH569_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch569_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
 ### Batch 569 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 568/566/565/564/563 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
