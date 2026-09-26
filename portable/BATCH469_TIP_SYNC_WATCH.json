@@ -1,0 +1,17 @@
+{
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "batch": "469",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T09:06:48Z",
+  "living": {
+    "need_upload": 0,
+    "tip_stale": 0,
+    "script_stale": 0
+  }
+}
