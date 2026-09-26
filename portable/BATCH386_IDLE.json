@@ -1,0 +1,15 @@
+{
+  "batch": "386",
+  "action": "idle_no_commit",
+  "assignment": "tip_or_eng_soften_base_tip_pin_after_tip_move",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T02:01:24Z",
+  "note": "timer tip_or_eng: tip stable; CI red test_batch378_tip_sync ebedb78 BASE_TIP pin \u2192 _living_tip; living tgz; unfreeze 385\u2192386"
+}

@@ -1,3 +1,7 @@
+## STATUS (Batch 386 tip-eng-soften)
+
+tip `7caac254` tip_match=true; soften Intent BASE_TIP ebedb78 pin → living; living tgz; unfreeze 385→386; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 385 tip-sync-idle)
 
 tip `7caac254` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.

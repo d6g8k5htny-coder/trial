@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 386 — tip_or_eng soften Intent BASE_TIP pin + living + unfreeze 385→386 @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1 @ `7caac25`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: CI red `test_batch378_tip_sync_ebedb78` asserted `"ebedb78" in BASE_TIP` after tip-sync to `7caac25` → `_living_tip(base)`. Living tgz content-delta; unfreeze last-resort/VERIFY/wake 385→386. Inventable skipped. Goal OPEN.
+
+
+
 ### Batch 385 — tip_sync_watch idle_no_commit + parent-pin inv @7caac25 (2026-09-26)
 
 - Tip stable @ `7caac25` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @3bbda9e; `lemma_closed=false`.

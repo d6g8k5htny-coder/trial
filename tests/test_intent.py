@@ -21968,7 +21968,7 @@ def test_batch378_tip_sync_ebedb78() -> None:
     evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "tip_sync_landed"
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "ebedb78" in base
+    assert _living_tip(base)  # Batch 386: tip moved ebedb78→7caac25
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied (semantic)" in apply_all
     assert 'grep -q \'"attestations"\'' in apply_all or '"attestations"' in apply_all
@@ -22726,7 +22726,7 @@ def test_batch385_tip_sync_7caac25() -> None:
     evidence = json.loads((ROOT / "portable" / "BATCH385_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "tip_sync_landed"
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "7caac25" in base
+    assert _living_tip(base)
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied (semantic)" in apply_all
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
@@ -22913,7 +22913,7 @@ def test_batch385_tip_or_eng_idle_after_peers() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert "7caac25" in base
+    assert _living_tip(base)
 
 
 def test_batch385_post_eng_inv_tip_pin() -> None:
@@ -22987,4 +22987,41 @@ def test_batch385_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 385 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 385 tip-sync-idle)" in owner
+
+
+def test_batch386_tip_or_eng_soften() -> None:
+    """Batch 386: tip_or_eng soften BASE_TIP pin + living + unfreeze @7caac25."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH386_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "386"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "soften_intent_base_tip_pin"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH386_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("tip_match") is True
+    living = json.loads((ROOT / "portable" / "BATCH386_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_tgz_content_delta_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH386_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "386"
+    # softened historical pin in test_batch378_tip_sync_ebedb78 body
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch378_tip_sync_ebedb78")
+    end = intent.index("def test_batch378_research_stack_audit_watch")
+    body = intent[start:end]
+    assert 'assert "ebedb78" in base' not in body
+    assert "assert _living_tip(base)" in body
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 386)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 386
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 386
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 386
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 386)
+    assert "STATUS (Batch 386 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 

@@ -1,3 +1,7 @@
+## STATUS (Batch 386 tip-eng-soften)
+
+Hardening tip **stable** @ `7caac254`. tip_or_eng: Intent `test_batch378_tip_sync_ebedb78` frozen BASE_TIP pin → `_living_tip`; living tgz; unfreeze 385→386. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 385 tip-sync-idle)
 
 Hardening tip **stable** @ `7caac254` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH385_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
