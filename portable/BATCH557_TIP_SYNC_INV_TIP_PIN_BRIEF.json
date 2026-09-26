@@ -16,5 +16,5 @@
   "action": "inventory_preserve_durable_tip_pin",
   "defect_id": "inv_tip_parent_pin_after_tip_sync_keep_prior",
   "parent_pin": true,
-  "note": "parent-pin inv tip_sha=precommit HEAD (348754f6); Soft Intent n=1 @557 (tip/eng557+research557+tip_sync555 raced); tip_sync557"
+  "note": "parent-pin inv tip_sha=precommit HEAD (3feceafe); Soft Intent n=1 @557 (tip/eng557+research557+tip_sync555 raced); tip_sync557"
 }
