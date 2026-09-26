@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 515,
+  "batch": "516",
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-26T13:29:02Z",
-      "tip_sha": "278822479d56fb65ffa2d513fa66b845e8b879ef",
+      "tip_sha": "a01a5e70efdec91a5c07044e6b5002489f50e2f1",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T13:31:27Z",
+  "generated_at_utc": "2026-09-26T13:35:17Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 515: tip_or_eng TIP_DRIFT keep-prior + unfreeze 514\u2192515; BASE=2f7a5a9 live=cd66a65; inv tip @0bec89d; durable 8/8; Soft Intent single-header.",
+  "note": "Batch 516: tip_or_eng TIP_DRIFT keep-prior + unfreeze 515\u2192516; BASE=2f7a5a9 live=cd66a65; inv tip @a01a5e7; durable 8/8; Soft Intent single-header.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {

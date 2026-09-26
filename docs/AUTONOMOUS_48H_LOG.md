@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+
+### Batch 516 — tip_or_eng TIP_DRIFT keep-prior + unfreeze 515→516 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE `cd66a65` vs BASE `2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 515→516; living current need_upload=0; `lemma_closed=false`.
+- Hunt eng negative; Soft Intent single === header →516; inv parent_pin. Inventable skipped. action=`keep_prior`. Goal OPEN.
+
 ### Batch 515 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 514/513/512/511/510 = 0 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no promotion; evidence JSON only.
