@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 494 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @e4ad319. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
 ### Batch 494 — tip_or_eng idle_no_commit hunt-negative + unfreeze 493→494 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 493→494; living current need_upload=0; `lemma_closed=false`.
