@@ -1,3 +1,7 @@
+## STATUS (Batch 425 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 424→425. Evidence: `portable/BATCH425_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 424 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH422/420/418/416; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH424_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
