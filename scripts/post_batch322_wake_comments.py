@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Post Path-C eng wake comments on eng PRs in d6g8k5htny-coder/main.
 
-Skips inventable/research drafts. Skips only when a wake comment already
-advertises the *living* BASE_TIP (not a frozen batch marker). Uses GH_TOKEN /
-MAIN_PUSH_TOKEN (App ghs lacks Issues:write). Triggered via trial workflow
+Skips inventable/research drafts and closed or merged PRs. For open PRs, skips
+when a wake comment advertises the *living* BASE_TIP (not a frozen batch marker).
+Uses GH_TOKEN / MAIN_PUSH_TOKEN (App ghs lacks Issues:write). Triggered via trial workflow
 wake-batch322-pr-comments (repository_dispatch).
 
 Batch 336: INTENT tip is derived from portable/patches/BASE_TIP.txt (living),
@@ -376,6 +376,26 @@ def _post_or_skip(
     skipped: list[dict],
     urls: list[str],
 ) -> None:
+    # Recheck here: static targets and previously listed open PRs may be closed.
+    pr = api("GET", f"/repos/{repo}/pulls/{n}")
+    if (
+        not isinstance(pr, dict)
+        or pr.get("state") not in ("open", "closed")
+        or type(pr.get("merged")) is not bool
+    ):
+        raise SystemExit(f"Cannot verify PR state for {repo}#{n}; refusing wake")
+    if pr["state"] != "open" or pr["merged"]:
+        print(f"SKIP {repo}#{n}: PR is closed or merged")
+        skipped.append(
+            {
+                "repo": repo,
+                "pr": n,
+                "reason": "closed_or_merged_pr",
+                "state": pr["state"],
+                "merged": pr["merged"],
+            }
+        )
+        return
     comments = list_comments(n, repo=repo)
     existing = [
         c for c in comments if _wake_body_has_living_tip(c.get("body") or "", tip)
