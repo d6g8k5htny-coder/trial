@@ -1,3 +1,7 @@
+## STATUS (Batch 375 research-audit-watch)
+
+tip `1ae02b9` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 375 idle-living-unfreeze)
 
 tip `1ae02b9` tip_match=true; idle tip-stable; living tgz content-delta republish; unfreeze 374→375; durable 8/8; lemma_closed=false; goal OPEN.
