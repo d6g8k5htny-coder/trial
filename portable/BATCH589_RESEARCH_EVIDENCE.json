@@ -1,0 +1,46 @@
+{
+  "batch": "589",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "audit_delta_needed": false,
+  "status_guard_tip_living": true,
+  "status_guard_pass": true,
+  "full_audit_recopy": false,
+  "coord_bc": "bc-ee63a10c-59c8-51d7-98d8-9d900a67a0f9",
+  "inventable_promoted": false,
+  "generated_at_utc": "2026-09-26T21:34:44Z",
+  "delta_vs_batch588": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch587": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch585": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch584": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch583": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  }
+}
