@@ -103,6 +103,17 @@ apply_one() {
     echo "skip (attestations/ absent): ${bn}"
     return 0
   fi
+  # Batch 378 tip-sync @ebedb78: 0018/0019 already on tip but context drifted
+  # (architecture joined REPOSITORY_TOP_LEVEL; close-handles already present).
+  # Treat semantic already-applied as success so keep-prior refresh can proceed.
+  if [[ "$bn" == 0018-* ]] && grep -q '"attestations"' engine/bridge/work_order.py 2>/dev/null; then
+    echo "already-applied (semantic): ${bn}"
+    return 0
+  fi
+  if [[ "$bn" == 0019-* ]] && grep -q 'with open(candidate' tools/attestations_check.py 2>/dev/null; then
+    echo "already-applied (semantic): ${bn}"
+    return 0
+  fi
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"

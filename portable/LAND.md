@@ -1,3 +1,7 @@
+## STATUS (Batch 378 tip-sync)
+
+tip `ebedb78` tip_match=true; tip-sync keep-prior 1ae02b9→ebedb78 after main #98; apply_all 0018/0019 semantic already-applied; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 378 tip-eng-idle)
 
 tip `1ae02b9` tip_match=true; tip_or_eng hunt negative after peer idle+unfreeze; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.

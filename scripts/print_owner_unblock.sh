@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 378 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 378: tip-sync keep-prior 1ae02b9→ebedb78 after main #98 @ebedb78"
 echo " Batch 378: tip_or_eng idle tip-stable @1ae02b9"
 echo " Batch 378: unfreeze last-resort 377→378 + VERIFY refresh_batch 377→378 @1ae02b9"
 echo " Batch 377: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @1ae02b9; no delta vs 376"

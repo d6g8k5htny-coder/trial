@@ -1,0 +1,14 @@
+{
+  "batch": "378",
+  "generated_at_utc": "2026-09-26T01:19:26Z",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "prior_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "tip_sync_landed",
+  "keep_prior": true,
+  "apply_all_check": "OK",
+  "living_tips_appended": "ebedb78"
+}

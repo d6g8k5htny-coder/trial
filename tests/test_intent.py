@@ -42,6 +42,7 @@ _LIVING_TIPS = (
     "fcad723",
     "e3cd7d4",
     "1ae02b9",
+    "ebedb78",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -21945,4 +21946,38 @@ def test_batch378_tip_or_eng_idle() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 378)
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch378_tip_sync_ebedb78() -> None:
+    """Batch 378: tip-sync 1ae02b9→ebedb78 keep-prior after main #98."""
+    import json
+    import re
+    assert "ebedb78" in _LIVING_TIPS
+    brief = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "378"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("tip_match") is True
+    assert brief.get("keep_prior") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    assert str(brief.get("hardening_tip") or "").startswith("ebedb78")
+    hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "tip_sync_landed"
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "ebedb78" in base
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "already-applied (semantic)" in apply_all
+    assert 'grep -q \'"attestations"\'' in apply_all or '"attestations"' in apply_all
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert _living_tip(str(verify.get("base_tip_sha") or ""))
+    assert int(verify.get("refresh_batch") or 0) >= 378
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 378)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 378)
+    assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
