@@ -1,3 +1,7 @@
+## STATUS (Batch 379 tip-eng-living)
+
+tip `ebedb780` tip_match=true; tip_or_eng living tgz_newer republish after tip-sync-idle peer; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 379 research-audit-watch)
 
 tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.

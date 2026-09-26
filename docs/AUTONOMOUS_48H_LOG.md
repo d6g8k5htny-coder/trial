@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 379 — tip_or_eng living tgz_newer republish after tip-sync-idle @ebedb780 (2026-09-26)
+
+- Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer need_upload=1 → force republish; inv parent-pin; stamps@379; `lemma_closed=false`.
+- tip_or_eng: tip-sync skipped (BASE==LIVE); peer tip-sync-idle@860439e; living eng shipped; inventable skipped. action=`living_republish`. Goal OPEN.
+
 ### Batch 379 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
 
 - Tip stable @ `ebedb78` tip_match=true; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

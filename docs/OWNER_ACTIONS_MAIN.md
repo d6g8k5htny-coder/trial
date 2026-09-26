@@ -1,3 +1,12 @@
+## STATUS (Batch 379 tip-eng-living)
+
+Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C; BASE==LIVE). tip_or_eng: living `tgz_newer` republish after tip-sync-idle peer; inv parent-pin; stamps@379. Evidence: `portable/BATCH379_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`living_republish`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+./scripts/republish_living_path_c_release.sh --force
+```
+
 ## STATUS (Batch 379 research-audit-watch)
 
 Hardening tip **stable** @ `ebedb78`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH378; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH379_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

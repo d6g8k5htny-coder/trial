@@ -1,0 +1,32 @@
+{
+  "batch": "379",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "write": "WRITABLE",
+  "path_c": "IDLE@0019",
+  "action": "living_republish",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "living_tag": "batch241-path-c-bundle",
+    "need_upload": 0,
+    "tgz_newer_pre": 1,
+    "script_stale_pre": 1
+  },
+  "refresh_dry_run": "BASE_TIP=ebedb78 live=ebedb78 match=1",
+  "assignment": "tip_or_eng_watch_vs_BASE_TIP_ebedb78",
+  "inventory_tip_pin": "preserve_parent_pin",
+  "coordinator_bc": "bc-01a0cf1e",
+  "peer_tip_sync_idle": "860439e",
+  "generated_at_utc": "2026-09-26T01:29:48Z",
+  "note": "tip_or_eng: tip stable; living script_stale+tgz_newer force republish after tip-sync-idle+research peers; skip inventable",
+  "peer_research": "c14dccd"
+}
