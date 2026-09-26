@@ -1,3 +1,7 @@
+## STATUS (Batch 389 idle-unfreeze)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle tip-stable; unfreeze 388→389; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 388 research-audit-watch)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion open 13/1/3 delta 0 vs 387; STATUS_GUARD living; durable 8/8; lemma_closed=false; goal OPEN.

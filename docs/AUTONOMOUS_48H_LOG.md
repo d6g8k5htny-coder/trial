@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 389 — idle tip-stable + unfreeze 388→389 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent_pin; `lemma_closed=false`.
+- Unfreeze last-resort + VERIFY + wake 388→389. Hunt negative (no live Intent tip pins). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
 ### Batch 388 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
