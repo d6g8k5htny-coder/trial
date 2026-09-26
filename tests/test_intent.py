@@ -20424,7 +20424,9 @@ def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     assert not (snap.get("violations") or [])
     assert _living_tip(str(snap.get("tip_sha") or ""))
     assert str(snap.get("tip_sha") or "").startswith("1ae02b9")
-    assert str(snap.get("baseline_tip_sha") or "").startswith("e3cd7d4")
+    # Living baseline supersedes across tip-sync; Batch 368 STATUS_GUARD briefly
+    # recorded prior e3cd7d4 — do not freeze baseline forever (Batch 341/346 class).
+    assert _living_tip(str(snap.get("baseline_tip_sha") or ""))
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH368_STATUS_GUARD_BRIEF.json").read_text(
