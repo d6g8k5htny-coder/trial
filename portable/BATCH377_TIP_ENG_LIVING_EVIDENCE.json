@@ -1,0 +1,14 @@
+{
+  "batch": "377",
+  "generated_at_utc": "2026-09-26T01:12:43Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "action": "eng_living_tgz_content_delta_republish",
+  "tip_stale_after": 0,
+  "script_stale_after": 0,
+  "need_upload_after": 0,
+  "living_tag": "batch241-path-c-bundle",
+  "pack_sha256": "18920bc823c167810a72768e04f5b6d7939d44d1e5c199049db7dcc6133ac809"
+}

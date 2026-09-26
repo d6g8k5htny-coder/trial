@@ -1,0 +1,20 @@
+{
+  "batch": "377",
+  "generated_at_utc": "2026-09-26T01:12:43Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "action": "eng_living_tgz_content_delta_republish",
+  "defect_id": "living_tgz_newer_need_upload_after_tip_sync_idle",
+  "script_stale_before": 0,
+  "script_stale_after": 0,
+  "tgz_newer_before": 1,
+  "need_upload_before": 1,
+  "need_upload_after": 0,
+  "living_tag": "batch241-path-c-bundle",
+  "pack_sha256": "18920bc823c167810a72768e04f5b6d7939d44d1e5c199049db7dcc6133ac809"
+}

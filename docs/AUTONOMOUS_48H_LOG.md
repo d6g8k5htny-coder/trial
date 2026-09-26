@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 377 — tip_or_eng: living tgz content-delta republish @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- After peer tip_sync idle, living dry-run `tgz_newer=1 need_upload=1` (script_stale=0). Real upload → need_upload=0. Living >=N. Inventable skipped. NEVER flip research.
+
 ### Batch 377 — research_stack_audit_watch_no_promotion @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

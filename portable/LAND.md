@@ -1,3 +1,7 @@
+## STATUS (Batch 377 tip-eng-living)
+
+tip `1ae02b9` tip_match=true; tip_or_eng living tgz content-delta republish (need_upload 1→0); durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 377 research-audit-watch)
 
 tip `1ae02b9` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
