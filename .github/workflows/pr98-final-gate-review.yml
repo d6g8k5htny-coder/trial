@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: d6g8k5htny-coder/main
-          ref: 2d3374c5827650f5c9b462a77b29e17b998dbd96
+          ref: feea1df7726f3b8a57f3de9bfe5d56e7377b8bc0
           path: subject
           fetch-depth: 0
           persist-credentials: false
@@ -29,8 +29,8 @@ jobs:
       - name: Bind exact subject and execute final boundary probes
         run: |
           set -euo pipefail
-          test "$(git -C subject rev-parse HEAD)" = 2d3374c5827650f5c9b462a77b29e17b998dbd96
-          echo '3ebcbb8a7f9822763bc6e75ac2402741144410d5d0dfdc636d34216cd0665420  subject/tools/claims_gate_adapter.py' | sha256sum -c -
+          test "$(git -C subject rev-parse HEAD)" = feea1df7726f3b8a57f3de9bfe5d56e7377b8bc0
+          echo '6bf3ab15e111b09ba5068605ad3d0e04794eca7d45838613329c47f320c15435  subject/tools/claims_gate_adapter.py' | sha256sum -c -
           python -B -S reviewer/reviews/pr98_final_gate_20260925/probe.py --subject-root subject --output "$RUNNER_TEMP/final-gate-evidence"
       - name: Install exact upstream test dependencies
         working-directory: subject
