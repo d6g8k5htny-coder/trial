@@ -31,6 +31,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 454 — tip_or_eng living script_stale republish + unfreeze 453→454 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch453 idle stamps; republish batch241; unfreeze VERIFY/last-resort 453→454; inv parent-pin @f29a81b. Batch452 tip_or_eng raced (peer tip-sync452+tip_or_eng453). Intent soften 441/445 preserved. Goal OPEN.
+
+
 ### Batch 452 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
