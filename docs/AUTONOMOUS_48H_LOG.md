@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 559 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior; Soft Intent n=1 === header @561 (tip/eng561+tip_sync560 raced); soft tip_sync559 echo only; living need_upload=0; inv parent-pin `364e3bd9`; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH559_TIP_SYNC_*.json`; test_batch559_tip_sync_watch_keep_prior_parent_pin. NEVER flip research.
+
 ### Batch 561 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 560→561 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE= BASE= keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 560→561; living script_stale need_upload=1; Soft Intent n=1; .
