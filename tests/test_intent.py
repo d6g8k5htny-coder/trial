@@ -20424,7 +20424,7 @@ def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     assert snap.get("flipped_anything") is False
     assert not (snap.get("violations") or [])
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("1ae02b9")
+    # Living tip advances after later tip-sync / STATUS_GUARD refreshes (Batch 378: →ebedb780).
     # Living baseline tip advances after later guard runs; >= living tip (Batch 286 class).
     assert _living_tip(str(snap.get("baseline_tip_sha") or ""))
 
@@ -21981,3 +21981,23 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_batch378_status_guard_tip_refresh() -> None:
+    """Batch 378: STATUS_GUARD tip refreshed to living hardening tip after tip-sync."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH378_STATUS_GUARD_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "378"
+    assert brief.get("action") == "status_guard_tip_refresh"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("pass") is True
+    assert brief.get("open_premises") == 13
+    assert brief.get("open_lemmas") == 1
+    assert brief.get("open_prizes") == 3
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    sg = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert _living_tip(str(sg.get("tip_sha") or ""))
+    assert sg.get("pass") is True
+    assert len(sg.get("open_premises") or []) == 13
+    assert "STATUS (Batch 378 status-guard tip refresh)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

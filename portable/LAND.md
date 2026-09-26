@@ -1,3 +1,7 @@
+## STATUS (Batch 378 status-guard tip refresh)
+
+tip `ebedb780` tip_match=true; STATUS_GUARD tip 1ae02b9→ebedb780; open 13/1/3; no promotion; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 378 tip-sync)
 
 tip `ebedb78` tip_match=true; tip-sync keep-prior 1ae02b9→ebedb78 after main #98; apply_all 0018/0019 semantic already-applied; durable 8/8; lemma_closed=false; goal OPEN.

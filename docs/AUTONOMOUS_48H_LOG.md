@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 378 — STATUS_GUARD tip refresh 1ae02b9→ebedb780 (2026-09-26)
+
+- After tip-sync, STATUS_GUARD tip_sha lagged at `1ae02b9`. Ran `guard_no_status_promotion` @ `ebedb780` → pass; tip→`ebedb780`; baseline→`1ae02b9`; open 13/1/3; no promotion.
+- Living pack content-delta republish after tip-sync artifacts. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 378 — tip-sync 1ae02b9→ebedb78 after main #98 (2026-09-26)
 
 - Tip **moved** @ hardening `ebedb78` (main #98 scientific-state-schema-crosswalk). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

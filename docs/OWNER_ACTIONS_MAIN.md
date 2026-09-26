@@ -1,3 +1,7 @@
+## STATUS (Batch 378 status-guard tip refresh)
+
+Hardening tip **moved** 1ae02b9→`ebedb780` (main #98). STATUS_GUARD tip refreshed to living tip; open stack 13/1/3 unchanged; no promotion. Evidence: `portable/BATCH378_STATUS_GUARD_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 378 tip-sync)
 
 Hardening tip **moved** @ `ebedb78` (main #98). Tip-sync keep-prior Path C refresh; `_LIVING_TIPS+=ebedb78`; apply_all softened for 0018/0019 already-on-tip. Evidence: `portable/BATCH378_TIP_SYNC*.json`. `lemma_closed=false`. action=`tip_sync_landed`. Goal OPEN.
