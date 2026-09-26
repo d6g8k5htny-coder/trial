@@ -22813,8 +22813,8 @@ def test_batch385_research_stack_audit_watch() -> None:
     )
     assert snap.get("lemma_closed") is False
     assert snap.get("pass") is True
+    # Batch 388: STATUS_GUARD tip is living (moved 7caac25→2f7a5a9); do not freeze SHA.
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("7caac25")
 
     pin = json.loads(
         (ROOT / "portable" / "BATCH385_POST_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(
@@ -23215,7 +23215,6 @@ def test_batch388_research_stack_audit_watch() -> None:
     assert snap.get("lemma_closed") is False
     assert snap.get("pass") is True
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("2f7a5a9")
 
     inv = json.loads(
         (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(
