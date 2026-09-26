@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 410 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 410: tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9"
+echo " Batch 410: post tip_sync living inv parent-pin @2f7a5a9"
 echo " Batch 410: tip_or_eng idle_no_commit hunt-negative @2f7a5a9"
 echo " Batch 409: post tip_sync living inv parent-pin @2f7a5a9"
 echo " Batch 408: tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9"
