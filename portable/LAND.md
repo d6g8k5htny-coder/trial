@@ -1,3 +1,27 @@
+## STATUS (Batch 390 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 391 post-pin-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale after inv pin; republish; parent-pin; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 391 post-ci-inv-pin)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin after peer CI-dedupe land; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 391 post-idle-pin-living)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin + living script_stale republish + unfreeze 390→391; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 389 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 391 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch390 soften+living; inv==HEAD^; living current; durable 8/8; lemma_closed=false; action=idle_no_commit; goal OPEN.
+
 ## STATUS (Batch 390 post-soften-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale after tip_or_eng soften; republish; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.

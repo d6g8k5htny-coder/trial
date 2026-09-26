@@ -23493,3 +23493,187 @@ def test_batch390_post_soften_living() -> None:
     assert _living_tip(str(living.get("hardening_tip") or ""))
     assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch391_tip_or_eng_idle() -> None:
+    """Batch 391: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH391_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "391"
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("flipped_anything") is False
+    assert idle.get("lemma_closed") is False
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = idle.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    assert "STATUS (Batch 391 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+def test_batch389_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 389: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "389"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("parent_pin") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1]) or "2f7a5a9" in _asg
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("lemma_closed") is False
+    assert pin.get("parent_pin") is True
+
+    living_brief = json.loads(
+        (ROOT / "portable" / "BATCH389_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living_brief.get("uploaded") is True
+    assert living_brief.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 389)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 389 tip-sync-idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 389 tip-sync-idle)" in owner
+
+
+def test_batch391_post_idle_pin_living() -> None:
+    """Batch 391: post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH391_POST_IDLE_PIN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "391"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "post_idle_inv_tip_pin_living_unfreeze"
+    assert brief.get("parent_pin") is True
+    assert brief.get("unfreeze") == "390→391"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-idle-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 391)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 391)
+
+
+def test_batch391_post_ci_inv_tip_pin() -> None:
+    """Batch 391: inv tip re-pin after peer CI-dedupe land @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH391_POST_CI_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "391"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_ci_dedupe_land"
+    assert brief.get("parent_pin") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-ci-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch391_post_pin_living() -> None:
+    """Batch 391: living script_stale republish after inv tip pin @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH391_POST_PIN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "391"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_inv_pin"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch390_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 390: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH390_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "390"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH390_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("parent_pin") is True
+    assert evidence.get("flipped_anything") is False
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH390_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH390_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "idle_no_commit"
+    assert watch.get("flipped_anything") is False
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH390_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("lemma_closed") is False
+    assert pin.get("parent_pin") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 390)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 390 tip-sync-idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 390 tip-sync-idle)" in owner
+

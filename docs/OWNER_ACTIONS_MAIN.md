@@ -1,3 +1,27 @@
+## STATUS (Batch 390 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH390_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 391 post-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after inv pin; republish batch241. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 391 post-ci-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after peer CI-dedupe. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 391 post-idle-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living republish + unfreeze 390→391. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 389 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after Batch389 idle+unfreeze / Batch390–391 peers; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH389_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 391 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peers Batch390 soften+living; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH391_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 390 post-soften-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch390 soften land; republish batch241. `lemma_closed=false`. Goal OPEN.

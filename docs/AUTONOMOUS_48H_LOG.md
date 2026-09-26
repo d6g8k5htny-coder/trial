@@ -21,6 +21,46 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 390 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin @2564595; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 391 — living script_stale republish after inv pin @2f7a5a9 (2026-09-26)
+
+- Tip stable; inv parent-pin restored; living `script_stale=1` → force republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 391 — post-ci inv tip pin after peer CI-dedupe @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; living current after Batch391 unfreeze land.
+- Peer `5f909fdc` CI-dedupe broke inv parent_pin → re-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 391 — post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 after Batch391 tip/eng idle + Batch389 tip_sync peer.
+- Living `script_stale=1` → force republish; inv parent-pin; unfreeze 390→391. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 389 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1 after Batch389 idle+unfreeze / Batch390–391 peers; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @2a2c53b; `lemma_closed=false`.
+- Assignment: `tip_sync_watch_vs_BASE_TIP_2f7a5a9`. No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 391 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv==HEAD^; Intent green; `lemma_closed=false`.
+- Peers Batch390 soften+living already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 390 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1; Batch390 tip_or_eng soften already on main (389→390).
