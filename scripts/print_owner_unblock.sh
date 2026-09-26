@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 521 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 521: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 520→521 @2f7a5a9 (LIVE 4a72a5a)"
+echo " Batch 521: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 520: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 519/518/517/516/515; covers research496/499/501/503/509/514/518 gap"
 echo " Batch 520: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 519→520 @2f7a5a9 (LIVE 4a72a5a)"
 echo " Batch 520: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
