@@ -9,7 +9,7 @@
   "living_tag": "batch241-path-c-bundle",
   "tip_stale": 0,
   "script_stale": 1,
-  "tgz_newer": 0,
+  "tgz_newer": 1,
   "need_upload": 1,
   "uploaded": true,
   "parent_pin": true,
