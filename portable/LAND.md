@@ -1,3 +1,7 @@
+## STATUS (Batch 385 tip-eng-idle)
+
+tip `7caac254` tip_match=true; tip_or_eng hunt negative after peer tip-sync+STATUS_GUARD+research+living; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 385 post-research-living)
 
 tip `7caac254` tip_match=true; living script_stale republish after research audit; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
