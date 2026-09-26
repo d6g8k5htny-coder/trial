@@ -1,3 +1,13 @@
+## STATUS (Batch 426 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH424/422/420/418; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH426_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch426_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 426 tip-sync-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tip/script current; parent-pin inv; skip inventable. Evidence: `portable/BATCH426_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
