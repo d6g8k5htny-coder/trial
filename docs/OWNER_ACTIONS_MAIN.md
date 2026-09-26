@@ -28,6 +28,15 @@ Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved).
 python3 -m pytest tests/test_intent.py::test_batch569_tip_or_eng_tip_drift_keep_prior_unfreeze -q
 ```
 
+## STATUS (Batch 568 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@570 tip/eng570 Soft Intent n=1 @570; tip/eng569+research569+tip_sync566 raced; tip_sync564 @8c302423; tip_sync566 @0904a834); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch568_tip_sync_watch_keep_prior_parent_pin -q
+```
+
 ## STATUS (Batch 566 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (living header Soft Intent n=1; tip/eng566 @5b2becc6 Soft Intent n=1; tip_sync565 @9f5fbc2f); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
