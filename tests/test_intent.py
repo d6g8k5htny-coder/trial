@@ -21963,13 +21963,12 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert brief.get("keep_prior") is True
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
-    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert brief.get("hardening_tip") == "ebedb7802024fa557e9071e4c9cec7cddc474b89"
     hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "tip_sync_landed"
-    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base)  # Batch 386: tip moved ebedb78→7caac25
+    assert evidence.get("hardening_tip") == brief["hardening_tip"]
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied (semantic)" in apply_all
     assert 'grep -q \'"attestations"\'' in apply_all or '"attestations"' in apply_all
@@ -21983,6 +21982,17 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_current_path_c_base_matches_bundle() -> None:
+    """Current readiness metadata must agree independently of historical receipts."""
+    import json
+    import re
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8").split()
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert re.fullmatch(r"[0-9a-f]{40}", str(verify.get("base_tip_sha") or ""))
+    assert base == [verify["hardening_ref"], verify["base_tip_sha"]]
 
 
 def test_batch378_research_stack_audit_watch() -> None:
@@ -23005,13 +23015,9 @@ def test_batch386_tip_or_eng_soften() -> None:
     assert living.get("action") == "living_tgz_content_delta_republish"
     unfreeze = json.loads((ROOT / "portable" / "BATCH386_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
     assert unfreeze.get("to_batch") == "386"
-    # softened historical pin in test_batch378_tip_sync_ebedb78 body
-    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
-    start = intent.index("def test_batch378_tip_sync_ebedb78")
-    end = intent.index("def test_batch378_research_stack_audit_watch")
-    body = intent[start:end]
-    assert 'assert "ebedb78" in base' not in body
-    assert "assert _living_tip(base)" in body
+    # Validate historical identity and current readiness without fixing source spelling.
+    test_batch378_tip_sync_ebedb78()
+    test_current_path_c_base_matches_bundle()
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 386)
     inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
@@ -23370,17 +23376,8 @@ def test_batch388_research_stack_audit_watch() -> None:
     assert snap.get("pass") is True
     assert _living_tip(str(snap.get("tip_sha") or ""))
 
-    inv = json.loads(
-        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    trial = next(
-        d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial"
-    )
-    # Batch 390: live inventory tip_sha advances on parent-pin; do not eq-freeze to brief.
-    assert len(str(trial.get("tip_sha") or "")) >= 7
-    assert len(str(pin.get("tip_sha") or "")) >= 7
+    # This receipt records Batch 388's parent, independently of current inventory.
+    assert pin.get("tip_sha") == "9a1ee5905d7a4671badf545e42d3872c6e17f42c"
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 388)
@@ -23468,12 +23465,8 @@ def test_batch390_tip_or_eng_soften() -> None:
     assert living.get("action") == "living_script_stale_republish"
     unfreeze = json.loads((ROOT / "portable" / "BATCH390_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
     assert unfreeze.get("to_batch") == "390"
-    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
-    start = intent.index("def test_batch388_research_stack_audit_watch")
-    end = intent.index("def test_batch389_idle_tip_sync_watch")
-    body = intent[start:end]
-    assert 'trial.get("tip_sha") == pin.get("tip_sha")' not in body
-    assert "do not eq-freeze" in body or "Batch 390" in body
+    # Validate the historical receipt contract independently of assertion spelling.
+    test_batch388_research_stack_audit_watch()
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 390)
     inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
