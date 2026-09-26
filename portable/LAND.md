@@ -1,12 +1,11 @@
-<<<<<<< Updated upstream
-## STATUS (Batch 539 tip-eng-keep-prior)
-
-tip BASE `2f7a5a9` LIVE `70664bd` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 538→539; Soft Intent n=1; inv parent-pin; VERIFY 539; durable 8/8; lemma_closed=false; goal OPEN.
-=======
 ## STATUS (Batch 537 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@538); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
->>>>>>> Stashed changes
+
+## STATUS (Batch 539 tip-eng-keep-prior)
+
+tip BASE `2f7a5a9` LIVE `70664bd` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 538→539; Soft Intent n=1; inv parent-pin; VERIFY 539; durable 8/8; lemma_closed=false; goal OPEN.
+
 
 ## STATUS (Batch 537 research-audit)
 
