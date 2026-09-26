@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+
+### Batch 504 — tip_or_eng idle_no_commit hunt-negative + unfreeze 503→504 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 503→504; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research502; unfreeze VERIFY lag; inv parent_pin. Soft Intent single === header preserved (no re-stack). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 502 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 500/498/497/495/494 = 0 (research496/499/501 gap); STATUS_GUARD living; no promotion; evidence JSON only.
