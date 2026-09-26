@@ -1,3 +1,7 @@
+## STATUS (Batch 491 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch490 idle; republish batch241; unfreeze VERIFY/last-resort 490→491; inv parent-pin. Evidence: `portable/BATCH491_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 490 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 489→490; inv parent-pin. Evidence: `portable/BATCH490_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.

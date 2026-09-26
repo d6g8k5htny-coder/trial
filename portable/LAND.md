@@ -1,3 +1,7 @@
+## STATUS (Batch 491 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale republish + unfreeze 490→491; inv parent-pin; VERIFY 491; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 490 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living tar-noise DIFF_COUNT=0; unfreeze 489→490; inv parent-pin; VERIFY 490; durable 8/8; lemma_closed=false; goal OPEN.
