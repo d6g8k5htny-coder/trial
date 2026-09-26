@@ -1,5 +1,15 @@
 ## STATUS (Batch 511 tip-sync-living)
 
+## STATUS (Batch 513 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 512→513; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch513_tip_or_eng_idle -q
+```
+
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
 
 ```bash

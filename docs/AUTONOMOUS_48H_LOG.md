@@ -1,6 +1,12 @@
 # Autonomous 48h work log
 
 
+
+### Batch 513 — tip_or_eng idle_no_commit hunt-negative + unfreeze 512→513 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 512→513; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync511 Soft Intent (post research512); Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 511 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
