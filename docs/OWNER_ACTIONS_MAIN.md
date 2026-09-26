@@ -1,3 +1,11 @@
+## STATUS (Batch 387 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after peer tip-sync land; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH387_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 387 tip-sync)
+
+Hardening tip **moved** @ `2f7a5a9` (SIDE24 theorem-chain sources). Tip-sync keep-prior; STATUS_GUARD tip refresh; unfreeze 386→387. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 387 research-audit-watch)
 
 Hardening tip **stable** @ `7caac254`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH385; STATUS_GUARD living (no lag); no AUDIT re-copy. Evidence: `portable/BATCH387_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
