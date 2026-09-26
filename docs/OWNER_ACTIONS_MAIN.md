@@ -1,3 +1,7 @@
+## STATUS (Batch 391 post-idle-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living republish + unfreeze 390→391. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 389 tip-sync-idle)
 
 Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after Batch389 idle+unfreeze / Batch390–391 peers; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH389_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
