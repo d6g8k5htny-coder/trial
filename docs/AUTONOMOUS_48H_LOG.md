@@ -21,11 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 369 — research_stack_audit_watch_no_promotion @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research audit watch: open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD living; delta vs BATCH367 all 0 — no-promotion evidence only (no full AUDIT re-copy).
+- Artifacts: `BATCH369_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
 ### Batch 369 — living script_stale republish after unfreeze idle @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; inv parent-pinned; `lemma_closed=false`.
 - Living CRITICAL scripts drifted after Batch 369 unfreeze idle — republished batch241 (real script_stale, not 1-byte thrash). Inventable skipped. Goal OPEN.
-
 
 ### Batch 369 — idle_no_commit tip-stable watch @1ae02b9 (2026-09-25)
 
