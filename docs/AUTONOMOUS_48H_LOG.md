@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 518 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 517→518 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 517→518; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive under tip drift after tip_sync515; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
 ### Batch 515 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
 
 - TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
