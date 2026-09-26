@@ -1,5 +1,11 @@
 ## Batch 574 tip_sync Soft Intent RESTORE (2026-09-26T20:13Z)
 
+### Batch 578 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 577→578 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 577→578; living script_stale republish pack_sha256=`3514c45a…`; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after tip/eng577 Soft Intent/REFRESH; Soft Intent single === header →578; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
 ### Batch 577 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 576→577 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 576→577; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
