@@ -1,3 +1,13 @@
+## STATUS (Batch 575 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 574→575; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH575_TIP_ENG_IDLE.json` + `BATCH575_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch575_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 573 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@574 Soft Intent n=1; tip/eng573 @a3906608 Soft Intent n=1 @573; tip_sync572 @6ceeeed9 landed; research574 @2346d51a; tip_sync571 @7df108e1; research573 @22736cf3); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
