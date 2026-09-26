@@ -1,3 +1,7 @@
+## STATUS (Batch 378 tip-eng-idle)
+
+Hardening tip **stable** @ `1ae02b9`. tip_or_eng continue: peer already shipped idle+unfreeze@378; hunt negative (parent-pin / stamps@378 / living need_upload=0). Evidence: `portable/BATCH378_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 378 idle-unfreeze)
 
 Hardening tip **stable** @ `1ae02b9`. Batch 378 idle tip-stable + unfreeze 377→378. Living `need_upload=0`. Evidence: `portable/BATCH378_IDLE.json`. `lemma_closed=false`. Goal OPEN.

@@ -1,0 +1,20 @@
+{
+  "batch": "378",
+  "generated_at_utc": "2026-09-26T01:17:03Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "defect_found": false,
+  "defect_shipped": false,
+  "skipped": [
+    "tip-sync (BASE==LIVE @1ae02b9)",
+    "inv tip lag (parent-pin @8929a1f)",
+    "last-resort/VERIFY/wake already 378",
+    "living script_stale/tgz (need_upload=0)",
+    "inventable"
+  ],
+  "peer_tip_or_eng": "8929a1f",
+  "goal": "OPEN"
+}
