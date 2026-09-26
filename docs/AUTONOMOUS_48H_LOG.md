@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 471 — tip_or_eng living script_stale republish + unfreeze 470→471 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch470 tip_or_eng print_owner drift; republish batch241; unfreeze VERIFY/last-resort 470→471; inv parent-pin @1567511. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
 ### Batch 470 — tip_or_eng idle_no_commit hunt-negative + unfreeze 469→470 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 469→470; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
