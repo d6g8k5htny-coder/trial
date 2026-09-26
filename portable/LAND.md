@@ -1,3 +1,7 @@
+## STATUS (Batch 374 living-republish)
+
+tip `1ae02b9` tip_match=true; living `batch241-path-c-bundle` force republish after script_stale; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 374 research-audit)
 
 tip `1ae02b9` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; delta=0 vs 372; durable 8/8; lemma_closed=false; goal OPEN.

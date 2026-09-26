@@ -21248,3 +21248,15 @@ def test_batch374_inv_tip_pin_after_research() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     assert str(inv.get("batch")) == "374" or int(str(inv.get("batch") or 0)) >= 374
+
+
+def test_batch374_living_script_stale_republish() -> None:
+    """Batch 374: living force republish after script_stale."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH374_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "374"
+    assert brief.get("action") == "living_script_stale_force_republish"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("living_tag") == "batch241-path-c-bundle"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 374 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

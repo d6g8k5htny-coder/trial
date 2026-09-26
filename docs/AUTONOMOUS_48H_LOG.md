@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 374 — living script_stale force republish @1ae02b9 (2026-09-26)
+
+- After unfreeze, living dry-run reported script_stale=1; force-uploaded trial-portable-main-fixes.tgz + path-c assets to `batch241-path-c-bundle`.
+- No research flip. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 374 — research_stack_audit_watch no-promotion @1ae02b9 (2026-09-26)
 
 - Tip stable tip_match=1; Path C IDLE@0019; durable 8/8; open stack 13 premises / 1 lemma / 3 prizes; delta vs Batch 372 = 0.
