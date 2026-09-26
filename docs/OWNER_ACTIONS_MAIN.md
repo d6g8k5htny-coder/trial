@@ -1,3 +1,7 @@
+## STATUS (Batch 408 tip-eng-living+inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng living script_stale republish + inv parent-pin after idle. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 408 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch407 tip_sync pin; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.

@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 408 — tip_or_eng living script_stale republish + inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After idle land: living `script_stale=1` → republish `batch241-path-c-bundle`; inv parent-pin @ precommit HEAD; tip_match; `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 408 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 408; `lemma_closed=false`.

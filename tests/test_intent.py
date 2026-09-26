@@ -24978,3 +24978,29 @@ def test_batch408_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 408 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 408)
+
+
+def test_batch408_tip_or_eng_living_inv_pin() -> None:
+    """Batch 408: living script_stale republish + inv parent-pin @2f7a5a9."""
+    import json
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH408_LIVING_REPUBLISH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "408"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("uploaded") is True
+    assert brief.get("tip_match") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH408_POST_IDLE_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("parent_pin") is True
+    assert pin.get("lemma_closed") is False
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin_after_tip_or_eng_living"
+    assert "STATUS (Batch 408 tip-eng-living+inv-pin)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")
