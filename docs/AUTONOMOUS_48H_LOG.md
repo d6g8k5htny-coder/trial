@@ -27,10 +27,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
 
 
-### Batch 441 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+### Batch 441 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
-- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @a191739. Inventable skipped. Goal OPEN. NEVER flip research.
+- Living current; action=`idle_no_commit`; inv parent-pin @3f03ae4. Inventable skipped. Goal OPEN. NEVER flip research.
 
 
 ### Batch 440 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)

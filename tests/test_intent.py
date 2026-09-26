@@ -29109,6 +29109,7 @@ def test_batch440_research_stack_audit_watch() -> None:
     assert "Batch 440" in log_md and "research_stack_audit_watch" in log_md
 
 
+
 def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 441: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -29161,8 +29162,8 @@ def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
             encoding="utf-8"
         )
     )
-    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
-    assert living_brief.get("uploaded") is True
+    assert living_brief.get("action") == "living_current_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is False
     assert living_brief.get("lemma_closed") is False
 
     pin = json.loads(
@@ -29180,13 +29181,14 @@ def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 441)
-    assert "STATUS (Batch 441 tip-sync-living)" in (
+    _assert_print_owner_header_batch_at_least(unblock, 442)
+    assert "STATUS (Batch 441 tip-sync-idle)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-    assert "STATUS (Batch 441 tip-sync-living)" in (
+    assert "STATUS (Batch 441 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
+
 
 
 def test_batch442_tip_or_eng_living_tgz() -> None:
