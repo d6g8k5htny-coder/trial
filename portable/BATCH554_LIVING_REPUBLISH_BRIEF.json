@@ -1,0 +1,20 @@
+{
+  "batch": "554",
+  "action": "living_script_stale_republish_keep_prior",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 1,
+  "tgz_newer": 0,
+  "uploaded": true,
+  "parent_pin": true,
+  "note": "tip_or_eng TIP_DRIFT keep-prior: living script_stale after Soft Intent/REFRESH 554 atop research553; republish; BASE immutable",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "8e43189fd37e0393af1efedd6fa19b1880314b51",
+  "generated_at_utc": "2026-09-26T17:20:52Z"
+}
