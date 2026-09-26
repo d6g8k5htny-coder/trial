@@ -1,5 +1,12 @@
 # Autonomous 48h work log
 
+### Batch 507 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 507 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @d0e92f6. Inventable skipped. Goal OPEN.
+
+
 ### Batch 507 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 506/505/504/502/500 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
