@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 374 — tip_or_eng idle_no_commit tip-stable watch @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; stamps@374; `lemma_closed=false`.
+- Hunt negative after peer research/unfreeze/inv pins. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 374 — living script_stale force republish @1ae02b9 (2026-09-26)
 
 - After unfreeze, living dry-run reported script_stale=1; force-uploaded trial-portable-main-fixes.tgz + path-c assets to `batch241-path-c-bundle`.

@@ -1,3 +1,7 @@
+## STATUS (Batch 374 idle)
+
+tip `1ae02b9` tip_match=true; tip_or_eng idle_no_commit; living tip/script current; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 374 living-republish)
 
 tip `1ae02b9` tip_match=true; living `batch241-path-c-bundle` force republish after script_stale; durable 8/8; lemma_closed=false; goal OPEN.

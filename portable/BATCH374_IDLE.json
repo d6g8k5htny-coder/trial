@@ -1,0 +1,34 @@
+{
+  "batch": "374",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "write": "WRITABLE",
+  "path_c": "IDLE@0019",
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "living_tag": "batch241-path-c-bundle",
+    "need_upload": 0
+  },
+  "refresh_dry_run": "BASE_TIP=1ae02b9 live=1ae02b9 match=1",
+  "assignment": "tip_or_eng_watch_vs_BASE_TIP_1ae02b9",
+  "inventory_tip_pin": "preserve_parent_pin",
+  "coordinator_bc": "bc-01a0cf1e",
+  "generated_at_utc": "2026-09-26T00:53:46Z",
+  "note": "tip_or_eng: tip stable; peers shipped research/unfreeze/inv pins; living current; skip inventable",
+  "hunt": [
+    "tip_match=1 @1ae02b9",
+    "inv_tip_lag=parent_pin skip",
+    "verify/last-resort/wake/header=374",
+    "living tip_stale=0 script_stale=0"
+  ]
+}

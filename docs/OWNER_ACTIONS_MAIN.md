@@ -1,3 +1,7 @@
+## STATUS (Batch 374 idle)
+
+Hardening tip **stable** @ `1ae02b9`. tip_or_eng: tip_match; peers already unfroze+inv-pinned; living current; inv parent-pin preserved. Evidence: `portable/BATCH374_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 374 research-audit)
 
 Hardening tip **stable** @ `1ae02b9`. Research stack audit watch — open 13/1/3; delta vs Batch 372 = 0. No promotion. Unfreeze 373→374. Evidence: `portable/BATCH374_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.
