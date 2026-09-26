@@ -1,3 +1,7 @@
+## STATUS (Batch 399 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch399 research; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 399 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. Research stack audit 13/1/3 no promotion; unfreeze 398→399. `lemma_closed=false`. Goal OPEN.
