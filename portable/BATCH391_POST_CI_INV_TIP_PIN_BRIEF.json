@@ -1,0 +1,13 @@
+{
+  "batch": "391",
+  "action": "inventory_preserve_durable_tip_pin_after_ci_dedupe_land",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "5f909fdc1154441f61915fb0599c5a60102d2eb4",
+  "generated_at_utc": "2026-09-26T02:44:43Z",
+  "note": "Batch389 tip-sync wake superseded; peer CI-dedupe 5f909fdc broke parent_pin; re-pin; living current; no unfreeze"
+}

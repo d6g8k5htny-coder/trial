@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 391 — post-ci inv tip pin after peer CI-dedupe @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; living current after Batch391 unfreeze land.
+- Peer `5f909fdc` CI-dedupe broke inv parent_pin → re-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 391 — post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 after Batch391 tip/eng idle + Batch389 tip_sync peer.

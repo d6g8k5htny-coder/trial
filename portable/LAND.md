@@ -1,3 +1,7 @@
+## STATUS (Batch 391 post-ci-inv-pin)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin after peer CI-dedupe land; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 391 post-idle-pin-living)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin + living script_stale republish + unfreeze 390→391; durable 8/8; lemma_closed=false; goal OPEN.

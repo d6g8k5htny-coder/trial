@@ -23589,3 +23589,15 @@ def test_batch391_post_idle_pin_living() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 391)
 
+
+def test_batch391_post_ci_inv_tip_pin() -> None:
+    """Batch 391: inv tip re-pin after peer CI-dedupe land @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH391_POST_CI_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "391"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_ci_dedupe_land"
+    assert brief.get("parent_pin") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-ci-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

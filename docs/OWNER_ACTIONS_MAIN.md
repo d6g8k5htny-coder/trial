@@ -1,3 +1,7 @@
+## STATUS (Batch 391 post-ci-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after peer CI-dedupe. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 391 post-idle-pin-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living republish + unfreeze 390→391. `lemma_closed=false`. Goal OPEN.
