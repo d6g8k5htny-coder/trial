@@ -1,3 +1,7 @@
+## STATUS (Batch 452 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch 451 idle; republish; unfreeze 451→452; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 451 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 450→451; inv parent-pin. Evidence: `portable/BATCH451_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
