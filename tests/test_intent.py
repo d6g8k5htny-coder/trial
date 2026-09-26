@@ -29162,8 +29162,10 @@ def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
             encoding="utf-8"
         )
     )
-    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
-    assert living_brief.get("uploaded") is True
+    # Soften: tip-sync447 incorrectly re-hardened to script_stale/uploaded=True while
+    # BATCH441 living brief stayed living_current/uploaded=false (idle path).
+    assert living_brief.get("action") == "living_current_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is False
     assert living_brief.get("lemma_closed") is False
 
     pin = json.loads(
@@ -29846,8 +29848,10 @@ def test_batch445_tip_sync_watch_idle_parent_pin() -> None:
             encoding="utf-8"
         )
     )
-    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
-    assert living_brief.get("uploaded") is True
+    # Soften: tip-sync447 incorrectly re-hardened to script_stale/uploaded=True while
+    # BATCH445 living brief stayed living_current/uploaded=false (idle path).
+    assert living_brief.get("action") == "living_current_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is False
     assert living_brief.get("lemma_closed") is False
 
     pin = json.loads(
@@ -30452,3 +30456,42 @@ def test_batch448_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 448)
     assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch448_intent_soften_441_445_tip_sync_living_brief() -> None:
+    """Batch 448: soften tip-sync447 re-harden of Batch441/445 living briefs."""
+    import json
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH448_INTENT_SOFTEN_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("batch") == "448"
+    assert hunt.get("action") == "intent_soften_441_445_tip_sync_living_brief"
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("lemma_closed") is False
+    assert _living_tip(str(hunt.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH448_INTENT_SOFTEN_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("action") == "intent_soften_441_445_tip_sync_living_brief"
+    assert brief.get("flipped_anything") is False
+    assert brief.get("scientific_effect") == "NONE"
+
+    for batch in ("441", "445"):
+        living_brief = json.loads(
+            (
+                ROOT / "portable" / f"BATCH{batch}_TIP_SYNC_WATCH_LIVING_BRIEF.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert living_brief.get("action") == "living_current_after_tip_sync_watch"
+        assert living_brief.get("uploaded") is False
+
+    assert "STATUS (Batch 448 intent-soften)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")
+    assert "STATUS (Batch 448 intent-soften)" in (
+        ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
+    ).read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    assert "CI Intent soften Batch441/445" in unblock

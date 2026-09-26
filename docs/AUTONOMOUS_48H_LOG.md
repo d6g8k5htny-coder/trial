@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+
+### Batch 448 — CI Intent soften 441/445 tip_sync living briefs (2026-09-26T07:07Z)
+
+- tip_match @2f7a5a9; tip-sync447 re-hardened test_batch441/445 living_brief asserts → CI sanity failed on cursor/batch447-tip-sync-watch-idle-309a.
+- Softened asserts back to living_current/uploaded=False matching portable briefs. lemma_closed=false. Goal OPEN.
+
 Window start (UTC): see `/cursor/stores/self/autonomous_48h_started_at.txt` on the agent host.
 **Window mode (Batch 61):** `PERMANENT_UNTIL_OWNER_INTERVENES` — Dylan Roy extended
 permanently until he intervenes. No 48h finale. Stop only on owner intervene.

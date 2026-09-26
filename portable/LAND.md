@@ -1,5 +1,10 @@
 ## STATUS (Batch 448 research-audit)
 
+
+## STATUS (Batch 448 intent-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. Soften Batch441/445 tip_sync living-brief Intent asserts (tip-sync447 re-hardened to script_stale/uploaded=True while briefs stayed living_current/false → CI sanity red). `lemma_closed=false`. action=`intent_soften_441_445_tip_sync_living_brief`. Goal OPEN.
+
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 447/446/445/444/443; STATUS_GUARD pass; stamps@448; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 448 tip-sync-living)
