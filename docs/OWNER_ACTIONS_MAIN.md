@@ -1,3 +1,7 @@
+## STATUS (Batch 373 post-living-inv-tip-pin)
+
+Hardening tip **stable** @ `1ae02b9`. After tip/eng living republish + eng-hunt idle, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH373_POST_LIVING_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 373 living-republish)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: living release `script_stale=1` (print_owner drift) after inv-tip-pin/unfreeze — real upload → `script_stale=0`. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
