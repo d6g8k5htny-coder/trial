@@ -1,3 +1,7 @@
+## STATUS (Batch 521 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 520→521; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH521_TIP_ENG_BRIEF.json` + `BATCH521_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 520 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH519/518/517/516/515 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH520_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
