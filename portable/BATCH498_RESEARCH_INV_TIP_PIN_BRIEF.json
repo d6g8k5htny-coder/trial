@@ -7,7 +7,7 @@
   "scientific_effect": "NONE",
   "tip_match": true,
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "tip_sha": "9a5db399c3dde53fa012c42cc69b41cddda35013",
-  "generated_at_utc": "2026-09-26T12:05:27Z",
+  "tip_sha": "cc2e092d9ed6d97751f98cfc69fdd670195088c4",
+  "generated_at_utc": "2026-09-26T12:06:54Z",
   "note": "parent-pin trial tip_sha=precommit HEAD after research_stack_audit_watch land @2f7a5a9"
 }
