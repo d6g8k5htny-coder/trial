@@ -1,3 +1,7 @@
+## STATUS (Batch 403 post-idle-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_or_eng idle: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 403 tip-eng-idle)
 
 Hardening tip **stable** @ . tip_or_eng idle_no_commit after Batch401 research on Batch402 tip; living current; inv parent-pin. Hunt negative. . Goal OPEN.

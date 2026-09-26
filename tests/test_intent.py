@@ -24646,3 +24646,21 @@ def test_batch403_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 403 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 403)
+
+
+def test_batch403_post_idle_inv_tip_pin() -> None:
+    """Batch 403: inv parent-pin after tip_or_eng idle @2f7a5a9."""
+    import json
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH403_POST_IDLE_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "403"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("parent_pin") is True
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_tip_eng_idle"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 403 post-idle-inv-pin)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")

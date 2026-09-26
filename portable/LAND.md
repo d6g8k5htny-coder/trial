@@ -1,3 +1,7 @@
+## STATUS (Batch 403 post-idle-inv-pin)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin after tip_or_eng idle; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 403 tip-eng-idle)
 
 tip  tip_match=true; tip_or_eng hunt negative after research; living current; inv parent-pin; VERIFY 402; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
