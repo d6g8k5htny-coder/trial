@@ -1,3 +1,7 @@
+## STATUS (Batch 383 tip-eng-idle)
+
+tip `ebedb780` tip_match=true; tip_or_eng hunt negative after peer Batch384 idle+living+unfreeze; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 384 idle-living-unfreeze)
 
 tip `ebedb780` tip_match=true; idle tip-stable; living script_stale republish; unfreeze 383→384; durable 8/8; lemma_closed=false; goal OPEN.

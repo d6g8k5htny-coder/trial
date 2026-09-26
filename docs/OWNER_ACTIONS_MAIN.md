@@ -1,3 +1,11 @@
+## STATUS (Batch 383 tip-eng-idle)
+
+Hardening tip **stable** @ `ebedb780`. tip_or_eng continue: peer Batch384 already idle+living+unfreeze; hunt negative (parent-pin / stamps@384 / living need_upload=0). Evidence: `portable/BATCH383_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+```
+
 ## STATUS (Batch 384 idle-living-unfreeze)
 
 Hardening tip **stable** @ `ebedb780`. Batch 384 idle + living script_stale + unfreeze 383→384. `lemma_closed=false`. Goal OPEN.

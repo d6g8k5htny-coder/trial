@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 383 — tip_or_eng idle_no_commit hunt-negative after peer Batch384 @ebedb780 (2026-09-26)
+
+- Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; stamps@384; `lemma_closed=false`.
+- Peer Batch384 already idle+living+unfreeze. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 384 — idle tip-stable + living script_stale + unfreeze 383→384 @ebedb780 (2026-09-26)
 
 - Timer tip_or_eng: tip stable @ebedb780; living script_stale=1 after Batch 383 tip-sync; durable 8/8.
