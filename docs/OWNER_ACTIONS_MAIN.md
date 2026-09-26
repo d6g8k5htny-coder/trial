@@ -1,3 +1,7 @@
+## STATUS (Batch 514 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 513→514; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH514_TIP_ENG_BRIEF.json` + `BATCH514_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 511 tip-sync-living)
 
 ## STATUS (Batch 513 tip-eng-idle)

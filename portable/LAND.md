@@ -1,3 +1,7 @@
+## STATUS (Batch 514 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng living script_stale republish; unfreeze 513→514; Soft Intent n=1; inv parent-pin; VERIFY 514; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 513 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 512→513; inv parent-pin; VERIFY 513; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
