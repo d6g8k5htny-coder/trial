@@ -1,0 +1,12 @@
+{
+  "batch": "390",
+  "action": "soften_intent_inv_tip_sha_eq_freeze",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "unfreeze": "389\u2192390",
+  "living_script_stale": 1,
+  "generated_at_utc": "2026-09-26T02:35:42Z"
+}
