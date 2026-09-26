@@ -1,3 +1,7 @@
+## STATUS (Batch 385 tip-sync)
+
+tip `7caac254` tip_match=true after tip-sync ebedb780→7caac25 (main #118); keep-prior; STATUS_GUARD living; unfreeze 384→385; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 383 tip-eng-idle)
 
 tip `ebedb780` tip_match=true; tip_or_eng hunt negative after peer Batch384 idle+living+unfreeze; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.

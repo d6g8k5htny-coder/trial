@@ -43,6 +43,7 @@ _LIVING_TIPS = (
     "e3cd7d4",
     "1ae02b9",
     "ebedb78",
+    "7caac25",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -22706,4 +22707,46 @@ def test_batch383_tip_or_eng_idle() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 383)
     assert "STATUS (Batch 383 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 383 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+def test_batch385_tip_sync_7caac25() -> None:
+    """Batch 385: tip-sync ebedb780→7caac25 keep-prior after main #118."""
+    import json
+    assert "7caac25" in _LIVING_TIPS
+    brief = json.loads((ROOT / "portable" / "BATCH385_TIP_SYNC.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "385"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("tip_match") is True
+    assert brief.get("keep_prior") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    assert str(brief.get("hardening_tip") or "").startswith("7caac25")
+    hunt = json.loads((ROOT / "portable" / "BATCH385_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH385_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "tip_sync_landed"
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "7caac25" in base
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "already-applied (semantic)" in apply_all
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert _living_tip(str(verify.get("base_tip_sha") or ""))
+    assert int(verify.get("refresh_batch") or 0) >= 385
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 385)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 385
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 385
+    unfreeze = json.loads((ROOT / "portable" / "BATCH385_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "385"
+    guard = json.loads((ROOT / "portable" / "BATCH385_STATUS_GUARD_BRIEF.json").read_text(encoding="utf-8"))
+    assert guard.get("pass") is True
+    assert guard.get("open_premises") == 13
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 385)
+    assert "STATUS (Batch 385 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 385 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 

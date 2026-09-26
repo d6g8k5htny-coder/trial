@@ -1,3 +1,7 @@
+## STATUS (Batch 385 tip-sync)
+
+Hardening tip **moved** @ `7caac254` (main #118 Q0 ledger custody). Tip-sync keep-prior; apply_all 0018/0019 semantic already-applied; STATUS_GUARD tip refresh; unfreeze 384→385. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 383 tip-eng-idle)
 
 Hardening tip **stable** @ `ebedb780`. tip_or_eng continue: peer Batch384 already idle+living+unfreeze; hunt negative (parent-pin / stamps@384 / living need_upload=0). Evidence: `portable/BATCH383_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

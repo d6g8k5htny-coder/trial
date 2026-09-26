@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 385 — tip-sync ebedb780→7caac25 keep-prior after main #118 (2026-09-26)
+
+- Tip **moved** @ hardening `7caac25` (main #118 preserve exact Q0 ledger custody). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip-sync keep-prior refresh; apply_all 0018/0019 semantic already-applied; `_LIVING_TIPS+=7caac25`; STATUS_GUARD tip refresh; unfreeze 384→385. Inventable/research NOT promoted. Goal OPEN.
+
+
+
 ### Batch 383 — tip_or_eng idle_no_commit hunt-negative after peer Batch384 @ebedb780 (2026-09-26)
 
 - Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; stamps@384; `lemma_closed=false`.

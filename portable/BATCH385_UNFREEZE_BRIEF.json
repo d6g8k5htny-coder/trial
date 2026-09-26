@@ -1,0 +1,12 @@
+{
+  "batch": "385",
+  "from_batch": "384",
+  "to_batch": "385",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "unfreeze_last_resort_and_verify_refresh_batch",
+  "generated_at_utc": "2026-09-26T01:46:28Z",
+  "tip_match": true,
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93"
+}
