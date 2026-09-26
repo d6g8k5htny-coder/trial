@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 380 — tip_or_eng living script_stale after Batch381 peer @ebedb780 (2026-09-26)
+
+- Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living script_stale=1 → force republish; inv parent-pin; stamps@381; `lemma_closed=false`.
+- tip_or_eng: tip-sync skipped; peer Batch381 already inv-pin+unfreeze; inventable skipped. action=`living_republish`. Goal OPEN.
+
+
 ### Batch 381 — post-research inv tip pin + living script_stale + unfreeze 380→381 @ebedb780 (2026-09-26)
 
 - Timer tip_or_eng: tip stable @ebedb780; research land broke parent_pin; living script_stale=1.

@@ -1,0 +1,25 @@
+{
+  "batch": "380",
+  "generated_at_utc": "2026-09-26T01:34:40Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "living_republish",
+  "defect": "living_script_stale",
+  "defect_found": true,
+  "defect_shipped": true,
+  "skipped": [
+    "tip-sync (BASE==LIVE @ebedb78)",
+    "inv tip lag (parent-pin @49c9f5e / HEAD@6bc1119)",
+    "last-resort/VERIFY/wake already 381 (peer Batch381)",
+    "inventable"
+  ],
+  "living_pre": {
+    "tip_stale": 0,
+    "script_stale": 1,
+    "need_upload": 1
+  },
+  "peer_batch381": "6bc1119",
+  "goal": "OPEN"
+}

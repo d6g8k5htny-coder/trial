@@ -1,3 +1,12 @@
+## STATUS (Batch 380 tip-eng-living)
+
+Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C; BASE==LIVE). tip_or_eng: living `script_stale` force republish; peer Batch381 already inv-pin+unfreeze 380→381. Evidence: `portable/BATCH380_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`living_republish`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+./scripts/republish_living_path_c_release.sh --force
+```
+
 ## STATUS (Batch 381 post-research-pin-living)
 
 Hardening tip **stable** @ `ebedb780`. Batch 381: re-pin after research land + living script_stale + unfreeze 380→381. `lemma_closed=false`. Goal OPEN.

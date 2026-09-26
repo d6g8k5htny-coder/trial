@@ -1,3 +1,7 @@
+## STATUS (Batch 380 tip-eng-living)
+
+tip `ebedb780` tip_match=true; tip_or_eng living script_stale republish after peer Batch381 inv-pin+unfreeze; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 381 post-research-pin-living)
 
 tip `ebedb780` tip_match=true; inv tip re-pin after research; living script_stale republish; unfreeze 380→381; durable 8/8; lemma_closed=false; goal OPEN.
