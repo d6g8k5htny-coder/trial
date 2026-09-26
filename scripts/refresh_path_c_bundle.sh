@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-474}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-475}"
 
 usage() {
   cat <<'EOF'
