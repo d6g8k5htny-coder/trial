@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 389 — tip_or_eng inv tip re-pin + soften Intent eq-freeze @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Defect: `test_batch388_research` eq-froze `trial.tip_sha == pin.tip_sha` (9a1ee59) after research/idle advanced inventory → soften; inv parent_pin @f2eecfb. Inventable skipped. Goal OPEN.
+
 ### Batch 389 — idle tip-stable + unfreeze 388→389 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent_pin; `lemma_closed=false`.

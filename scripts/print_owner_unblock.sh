@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 389 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 389: tip_or_eng inv tip re-pin + soften Intent eq-freeze @2f7a5a9"
 echo " Batch 389: tip_or_eng idle tip-stable + unfreeze 388→389 @2f7a5a9"
 echo " Batch 388: research_stack_audit_watch no-promotion @2f7a5a9 (13/1/3; delta=0 vs 387)"
 echo " Batch 388: tip_or_eng soften Intent STATUS_GUARD tip_sha pin + living script_stale + unfreeze 387→388 @2f7a5a9"

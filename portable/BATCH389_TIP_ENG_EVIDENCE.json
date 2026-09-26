@@ -1,0 +1,13 @@
+{
+  "batch": "389",
+  "action": "inv_tip_pin_soften_intent_eq_freeze",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "pin_tip_pre": "9a1ee5905d7a4671badf545e42d3872c6e17f42c",
+  "inv_tip_pre": "d938d39223fd579026267060159e70c70c741571",
+  "eq_freeze_broken": true,
+  "generated_at_utc": "2026-09-26T02:37:06Z"
+}

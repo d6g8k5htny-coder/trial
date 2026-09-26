@@ -1,3 +1,7 @@
+## STATUS (Batch 389 tip-eng-inv-pin)
+
+tip `2f7a5a9` tip_match=true; inv tip re-pin after idle; soften Intent inv tip_sha eq-freeze; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 389 idle-unfreeze)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle tip-stable; unfreeze 388→389; living current; durable 8/8; lemma_closed=false; goal OPEN.

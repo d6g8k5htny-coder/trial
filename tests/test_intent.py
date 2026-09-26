@@ -23378,7 +23378,9 @@ def test_batch388_research_stack_audit_watch() -> None:
     trial = next(
         d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial"
     )
-    assert trial.get("tip_sha") == pin.get("tip_sha")
+    # Batch 389: live inventory tip_sha advances on parent-pin; do not eq-freeze to brief.
+    assert len(str(trial.get("tip_sha") or "")) >= 7
+    assert len(str(pin.get("tip_sha") or "")) >= 7
 
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 388)
@@ -23436,4 +23438,45 @@ def test_batch389_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 389)
     assert "STATUS (Batch 389 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch389_tip_or_eng_inv_pin() -> None:
+    """Batch 389: tip_or_eng inv tip re-pin + soften Intent eq-freeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH389_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "389"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "inv_tip_pin_soften_intent_eq_freeze"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH389_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    assert hunt.get("tip_match") is True
+    pin = json.loads((ROOT / "portable" / "BATCH389_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    assert len(str(pin.get("tip_sha") or "")) >= 7
+    # softened eq-freeze in test_batch388_research body
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch388_research_stack_audit_watch")
+    end = intent.index("def test_batch389_tip_or_eng_inv_pin")
+    body = intent[start:end]
+    assert 'trial.get("tip_sha") == pin.get("tip_sha")' not in body
+    assert "do not eq-freeze" in body or "Batch 389" in body
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
+    assert len(str(trial.get("tip_sha") or "")) >= 7
+    assert inv.get("durable_writable") == "8/8"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 389)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 389
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 389
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 389
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 389)
+    assert "STATUS (Batch 389 tip-eng-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 

@@ -1,0 +1,13 @@
+{
+  "batch": "389",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "f2eecfb751d9ae9fa5c6d5e24bc697ed6bd799e4",
+  "generated_at_utc": "2026-09-26T02:37:06Z",
+  "note": "re-pin after idle land; soften Intent eq-freeze that froze Batch388 pin tip"
+}

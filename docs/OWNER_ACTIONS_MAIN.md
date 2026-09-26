@@ -1,3 +1,11 @@
+## STATUS (Batch 389 tip-eng-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch388_research` eq-froze live inventory tip_sha to Batch388 pin brief → soften; inv tip re-pin @f2eecfb. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch389_tip_or_eng_inv_pin -q
+```
+
 ## STATUS (Batch 389 idle-unfreeze)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit; unfreeze last-resort/VERIFY/wake 388→389. `lemma_closed=false`. Goal OPEN.
