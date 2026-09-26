@@ -1,3 +1,7 @@
+## STATUS (Batch 413 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch412 idle; republish batch241; unfreeze 412→413; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 412 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch411 living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.

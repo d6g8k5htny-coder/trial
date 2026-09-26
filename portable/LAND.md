@@ -1,3 +1,7 @@
+## STATUS (Batch 413 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living tgz_newer republish + unfreeze 412→413; inv parent-pin; VERIFY 413; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 412 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch411 living + research; living current; inv parent-pin; VERIFY 412; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
