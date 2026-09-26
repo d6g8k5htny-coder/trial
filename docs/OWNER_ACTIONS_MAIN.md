@@ -1,3 +1,7 @@
+## STATUS (Batch 373 inv-tip-pin)
+
+Hardening tip **stable** @ `1ae02b9`. Tip_sync idle left trial tip lagging beyond parent. PRESERVE_DURABLE re-pin + unfreeze 372→373. Evidence: `portable/BATCH373_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 372 idle)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin preserved. Evidence: `portable/BATCH372_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

@@ -1,3 +1,7 @@
+## STATUS (Batch 373 inv-tip-pin)
+
+tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after tip_sync idle; unfreeze 372→373; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 372 idle)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.

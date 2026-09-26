@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 373 — inv tip re-pin after tip_sync idle + unfreeze 372→373 @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip_sync idle land left inv tip lagging beyond parent — PRESERVE_DURABLE re-pin→HEAD; unfreeze last-resort/VERIFY/wake 372→373. Goal OPEN.
+
+
 ### Batch 372 — tip_sync_watch idle_no_commit @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
