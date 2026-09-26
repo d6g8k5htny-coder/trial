@@ -1,3 +1,7 @@
+## STATUS (Batch 375 tip-eng-idle)
+
+tip `1ae02b9` tip_match=true; tip_or_eng hunt negative after peer idle+living+unfreeze; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 375 idle-living-unfreeze)
 
 tip `1ae02b9` tip_match=true; idle tip-stable; living tgz content-delta republish; unfreeze 374→375; durable 8/8; lemma_closed=false; goal OPEN.
