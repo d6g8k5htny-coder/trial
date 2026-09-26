@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 489 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 489: tip_sync_watch living script_stale republish + parent-pin inv @2f7a5a9"
+echo " Batch 489: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 488/487/485/484/482"
 echo " Batch 489: tip_or_eng idle_no_commit hunt-negative + unfreeze 488→489 @2f7a5a9"
 echo " Batch 488: tip_sync_watch living script_stale republish + parent-pin inv @2f7a5a9"
 echo " Batch 488: tip_or_eng living tgz_newer republish + unfreeze 487→488 @2f7a5a9"
