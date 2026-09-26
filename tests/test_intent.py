@@ -35734,6 +35734,100 @@ def test_batch476_tip_or_eng_idle() -> None:
         assert brief.get("uploaded") is False
 
 
+def test_batch477_research_stack_audit_watch() -> None:
+    """Batch 477: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 476/475/474/473/472."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH477_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "477"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in (
+        "delta_vs_batch476",
+        "delta_vs_batch475",
+        "delta_vs_batch474",
+        "delta_vs_batch473",
+        "delta_vs_batch472",
+    ):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH477_RESEARCH_STACK_AUDIT.json").exists()
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH477_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "477"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "research_stack_audit_watch"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH477_RESEARCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("batch") == "477"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("action") == "research_stack_audit_watch"
+    assert evidence.get("status_guard_pass") is True
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("goal_complete") is False
+    assert evidence.get("inventable_promoted") is False
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH477_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("parent_pin") is True
+    assert pin.get("lemma_closed") is False
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 477)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 477)
+    assert "research_stack_audit_watch" in unblock
+    assert "STATUS (Batch 477 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 477 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 477" in log_md and "research_stack_audit_watch" in log_md
+    for name in (
+        "BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json",
+        "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json",
+    ):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
 def test_batch477_tip_or_eng_idle() -> None:
     """Batch 477: tip_or_eng idle_no_commit + unfreeze 476→477 @2f7a5a9."""
     import json
