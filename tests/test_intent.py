@@ -39603,8 +39603,46 @@ def test_batch506_tip_or_eng_idle() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 506)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
-    assert headers == ["506"], f"Soft Intent single-header required, got {headers}"
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 506, f"Soft Intent header Batch {headers[0]} < 506"
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
+
+
+def test_batch507_tip_or_eng_idle() -> None:
+    """Batch 507: tip_or_eng idle_no_commit + unfreeze 506→507 @2f7a5a9; Soft Intent single header."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH507_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "507"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 507
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH507_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH507_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "507"
+    assert unfreeze.get("from_batch") == "506"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH507_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 507
+    assert verify.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 507)
+    assert "STATUS (Batch 507 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 507)
+    headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 507
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert brief.get("uploaded") is False
