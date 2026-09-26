@@ -1,6 +1,11 @@
+## STATUS (Batch 372 idle)
+
+tip `1ae02b9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 372 inv-tip-pin)
 
 tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after research/tip-eng; durable 8/8; lemma_closed=false; goal OPEN.
+
 
 ## STATUS (Batch 372 tip-eng)
 

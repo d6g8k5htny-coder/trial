@@ -21,17 +21,23 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 372 — tip_sync_watch idle_no_commit @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; living batch241 current; inv parent-pin preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 372 — inv tip re-pin beyond parent after research/tip-eng @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Research audit + tip_or_eng wake left inv tip lagging beyond parent — PRESERVE_DURABLE re-pin→HEAD. Goal OPEN.
 
 
+
 ### Batch 372 — tip_or_eng: wake last-resort 370→372 vs print_owner @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
 - Peer research audit already unfroze inventory/VERIFY/REFRESH 371→372 but left wake last-resort frozen at 370. Soften via return "372". Living >=N. Inventable skipped. NEVER flip research.
-
 
 ### Batch 372 — research_stack_audit_watch no-promotion @1ae02b9 (2026-09-26)
 
