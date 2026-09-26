@@ -1,9 +1,9 @@
 # Autonomous 48h work log
 
-### Batch 496 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+### Batch 497 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
-- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
-- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @fa94709. Inventable skipped. Goal OPEN. NEVER flip research.
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 495/494/493/492/491 = 0 (research496 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH497_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@497; inv parent-pin @55ffec2. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
 
 
 ### Batch 497 — tip_or_eng living script_stale republish + unfreeze 496→497 @2f7a5a9 (2026-09-26)
