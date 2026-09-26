@@ -24322,3 +24322,25 @@ def test_batch399_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 399 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
+
+def test_batch400_tip_or_eng_inv_living() -> None:
+    """Batch 400: tip_or_eng inv tip re-pin + living tgz + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH400_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "400"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "inv_tip_pin_living_tgz"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    pin = json.loads((ROOT / "portable" / "BATCH400_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    living = json.loads((ROOT / "portable" / "BATCH400_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_tgz_content_delta_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH400_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "400"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 400)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 400)
+    assert "STATUS (Batch 400 tip-eng-inv-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

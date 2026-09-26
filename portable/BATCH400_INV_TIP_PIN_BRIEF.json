@@ -1,0 +1,13 @@
+{
+  "batch": "400",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "3827261f1bc279895a14a731f07619f5a49b4528",
+  "generated_at_utc": "2026-09-26T03:26:42Z",
+  "note": "re-pin after tip_sync living broke parent_pin"
+}
