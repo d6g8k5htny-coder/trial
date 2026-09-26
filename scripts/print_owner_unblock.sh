@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 431 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 430: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 428/427/426/424"
 echo " Batch 431: tip_or_eng living script_stale republish + unfreeze 430→431 @2f7a5a9"
 echo " Batch 427: tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9"
 echo " Batch 430: tip_or_eng living script_stale republish + unfreeze 429→430 @2f7a5a9"
