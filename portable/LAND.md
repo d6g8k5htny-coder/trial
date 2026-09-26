@@ -1,3 +1,7 @@
+## STATUS (Batch 373 living-republish)
+
+tip `1ae02b9` tip_match=true; eng: living script_stale republish after inv-tip-pin/unfreeze; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 373 inv-tip-pin)
 
 tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after tip_sync idle; unfreeze 372→373; durable 8/8; lemma_closed=false; goal OPEN.

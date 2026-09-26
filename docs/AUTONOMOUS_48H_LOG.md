@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 373 — tip_or_eng: living script_stale republish after inv-tip-pin/unfreeze @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Peer inv tip re-pin + unfreeze 372→373 left living `script_stale=1` (print_owner drift). Real upload → script_stale=0 tip_stale=0. Living >=N. Inventable skipped. NEVER flip research.
+
+
 ### Batch 373 — inv tip re-pin after tip_sync idle + unfreeze 372→373 @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
