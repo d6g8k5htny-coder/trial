@@ -1,3 +1,7 @@
+## STATUS (Batch 398 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after peer SyntaxError-fix release race; republish; unfreeze 396→398. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 396 ci-intent-syntax)
 
 Hardening tip **stable** @ `2f7a5a9`. CI Intent SyntaxError fixed (lone literal `\\n` line). `lemma_closed=false`. Goal OPEN.

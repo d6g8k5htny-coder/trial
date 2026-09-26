@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 398 — tip_or_eng living script_stale republish + unfreeze 396→398 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale=1 (release raced ahead of main after peer SyntaxError fix) → republish; inv parent-pin; unfreeze 396→398. Inventable skipped. Goal OPEN.
+
+
 ### Batch 396 — CI Intent syntax fix (lone literal \\n line) @2f7a5a9 (2026-09-26)
 
 - sanity failed on `2d15fa33` / still broken on `26b9c648`: `SyntaxError` at a lone `\\n` line after tip_or_eng idle Intent append.

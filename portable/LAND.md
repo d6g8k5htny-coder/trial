@@ -1,3 +1,7 @@
+## STATUS (Batch 398 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale republish; inv parent-pin; unfreeze 396→398; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 396 ci-intent-syntax)
 
 tip `2f7a5a9` tip_match=true; removed lone literal `\\n` line in test_intent.py that broke CI Intent collection; durable 8/8; lemma_closed=false; goal OPEN.
