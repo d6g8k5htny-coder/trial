@@ -38972,3 +38972,39 @@ def test_batch498_tip_or_eng_living_tgz() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
+
+
+def test_batch500_tip_or_eng_living_tgz() -> None:
+    """Batch 500: tip_or_eng living tgz_newer republish + unfreeze 499→500 @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH500_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "500"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+    assert brief.get("action") == "living_tgz_newer_unfreeze"
+    assert brief.get("defect_shipped") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH500_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    assert hunt.get("action") == "living_tgz_newer_unfreeze"
+    living = json.loads((ROOT / "portable" / "BATCH500_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("tgz_newer") == 1
+    assert living.get("uploaded") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH500_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "500"
+    assert unfreeze.get("from_batch") == "499"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH500_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 500
+    assert verify.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 500)
+    assert "STATUS (Batch 500 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 500)
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
