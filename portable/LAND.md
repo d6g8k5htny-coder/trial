@@ -1,3 +1,7 @@
+## STATUS (Batch 406 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living release tgz asset missing → republish; unfreeze 405→406; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 405 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 401; STATUS_GUARD pass; unfreeze 404→405; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.

@@ -1,0 +1,13 @@
+{
+  "batch": "406",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "living_tgz_missing_republish_unfreeze",
+  "defect_id": "living_release_tgz_asset_missing_after_batch405_research",
+  "defect_found": true,
+  "defect_shipped": true,
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T04:04:21Z"
+}

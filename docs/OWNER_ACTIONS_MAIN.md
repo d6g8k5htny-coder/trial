@@ -1,3 +1,7 @@
+## STATUS (Batch 406 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living `trial-portable-main-fixes.tgz` missing from release after Batch 405 research; republish; unfreeze 405→406; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 405 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH401; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH405_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Unfreeze 404→405; inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

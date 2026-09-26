@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 406 — tip_or_eng living tgz missing republish + unfreeze 405→406 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living release missing `trial-portable-main-fixes.tgz` after Batch 405 research → republish + unfreeze 405→406; inv parent-pin. Inventable skipped. Goal OPEN.
+
 ### Batch 405 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 401 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
