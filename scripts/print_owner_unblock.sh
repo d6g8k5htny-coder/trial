@@ -51,6 +51,7 @@ echo "=== Batch 402 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; wri
 echo " Batch 402: tip_or_eng living tgz_newer republish + unfreeze 401→402 @2f7a5a9"
 echo " Batch 401: tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9"
 echo " Batch 401: tip_or_eng living tgz_newer republish + unfreeze 400→401 @2f7a5a9"
+echo " Batch 401: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 399"
 echo " Batch 400: tip_or_eng inv tip re-pin + living tgz + unfreeze 399→400 @2f7a5a9"
 echo " Batch 399: tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9"
 echo " Batch 399: tip_or_eng idle_no_commit hunt-negative @2f7a5a9"

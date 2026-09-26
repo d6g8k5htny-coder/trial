@@ -2,6 +2,16 @@
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch 401 post tip_sync; republish; unfreeze 401→402; inv parent-pin. `lemma_closed=false`. Goal OPEN.
 
+## STATUS (Batch 401 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH399; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH401_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Unfreeze 400→401; inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch401_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 401 post-tip-sync-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
@@ -14,13 +24,14 @@ Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). 
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch400 post-living pin; republish batch241; unfreeze 400→401; inv parent-pin. `lemma_closed=false`. Goal OPEN.
 
+
 ## STATUS (Batch 400 post-living-inv-pin)
 
-Hardening tip **stable** @ . Post tip_or_eng living: inv parent-pin. . Goal OPEN.
+Hardening tip **stable** @ `2f7a5a9`. Post tip_or_eng living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
 
 ## STATUS (Batch 400 tip-eng-living-refresh)
 
-Hardening tip **stable** @ . Living script_stale after Batch400 tip_or_eng land; republish batch241. . Goal OPEN.
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch400 tip_or_eng land; republish batch241. `lemma_closed=false`. Goal OPEN.
 
 ## STATUS (Batch 400 tip-eng-inv-living)
 

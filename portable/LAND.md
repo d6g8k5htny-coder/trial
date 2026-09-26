@@ -2,6 +2,10 @@
 
 tip `2f7a5a9` tip_match=true; living tgz_newer republish; unfreeze 401→402; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
 
+## STATUS (Batch 401 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 399; STATUS_GUARD pass; unfreeze 400→401; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 401 post-tip-sync-inv-pin)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin after tip_sync living; durable 8/8; lemma_closed=false; goal OPEN.
@@ -14,13 +18,14 @@ tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_sta
 
 tip `2f7a5a9` tip_match=true; living tgz_newer republish + unfreeze 400→401; inv parent-pin; VERIFY 401; durable 8/8; lemma_closed=false; goal OPEN.
 
+
 ## STATUS (Batch 400 post-living-inv-pin)
 
-tip  tip_match=true; inv tip re-pin after tip_or_eng living; durable 8/8; lemma_closed=false; goal OPEN.
+tip `2f7a5a9` tip_match=true; inv tip re-pin after tip_or_eng living; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 400 tip-eng-living-refresh)
 
-tip  tip_match=true; living script_stale republish after tip_or_eng land; parent_pin preserved; durable 8/8; lemma_closed=false; goal OPEN.
+tip `2f7a5a9` tip_match=true; living script_stale republish after tip_or_eng land; parent_pin preserved; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 400 tip-eng-inv-living)
 
