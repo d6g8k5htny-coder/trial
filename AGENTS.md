@@ -12,6 +12,7 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 - Prefer portable artifacts under `portable/` when this environment cannot push to `main`.
 - Keep scientific effect **NONE**: never promote, close, or discharge claims, premises, prizes, or lemmas.
 - After meaningful work: commit, push `cursor/*` branches, land on trial `main` when PR create is 403.
+- `idle_no_commit` is terminal. Run `python3 scripts/idle_no_commit.py` before an automation pulse. Exit 0 means source identity and capabilities are unchanged and no substantive defect is present: report that result and return before tracked-file writes. Leave batch headers, `REFRESH_BATCH_TAG` defaults, last-resort fallbacks, `VERIFY.refresh_batch`, schedules, and the release content-hash detector as they are.
 - Owner land scripts (`owner_land_path_*.sh`) are technical fallback for GitHub App 403 only — not approval gates.
 
 ## Never
