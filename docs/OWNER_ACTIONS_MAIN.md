@@ -1,3 +1,11 @@
+## STATUS (Batch 378 tip-sync)
+
+Hardening tip **moved** 1ae02b9→`ebedb78` (main #98). tip_sync_watch keep-prior Path C refresh; STATUS_GUARD tip refresh; apply_all content-already 0018/0019. Evidence: `portable/BATCH378_TIP_SYNC.json`. `lemma_closed=false`. action=`tip_sync_landed`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+```
+
 ## STATUS (Batch 378 tip-eng-idle)
 
 Hardening tip **stable** @ `1ae02b9`. tip_or_eng continue: peer already shipped idle+unfreeze@378; hunt negative (parent-pin / stamps@378 / living need_upload=0). Evidence: `portable/BATCH378_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

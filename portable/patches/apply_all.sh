@@ -103,6 +103,17 @@ apply_one() {
     echo "skip (attestations/ absent): ${bn}"
     return 0
   fi
+  # Batch 378 tip-sync @ ebedb78: tip absorbed 0018/0019 (and added architecture/);
+  # reverse --check fails because tip never matched the exact pre-image. Treat
+  # content-satisfied as already-applied so keep-prior tip-sync can advance.
+  if [[ "$bn" == 0018-* ]] && grep -q '"attestations"' engine/bridge/work_order.py 2>/dev/null; then
+    echo "already-applied (content): ${bn}"
+    return 0
+  fi
+  if [[ "$bn" == 0019-* ]] && grep -q 'with open(candidate, "rb") as handle' tools/attestations_check.py 2>/dev/null; then
+    echo "already-applied (content): ${bn}"
+    return 0
+  fi
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"

@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 378 — tip-sync keep-prior 1ae02b9→ebedb78 after main #98 (2026-09-26)
+
+- Tip moved BASE_TIP `1ae02b9`→live `ebedb78` (main #98 scientific-state schema crosswalk). tip_match after keep-prior.
+- KEEP_PRIOR Path C refresh; apply_all content-already for 0018/0019 (tip absorbed). STATUS_GUARD tip refresh.
+- Inventable skipped. `lemma_closed=false`. action=`tip_sync_landed`. Goal OPEN.
+
+
 ### Batch 378 — tip_or_eng idle_no_commit hunt-negative after peer @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; stamps@378; `lemma_closed=false`.

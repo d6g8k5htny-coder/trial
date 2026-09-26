@@ -41,6 +41,7 @@ _LIVING_TIPS = (
     "f244312",
     "fcad723",
     "e3cd7d4",
+    "ebedb78",
     "1ae02b9",
 )
 _LIVING_RELEASES = (
@@ -21946,3 +21947,48 @@ def test_batch378_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+def test_batch378_tip_sync_keep_prior_ebedb78() -> None:
+    """Batch 378: tip-sync keep-prior 1ae02b9→ebedb78 after main #98."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH378_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "378"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+    assert brief.get("aligned") is True
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("keep_prior") is True
+    assert brief.get("tip_moved") is True
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("defect_id") == "tip_sync_1ae02b9_to_ebedb78_main_98"
+    assert _living_tip(str(brief.get("hardening_tip") or brief.get("tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "tip_sync_landed"
+    assert evidence.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    assert "ebedb78" in base
+    assert "ebedb78" in _LIVING_TIPS
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 378)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 378 tip-sync)" in land
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
+    assert "already-applied (content)" in apply_all
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert verify.get("lemma_closed") is False
+    assert int(verify.get("refresh_batch") or 0) >= 378

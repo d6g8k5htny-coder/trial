@@ -1,0 +1,16 @@
+{
+  "batch": "378",
+  "generated_at_utc": "2026-09-26T01:19:23Z",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "tip": "ebedb78",
+  "prior_tip": "1ae02b9",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "tip_sync_landed",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "keep_prior": true,
+  "path_c": "IDLE@0019"
+}
