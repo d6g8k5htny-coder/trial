@@ -1,3 +1,7 @@
+## STATUS (Batch 502 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 501→502; inv parent-pin; VERIFY 502; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 500 tip-sync-living)
 
 tip `2f7a5a9` tip_match=true; tip_sync_watch living script_stale republish; Soft Intent single living print_owner header; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
