@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 411 — tip_or_eng living tgz_newer republish + unfreeze 410→411 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 410→411; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
 ### Batch 410 — post tip_sync living inv parent-pin @2f7a5a9 (2026-09-26)
 
 - After tip_sync living `a35c7ad`: inv tip lagged; re-pinned parent_pin; tip_match; living current; `lemma_closed=false`. Goal OPEN.
