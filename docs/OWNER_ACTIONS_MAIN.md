@@ -1,3 +1,7 @@
+## STATUS (Batch 396 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. Research stack audit 13/1/3 no promotion; unfreeze 395→396. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 395 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after tip_sync/inv peers; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.

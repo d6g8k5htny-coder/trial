@@ -1,3 +1,7 @@
+## STATUS (Batch 396 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 393; STATUS_GUARD pass; unfreeze 395→396; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 395 tip-eng-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale republish; inv parent-pin; VERIFY 395; durable 8/8; lemma_closed=false; goal OPEN.
