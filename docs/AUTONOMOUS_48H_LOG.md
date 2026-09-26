@@ -1,5 +1,19 @@
 # Autonomous 48h work log
 
+### Batch 522 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 523 — PERMANENT` header preserved (n=1; tip/eng523+research522 raced).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @33d2805. Inventable skipped. Goal OPEN.
+
+
+### Batch 523 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT recover tip-sync522 ERROR @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 523 — PERMANENT` header preserved (n=1). tip-sync522 ERROR raced tip/eng523 @7ef3d8ff — recover via tip_sync523.
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @33d2805. Inventable skipped. Goal OPEN. idle_recover_ok=true.
+
+
 ### Batch 522 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 521/520/519/518/517 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
