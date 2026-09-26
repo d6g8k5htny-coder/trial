@@ -1,3 +1,13 @@
+## STATUS (Batch 369 tip-eng-repair)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: rebase left mangled `BATCH369_TIP_ENG_*.json` / inv pin brief; inv tip lag>1; living script_stale — rewrite JSON + PRESERVE_DURABLE re-pin→HEAD + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=369 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch369_tip_or_eng_continue tests/test_intent.py::test_batch369_tip_or_eng_wake_inv_living -q
+```
+
 ## STATUS (Batch 369 research-audit-watch)
 
 Hardening tip **stable** @ `1ae02b9`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH367; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH369_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

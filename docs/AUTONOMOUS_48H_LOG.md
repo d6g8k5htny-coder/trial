@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 369 — eng repair tip_eng JSON + inv tip pin + living republish @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: conflict-mangled tip_eng/inv-pin JSON broke Intent; inv tip lag>1; living script_stale. Rewrote JSON; PRESERVE_DURABLE re-pin→HEAD; living republish. Intent living >=N. Inventable skipped. NEVER flip research.
+
 ### Batch 369 — research_stack_audit_watch_no_promotion @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
