@@ -1,10 +1,14 @@
 # Autonomous 48h work log
 
+### Batch 571 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @571 (never harden/stack); soft tip_sync571 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `9c9f0456`; tip/eng571 @`3082ab67` Soft Intent n=1 @571; tip_sync570 @`7d8a0ccf`; research571 @`9c9f0456`; tip_sync569 @`59cc9f48`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH571_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch571_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
 ### Batch 571 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 570/569/568/566/565 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
 - Artifacts: `BATCH571_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@571; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
-
 
 ### Batch 570 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
 
