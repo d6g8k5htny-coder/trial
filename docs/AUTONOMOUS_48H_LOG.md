@@ -27,6 +27,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 450 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 449→450; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 449 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 448/447/446/445/444 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
