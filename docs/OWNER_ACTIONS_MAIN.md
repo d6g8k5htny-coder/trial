@@ -1,3 +1,11 @@
+## STATUS (Batch 379 tip-sync-idle)
+
+Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; unfreeze 378→379; inv parent-pin. Evidence: `portable/BATCH379_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+```
+
 ## STATUS (Batch 379 idle-living-unfreeze)
 
 Hardening tip **stable** @ `ebedb780`. Batch 379 idle + living script_stale republish + unfreeze 378→379. Evidence: `portable/BATCH379_IDLE.json`. `lemma_closed=false`. Goal OPEN.
