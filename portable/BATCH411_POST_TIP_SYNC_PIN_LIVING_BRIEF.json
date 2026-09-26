@@ -1,0 +1,15 @@
+{
+  "batch": "411",
+  "action": "post_tip_sync_inv_tip_pin_living",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "parent_pin": true,
+  "living_tag": "batch241-path-c-bundle",
+  "inv_lag_commits": 2,
+  "tgz_newer": 1,
+  "generated_at_utc": "2026-09-26T04:29:06Z",
+  "note": "tip_or_eng: tip_sync living left inv tip 2 behind HEAD + living tgz_newer; re-pin + republish + unfreeze"
+}
