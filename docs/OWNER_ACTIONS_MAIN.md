@@ -1,3 +1,7 @@
+## STATUS (Batch 369 idle)
+
+Hardening tip **stable** @ `1ae02b9` (tip_match=true). tip_sync_watch: no tip move; living tip/script current (ignore 1-byte pack thrash). Unfreeze last-resort + VERIFY refresh_batch 368→369. Woke tip/eng/research peers. Evidence: `portable/BATCH369_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 368 living-upload-confirm)
 
 Hardening tip **stable** @ `1ae02b9`. Peer living land was Intent-only; release tgz still stale and CI failed 276/279 on living-current `need_upload=0`. Uploaded batch241; softened Intent dry-runs with `--force`; inv tip re-pin. Evidence: `portable/BATCH368_LIVING_UPLOAD_CONFIRM_*.json`. `lemma_closed=false`. Goal OPEN.

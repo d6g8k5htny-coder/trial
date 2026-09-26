@@ -1,0 +1,15 @@
+{
+  "batch": "369",
+  "generated_at_utc": "2026-09-25T23:59:30Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "action": "unfreeze_last_resort_and_verify_refresh_batch",
+  "from_batch": "368",
+  "to_batch": "369",
+  "durable": "8/8_WRITABLE"
+}

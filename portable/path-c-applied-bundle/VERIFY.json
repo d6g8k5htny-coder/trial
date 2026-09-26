@@ -1,6 +1,6 @@
 {
   "batch": "241",
-  "refresh_batch": "368",
+  "refresh_batch": 369,
   "generated_at_utc": "2026-09-25T23:28:53Z",
   "base_tip_sha": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
   "applied_commit_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
