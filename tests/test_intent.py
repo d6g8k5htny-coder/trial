@@ -40585,3 +40585,45 @@ def test_batch516_tip_or_eng_keep_prior() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
+def test_batch517_tip_or_eng_keep_prior() -> None:
+    """Batch 517: tip_or_eng TIP_DRIFT keep-prior + living script_stale + unfreeze 516→517; Soft Intent single header."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH517_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "517"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "keep_prior"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 517
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    hunt = json.loads((ROOT / "portable" / "BATCH517_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("keep_prior") is True
+    assert hunt.get("action") == "keep_prior"
+    living = json.loads((ROOT / "portable" / "BATCH517_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("script_stale") == 1
+    assert living.get("uploaded") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH517_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "517"
+    assert unfreeze.get("from_batch") == "516"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH517_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 517
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 517)
+    assert "STATUS (Batch 517 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 517)
+    headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
+    assert headers == ["517"], f"Soft Intent single-header required, got {headers}"
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert brief.get("uploaded") is False
+
