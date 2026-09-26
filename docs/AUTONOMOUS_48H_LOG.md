@@ -26,6 +26,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `ebedb78` tip_match=true after tip-sync; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH377; STATUS_GUARD living; no full AUDIT re-copy. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN.
 
+### Batch 378 — follow-up STATUS_GUARD tip living + parent-pin @ebedb780 (2026-09-26)
+
+- Tip stable tip_match=1 @ `ebedb780`; STATUS_GUARD tip living; living tip/script current need_upload=0.
+- Parent-pin inv; inventable skipped. `lemma_closed=false`. action=`followup_status_guard_living_confirm`. Goal OPEN.
+
+
 ### Batch 378 — tip_or_eng idle_no_commit hunt-negative after STATUS_GUARD @ebedb78 (2026-09-26)
 
 - Tip stable @ `ebedb78` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; STATUS_GUARD tip living; `lemma_closed=false`.

@@ -2,6 +2,10 @@
 
 tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
 
+## STATUS (Batch 378 followup)
+
+tip `ebedb780` tip_match=true; follow-up: STATUS_GUARD tip living; living tip_stale=0 script_stale=0 need_upload=0; parent-pin inv; action=followup_status_guard_living_confirm; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 378 tip-eng-post-guard-idle)
 
 tip `ebedb78` tip_match=true; tip_or_eng hunt negative after tip-sync+STATUS_GUARD; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.

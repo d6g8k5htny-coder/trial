@@ -6,6 +6,14 @@ Hardening tip **stable** @ `ebedb78`. Research stack audit watch no-promotion: o
 python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha ebedb7802024fa557e9071e4c9cec7cddc474b89
 python3 -m pytest tests/test_intent.py::test_batch378_research_stack_audit_watch -q
 ```
+## STATUS (Batch 378 followup)
+
+Hardening tip **stable** @ `ebedb780` (tip_match=true). Follow-up after tip-sync: STATUS_GUARD tip living; living need_upload=0; inv parent-pin. Evidence: `portable/BATCH378_FOLLOWUP_EVIDENCE.json`. `lemma_closed=false`. action=`followup_status_guard_living_confirm`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ ebedb78
+```
+
 ## STATUS (Batch 378 tip-eng-post-guard-idle)
 
 Hardening tip **stable** @ `ebedb78`. tip_or_eng continue: tip-sync+STATUS_GUARD already on main; hunt negative (parent-pin / STATUS_GUARD tip living / living need_upload=0). Evidence: `portable/BATCH378_TIP_ENG_POST_GUARD_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

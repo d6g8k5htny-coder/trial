@@ -22097,3 +22097,35 @@ def test_batch378_tip_or_eng_post_guard_idle() -> None:
     assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+def test_batch378_followup_status_guard_living() -> None:
+    """Batch 378 follow-up: tip stable; STATUS_GUARD tip living; parent-pin."""
+    import json
+
+    ev = json.loads(
+        (ROOT / "portable" / "BATCH378_FOLLOWUP_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert ev.get("batch") == "378"
+    assert ev.get("lemma_closed") is False
+    assert ev.get("flipped_anything") is False
+    assert ev.get("tip_match") is True
+    assert ev.get("aligned") is True
+    assert ev.get("action") == "followup_status_guard_living_confirm"
+    assert ev.get("status_guard_tip_living") is True
+    assert ev.get("inventable_promoted") is False
+    assert _living_tip(str(ev.get("hardening_tip") or ""))
+    living = ev.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    sg = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert _living_tip(str(sg.get("tip_sha") or ""))
+    assert sg.get("pass") is True
+    assert sg.get("lemma_closed") is False
+    assert str(sg.get("baseline_path") or "").startswith("portable/")
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 378 followup)" in land
