@@ -1,3 +1,7 @@
+## STATUS (Batch 378 idle-unfreeze)
+
+Hardening tip **stable** @ `1ae02b9`. Batch 378 idle tip-stable + unfreeze 377→378. Living `need_upload=0`. Evidence: `portable/BATCH378_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 377 tip-eng-living)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: living release `tgz_newer=1 need_upload=1` after tip_sync idle — real upload → need_upload=0. `lemma_closed=false`. Goal OPEN. action=`eng_living_tgz_content_delta_republish`.

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 378 — idle tip-stable + unfreeze 377→378 @1ae02b9 (2026-09-26)
+
+- Tip stable tip_match=1; living need_upload=0; Path C IDLE@0019; durable 8/8.
+- Unfreeze last-resort + VERIFY + wake 377→378. No research flip. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 377 — tip_or_eng: living tgz content-delta republish @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
