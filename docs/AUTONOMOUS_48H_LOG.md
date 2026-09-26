@@ -2,6 +2,7 @@
 
 ### Batch 546 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 545→546 @2f7a5a9 (2026-09-26)
 
+- tip_sync546 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng546 race; Soft Intent n=1 @546; living force need_upload=0; inv parent-pin precommit 3a86f7ba; lemma_closed=false; goal OPEN.
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 545→546; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
 - Hunt living negative (tar-noise only) after tip_sync544 Soft Intent preserve; Soft Intent single === header →546; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
