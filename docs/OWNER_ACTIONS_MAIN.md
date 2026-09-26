@@ -1,3 +1,22 @@
+## STATUS (Batch 561 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @  (LIVE  tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 560→561; Soft Intent single-header; inv parent-pin. Evidence:  + . Intent soften 441/445 preserved. . Goal OPEN.
+
+refresh_path_c_bundle: fetching live tip d6g8k5htny-coder/main@chatgpt/drive-github-hardening-20260919
+refresh_path_c_bundle: tip_fetch_via=curl_api
+refresh_path_c_bundle: BASE_TIP=2f7a5a9 live=96e5175 match=0 force=0 dry_run=1
+refresh_path_c_bundle: dry-run TIP_DRIFT 2f7a5a9 -> 96e5175
+refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)
+republish_living_path_c_release: packing → /tmp/trial-portable-main-fixes.tgz
+wrote /tmp/trial-portable-main-fixes.tgz (792857 bytes; living_tag=batch241-path-c-bundle; 28 restore plans; 21 token logs; 1 rebase reports; 1 rebase notes; 75 stack audits; 1 status guards; 1 objective evidence; 1551 briefs; 507 hunts)
+republish_living_path_c_release: upload target tag=batch241-path-c-bundle (post-pack)
+republish_living_path_c_release: local pack bytes=792857 sha256=00df83a2bf5a5afe8061da9ef3948960fd8cf000d1166a6f08add3e36c5c99d8
+republish_living_path_c_release: release tgz bytes=792857 sha256=072d87e25c0806112d19380bd0a2f841c2c994722d44c593fdc7e9a3bb4f0313
+republish_living_path_c_release: local_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 release_pack_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 tip_stale=0
+republish_living_path_c_release: script_stale=0
+republish_living_path_c_release: tgz_newer=0 tip_stale=0 script_stale=0 bundle_newer=0 patch_newer=0 force=0 need_upload=0 dry_run=1
+republish_living_path_c_release: OK — release assets already current (no upload).
+
 ## STATUS (Batch 560 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@560 tip/eng560+research560 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
