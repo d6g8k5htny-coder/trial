@@ -1,0 +1,15 @@
+{
+  "batch": "377",
+  "action": "idle_no_commit",
+  "assignment": "tip_or_eng_idle_tip_stable",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T01:10:19Z",
+  "note": "timer tip_or_eng watch: tip stable; living need_upload=0; unfreeze 376\u2192377"
+}

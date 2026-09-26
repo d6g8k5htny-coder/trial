@@ -1,3 +1,7 @@
+## STATUS (Batch 377 idle-unfreeze)
+
+tip `1ae02b9` tip_match=true; idle tip-stable; living current; unfreeze 376→377; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 376 tip-eng-living)
 
 tip `1ae02b9` tip_match=true; tip_or_eng living tgz content-delta republish (need_upload 1→0); durable 8/8; lemma_closed=false; goal OPEN.
