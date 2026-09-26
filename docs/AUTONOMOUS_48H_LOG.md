@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 409 — post tip_sync living inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After tip_sync living : inv tip lagged at Batch409 precommit; re-pinned parent_pin; tip_match; living current; . Goal OPEN.
+
+
+
 ### Batch 408 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 
 - Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; VERIFY 408+; `lemma_closed=false`.
