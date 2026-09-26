@@ -1,3 +1,7 @@
+## STATUS (Batch 539 tip-eng-keep-prior)
+
+tip BASE `2f7a5a9` LIVE `70664bd` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 538→539; Soft Intent n=1; inv parent-pin; VERIFY 539; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 537 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 536/535/534/533/532; STATUS_GUARD pass; stamps@537; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
