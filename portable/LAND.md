@@ -1,3 +1,7 @@
+## STATUS (Batch 372 research-audit)
+
+tip `1ae02b9` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; delta=0 vs 369; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 371 post-soften-inv-tip-pin)
 
 tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after CI Intent soften; durable 8/8; lemma_closed=false; goal OPEN.

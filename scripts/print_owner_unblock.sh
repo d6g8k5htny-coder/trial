@@ -47,7 +47,9 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 371 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 372 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 372: research_stack_audit_watch no-promotion @1ae02b9 (13/1/3 open; delta=0 vs 369)"
+echo " Batch 372: unfreeze last-resort 371→372 + VERIFY refresh_batch 371→372 @1ae02b9"
 echo " Batch 371: inv tip re-pin beyond parent after CI Intent soften @1ae02b9"
 echo " Batch 371: tip_or_eng CI Intent STATUS_GUARD baseline living soften @1ae02b9"
 echo " Batch 371: inv tip re-pin beyond parent after eng-hunt idle @1ae02b9"

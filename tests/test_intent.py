@@ -20968,3 +20968,38 @@ def test_batch371_post_soften_inv_tip_pin() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
     assert "STATUS (Batch 371 post-soften-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch372_research_stack_audit_watch() -> None:
+    """Batch 372: research_stack_audit_watch no promotion @1ae02b9."""
+    import json
+    watch = json.loads((ROOT / "portable" / "BATCH372_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "372"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("open_premises") == 13
+    assert watch.get("open_lemmas") == 1
+    assert watch.get("open_prizes") == 3
+    delta = watch.get("delta_vs_batch369") or {}
+    assert delta.get("open_premises") == 0
+    assert delta.get("open_lemmas") == 0
+    assert delta.get("open_prizes") == 0
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    brief = json.loads((ROOT / "portable" / "BATCH372_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH372_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "372"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 372)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 372
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 372
+    assert verify.get("lemma_closed") is False
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 372)
+    assert "STATUS (Batch 372 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 372 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

@@ -1,3 +1,7 @@
+## STATUS (Batch 372 research-audit)
+
+Hardening tip **stable** @ `1ae02b9`. Research stack audit watch — open 13 premises / 1 lemma / 3 prizes; delta vs Batch 369 = 0. No status/lemma/prize promotion. Unfreeze 371→372. Evidence: `portable/BATCH372_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 371 post-soften-inv-tip-pin)
 
 Hardening tip **stable** @ `1ae02b9`. After tip/eng CI Intent STATUS_GUARD soften, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH371_POST_SOFTEN_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
