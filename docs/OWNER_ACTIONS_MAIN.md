@@ -1,3 +1,7 @@
+## STATUS (Batch 384 idle-living-unfreeze)
+
+Hardening tip **stable** @ `ebedb780`. Batch 384 idle + living script_stale + unfreeze 383→384. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 383 tip-sync-idle)
 
 Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH383_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

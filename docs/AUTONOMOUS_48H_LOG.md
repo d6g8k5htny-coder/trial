@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 384 — idle tip-stable + living script_stale + unfreeze 383→384 @ebedb780 (2026-09-26)
+
+- Timer tip_or_eng: tip stable @ebedb780; living script_stale=1 after Batch 383 tip-sync; durable 8/8.
+- Force-uploaded living; unfreeze last-resort/VERIFY/wake 383→384. No research flip. Goal OPEN.
+
+
 ### Batch 383 — tip_sync_watch idle_no_commit @ebedb780 (2026-09-26)
 
 - Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.

@@ -22639,3 +22639,31 @@ def test_batch383_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 383 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 383 tip-sync-idle)" in owner
+
+
+def test_batch384_idle_tip_sync_watch() -> None:
+    """Batch 384: idle tip-stable + living republish + unfreeze @ebedb780."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH384_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "384"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH384_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_force_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH384_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "384"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 384)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 384
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 384
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 384
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 384)
