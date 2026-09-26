@@ -31383,3 +31383,33 @@ def test_batch454_research_stack_audit_watch() -> None:
     ):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
+
+def test_batch455_tip_or_eng_living_script() -> None:
+    """Batch 455: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH455_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "455"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "living_script_stale_unfreeze"
+    assert brief.get("flipped_anything") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH455_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    assert living.get("uploaded") is True
+    hunt = json.loads((ROOT / "portable" / "BATCH455_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    unf = json.loads((ROOT / "portable" / "BATCH455_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unf.get("to_batch") == "455"
+    pin = json.loads((ROOT / "portable" / "BATCH455_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 455)
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 455
+    assert "STATUS (Batch 455 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 455)
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
