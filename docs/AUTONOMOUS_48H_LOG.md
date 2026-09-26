@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 543 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 544 — PERMANENT` header preserved (n=1; tip/eng544 raced).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @0f91948 (precommit). Inventable skipped. Goal OPEN.
+
 ### Batch 544 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 543→544 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`d98dbde` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 543→544; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
