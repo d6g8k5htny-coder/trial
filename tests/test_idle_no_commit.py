@@ -45,26 +45,47 @@ def test_unchanged_identity_is_terminal_idle() -> None:
 
 
 def test_pulse_stamps_are_not_source_identity() -> None:
+    import re
+
     mod, files, inventory = _pair()
     current = dict(files)
-    current["scripts/refresh_path_c_bundle.sh"] = current[
-        "scripts/refresh_path_c_bundle.sh"
-    ].replace("REFRESH_BATCH_TAG:-389", "REFRESH_BATCH_TAG:-390", 1)
-    current["scripts/refresh_ai_agent_access_inventory.py"] = current[
-        "scripts/refresh_ai_agent_access_inventory.py"
-    ].replace('return "389"', 'return "390"', 1)
-    current["scripts/post_batch322_wake_comments.py"] = current[
-        "scripts/post_batch322_wake_comments.py"
-    ].replace('return "389"', 'return "390"', 1)
-    current["scripts/print_owner_unblock.sh"] = current[
-        "scripts/print_owner_unblock.sh"
-    ].replace("=== Batch 389", "=== Batch 390", 1)
-    current["scripts/print_owner_unblock.sh"] += (
-        '\necho " Batch 390: idle_no_commit pulse"\n'
+    refresh = current["scripts/refresh_path_c_bundle.sh"]
+    tag = re.search(r"REFRESH_BATCH_TAG:-(\d+)", refresh)
+    assert tag is not None
+    nxt = str(int(tag.group(1)) + 1)
+    current["scripts/refresh_path_c_bundle.sh"] = refresh.replace(
+        f"REFRESH_BATCH_TAG:-{tag.group(1)}",
+        f"REFRESH_BATCH_TAG:-{nxt}",
+        1,
     )
-    current["portable/path-c-applied-bundle/VERIFY.json"] = current[
-        "portable/path-c-applied-bundle/VERIFY.json"
-    ].replace('"refresh_batch": 389', '"refresh_batch": 390', 1)
+    for rel in (
+        "scripts/refresh_ai_agent_access_inventory.py",
+        "scripts/post_batch322_wake_comments.py",
+    ):
+        text = current[rel]
+        found = re.search(r'return "(\d+)"', text)
+        assert found is not None
+        current[rel] = text.replace(
+            f'return "{found.group(1)}"',
+            f'return "{int(found.group(1)) + 1}"',
+            1,
+        )
+    unblock = current["scripts/print_owner_unblock.sh"]
+    header = re.search(r"=== Batch (\d+)", unblock)
+    assert header is not None
+    current["scripts/print_owner_unblock.sh"] = unblock.replace(
+        f"=== Batch {header.group(1)}",
+        f"=== Batch {int(header.group(1)) + 1}",
+        1,
+    ) + f'\necho " Batch {int(header.group(1)) + 1}: idle_no_commit pulse"\n'
+    verify = current["portable/path-c-applied-bundle/VERIFY.json"]
+    stamped = re.search(r'"refresh_batch": (\d+)', verify)
+    assert stamped is not None
+    current["portable/path-c-applied-bundle/VERIFY.json"] = verify.replace(
+        f'"refresh_batch": {stamped.group(1)}',
+        f'"refresh_batch": {int(stamped.group(1)) + 1}',
+        1,
+    )
     report = mod.decide(
         current_files=current,
         baseline_files=files,
