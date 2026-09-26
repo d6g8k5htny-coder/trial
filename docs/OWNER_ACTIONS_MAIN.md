@@ -1,3 +1,7 @@
+## STATUS (Batch 490 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 489→490; inv parent-pin. Evidence: `portable/BATCH490_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 489 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH488/487/485/484/482; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH489_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
