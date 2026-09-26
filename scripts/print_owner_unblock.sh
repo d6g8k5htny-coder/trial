@@ -50,6 +50,7 @@ fi
 echo "=== Batch 369 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 369: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @1ae02b9; no delta vs 367"
 echo " Batch 369: tip_or_eng inv tip re-pin beyond parent after living republish @1ae02b9"
+echo " Batch 369: tip_or_eng wake last-resort 368→369 + inv tip pin + living republish @1ae02b9"
 echo " Batch 369: living script_stale republish after unfreeze idle @1ae02b9"
 echo " Batch 369: idle_no_commit tip-stable watch @1ae02b9 (tip_match; living tip/script current; woke peers)"
 echo " Batch 369: unfreeze last-resort 368→369 + VERIFY refresh_batch 368→369 @1ae02b9"

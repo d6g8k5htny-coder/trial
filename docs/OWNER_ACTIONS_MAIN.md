@@ -10,6 +10,13 @@ python3 -m pytest tests/test_intent.py::test_batch369_research_stack_audit_watch
 ## STATUS (Batch 369 tip-eng)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: inv tip lagged beyond parent after living republish land; living CRITICAL script drift cleared via batch241 upload. PRESERVE_DURABLE re-pin→HEAD. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+Hardening tip **stable** @ `1ae02b9`. Eng: wake last-resort frozen at 368 vs header 369; inv tip lag=2 after living republish; living script_stale — wake unfreeze→369 + PRESERVE_DURABLE re-pin→HEAD + living republish. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_wake_unfreeze_inv_pin_and_living_republish`.
+
+```bash
+PRESERVE_DURABLE=1 INV_BATCH=369 python3 scripts/refresh_ai_agent_access_inventory.py
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch369_tip_or_eng_wake_inv_living -q
+```
 
 ## STATUS (Batch 369 living-republish)
 

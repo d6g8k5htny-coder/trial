@@ -33,6 +33,10 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
 - Eng: trial tip lagged beyond parent after living republish land; living CRITICAL scripts drifted vs release — PRESERVE_DURABLE re-pin→HEAD + batch241 force upload. Intent living >=N. Inventable skipped. NEVER flip research.
 
+### Batch 369 — tip_or_eng: wake last-resort 368→369 + inv tip pin + living republish @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: wake last-resort still 368 vs header 369; inv tip lag=2 after living republish land; living script_stale. Wake unfreeze→369 + PRESERVE_DURABLE re-pin→HEAD + living republish. Intent living >=N. Inventable skipped. NEVER flip research.
 
 ### Batch 369 — living script_stale republish after unfreeze idle @1ae02b9 (2026-09-26)
 
