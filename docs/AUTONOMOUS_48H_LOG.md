@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 417 — tip_or_eng living script_stale republish + unfreeze 416→417 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 416→417; `lemma_closed=false`.
+- Living script_stale=1 after research → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
 ### Batch 416 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 414/412/410/405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
