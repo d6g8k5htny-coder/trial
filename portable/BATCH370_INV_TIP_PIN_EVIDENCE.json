@@ -1,0 +1,20 @@
+{
+  "batch": "370",
+  "generated_at_utc": "2026-09-26T00:11:18Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "defect_id": "inv_tip_lag_beyond_parent_after_eng_hunt_json_repair",
+  "trial_tip_before": "17700f85baf521e2218efc572046e77892654477",
+  "trial_tip_after": "17700f85baf521e2218efc572046e77892654477",
+  "lag_beyond_parent": true,
+  "peer": "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf"
+}

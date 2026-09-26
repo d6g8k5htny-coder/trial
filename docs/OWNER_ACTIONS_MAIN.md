@@ -1,3 +1,7 @@
+## STATUS (Batch 370 inv-tip-pin)
+
+Hardening tip **stable** @ `1ae02b9`. After eng-hunt JSON repair land, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH370_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 370 tip-eng-json-wake)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: mangled `BATCH369_TIP_ENG_*.json` still broke Intent after Batch 369 tip_or_eng race; wake last-resort frozen at 369 vs header 370 — rewrite JSON + wake unfreeze→370. Intent living >=N. `lemma_closed=false`. Goal OPEN.

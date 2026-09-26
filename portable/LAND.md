@@ -1,3 +1,7 @@
+## STATUS (Batch 370 inv-tip-pin)
+
+tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after eng-hunt JSON repair; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 370 tip-eng-json-wake)
 
 tip `1ae02b9` tip_match=true; eng: repair mangled Batch369 tip_eng JSON + wake last-resort 369→370; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
