@@ -25082,3 +25082,29 @@ def test_batch408_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 408 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 408" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch408_post_research_living_inv_pin() -> None:
+    """Batch 408: living republish + inv parent-pin after research audit."""
+    import json
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH408_POST_RESEARCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "408"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("uploaded") is True
+    assert brief.get("tip_match") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH408_POST_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("parent_pin") is True
+    assert pin.get("lemma_closed") is False
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin_after_research_living"
+    assert "STATUS (Batch 408 post-research-living+inv-pin)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")

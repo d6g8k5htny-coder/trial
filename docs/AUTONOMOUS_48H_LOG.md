@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 408 — post-research living script_stale republish + inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After research land `3eac052`: living `script_stale=1` → republish; inv parent-pin; tip_match; `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 408 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.

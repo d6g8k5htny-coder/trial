@@ -1,0 +1,18 @@
+{
+  "batch": "408",
+  "action": "living_script_stale_republish_after_research_audit",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 1,
+  "need_upload": 1,
+  "uploaded": true,
+  "living_sha256": "e3d324ecb929def5274ba2e7b0c17a240872427a4fba08bed4812875fc8f2229",
+  "living_bytes": 718979,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T04:17:26Z"
+}
