@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 558 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 557/556/555/554/553 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH558_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@558; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 556 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @558 (tip/eng558 raced); soft tip_sync556 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `3feceafe`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
