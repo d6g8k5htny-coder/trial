@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 409 — tip_or_eng living tgz_newer republish + unfreeze 408→409 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 408→409; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
 ### Batch 408 — post-research living script_stale republish + inv parent-pin @2f7a5a9 (2026-09-26)
 
 - After research land `3eac052`: living `script_stale=1` → republish; inv parent-pin; tip_match; `lemma_closed=false`. Goal OPEN.

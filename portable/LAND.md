@@ -1,3 +1,7 @@
+## STATUS (Batch 409 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living tgz_newer republish + unfreeze 408→409; inv parent-pin; VERIFY 409; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 408 post-research-living+inv-pin)
 
 tip `2f7a5a9` tip_match=true; living script_stale republish after research audit; inv parent-pin @3eac052; durable 8/8; lemma_closed=false; goal OPEN.
