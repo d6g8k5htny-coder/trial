@@ -1,3 +1,7 @@
+## STATUS (Batch 421 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch420 tip_sync living; living current; inv parent-pin; VERIFY 421; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 420 tip-sync-living)
 
 tip `2f7a5a9` tip_match=true; tip_sync_watch living tgz_newer republish; action=idle_no_commit after republish; parent-pin inv; lemma_closed=false; scientific effect NONE.

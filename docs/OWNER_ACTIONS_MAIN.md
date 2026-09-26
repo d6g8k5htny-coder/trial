@@ -1,3 +1,7 @@
+## STATUS (Batch 421 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch420 tip_sync living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 420 tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish batch241; parent-pin inv; skip inventable. Evidence: `portable/BATCH420_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit` (post-republish). Goal OPEN.
