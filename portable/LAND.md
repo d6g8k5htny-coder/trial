@@ -1,3 +1,7 @@
+## STATUS (Batch 400 post-living-inv-pin)
+
+tip  tip_match=true; inv tip re-pin after tip_or_eng living; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 400 tip-eng-living-refresh)
 
 tip  tip_match=true; living script_stale republish after tip_or_eng land; parent_pin preserved; durable 8/8; lemma_closed=false; goal OPEN.

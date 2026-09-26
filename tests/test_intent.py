@@ -24360,3 +24360,25 @@ def test_batch400_tip_eng_living_refresh() -> None:
     assert "STATUS (Batch 400 tip-eng-living-refresh)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
+
+
+def test_batch400_post_living_inv_tip_pin() -> None:
+    """Batch 400: inv parent-pin after tip_or_eng living refresh @2f7a5a9."""
+    import json
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH400_POST_LIVING_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert brief.get("batch") == "400"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("parent_pin") is True
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_tip_eng_living"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+    assert "STATUS (Batch 400 post-living-inv-pin)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")

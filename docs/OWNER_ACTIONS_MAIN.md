@@ -1,3 +1,7 @@
+## STATUS (Batch 400 post-living-inv-pin)
+
+Hardening tip **stable** @ . Post tip_or_eng living: inv parent-pin. . Goal OPEN.
+
 ## STATUS (Batch 400 tip-eng-living-refresh)
 
 Hardening tip **stable** @ . Living script_stale after Batch400 tip_or_eng land; republish batch241. . Goal OPEN.
