@@ -1,3 +1,7 @@
+## STATUS (Batch 416 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH416_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 417 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch416 research; republish batch241; unfreeze 416→417; inv parent-pin. `lemma_closed=false`. Goal OPEN.

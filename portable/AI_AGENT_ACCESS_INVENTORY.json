@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T04:55:10Z",
-      "tip_sha": "56e2a0d841b79b56912395a46db7f03726305bb3",
+      "pushed_at": "2026-09-26T04:56:53Z",
+      "tip_sha": "27f37c4747a5b1978d77840a675a7fe5e20dc90d",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T04:55:10Z",
+  "generated_at_utc": "2026-09-26T04:56:53Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 417: tip_or_eng living script_stale + unfreeze; inv tip @56e2a0d; durable 8/8; lemma_closed=false.",
+  "note": "Batch 416: tip_sync_watch idle + parent-pin; inv tip @27f37c4; durable 8/8; lemma_closed=false. (landed under Batch417 stamps)",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
