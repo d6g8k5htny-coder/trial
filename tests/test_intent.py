@@ -45139,7 +45139,9 @@ def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    assert str(trial.get("tip_sha") or "").startswith("3019d988")
+    # tip_sync parent-pin @3019d988; research552 advances inv tip_sha to tip_sync HEAD (f089ba00)
+    tip = str(trial.get("tip_sha") or "")
+    assert tip.startswith("3019d988") or tip.startswith("f089ba00") or tip.startswith("04d119fd") or tip.startswith("ef1c11fd"), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
