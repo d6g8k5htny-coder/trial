@@ -23448,3 +23448,48 @@ def test_batch389_post_idle_living() -> None:
     assert _living_tip(str(living.get("hardening_tip") or ""))
     assert "STATUS (Batch 389 post-idle-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+def test_batch390_tip_or_eng_soften() -> None:
+    """Batch 390: tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH390_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "390"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "soften_intent_inv_tip_sha_eq_freeze"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH390_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("tip_match") is True
+    pin = json.loads((ROOT / "portable" / "BATCH390_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    living = json.loads((ROOT / "portable" / "BATCH390_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH390_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "390"
+    # Validate the historical receipt contract independently of assertion spelling.
+    test_batch388_research_stack_audit_watch()
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 390)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 390
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 390
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 390
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 390)
+    assert "STATUS (Batch 390 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch390_post_soften_living() -> None:
+    """Batch 390: living script_stale republish after tip_or_eng soften @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH390_POST_SOFTEN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "390"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_or_eng_soften"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
