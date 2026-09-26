@@ -1,15 +1,19 @@
 {
   "batch": "371",
-  "defect_shipped": false,
-  "hunt_0020": "NEGATIVE",
-  "patch_0020": false,
+  "generated_at_utc": "2026-09-26T00:15:15Z",
+  "hunt": "eng_defect_hunt_no_claim_promotion",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "action": "idle_no_commit",
-  "avoided": [
-    "status/lemma promotion",
-    "1-byte living thrash upload",
-    "inventable drafts"
-  ]
+  "defect_found": false,
+  "defect_shipped": false,
+  "goal": "OPEN",
+  "inv_tip_lag": 1,
+  "inv_tip_lag_policy": "lag=1_skip",
+  "verify_refresh_batch": "370",
+  "last_resort": "370",
+  "living_script_stale": 0
 }

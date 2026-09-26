@@ -1,6 +1,12 @@
 ## STATUS (Batch 371 idle)
 
 Hardening tip **stable** @ `1ae02b9`. tip_sync_watch idle; living current; unfreeze 370→371. Woke tip/eng/CI peers. Evidence: `portable/BATCH371_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+Hardening tip **stable** @ `1ae02b9` (tip_match=true; Path C idle; BASE==LIVE). eng_defect_hunt: inv lag=1 skip; VERIFY/last-resort match header 370; living tip_stale=0 script_stale=0; no mangled JSON. Evidence: `portable/BATCH371_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 1ae02b9
+python3 -m pytest tests/test_intent.py::test_batch371_idle_eng_hunt -q
+```
 
 ## STATUS (Batch 370 inv-tip-pin)
 

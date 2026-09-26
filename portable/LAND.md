@@ -1,6 +1,7 @@
 ## STATUS (Batch 371 idle)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch idle_no_commit; living tip/script current; durable 8/8; lemma_closed=false; goal OPEN.
+tip `1ae02b9` tip_match=true; eng_defect_hunt idle; living tip_stale=0 script_stale=0; inv lag=1 skip; VERIFY/last-resort match header 370; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 370 inv-tip-pin)
 

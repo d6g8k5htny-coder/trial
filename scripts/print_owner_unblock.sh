@@ -50,6 +50,7 @@ fi
 echo "=== Batch 371 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 371: idle_no_commit tip-stable watch @1ae02b9 (tip_match; living tip/script current; woke peers)"
 echo " Batch 371: unfreeze last-resort 370→371 + VERIFY refresh_batch 370→371 @1ae02b9"
+echo " Batch 371: eng_defect_hunt idle_no_commit @1ae02b9 (tip_match; lag=1 skip; living tip/script current)"
 echo " Batch 370: eng repair Batch369 tip_eng JSON + wake last-resort 369→370 @1ae02b9"
 echo " Batch 370: inv tip re-pin beyond parent after eng-hunt JSON repair @1ae02b9"
 echo " Batch 370: tip_or_eng inv tip re-pin beyond parent + living republish @1ae02b9"

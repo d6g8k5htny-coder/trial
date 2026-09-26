@@ -1,6 +1,6 @@
 {
   "batch": "371",
-  "assignment": "tip_sync_watch_vs_BASE_TIP_1ae02b9",
+  "assignment": "eng_defect_hunt_no_claim_promotion",
   "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
   "tip_match": true,
   "aligned": true,
@@ -14,5 +14,6 @@
   "living_tip_stale": 0,
   "living_script_stale": 0,
   "inventable_promoted": false,
-  "generated_at_utc": "2026-09-26T00:13:26Z"
+  "generated_at_utc": "2026-09-26T00:15:15Z",
+  "note": "eng_defect_hunt negative @1ae02b9; no shippable eng; idle_no_commit"
 }
