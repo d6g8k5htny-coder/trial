@@ -1,3 +1,7 @@
+## STATUS (Batch 595 tip-eng-keep-prior)
+
+tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 594→595; Soft Intent n=1; inv parent-pin; VERIFY 595; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 594 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living tar-noise DIFF_COUNT=0 idle; unfreeze 593→594; Soft Intent n=1; inv parent-pin; VERIFY 594; durable 8/8; lemma_closed=false; goal OPEN.
