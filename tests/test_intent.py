@@ -23206,3 +23206,19 @@ def test_batch387_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 387 tip-sync-idle)" in owner
 
+
+def test_batch387_post_tip_sync_living() -> None:
+    """Batch 387: living script_stale republish after tip_sync idle @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH387_POST_TIP_SYNC_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "387"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_sync_idle"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH387_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("lemma_closed") is False
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 387 post-tip-sync-living)" in land
+

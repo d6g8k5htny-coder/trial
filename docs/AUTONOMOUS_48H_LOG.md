@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 387 — living script_stale republish after tip_sync idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; tip_sync_watch idle already on main with parent_pin.
+- Living `script_stale=1` vs pack → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 387 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 
 - Tip stable @ `2f7a5a9` tip_match=1 after peer tip-sync land; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @53d029b; `lemma_closed=false`.
