@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 371 — inv tip re-pin beyond parent after CI Intent soften @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip/eng peer softened STATUS_GUARD Intent; inv tip lagged beyond parent — PRESERVE_DURABLE re-pin→HEAD. Goal OPEN.
+
+
 ### Batch 371 — tip_or_eng: CI Intent STATUS_GUARD baseline living soften @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.

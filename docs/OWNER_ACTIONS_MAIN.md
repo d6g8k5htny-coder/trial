@@ -1,3 +1,7 @@
+## STATUS (Batch 371 post-soften-inv-tip-pin)
+
+Hardening tip **stable** @ `1ae02b9`. After tip/eng CI Intent STATUS_GUARD soften, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH371_POST_SOFTEN_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 371 tip-eng)
 
 Hardening tip **stable** @ `1ae02b9`. Eng: Intent `baseline_tip_sha` hard-pinned to e3cd7d4 after living baseline advanced to 1ae02b9 — soften via `_living_tip`. Peer already shipped inv tip re-pin. `lemma_closed=false`. Goal OPEN. action=`eng_ci_intent_soften`.
