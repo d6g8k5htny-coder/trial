@@ -1,0 +1,18 @@
+{
+  "batch": "499",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "defect_id": null,
+  "defect_found": false,
+  "defect_shipped": false,
+  "goal": "OPEN",
+  "living_need_upload": 0,
+  "inventable_skipped": true,
+  "verify_unfreeze": "498\u2192499",
+  "inv_parent_pin": true,
+  "generated_at_utc": "2026-09-26T12:05:10Z",
+  "note": "hunt-negative: tip_match; living current; VERIFY lag + inv parent_pin after tip_sync497@b17d4b3"
+}

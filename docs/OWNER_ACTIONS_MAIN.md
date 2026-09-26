@@ -1,5 +1,15 @@
 ## STATUS (Batch 497 tip-sync-living)
 
+## STATUS (Batch 499 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 498→499; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch499_tip_or_eng_idle -q
+```
+
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
 
 ```bash
