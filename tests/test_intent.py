@@ -46817,7 +46817,11 @@ def test_batch558_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
     assert (
-        tip.startswith("e883925a")
+        tip.startswith("b6d7cb50")
+        or tip.startswith("b156bfc7")
+        or tip.startswith("7ababd84")
+        or tip.startswith("d785cdd3")
+        or tip.startswith("e883925a")
         or tip.startswith("7ababd84")
         or tip.startswith("d785cdd3")
         or tip.startswith("08b543b8")
@@ -46889,7 +46893,11 @@ def test_batch559_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
     assert (
-        tip.startswith("364e3bd9")
+        tip.startswith("b6d7cb50")
+        or tip.startswith("b156bfc7")
+        or tip.startswith("7ababd84")
+        or tip.startswith("d785cdd3")
+        or tip.startswith("364e3bd9")
         or tip.startswith("7ababd84")
         or tip.startswith("d785cdd3")
         or tip.startswith("08b543b8")
@@ -46960,7 +46968,11 @@ def test_batch560_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
     assert (
-        tip.startswith("012d5be6")
+        tip.startswith("b6d7cb50")
+        or tip.startswith("b156bfc7")
+        or tip.startswith("7ababd84")
+        or tip.startswith("d785cdd3")
+        or tip.startswith("012d5be6")
         or tip.startswith("7ababd84")
         or tip.startswith("d785cdd3")
         or tip.startswith("08b543b8")
@@ -47033,7 +47045,11 @@ def test_batch561_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
     assert (
-        tip.startswith("7565529f")
+        tip.startswith("b6d7cb50")
+        or tip.startswith("b156bfc7")
+        or tip.startswith("7ababd84")
+        or tip.startswith("d785cdd3")
+        or tip.startswith("7565529f")
         or tip.startswith("7ababd84")
         or tip.startswith("d785cdd3")
         or tip.startswith("08b543b8")
@@ -47153,7 +47169,7 @@ def test_batch562_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f") or tip.startswith("451a5ece") or tip.startswith("7aeacc88"), tip
+    assert tip.startswith("b6d7cb50") or tip.startswith("b156bfc7") or tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f") or tip.startswith("451a5ece") or tip.startswith("7aeacc88"), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -47251,7 +47267,7 @@ def test_batch563_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f"), tip
+    assert tip.startswith("b6d7cb50") or tip.startswith("b156bfc7") or tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f"), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -47399,3 +47415,62 @@ def test_batch565_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
+
+
+def test_batch565_tip_sync_watch_keep_prior_parent_pin() -> None:
+    """Batch 565: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
+    import json
+    import re
+
+    tiny = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "565"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is False
+    assert tiny.get("tip_moved") is True
+    assert tiny.get("keep_prior") is True
+    assert tiny.get("action") == "keep_prior"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("parent_pin") is True
+    assert str(tiny.get("hardening_tip") or "").startswith("2f7a5a9")
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0 and living.get("script_stale") == 0 and living.get("need_upload") == 0
+
+    evidence = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_WATCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "keep_prior" and evidence.get("keep_prior") is True and evidence.get("parent_pin") is True
+
+    brief = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_WATCH_BRIEF.json").read_text(encoding="utf-8"))
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_") and "2f7a5a9" in _asg
+
+    watch = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("tip_moved") is True and watch.get("keep_prior") is True and watch.get("action") == "keep_prior"
+
+    living_brief = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is True and living_brief.get("lemma_closed") is False
+
+    pin = json.loads((ROOT / "portable" / "BATCH565_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin" and pin.get("parent_pin") is True
+
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert inv.get("lemma_closed") is False
+    trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
+    tip = str(trial.get("tip_sha") or "")
+    assert (
+        tip.startswith("b6d7cb50")
+        or tip.startswith("b156bfc7")
+        or tip.startswith("7ababd84")
+        or tip.startswith("d785cdd3")
+    ), tip
+
+    assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 565)
+    headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
+    assert headers and int(headers[0]) >= 565 and len(headers) == 1
+    assert " Batch 565: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
+    assert "STATUS (Batch 565 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 565 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

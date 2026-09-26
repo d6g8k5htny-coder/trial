@@ -1,0 +1,18 @@
+{
+  "batch": "565",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "b6d7cb505a28048559fe2ea2eeacc94ca3697669",
+  "tip_match": false,
+  "aligned": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T18:55:01Z",
+  "action": "keep_prior",
+  "goal_complete": false,
+  "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9",
+  "soft_intent_restore": "single_living_print_owner_permanent_header_preserved"
+}
