@@ -1,3 +1,7 @@
+## STATUS (Batch 391 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peers Batch390 soften+living; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH391_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 390 post-soften-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch390 soften land; republish batch241. `lemma_closed=false`. Goal OPEN.

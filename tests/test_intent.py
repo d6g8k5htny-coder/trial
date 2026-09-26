@@ -23500,3 +23500,20 @@ def test_batch390_post_soften_living() -> None:
     assert _living_tip(str(living.get("hardening_tip") or ""))
     assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch391_tip_or_eng_idle() -> None:
+    """Batch 391: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH391_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "391"
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("flipped_anything") is False
+    assert idle.get("lemma_closed") is False
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = idle.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    assert "STATUS (Batch 391 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

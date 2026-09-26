@@ -1,3 +1,7 @@
+## STATUS (Batch 391 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch390 soften+living; inv==HEAD^; living current; durable 8/8; lemma_closed=false; action=idle_no_commit; goal OPEN.
+
 ## STATUS (Batch 390 post-soften-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale after tip_or_eng soften; republish; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
