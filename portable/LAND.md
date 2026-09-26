@@ -1,3 +1,7 @@
+## STATUS (Batch 394 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch393 idle peer; inv==HEAD^; living current; durable 8/8; lemma_closed=false; action=idle_no_commit; goal OPEN.
+
 ## STATUS (Batch 393 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after research; living current; inv parent-pin; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
