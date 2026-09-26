@@ -1,0 +1,20 @@
+{
+  "batch": "378",
+  "generated_at_utc": "2026-09-26T01:22:48Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "defect_found": false,
+  "defect_shipped": false,
+  "skipped": [
+    "tip-sync (BASE==LIVE @ebedb78)",
+    "STATUS_GUARD tip lag (peer refreshed @2f7c0ff)",
+    "inv tip lag (parent-pin)",
+    "living script_stale/tgz (need_upload=0)",
+    "inventable"
+  ],
+  "peer_status_guard": "2f7c0ff",
+  "goal": "OPEN"
+}

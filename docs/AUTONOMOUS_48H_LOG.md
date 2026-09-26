@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 378 — tip_or_eng idle_no_commit hunt-negative after STATUS_GUARD @ebedb78 (2026-09-26)
+
+- Tip stable @ `ebedb78` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; STATUS_GUARD tip living; `lemma_closed=false`.
+- Hunt negative after tip-sync+STATUS_GUARD peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 378 — STATUS_GUARD tip refresh 1ae02b9→ebedb780 (2026-09-26)
 
 - After tip-sync, STATUS_GUARD tip_sha lagged at `1ae02b9`. Ran `guard_no_status_promotion` @ `ebedb780` → pass; tip→`ebedb780`; baseline→`1ae02b9`; open 13/1/3; no promotion.

@@ -22001,3 +22001,42 @@ def test_batch378_status_guard_tip_refresh() -> None:
     assert sg.get("pass") is True
     assert len(sg.get("open_premises") or []) == 13
     assert "STATUS (Batch 378 status-guard tip refresh)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch378_tip_or_eng_post_guard_idle() -> None:
+    """Batch 378: tip_or_eng idle after tip-sync+STATUS_GUARD; hunt negative @ebedb78."""
+    import json
+    import re
+    tiny = json.loads((ROOT / "portable" / "BATCH378_TIP_ENG_POST_GUARD_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "378"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    assert str(tiny.get("hardening_tip") or "").startswith("ebedb78")
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    brief = json.loads((ROOT / "portable" / "BATCH378_TIP_ENG_POST_GUARD_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("action") == "idle_no_commit"
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_or_eng_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+    hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_ENG_POST_GUARD_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_ENG_POST_GUARD_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("status_guard_tip_living") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+    assert str(snap.get("tip_sha") or "").startswith("ebedb78")
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 378)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 378)
+    assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+

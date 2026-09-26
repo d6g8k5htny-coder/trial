@@ -1,3 +1,7 @@
+## STATUS (Batch 378 tip-eng-post-guard-idle)
+
+tip `ebedb78` tip_match=true; tip_or_eng hunt negative after tip-sync+STATUS_GUARD; inv parent-pin; living current; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 378 status-guard tip refresh)
 
 tip `ebedb780` tip_match=true; STATUS_GUARD tip 1ae02b9→ebedb780; open 13/1/3; no promotion; durable 8/8; lemma_closed=false; goal OPEN.
