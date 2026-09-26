@@ -1,3 +1,7 @@
+## STATUS (Batch 519 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; Soft Intent single living print_owner header n=1; tip_sync_watch living script_stale republish; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 519 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 518/517/516/515/514; STATUS_GUARD pass; stamps@519; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
