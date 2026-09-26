@@ -1,6 +1,18 @@
+<<<<<<< Updated upstream
 ## STATUS (Batch 539 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `70664bd` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 538→539; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH539_TIP_ENG_BRIEF.json` + `BATCH539_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+=======
+## STATUS (Batch 537 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 (header@538); keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch537_tip_sync_watch_keep_prior_parent_pin -q
+```
+>>>>>>> Stashed changes
 
 ## STATUS (Batch 537 research-audit)
 

@@ -1,0 +1,23 @@
+{
+  "batch": "537",
+  "generated_at_utc": "2026-09-26T15:48:07Z",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip": "2f7a5a9",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "aligned": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "defect_id": "inv_tip_parent_pin_after_tip_sync_keep_prior",
+  "parent_pin": true,
+  "trial_tip_before": "bd43be1cc8c797ba722f58fb2ef4025ff501ee0a",
+  "trial_tip_after": "3a70c967221dd8870347b1f926f81bd6d39845d3",
+  "lag_beyond_parent": true,
+  "note": "parent-pin inv tip_sha=precommit HEAD (3a70c96); was at bd43be1; Soft Intent n=1 @538"
+}

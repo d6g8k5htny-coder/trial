@@ -52,6 +52,7 @@ echo " Batch 539: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze
 echo " Batch 537: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 536/535/534/533/532; covers research496/499/501/503/509/514/518/531 gap"
 echo " Batch 538: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 537→538 @2f7a5a9 (LIVE cd66a65)"
 echo " Batch 537: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 536→537 @2f7a5a9 (LIVE 70664bd)"
+echo " Batch 537: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 536: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 535/534/533/532/530; covers research496/499/501/503/509/514/518/531 gap"
 echo " Batch 536: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 535→536 @2f7a5a9 (LIVE cd66a65)"
 echo " Batch 536: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"

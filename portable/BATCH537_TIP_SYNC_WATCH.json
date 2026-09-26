@@ -1,0 +1,18 @@
+{
+  "batch": "537",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "70664bd66f7778c356665b26222df0a61314c813",
+  "tip_match": false,
+  "aligned": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "action": "keep_prior",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "parent_pin": true,
+  "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9",
+  "generated_at_utc": "2026-09-26T15:48:07Z",
+  "note": "tip_sync_watch keep-prior; Soft Intent single header preserved @538"
+}
