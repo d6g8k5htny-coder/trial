@@ -1,3 +1,7 @@
+## STATUS (Batch 383 research-living-unfreeze)
+
+tip `ebedb780` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; living tgz content-delta; unfreeze 382→383; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 382 idle-pin-unfreeze)
 
 tip `ebedb780` tip_match=true; inv tip re-pin after peer living; unfreeze 381→382; durable 8/8; lemma_closed=false; goal OPEN.

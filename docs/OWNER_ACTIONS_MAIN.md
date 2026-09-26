@@ -1,3 +1,7 @@
+## STATUS (Batch 383 research-living-unfreeze)
+
+Hardening tip **stable** @ `ebedb780`. Research audit 13/1/3 delta 0 vs 380; living pack content-delta; unfreeze 382→383. No promotion. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 382 idle-pin-unfreeze)
 
 Hardening tip **stable** @ `ebedb780`. Batch 382: re-pin after peer living + unfreeze 381→382. `lemma_closed=false`. Goal OPEN.

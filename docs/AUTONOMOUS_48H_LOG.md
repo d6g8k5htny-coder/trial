@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 383 — research_stack_audit_watch + living tgz + unfreeze 382→383 @ebedb780 (2026-09-26)
+
+- Tip stable tip_match=1; open stack 13/1/3; delta vs Batch 380 = 0; no promotion.
+- Living pack content-delta uploaded; unfreeze last-resort/VERIFY/wake 382→383. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 382 — inv tip re-pin + unfreeze 381→382 @ebedb780 (2026-09-26)
 
 - Timer tip_or_eng: tip stable; peer living broke parent_pin; living need_upload=0.
