@@ -21,6 +21,34 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 386 — tip_or_eng soften Intent BASE_TIP pin + living + unfreeze 385→386 @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1 @ `7caac25`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: CI red `test_batch378_tip_sync_ebedb78` asserted `"ebedb78" in BASE_TIP` after tip-sync to `7caac25` → `_living_tip(base)`. Living tgz content-delta; unfreeze last-resort/VERIFY/wake 385→386. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 385 — tip_sync_watch idle_no_commit + parent-pin inv @7caac25 (2026-09-26)
+
+- Tip stable @ `7caac25` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @3bbda9e; `lemma_closed=false`.
+- Post tip-sync land (main #118). No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 385 — inv tip re-pin + living after tip_or_eng idle @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1; tip_or_eng idle broke parent_pin (tip lagged at research land).
+- Re-pin tip_sha=precommit HEAD; living script_stale republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 385 — tip_or_eng idle_no_commit hunt-negative after peers @7caac25 (2026-09-26)
+
+- Tip stable @ `7caac254` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; stamps@385; `lemma_closed=false`.
+- Peers already tip-sync+STATUS_GUARD+research+living. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
 ### Batch 385 — living script_stale republish after research audit @7caac25 (2026-09-26)
 
 - Tip stable tip_match=1 @ `7caac25`; research audit already on main (13/1/3 delta 0).
@@ -37,7 +65,6 @@ Path C dry-run ready on hardening; permanent window recorded.
 ### Batch 385 — STATUS_GUARD baseline_path relative + PATH_C_STATUS tip @7caac25 (2026-09-26)
 
 - Eng: `guard_no_status_promotion` wrote absolute `baseline_path` under CI cwd → Intent `test_batch378_followup` red; store portable/-relative. PATH_C_STATUS tip refresh after tip-sync. `lemma_closed=false`. Goal OPEN.
-
 
 
 ### Batch 385 — tip-sync ebedb780→7caac25 keep-prior after main #118 (2026-09-26)

@@ -1,0 +1,12 @@
+{
+  "batch": "385",
+  "action": "inventory_preserve_durable_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "parent_pin": true,
+  "tip_sha": "ae089146824307be7193497be8a2fcc382a68873",
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93",
+  "generated_at_utc": "2026-09-26T01:56:40Z",
+  "note": "re-pin after tip_or_eng idle land broke parent_pin; living script_stale republish"
+}

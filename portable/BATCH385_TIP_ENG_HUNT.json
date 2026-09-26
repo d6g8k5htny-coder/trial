@@ -1,0 +1,25 @@
+{
+  "batch": "385",
+  "generated_at_utc": "2026-09-26T01:54:30Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "defect_found": false,
+  "defect_shipped": false,
+  "skipped": [
+    "tip-sync (peer Batch385 tip-sync @177b9e7; BASE==LIVE @7caac25)",
+    "STATUS_GUARD baseline_path (peer @c127d6b)",
+    "inv tip lag (parent-pin @ab12d92 / HEAD@10736f1)",
+    "last-resort/VERIFY/wake already 385 (peer tip-sync)",
+    "living tip_stale/script_stale/tgz (need_upload=0 after peer living @10736f1)",
+    "research_stack (peer research_audit_watch @ab12d92; open 13/1/3)",
+    "inventable"
+  ],
+  "peer_tip_sync": "177b9e7",
+  "peer_status_guard": "c127d6b",
+  "peer_research": "ab12d92",
+  "peer_living": "10736f1",
+  "goal": "OPEN"
+}

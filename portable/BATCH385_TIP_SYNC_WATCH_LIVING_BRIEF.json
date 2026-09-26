@@ -1,0 +1,17 @@
+{
+  "batch": "385",
+  "action": "living_script_stale_republish_after_tip_sync_watch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 1,
+  "need_upload": 1,
+  "uploaded": true,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T01:58:00Z",
+  "note": "tip_sync_watch print_owner edit \u2192 script_stale; living republish; idle evidence tip/script current after upload"
+}
