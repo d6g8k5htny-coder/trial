@@ -6,6 +6,11 @@
 - Hunt living negative (tar-noise only) after tip/eng593/research593 Soft Intent preserve; Soft Intent single === header →594; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 
+### Batch 594 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 593/592/591/590/589 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH594_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@594; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 591 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 590→591 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 590→591; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
@@ -132,12 +137,6 @@ Soft Intent preserve tip_moved keep-prior @ BASE `2f7a5a9`: single living === Ba
 Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PERMANENT header (n=1) after prior broken n=2 + inv conflict markers @289df5b7. Soft RESTORE echo only; parent-pin tip_sha=precommit `266b8b12`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
 
 # Autonomous 48h work log
-
-### Batch 595 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 594→595 @2f7a5a9 (2026-09-26)
-
-- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 594→595; living script_stale republish pack_sha256=`02429cb0…`; Soft Intent n=1; `lemma_closed=false`.
-- Hunt living script_stale after tip/eng594 Soft Intent/REFRESH; Soft Intent single === header →595; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
-
 
 ### Batch 593 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 592→593 @2f7a5a9 (2026-09-26)
 
