@@ -1,3 +1,7 @@
+## STATUS (Batch 396 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after tip_sync/inv peers; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 396 ci-intent-syntax)
 
 Hardening tip **stable** @ `2f7a5a9`. CI Intent SyntaxError fixed (lone literal `\\n` line). `lemma_closed=false`. Goal OPEN.
