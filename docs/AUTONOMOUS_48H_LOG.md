@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 434 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @5c54faa. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
 ### Batch 435 — tip_or_eng living script_stale republish + unfreeze 434→435 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 434→435; `lemma_closed=false`.

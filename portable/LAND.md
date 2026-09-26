@@ -1,3 +1,7 @@
+## STATUS (Batch 434 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch living current; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 435 tip-eng-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale republish + unfreeze 434→435; inv parent-pin; VERIFY 435; durable 8/8; lemma_closed=false; goal OPEN.
