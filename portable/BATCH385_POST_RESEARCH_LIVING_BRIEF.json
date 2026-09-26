@@ -1,0 +1,14 @@
+{
+  "batch": "385",
+  "action": "living_script_stale_republish_after_research",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "7caac254cbba5f513b2dc0afb56b78a598bc0c93",
+  "living_tag": "batch241-path-c-bundle",
+  "script_stale": 1,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T01:52:23Z",
+  "note": "after research audit land ab12d92; print_owner script_stale; parent_pin via tip_sha=precommit HEAD"
+}

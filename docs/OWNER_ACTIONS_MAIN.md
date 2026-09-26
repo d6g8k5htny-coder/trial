@@ -1,3 +1,7 @@
+## STATUS (Batch 385 post-research-living)
+
+Hardening tip **stable** @ `7caac254`. Living script_stale after research audit land; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 385 research-audit-watch)
 
 Hardening tip **stable** @ `7caac254`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH383/380; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH385_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

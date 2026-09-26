@@ -22833,3 +22833,21 @@ def test_batch385_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 385 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 385" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch385_post_research_living() -> None:
+    """Batch 385: living script_stale republish after research audit @7caac25."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH385_POST_RESEARCH_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "385"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_research"
+    assert living.get("tip_match") is True
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    watch = json.loads((ROOT / "portable" / "BATCH385_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("open_premises") == 13
+    assert watch.get("lemma_closed") is False
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 385 post-research-living)" in land
+

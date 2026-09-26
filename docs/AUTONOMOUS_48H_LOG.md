@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 385 — living script_stale republish after research audit @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1 @ `7caac25`; research audit already on main (13/1/3 delta 0).
+- Living `script_stale=1` (print_owner) → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 385 — research_stack_audit_watch_no_promotion @7caac25 (2026-09-26)
 
 - Tip stable tip_match=1 @ `7caac254` after tip-sync; open stack 13/1/3; delta vs Batch 383/380 = 0; STATUS_GUARD living (no lag); no promotion.
