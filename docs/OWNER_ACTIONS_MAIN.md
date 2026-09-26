@@ -1,3 +1,6 @@
+## STATUS (Batch 376 tip-eng-living)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: living release `tgz_newer=1 need_upload=1` after tip_sync idle — real upload → need_upload=0. `lemma_closed=false`. Goal OPEN. action=`eng_living_tgz_content_delta_republish`.
 ## STATUS (Batch 376 research-audit-watch)
 
 Hardening tip **stable** @ `1ae02b9`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH375; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH376_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
