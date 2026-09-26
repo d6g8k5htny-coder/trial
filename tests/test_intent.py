@@ -24081,3 +24081,21 @@ def test_batch397_tip_or_eng_idle() -> None:
     assert living.get("need_upload") == 0
     assert "STATUS (Batch 397 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+def test_batch396_tip_or_eng_idle() -> None:
+    """Batch 396: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH396_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "396"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 396
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH396_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert "STATUS (Batch 396 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 396)
+\n
