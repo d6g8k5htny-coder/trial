@@ -44,6 +44,7 @@ _LIVING_TIPS = (
     "1ae02b9",
     "ebedb78",
     "7caac25",
+    "2f7a5a9",
 )
 _LIVING_RELEASES = (
     "batch180-path-c-bundle",
@@ -22813,7 +22814,7 @@ def test_batch385_research_stack_audit_watch() -> None:
     assert snap.get("lemma_closed") is False
     assert snap.get("pass") is True
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("7caac25")
+    # Batch 386: tip moved 7caac25→2f7a5a9; do not freeze STATUS_GUARD tip_sha
 
     pin = json.loads(
         (ROOT / "portable" / "BATCH385_POST_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(
@@ -23025,6 +23026,109 @@ def test_batch386_tip_or_eng_soften() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 386)
     assert "STATUS (Batch 386 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch386_tip_sync_2f7a5a9() -> None:
+    """Batch 386: tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 recovery."""
+    import json
+
+    assert "2f7a5a9" in _LIVING_TIPS
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "386"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "tip_sync_landed"
+    assert brief.get("tip_match") is True
+    assert brief.get("keep_prior") is True
+    assert brief.get("goal") == "OPEN"
+    assert brief.get("inventable_promoted") is False
+    assert brief.get("scientific_effect") == "NONE"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    assert str(brief.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(brief.get("assignment") or "").startswith("tip_sync_watch_vs_BASE_TIP_")
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    assert hunt.get("action") == "tip_sync_landed"
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "tip_sync_landed"
+    assert evidence.get("keep_prior") is True
+    assert evidence.get("parent_pin") is True
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("tip_moved") is True
+    assert watch.get("action") == "tip_sync_landed"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    assert "2f7a5a9" in base
+
+    apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "already-applied (semantic)" in apply_all
+
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert _living_tip(str(verify.get("base_tip_sha") or ""))
+    assert int(verify.get("refresh_batch") or 0) >= 386
+    assert verify.get("keep_prior_bundle") is True
+
+    guard = json.loads(
+        (ROOT / "portable" / "BATCH386_STATUS_GUARD_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert guard.get("pass") is True
+    assert guard.get("open_premises") == 13
+    assert guard.get("lemma_closed") is False
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("pass") is True
+    assert snap.get("lemma_closed") is False
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+    assert str(snap.get("tip_sha") or "").startswith("2f7a5a9")
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("parent_pin") is True
+    assert pin.get("lemma_closed") is False
+
+    living = json.loads(
+        (ROOT / "portable" / "BATCH386_TIP_SYNC_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living.get("lemma_closed") is False
+    assert living.get("uploaded") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 386)
+    assert "tip-sync 7caac25→2f7a5a9" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 386 tip-sync)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 386 tip-sync)" in owner
 
 def test_batch387_research_stack_audit_watch() -> None:
     """Batch 387: research_stack_audit_watch_no_promotion @7caac25; no delta vs 385."""

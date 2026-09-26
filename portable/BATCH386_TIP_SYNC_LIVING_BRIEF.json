@@ -1,0 +1,17 @@
+{
+  "batch": "386",
+  "action": "living_tip_stale_script_stale_republish_after_tip_sync",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 1,
+  "script_stale": 1,
+  "need_upload": 1,
+  "uploaded": true,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T02:06:28Z",
+  "note": "tip-sync BASE_TIP 7caac25\u21922f7a5a9 + print_owner edit \u2192 tip_stale+script_stale; living republish"
+}

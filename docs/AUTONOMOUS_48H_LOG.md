@@ -21,9 +21,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 386 — tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 recovery (2026-09-26)
+
+- Tip **moved** @ hardening `2f7a5a9` (SIDE24 theorem-chain sources recovery merge). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip-sync keep-prior refresh; apply_all 0018/0019 semantic already-applied; `_LIVING_TIPS+=2f7a5a9`; STATUS_GUARD tip refresh; inv parent-pin; living tip_stale republish. Inventable/research NOT promoted. Goal OPEN.
+- Assignment: `tip_sync_watch_vs_BASE_TIP_7caac25` → tip moved path. action=`tip_sync_landed`.
+
+
+
 ### Batch 387 — research_stack_audit_watch_no_promotion @7caac25 (2026-09-26)
 
-- Tip stable tip_match=1 @ `7caac254`; open stack 13/1/3; delta vs Batch 385 = 0; STATUS_GUARD living (no lag refresh); no promotion; evidence JSON only.
+- Tip stable tip_match=1 @ `7caac254` at audit (pre tip-sync); open stack 13/1/3; delta vs Batch 385 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
 - Artifacts: `BATCH387_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; inv parent-pin @1d91e28. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
 
 
