@@ -39236,13 +39236,14 @@ def test_batch510_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-def test_batch519_tip_sync_watch_keep_prior_parent_pin() -> None:
-    """Batch 519: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
+
+def test_batch517_tip_sync_watch_keep_prior_parent_pin() -> None:
+    """Batch 517: tip_sync_watch keep-prior TIP_DRIFT; Soft Intent; parent-pin."""
     import json
     import re
 
-    tiny = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
-    assert tiny.get("batch") == "519"
+    tiny = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "517"
     assert tiny.get("lemma_closed") is False
     assert tiny.get("flipped_anything") is False
     assert tiny.get("tip_match") is False
@@ -39256,21 +39257,21 @@ def test_batch519_tip_sync_watch_keep_prior_parent_pin() -> None:
     living = tiny.get("living") or {}
     assert living.get("tip_stale") == 0 and living.get("script_stale") == 0 and living.get("need_upload") == 0
 
-    evidence = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_WATCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    evidence = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_WATCH_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "keep_prior" and evidence.get("keep_prior") is True and evidence.get("parent_pin") is True
 
-    brief = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_WATCH_BRIEF.json").read_text(encoding="utf-8"))
+    brief = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_WATCH_BRIEF.json").read_text(encoding="utf-8"))
     _asg = str(brief.get("assignment") or "")
     assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_") and "2f7a5a9" in _asg
 
-    watch = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_WATCH.json").read_text(encoding="utf-8"))
+    watch = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_WATCH.json").read_text(encoding="utf-8"))
     assert watch.get("tip_moved") is True and watch.get("keep_prior") is True and watch.get("action") == "keep_prior"
 
-    living_brief = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    living_brief = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(encoding="utf-8"))
     assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
     assert living_brief.get("uploaded") is True and living_brief.get("lemma_closed") is False
 
-    pin = json.loads((ROOT / "portable" / "BATCH519_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    pin = json.loads((ROOT / "portable" / "BATCH517_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
     assert pin.get("action") == "inventory_preserve_durable_tip_pin" and pin.get("parent_pin") is True
 
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
@@ -39279,11 +39280,11 @@ def test_batch519_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 519)
+    _assert_print_owner_header_batch_at_least(unblock, 517)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
-    assert headers and int(headers[0]) >= 519 and len(headers) == 1
-    assert "STATUS (Batch 519 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 519 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert headers and int(headers[0]) >= 517 and len(headers) == 1
+    assert "STATUS (Batch 517 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 517 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
 def test_batch516_tip_sync_watch_keep_prior_parent_pin() -> None:

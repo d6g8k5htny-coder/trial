@@ -1,3 +1,7 @@
+## STATUS (Batch 517 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch living republish; Soft Intent single living print_owner header n=1; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 519 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; Soft Intent single living print_owner header n=1; tip_sync_watch living script_stale republish; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.

@@ -1,3 +1,13 @@
+## STATUS (Batch 517 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch517_tip_sync_watch_keep_prior_parent_pin -q
+```
+
 ## STATUS (Batch 519 tip-sync-living)
 
 Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; tip_moved keep_prior; living script_stale republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
