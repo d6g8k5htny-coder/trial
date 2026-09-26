@@ -1,3 +1,21 @@
+## STATUS (Batch 466 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH465/464/463/462/461; STATUS_GUARD living; no AUDIT re-copy; covers research465 gap. Evidence: `portable/BATCH466_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch466_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 465 research-audit gap-fill)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion gap-fill: open 13/1/3; delta 0 vs BATCH464/463/462/461/460; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH465_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch465_research_stack_audit_watch_gap_fill -q
+```
+
 ## STATUS (Batch 466 tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.

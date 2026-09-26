@@ -1,3 +1,11 @@
+## STATUS (Batch 466 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 465/464/463/462/461; STATUS_GUARD pass; stamps@466; covers research465 gap; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 465 research-audit gap-fill)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion gap-fill 13/1/3 delta=0 vs 464/463/462/461/460; STATUS_GUARD pass; stamps@465; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 466 tip-sync-living)
 
 tip `2f7a5a9` tip_match=true; tip_sync_watch living script_stale republish; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
