@@ -2,6 +2,7 @@
 
 ### Batch 555 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 554→555 @2f7a5a9 (2026-09-26)
 
+- tip_sync554 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng555 race; Soft Intent n=1 @555; living force need_upload=0; inv parent-pin precommit 81dab5a2; lemma_closed=false; goal OPEN.
 - TIP_DRIFT LIVE=`d8a0f88` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 554→555; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
 - Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research554; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
 
@@ -12,6 +13,7 @@
 
 ### Batch 554 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 553→554 @2f7a5a9 (2026-09-26)
 
+- tip_sync554 Soft Intent preserve tip_moved keep-prior @2f7a5a9 (post tip/eng555); Soft Intent n=1 @555; living force need_upload=0; inv parent-pin precommit 81dab5a2; lemma_closed=false; goal OPEN.
 - TIP_DRIFT LIVE=`8e43189` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 553→554; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
 - Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research553/tip_sync552; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
 

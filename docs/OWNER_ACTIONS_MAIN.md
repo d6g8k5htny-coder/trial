@@ -1,3 +1,12 @@
+## STATUS (Batch 554 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@555 tip/eng555 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch554_tip_sync_watch_keep_prior_parent_pin -q
+```
+
 ## STATUS (Batch 553 tip-sync-living)
 
 tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@555 tip/eng555 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
@@ -26,6 +35,7 @@ python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792
 python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
 python3 -m pytest tests/test_intent.py::test_batch554_research_stack_audit_watch -q
 ```
+
 
 ## STATUS (Batch 554 tip-eng-keep-prior)
 
