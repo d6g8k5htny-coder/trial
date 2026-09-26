@@ -1,6 +1,7 @@
 ## STATUS (Batch 369 tip-eng)
 
 tip `1ae02b9` tip_match=true; eng: inv tip re-pin beyond parent after living republish + living script_stale clear; durable 8/8; lemma_closed=false; goal OPEN.
+tip `1ae02b9` tip_match=true; eng: wake last-resort 368→369 + inv tip re-pin beyond parent + living republish; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
 
 ## STATUS (Batch 369 living-republish)
 
