@@ -1,3 +1,7 @@
+## STATUS (Batch 572 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@574 Soft Intent n=1; tip/eng572 @9d8498f8; tip_sync571 @7df108e1; research573 @22736cf3); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 573 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 572/571/570/569/568; STATUS_GUARD pass; stamps@573; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
@@ -6,13 +10,16 @@ tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 del
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 573→574; Soft Intent n=1; inv parent-pin; VERIFY 574; durable 8/8; lemma_closed=false; goal OPEN.
 
+
 ## STATUS (Batch 573 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living tar-noise DIFF_COUNT=0 idle; unfreeze 572→573; Soft Intent n=1; inv parent-pin; VERIFY 573; durable 8/8; lemma_closed=false; goal OPEN.
 
+
 ## STATUS (Batch 572 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 571/570/569/568/566; STATUS_GUARD pass; stamps@572; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 
 ## STATUS (Batch 572 tip-eng-idle)
 

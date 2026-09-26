@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 572 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @574 (never harden/stack); soft tip_sync572 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `22736cf3`; tip/eng572 @`9d8498f8`; tip_sync571 @`7df108e1`; research572 @`c5be8f1c`; research573 @`22736cf3`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH572_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch572_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
 ### Batch 573 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 572/571/570/569/568 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
@@ -10,6 +15,7 @@
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 573→574; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
 - Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip/eng573 idle; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
 
 ### Batch 573 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 572→573 @2f7a5a9 (2026-09-26)
 
