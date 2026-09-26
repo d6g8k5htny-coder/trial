@@ -1,3 +1,13 @@
+## STATUS (Batch 466 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch465 tip_or_eng; republish batch241; unfreeze 465→466; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch466_tip_or_eng_living_script -q
+```
+
 ## STATUS (Batch 465 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 464→465; inv parent-pin. Evidence: `portable/BATCH465_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
