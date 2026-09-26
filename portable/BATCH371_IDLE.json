@@ -1,0 +1,33 @@
+{
+  "batch": "371",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "write": "WRITABLE",
+  "path_c": "IDLE@0019",
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "durable": "8/8",
+  "tip_moved": false,
+  "inventable_promoted": false,
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "living_tag": "batch241-path-c-bundle",
+    "need_upload": 0
+  },
+  "refresh_dry_run": "BASE_TIP=1ae02b9 live=1ae02b9 match=1",
+  "assignment": "tip_sync_watch_vs_BASE_TIP_1ae02b9",
+  "coordinator_bc": "bc-01a0cf1e",
+  "woke_peers": [
+    "bc-d8dd318c-7438-5481-98b5-07ba743ce9ad",
+    "bc-dfd45dde-ca70-5895-8796-c35435b073eb",
+    "bc-d7eba60f-9f5e-52cc-ba29-5b0cc5b0bccf",
+    "bc-c881778a-e3f3-59bd-b6de-d3956779790f"
+  ],
+  "generated_at_utc": "2026-09-26T00:13:26Z",
+  "note": "goal continue; tip stable; Batch370 lands parent-pinned; living current; skip inventable"
+}

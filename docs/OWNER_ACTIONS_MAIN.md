@@ -1,3 +1,7 @@
+## STATUS (Batch 371 idle)
+
+Hardening tip **stable** @ `1ae02b9`. tip_sync_watch idle; living current; unfreeze 370→371. Woke tip/eng/CI peers. Evidence: `portable/BATCH371_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 370 inv-tip-pin)
 
 Hardening tip **stable** @ `1ae02b9`. After eng-hunt JSON repair land, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH370_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.

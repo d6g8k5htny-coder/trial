@@ -1,0 +1,17 @@
+{
+  "batch": "371",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal_complete": false,
+  "durable": "8/8_WRITABLE",
+  "path_c": "IDLE@0019",
+  "living_tip_stale": 0,
+  "living_script_stale": 0,
+  "inventable_promoted": false,
+  "generated_at_utc": "2026-09-26T00:13:26Z"
+}
