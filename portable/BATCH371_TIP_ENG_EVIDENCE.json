@@ -1,0 +1,21 @@
+{
+  "batch": "371",
+  "generated_at_utc": "2026-09-26T00:19:00Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "coordinator_bcId": "bc-01a0cf1e",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "eng_ci_intent_soften",
+  "defect_id": "status_guard_baseline_hard_pin_e3cd7d4",
+  "snapshot_baseline_tip_sha": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "intent_before": "startswith(\"e3cd7d4\")",
+  "intent_after": "_living_tip(baseline_tip_sha)",
+  "peer_inv_tip_pin_landed": true
+}

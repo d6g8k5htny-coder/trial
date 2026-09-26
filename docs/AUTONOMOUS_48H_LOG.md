@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 371 — tip_or_eng: CI Intent STATUS_GUARD baseline living soften @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: Intent hard-pinned STATUS_GUARD `baseline_tip_sha` to e3cd7d4 after living baseline→1ae02b9 (CI red). Soften via `_living_tip`. Peer inv tip re-pin already landed (parent-pin). Living >=N helpers. Inventable skipped. NEVER flip research.
+
 ### Batch 371 — inv tip re-pin beyond parent after eng-hunt idle @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

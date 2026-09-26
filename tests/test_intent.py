@@ -20424,7 +20424,8 @@ def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     assert not (snap.get("violations") or [])
     assert _living_tip(str(snap.get("tip_sha") or ""))
     assert str(snap.get("tip_sha") or "").startswith("1ae02b9")
-    assert str(snap.get("baseline_tip_sha") or "").startswith("e3cd7d4")
+    # Living baseline tip advances after later guard runs; >= living tip (Batch 286 class).
+    assert _living_tip(str(snap.get("baseline_tip_sha") or ""))
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH368_STATUS_GUARD_BRIEF.json").read_text(
@@ -20914,3 +20915,37 @@ def test_batch371_inv_tip_pin_after_eng_hunt() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
     assert "STATUS (Batch 371 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch371_tip_or_eng_continue() -> None:
+    """Batch 371: tip_or_eng — STATUS_GUARD baseline living soften."""
+    import json
+    import re
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert int(str(inv.get("batch") or "0")) >= 371
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    brief = json.loads((ROOT / "portable" / "BATCH371_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "371" and brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_ci_intent_soften"
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH371_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH371_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_ci_intent_soften"
+    assert evidence.get("tip_match") is True
+    soften = json.loads((ROOT / "portable" / "BATCH371_CI_INTENT_SOFTEN_BRIEF.json").read_text(encoding="utf-8"))
+    assert soften.get("action") == "eng_soften_status_guard_baseline_living_tip"
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    assert '_living_tip(str(snap.get("baseline_tip_sha")' in intent
+    assert 'startswith("e3cd7d4")' not in intent.split("def test_batch368_status_guard_tip_refresh_1ae02b9")[1].split("def test_batch368_living_script_stale_republish")[0]
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 371)
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 371
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 371)
+    assert "STATUS (Batch 371 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 371 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")

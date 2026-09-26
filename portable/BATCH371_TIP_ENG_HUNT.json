@@ -1,0 +1,21 @@
+{
+  "batch": "371",
+  "generated_at_utc": "2026-09-26T00:19:00Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "eng_ci_intent_soften",
+  "defect_id": "status_guard_baseline_hard_pin_e3cd7d4",
+  "defect_found": true,
+  "defect_shipped": true,
+  "skipped": [
+    "tip-sync (BASE==LIVE @1ae02b9)",
+    "inv tip lag (peer parent-pin @8268aff)",
+    "living script_stale (0)",
+    "VERIFY/last-resort lag",
+    "mangled JSON",
+    "inventable"
+  ],
+  "goal": "OPEN"
+}

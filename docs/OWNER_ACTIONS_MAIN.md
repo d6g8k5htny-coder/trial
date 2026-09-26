@@ -1,3 +1,11 @@
+## STATUS (Batch 371 tip-eng)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: Intent `baseline_tip_sha` hard-pinned to e3cd7d4 after living baseline advanced to 1ae02b9 — soften via `_living_tip`. Peer already shipped inv tip re-pin. `lemma_closed=false`. Goal OPEN. action=`eng_ci_intent_soften`.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch371_tip_or_eng_continue -q
+```
+
 ## STATUS (Batch 371 inv-tip-pin)
 
 Hardening tip **stable** @ `1ae02b9`. After eng-hunt idle land, trial tip lagged beyond parent. PRESERVE_DURABLE re-pin. Evidence: `portable/BATCH371_INV_TIP_PIN_*.json`. `lemma_closed=false`. Goal OPEN.
