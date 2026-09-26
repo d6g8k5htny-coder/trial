@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 383 — tip_sync_watch idle_no_commit @ebedb780 (2026-09-26)
+
+- Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; inv parent-pin; inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 383 — research_stack_audit_watch + living tgz + unfreeze 382→383 @ebedb780 (2026-09-26)
 
 - Tip stable tip_match=1; open stack 13/1/3; delta vs Batch 380 = 0; no promotion.
