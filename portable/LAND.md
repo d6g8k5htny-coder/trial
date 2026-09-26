@@ -1,3 +1,7 @@
+## STATUS (Batch 588 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 587/585/584/583/582; STATUS_GUARD pass; stamps@588; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 588 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living tar-noise DIFF_COUNT=0 idle; unfreeze 587→588; Soft Intent n=1; inv parent-pin; VERIFY 588; durable 8/8; lemma_closed=false; goal OPEN.
