@@ -1,0 +1,15 @@
+{
+  "batch": "390",
+  "action": "soften_not_idle",
+  "assignment": "tip_or_eng_soften_inv_eq_freeze_after_peer_idle",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T02:35:42Z",
+  "note": "timer tip_or_eng @2f7a5a9: peer Batch389 idle+unfreeze; Intent eq-freeze + living script_stale remain"
+}

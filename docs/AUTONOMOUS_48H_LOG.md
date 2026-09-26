@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 390 — tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze 389→390 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: peer Batch389 idle left Intent `test_batch388_research` eq-freezing inventory tip_sha to pin brief → soften; living script_stale; inv parent-pin; unfreeze 389→390. Inventable skipped. Goal OPEN.
+
+
+
 ### Batch 389 — living script_stale republish after idle @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1; Batch389 idle+unfreeze already on main.
