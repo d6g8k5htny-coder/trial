@@ -1,0 +1,20 @@
+{
+  "batch": "574",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "96e5175306f7ab791a9ad021d0d39ecc1fbfee57",
+  "tip_match": false,
+  "aligned": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T20:06:30Z",
+  "action": "keep_prior",
+  "goal_complete": false,
+  "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9",
+  "defect_found": false,
+  "defect_id": "tip_sync_watch_tip_drift_keep_prior",
+  "note": "parent-pin inv tip_sha=precommit HEAD (97e32b19); Soft Intent n=1 preserve @575 header; tip/eng575 @97e32b19; tip/eng574 @ba8792dc; tip_sync573 @46b77b3d; tip_sync572 @6ceeeed9; research574 @2346d51a"
+}
