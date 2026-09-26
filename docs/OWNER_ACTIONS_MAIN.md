@@ -1,3 +1,7 @@
+## STATUS (Batch 389 post-idle-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after idle land; republish batch241. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 389 idle-unfreeze)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit; unfreeze last-resort/VERIFY/wake 388→389. `lemma_closed=false`. Goal OPEN.

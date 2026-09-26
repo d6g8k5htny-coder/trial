@@ -1,3 +1,7 @@
+## STATUS (Batch 389 post-idle-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale republish after idle; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 389 idle-unfreeze)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle tip-stable; unfreeze 388→389; living current; durable 8/8; lemma_closed=false; goal OPEN.

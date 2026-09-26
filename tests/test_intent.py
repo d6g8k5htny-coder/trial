@@ -23437,3 +23437,15 @@ def test_batch389_idle_tip_sync_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 389)
     assert "STATUS (Batch 389 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch389_post_idle_living() -> None:
+    """Batch 389: living script_stale republish after idle @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH389_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "389"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_idle"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 389 post-idle-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

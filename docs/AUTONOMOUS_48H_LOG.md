@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 389 — living script_stale republish after idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch389 idle+unfreeze already on main.
+- Living `script_stale=1` → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 389 — idle tip-stable + unfreeze 388→389 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent_pin; `lemma_closed=false`.
