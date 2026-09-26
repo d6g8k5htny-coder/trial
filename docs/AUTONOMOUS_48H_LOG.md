@@ -121,6 +121,12 @@ Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PER
 
 # Autonomous 48h work log
 
+### Batch 590 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 589→590 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 589→590; living script_stale republish pack_sha256=`59905c6e…`; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after tip/eng589 Soft Intent/REFRESH; Soft Intent single === header →590; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
 ### Batch 588 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 587→588 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 587→588; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
