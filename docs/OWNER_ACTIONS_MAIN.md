@@ -1,5 +1,15 @@
 ## STATUS (Batch 497 research-audit)
 
+## STATUS (Batch 498 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living tgz_newer republish + unfreeze 497→498; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch498_tip_or_eng_living_tgz -q
+```
+
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH495/494/493/492/491 (research496 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH497_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
 
 ```bash
