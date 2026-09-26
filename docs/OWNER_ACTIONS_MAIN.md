@@ -1,3 +1,12 @@
+## STATUS (Batch 388 tip-eng-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch385_research` frozen STATUS_GUARD tip_sha 7caac25 pin → `_living_tip`; living script_stale republish; unfreeze 387→388. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch388_tip_or_eng_soften -q
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 387 post-tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_sync_watch idle; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
