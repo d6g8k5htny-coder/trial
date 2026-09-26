@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 388 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; tip_or_eng soften already on main with parent_pin.
+- Living `script_stale=1` vs pack (upload race) → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 388 — tip_or_eng soften Intent STATUS_GUARD tip_sha pin + living + unfreeze 387→388 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9` after Batch 387 tip-sync; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

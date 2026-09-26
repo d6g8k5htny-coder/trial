@@ -23263,3 +23263,39 @@ def test_batch388_tip_or_eng_soften() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 388)
     assert "STATUS (Batch 388 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch388_post_soften_living() -> None:
+    """Batch 388: living script_stale republish after tip_or_eng soften @2f7a5a9."""
+    import json
+    living = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living.get("batch") == "388"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_eng_soften"
+    assert living.get("parent_pin") is True
+    assert living.get("uploaded") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("script_stale_post") == 0
+    soften = json.loads(
+        (ROOT / "portable" / "BATCH388_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert soften.get("action") == "soften_intent_status_guard_tip_pin"
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 post-soften-living)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 post-soften-living)" in owner
+

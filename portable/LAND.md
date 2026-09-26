@@ -1,3 +1,7 @@
+## STATUS (Batch 388 post-soften-living)
+
+tip `2f7a5a9f` tip_match=true; living script_stale republish after tip_or_eng soften; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 388 tip-eng-soften)
 
 tip `2f7a5a9` tip_match=true; soften Intent STATUS_GUARD tip_sha 7caac25 pin → living; living script_stale; unfreeze 387→388; durable 8/8; lemma_closed=false; goal OPEN.
