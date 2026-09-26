@@ -1,0 +1,11 @@
+{
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "batch": "408",
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T04:21:36Z"
+}
