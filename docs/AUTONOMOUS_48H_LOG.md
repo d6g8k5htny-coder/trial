@@ -1,3 +1,9 @@
+### Batch 601 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 600→601 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 600→601; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after tip/eng600; Soft Intent single === header →601; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
 ## Batch 588 tip_sync Soft Intent preserve (2026-09-26T20:24Z)
 
 ### Batch 596 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 595→596 @2f7a5a9 (2026-09-26)
