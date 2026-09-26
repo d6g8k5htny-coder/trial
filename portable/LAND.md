@@ -1,3 +1,7 @@
+## STATUS (Batch 451 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 450/449/448/447/446; STATUS_GUARD pass; stamps@451; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 451 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 450→451; inv parent-pin; VERIFY 451; durable 8/8; lemma_closed=false; goal OPEN.
