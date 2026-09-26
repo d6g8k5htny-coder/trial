@@ -1,3 +1,12 @@
+## STATUS (Batch 422 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tip/script current; parent-pin inv; skip inventable. Evidence: `portable/BATCH422_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch422_tip_sync_watch_idle_parent_pin -q
+```
+
 ## STATUS (Batch 423 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch422 idle; republish batch241; unfreeze 422→423; inv parent-pin. `lemma_closed=false`. Goal OPEN.
