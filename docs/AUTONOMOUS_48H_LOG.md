@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 391 — post tip_sync inv tip pin @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch390 tip_sync living left inv tip lag.
+- Re-pin inv to HEAD^; living script_stale=0. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 390 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 
 - Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin @2564595; `lemma_closed=false`.
