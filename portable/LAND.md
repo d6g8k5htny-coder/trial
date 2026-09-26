@@ -1,3 +1,7 @@
+## STATUS (Batch 393 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 393 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 388; STATUS_GUARD pass; unfreeze 392→393; durable 8/8; lemma_closed=false; goal OPEN.

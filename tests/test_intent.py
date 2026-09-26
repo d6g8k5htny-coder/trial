@@ -23756,3 +23756,66 @@ def test_batch393_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 393)
     assert "STATUS (Batch 393 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch393_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 393: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH393_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "393"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH393_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("parent_pin") is True
+    assert evidence.get("flipped_anything") is False
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH393_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH393_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "idle_no_commit"
+    assert watch.get("flipped_anything") is False
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH393_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("lemma_closed") is False
+    assert pin.get("parent_pin") is True
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 393)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 393 tip-sync-idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 393 tip-sync-idle)" in owner
