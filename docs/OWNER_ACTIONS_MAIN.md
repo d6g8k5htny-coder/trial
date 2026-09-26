@@ -1,3 +1,7 @@
+## STATUS (Batch 382 idle-pin-unfreeze)
+
+Hardening tip **stable** @ `ebedb780`. Batch 382: re-pin after peer living + unfreeze 381→382. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 380 tip-eng-living)
 
 Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C; BASE==LIVE). tip_or_eng: living `script_stale` force republish; peer Batch381 already inv-pin+unfreeze 380→381. Evidence: `portable/BATCH380_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`living_republish`. Goal OPEN.
