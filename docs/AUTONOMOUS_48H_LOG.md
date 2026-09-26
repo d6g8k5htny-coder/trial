@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 488 — tip_or_eng living tgz_newer republish + unfreeze 487→488 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 487→488; living tgz_newer republish; `lemma_closed=false`.
+- After research487; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+
 ### Batch 487 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 485/484/482/481/480 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
