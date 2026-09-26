@@ -1,3 +1,7 @@
+## STATUS (Batch 507 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 506/505/504/502/500; STATUS_GUARD pass; stamps@507; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 507 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 506→507; Soft Intent n=1; inv parent-pin; VERIFY 507; durable 8/8; lemma_closed=false; goal OPEN.
