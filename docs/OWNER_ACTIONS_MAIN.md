@@ -1,3 +1,13 @@
+## STATUS (Batch 420 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish batch241; parent-pin inv; skip inventable. Evidence: `portable/BATCH420_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit` (post-republish). Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch420_tip_sync_watch_living_parent_pin -q
+```
+
 ## STATUS (Batch 420 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 419→420. Evidence: `portable/BATCH420_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.

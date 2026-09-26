@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T05:10:48Z",
-      "tip_sha": "595bc06595c56659a5470d848cbe8f89e2e581ab",
+      "pushed_at": "2026-09-26T05:12:46Z",
+      "tip_sha": "d4865602500651f64adcb42c4334c338745717c0",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T05:10:48Z",
+  "generated_at_utc": "2026-09-26T05:12:46Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 420: tip_or_eng idle_no_commit hunt-negative; inv tip @595bc06; durable 8/8; lemma_closed=false.",
+  "note": "Batch 420: tip_sync_watch living tgz_newer republish + parent-pin inv @d486560; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
