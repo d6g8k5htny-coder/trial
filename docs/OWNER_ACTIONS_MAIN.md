@@ -1,3 +1,7 @@
+## STATUS (Batch 442 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch441 tip_sync living; republish batch241; unfreeze 441→442; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 441 tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
