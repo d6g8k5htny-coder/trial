@@ -1,3 +1,12 @@
+## STATUS (Batch 375 research-audit-watch)
+
+Hardening tip **stable** @ `1ae02b9`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH374; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH375_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5
+python3 -m pytest tests/test_intent.py::test_batch375_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 374 tip-sync-idle)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH374_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
