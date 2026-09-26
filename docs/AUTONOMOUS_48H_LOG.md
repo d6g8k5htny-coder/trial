@@ -42,6 +42,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 460 — tip_or_eng idle_no_commit hunt-negative + unfreeze 459→460 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 459→460; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative; unfreeze VERIFY lag after tip-sync459+research459. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 459 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
