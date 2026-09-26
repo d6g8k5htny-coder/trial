@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 425 — tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer → republish batch241; inv parent-pin @27e29a4; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit` after living republish. Goal OPEN.
+
 ### Batch 425 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 424→425; living current need_upload=0; `lemma_closed=false`.
