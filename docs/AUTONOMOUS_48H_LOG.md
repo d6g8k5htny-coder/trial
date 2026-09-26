@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 369 — eng_defect_hunt idle_no_commit @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; inv lag=1 skip; VERIFY/last-resort=header 368; `lemma_closed=false`.
+- eng_defect_hunt: no shippable eng (not inventable; not research). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 368 — living upload confirm + Intent 276/279 --force + inv tip pin @1ae02b9 (2026-09-25)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

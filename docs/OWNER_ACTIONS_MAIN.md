@@ -1,3 +1,12 @@
+## STATUS (Batch 369 idle)
+
+Hardening tip **stable** @ `1ae02b9` (tip_match=true; Path C idle; BASE==LIVE). eng_defect_hunt: inv lag=1 skip; VERIFY/last-resort match header 368; living tip_stale=0 script_stale=0. Evidence: `portable/BATCH369_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run   # tip stable @ 1ae02b9
+python3 -m pytest tests/test_intent.py::test_batch369_idle_eng_hunt -q
+```
+
 ## STATUS (Batch 368 living-upload-confirm)
 
 Hardening tip **stable** @ `1ae02b9`. Peer living land was Intent-only; release tgz still stale and CI failed 276/279 on living-current `need_upload=0`. Uploaded batch241; softened Intent dry-runs with `--force`; inv tip re-pin. Evidence: `portable/BATCH368_LIVING_UPLOAD_CONFIRM_*.json`. `lemma_closed=false`. Goal OPEN.

@@ -20473,6 +20473,63 @@ def test_batch368_living_script_stale_republish() -> None:
     assert "STATUS (Batch 368 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
+def test_batch369_idle_eng_hunt() -> None:
+    """Batch 369: eng_defect_hunt idle @1ae02b9; tip_match; living current."""
+    import json
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH369_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "369"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("goal_complete") is False
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH369_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("tip_match") is True
+    assert _living_tip(str(evidence.get("hardening_tip") or ""))
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH369_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("assignment") == "eng_defect_hunt_no_claim_promotion"
+    assert brief.get("action") == "idle_no_commit"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("living_tip_stale") == 0
+    assert brief.get("living_script_stale") == 0
+
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH369_IDLE_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is False
+    assert hunt.get("action") == "idle_no_commit"
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 369)
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 369 idle)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 369 idle)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 369" in log_md and "idle_no_commit" in log_md
+
+
 def test_batch368_living_upload_confirm_intent_force() -> None:
     """Batch 368: living upload confirm + Intent 276/279 --force soften @1ae02b9."""
     import json

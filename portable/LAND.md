@@ -1,3 +1,7 @@
+## STATUS (Batch 369 idle)
+
+tip `1ae02b9` tip_match=true; eng_defect_hunt idle; living tip_stale=0 script_stale=0; inv lag=1 skip; VERIFY/last-resort match header 368; action=idle_no_commit; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 368 living-upload-confirm)
 
 tip `1ae02b9` tip_match=true; living batch241 upload confirm after Intent-only land; Intent 276/279 `--force`; inv tip pin; durable 8/8; lemma_closed=false; goal OPEN.
