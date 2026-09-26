@@ -1,3 +1,7 @@
+## STATUS (Batch 428 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 427→428. Evidence: `portable/BATCH428_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 427 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch426 tip_sync+research; republish batch241; unfreeze 426→427; inv parent-pin. `lemma_closed=false`. Goal OPEN.
