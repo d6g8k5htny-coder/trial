@@ -1,3 +1,7 @@
+## STATUS (Batch 523 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 522→523; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH523_TIP_ENG_BRIEF.json` + `BATCH523_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 522 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 521→522; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH522_TIP_ENG_BRIEF.json` + `BATCH522_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
