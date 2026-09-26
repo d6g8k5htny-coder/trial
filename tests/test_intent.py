@@ -24140,3 +24140,18 @@ def test_batch396_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 396)
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch396_ci_intent_syntax() -> None:
+    """Batch 396: CI Intent syntax fix for literal backslash-n line @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH396_CI_INTENT_SYNTAX_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "396"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "ci_intent_syntax_fix_literal_backslash_n"
+    assert brief.get("parent_pin") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    src_lines = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8").splitlines()
+    assert "\\n" not in src_lines  # no lone literal backslash-n lines
+    assert "STATUS (Batch 396 ci-intent-syntax)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

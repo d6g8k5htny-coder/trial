@@ -1,3 +1,7 @@
+## STATUS (Batch 396 ci-intent-syntax)
+
+tip `2f7a5a9` tip_match=true; removed lone literal `\\n` line in test_intent.py that broke CI Intent collection; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 396 tip-sync-idle)
 
 tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; inv JSON trailing \\n fixed; lemma_closed=false; scientific effect NONE.

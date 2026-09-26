@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 396 — CI Intent syntax fix (lone literal \\n line) @2f7a5a9 (2026-09-26)
+
+- sanity failed on `2d15fa33` / still broken on `26b9c648`: `SyntaxError` at a lone `\\n` line after tip_or_eng idle Intent append.
+- Removed the bad line; inventory parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 396 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 
 - Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; fixed inventory trailing literal `\\n` from tip_or_eng idle; `lemma_closed=false`.
