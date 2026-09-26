@@ -1,3 +1,7 @@
+## STATUS (Batch 388 research-audit-watch)
+
+Hardening tip **stable** @ `2f7a5a9`. Research audit watch no-promotion: open 13/1/3; delta 0 vs BATCH387; STATUS_GUARD living. Landed after tip_or_eng peers. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 388 post-soften-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_or_eng soften land; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.

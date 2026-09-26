@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 388 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research audit watch: open 13/1/3; delta 0 vs BATCH387; STATUS_GUARD living. Evidence only (peer branch diverged — land artifacts). Inventable skipped. Goal OPEN.
+
+
+
 ### Batch 388 — living script_stale republish after tip_or_eng soften @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; tip_or_eng soften already on main with parent_pin.
