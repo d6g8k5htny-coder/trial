@@ -1,3 +1,7 @@
+## STATUS (Batch 385 tip-sync-idle)
+
+tip `7caac254` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 385 post-eng-inv-pin)
 
 tip `7caac254` tip_match=true; inv tip re-pin after tip-eng idle; living script_stale republish; durable 8/8; lemma_closed=false; goal OPEN.
