@@ -29516,3 +29516,29 @@ def test_batch444_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 444 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 444)
+
+
+def test_batch445_tip_or_eng_living_script() -> None:
+    """Batch 445: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH445_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "445"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "living_script_stale_unfreeze"
+    assert brief.get("flipped_anything") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH445_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    assert living.get("uploaded") is True
+    hunt = json.loads((ROOT / "portable" / "BATCH445_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    unf = json.loads((ROOT / "portable" / "BATCH445_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unf.get("to_batch") == "445"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 445)
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 445
+    assert "STATUS (Batch 445 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 445)
