@@ -1,0 +1,15 @@
+{
+  "batch": "376",
+  "action": "idle_no_commit",
+  "assignment": "tip_or_eng_idle_tip_stable",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T01:04:54Z",
+  "note": "tip stable @1ae02b9; living tgz content-delta after Batch375 research/idle; unfreeze 375\u2192376"
+}
