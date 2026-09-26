@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 512 — tip_sync_watch keep-prior TIP_DRIFT gap-fill @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 515 — PERMANENT` header preserved (n=1).
+- Living tgz_newer republish; action=`keep_prior`; inv parent-pin @724052b. Inventable skipped. Goal OPEN.
+
 
 ### Batch 515 — tip_or_eng TIP_DRIFT keep-prior + unfreeze 514→515 @2f7a5a9 (2026-09-26)
 

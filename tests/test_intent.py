@@ -39024,6 +39024,90 @@ def test_batch510_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+def test_batch512_tip_sync_watch_keep_prior_parent_pin() -> None:
+    """Batch 512: tip_sync_watch keep-prior TIP_DRIFT gap-fill; Soft Intent; parent-pin."""
+    import json
+    import re
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "512"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is False
+    assert tiny.get("tip_moved") is True
+    assert tiny.get("keep_prior") is True
+    assert tiny.get("action") == "keep_prior"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("parent_pin") is True
+    assert str(tiny.get("hardening_tip") or "").startswith("2f7a5a9")
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "keep_prior"
+    assert evidence.get("keep_prior") is True
+    assert evidence.get("parent_pin") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert "2f7a5a9" in _asg
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("tip_moved") is True
+    assert watch.get("keep_prior") is True
+    assert watch.get("action") == "keep_prior"
+    assert watch.get("parent_pin") is True
+
+    living_brief = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is True
+    assert living_brief.get("lemma_closed") is False
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH512_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("parent_pin") is True
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9" in base
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 512)
+    headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
+    assert headers and int(headers[0]) >= 512
+    assert len(headers) == 1
+    assert "STATUS (Batch 512 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 512 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
 def test_batch513_tip_sync_watch_keep_prior_parent_pin() -> None:
     """Batch 513: tip_sync_watch keep-prior TIP_DRIFT; Soft Intent; parent-pin."""
     import json

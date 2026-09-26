@@ -1,0 +1,11 @@
+{
+  "batch": "512",
+  "defect_found": false,
+  "action": "keep_prior",
+  "tip_moved": true,
+  "keep_prior": true,
+  "parent_pin": true,
+  "lemma_closed": false,
+  "generated_at_utc": "2026-09-26T13:29:02Z",
+  "note": "no inventable; TIP_DRIFT keep-prior gap-fill; Soft Intent n=1"
+}
