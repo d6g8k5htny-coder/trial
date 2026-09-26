@@ -1,0 +1,17 @@
+{
+  "batch": "402",
+  "action": "living_tgz_newer_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 0,
+  "tgz_newer": 0,
+  "need_upload": 0,
+  "uploaded": true,
+  "generated_at_utc": "2026-09-26T03:38:26Z",
+  "living_sha256": "acb59c969ee03dedafc5bf1334e9339aae2696cc4d1349a2315642f40d8828fe",
+  "living_bytes": 717112
+}
