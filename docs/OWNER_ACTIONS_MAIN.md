@@ -1,3 +1,13 @@
+## STATUS (Batch 504 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch504_tip_sync_watch_idle_parent_pin -q
+```
+
 ## STATUS (Batch 502 research-audit)
 
 ## STATUS (Batch 504 tip-eng-idle)
