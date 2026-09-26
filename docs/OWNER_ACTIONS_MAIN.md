@@ -1,3 +1,7 @@
+## STATUS (Batch 394 post-idle-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living + unfreeze 393→394. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 394 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peer Batch393 idle; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH394_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

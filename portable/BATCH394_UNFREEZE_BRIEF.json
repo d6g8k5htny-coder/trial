@@ -1,0 +1,11 @@
+{
+  "batch": "394",
+  "action": "unfreeze_393_to_394",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "from": "393",
+  "to": "394",
+  "generated_at_utc": "2026-09-26T02:58:04Z"
+}

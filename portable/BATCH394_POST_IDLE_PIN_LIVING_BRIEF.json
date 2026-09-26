@@ -1,0 +1,16 @@
+{
+  "batch": "394",
+  "action": "post_idle_inv_tip_pin_living_unfreeze",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "parent_pin": true,
+  "living_tag": "batch241-path-c-bundle",
+  "script_stale": 0,
+  "tgz_newer": 1,
+  "unfreeze": "393\u2192394",
+  "generated_at_utc": "2026-09-26T02:58:04Z",
+  "note": "Batch394 tip/eng idle left inv tip lag; re-pin; living force; unfreeze 393\u2192394"
+}
