@@ -1,3 +1,7 @@
+## STATUS (Batch 381 post-research-pin-living)
+
+Hardening tip **stable** @ `ebedb780`. Batch 381: re-pin after research land + living script_stale + unfreeze 380→381. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 380 research-audit-watch)
 
 Hardening tip **stable** @ `ebedb78`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH379; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH380_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

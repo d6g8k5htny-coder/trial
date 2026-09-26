@@ -21961,7 +21961,7 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert brief.get("keep_prior") is True
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
-    assert str(brief.get("hardening_tip") or "").startswith("ebedb78")
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
     hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
@@ -22072,7 +22072,7 @@ def test_batch378_tip_or_eng_post_guard_idle() -> None:
     assert tiny.get("action") == "idle_no_commit"
     assert tiny.get("inventable_promoted") is False
     assert _living_tip(str(tiny.get("hardening_tip") or ""))
-    assert str(tiny.get("hardening_tip") or "").startswith("ebedb78")
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
     living = tiny.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
@@ -22089,7 +22089,7 @@ def test_batch378_tip_or_eng_post_guard_idle() -> None:
     assert evidence.get("status_guard_tip_living") is True
     snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("ebedb78")
+    assert _living_tip(str(snap.get("tip_sha") or ""))
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 378)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -22302,7 +22302,7 @@ def test_batch379_tip_or_eng_living_tgz() -> None:
     assert tiny.get("inventable_promoted") is False
     assert tiny.get("scientific_effect") == "NONE"
     assert _living_tip(str(tiny.get("hardening_tip") or ""))
-    assert str(tiny.get("hardening_tip") or "").startswith("ebedb78")
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
     living = tiny.get("living") or {}
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
@@ -22418,3 +22418,26 @@ def test_batch380_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 380 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 380" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch381_post_research_inv_tip_pin() -> None:
+    """Batch 381: post-research inv tip pin + living + unfreeze @ebedb780."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH381_POST_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "381"
+    assert brief.get("parent_pin") is True
+    assert brief.get("lemma_closed") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH381_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_force_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH381_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "381"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 381)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 381
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 381
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 381)

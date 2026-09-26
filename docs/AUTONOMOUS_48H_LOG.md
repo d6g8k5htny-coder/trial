@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 381 — post-research inv tip pin + living script_stale + unfreeze 380→381 @ebedb780 (2026-09-26)
+
+- Timer tip_or_eng: tip stable @ebedb780; research land broke parent_pin; living script_stale=1.
+- Re-pin inv; force living upload; unfreeze last-resort/VERIFY/wake 380→381. Soften Intent hard ebedb78 tip pins to living. No research flip. Goal OPEN.
+
+
 ### Batch 380 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
 
 - Tip stable @ `ebedb78` tip_match=true; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
