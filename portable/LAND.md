@@ -1,3 +1,7 @@
+## STATUS (Batch 397 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after Batch396 research; inv==HEAD^; living current; durable 8/8; lemma_closed=false; action=idle_no_commit; goal OPEN.
+
 ## STATUS (Batch 396 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 393; STATUS_GUARD pass; unfreeze 395→396; durable 8/8; lemma_closed=false; goal OPEN.

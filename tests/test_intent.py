@@ -24065,3 +24065,19 @@ def test_batch396_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 396)
     assert "STATUS (Batch 396 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+def test_batch397_tip_or_eng_idle() -> None:
+    """Batch 397: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH397_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "397"
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("flipped_anything") is False
+    assert idle.get("lemma_closed") is False
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = idle.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+    assert "STATUS (Batch 397 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
