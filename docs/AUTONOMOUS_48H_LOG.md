@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 416 — tip_sync_watch living tgz_newer republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; living tgz_newer after tip_sync idle land → republish batch241; inv parent-pin; `lemma_closed=false`.
+- action=`living_script_stale_republish_after_tip_sync_watch`. Goal OPEN.
+
 ### Batch 416 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 
 - Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; `lemma_closed=false`.
