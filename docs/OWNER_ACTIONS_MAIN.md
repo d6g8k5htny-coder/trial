@@ -1,3 +1,13 @@
+## STATUS (Batch 452 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch451 research; republish batch241; unfreeze 451→452; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch452_tip_or_eng_living_script -q
+```
+
 ## STATUS (Batch 452 tip-sync-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
