@@ -1,3 +1,7 @@
+## STATUS (Batch 375 idle-living-unfreeze)
+
+Hardening tip **stable** @ `1ae02b9`. Batch 375 idle + living pack content-delta republish + unfreeze 374→375. Evidence: `portable/BATCH375_IDLE.json`, `portable/BATCH375_LIVING_REPUBLISH_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 374 tip-sync-idle)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH374_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

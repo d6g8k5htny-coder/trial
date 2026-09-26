@@ -21363,3 +21363,35 @@ def test_batch374_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 374 tip-sync-idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 374" in log_md and "tip_sync_watch" in log_md and "idle_no_commit" in log_md
+
+
+def test_batch375_idle_tip_sync_watch() -> None:
+    """Batch 375: idle tip-stable + living republish + unfreeze @1ae02b9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH375_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "375"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH375_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_tgz_content_delta_republish"
+    assert living.get("living_tag") == "batch241-path-c-bundle"
+    assert living.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH375_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "375"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 375)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 375
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 375
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 375
+    assert verify.get("lemma_closed") is False
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 375)
+    assert "STATUS (Batch 375 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

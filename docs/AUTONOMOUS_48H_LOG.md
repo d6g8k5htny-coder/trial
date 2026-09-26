@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 375 — idle tip-stable + living tgz republish + unfreeze 374→375 @1ae02b9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
+- Living pack sha diverged from release after Batch 374 artifacts — uploaded `batch241-path-c-bundle`.
+- Unfreeze last-resort + VERIFY + wake 374→375. No research flip. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 374 — tip_sync_watch idle_no_commit @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
