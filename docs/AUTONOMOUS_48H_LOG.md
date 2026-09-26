@@ -1,3 +1,8 @@
+### Batch 604 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 603/601/600/599/598 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only; parent-pin REPAIR (tip/eng604 tip_sha!=HEAD^).
+- Artifacts: `BATCH604_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@604; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 604 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 603→604 @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 603→604; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
