@@ -155,6 +155,11 @@ Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PER
 - Hunt living negative (tar-noise only) after tip/eng598/research597; Soft Intent single === header →599; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 
+### Batch 599 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 598/597/595/594/593 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH599_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@599; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 598 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip raced eng599 Soft Intent@599 n=1; open stack 13/1/3; delta vs Batch 597/595/594/593/592 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.

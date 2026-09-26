@@ -1,3 +1,7 @@
+## STATUS (Batch 599 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 598/597/595/594/593 (catch-up after tip race); STATUS_GUARD pass; stamps@599; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 598 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 597/595/594/593/592; STATUS_GUARD pass; stamps@598; inv parent-pin; Soft Intent single-header (tip@599); durable 8/8; lemma_closed=false; goal OPEN.

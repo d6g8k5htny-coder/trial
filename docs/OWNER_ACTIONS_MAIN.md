@@ -1,3 +1,13 @@
+## STATUS (Batch 599 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH598/597/595/594/593 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH599_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch599_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 598 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH597/595/594/593/592 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH598_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header (tip Soft Intent@599). `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
