@@ -59,17 +59,14 @@ _LIVING_RELEASES = (
     "batch241-path-c-bundle",
 )
 
-
 def _living_tip(val) -> bool:
     """True if val is / contains / starts with a living Path C tip SHA prefix."""
     s = str(val or "")
     return any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS)
 
-
 def _living_release(val) -> bool:
     s = str(val or "")
     return s in _LIVING_RELEASES or s.endswith("-path-c-bundle")
-
 
 def _refresh_batch_tag_default(refresh_text: str) -> int:
     """Batch 286: parse REFRESH_BATCH_TAG default; stop hardcoded allowlist churn.
@@ -85,11 +82,9 @@ def _refresh_batch_tag_default(refresh_text: str) -> int:
     assert m is not None, "REFRESH_BATCH_TAG:-N default missing in refresh_path_c_bundle.sh"
     return int(m.group(1))
 
-
 def _assert_refresh_batch_tag_default_at_least(refresh_text: str, min_batch: int) -> None:
     got = _refresh_batch_tag_default(refresh_text)
     assert got >= min_batch, f"REFRESH_BATCH_TAG default {got} < {min_batch}"
-
 
 def _print_owner_header_batch(unblock_text: str) -> int | None:
     """Parse `=== Batch N —` header from print_owner_unblock.sh (Batch 317+).
@@ -106,13 +101,10 @@ def _print_owner_header_batch(unblock_text: str) -> int | None:
         return None
     return int(m.group(1))
 
-
 def _assert_print_owner_header_batch_at_least(unblock_text: str, min_batch: int) -> None:
     got = _print_owner_header_batch(unblock_text)
     assert got is not None, "print_owner_unblock missing === Batch N header"
     assert got >= min_batch, f"print_owner header Batch {got} < {min_batch}"
-
-
 
 def _living_tip_refresh(val) -> bool:
     """True if VERIFY.tip_refresh is a living bool (Batch 329 remediation class).
@@ -122,10 +114,8 @@ def _living_tip_refresh(val) -> bool:
     """
     return val in (True, False)
 
-
 def _assert_living_tip_refresh(val) -> None:
     assert _living_tip_refresh(val), f"VERIFY.tip_refresh not living bool: {val!r}"
-
 
 def test_readme_states_sandbox_boundary() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -133,7 +123,6 @@ def test_readme_states_sandbox_boundary() -> None:
     assert "**Not**" in text
     assert "d6g8k5htny-coder/main" in text
     assert "No scientific authority" in text
-
 
 def test_audit_and_owner_actions_exist() -> None:
     assert (ROOT / "docs" / "PROJECT_INTENT_AUDIT.md").is_file()
@@ -144,17 +133,14 @@ def test_audit_and_owner_actions_exist() -> None:
     assert "D3-LEMMA-RN-UNIF" in audit
     assert "lemma_closed" in audit
 
-
 def test_license_is_cc0() -> None:
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     assert "CC0 1.0 Universal" in license_text
-
 
 def test_no_research_registers_tree() -> None:
     """trial must not grow a shadow registers/ that could be mistaken for authority."""
     assert not (ROOT / "registers").exists()
     assert not (ROOT / "claims").exists()
-
 
 def test_portable_default_branch_pack() -> None:
     readme = (ROOT / "portable" / "main-default-branch" / "README.md").read_text(
@@ -192,7 +178,6 @@ def test_portable_default_branch_pack() -> None:
         assert bad not in readme
         assert bad not in agents
 
-
 def test_audit_script_reports_misalignment_or_ok() -> None:
     result = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "audit_main_alignment.py")],
@@ -216,7 +201,6 @@ def test_audit_script_reports_misalignment_or_ok() -> None:
     assert '"scientific_effect": "NONE"' in result.stdout
     if result.returncode == 1:
         assert "MISALIGNED" in result.stderr
-
 
 def test_autonomous_log_and_ci_exist() -> None:
     text = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
@@ -281,7 +265,6 @@ def test_autonomous_log_and_ci_exist() -> None:
     assert "0005-inventable-probes-restore-receipts-after-test.patch" not in apply_all
     assert "0006-instrumentation-status-restore-receipts-after-test.patch" not in apply_all
     assert "0007-inventable-tests-close-file-handles.patch" not in apply_all
-
 
 def test_portable_patches_exist() -> None:
     root = ROOT / "portable" / "patches"
@@ -383,7 +366,6 @@ def test_portable_patches_exist() -> None:
     assert "MERGEABLE" in checklist
     assert "Scientific effect: NONE" in checklist
 
-
 def test_alignment_status_script() -> None:
     import subprocess, sys, json
     result = subprocess.run(
@@ -396,7 +378,6 @@ def test_alignment_status_script() -> None:
         assert data["scientific_effect"] == "NONE"
         assert "main" in data and "trial" in data
         assert data["main"]["alignment"]["audit_exit"] in (0, 1)
-
 
 def test_land_sheet() -> None:
     text = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
@@ -412,7 +393,6 @@ def test_land_sheet() -> None:
     assert "obsolete" in compat.lower()
     assert "0001–0004 + 0008" in compat or "0001-0004 + 0008" in compat
     assert "tmp_path" in compat
-
 
 def test_watch_main_alignment_and_expected_fixture() -> None:
     import json, subprocess, sys
@@ -430,7 +410,6 @@ def test_watch_main_alignment_and_expected_fixture() -> None:
     assert data["scientific_effect"] == "NONE"
     assert data["state"] in {"ALIGNED", "MISALIGNED", "TRANSPORT_ERROR"}
 
-
 def test_conflicting_pr_notes() -> None:
     text = (ROOT / "portable" / "CONFLICTING_PR_NOTES.md").read_text(encoding="utf-8")
     assert "PR #12" in text and "PR #3" in text
@@ -439,14 +418,12 @@ def test_conflicting_pr_notes() -> None:
     assert "Scientific effect: NONE" in text
     assert "#18" in text and "340d98a" in text
 
-
 def test_verify_after_merge_script() -> None:
     path = ROOT / "portable" / "pr2-landing" / "VERIFY_AFTER_MERGE.sh"
     assert path.is_file()
     text = path.read_text(encoding="utf-8")
     assert "watch_main_alignment.py" in text
     assert "ALIGNED" in text
-
 
 def test_pack_portable_script() -> None:
     import subprocess, tempfile, os
@@ -456,7 +433,6 @@ def test_pack_portable_script() -> None:
         out = os.path.join(td, "pack.tgz")
         subprocess.run([str(script), out], check=True, timeout=60)
         assert os.path.getsize(out) > 1000
-
 
 def test_audit_local_tree_option_b_would_align() -> None:
     """Option-B portable README (+ AGENTS) must flip the local auditor to ALIGNED."""
@@ -493,7 +469,6 @@ def test_audit_local_tree_option_b_would_align() -> None:
         assert data["complexity_markers_present"] == []
         assert data["root_has_AGENTS_md"] is True
         assert "q0 Research Program" in data["q0_or_notice_markers_present"]
-
 
 def test_owner_one_liners_and_probe_main_write() -> None:
     one = (ROOT / "portable" / "OWNER_ONE_LINERS.md").read_text(encoding="utf-8")
@@ -792,7 +767,6 @@ def test_owner_one_liners_and_probe_main_write() -> None:
     assert land.returncode == 0, land.stderr + land.stdout
     assert "already ALIGNED" in (land.stdout + land.stderr)
 
-
 def test_land_path_c_workflow_dry_run_default() -> None:
     """Batch 69: Path C Actions land workflow exists; dry_run defaults true; never flips status."""
     path = ROOT / ".github" / "workflows" / "land-path-c-on-main.yml"
@@ -835,7 +809,6 @@ def test_land_path_c_workflow_dry_run_default() -> None:
     assert "land-path-c-on-main" in dtxt
     assert "--apply" in dtxt
 
-
 def test_watch_main_alignment_workflow_exists() -> None:
     """Batch 98: hourly trial workflow watches remote main; upserts drift issue; never writes main."""
     path = ROOT / ".github" / "workflows" / "watch-main-alignment.yml"
@@ -869,7 +842,6 @@ def test_watch_main_alignment_workflow_exists() -> None:
     assert "Clone hardening" not in text
     assert "clone.*d6g8k5htny-coder/main" not in text.replace("\n", " ")
 
-
 def test_validate_land_workflows_no_token() -> None:
     """Batch 73: land workflows validate without MAIN_PUSH_TOKEN (CI dry-run contract)."""
     script = ROOT / "scripts" / "validate_land_workflows.py"
@@ -896,7 +868,6 @@ def test_validate_land_workflows_no_token() -> None:
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "land-workflows-dry-run" in ci
     assert "validate_land_workflows.py" in ci
-
 
 def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     """Path C certainty: apply check OK; landed tip → idle (not APPLY_READY land advert)."""
@@ -950,7 +921,6 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert "already-on-tip idle" in combined or "dry-run OK" in combined
     assert "apply_ready on hardening BASE_TIP" not in combined
 
-
 def test_path_c_rebase_helper_dry_run() -> None:
     """Batch 68: owner-safe rebase helper documents strategy without inventing status."""
     helper = ROOT / "scripts" / "path_c_rebase_helper.sh"
@@ -987,7 +957,6 @@ def test_path_c_rebase_helper_dry_run() -> None:
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "path_c_rebase_helper.sh" in pack
     assert "PATH_C_REBASE_RESOLUTION_NOTES_" in pack
-
 
 def test_check_autonomous_window_permanent_mode(tmp_path, monkeypatch) -> None:
     """Permanent mode must never hard-stop on elapsed wall-clock."""
@@ -1028,7 +997,6 @@ def test_check_autonomous_window_permanent_mode(tmp_path, monkeypatch) -> None:
     assert data["finale"] is False
     assert data["stop_condition"] == "owner_intervene_only"
 
-
 def test_watch_embeds_autonomous_window_and_route() -> None:
     """Batch 62: watch_main_alignment embeds permanent window + Path C route hint."""
     import json
@@ -1066,7 +1034,6 @@ def test_watch_embeds_autonomous_window_and_route() -> None:
     assert skipped_data["autonomous_window"] is None
     assert skipped_data["route"]["goal_complete"] is False
 
-
 def test_alignment_status_post_41_critical_path() -> None:
     """Dashboard must not claim PR #2 MERGEABLE; embed window + Path C tip currency."""
     import json
@@ -1103,7 +1070,6 @@ def test_alignment_status_post_41_critical_path() -> None:
     crit = data["main"]["critical_path"]
     assert "pr41_url" in crit
     assert crit.get("prefer_when_aligned_writable") == "Path_C_on_hardening"
-
 
 def test_audit_research_stack_open_read_only() -> None:
     """Batch 70: mechanical OPEN inventory; never flips lemma_closed / prizes."""
@@ -1375,7 +1341,6 @@ def test_audit_research_stack_open_read_only() -> None:
     pack76 = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "portable/path-c-applied-bundle" in pack76
 
-
 def test_aligned_drift_watch_script_and_ci_record_only() -> None:
     """Batch 72: drift watch exits 0/1/2, snapshots tip+markers, CI is record-only."""
     import json
@@ -1546,7 +1511,6 @@ def test_aligned_drift_watch_script_and_ci_record_only() -> None:
     assert "restore" not in nr_data or nr_data["restore"].get("attempted") is False
     assert nr_data["instant_restore_ready"].get("auto_restore") is False
 
-
 def test_owner_land_scripts_exist_and_fail_closed() -> None:
     """Owner Path A/B land scripts must be executable and mention fail-closed gates."""
     path_a = ROOT / "scripts" / "owner_land_path_a.sh"
@@ -1636,7 +1600,6 @@ def test_owner_land_scripts_exist_and_fail_closed() -> None:
     assert "AGENTS.md" in ob
     assert "create mode 100644 AGENTS.md" in ob or "AGENTS.md" in ob
     assert (ROOT / "portable" / "main-default-branch" / "AGENTS.md").is_file()
-
 
 def test_when_writable_land_once_dry_run() -> None:
     """Batch 82/92: background lander --once --dry-run; install_has_main status."""
@@ -1871,7 +1834,6 @@ def test_when_writable_land_once_dry_run() -> None:
         assert status["stop_reason"] == "stop_file"
         assert status["goal_complete"] is False
 
-
 def test_when_writable_land_token_file_discovery() -> None:
     """Batch 84: MAIN_PUSH_TOKEN from env → store file → .secrets (tempfile only)."""
     import importlib.util
@@ -1988,7 +1950,6 @@ def test_when_writable_land_token_file_discovery() -> None:
         assert status["token_present"] is True
         assert status["token_source"] == "env:MAIN_PUSH_TOKEN"
         assert fake not in status_path.read_text(encoding="utf-8")
-
 
 def test_guard_no_status_promotion_detects_flips() -> None:
     """Batch 86: fixture snapshots — pass when unchanged/new OPEN; fail on promote."""
@@ -2223,7 +2184,6 @@ def test_guard_no_status_promotion_detects_flips() -> None:
     assert "Batch 86" in log
     assert "guard_no_status_promotion" in log
 
-
 def test_objective_evidence_83() -> None:
     """Batch 83: requirement-by-requirement objective evidence; no 0017; goal_complete false."""
     import json
@@ -2264,7 +2224,6 @@ def test_objective_evidence_83() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 83" in log or "OBJECTIVE_EVIDENCE_83" in log
-
 
 def test_patches_manifest_and_pack_includes_it() -> None:
     """Batch 89: MANIFEST.json lists apply_all patches; pack_portable requires it."""
@@ -2322,7 +2281,6 @@ def test_patches_manifest_and_pack_includes_it() -> None:
         with tarfile.open(out, "r:gz") as tf:
             names = tf.getnames()
         assert "portable/patches/MANIFEST.json" in names
-
 
 def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     """Batch 137: owner one-shot --from-bundle + RELAUNCH_WITH_MAIN_SCOPE.md."""
@@ -2407,7 +2365,6 @@ def test_batch137_owner_path_c_oneshot_and_relaunch_doc() -> None:
     )
     assert dry.returncode == 0, dry.stderr + dry.stdout
 
-
 def test_batch138_path_c_bundle_ci_and_dry_run_exit_codes() -> None:
     """Batch 138: CI dry-applies path-c-applied-bundle; dry-run exits 0/1/2."""
     import json
@@ -2438,7 +2395,6 @@ def test_batch138_path_c_bundle_ci_and_dry_run_exit_codes() -> None:
     assert data["flipped_anything"] is False
     assert data["tip_refresh"] is False
     assert data["path_c_landed"] is False
-
 
 def test_batch139_path_c_repository_dispatch_and_ci_green() -> None:
     """Batch 139: Path C repository_dispatch + dispatch helper; CI dry-apply verified."""
@@ -2479,7 +2435,6 @@ def test_batch139_path_c_repository_dispatch_and_ci_green() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 139" in log
     assert "repository_dispatch" in log
-
 
 def test_batch140_when_writable_repository_dispatch_on_token_file() -> None:
     """Batch 140: token-file drop → repository_dispatch land-path-c; no 0017."""
@@ -2604,7 +2559,6 @@ def test_batch140_when_writable_repository_dispatch_on_token_file() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 140" in log
 
-
 def test_batch141_w3f_false_positive_neutralized() -> None:
     """Batch 141: W3f dry-run dispatch is false_positive; not path_b_ready."""
     import json
@@ -2641,7 +2595,6 @@ def test_batch141_w3f_false_positive_neutralized() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 141" in log
     assert "false_positive" in log
-
 
 def test_batch147_tip_drift_gate_and_auth_renew() -> None:
     """Batch 147: CI tip-drift gate; auth renew doc; no obsolete drops; lemma_closed=false."""
@@ -2684,7 +2637,6 @@ def test_batch147_tip_drift_gate_and_auth_renew() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 147" in log
     assert "tip-drift" in log
-
 
 def test_batch149_research_audit_and_ci_intent_fix() -> None:
     """Batch 149: research audit OPEN_HOLD; intent release tag current; lemma_closed=false."""
@@ -2739,7 +2691,6 @@ def test_batch149_research_audit_and_ci_intent_fix() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 149" in log
     assert "research audit" in log.lower() or "Research audit" in log
-
 
 def test_batch151_owner_open_path_c_pr_script() -> None:
     """Batch 151: owner_open_path_c_pr.sh present; --dry-run/--help; wired; lemma_closed=false."""
@@ -2819,7 +2770,6 @@ def test_batch151_owner_open_path_c_pr_script() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 151" in log
     assert "owner_open_path_c_pr" in log
-
 
 def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
     """Batch 153: robust BASE_TIP hex parse; --from-bundle --dry-run; daemon prefers open-PR."""
@@ -2954,7 +2904,6 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
     assert "Batch 153" in log
     assert "1FC8-3D96" in log
 
-
 def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
     """Batch 155: assert_path_c_ready.sh; CI BASE_SHA \\b fix; lemma_closed=false."""
     import json
@@ -3013,7 +2962,6 @@ def test_batch155_assert_path_c_ready_and_basetip_ci_fix() -> None:
     assert "Batch 155" in log
     assert "assert_path_c_ready" in log
     assert "E136-5AE7" in log or "1FC8-3D96" in log
-
 
 def test_batch157_path_c_blocked_reason_codes() -> None:
     """Batch 157: when_writable_land logs PATH_C_BLOCKED=NO_TOKEN|TIP_DRIFT|APPLY_FAIL."""
@@ -3118,7 +3066,6 @@ def test_batch157_path_c_blocked_reason_codes() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 157" in log
     assert "PATH_C_BLOCKED" in log
-
 
 def test_batch160_owner_set_main_push_token_script() -> None:
     """Batch 160: owner_set_main_push_token.sh present; --help/--dry-run; wired; lemma_closed=false."""
@@ -3235,7 +3182,6 @@ def test_batch160_owner_set_main_push_token_script() -> None:
     assert "owner_set_main_push_token" in log
     assert "E818-2EE5" in log
 
-
 def test_batch164_auth_ci_issue_refresh() -> None:
     """Batch 164: tip stable; CI green post-batch162; auth pending; issue #29; main comment_denied; lemma_closed=false."""
     import json
@@ -3285,7 +3231,6 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert "comment_denied" in log
     assert "#29" in log or "issues/29" in log
     assert "lemma_closed" in log.lower()
-
 
 def test_batch169_git_bundle_path_c() -> None:
     """Batch 169: fetchable path-c-on-hardening.bundle; owner prefers .bundle; tip stable; auth pending; lemma_closed=false."""
@@ -3419,7 +3364,6 @@ def test_batch169_git_bundle_path_c() -> None:
     assert "issues/27" in gh
     assert "BATCH162_BRIEF" in gh
 
-
 def test_batch168_oneshot_pack_ci() -> None:
     """Batch 168: oneshot dry-run + pack release tag; CI history fix; tip stable; auth pending; lemma_closed=false."""
     import json
@@ -3525,7 +3469,6 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert "preferred_auth_interval_s=1800" in log
     assert "#31" in log or "issues/31" in log
     assert "lemma_closed" in log.lower()
-
 
 def test_batch165_owner_path_c_oneshot() -> None:
     """Batch 165: owner_path_c_oneshot.sh; research audit refresh; tip stable; auth renew; lemma_closed=false."""
@@ -3641,7 +3584,6 @@ def test_batch165_owner_path_c_oneshot() -> None:
     assert "8ea3b5f" in log
     assert "#30" in log or "issues/30" in log
     assert "lemma_closed" in log.lower()
-
 
 def test_batch162_path_c_issue_and_secret_stdin() -> None:
     """Batch 162: Path C unblock issue #26; secret set via stdin (not --body -); lemma_closed=false."""
@@ -3785,7 +3727,6 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert "bundle" in log.lower()
     assert "lemma_closed" in log.lower()
 
-
 def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
     """Batch 172: tip stable; issue #33 canonical; hunt clean no 0017; auth pending; lemma_closed=false."""
     import json
@@ -3826,7 +3767,6 @@ def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
     assert "Batch 172" in log
     assert "7BCB-0057" in log
     assert "lemma_closed" in log.lower()
-
 
 def test_batch173_refresh_path_c_bundle() -> None:
     """Batch 173: tip stable; auth renew 9671; refresh_path_c_bundle.sh; lemma_closed=false."""
@@ -3905,7 +3845,6 @@ def test_batch173_refresh_path_c_bundle() -> None:
     assert "9671-4918" in log
     assert "refresh_path_c_bundle" in log
     assert "lemma_closed" in log.lower()
-
 
 def test_batch176_refresh_ci_tip_drift() -> None:
     """Batch 176: tip stable; auth renew 5E05; refresh fetch harden + CI tip-drift dry-sim; lemma_closed=false."""
@@ -3995,7 +3934,6 @@ def test_batch176_refresh_ci_tip_drift() -> None:
     assert "Batch 176" in ones
     assert "refresh_path_c_bundle.sh" in ones
 
-
 def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     """Batch 178: tip stable; auth pending 5E05; owner_open_path_c_pr links release .bundle; CI tip-drift string fix; lemma_closed=false."""
     import json
@@ -4082,7 +4020,6 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert "Batch 178" in ones
     assert "owner_open_path_c_pr.sh" in ones
     assert "path-c-on-hardening.bundle" in ones
-
 
 def test_batch179_path_c_bundle_release() -> None:
     """Batch 179: tip stable; auth pending AD78; CI green; release batch179-path-c-bundle (oneshot+bundle+refresh); lemma_closed=false."""
@@ -4181,7 +4118,6 @@ def test_batch179_path_c_bundle_release() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "batch179-path-c-bundle" in unblock
-
 
 def test_batch180_path_c_status_json_schema() -> None:
     """Batch 180: write_path_c_status.py dry-run emits required PATH_C_STATUS schema keys; tip refresh 8bd1f03; auth renew; lemma_closed=false."""
@@ -4354,7 +4290,6 @@ def test_batch180_path_c_status_json_schema() -> None:
 
     wwl = (ROOT / "scripts" / "when_writable_land.py").read_text(encoding="utf-8")
     assert "_maybe_write_path_c_status" in wwl
-
 
 def test_batch183_ci_tip_drift_auth_renew() -> None:
     """Batch 183: tip stable 8bd1f03; auth renew DF9C; CI tip-drift supersession; hunt clean; lemma_closed=false."""
@@ -4536,7 +4471,6 @@ def test_batch185_auth_renew_research_audit_bundle() -> None:
     assert "Batch 185" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 
-
 def test_batch188_align_watch_auth_renew_idle() -> None:
     """Batch 188: tip stable 8bd1f03; auth renew C949; write DENIED; idle watch; lemma_closed=false."""
     import json
@@ -4623,7 +4557,6 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert "Batch 188" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
 
-
 def test_batch190_deeper_hunt_auth_renew() -> None:
     """Batch 190: tip stable 8bd1f03; auth renew 1C7F; deeper hunt clean; lemma_closed=false."""
     import json
@@ -4704,7 +4637,6 @@ def test_batch190_deeper_hunt_auth_renew() -> None:
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 190" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
-
 
 def test_batch192_readme_path_c_face() -> None:
     """Batch 192: tip stable 8bd1f03; auth pending 1C7F; README Path C face; lemma_closed=false."""
@@ -4794,7 +4726,6 @@ def test_batch192_readme_path_c_face() -> None:
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 192" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
-
 
 def test_batch194_readme_link_only_device_code() -> None:
     """Batch 194: README Path C must not embed perishable XXXX-XXXX; GH_DEVICE_LOGIN is SoT."""
@@ -4889,7 +4820,6 @@ def test_batch194_readme_link_only_device_code() -> None:
     assert "Batch 194" in findings
     assert "link-only" in findings.lower()
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
-
 
 def test_batch195_path_c_status_watch_wire() -> None:
     """Batch 195: tip stable; auth renew 50DB; PATH_C_STATUS refresh on watch; lemma_closed=false."""
@@ -4991,7 +4921,6 @@ def test_batch195_path_c_status_watch_wire() -> None:
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 195" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
-
 
 def test_batch199_path_c_bundle_pack_release() -> None:
     """Batch 199: tip stable; auth renew 6A29; pack+release batch199; lemma_closed=false."""
@@ -5110,7 +5039,6 @@ def test_batch199_path_c_bundle_pack_release() -> None:
     findings = (ROOT / "docs" / "MECHANICAL_FINDINGS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 199" in findings
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
-
 
 def test_batch202_ci_sanity_tip_refresh() -> None:
     """Batch 202: CI release-tag supersession; tip refresh b89448d; auth renew 5160; lemma_closed=false."""
@@ -5258,8 +5186,6 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert "lemma_closed=false" in findings or "lemma_closed=false" in findings.lower()
     assert "b89448d" in findings or "1d0dceb" in findings or "Batch 202" in findings
 
-
-
 def test_batch207_path_c_0017_bundle_refresh() -> None:
     """Batch 207: ship 0017 pinned_sources RW fix; bundle refresh; auth renew; lemma_closed=false."""
     import json
@@ -5312,7 +5238,6 @@ def test_batch207_path_c_0017_bundle_refresh() -> None:
     assert "Batch 207" in log
     assert "0017" in log
 
-
 def test_batch210_auth_renew_hunt_clean_has_0017() -> None:
     """Batch 210: tip stable b89448d; auth renew B064; has_0017; hunt clean no 0018; lemma_closed=false."""
     import json
@@ -5360,7 +5285,6 @@ def test_batch210_auth_renew_hunt_clean_has_0017() -> None:
     assert "Batch 210" in log
     assert "B064-C458" in log
 
-
 def test_batch212_auth_renew_tip_stable() -> None:
     """Batch 212: tip stable b89448d; auth renew 5AEC; lemma_closed=false."""
     import json
@@ -5390,7 +5314,6 @@ def test_batch212_auth_renew_tip_stable() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 212" in log
     assert data["device_code"] in log
-
 
 def test_batch219_repos_connect_all() -> None:
     """Batch 219: connect ALL visible owner repos; tip living 1d0dceb; auth renew; lemma_closed=false."""
@@ -5463,7 +5386,6 @@ def test_batch219_repos_connect_all() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 219" in log
     assert "0867-BD4B" in log or data["device_code"] in log
-
 
 def test_batch223_multi_agent_access() -> None:
     """Batch 223: multi-agent access docs+script; tip cbaa056; auth pending; lemma_closed=false."""
@@ -5563,7 +5485,6 @@ def test_batch223_multi_agent_access() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 223" in log
     assert "MULTI_AGENT" in log.upper() or "multi-agent" in log.lower()
-
 
 def test_batch224_sandbox_eight_repos() -> None:
     """Batch 224: add sandbox → 8 repos; grant --check; auth pending; lemma_closed=false."""
@@ -5666,7 +5587,6 @@ def test_batch224_sandbox_eight_repos() -> None:
     assert "Batch 224" in log
     assert "sandbox" in log
 
-
 def test_batch227_path_b_transport_retry() -> None:
     """Batch 227: Path B --after-merge retries audit/watch transport (CI sanity flake)."""
     import json
@@ -5701,7 +5621,6 @@ def test_batch227_path_b_transport_retry() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 227" in log
     assert "transport" in log.lower()
-
 
 def test_batch230_path_c_landed() -> None:
     """Batch 230: device auth SUCCESS; Path C landed on hardening PR #64; lemma_closed=false."""
@@ -5753,7 +5672,6 @@ def test_batch230_path_c_landed() -> None:
     assert "PR #64" in log or "pull/64" in log
     assert "lemma_closed" in log.lower()
 
-
 def test_batch231_post_land_hygiene() -> None:
     """Batch 231: Path C DONE hygiene; apply_all idempotent; lander idle; no flip."""
     import json
@@ -5800,8 +5718,6 @@ def test_batch231_post_land_hygiene() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 231" in log
     assert "tip-sync+drift" in log or "idle_path_c_done" in log
-
-
 
 def test_batch232_path_c_status_write_state_clobber() -> None:
     """Batch 232: skip-write-probe recovers WRITABLE after Path C land; no sticky DENIED."""
@@ -5873,7 +5789,6 @@ def test_batch232_path_c_status_write_state_clobber() -> None:
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 232" in log
-
 
 def test_batch233_guard_tip_sha_clobber() -> None:
     """Batch 233: guard_no_status_promotion preserves tip_sha without --tip-sha."""
@@ -5962,7 +5877,6 @@ def test_batch233_guard_tip_sha_clobber() -> None:
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 233" in log
 
-
 def test_batch236_sibling_agent_access() -> None:
     """Batch 236: sibling R/W inventory; sandbox README+AGENTS; pack release; no flip."""
     import json
@@ -6040,7 +5954,6 @@ def test_batch236_sibling_agent_access() -> None:
     assert "Batch 236" in log
     assert "sibling" in log.lower() or "AGENTS" in log
 
-
 def test_batch238_merge70_wait69_followon_gate() -> None:
     """Batch 238: merge #70; tip 62f955a; 0018 on tip; when_writable follow-on gate; no flip."""
     import json
@@ -6102,7 +6015,6 @@ def test_batch238_merge70_wait69_followon_gate() -> None:
     assert "Batch 238" in log
     assert "pull/70" in log or "#70" in log
     assert "waiting_ci" in log.lower() or "PENDING" in log
-
 
 def test_batch239_0019_future_delta_gate() -> None:
     """Batch 239: tip hunt → 0019; when_writable future-delta gate; #69 wait; no flip."""
@@ -6175,7 +6087,6 @@ def test_batch239_0019_future_delta_gate() -> None:
     assert "Batch 239" in log
     assert "0019" in log
     assert "sibling" in log.lower() or "AGENTS" in log
-
 
 def test_batch240_land_path_c_apply_includes_0019() -> None:
     """Batch 240: land-path-c + owner_land always apply through 0019; deep 0020 hunt NEGATIVE."""
@@ -6257,7 +6168,6 @@ def test_batch240_land_path_c_apply_includes_0019() -> None:
     assert "auto_path_b_restore" in ww
     assert "MAIN_PUSH_TOKEN" in ww
 
-
 def test_batch241_path_b_aligned_skip_and_from_bundle_fallback() -> None:
     """Batch 241: Path B auditor ALIGNED short-circuit; from-bundle apply_all fallback; pack release."""
     import json
@@ -6325,7 +6235,6 @@ def test_batch241_path_b_aligned_skip_and_from_bundle_fallback() -> None:
     assert "Batch 241" in log
     assert "ALIGNED skip" in log or "aligned skip" in log.lower() or "audit_local_tree" in log
     assert "from-bundle" in log.lower() or "already_applied" in log.lower()
-
 
 def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     """Batch 242: Path B ALIGNED no-op (no push/PR); OWNER face WRITABLE; pack help batch241."""
@@ -6411,7 +6320,6 @@ def test_batch242_path_b_aligned_noop_and_owner_face() -> None:
     assert "Batch 242" in log
     assert "no-op" in log.lower() or "noop" in log.lower() or "no push/PR" in log
 
-
 def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
     """Batch 243: Path A ALIGNED no-op (no revert/merge); owner_land_path_c help → batch241."""
     import json
@@ -6488,7 +6396,6 @@ def test_batch243_path_a_aligned_noop_and_land_c_release() -> None:
     assert "Batch 243" in log
     assert "Path A" in log
     assert "no-op" in log.lower() or "noop" in log.lower() or "ALIGNED" in log
-
 
 def test_batch244_pack_living_tip_siblings_idle() -> None:
     """Batch 244: APPLY.md living tip (not batch207); sibling AGENTS; idle after 0019."""
@@ -6645,7 +6552,6 @@ def test_batch244_pack_living_tip_siblings_idle() -> None:
     assert "Batch 244" in log
     assert "batch207" in log.lower() or "APPLY" in log
 
-
 def test_batch245_pack_living_tag_automation() -> None:
     """Batch 245: pack_portable living-tag automation; tip stable; no flip."""
     import json
@@ -6779,7 +6685,6 @@ def test_batch245_pack_living_tag_automation() -> None:
     owner_actions = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 245" in owner_actions
 
-
 def test_batch246_assert_path_c_idle_catch_0020() -> None:
     """Batch 246: assert_path_c_ready IDLE_PATH_C_DONE + catch 0020; tip stable; no flip."""
     import json
@@ -6899,7 +6804,6 @@ def test_batch246_assert_path_c_idle_catch_0020() -> None:
     assert "Batch 246" in owner_actions
     assert "IDLE_PATH_C_DONE" in owner_actions
 
-
 def test_batch247_ci_yml_workflow_file_flake() -> None:
     """Batch 247: ci.yml must YAML-parse; no col-0 python; tip stable; no flip."""
     import json
@@ -7003,7 +6907,6 @@ def test_batch247_ci_yml_workflow_file_flake() -> None:
     assert "Batch 247" in owner_actions
     assert "workflow" in owner_actions.lower()
 
-
 def test_batch248_workspace_landing_ci_path_split() -> None:
     """Batch 248: workspace-landing/ci.yml path collision fixed on main; tip stable; no flip."""
     import json
@@ -7074,7 +6977,6 @@ def test_batch248_workspace_landing_ci_path_split() -> None:
     assert status.get("lemma_closed") is False
     assert status.get("tip_match") is True
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     """Batch 249: tip-observe eng #79; tip moved; Path C IDLE; no research flip."""
@@ -7168,7 +7070,6 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
     )
     assert snap.get("state") == "ALIGNED"
     assert snap.get("lemma_closed") is False
-
 
 def test_batch250_verify_keep_prior_honesty_and_path_c_noop() -> None:
     """Batch 250: VERIFY keep-prior names bundle head; Path C already-on-tip no-op."""
@@ -7270,7 +7171,6 @@ def test_batch250_verify_keep_prior_honesty_and_path_c_noop() -> None:
 
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "Batch 250" in owner
-
 
 def test_batch251_pack_portable_default_out_writable_fallback() -> None:
     """Batch 251: bare pack_portable OUT falls back when $ROOT/.. not writable."""
@@ -7426,7 +7326,6 @@ def test_batch251_pack_portable_default_out_writable_fallback() -> None:
         or "STATUS (Batch" in land
     )
 
-
 def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
     """Batch 252: GraphQL exact-title drift issue hygiene; close-all; avoid Search."""
     import json
@@ -7556,7 +7455,6 @@ def test_batch252_watch_alignment_issue_hygiene_graphql() -> None:
         or "STATUS (Batch" in land
     )
 
-
 def test_batch253_when_writable_token_install_and_land_dry_run_idle() -> None:
     """Batch 253: user-token install check fallback + land-path-c dry-run idle."""
     import importlib.util
@@ -7680,7 +7578,6 @@ def test_batch253_when_writable_token_install_and_land_dry_run_idle() -> None:
         p.write_text("x", encoding="utf-8")
         assert p.read_text(encoding="utf-8") == "x"
 
-
 def test_batch254_probe_ref_collision_422_false_transport() -> None:
     """Batch 254: unique probe refs + 422 already-exists retry (no false TRANSPORT)."""
     import importlib.util
@@ -7781,7 +7678,6 @@ def test_batch254_probe_ref_collision_422_false_transport() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch256_aligned_drift_restore_race_and_audit_rate_limit() -> None:
     """Batch 256: restore/snapshot race fix + audit rate-limit retry; no flip."""
@@ -7938,7 +7834,6 @@ def test_batch256_aligned_drift_restore_race_and_audit_rate_limit() -> None:
     gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     assert ".aligned_drift_restore.lock" in gitignore
 
-
 def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> None:
     """Batch 257: tip-fetch rate-limit fallback + print_owner_unblock WRITABLE; no flip."""
     import json
@@ -8070,7 +7965,6 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch255_republish_living_path_c_release_assets() -> None:
     """Batch 255: republish helper when pack newer than living release; no flip."""
     import json
@@ -8168,7 +8062,6 @@ def test_batch255_republish_living_path_c_release_assets() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch258_wait_until_aligned_transport_timeout_flake() -> None:
     """Batch 258: wait_until_aligned transport max-wait exits 2 not MISALIGNED; no flip."""
@@ -8317,7 +8210,6 @@ def test_batch258_wait_until_aligned_transport_timeout_flake() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch259_grant_check_dual_vector_sandbox_durable() -> None:
     """Batch 259: grant --check dual-vector + set-token auth/--also-sandbox; no flip."""
     import json
@@ -8417,7 +8309,6 @@ def test_batch259_grant_check_dual_vector_sandbox_durable() -> None:
     assert _living_tip(status.get("tip"))
     repos = status.get("main_push_token_set_repos") or []
     assert "d6g8k5htny-coder/sandbox" in repos
-
 
 def test_batch260_republish_living_pack_stale_post_255() -> None:
     """Batch 260: republish living release after pack grew past Batch 255 upload; no flip."""
@@ -8519,7 +8410,6 @@ def test_batch260_republish_living_pack_stale_post_255() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     """Batch 261: path_c_dry_run IDLE when landed+tip match; no APPLY_READY land advert."""
     import json
@@ -8618,7 +8508,6 @@ def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch262_probe_file_token_discovery() -> None:
     """Batch 262: probe_main_write(+vectors) discover durable file tokens; no flip."""
@@ -8760,7 +8649,6 @@ def test_batch262_probe_file_token_discovery() -> None:
         # After scrub: no env/file durable source. Do not accept env:GITHUB_TOKEN —
         # that was the CI flake (Actions ambient token ≠ durable file discovery).
         assert data.get("token_source") in (None, "")
-
 
 def test_batch263_research_guard_nopacket_shape_stripped() -> None:
     """Batch 263: research-guard NO_PACKET vs shape-stripped HAS_PACKET → exit 2."""
@@ -8909,7 +8797,6 @@ def test_batch263_research_guard_nopacket_shape_stripped() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch264_path_b_dryrun_already_aligned_idle() -> None:
     """Batch 264: Path B dry-run ALREADY_ALIGNED must not lie 're-run to land'."""
     import json
@@ -9011,7 +8898,6 @@ def test_batch264_path_b_dryrun_already_aligned_idle() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch265_live_ignore_ci_isolate_github_token() -> None:
     """Batch 265: Batch 262 live-ignore Intent scrubs Actions GITHUB_TOKEN; no flip."""
@@ -9145,7 +9031,6 @@ def test_batch265_live_ignore_ci_isolate_github_token() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch266_path_c_dry_run_write_required_when_idle() -> None:
     """Batch 266: path_c_dry_run IDLE must set write_required_to_land=false; no flip."""
@@ -9433,7 +9318,6 @@ def test_batch267_when_writable_dual_daemon_status_race() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch268_pack_living_tag_validate_before_write() -> None:
     """Batch 268: pack_portable does not dirty LIVING_PATH_C_RELEASE_TAG on fail-closed mismatch."""
     import json
@@ -9574,7 +9458,6 @@ def test_batch268_pack_living_tag_validate_before_write() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch269_verify_batch_release_align() -> None:
     """Batch 269: refresh keep-prior aligns VERIFY.batch to release; tip stable; no flip."""
     import json
@@ -9713,7 +9596,6 @@ def test_batch269_verify_batch_release_align() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch270_when_writable_once_pid_liveness() -> None:
     """Batch 270: --once redirects on lockfile pid= live even when flock probe misses."""
@@ -9892,7 +9774,6 @@ def test_batch270_when_writable_once_pid_liveness() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch271_probe_w3_dryrun_path_b_false_positive() -> None:
     """Batch 271: W3a–W3e dry_run dispatch excluded from path_b_ready (W3f leftover)."""
     import importlib.util
@@ -10028,7 +9909,6 @@ def test_batch271_probe_w3_dryrun_path_b_false_positive() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
 
-
 def test_batch272_ci_land_workflows_path_c_idle_contract() -> None:
     """Batch 272: land-workflows-dry-run asserts Path C idle on its own outfile."""
     import json
@@ -10134,7 +10014,6 @@ def test_batch272_ci_land_workflows_path_c_idle_contract() -> None:
     )
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
-
 
 def test_batch273_apply_verify_honesty_keep_prior() -> None:
     """Batch 273: APPLY living-tip == BASE_TIP; VERIFY pytest preserved on keep-prior."""
@@ -10324,7 +10203,6 @@ def test_batch273_apply_verify_honesty_keep_prior() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch275_manifest_verified_batch_release_align() -> None:
     """Batch 275: MANIFEST.verified_batch release-aligned; not stamped from BATCH_TAG."""
     import json
@@ -10446,7 +10324,6 @@ def test_batch275_manifest_verified_batch_release_align() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch276_republish_living_tag_post_pack() -> None:
     """Batch 276: republish reads upload TAG after pack; stale pre-pack pin ignored."""
     import json
@@ -10556,7 +10433,6 @@ def test_batch276_republish_living_tag_post_pack() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch277_owner_verify_release_first() -> None:
     """Batch 277: oneshot/open_pr prefer VERIFY.release over dirty living pin."""
@@ -10681,7 +10557,6 @@ def test_batch277_owner_verify_release_first() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch278_pack_portable_help_not_out() -> None:
     """Batch 278: pack_portable --help must not write an OUT tarball named --help."""
@@ -10809,7 +10684,6 @@ def test_batch278_pack_portable_help_not_out() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch279_republish_canonical_basename() -> None:
     """Batch 279: republish stages canonical pack basename + post-upload verify."""
     import json
@@ -10924,7 +10798,6 @@ def test_batch279_republish_canonical_basename() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch280_probe_w2_contents_ref_first() -> None:
     """Batch 280: W2 contents PUT creates throwaway git ref before PUT."""
     import json
@@ -10998,7 +10871,6 @@ def test_batch280_probe_w2_contents_ref_first() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch281_grant_durable_ls_remote_auth() -> None:
     """Batch 281: grant --check authenticates ls-remote when token env set."""
     import json
@@ -11070,7 +10942,6 @@ def test_batch281_grant_durable_ls_remote_auth() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch282_pack_portable_includes_owner_grant() -> None:
     """Batch 282: pack_portable includes owner_grant (+ inventory); VERIFY-driven focused."""
@@ -11165,7 +11036,6 @@ def test_batch282_pack_portable_includes_owner_grant() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch283_republish_tip_stale_living_release() -> None:
     """Batch 283: republish tip_stale when living release BASE_TIP lags local."""
@@ -11262,7 +11132,6 @@ def test_batch283_republish_tip_stale_living_release() -> None:
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch285_grant_install_403_json_false_missing() -> None:
     """Batch 285: grant --check must not treat 403 JSON as empty install list."""
@@ -11398,7 +11267,6 @@ print("install_missing_from_deps:", ["x"] if not names else [])
     assert status.get("lemma_closed") is False
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
-
 
 def test_batch286_grant_list_script_stale_refresh_durable() -> None:
     """Batch 286: repositories must be list; republish script_stale; REFRESH >= durable."""
@@ -11548,7 +11416,6 @@ print("install_missing_from_deps:", ["x"] if not names else [])
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch287_probe_install_repositories_list() -> None:
     """Batch 287: probe/when_writable require repositories list (286 grant leftover)."""
     import importlib.util
@@ -11661,7 +11528,6 @@ def test_batch287_probe_install_repositories_list() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
-
 def test_batch288_when_writable_critical_living_republish() -> None:
     """Batch 288: CRITICAL includes when_writable; living republish; REFRESH 288."""
     import json
@@ -11735,7 +11601,6 @@ def test_batch288_when_writable_critical_living_republish() -> None:
     assert "Batch 288" in log_md
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 288)" in land
-
 
 def test_batch289_tip_sync_after_main_83() -> None:
     """Batch 289: tip-sync 7d13a88→3a29f52 after main #83; living tip_stale; REFRESH 289."""
@@ -11826,7 +11691,6 @@ def test_batch289_tip_sync_after_main_83() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
 
-
 def test_batch290_permanent_watch_idle() -> None:
     """Batch 290: permanent-watch IDLE — no new eng; lemma stays open."""
     import json
@@ -11884,7 +11748,6 @@ def test_batch290_permanent_watch_idle() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
-
 
 def test_batch291_idle_deep() -> None:
     """Batch 291: DEEP idle — no new eng beyond 273–290; lemma stays open."""
@@ -11946,7 +11809,6 @@ def test_batch291_idle_deep() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
-
 
 def test_batch293_research_audit_idle() -> None:
     """Batch 293: research audit WITHOUT promotion; lemma stays open; no NEW eng."""
@@ -12016,7 +11878,6 @@ def test_batch293_research_audit_idle() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
 
-
 def test_batch294_permanent_watch_idle() -> None:
     """Batch 294: permanent-watch IDLE — no new eng beyond 273–293; lemma stays open."""
     import json
@@ -12077,7 +11938,6 @@ def test_batch294_permanent_watch_idle() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
-
 
 def test_batch296_permanent_watch_idle() -> None:
     """Batch 296: permanent-watch IDLE — MAIN eng while WRITABLE; idle_no_commit."""
@@ -12147,7 +12007,6 @@ def test_batch296_permanent_watch_idle() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
-
 
 def test_batch304_permanent_watch_idle() -> None:
     """Batch 304: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
@@ -12240,7 +12099,6 @@ def test_batch304_permanent_watch_idle() -> None:
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
 
-
 def test_batch299_permanent_watch_idle() -> None:
     """Batch 299: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
     import json
@@ -12326,7 +12184,6 @@ def test_batch299_permanent_watch_idle() -> None:
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
 
-
 def test_batch303_align_repos_multi_agent_dual_vector() -> None:
     """Batch 303: ALIGN REPOS — MULTI_AGENT capability table matches grant dual-vector."""
     import json
@@ -12381,7 +12238,6 @@ def test_batch303_align_repos_multi_agent_dual_vector() -> None:
     assert _living_tip(status.get("tip"))
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("write_state") == "WRITABLE"
-
 
 def test_batch298_permanent_watch_idle() -> None:
     """Batch 298: permanent-watch IDLE — tip stable @02cfbfd; idle_no_commit."""
@@ -12464,7 +12320,6 @@ def test_batch298_permanent_watch_idle() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
-
 
 def test_batch297_permanent_watch_idle() -> None:
     """Batch 297: tip-sync after main #84; early idle superseded."""
@@ -12564,7 +12419,6 @@ def test_batch297_permanent_watch_idle() -> None:
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert status.get("lemma_closed") is False
     assert status.get("write_state") == "WRITABLE"
-
 
 def test_batch305_tip_sync_after_main_85() -> None:
     """Batch 305: tip-sync after main #85; inventable not promoted."""
@@ -12898,7 +12752,6 @@ def test_batch323_grant_check_inventory_refresh() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 323)" in land
 
-
 def test_batch324_print_owner_unblock_tip_drift_not_apply_ready() -> None:
     """Batch 324: PATH_C_LANDED_TIP_DRIFT must not advertise APPLY_READY land."""
     import json
@@ -12965,7 +12818,6 @@ def test_batch325_keep_prior_bundle_verify_workdir() -> None:
     assert "Batch 325" in log_md
     assert "keep-prior" in log_md.lower() or "WORKDIR" in log_md
 
-
 def test_batch326_research_audit_no_promotion() -> None:
     """Batch 326: research open-list audit artifact; lemma_closed stays false."""
     import json
@@ -12982,7 +12834,6 @@ def test_batch326_research_audit_no_promotion() -> None:
     assert "Batch 325: verify against WORKDIR" in refresh
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 326" in log_md
-
 
 def test_batch327_verify_refresh_and_wake_pack() -> None:
     """Batch 327: VERIFY.refresh_batch after keep-prior force; wake poster in pack."""
@@ -13016,7 +12867,6 @@ def test_batch327_verify_refresh_and_wake_pack() -> None:
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 327" in log_md
-
 
 def test_batch328_inventory_batch_living() -> None:
     """Batch 328: inventory refresh batch stamp follows print_owner header."""
@@ -13055,7 +12905,6 @@ def test_batch328_inventory_batch_living() -> None:
     assert "STATUS (Batch 328)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 328" in log_md
-
 
 def test_batch329_tip_refresh_living_and_wake() -> None:
     """Batch 329: living tip_refresh assert + MULTI_AGENT_WAKE_BATCH329."""
@@ -13203,7 +13052,6 @@ def test_batch329_inv_no_token_preserve_durable() -> None:
         for c in out.get("repos_connected") or []:
             assert c.get("perm") == "push", c
 
-
 def test_batch330_inv_no_token_preserve_durable() -> None:
     """Batch 330: land no_token durable preserve; header >= 330."""
     import re
@@ -13226,9 +13074,6 @@ def test_batch330_inv_no_token_preserve_durable() -> None:
     assert "STATUS (Batch 330)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 330" in log_md
-
-
-
 
 def test_batch331_grant_skip_inventory_refresh_without_durable() -> None:
     """Batch 331: grant --check skips inventory refresh when durable token absent."""
@@ -13459,8 +13304,6 @@ def test_batch335_tip_sync_after_main_99_100() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 335" in log_md
 
-
-
 def test_batch336_multi_agent_wake_verify_land() -> None:
     """Batch 336: wake336 on main; Batch 329 prior wake present; lemma_closed false."""
     import json
@@ -13491,7 +13334,6 @@ def test_batch336_multi_agent_wake_verify_land() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
 
-
 def test_batch336_soften_batch335_live_tip_pins() -> None:
     """Batch 336: Batch 335 live tip Intent pins softened to _living_tip."""
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
@@ -13511,7 +13353,6 @@ def test_batch336_soften_batch335_live_tip_pins() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
     assert "eeebb28" in _LIVING_TIPS
-
 
 def test_batch336_inventory_batch_fallback_living() -> None:
     """Batch 336: _living_inventory_batch ultimate fallback uses REFRESH_BATCH_TAG."""
@@ -13549,8 +13390,6 @@ def test_batch336_inventory_batch_fallback_living() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 336" in log_md
     assert "331" in log_md or "REFRESH_BATCH_TAG" in log_md
-
-
 
 def test_batch336_inv_preserve_durable_writable0_denied() -> None:
     """Batch 336: preserve_durable on durable_writable=0 with sandbox_write=DENIED."""
@@ -13643,7 +13482,6 @@ def test_batch336_inv_preserve_durable_writable0_denied() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 336)" in owner
 
-
 def test_batch336_wake_intent_living_base_tip() -> None:
     """Batch 336: wake poster INTENT tip derives from BASE_TIP (not frozen 077464e)."""
     import json
@@ -13709,7 +13547,6 @@ def test_batch336_wake_intent_living_base_tip() -> None:
     assert "wake INTENT" in log_md or "post_batch322_wake_comments" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 336)" in owner
-
 
 def test_batch337_tip_sync_after_main_101_107_102() -> None:
     """Batch 337: tip-sync after main #101/#107/#102; inventable not promoted."""
@@ -13799,7 +13636,6 @@ def test_batch337_tip_sync_after_main_101_107_102() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 337)" in owner
 
-
 def test_batch337_no_frozen_live_tip_pins() -> None:
     """Batch 337: tip-sync Intent uses _living_tip — not frozen startswith on BASE_TIP/VERIFY."""
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
@@ -13811,7 +13647,6 @@ def test_batch337_no_frozen_live_tip_pins() -> None:
     assert 'verify.get("base_tip_sha", "")).startswith("848aea2")' not in body
     assert "848aea2" in _LIVING_TIPS
     assert "eeebb28" in _LIVING_TIPS
-
 
 def test_batch338_align_watch_idle() -> None:
     """Batch 338: post-Path-C align watch idle; tip stable; lemma_closed false."""
@@ -13835,7 +13670,6 @@ def test_batch338_align_watch_idle() -> None:
     assert "STATUS (Batch 338)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 338" in log_md
-
 
 def test_batch338_wake_marker_living_tip() -> None:
     """Batch 338: wake skip gate keys off living tip — not frozen Batch 329 marker."""
@@ -13907,7 +13741,6 @@ def test_batch338_wake_marker_living_tip() -> None:
     assert "wake marker" in log_md.lower() or "Batch 329 wake" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 338)" in owner
-
 
 def test_batch339_living_script_stale_republish() -> None:
     """Batch 339: tip stable @848aea2; living script_stale republish."""
@@ -14052,7 +13885,6 @@ def test_batch340_audit_rate_limit_403_backoff() -> None:
     )
     assert status.get("lemma_closed") is False
 
-
 def test_batch340_wake_land_verify() -> None:
     """Batch 340: wake340 on main; tip_match living; lemma_closed false."""
     import json
@@ -14097,8 +13929,6 @@ def test_batch340_wake_land_verify() -> None:
 
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 340" in log_md
-
-
 
 def test_batch340_audit_rate_limit_raw_fallback() -> None:
     """Batch 340b: raw/ls-remote fallback after rate-limit; CI soft-continue exit 2."""
@@ -14178,8 +14008,6 @@ def test_batch340_audit_rate_limit_raw_fallback() -> None:
     assert "raw/ls-remote" in log_md or "raw fallback" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340)" in owner
-
-
 
 def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
     """Batch 340: empty-tree inventory batch fallback no longer freezes at 336."""
@@ -14285,7 +14113,6 @@ def test_batch340_inventory_ultimate_fallback_unfreeze() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "ultimate fallback" in log_md
 
-
 def test_batch340_multi_agent_wake_assign() -> None:
     """Batch 340: Dylan wake stopped agents + assign Path C intent tasks."""
     import json
@@ -14319,7 +14146,6 @@ def test_batch340_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH340" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md or "wake+assign" in log_md
-
 
 def test_batch340_republish_critical_includes_audit() -> None:
     """Batch 340: republish CRITICAL includes audit_main_alignment (pack-only was silent)."""
@@ -14369,7 +14195,6 @@ def test_batch340_republish_critical_includes_audit() -> None:
     assert "CRITICAL" in land or "audit_main_alignment" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "CRITICAL" in log_md and "audit_main_alignment" in log_md
-
 
 def test_batch340_wake_durable_token() -> None:
     """Batch 340: wake poster MAIN_PUSH_TOKEN-first + durable file drops."""
@@ -14449,7 +14274,6 @@ def test_batch340_wake_durable_token() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340 wake-token)" in owner
 
-
 def test_batch340_tip_sync_f244312() -> None:
     """Batch 340: tip-sync 848aea2→f244312 after main #108; inventable not promoted."""
     import json
@@ -14498,7 +14322,6 @@ def test_batch340_tip_sync_f244312() -> None:
     assert "f244312" in land
     assert "tip-sync" in land.lower() or "TIP_OK" in land
 
-
 def test_batch340_grant_inventory_refresh() -> None:
     """Batch 340: grant inventory tip refresh artifact + durable 8/8."""
     import json
@@ -14529,7 +14352,6 @@ def test_batch340_grant_inventory_refresh() -> None:
     assert "STATUS (Batch 340)" in owner
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 340)" in land
-
 
 def test_batch341_grant_inventory_refresh() -> None:
     """Batch 341: grant inventory tip refresh after tip-sync soften land."""
@@ -14572,7 +14394,6 @@ def test_batch341_grant_inventory_refresh() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341" in land
 
-
 def test_batch341_soften_batch340_live_tip_pins() -> None:
     """Batch 341: tip-sync Intent must not freeze live BASE_TIP to f244312."""
     intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
@@ -14591,7 +14412,6 @@ def test_batch341_soften_batch340_live_tip_pins() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 341" in log_md
     assert "f244312" in log_md or "soften" in log_md.lower()
-
 
 def test_batch341_wake_batch_n_living_print_owner() -> None:
     """Batch 341: wake _living_batch_n from print_owner — not frozen _WAKE_BATCH=340."""
@@ -14707,7 +14527,6 @@ def test_batch342_wake340_living_tip_pins() -> None:
 
     assert _living_tip("f244312")
 
-
 def test_batch343_tip_sync_after_main_109() -> None:
     """Batch 343: tip-sync f244312→fcad723 after main #109; inventable not promoted."""
     import json
@@ -14756,7 +14575,6 @@ def test_batch343_tip_sync_after_main_109() -> None:
     assert "Batch 343" in log_md
 
     assert _living_tip("f244312")
-
 
 def test_batch341_research_stack_audit() -> None:
     """Batch 341: research audit WITHOUT promotion; lemma stays open."""
@@ -14811,7 +14629,6 @@ def test_batch341_research_stack_audit() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 341" in log_md and "WITHOUT promotion" in log_md
 
-
 def test_batch342_inventory_tip_refresh_and_wake_token_pin() -> None:
     """Batch 342: inventory batch 342 + soften wake-token live tip pin."""
     import json
@@ -14846,7 +14663,6 @@ def test_batch342_inventory_tip_refresh_and_wake_token_pin() -> None:
     assert "STATUS (Batch 342)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "inventory tip refresh batch 342" in log_md.lower() or "Batch 342" in log_md
-
 
 def test_batch341_soften_inv_batch_hard_pins_after_342() -> None:
     """Batch 341 continue: Batch 340 Intent must not freeze living INV_BATCH to 340."""
@@ -14905,7 +14721,6 @@ def test_batch341_soften_inv_batch_hard_pins_after_342() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 341 inv-batch-pin)" in owner or "inv_batch" in owner.lower()
 
-
 def test_batch343_wake_land_verify() -> None:
     """Batch 343: GRANT341 + WAKE340 tip living @f244312; lemma_closed false."""
     import json
@@ -14956,7 +14771,6 @@ def test_batch343_wake_land_verify() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "wake_land_verify_batch343" in log_md or "Batch 343" in log_md
 
-
 def test_batch343_multi_agent_wake_assign() -> None:
     """Batch 343: Dylan wake stopped agents + assign Path C intent tasks."""
     import json
@@ -14992,7 +14806,6 @@ def test_batch343_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH343" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 343" in log_md
-
 
 def test_batch343_grant_inventory_refresh() -> None:
     """Batch 343: inventory batch >=343 + durable 8/8; grant skip source=none."""
@@ -15072,8 +14885,6 @@ def test_batch343_tip_sync_watch_confirm() -> None:
     # Live BASE_TIP supersedes across tip-sync; Batch 343 watch shipped fcad723.
     # Do not hard-pin the live tip SHA in BASE_TIP (Batch 341/344 class).
     assert _living_tip(base)
-
-
 
 def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     """Batch 343: empty-tree inventory batch fallback no longer freezes at 340."""
@@ -15178,7 +14989,6 @@ def test_batch343_inventory_ultimate_fallback_unfreeze() -> None:
     assert "ultimate fallback unfreeze" in log_md.lower() or "340→343" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 343 inv-fallback)" in owner
-
 
 def test_batch343_wake_living_tip_pins() -> None:
     """Batch 343: WAKE343/340 tip pins living @fcad723 after tip-sync; assign tip preserved."""
@@ -15326,8 +15136,6 @@ def test_batch343_status_guard_tip_refresh_fcad723() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 343 status-guard)" in owner
 
-
-
 def test_batch344_idle_no_commit() -> None:
     """Batch 344: tip-stable idle_no_commit evidence @fcad723; lemma_closed false."""
     import json
@@ -15353,7 +15161,6 @@ def test_batch344_idle_no_commit() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 344)
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 344 idle)" in land or "idle_no_commit" in land
-
 
 def test_batch344_soften_tip_sync_watch_live_tip_pin() -> None:
     """Batch 344: tip_sync_watch Intent must not freeze live BASE_TIP to fcad723."""
@@ -15416,7 +15223,6 @@ def test_batch344_soften_tip_sync_watch_live_tip_pin() -> None:
     assert "Batch 344" in log_md and "soften" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 344)" in owner
-
 
 def test_batch343_audit_intent_timeout_early_fallback() -> None:
     """Batch 343: rate-limit early-fallback before Intent audit timeout=60."""
@@ -15525,7 +15331,6 @@ def test_batch343_audit_intent_timeout_early_fallback() -> None:
     )
     assert status.get("lemma_closed") is False
 
-
 def test_batch345_multi_agent_wake_assign() -> None:
     """Batch 345: Dylan/timer wake stopped agents + assign Path C intent tasks."""
     import json
@@ -15560,7 +15365,6 @@ def test_batch345_multi_agent_wake_assign() -> None:
     assert "MULTI_AGENT_WAKE_BATCH345" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "stopped agents" in log_md and "Batch 345" in log_md
-
 
 def test_batch345_tip_sync_e3cd7d4() -> None:
     """Batch 345: tip-sync fcad723→e3cd7d4 after main #105; docs not promoted."""
@@ -15685,7 +15489,6 @@ def test_batch345_grant_inventory_refresh() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 grant)" in owner
 
-
 def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     """Batch 345: wake empty-tree batch fallback no longer freezes at 341; print_owner header living."""
     import json
@@ -15754,7 +15557,6 @@ def test_batch345_wake_ultimate_fallback_unfreeze() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 345 wake-fallback)" in owner
 
-
 def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
     """Batch 345 WAKE: tip_sync_watch confirm @e3cd7d4; valid tip-sync evidence JSON."""
     import json
@@ -15783,8 +15585,6 @@ def test_batch345_tip_sync_watch_confirm_e3cd7d4() -> None:
     # Do not hard-pin the live tip SHA in BASE_TIP (Batch 341/344/346 class).
     assert _living_tip(base)
 
-
-
 def test_batch345_grant_inventory_tip_pin() -> None:
     """Batch 345: inventory trial tip pinned after tip-sync; durable 8/8."""
     import json
@@ -15812,7 +15612,6 @@ def test_batch345_grant_inventory_tip_pin() -> None:
     assert brief.get("batch") == "345"
     assert brief.get("action") == "grant_inventory_tip_pin_after_tip_sync"
     assert brief.get("lemma_closed") is False
-
 
 def test_batch346_soften_tip_sync_watch_live_tip_pin() -> None:
     """Batch 346: tip_sync_watch Intent must not freeze live BASE_TIP to e3cd7d4."""
@@ -15872,7 +15671,6 @@ def test_batch346_soften_tip_sync_watch_live_tip_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346)" in owner
 
-
 def test_batch346_grant_inventory_refresh() -> None:
     """Batch 346: inventory batch >=346 + durable 8/8; grant skip source=none."""
     import json
@@ -15923,7 +15721,6 @@ def test_batch346_grant_inventory_refresh() -> None:
     assert "BATCH346_GRANT" in log_md or "grant_inventory_refresh_batch346" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346 grant)" in owner
-
 
 def test_batch346_status_guard_tip_refresh_e3cd7d4() -> None:
     """Batch 346: STATUS_GUARD tip living @e3cd7d4 after tip-sync; no promotion."""
@@ -15997,7 +15794,6 @@ def test_batch346_status_guard_tip_refresh_e3cd7d4() -> None:
     assert "STATUS_GUARD tip refresh" in log_md and "e3cd7d4" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346 status-guard)" in owner
-
 
 def test_batch346_multi_agent_wake_assign() -> None:
     """Batch 346: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
@@ -16132,8 +15928,6 @@ def test_batch346_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "inventory_preserve_durable_tip_pin" in log_md
 
-
-
 def test_batch346_ci_audit_watch_idle() -> None:
     """Batch 346: ci_audit_watch idle; early-fallback intact; lemma_closed false."""
     import json
@@ -16177,7 +15971,6 @@ def test_batch346_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
-
 
 def test_batch346_living_script_stale_republish() -> None:
     """Batch 346: living release script_stale cleared after tip-stable @e3cd7d4."""
@@ -16232,7 +16025,6 @@ def test_batch346_living_script_stale_republish() -> None:
     assert "script_stale" in log_md and "republish" in log_md.lower()
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 346 republish)" in owner
-
 
 def test_batch347_inventory_tip_pin() -> None:
     """Batch 347: inventory trial tip pinned after Batch 346 lands; durable 8/8."""
@@ -16311,7 +16103,6 @@ def test_batch347_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "BATCH347_IDLE" in log_md or "Batch 347" in log_md
 
-
 def test_batch347_soften_wake346_live_tip_pin() -> None:
     """Batch 347: WAKE346 Intent must not freeze live wake tip to e3cd7d4."""
     import json
@@ -16364,7 +16155,6 @@ def test_batch347_soften_wake346_live_tip_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 347 soften-wake-pin)" in owner
 
-
 def test_batch348_inventory_tip_pin() -> None:
     """Batch 348: inventory trial tip pinned after Batch 347 lands; durable 8/8."""
     import json
@@ -16396,7 +16186,6 @@ def test_batch348_inventory_tip_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 348)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 348 and len(headers) == 1
-
 
 def test_batch348_research_stack_audit_no_promotion() -> None:
     """Batch 348: research stack audit without status promotion @e3cd7d4."""
@@ -16437,8 +16226,6 @@ def test_batch348_research_stack_audit_no_promotion() -> None:
     assert "Batch 348" in land and "research" in land.lower()
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 348" in log_md and "research stack audit" in log_md.lower()
-
-
 
 def test_batch348_research_stack_audit_watch() -> None:
     """Batch 348: research_stack_audit_watch; STATUS_GUARD no lag; eng living republish."""
@@ -16491,7 +16278,6 @@ def test_batch348_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "research_stack_audit_watch" in log_md
 
-
 def test_batch348_idle_tip_sync_or_eng() -> None:
     """Batch 348: tip stable @e3cd7d4; idle_no_commit evidence."""
     import json
@@ -16533,7 +16319,6 @@ def test_batch348_idle_tip_sync_or_eng() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 348" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch349_ci_intent_early_fallback_unit_isolate() -> None:
     """Batch 349: rate-limit unit tests force EARLY_FALLBACK off under CI Intent env."""
     import json
@@ -16572,7 +16357,6 @@ def test_batch349_ci_intent_early_fallback_unit_isolate() -> None:
     assert headers and int(headers[0]) >= 349 and len(headers) == 1
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 349 ci-remediate)" in land
-
 
 def test_batch349_idle_eng_hunt() -> None:
     """Batch 349: eng hunt negative @e3cd7d4; idle_no_commit evidence."""
@@ -16621,7 +16405,6 @@ def test_batch349_idle_eng_hunt() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "eng_defect_hunt idle_no_commit" in log_md or "Batch 349" in log_md
 
-
 def test_batch350_inventory_tip_pin() -> None:
     """Batch 350: inventory trial tip pinned after Batch 349 CI green; durable 8/8."""
     import json
@@ -16657,7 +16440,6 @@ def test_batch350_inventory_tip_pin() -> None:
     assert headers and int(headers[0]) >= 350 and len(headers) == 1
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 350 inv-tip-pin)" in land
-
 
 def test_batch350_soften_inv_tip_pin_action() -> None:
     """Batch 350: soften INV_TIP_PIN Intent frozen action after peer re-pin."""
@@ -16707,7 +16489,6 @@ def test_batch350_soften_inv_tip_pin_action() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "soften INV_TIP_PIN" in log_md or "intent_batch350_inv_tip_pin_frozen_action" in log_md
 
-
 def test_batch350_idle_tip_sync_or_eng() -> None:
     """Batch 350: tip stable @e3cd7d4; idle_no_commit evidence."""
     import json
@@ -16749,7 +16530,6 @@ def test_batch350_idle_tip_sync_or_eng() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 350" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch351_inventory_tip_pin() -> None:
     """Batch 351: inventory tip pin after Batch 350 idle; durable 8/8."""
     import json
@@ -16781,7 +16561,6 @@ def test_batch351_inventory_tip_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 351)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 351 and len(headers) == 1
-
 
 def test_batch351_research_stack_audit_watch() -> None:
     """Batch 351: research_stack_audit_watch; STATUS_GUARD living; eng living republish."""
@@ -16835,7 +16614,6 @@ def test_batch351_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "research_stack_audit_watch" in log_md
 
-
 def test_batch351_idle_tip_sync_or_eng() -> None:
     """Batch 351: tip stable @e3cd7d4 (NOT 077464e); idle_no_commit evidence."""
     import json
@@ -16878,7 +16656,6 @@ def test_batch351_idle_tip_sync_or_eng() -> None:
     assert "STATUS (Batch 351 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 351" in log_md and "idle_no_commit" in log_md
-
 
 def test_batch352_unfreeze_last_resort() -> None:
     """Batch 352: last-resort batch defaults unfrozen 351→352; tip stable."""
@@ -16996,7 +16773,6 @@ def test_batch352_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 352" in log_md and "tip_sync_watch idle_no_commit" in log_md
 
-
 def test_batch352_living_script_stale_republish() -> None:
     """Batch 352: living script_stale republish after inv tip-pin; lemma open."""
     import json
@@ -17092,7 +16868,6 @@ def test_batch352_grant_inventory_refresh() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 352 grant)" in owner
 
-
 def test_batch352_multi_agent_wake_assign() -> None:
     """Batch 352: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
     import json
@@ -17141,8 +16916,6 @@ def test_batch352_multi_agent_wake_assign() -> None:
     m_inv = re.search(r'return "(\d+)"', helper)
     assert m_inv is not None
     assert int(m_inv.group(1)) >= 352
-
-
 
 def test_batch352_tip_or_eng_continue() -> None:
     """Batch 352: tip_or_eng — inv tip re-pin + living script_stale republish."""
@@ -17196,7 +16969,6 @@ def test_batch352_tip_or_eng_continue() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 352 tip-eng)" in owner
 
-
 def test_batch352_ci_audit_watch_idle() -> None:
     """Batch 352: ci_audit_watch idle with green CI evidence; lemma_closed false."""
     import json
@@ -17239,7 +17011,6 @@ def test_batch352_ci_audit_watch_idle() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
-
 
 def test_batch353_idle_tip_sync_watch() -> None:
     """Batch 353: tip stable @e3cd7d4; idle_no_commit tip_sync_watch evidence."""
@@ -17284,7 +17055,6 @@ def test_batch353_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 353 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 353" in log_md and "tip_sync_watch idle_no_commit" in log_md
-
 
 def test_batch353_living_republish_inv_tip_pin() -> None:
     """Batch 353: living script_stale republish + inventory tip pin→HEAD @e3cd7d4."""
@@ -17347,7 +17117,6 @@ def test_batch353_living_republish_inv_tip_pin() -> None:
     m_r = re.search(r"REFRESH_BATCH_TAG:-(\d+)", refresh)
     assert m_r is not None
     assert int(m_r.group(1)) >= 353
-
 
 def test_batch353_research_stack_audit_watch() -> None:
     """Batch 353: research_stack_audit_watch; STATUS_GUARD living; no promotion."""
@@ -17460,8 +17229,6 @@ def test_batch353_living_script_stale_republish() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "living script_stale" in log_md and "research-audit" in log_md
 
-
-
 def test_batch354_idle_tip_sync_or_eng() -> None:
     """Batch 354: tip stable @e3cd7d4; idle_no_commit evidence."""
     import json
@@ -17562,7 +17329,6 @@ def test_batch354_inventory_preserve_durable_tip_pin() -> None:
     assert soften.get("flipped_anything") is False
     assert soften.get("tip_match") is True
 
-
 def test_batch354_living_script_stale_republish() -> None:
     """Batch 354: living script_stale republish after inv tip-pin; lemma open."""
     import json
@@ -17615,8 +17381,6 @@ def test_batch354_living_script_stale_republish() -> None:
     assert "STATUS (Batch 354 republish)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "living script_stale" in log_md and "Batch 354" in log_md
-
-
 
 def test_batch355_multi_agent_wake_assign() -> None:
     """Batch 355: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
@@ -17795,7 +17559,6 @@ def test_batch355_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 355" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch355_inventory_preserve_durable_tip_pin() -> None:
     """Batch 355: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
     import json
@@ -17896,7 +17659,6 @@ def test_batch355_living_script_stale_republish() -> None:
     assert soften.get("flipped_anything") is False
     assert soften.get("tip_match") is True
 
-
 def test_batch355_grant_inventory_refresh() -> None:
     """Batch 355: inventory batch >=355 + durable 8/8; grant skip source=none."""
     import json
@@ -17947,7 +17709,6 @@ def test_batch355_grant_inventory_refresh() -> None:
     assert "BATCH355_GRANT" in log_md or "grant_inventory_refresh_batch355" in log_md
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 355 grant)" in owner
-
 
 def test_batch355_tip_or_eng_continue() -> None:
     """Batch 355: tip_or_eng — inv tip re-pin + living script_stale republish."""
@@ -18000,9 +17761,6 @@ def test_batch355_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 355 tip-eng)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 355 tip-eng)" in owner
-
-
-
 
 def test_batch355_ci_audit_watch_idle() -> None:
     """Batch 355: ci_audit_watch idle with green CI; unfreeze living; lemma_closed false."""
@@ -18100,7 +17858,6 @@ def test_batch356_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 356" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     """Batch 356: preserve_durable tip pin; 8/8; lemma open; tip e3cd7d4."""
     import json
@@ -18171,7 +17928,6 @@ def test_batch356_inventory_preserve_durable_tip_pin() -> None:
     assert "STATUS (Batch 356 inv-preserve-tip-pin)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 356" in log_md and "inventory_preserve_durable_tip_pin" in log_md
-
 
 def test_batch356_tip_or_eng_continue() -> None:
     """Batch 356: tip_or_eng — inv tip re-pin after Intent-fix land."""
@@ -18346,7 +18102,6 @@ def test_batch357_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 357" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch357_inventory_preserve_durable_tip_pin() -> None:
     """Batch 357: preserve_durable tip pin after lands; tip e3cd7d4."""
     import json
@@ -18400,7 +18155,6 @@ def test_batch357_inventory_preserve_durable_tip_pin() -> None:
     assert "STATUS (Batch 357 tip-eng)" in land
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 357" in log_md
-
 
 def test_batch357_tip_or_eng_continue() -> None:
     """Batch 357: tip_or_eng — inv tip re-pin after lands; living action allowlist."""
@@ -18462,7 +18216,6 @@ def test_batch357_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 357 tip-eng)" in owner or "STATUS (Batch 357 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 357" in log_md
-
 
 def test_batch357_unfreeze_last_resort() -> None:
     """Batch 357: last-resort batch defaults unfrozen 356→357; tip stable."""
@@ -18592,7 +18345,6 @@ def test_batch358_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 358" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch358_inventory_preserve_durable_tip_pin() -> None:
     """Batch 358: preserve_durable tip pin after lands; tip e3cd7d4."""
     import json
@@ -18647,7 +18399,6 @@ def test_batch358_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 358" in log_md
 
-
 def test_batch358_tip_or_eng_continue() -> None:
     """Batch 358: tip_or_eng — inv tip re-pin after lands."""
     import json
@@ -18697,7 +18448,6 @@ def test_batch358_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 358 tip-eng)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 358 tip-eng)" in owner
-
 
 def test_batch358_living_script_stale_republish() -> None:
     """Batch 358: living script_stale republish after tip_sync idle; lemma open."""
@@ -18770,9 +18520,6 @@ def test_batch358_living_script_stale_republish() -> None:
     assert "STATUS (Batch 358 republish)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "living script_stale" in log_md and "Batch 358" in log_md
-
-
-
 
 def test_batch359_idle_tip_sync_watch() -> None:
     """Batch 359: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -18882,7 +18629,6 @@ def test_batch359_inventory_preserve_durable_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "inventory_preserve_durable_tip_pin" in log_md
 
-
 def test_batch359_research_stack_audit_watch() -> None:
     """Batch 359: research_stack_audit_watch_no_promotion; no audit delta vs 357."""
     import json
@@ -18974,7 +18720,6 @@ def test_batch359_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 359" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch359_grant_inventory_refresh() -> None:
     """Batch 359: inventory batch >=359 + durable 8/8; grant skip source=none."""
     import json
@@ -19026,7 +18771,6 @@ def test_batch359_grant_inventory_refresh() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 359 grant)" in owner
 
-
 def test_batch359_tip_or_eng_continue() -> None:
     """Batch 359: tip_or_eng — inv tip re-pin after grant/sync lands."""
     import json
@@ -19076,7 +18820,6 @@ def test_batch359_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 359 tip-eng)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 359 tip-eng)" in owner
-
 
 def test_batch359_multi_agent_wake_assign() -> None:
     """Batch 359: Dylan wake stopped agents + assign Path C intent tasks @e3cd7d4."""
@@ -19133,7 +18876,6 @@ def test_batch359_multi_agent_wake_assign() -> None:
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 359)
 
-
 def test_batch359_living_script_stale_republish_after_wake() -> None:
     """Batch 359: living script_stale republish after WAKE359 print_owner drift."""
     import json
@@ -19187,7 +18929,6 @@ def test_batch359_living_script_stale_republish_after_wake() -> None:
     assert "STATUS (Batch 359 wake-republish)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "WAKE359" in log_md and "script_stale" in log_md
-
 
 def test_batch360_idle_tip_sync_watch() -> None:
     """Batch 360: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -19267,8 +19008,6 @@ def test_batch360_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 360)
     assert "STATUS (Batch 360 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 360 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch361_research_stack_audit_watch() -> None:
     """Batch 361: research_stack_audit_watch_no_promotion; no audit delta vs 359."""
@@ -19430,8 +19169,6 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 361 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch362_idle_tip_sync_watch() -> None:
     """Batch 362: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -19476,7 +19213,6 @@ def test_batch362_idle_tip_sync_watch() -> None:
     assert "STATUS (Batch 362 idle)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 362" in log_md and "idle_no_commit" in log_md
-
 
 def test_batch362_research_stack_audit_watch() -> None:
     """Batch 362: research_stack_audit_watch_no_promotion; no audit delta vs 361."""
@@ -19562,7 +19298,6 @@ def test_batch362_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 362" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch362_tip_or_eng_continue() -> None:
     """Batch 362: tip_or_eng — inv tip re-pin beyond parent + living republish."""
     import json
@@ -19593,8 +19328,6 @@ def test_batch362_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 362 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 362 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch363_tip_or_eng_continue() -> None:
     """Batch 363: tip_or_eng living script_stale republish VERIFY refresh_batch 345→362."""
     import json
@@ -19624,7 +19357,6 @@ def test_batch363_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 363)
     assert "STATUS (Batch 363 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 363 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch363_inventory_preserve_durable_tip_pin() -> None:
     """Batch 363: preserve_durable tip pin after living republish; tip e3cd7d4."""
@@ -19661,7 +19393,6 @@ def test_batch363_inventory_preserve_durable_tip_pin() -> None:
     assert headers and int(headers[0]) >= 363 and len(headers) == 1
     assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch363_tip_eng_sync_living() -> None:
     """Batch 363: tip_or_eng inv tip sync after post-eng + living republish."""
@@ -19710,7 +19441,6 @@ def test_batch363_tip_eng_sync_living() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 363 tip-eng-sync-living)" in owner
 
-
 def test_batch364_idle_tip_sync_watch() -> None:
     """Batch 364: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -19756,7 +19486,6 @@ def test_batch364_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 364" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch364_tip_or_eng_continue() -> None:
     """Batch 364: tip_or_eng — inv tip re-pin beyond parent + living republish."""
     import json
@@ -19794,8 +19523,6 @@ def test_batch364_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 364 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 364 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch365_tip_or_eng_continue() -> None:
     """Batch 365: tip_or_eng living script_stale republish VERIFY refresh_batch 363→364."""
     import json
@@ -19825,7 +19552,6 @@ def test_batch365_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 365)
     assert "STATUS (Batch 365 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 365 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch365_research_stack_audit_watch() -> None:
     """Batch 365: research_stack_audit_watch_no_promotion; no audit delta vs 362."""
@@ -19911,7 +19637,6 @@ def test_batch365_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 365" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch365_unfreeze_verify_refresh_batch() -> None:
     """Batch 365: unfreeze last-resort 364→365 + VERIFY refresh_batch 364→365."""
     import json
@@ -19945,8 +19670,6 @@ def test_batch365_unfreeze_verify_refresh_batch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 365)
     assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch366_idle_tip_sync_watch() -> None:
     """Batch 366: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -19993,7 +19716,6 @@ def test_batch366_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 366" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch366_tip_or_eng_continue() -> None:
     """Batch 366: tip_or_eng — inv tip re-pin beyond parent + VERIFY/unfreeze + living."""
     import json
@@ -20032,8 +19754,6 @@ def test_batch366_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 366)
     assert "STATUS (Batch 366 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 366 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch367_research_stack_audit_watch() -> None:
     """Batch 367: research_stack_audit_watch_no_promotion; no audit delta vs 365."""
@@ -20109,7 +19829,6 @@ def test_batch367_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 367" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch367_idle_tip_sync_watch() -> None:
     """Batch 367: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
     import json
@@ -20161,7 +19880,6 @@ def test_batch367_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 367" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch367_tip_or_eng_continue() -> None:
     """Batch 367: tip_or_eng — inv tip re-pin beyond parent + VERIFY/unfreeze + living."""
     import json
@@ -20201,7 +19919,6 @@ def test_batch367_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 367)
     assert "STATUS (Batch 367 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 367 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch368_idle_tip_sync_watch() -> None:
     """Batch 368: tip_sync_watch idle after tip-sync; tip_match; living current."""
@@ -20251,7 +19968,6 @@ def test_batch368_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 368" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch368_tip_or_eng_continue() -> None:
     """Batch 368: tip_or_eng — inv tip re-pin beyond parent + VERIFY/unfreeze + living."""
     import json
@@ -20291,7 +20007,6 @@ def test_batch368_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 368)
     assert "STATUS (Batch 368 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch368_tip_sync_1ae02b9() -> None:
     """Batch 368: tip-sync e3cd7d4→1ae02b9 after main #115; docs not promoted."""
@@ -20355,7 +20070,6 @@ def test_batch368_tip_sync_1ae02b9() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 tip-sync)" in owner
 
-
 def test_batch368_soften_tip_sync_watch_live_tip_pin() -> None:
     """Batch 368: tip_sync_watch Intent must not freeze live BASE_TIP to e3cd7d4."""
     import json
@@ -20412,8 +20126,6 @@ def test_batch368_soften_tip_sync_watch_live_tip_pin() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "soften" in log_md.lower() and "1ae02b9" in log_md
 
-
-
 def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     """Batch 368: STATUS_GUARD tip living @1ae02b9 after tip-sync; no promotion."""
     import json
@@ -20455,7 +20167,6 @@ def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     assert "STATUS (Batch 368 status-guard)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 status-guard)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch368_living_script_stale_republish() -> None:
     """Batch 368: living script_stale republish after STATUS_GUARD tip refresh @1ae02b9."""
     import json
@@ -20475,7 +20186,6 @@ def test_batch368_living_script_stale_republish() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 368)
     assert "STATUS (Batch 368 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 368 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch368_living_upload_confirm_intent_force() -> None:
     """Batch 368: living upload confirm + Intent 276/279 --force soften @1ae02b9."""
@@ -20526,7 +20236,6 @@ def test_batch368_living_upload_confirm_intent_force() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch369_tip_or_eng_wake_inv_living() -> None:
     """Batch 369: tip_or_eng — wake unfreeze + inv tip pin + living republish."""
     import json
@@ -20559,7 +20268,6 @@ def test_batch369_tip_or_eng_wake_inv_living() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 369)
     assert "STATUS (Batch 369 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 369 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch369_idle_tip_sync_watch() -> None:
     """Batch 369: tip_sync_watch idle @1ae02b9; tip_match; living current."""
@@ -20629,7 +20337,6 @@ def test_batch369_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 369" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch369_living_script_stale_republish() -> None:
     """Batch 369: living script_stale republish after unfreeze idle @1ae02b9."""
     import json
@@ -20652,7 +20359,6 @@ def test_batch369_living_script_stale_republish() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 369)
     assert "STATUS (Batch 369 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 369 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch369_tip_or_eng_continue() -> None:
     """Batch 369: tip_or_eng — inv tip re-pin beyond parent after living + living republish."""
@@ -20686,7 +20392,6 @@ def test_batch369_tip_or_eng_continue() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 369)
     assert "STATUS (Batch 369 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 369 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch369_research_stack_audit_watch() -> None:
     """Batch 369: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 367."""
@@ -20763,7 +20468,6 @@ def test_batch369_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 369" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch370_tip_or_eng_inv_living() -> None:
     """Batch 370: tip_or_eng inv tip re-pin + living republish @1ae02b9."""
     import json
@@ -20813,7 +20517,6 @@ def test_batch370_tip_or_eng_inv_living() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch370_inv_tip_pin_after_eng_hunt() -> None:
     """Batch 370: inv tip re-pin beyond parent after eng-hunt JSON repair."""
     import json
@@ -20841,7 +20544,6 @@ def test_batch370_inv_tip_pin_after_eng_hunt() -> None:
     assert "STATUS (Batch 370 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(
         encoding="utf-8"
     )
-
 
 def test_batch371_idle_eng_hunt() -> None:
     """Batch 371: eng_defect_hunt idle @1ae02b9; tip_match; living current."""
@@ -20899,8 +20601,6 @@ def test_batch371_idle_eng_hunt() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 371" in log_md and "idle_no_commit" in log_md
 
-
-
 def test_batch371_inv_tip_pin_after_eng_hunt() -> None:
     """Batch 371: inv tip re-pin beyond parent after eng-hunt idle."""
     import json
@@ -20918,7 +20618,6 @@ def test_batch371_inv_tip_pin_after_eng_hunt() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
     assert "STATUS (Batch 371 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch371_tip_or_eng_continue() -> None:
     """Batch 371: tip_or_eng — STATUS_GUARD baseline living soften."""
@@ -20953,7 +20652,6 @@ def test_batch371_tip_or_eng_continue() -> None:
     assert "STATUS (Batch 371 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 371 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch371_post_soften_inv_tip_pin() -> None:
     """Batch 371: inv tip re-pin beyond parent after CI Intent soften."""
     import json
@@ -20971,7 +20669,6 @@ def test_batch371_post_soften_inv_tip_pin() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
     assert "STATUS (Batch 371 post-soften-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch372_research_stack_audit_watch() -> None:
     """Batch 372: research_stack_audit_watch no promotion @1ae02b9."""
@@ -21007,8 +20704,6 @@ def test_batch372_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 372 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 372 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch372_tip_or_eng_wake_last_resort() -> None:
     """Batch 372: tip_or_eng — wake last-resort 370→372 vs print_owner."""
     import json
@@ -21039,9 +20734,6 @@ def test_batch372_tip_or_eng_wake_last_resort() -> None:
     assert "STATUS (Batch 372 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 372 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
-
 def test_batch372_inv_tip_pin_after_research() -> None:
     """Batch 372: inv tip re-pin beyond parent after research/tip-eng."""
     import json
@@ -21059,7 +20751,6 @@ def test_batch372_inv_tip_pin_after_research() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 372)
     assert "STATUS (Batch 372 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch372_idle_tip_sync_watch() -> None:
     """Batch 372: tip_sync_watch idle @1ae02b9; tip_match; living current."""
@@ -21114,8 +20805,6 @@ def test_batch372_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 372" in log_md and "idle_no_commit" in log_md
 
-
-
 def test_batch373_inv_tip_pin_unfreeze() -> None:
     """Batch 373: inv tip re-pin after tip_sync idle + unfreeze 372→373."""
     import json
@@ -21149,7 +20838,6 @@ def test_batch373_inv_tip_pin_unfreeze() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 373)
     assert "STATUS (Batch 373 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch373_eng_hunt_idle() -> None:
     """Batch 373: eng_defect_hunt idle @1ae02b9 after peer tip_or_eng."""
     import json
@@ -21182,8 +20870,6 @@ def test_batch373_eng_hunt_idle() -> None:
     assert "STATUS (Batch 373 eng-hunt-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 373 eng-hunt-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch373_post_living_inv_tip_pin() -> None:
     """Batch 373: inv tip re-pin beyond parent after living republish."""
     import json
@@ -21201,7 +20887,6 @@ def test_batch373_post_living_inv_tip_pin() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 373)
     assert "STATUS (Batch 373 post-living-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch374_research_stack_audit_watch() -> None:
     """Batch 374: research_stack_audit_watch no promotion @1ae02b9."""
@@ -21239,7 +20924,6 @@ def test_batch374_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 374)
     assert "STATUS (Batch 374 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch374_inv_tip_pin_after_research() -> None:
     """Batch 374: inv tip parent_pin after research audit."""
     import json
@@ -21252,7 +20936,6 @@ def test_batch374_inv_tip_pin_after_research() -> None:
     assert inv.get("lemma_closed") is False
     assert str(inv.get("batch")) == "374" or int(str(inv.get("batch") or 0)) >= 374
 
-
 def test_batch374_living_script_stale_republish() -> None:
     """Batch 374: living force republish after script_stale."""
     import json
@@ -21263,7 +20946,6 @@ def test_batch374_living_script_stale_republish() -> None:
     assert brief.get("living_tag") == "batch241-path-c-bundle"
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     assert "STATUS (Batch 374 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch374_tip_or_eng_idle() -> None:
     """Batch 374: tip_or_eng idle @1ae02b9; tip_match; living current; parent-pin."""
@@ -21304,7 +20986,6 @@ def test_batch374_tip_or_eng_idle() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 374)
     assert "STATUS (Batch 374 idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 374 idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch374_idle_tip_sync_watch() -> None:
     """Batch 374: tip_sync_watch idle @1ae02b9; tip_match; living current; parent-pin."""
@@ -21367,7 +21048,6 @@ def test_batch374_idle_tip_sync_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 374" in log_md and "tip_sync_watch" in log_md and "idle_no_commit" in log_md
 
-
 def test_batch375_idle_tip_sync_watch() -> None:
     """Batch 375: idle tip-stable + living republish + unfreeze @1ae02b9."""
     import json
@@ -21398,7 +21078,6 @@ def test_batch375_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 375)
     assert "STATUS (Batch 375 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch375_tip_or_eng_idle() -> None:
     """Batch 375: tip_or_eng idle after peer idle+living+unfreeze; hunt negative."""
@@ -21435,7 +21114,6 @@ def test_batch375_tip_or_eng_idle() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 375)
     assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch375_research_stack_audit_watch() -> None:
     """Batch 375: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 374."""
@@ -21495,7 +21173,6 @@ def test_batch375_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 375" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch375_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 375: tip_sync_watch idle @1ae02b9; tip_match; parent-pin."""
     import json
@@ -21546,7 +21223,6 @@ def test_batch375_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 375 tip-sync-idle)" in owner
 
-
 def test_batch376_idle_tip_sync_watch() -> None:
     """Batch 376: idle tip-stable + living republish + unfreeze @1ae02b9."""
     import json
@@ -21577,7 +21253,6 @@ def test_batch376_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 376)
     assert "STATUS (Batch 376 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch376_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 376: tip_sync_watch idle @1ae02b9; tip_match; parent-pin."""
@@ -21628,7 +21303,6 @@ def test_batch376_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 376 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 376 tip-sync-idle)" in owner
-
 
 def test_batch376_research_stack_audit_watch() -> None:
     """Batch 376: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 375."""
@@ -21688,7 +21362,6 @@ def test_batch376_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 376" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch376_tip_or_eng_living_tgz_republish() -> None:
     """Batch 376: tip_or_eng living tgz content-delta republish after tip_sync idle."""
     import json
@@ -21716,8 +21389,6 @@ def test_batch376_tip_or_eng_living_tgz_republish() -> None:
     assert "STATUS (Batch 376 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 376 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch377_idle_tip_sync_watch() -> None:
     """Batch 377: idle tip-stable + unfreeze @1ae02b9."""
     import json
@@ -21744,7 +21415,6 @@ def test_batch377_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 377)
     assert "STATUS (Batch 377 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch377_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 377: tip_sync_watch idle @1ae02b9; tip_match; parent-pin."""
@@ -21795,7 +21465,6 @@ def test_batch377_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 377 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 377 tip-sync-idle)" in owner
-
 
 def test_batch377_research_stack_audit_watch() -> None:
     """Batch 377: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 376."""
@@ -21855,7 +21524,6 @@ def test_batch377_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 377" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch377_tip_or_eng_living_tgz_republish() -> None:
     """Batch 377: tip_or_eng living tgz content-delta republish after tip_sync idle."""
     import json
@@ -21883,8 +21551,6 @@ def test_batch377_tip_or_eng_living_tgz_republish() -> None:
     assert "STATUS (Batch 377 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 377 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch378_idle_tip_sync_watch() -> None:
     """Batch 378: idle tip-stable + unfreeze @1ae02b9."""
     import json
@@ -21911,7 +21577,6 @@ def test_batch378_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 378)
     assert "STATUS (Batch 378 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch378_tip_or_eng_idle() -> None:
     """Batch 378: tip_or_eng idle after peer idle+unfreeze; hunt negative."""
@@ -21949,7 +21614,6 @@ def test_batch378_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch378_tip_sync_ebedb78() -> None:
     """Batch 378: tip-sync 1ae02b9→ebedb78 keep-prior after main #98."""
     import json
@@ -21982,8 +21646,6 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_current_path_c_base_matches_bundle() -> None:
     """Current readiness metadata must agree independently of historical receipts."""
     import json
@@ -21993,7 +21655,6 @@ def test_current_path_c_base_matches_bundle() -> None:
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert re.fullmatch(r"[0-9a-f]{40}", str(verify.get("base_tip_sha") or ""))
     assert base == [verify["hardening_ref"], verify["base_tip_sha"]]
-
 
 def test_batch378_research_stack_audit_watch() -> None:
     """Batch 378: research_stack_audit_watch_no_promotion @ebedb78; no delta vs 377."""
@@ -22071,7 +21732,6 @@ def test_batch378_status_guard_tip_refresh() -> None:
     assert len(sg.get("open_premises") or []) == 13
     assert "STATUS (Batch 378 status-guard tip refresh)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch378_tip_or_eng_post_guard_idle() -> None:
     """Batch 378: tip_or_eng idle after tip-sync+STATUS_GUARD; hunt negative @ebedb78."""
     import json
@@ -22109,7 +21769,6 @@ def test_batch378_tip_or_eng_post_guard_idle() -> None:
     assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch378_followup_status_guard_living() -> None:
     """Batch 378 follow-up: tip stable; STATUS_GUARD tip living; parent-pin."""
     import json
@@ -22142,7 +21801,6 @@ def test_batch378_followup_status_guard_living() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 followup)" in land
 
-
 def test_batch379_idle_tip_sync_watch() -> None:
     """Batch 379: idle tip-stable + living republish + unfreeze @ebedb780."""
     import json
@@ -22173,7 +21831,6 @@ def test_batch379_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 379)
     assert "STATUS (Batch 379 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch379_tip_sync_watch_idle_unfreeze() -> None:
     """Batch 379: tip_sync_watch idle @ebedb780; unfreeze 378→379; parent-pin."""
@@ -22243,7 +21900,6 @@ def test_batch379_tip_sync_watch_idle_unfreeze() -> None:
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 379 tip-sync-idle)" in land
 
-
 def test_batch379_research_stack_audit_watch() -> None:
     """Batch 379: research_stack_audit_watch_no_promotion @ebedb78; no delta vs 378."""
     import json
@@ -22302,7 +21958,6 @@ def test_batch379_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 379" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch379_tip_or_eng_living_tgz() -> None:
     """Batch 379: tip_or_eng living tgz_newer republish; tip stable @ebedb780."""
     import json
@@ -22340,7 +21995,6 @@ def test_batch379_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 379 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 379 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch380_idle_tip_sync_watch() -> None:
     """Batch 380: idle tip-stable + living republish + unfreeze @ebedb780."""
     import json
@@ -22371,7 +22025,6 @@ def test_batch380_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 380)
     assert "STATUS (Batch 380 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch380_research_stack_audit_watch() -> None:
     """Batch 380: research_stack_audit_watch_no_promotion @ebedb78; no delta vs 379."""
@@ -22431,7 +22084,6 @@ def test_batch380_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 380" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch381_post_research_inv_tip_pin() -> None:
     """Batch 381: post-research inv tip pin + living + unfreeze @ebedb780."""
     import json
@@ -22453,7 +22105,6 @@ def test_batch381_post_research_inv_tip_pin() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 381
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 381)
-
 
 def test_batch380_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 380: tip_sync_watch idle @ebedb780; tip_match; parent-pin."""
@@ -22503,7 +22154,6 @@ def test_batch380_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 380 tip-sync-idle)" in owner
 
-
 def test_batch380_tip_or_eng_living_script_stale() -> None:
     """Batch 380: tip_or_eng living script_stale republish @ebedb780 after Batch381 peer."""
     import json
@@ -22546,8 +22196,6 @@ def test_batch380_tip_or_eng_living_script_stale() -> None:
     assert "STATUS (Batch 380 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 380 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch382_idle_tip_sync_watch() -> None:
     """Batch 382: inv tip re-pin + unfreeze @ebedb780."""
     import json
@@ -22569,7 +22217,6 @@ def test_batch382_idle_tip_sync_watch() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 382
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 382)
-
 
 def test_batch383_research_stack_audit_watch() -> None:
     """Batch 383: research_stack_audit_watch no promotion + living + unfreeze @ebedb780."""
@@ -22602,7 +22249,6 @@ def test_batch383_research_stack_audit_watch() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 383
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 383)
-
 
 def test_batch383_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 383: tip_sync_watch idle @ebedb780; tip_match; parent-pin."""
@@ -22651,7 +22297,6 @@ def test_batch383_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 383 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 383 tip-sync-idle)" in owner
-
 
 def test_batch384_idle_tip_sync_watch() -> None:
     """Batch 384: idle tip-stable + living republish + unfreeze @ebedb780."""
@@ -22761,8 +22406,6 @@ def test_batch385_tip_sync_7caac25() -> None:
     assert "STATUS (Batch 385 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 385 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch385_research_stack_audit_watch() -> None:
     """Batch 385: research_stack_audit_watch_no_promotion @7caac25; no delta vs 383/380."""
     import json
@@ -22845,7 +22488,6 @@ def test_batch385_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 385" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch385_post_research_living() -> None:
     """Batch 385: living script_stale republish after research audit @7caac25."""
     import json
@@ -22861,7 +22503,6 @@ def test_batch385_post_research_living() -> None:
     assert watch.get("lemma_closed") is False
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 385 post-research-living)" in land
-
 
 def test_batch385_tip_or_eng_idle_after_peers() -> None:
     """Batch 385: tip_or_eng idle after tip-sync+STATUS_GUARD+research+living; hunt negative @7caac25."""
@@ -22926,7 +22567,6 @@ def test_batch385_tip_or_eng_idle_after_peers() -> None:
     base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
     assert _living_tip(base)
 
-
 def test_batch385_post_eng_inv_tip_pin() -> None:
     """Batch 385: inv tip re-pin + living after tip_or_eng idle @7caac25."""
     import json
@@ -22943,7 +22583,6 @@ def test_batch385_post_eng_inv_tip_pin() -> None:
     assert idle.get("lemma_closed") is False
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 385 post-eng-inv-pin)" in land
-
 
 def test_batch385_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 385: tip_sync_watch idle @7caac25; tip_match; parent-pin."""
@@ -22999,7 +22638,6 @@ def test_batch385_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 385 tip-sync-idle)" in owner
 
-
 def test_batch386_tip_or_eng_soften() -> None:
     """Batch 386: tip_or_eng soften BASE_TIP pin + living + unfreeze @7caac25."""
     import json
@@ -23031,7 +22669,6 @@ def test_batch386_tip_or_eng_soften() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 386)
     assert "STATUS (Batch 386 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch387_research_stack_audit_watch() -> None:
     """Batch 387: research_stack_audit_watch_no_promotion @7caac25; no delta vs 385."""
@@ -23111,7 +22748,6 @@ def test_batch387_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 387" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch387_tip_sync_2f7a5a9() -> None:
     """Batch 387: tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 sources."""
     import json
@@ -23148,7 +22784,6 @@ def test_batch387_tip_sync_2f7a5a9() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 387)
     assert "STATUS (Batch 387 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch387_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 387: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23212,7 +22847,6 @@ def test_batch387_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 387 tip-sync-idle)" in owner
 
-
 def test_batch387_post_tip_sync_living() -> None:
     """Batch 387: living script_stale republish after tip_sync idle @2f7a5a9."""
     import json
@@ -23227,7 +22861,6 @@ def test_batch387_post_tip_sync_living() -> None:
     assert idle.get("lemma_closed") is False
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 387 post-tip-sync-living)" in land
-
 
 def test_batch388_tip_or_eng_soften() -> None:
     """Batch 388: tip_or_eng soften STATUS_GUARD tip_sha pin + living + unfreeze @2f7a5a9."""
@@ -23268,7 +22901,6 @@ def test_batch388_tip_or_eng_soften() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 388)
     assert "STATUS (Batch 388 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch388_post_soften_living() -> None:
     """Batch 388: living script_stale republish after tip_or_eng soften @2f7a5a9."""
@@ -23409,7 +23041,6 @@ def test_batch388_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 388" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch389_idle_tip_sync_watch() -> None:
     """Batch 389: idle tip-stable + unfreeze @2f7a5a9."""
     import json
@@ -23435,7 +23066,6 @@ def test_batch389_idle_tip_sync_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 389)
     assert "STATUS (Batch 389 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch389_post_idle_living() -> None:
     """Batch 389: living script_stale republish after idle @2f7a5a9."""
@@ -23481,7 +23111,6 @@ def test_batch390_tip_or_eng_soften() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 390)
     assert "STATUS (Batch 390 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch390_post_soften_living() -> None:
     """Batch 390: living script_stale republish after tip_or_eng soften @2f7a5a9."""
     import json
@@ -23492,7 +23121,6 @@ def test_batch390_post_soften_living() -> None:
     assert living.get("parent_pin") is True
     assert _living_tip(str(living.get("hardening_tip") or ""))
     assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch391_tip_or_eng_idle() -> None:
     """Batch 391: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -23572,7 +23200,6 @@ def test_batch389_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 389 tip-sync-idle)" in owner
 
-
 def test_batch391_post_idle_pin_living() -> None:
     """Batch 391: post-idle inv tip pin + living + unfreeze 390→391 @2f7a5a9."""
     import json
@@ -23589,7 +23216,6 @@ def test_batch391_post_idle_pin_living() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 391)
 
-
 def test_batch391_post_ci_inv_tip_pin() -> None:
     """Batch 391: inv tip re-pin after peer CI-dedupe land @2f7a5a9."""
     import json
@@ -23601,7 +23227,6 @@ def test_batch391_post_ci_inv_tip_pin() -> None:
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     assert "STATUS (Batch 391 post-ci-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch391_post_pin_living() -> None:
     """Batch 391: living script_stale republish after inv tip pin @2f7a5a9."""
     import json
@@ -23612,7 +23237,6 @@ def test_batch391_post_pin_living() -> None:
     assert living.get("parent_pin") is True
     assert _living_tip(str(living.get("hardening_tip") or ""))
     assert "STATUS (Batch 391 post-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch390_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 390: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23677,7 +23301,6 @@ def test_batch390_tip_sync_watch_idle_parent_pin() -> None:
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 390 tip-sync-idle)" in owner
 
-
 def test_batch391_post_tip_sync_inv_tip_pin() -> None:
     """Batch 391: inv tip re-pin after tip_sync living @2f7a5a9."""
     import json
@@ -23717,7 +23340,6 @@ def test_batch392_tip_or_eng_unfreeze() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 392)
     assert "STATUS (Batch 392 tip-eng-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch393_research_stack_audit_watch() -> None:
     """Batch 393: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 388."""
     import json
@@ -23755,7 +23377,6 @@ def test_batch393_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 393)
     assert "STATUS (Batch 393 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch393_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 393: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23853,7 +23474,6 @@ def test_batch394_tip_or_eng_idle() -> None:
     assert living.get("need_upload") == 0
     assert "STATUS (Batch 394 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch394_post_idle_pin_living() -> None:
     """Batch 394: post-idle inv tip pin + living + unfreeze 393→394 @2f7a5a9."""
     import json
@@ -23927,7 +23547,6 @@ def test_batch394_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch394_post_tip_sync_inv_tip_pin() -> None:
     """Batch 394: inv tip re-pin after tip_sync living @2f7a5a9."""
     import json
@@ -23938,7 +23557,6 @@ def test_batch394_post_tip_sync_inv_tip_pin() -> None:
     assert brief.get("parent_pin") is True
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     assert "STATUS (Batch 394 post-tip-sync-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-
 
 def test_batch395_idle_tip_stable() -> None:
     """Batch 395: idle tip-stable + unfreeze 394→395 @2f7a5a9."""
@@ -23996,7 +23614,6 @@ def test_batch395_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 395 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 395 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch395_post_tip_sync_pin_living() -> None:
     """Batch 395: inv tip pin + living after tip_sync living @2f7a5a9."""
     import json
@@ -24025,7 +23642,6 @@ def test_batch395_tip_or_eng_living() -> None:
     assert "STATUS (Batch 395 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 395)
-
 
 def test_batch396_research_stack_audit_watch() -> None:
     """Batch 396: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 393."""
@@ -24141,7 +23757,6 @@ def test_batch396_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch396_ci_intent_syntax() -> None:
     """Batch 396: CI Intent syntax fix for literal backslash-n line @2f7a5a9."""
     import json
@@ -24174,7 +23789,6 @@ def test_batch398_tip_or_eng_living() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 398)
     assert "STATUS (Batch 398 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch396_tip_or_eng_idle_continue() -> None:
     """Batch 396: tip_or_eng continue idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -24192,7 +23806,6 @@ def test_batch396_tip_or_eng_idle_continue() -> None:
     assert "STATUS (Batch 396 tip-eng-idle-continue)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
-
 
 def test_batch399_research_stack_audit_watch() -> None:
     """Batch 399: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 396."""
@@ -24232,7 +23845,6 @@ def test_batch399_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 399)
     assert "STATUS (Batch 399 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch399_tip_or_eng_idle() -> None:
     """Batch 399: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -24250,7 +23862,6 @@ def test_batch399_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 399 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 399)
-
 
 def test_batch399_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 399: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -24344,7 +23955,6 @@ def test_batch400_tip_or_eng_inv_living() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 400)
     assert "STATUS (Batch 400 tip-eng-inv-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
-
 def test_batch400_tip_eng_living_refresh() -> None:
     """Batch 400: living script_stale republish after tip_or_eng land @2f7a5a9."""
     import json
@@ -24360,7 +23970,6 @@ def test_batch400_tip_eng_living_refresh() -> None:
     assert "STATUS (Batch 400 tip-eng-living-refresh)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch400_post_living_inv_tip_pin() -> None:
     """Batch 400: inv parent-pin after tip_or_eng living refresh @2f7a5a9."""
@@ -24382,7 +23991,6 @@ def test_batch400_post_living_inv_tip_pin() -> None:
     assert "STATUS (Batch 400 post-living-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch401_tip_or_eng_living_tgz() -> None:
     """Batch 401: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -24408,7 +24016,6 @@ def test_batch401_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 401 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 401)
-
 
 def test_batch401_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 401: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -24479,7 +24086,6 @@ def test_batch401_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 401 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch401_post_tip_sync_inv_tip_pin() -> None:
     """Batch 401: inv parent-pin after tip_sync living @2f7a5a9."""
@@ -24628,7 +24234,6 @@ def test_batch401_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 401" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch403_tip_or_eng_idle() -> None:
     """Batch 403: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -24647,7 +24252,6 @@ def test_batch403_tip_or_eng_idle() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 403)
 
-
 def test_batch403_post_idle_inv_tip_pin() -> None:
     """Batch 403: inv parent-pin after tip_or_eng idle @2f7a5a9."""
     import json
@@ -24664,7 +24268,6 @@ def test_batch403_post_idle_inv_tip_pin() -> None:
     assert "STATUS (Batch 403 post-idle-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch404_tip_or_eng_living_tgz() -> None:
     """Batch 404: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -24690,7 +24293,6 @@ def test_batch404_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 404 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 404)
-
 
 def test_batch404_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 404: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -24762,7 +24364,6 @@ def test_batch404_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch404_post_tip_sync_inv_tip_pin() -> None:
     """Batch 404: inv parent-pin after tip_sync living @2f7a5a9."""
     import json
@@ -24779,7 +24380,6 @@ def test_batch404_post_tip_sync_inv_tip_pin() -> None:
     assert "STATUS (Batch 404 post-tip-sync-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch405_research_stack_audit_watch() -> None:
     """Batch 405: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 401."""
@@ -24846,7 +24446,6 @@ def test_batch406_tip_or_eng_living_tgz() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 406)
 
-
 def test_batch407_tip_or_eng_idle() -> None:
     """Batch 407: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -24864,7 +24463,6 @@ def test_batch407_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 407 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 407)
-
 
 def test_batch407_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 407: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -24936,7 +24534,6 @@ def test_batch407_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch407_post_tip_sync_inv_tip_pin() -> None:
     """Batch 407: inv parent-pin after tip_sync living @2f7a5a9."""
     import json
@@ -24953,7 +24550,6 @@ def test_batch407_post_tip_sync_inv_tip_pin() -> None:
     assert "STATUS (Batch 407 post-tip-sync-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch408_tip_or_eng_idle() -> None:
     """Batch 408: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -24979,7 +24575,6 @@ def test_batch408_tip_or_eng_idle() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 408)
 
-
 def test_batch408_tip_or_eng_living_inv_pin() -> None:
     """Batch 408: living script_stale republish + inv parent-pin @2f7a5a9."""
     import json
@@ -25004,7 +24599,6 @@ def test_batch408_tip_or_eng_living_inv_pin() -> None:
     assert "STATUS (Batch 408 tip-eng-living+inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch408_research_stack_audit_watch() -> None:
     """Batch 408: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 405."""
@@ -25083,7 +24677,6 @@ def test_batch408_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 408" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch408_post_research_living_inv_pin() -> None:
     """Batch 408: living republish + inv parent-pin after research audit."""
     import json
@@ -25109,7 +24702,6 @@ def test_batch408_post_research_living_inv_pin() -> None:
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch409_tip_or_eng_living_tgz() -> None:
     """Batch 409: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -25134,7 +24726,6 @@ def test_batch409_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 409 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 409)
-
 
 def test_batch408_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 408: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -25206,7 +24797,6 @@ def test_batch408_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch409_post_tip_sync_inv_tip_pin() -> None:
     """Batch 409: inv parent-pin after tip_sync living @2f7a5a9."""
     import json
@@ -25223,7 +24813,6 @@ def test_batch409_post_tip_sync_inv_tip_pin() -> None:
     assert "STATUS (Batch 409 post-tip-sync-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch410_tip_or_eng_idle() -> None:
     """Batch 410: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -25248,7 +24837,6 @@ def test_batch410_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 410 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 410)
-
 
 def test_batch410_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 410: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -25320,7 +24908,6 @@ def test_batch410_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch410_post_tip_sync_inv_tip_pin() -> None:
     """Batch 410: inv parent-pin after tip_sync living @2f7a5a9."""
     import json
@@ -25337,7 +24924,6 @@ def test_batch410_post_tip_sync_inv_tip_pin() -> None:
     assert "STATUS (Batch 410 post-tip-sync-inv-pin)" in (
         ROOT / "portable" / "LAND.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch411_tip_or_eng_living_tgz() -> None:
     """Batch 411: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -25363,7 +24949,6 @@ def test_batch411_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 411 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 411)
-
 
 def test_batch410_research_stack_audit_watch() -> None:
     """Batch 410: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 408/405."""
@@ -25443,7 +25028,6 @@ def test_batch410_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 410" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch412_tip_or_eng_idle() -> None:
     """Batch 412: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -25467,7 +25051,6 @@ def test_batch412_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 412 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 412)
-
 
 def test_batch413_tip_or_eng_living_tgz() -> None:
     """Batch 413: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -25493,7 +25076,6 @@ def test_batch413_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 413 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 413)
-
 
 def test_batch412_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 412: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -25564,7 +25146,6 @@ def test_batch412_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 412 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch412_research_stack_audit_watch() -> None:
     """Batch 412: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 410/408/405."""
@@ -25644,7 +25225,6 @@ def test_batch412_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 412" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch414_tip_or_eng_living_tgz() -> None:
     """Batch 414: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -25666,7 +25246,6 @@ def test_batch414_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 414 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 414)
-
 
 def test_batch415_tip_or_eng_living_tgz() -> None:
     """Batch 415: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -25692,7 +25271,6 @@ def test_batch415_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 415 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 415)
-
 
 def test_batch414_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 414: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -25763,7 +25341,6 @@ def test_batch414_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 414 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch414_research_stack_audit_watch() -> None:
     """Batch 414: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 412/410/405."""
@@ -25842,7 +25419,6 @@ def test_batch414_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 414 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 414" in log_md and "research_stack_audit_watch" in log_md
-
 
 def test_batch416_tip_or_eng_living_script_stale() -> None:
     """Batch 416: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -25953,7 +25529,6 @@ def test_batch416_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 416" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch417_tip_or_eng_living() -> None:
     """Batch 417: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -26049,8 +25624,6 @@ def test_batch416_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
-
 def test_batch418_tip_or_eng_idle() -> None:
     """Batch 418: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26076,7 +25649,6 @@ def test_batch418_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 418 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 418)
-
 
 def test_batch419_tip_or_eng_living_tgz() -> None:
     """Batch 419: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -26187,8 +25759,6 @@ def test_batch418_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 418" in log_md and "research_stack_audit_watch" in log_md
 
-
-
 def test_batch418_tip_sync_watch_living_parent_pin() -> None:
     """Batch 418: tip_sync_watch living tgz_newer republish @2f7a5a9; parent-pin."""
     import json
@@ -26269,7 +25839,6 @@ def test_batch418_tip_sync_watch_living_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch420_tip_or_eng_idle() -> None:
     """Batch 420: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26295,7 +25864,6 @@ def test_batch420_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 420 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 420)
-
 
 def test_batch420_tip_sync_watch_living_parent_pin() -> None:
     """Batch 420: tip_sync_watch living tgz_newer republish @2f7a5a9; parent-pin."""
@@ -26377,7 +25945,6 @@ def test_batch420_tip_sync_watch_living_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch421_tip_or_eng_idle() -> None:
     """Batch 421: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26396,7 +25963,6 @@ def test_batch421_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 421 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 421)
-
 
 def test_batch420_research_stack_audit_watch() -> None:
     """Batch 420: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 418/416/414/412."""
@@ -26482,8 +26048,6 @@ def test_batch420_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 420" in log_md and "research_stack_audit_watch" in log_md
 
-
-
 def test_batch422_tip_or_eng_idle() -> None:
     """Batch 422: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26510,7 +26074,6 @@ def test_batch422_tip_or_eng_idle() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 422)
 
-
 def test_batch423_tip_or_eng_living_tgz() -> None:
     """Batch 423: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -26535,7 +26098,6 @@ def test_batch423_tip_or_eng_living_tgz() -> None:
     assert "STATUS (Batch 423 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 423)
-
 
 def test_batch422_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 422: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -26606,7 +26168,6 @@ def test_batch422_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 422 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch422_research_stack_audit_watch() -> None:
     """Batch 422: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 420/418/416/414."""
@@ -26692,8 +26253,6 @@ def test_batch422_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 422" in log_md and "research_stack_audit_watch" in log_md
 
-
-
 def test_batch424_tip_or_eng_idle() -> None:
     """Batch 424: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26719,7 +26278,6 @@ def test_batch424_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 424 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 424)
-
 
 def test_batch424_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 424: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -26790,7 +26348,6 @@ def test_batch424_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 424 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch424_research_stack_audit_watch() -> None:
     """Batch 424: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 422/420/418/416."""
@@ -26876,7 +26433,6 @@ def test_batch424_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 424" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch425_tip_or_eng_idle() -> None:
     """Batch 425: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -26902,7 +26458,6 @@ def test_batch425_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 425 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 425)
-
 
 def test_batch425_tip_sync_watch_living_parent_pin() -> None:
     """Batch 425: tip_sync_watch living tgz_newer republish @2f7a5a9; parent-pin."""
@@ -26984,7 +26539,6 @@ def test_batch425_tip_sync_watch_living_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch426_tip_or_eng_idle() -> None:
     """Batch 426: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -27010,7 +26564,6 @@ def test_batch426_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 426 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 426)
-
 
 def test_batch426_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 426: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -27081,7 +26634,6 @@ def test_batch426_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 426 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch426_research_stack_audit_watch() -> None:
     """Batch 426: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 424/422/420/418."""
@@ -27167,7 +26719,6 @@ def test_batch426_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 426" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch427_tip_or_eng_living_script() -> None:
     """Batch 427: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27192,7 +26743,6 @@ def test_batch427_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 427 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 427)
-
 
 def test_batch428_tip_or_eng_idle() -> None:
     """Batch 428: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -27219,7 +26769,6 @@ def test_batch428_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 428 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 428)
-
 
 def test_batch427_research_stack_audit_watch() -> None:
     """Batch 427: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 426/424/422/420."""
@@ -27305,7 +26854,6 @@ def test_batch427_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 427" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch429_tip_or_eng_living_script() -> None:
     """Batch 429: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27330,7 +26878,6 @@ def test_batch429_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 429 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 429)
-
 
 def test_batch428_research_stack_audit_watch() -> None:
     """Batch 428: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 427/426/424/422."""
@@ -27416,7 +26963,6 @@ def test_batch428_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 428" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch430_tip_or_eng_living_script() -> None:
     """Batch 430: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27441,7 +26987,6 @@ def test_batch430_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 430 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 430)
-
 
 def test_batch427_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 427: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -27522,7 +27067,6 @@ def test_batch427_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch431_tip_or_eng_living_script() -> None:
     """Batch 431: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27547,7 +27091,6 @@ def test_batch431_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 431 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 431)
-
 
 def test_batch430_research_stack_audit_watch() -> None:
     """Batch 430: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 428/427/426/424."""
@@ -27633,7 +27176,6 @@ def test_batch430_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 430" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch432_tip_or_eng_living_script() -> None:
     """Batch 432: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27658,7 +27200,6 @@ def test_batch432_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 432 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 432)
-
 
 def test_batch431_research_stack_audit_watch() -> None:
     """Batch 431: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 430/428/427/426."""
@@ -27769,8 +27310,6 @@ def test_batch433_tip_or_eng_living_script() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 433)
 
-
-
 def test_batch430_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 430: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -27850,7 +27389,6 @@ def test_batch430_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch434_tip_or_eng_living_script() -> None:
     """Batch 434: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -27875,7 +27413,6 @@ def test_batch434_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 434 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 434)
-
 
 def test_batch433_research_stack_audit_watch() -> None:
     """Batch 433: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 431/430/428/427."""
@@ -27961,7 +27498,6 @@ def test_batch433_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 433" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch433_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 433: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -28040,7 +27576,6 @@ def test_batch433_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 433 tip-sync-living)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch434_research_stack_audit_watch() -> None:
     """Batch 434: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 433/431/430/428."""
@@ -28126,7 +27661,6 @@ def test_batch434_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 434" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch435_tip_or_eng_living_script() -> None:
     """Batch 435: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -28151,7 +27685,6 @@ def test_batch435_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 435 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 435)
-
 
 def test_batch434_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 434: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -28223,7 +27756,6 @@ def test_batch434_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch436_tip_or_eng_living_script() -> None:
     """Batch 436: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -28248,7 +27780,6 @@ def test_batch436_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 436 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 436)
-
 
 def test_batch435_research_stack_audit_watch() -> None:
     """Batch 435: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 434/433/431/430."""
@@ -28334,7 +27865,6 @@ def test_batch435_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 435" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch437_tip_or_eng_living_script() -> None:
     """Batch 437: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -28359,7 +27889,6 @@ def test_batch437_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 437 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 437)
-
 
 def test_batch436_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 436: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -28430,7 +27959,6 @@ def test_batch436_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 436 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch436_research_stack_audit_watch() -> None:
     """Batch 436: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 435/434/433/431."""
@@ -28516,7 +28044,6 @@ def test_batch436_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 436" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch438_tip_or_eng_idle() -> None:
     """Batch 438: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -28542,7 +28069,6 @@ def test_batch438_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 438 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 438)
-
 
 def test_batch437_research_stack_audit_watch() -> None:
     """Batch 437: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 436/435/434/433."""
@@ -28628,7 +28154,6 @@ def test_batch437_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 437" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch437_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 437: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -28708,7 +28233,6 @@ def test_batch437_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch439_tip_or_eng_idle() -> None:
     """Batch 439: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -28759,8 +28283,6 @@ def test_batch440_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 440 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 440)
-
-
 
 def test_batch438_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 438: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -28831,7 +28353,6 @@ def test_batch438_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 438 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch438_research_stack_audit_watch() -> None:
     """Batch 438: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 437/436/435/434."""
@@ -28917,7 +28438,6 @@ def test_batch438_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 438" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch441_tip_or_eng_living_script() -> None:
     """Batch 441: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -28942,7 +28462,6 @@ def test_batch441_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 441 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 441)
-
 
 def test_batch440_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 440: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -29022,7 +28541,6 @@ def test_batch440_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 440 tip-sync-living)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch440_research_stack_audit_watch() -> None:
     """Batch 440: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 438/437/436/435."""
@@ -29108,8 +28626,6 @@ def test_batch440_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 440" in log_md and "research_stack_audit_watch" in log_md
 
-
-
 def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 441: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -29190,7 +28706,6 @@ def test_batch441_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 441 tip-sync-idle)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch441_research_stack_audit_watch() -> None:
     """Batch 441: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 440/438/437/436."""
@@ -29276,7 +28791,6 @@ def test_batch441_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 441" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch442_tip_or_eng_living_tgz() -> None:
     """Batch 442: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -29302,7 +28816,6 @@ def test_batch442_tip_or_eng_living_tgz() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 442)
 
-
 def test_batch443_tip_or_eng_living_script() -> None:
     """Batch 443: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -29327,7 +28840,6 @@ def test_batch443_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 443 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 443)
-
 
 def test_batch443_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 443: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -29407,7 +28919,6 @@ def test_batch443_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 443 tip-sync-living)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch443_research_stack_audit_watch() -> None:
     """Batch 443: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 441/440/438/437."""
@@ -29493,7 +29004,6 @@ def test_batch443_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 443" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch444_tip_or_eng_living_script() -> None:
     """Batch 444: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -29519,7 +29029,6 @@ def test_batch444_tip_or_eng_living_script() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 444)
 
-
 def test_batch445_tip_or_eng_living_script() -> None:
     """Batch 445: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -29544,7 +29053,6 @@ def test_batch445_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 445 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 445)
-
 
 def test_batch444_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 444: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -29624,7 +29132,6 @@ def test_batch444_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 444 tip-sync-living)" in (
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
-
 
 def test_batch444_research_stack_audit_watch() -> None:
     """Batch 444: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 443/441/440/438."""
@@ -29710,7 +29217,6 @@ def test_batch444_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 444" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch445_research_stack_audit_watch() -> None:
     """Batch 445: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 444/443/441/440."""
     import json
@@ -29795,7 +29301,6 @@ def test_batch445_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 445" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch445_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 445: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -29877,7 +29382,6 @@ def test_batch445_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch446_tip_or_eng_living_script() -> None:
     """Batch 446: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -29902,7 +29406,6 @@ def test_batch446_tip_or_eng_living_script() -> None:
     assert "STATUS (Batch 446 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 446)
-
 
 def test_batch446_research_stack_audit_watch() -> None:
     """Batch 446: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 445/444/443/441/440."""
@@ -29990,7 +29493,6 @@ def test_batch446_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 446" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch446_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 446: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -30073,7 +29575,6 @@ def test_batch446_tip_sync_watch_idle_parent_pin() -> None:
         ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
     ).read_text(encoding="utf-8")
 
-
 def test_batch447_tip_or_eng_idle() -> None:
     """Batch 447: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -30099,7 +29600,6 @@ def test_batch447_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 447 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 447)
-
 
 def test_batch447_research_stack_audit_watch() -> None:
     """Batch 447: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 446/445/444/443/441."""
@@ -30187,7 +29687,6 @@ def test_batch447_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 447" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch447_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 447: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -30265,7 +29764,6 @@ def test_batch447_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 447 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 447 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch448_tip_or_eng_idle() -> None:
     """Batch 448: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -30291,7 +29789,6 @@ def test_batch448_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 448 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 448)
-
 
 def test_batch448_research_stack_audit_watch() -> None:
     """Batch 448: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 447/446/445/444/443."""
@@ -30379,7 +29876,6 @@ def test_batch448_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 448" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch448_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 448: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -30457,7 +29953,6 @@ def test_batch448_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch448_intent_soften_441_445_tip_sync_living_brief() -> None:
     """Batch 448: soften tip-sync447 re-harden of Batch441/445 living briefs."""
     import json
@@ -30496,7 +29991,6 @@ def test_batch448_intent_soften_441_445_tip_sync_living_brief() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "CI Intent soften Batch441/445" in unblock
 
-
 def test_batch449_tip_or_eng_idle() -> None:
     """Batch 449: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -30522,7 +30016,6 @@ def test_batch449_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 449 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 449)
-
 
 def test_batch449_research_stack_audit_watch() -> None:
     """Batch 449: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 448/447/446/445/444."""
@@ -30610,7 +30103,6 @@ def test_batch449_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 449" in log_md and "research_stack_audit_watch" in log_md
 
-
 def test_batch449_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 449: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -30688,7 +30180,6 @@ def test_batch449_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 449 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 449 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch450_tip_or_eng_idle() -> None:
     """Batch 450: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
     import json
@@ -30714,7 +30205,6 @@ def test_batch450_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 450 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 450)
-
 
 def test_batch450_research_stack_audit_watch() -> None:
     """Batch 450: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 449/448/447/446/445."""
@@ -30801,7 +30291,6 @@ def test_batch450_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 450 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 450" in log_md and "research_stack_audit_watch" in log_md
-
 
 def test_batch450_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 450: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -30957,7 +30446,6 @@ def test_batch451_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 451 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 451 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch451_tip_or_eng_idle() -> None:
     """Batch 451: tip_or_eng idle_no_commit + unfreeze 450→451 @2f7a5a9."""
     import json
@@ -30987,7 +30475,6 @@ def test_batch451_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch451_research_stack_audit_watch() -> None:
     """Batch 451: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 450/449/448/447/446."""
@@ -31152,7 +30639,6 @@ def test_batch452_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 452 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 452 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch453_tip_or_eng_idle() -> None:
     """Batch 453: tip_or_eng idle_no_commit + unfreeze 451→453 @2f7a5a9."""
     import json
@@ -31184,7 +30670,6 @@ def test_batch453_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch454_tip_or_eng_living_script() -> None:
     """Batch 454: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -31290,7 +30775,6 @@ def test_batch454_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 454)
     assert "STATUS (Batch 454 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 454 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch454_research_stack_audit_watch() -> None:
     """Batch 454: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 451/450/449/448/447."""
@@ -31491,7 +30975,6 @@ def test_batch455_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 455 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 455 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch455_research_stack_audit_watch() -> None:
     """Batch 455: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 454/451/450/449/448."""
     import json
@@ -31583,7 +31066,6 @@ def test_batch455_research_stack_audit_watch() -> None:
     ):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch456_tip_or_eng_living_script() -> None:
     """Batch 456: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -31690,7 +31172,6 @@ def test_batch456_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 456 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 456 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch456_research_stack_audit_watch() -> None:
     """Batch 456: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 455/454/451/450/449."""
     import json
@@ -31782,7 +31263,6 @@ def test_batch456_research_stack_audit_watch() -> None:
     ):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch457_tip_or_eng_idle() -> None:
     """Batch 457: tip_or_eng idle_no_commit + unfreeze 456→457 @2f7a5a9."""
@@ -31891,7 +31371,6 @@ def test_batch457_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 457 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 457 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch457_research_stack_audit_watch() -> None:
     """Batch 457: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 456/455/454/451/450."""
     import json
@@ -31984,7 +31463,6 @@ def test_batch457_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch458_tip_or_eng_idle() -> None:
     """Batch 458: tip_or_eng idle_no_commit + unfreeze 457→458 @2f7a5a9."""
     import json
@@ -32014,7 +31492,6 @@ def test_batch458_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch458_research_stack_audit_watch() -> None:
     """Batch 458: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 457/456/455/454/451."""
@@ -32185,7 +31662,6 @@ def test_batch458_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 458 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 458 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch459_tip_or_eng_living_tgz() -> None:
     """Batch 459: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -32213,7 +31689,6 @@ def test_batch459_tip_or_eng_living_tgz() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch459_research_stack_audit_watch() -> None:
     """Batch 459: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 458/457/456/455/454."""
@@ -32384,7 +31859,6 @@ def test_batch459_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 459 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 459 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch460_tip_or_eng_idle() -> None:
     """Batch 460: tip_or_eng idle_no_commit + unfreeze 459→460 @2f7a5a9."""
     import json
@@ -32492,7 +31966,6 @@ def test_batch460_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 460 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 460 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch460_research_stack_audit_watch() -> None:
     """Batch 460: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 459/458/457/456/455."""
     import json
@@ -32584,7 +32057,6 @@ def test_batch460_research_stack_audit_watch() -> None:
     ):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch461_tip_or_eng_idle() -> None:
     """Batch 461: tip_or_eng idle_no_commit + unfreeze 460→461 @2f7a5a9."""
@@ -32695,7 +32167,6 @@ def test_batch461_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 461 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 461 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch461_research_stack_audit_watch() -> None:
     """Batch 461: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 460/459/458/457/456."""
     import json
@@ -32788,7 +32259,6 @@ def test_batch461_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch462_tip_or_eng_idle() -> None:
     """Batch 462: tip_or_eng idle_no_commit + unfreeze 461→462 @2f7a5a9."""
     import json
@@ -32820,7 +32290,6 @@ def test_batch462_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch462_research_stack_audit_watch() -> None:
     """Batch 462: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 461/460/459/458/457."""
@@ -32990,9 +32459,6 @@ def test_batch462_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 462 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 462 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
-
 def test_batch463_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 463: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -33070,7 +32536,6 @@ def test_batch463_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 463 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 463 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch463_tip_or_eng_idle() -> None:
     """Batch 463: tip_or_eng idle_no_commit + unfreeze 462→463 @2f7a5a9."""
     import json
@@ -33102,7 +32567,6 @@ def test_batch463_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch463_research_stack_audit_watch() -> None:
     """Batch 463: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 462/461/460/459/458."""
@@ -33196,7 +32660,6 @@ def test_batch463_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch464_research_stack_audit_watch() -> None:
     """Batch 464: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 463/462/461/460/459."""
     import json
@@ -33289,8 +32752,6 @@ def test_batch464_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch464_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 464: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -33368,7 +32829,6 @@ def test_batch464_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 464 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 464 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch464_tip_or_eng_idle() -> None:
     """Batch 464: tip_or_eng idle_no_commit + unfreeze 463→464 @2f7a5a9."""
     import json
@@ -33400,7 +32860,6 @@ def test_batch464_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch465_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 465: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -33479,7 +32938,6 @@ def test_batch465_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 465 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 465 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch465_tip_or_eng_idle() -> None:
     """Batch 465: tip_or_eng idle_no_commit + unfreeze 464→465 @2f7a5a9."""
     import json
@@ -33511,7 +32969,6 @@ def test_batch465_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch465_research_stack_audit_watch_gap_fill() -> None:
     """Batch 465: research gap-fill no-promotion @2f7a5a9; Δ0 vs 464/463/462/461/460."""
@@ -33742,7 +33199,6 @@ def test_batch466_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 466 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 466 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch466_tip_or_eng_living_script() -> None:
     """Batch 466: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -33770,7 +33226,6 @@ def test_batch466_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch467_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 467: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -33849,7 +33304,6 @@ def test_batch467_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 467 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 467 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch467_tip_or_eng_idle() -> None:
     """Batch 467: tip_or_eng idle_no_commit + unfreeze 466→467 @2f7a5a9."""
     import json
@@ -33881,7 +33335,6 @@ def test_batch467_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch467_research_stack_audit_watch() -> None:
     """Batch 467: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 466/465/464/463/462."""
@@ -33975,7 +33428,6 @@ def test_batch467_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch468_tip_or_eng_idle() -> None:
     """Batch 468: tip_or_eng idle_no_commit + unfreeze 467→468 @2f7a5a9."""
     import json
@@ -34007,7 +33459,6 @@ def test_batch468_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch468_research_stack_audit_watch() -> None:
     """Batch 468: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 467/466/465/464/463."""
@@ -34101,7 +33552,6 @@ def test_batch468_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch469_research_stack_audit_watch() -> None:
     """Batch 469: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 468/467/466/465/464."""
     import json
@@ -34194,8 +33644,6 @@ def test_batch469_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch469_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 469: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -34273,7 +33721,6 @@ def test_batch469_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 469 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 469 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch469_tip_or_eng_idle() -> None:
     """Batch 469: tip_or_eng idle_no_commit + unfreeze 468→469 @2f7a5a9."""
     import json
@@ -34305,7 +33752,6 @@ def test_batch469_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch470_research_stack_audit_watch() -> None:
     """Batch 470: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 469/468/467/466/465."""
@@ -34399,8 +33845,6 @@ def test_batch470_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch470_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 470: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -34478,8 +33922,6 @@ def test_batch470_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 470 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 470 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch470_tip_or_eng_idle() -> None:
     """Batch 470: tip_or_eng idle_no_commit + unfreeze 469→470 @2f7a5a9."""
     import json
@@ -34511,7 +33953,6 @@ def test_batch470_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch471_research_stack_audit_watch() -> None:
     """Batch 471: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 470/469/468/467/466."""
@@ -34605,8 +34046,6 @@ def test_batch471_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch471_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 471: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -34684,7 +34123,6 @@ def test_batch471_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 471 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 471 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch471_tip_or_eng_living_script() -> None:
     """Batch 471: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -34712,7 +34150,6 @@ def test_batch471_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch472_research_stack_audit_watch() -> None:
     """Batch 472: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 471/470/469/468/467."""
@@ -34806,8 +34243,6 @@ def test_batch472_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch472_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 472: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -34885,7 +34320,6 @@ def test_batch472_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 472 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 472 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch472_tip_or_eng_idle() -> None:
     """Batch 472: tip_or_eng idle_no_commit + unfreeze 471→472 @2f7a5a9."""
     import json
@@ -34917,7 +34351,6 @@ def test_batch472_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch473_research_stack_audit_watch() -> None:
     """Batch 473: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 472/471/470/469/468."""
@@ -35011,8 +34444,6 @@ def test_batch473_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch473_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 473: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -35090,7 +34521,6 @@ def test_batch473_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 473 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 473 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch473_tip_or_eng_living_tgz() -> None:
     """Batch 473: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
     import json
@@ -35118,7 +34548,6 @@ def test_batch473_tip_or_eng_living_tgz() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch474_research_stack_audit_watch() -> None:
     """Batch 474: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 473/472/471/470/469."""
@@ -35212,7 +34641,6 @@ def test_batch474_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch474_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 474: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -35290,7 +34718,6 @@ def test_batch474_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 474 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 474 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch474_tip_or_eng_idle() -> None:
     """Batch 474: tip_or_eng idle_no_commit + unfreeze 473→474 @2f7a5a9."""
     import json
@@ -35322,7 +34749,6 @@ def test_batch474_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch475_research_stack_audit_watch() -> None:
     """Batch 475: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 474/473/472/471/470."""
@@ -35417,7 +34843,6 @@ def test_batch475_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch475_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 475: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -35495,7 +34920,6 @@ def test_batch475_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 475 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 475 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch475_tip_or_eng_idle() -> None:
     """Batch 475: tip_or_eng idle_no_commit + unfreeze 474→475 @2f7a5a9."""
     import json
@@ -35527,7 +34951,6 @@ def test_batch475_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch476_research_stack_audit_watch() -> None:
     """Batch 476: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 475/474/473/472/471."""
@@ -35622,7 +35045,6 @@ def test_batch476_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch476_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 476: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -35700,7 +35122,6 @@ def test_batch476_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 476 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 476 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch476_tip_or_eng_idle() -> None:
     """Batch 476: tip_or_eng idle_no_commit + unfreeze 475→476 @2f7a5a9."""
     import json
@@ -35732,7 +35153,6 @@ def test_batch476_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch477_research_stack_audit_watch() -> None:
     """Batch 477: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 476/475/474/473/472."""
@@ -35827,7 +35247,6 @@ def test_batch477_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch477_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 477: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -35905,9 +35324,6 @@ def test_batch477_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 477 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 477 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
-
 def test_batch477_tip_or_eng_idle() -> None:
     """Batch 477: tip_or_eng idle_no_commit + unfreeze 476→477 @2f7a5a9."""
     import json
@@ -35939,7 +35355,6 @@ def test_batch477_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch478_research_stack_audit_watch() -> None:
     """Batch 478: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 477/476/475/474/473."""
@@ -36034,7 +35449,6 @@ def test_batch478_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch478_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 478: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -36112,10 +35526,6 @@ def test_batch478_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 478 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 478 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
-
-
 def test_batch478_tip_or_eng_idle() -> None:
     """Batch 478: tip_or_eng idle_no_commit + unfreeze 477→478 @2f7a5a9."""
     import json
@@ -36148,7 +35558,6 @@ def test_batch478_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
 def test_batch479_tip_or_eng_idle() -> None:
     """Batch 479: tip_or_eng idle_no_commit + unfreeze 478→479 @2f7a5a9."""
     import json
@@ -36180,7 +35589,6 @@ def test_batch479_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch480_research_stack_audit_watch() -> None:
     """Batch 480: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 478/477/476/475/474."""
@@ -36275,7 +35683,6 @@ def test_batch480_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch480_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 480: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -36353,7 +35760,6 @@ def test_batch480_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 480 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 480 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch480_tip_or_eng_living_script() -> None:
     """Batch 480: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -36381,7 +35787,6 @@ def test_batch480_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch481_research_stack_audit_watch() -> None:
     """Batch 481: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 480/478/477/476/475."""
@@ -36476,7 +35881,6 @@ def test_batch481_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch481_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 481: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -36554,7 +35958,6 @@ def test_batch481_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 481 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 481 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch481_tip_or_eng_idle() -> None:
     """Batch 481: tip_or_eng idle_no_commit + unfreeze 480→481 @2f7a5a9."""
     import json
@@ -36586,7 +35989,6 @@ def test_batch481_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch482_research_stack_audit_watch() -> None:
     """Batch 482: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 481/480/478/477/476."""
@@ -36681,7 +36083,6 @@ def test_batch482_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch482_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 482: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -36759,7 +36160,6 @@ def test_batch482_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 482 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 482 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch482_tip_or_eng_living_script() -> None:
     """Batch 482: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
     import json
@@ -36787,7 +36187,6 @@ def test_batch482_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch483_tip_or_eng_idle() -> None:
     """Batch 483: tip_or_eng idle_no_commit + unfreeze 482→483 @2f7a5a9."""
@@ -36820,7 +36219,6 @@ def test_batch483_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch484_research_stack_audit_watch() -> None:
     """Batch 484: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 482/481/480/478/477."""
@@ -36915,7 +36313,6 @@ def test_batch484_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch484_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 484: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -36993,7 +36390,6 @@ def test_batch484_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 484 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 484 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch484_tip_or_eng_living_script() -> None:
     """Batch 484: tip_or_eng living script_stale republish + unfreeze 483→484 @2f7a5a9."""
     import json
@@ -37026,7 +36422,6 @@ def test_batch484_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch485_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 485: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -37105,7 +36500,6 @@ def test_batch485_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 485 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 485 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch485_tip_or_eng_idle() -> None:
     """Batch 485: tip_or_eng idle_no_commit + unfreeze 484→485 @2f7a5a9."""
     import json
@@ -37138,7 +36532,6 @@ def test_batch485_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
 def test_batch486_tip_or_eng_idle() -> None:
     """Batch 486: tip_or_eng idle_no_commit + unfreeze 485→486 @2f7a5a9."""
     import json
@@ -37170,7 +36563,6 @@ def test_batch486_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch487_research_stack_audit_watch() -> None:
     """Batch 487: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 485/484/482/481/480."""
@@ -37221,7 +36613,6 @@ def test_batch487_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch487_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 487: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -37300,7 +36691,6 @@ def test_batch487_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 487 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 487 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch487_tip_or_eng_living_script() -> None:
     """Batch 487: tip_or_eng living script_stale republish + unfreeze 486→487 @2f7a5a9."""
     import json
@@ -37333,7 +36723,6 @@ def test_batch487_tip_or_eng_living_script() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch485_research_stack_audit_watch() -> None:
     """Batch 485: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 484/482/481/480/478."""
@@ -37385,7 +36774,6 @@ def test_batch485_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch488_research_stack_audit_watch() -> None:
     """Batch 488: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 487/485/484/482/481."""
     import json
@@ -37435,7 +36823,6 @@ def test_batch488_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch488_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 488: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -37514,7 +36901,6 @@ def test_batch488_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 488 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 488 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch488_tip_or_eng_living_tgz() -> None:
     """Batch 488: tip_or_eng living tgz_newer republish + unfreeze 487→488 @2f7a5a9."""
     import json
@@ -37547,7 +36933,6 @@ def test_batch488_tip_or_eng_living_tgz() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch489_research_stack_audit_watch() -> None:
     """Batch 489: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 488/487/485/484/482."""
@@ -37598,7 +36983,6 @@ def test_batch489_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch489_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 489: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -37677,7 +37061,6 @@ def test_batch489_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 489 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 489 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch489_tip_or_eng_idle() -> None:
     """Batch 489: tip_or_eng idle_no_commit + unfreeze 488→489 @2f7a5a9."""
     import json
@@ -37710,7 +37093,6 @@ def test_batch489_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
 def test_batch490_tip_or_eng_idle() -> None:
     """Batch 490: tip_or_eng idle_no_commit + unfreeze 489→490 @2f7a5a9."""
     import json
@@ -37742,7 +37124,6 @@ def test_batch490_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch490_research_stack_audit_watch() -> None:
     """Batch 490: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 489/488/487/485/484."""
@@ -37793,7 +37174,6 @@ def test_batch490_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch508_research_stack_audit_watch() -> None:
     """Batch 508: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 507/506/505/504/502."""
@@ -37847,7 +37227,6 @@ def test_batch508_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch507_research_stack_audit_watch() -> None:
     """Batch 507: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 506/505/504/502/500."""
     import json
@@ -37899,7 +37278,6 @@ def test_batch507_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch506_research_stack_audit_watch() -> None:
     """Batch 506: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 505/504/502/500/498."""
@@ -37953,7 +37331,6 @@ def test_batch506_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch505_research_stack_audit_watch() -> None:
     """Batch 505: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 504/502/500/498/497."""
     import json
@@ -38006,7 +37383,6 @@ def test_batch505_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch504_research_stack_audit_watch() -> None:
     """Batch 504: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 502/500/498/497/495."""
     import json
@@ -38058,7 +37434,6 @@ def test_batch504_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch502_research_stack_audit_watch() -> None:
     """Batch 502: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 500/498/497/495/494 (research496/499/501 gap)."""
@@ -38113,7 +37488,6 @@ def test_batch502_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch500_research_stack_audit_watch() -> None:
     """Batch 500: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 498/497/495/494/493 (research496/499 gap)."""
     import json
@@ -38163,7 +37537,6 @@ def test_batch500_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch498_research_stack_audit_watch() -> None:
     """Batch 498: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 497/495/494/493/492 (research496 gap)."""
@@ -38215,7 +37588,6 @@ def test_batch498_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch497_research_stack_audit_watch() -> None:
     """Batch 497: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 495/494/493/492/491 (research496 gap)."""
     import json
@@ -38265,7 +37637,6 @@ def test_batch497_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch495_research_stack_audit_watch() -> None:
     """Batch 495: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 494/493/492/491/490."""
@@ -38317,7 +37688,6 @@ def test_batch495_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch494_research_stack_audit_watch() -> None:
     """Batch 494: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 493/492/491/490/489."""
     import json
@@ -38367,7 +37737,6 @@ def test_batch494_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch493_research_stack_audit_watch() -> None:
     """Batch 493: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 492/491/490/489/488."""
@@ -38419,7 +37788,6 @@ def test_batch493_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch492_research_stack_audit_watch() -> None:
     """Batch 492: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 491/490/489/488/487."""
     import json
@@ -38470,7 +37838,6 @@ def test_batch492_research_stack_audit_watch() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch491_research_stack_audit_watch() -> None:
     """Batch 491: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 490/489/488/487/485."""
     import json
@@ -38520,7 +37887,6 @@ def test_batch491_research_stack_audit_watch() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch491_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 491: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -38599,8 +37965,6 @@ def test_batch491_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 491 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 491 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch492_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 492: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -38677,7 +38041,6 @@ def test_batch492_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 492)
     assert "STATUS (Batch 492 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 492 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
 
 def test_batch493_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 493: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -38756,7 +38119,6 @@ def test_batch493_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 493 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 493 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch499_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 499: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -38833,8 +38195,6 @@ def test_batch499_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 499)
     assert "STATUS (Batch 499 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 499 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch500_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 500: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -38913,8 +38273,6 @@ def test_batch500_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch506_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 506: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
     import json
@@ -38991,8 +38349,6 @@ def test_batch506_tip_sync_watch_idle_parent_pin() -> None:
     assert len(headers) == 1  # Soft Intent: single living PERMANENT header
     assert "STATUS (Batch 506 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 506 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch505_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 505: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -39071,8 +38427,6 @@ def test_batch505_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 505 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 505 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch504_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 504: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
     import json
@@ -39149,8 +38503,6 @@ def test_batch504_tip_sync_watch_idle_parent_pin() -> None:
     assert len(headers) == 1  # Soft Intent: single living PERMANENT header
     assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch502_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 502: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -39229,8 +38581,6 @@ def test_batch502_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch507_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 507: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
     import json
@@ -39308,7 +38658,159 @@ def test_batch507_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 507 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 507 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+def test_batch508_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 508: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
+    import json
+    import re
 
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "508"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("parent_pin") is True
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("parent_pin") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "idle_no_commit"
+    assert watch.get("parent_pin") is True
+
+    living_brief = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is True
+    assert living_brief.get("lemma_closed") is False
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH508_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("parent_pin") is True
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 508)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 508
+    assert len(headers) == 1
+    assert "STATUS (Batch 508 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 508 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+def test_batch510_tip_sync_watch_idle_parent_pin() -> None:
+    """Batch 510: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
+    import json
+    import re
+
+    tiny = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
+    )
+    assert tiny.get("batch") == "510"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is True
+    assert tiny.get("aligned") is True
+    assert tiny.get("action") == "idle_no_commit"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("parent_pin") is True
+    assert _living_tip(str(tiny.get("hardening_tip") or ""))
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0
+    assert living.get("script_stale") == 0
+    assert living.get("need_upload") == 0
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "idle_no_commit"
+    assert evidence.get("parent_pin") is True
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_WATCH_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
+    assert _living_tip(_asg.rsplit("_", 1)[-1])
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
+    )
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "idle_no_commit"
+    assert watch.get("parent_pin") is True
+
+    living_brief = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is True
+    assert living_brief.get("lemma_closed") is False
+
+    pin = json.loads(
+        (ROOT / "portable" / "BATCH510_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
+    assert pin.get("parent_pin") is True
+
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert inv.get("lemma_closed") is False
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 510)
+    headers = re.findall(r"=== Batch (\d+)\b", unblock)
+    assert headers and int(headers[0]) >= 510
+    assert len(headers) == 1
+    assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 def test_batch494_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 494: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -39387,7 +38889,6 @@ def test_batch494_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 494 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 494 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
 def test_batch495_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 495: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -39464,8 +38965,6 @@ def test_batch495_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 495)
     assert "STATUS (Batch 495 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 495 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
 
 def test_batch496_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 496: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -39544,8 +39043,6 @@ def test_batch496_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 496 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 496 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch497_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 497: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
     import json
@@ -39623,8 +39120,6 @@ def test_batch497_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 497 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 497 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
-
-
 def test_batch491_tip_or_eng_living_script() -> None:
     """Batch 491: tip_or_eng living script_stale republish + unfreeze 490→491 @2f7a5a9."""
     import json
@@ -39658,7 +39153,6 @@ def test_batch491_tip_or_eng_living_script() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch492_tip_or_eng_idle() -> None:
     """Batch 492: tip_or_eng idle_no_commit + unfreeze 491→492 @2f7a5a9."""
     import json
@@ -39690,7 +39184,6 @@ def test_batch492_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch493_tip_or_eng_living_script() -> None:
     """Batch 493: tip_or_eng living script_stale republish + unfreeze 492→493 @2f7a5a9."""
@@ -39725,7 +39218,6 @@ def test_batch493_tip_or_eng_living_script() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
 def test_batch494_tip_or_eng_idle() -> None:
     """Batch 494: tip_or_eng idle_no_commit + unfreeze 493→494 @2f7a5a9."""
     import json
@@ -39757,7 +39249,6 @@ def test_batch494_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch495_tip_or_eng_idle() -> None:
     """Batch 495: tip_or_eng idle_no_commit + unfreeze 494→495 @2f7a5a9."""
@@ -39791,7 +39282,6 @@ def test_batch495_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
 def test_batch496_tip_or_eng_idle() -> None:
     """Batch 496: tip_or_eng idle_no_commit + unfreeze 495→496 @2f7a5a9."""
     import json
@@ -39823,7 +39313,6 @@ def test_batch496_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
 
 def test_batch497_tip_or_eng_living_script() -> None:
     """Batch 497: tip_or_eng living script_stale republish + unfreeze 496→497 @2f7a5a9."""
@@ -39895,8 +39384,6 @@ def test_batch498_tip_or_eng_living_tgz() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
-
-
 def test_batch500_tip_or_eng_living_tgz() -> None:
     """Batch 500: tip_or_eng living tgz_newer republish + unfreeze 499→500 @2f7a5a9."""
     import json
@@ -39931,7 +39418,6 @@ def test_batch500_tip_or_eng_living_tgz() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
-
 
 def test_batch502_tip_or_eng_idle() -> None:
     """Batch 502: tip_or_eng idle_no_commit + unfreeze 501→502 @2f7a5a9."""
@@ -40033,8 +39519,6 @@ def test_batch504_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
-
 def test_batch505_tip_or_eng_living_tgz() -> None:
     """Batch 505: tip_or_eng living tgz_newer republish + unfreeze 504→505 @2f7a5a9."""
     import json
@@ -40110,8 +39594,6 @@ def test_batch506_tip_or_eng_idle() -> None:
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
 
-
-
 def test_batch507_tip_or_eng_idle() -> None:
     """Batch 507: tip_or_eng idle_no_commit + unfreeze 506→507 @2f7a5a9; Soft Intent single header."""
     import json
@@ -40183,8 +39665,6 @@ def test_batch508_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
-
-
 
 def test_batch509_tip_or_eng_living_tgz() -> None:
     """Batch 509: tip_or_eng living tgz_newer republish + unfreeze 508→509 @2f7a5a9."""
