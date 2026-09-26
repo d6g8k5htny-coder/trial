@@ -1,3 +1,7 @@
+## STATUS (Batch 369 living-wake-unfreeze)
+
+tip `1ae02b9` tip_match=true; eng: living script_stale republish + wake last-resort 368→369; durable 8/8; lemma_closed=false; goal OPEN; scientific effect NONE.
+
 ## STATUS (Batch 369 idle)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch idle_no_commit; living tip/script current; durable 8/8; lemma_closed=false; goal OPEN; woke tip/eng/research peers.

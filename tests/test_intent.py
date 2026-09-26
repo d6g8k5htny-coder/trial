@@ -20523,6 +20523,56 @@ def test_batch368_living_upload_confirm_intent_force() -> None:
     ).read_text(encoding="utf-8")
 
 
+def test_batch369_living_wake_unfreeze() -> None:
+    """Batch 369: living script_stale republish + wake last-resort 368→369."""
+    import json
+    import re
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH369_REPUBLISH_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "369"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_living_script_stale_republish"
+    assert brief.get("defect_id") == "living_script_stale_after_batch369_idle_unfreeze"
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH369_REPUBLISH_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH369_REPUBLISH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("action") == "eng_living_script_stale_republish"
+    wake_brief = json.loads(
+        (ROOT / "portable" / "BATCH369_WAKE_UNFREEZE_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert wake_brief.get("action") == "eng_unfreeze_wake_last_resort_368_to_369"
+    poster = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(
+        encoding="utf-8"
+    )
+    _wake_rets = [
+        int(x)
+        for x in re.findall(
+            r'return "(\d+)"', poster.split("def batch_marker")[0]
+        )
+    ]
+    assert _wake_rets and max(_wake_rets) >= 369
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 369)
+    assert "STATUS (Batch 369 living-wake-unfreeze)" in (
+        ROOT / "portable" / "LAND.md"
+    ).read_text(encoding="utf-8")
+    assert "STATUS (Batch 369 living-wake-unfreeze)" in (
+        ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
+    ).read_text(encoding="utf-8")
+
+
 def test_batch369_idle_tip_sync_watch() -> None:
     """Batch 369: tip_sync_watch idle @1ae02b9; tip_match; living current."""
     import json

@@ -1,3 +1,12 @@
+## STATUS (Batch 369 living-wake-unfreeze)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: living `script_stale=1` after Batch 369 idle/unfreeze; wake last-resort still frozen at 368 vs header 369 — living republish + wake unfreeze→369. Intent living >=N. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch369_living_wake_unfreeze -q
+```
+
 ## STATUS (Batch 369 idle)
 
 Hardening tip **stable** @ `1ae02b9` (tip_match=true). tip_sync_watch: no tip move; living tip/script current (ignore 1-byte pack thrash). Unfreeze last-resort + VERIFY refresh_batch 368→369. Woke tip/eng/research peers. Evidence: `portable/BATCH369_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 369 — eng living script_stale republish + wake last-resort 368→369 @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: after Batch 369 idle/unfreeze land, living `script_stale=1` need_upload=1; wake last-resort still frozen at 368 vs header/inv/VERIFY 369. Living republish + wake unfreeze→369. Intent living >=N. Inventable skipped. NEVER flip research.
+
 ### Batch 369 — idle_no_commit tip-stable watch @1ae02b9 (2026-09-25)
 
 - Batch359 tip-eng-watch timer pulse. Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; `lemma_closed=false`.
