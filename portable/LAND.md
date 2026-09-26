@@ -1,3 +1,7 @@
+## STATUS (Batch 461 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 460→461; inv parent-pin; VERIFY 461; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 460 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 459/458/457/456/455; STATUS_GUARD pass; stamps@460; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
