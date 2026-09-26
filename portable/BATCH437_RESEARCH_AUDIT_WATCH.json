@@ -1,0 +1,53 @@
+{
+  "batch": "437",
+  "generated_at_utc": "2026-09-26T06:11:11Z",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "hardening_tip_short": "2f7a5a9",
+  "tip_match": true,
+  "open_premises": 13,
+  "open_lemmas": 1,
+  "open_prizes": 3,
+  "lemma_closed": false,
+  "action": "research_stack_audit_watch",
+  "assignment": "research_stack_audit_watch_no_promotion",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "status_guard_tip": "2f7a5a9",
+  "status_guard_tip_living": true,
+  "status_guard_tip_lag": false,
+  "status_guard_pass": true,
+  "audit_delta_needed": false,
+  "delta_vs_batch436": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch435": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch434": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "delta_vs_batch433": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
+  "prior_audit_artifact": "portable/BATCH436_RESEARCH_AUDIT_WATCH.json",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0
+  },
+  "inventable_promoted": false,
+  "full_audit_recopy": false,
+  "coord_bc": "bc-8dab7ae9",
+  "note": "no-promotion re-audit @2f7a5a9 after Batch 437 living under Batch436 research: open stack unchanged 13/1/3 vs BATCH436/435/434/433; STATUS_GUARD living; stamps already@437; lemma_closed=false"
+}
