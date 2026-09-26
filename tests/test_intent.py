@@ -25643,3 +25643,26 @@ def test_batch412_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 412 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 412" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch414_tip_or_eng_living_tgz() -> None:
+    """Batch 414: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH414_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "414"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+    assert brief.get("action") == "living_tgz_newer_unfreeze"
+    assert int(brief.get("verify_refresh_batch") or 0) >= 414
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH414_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("uploaded") is True
+    assert living.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH414_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "414"
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 414
+    assert "STATUS (Batch 414 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 414)
