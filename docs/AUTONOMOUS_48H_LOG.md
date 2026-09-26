@@ -1,3 +1,8 @@
+## Batch 588 tip_sync Soft Intent preserve (2026-09-26T20:24Z)
+
+Soft Intent preserve tip_moved keep-prior @ BASE `2f7a5a9`: single living === Batch 578 PERMANENT header (n=1); soft tip_sync588 echo only; parent-pin tip_sha=precommit `d4bda504`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+
+
 ## Batch 574 tip_sync Soft Intent RESTORE (2026-09-26T20:13Z)
 
 ### Batch 577 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)

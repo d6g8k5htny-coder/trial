@@ -1,0 +1,23 @@
+{
+  "batch": "588",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "tip_sha": "d4bda50423b1cd40bdde50781c9e67b02f1ec307",
+  "lemma_closed": false,
+  "durable_writable": "8/8",
+  "generated_at_utc": "2026-09-26T20:26:12Z",
+  "note": "parent-pin tip_sha=precommit HEAD (no trailing newline)",
+  "scientific_effect": "NONE",
+  "flipped_anything": false,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "preserve": true,
+  "inventory": "AI_AGENT_ACCESS_INVENTORY.json",
+  "write": "WRITABLE",
+  "goal_complete": false,
+  "path_c": "IDLE@0019",
+  "inventable_promoted": false,
+  "aligned": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "tip_match": false
+}
