@@ -23601,3 +23601,15 @@ def test_batch391_post_ci_inv_tip_pin() -> None:
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     assert "STATUS (Batch 391 post-ci-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+def test_batch391_post_pin_living() -> None:
+    """Batch 391: living script_stale republish after inv tip pin @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH391_POST_PIN_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "391"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_inv_pin"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    assert "STATUS (Batch 391 post-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+

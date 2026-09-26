@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 391 — living script_stale republish after inv pin @2f7a5a9 (2026-09-26)
+
+- Tip stable; inv parent-pin restored; living `script_stale=1` → force republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 391 — post-ci inv tip pin after peer CI-dedupe @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1; living current after Batch391 unfreeze land.

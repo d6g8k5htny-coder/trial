@@ -1,3 +1,7 @@
+## STATUS (Batch 391 post-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after inv pin; republish batch241. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 391 post-ci-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after peer CI-dedupe. `lemma_closed=false`. Goal OPEN.
