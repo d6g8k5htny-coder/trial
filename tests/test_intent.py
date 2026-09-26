@@ -28516,3 +28516,29 @@ def test_batch436_research_stack_audit_watch() -> None:
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 436" in log_md and "research_stack_audit_watch" in log_md
 
+
+def test_batch438_tip_or_eng_idle() -> None:
+    """Batch 438: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH438_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "438"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 438
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH438_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH438_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "438"
+    assert unfreeze.get("lemma_closed") is False
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 438
+    assert verify.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 438)
+    assert "STATUS (Batch 438 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 438)
