@@ -38483,3 +38483,39 @@ def test_batch496_tip_or_eng_idle() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         brief = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert brief.get("uploaded") is False
+
+
+def test_batch497_tip_or_eng_living_script() -> None:
+    """Batch 497: tip_or_eng living script_stale republish + unfreeze 496→497 @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH497_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "497"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("flipped_anything") is False
+    assert brief.get("tip_match") is True
+    assert brief.get("action") == "living_script_stale_unfreeze"
+    assert brief.get("defect_shipped") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH497_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    assert hunt.get("action") == "living_script_stale_unfreeze"
+    living = json.loads((ROOT / "portable" / "BATCH497_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("script_stale") == 1
+    assert living.get("uploaded") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH497_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "497"
+    assert unfreeze.get("from_batch") == "496"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH497_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 497
+    assert verify.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 497)
+    assert "STATUS (Batch 497 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 497)
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False

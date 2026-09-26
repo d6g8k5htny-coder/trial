@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": "496",
+  "batch": 497,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T11:54:08Z",
-      "tip_sha": "878eb9a337a61615c4b3c9c1726baac64a5c66eb",
+      "pushed_at": "2026-09-26T11:55:46Z",
+      "tip_sha": "bcf1515a159fe105fbc269863dc5c55a8dd2ed6e",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T11:54:08Z",
+  "generated_at_utc": "2026-09-26T11:55:46Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 496: tip_or_eng idle_no_commit hunt-negative + unfreeze 495\u2192496; inv tip @878eb9a; durable 8/8; lemma_closed=false.",
+  "note": "Batch 497: tip_or_eng living script_stale republish + unfreeze 496\u2192497; inv tip @bcf1515a; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
