@@ -24008,3 +24008,20 @@ def test_batch395_post_tip_sync_pin_living() -> None:
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     assert "STATUS (Batch 395 post-tip-sync-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+def test_batch395_tip_or_eng_living() -> None:
+    """Batch 395: tip_or_eng living script_stale republish @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH395_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "395"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "living_script_stale_republish"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH395_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    assert living.get("uploaded") is True
+    hunt = json.loads((ROOT / "portable" / "BATCH395_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is True
+    assert "STATUS (Batch 395 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 395)
