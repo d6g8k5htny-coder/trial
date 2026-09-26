@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 376 — research_stack_audit_watch_no_promotion @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research audit watch: open_premises=13 open_lemmas=1 open_prizes=3; STATUS_GUARD living; delta vs BATCH375 all 0 — no-promotion evidence only.
+- Artifacts: `BATCH376_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 375 — tip_sync_watch idle_no_commit @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
