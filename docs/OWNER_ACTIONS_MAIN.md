@@ -1,3 +1,7 @@
+## STATUS (Batch 379 idle-living-unfreeze)
+
+Hardening tip **stable** @ `ebedb780`. Batch 379 idle + living script_stale republish + unfreeze 378→379. Evidence: `portable/BATCH379_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 378 research-audit-watch)
 
 Hardening tip **stable** @ `ebedb78`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH377; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH378_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

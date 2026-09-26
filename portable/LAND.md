@@ -1,3 +1,7 @@
+## STATUS (Batch 379 idle-living-unfreeze)
+
+tip `ebedb780` tip_match=true; idle tip-stable; living script_stale republish; unfreeze 378→379; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 378 research-audit-watch)
 
 tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.

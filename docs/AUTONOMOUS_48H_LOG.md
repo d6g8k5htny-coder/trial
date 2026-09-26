@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 379 — idle tip-stable + living script_stale + unfreeze 378→379 @ebedb780 (2026-09-26)
+
+- Tip stable tip_match=1 @ebedb780; Path C IDLE@0019; durable 8/8.
+- Living script_stale=1 after Batch 378 lands — force-uploaded `batch241-path-c-bundle`.
+- Unfreeze last-resort + VERIFY + wake 378→379. No research flip. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 378 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
 
 - Tip stable @ `ebedb78` tip_match=true after tip-sync; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

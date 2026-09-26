@@ -22129,3 +22129,35 @@ def test_batch378_followup_status_guard_living() -> None:
     assert _living_tip(base)
     land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 followup)" in land
+
+
+def test_batch379_idle_tip_sync_watch() -> None:
+    """Batch 379: idle tip-stable + living republish + unfreeze @ebedb780."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH379_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "379"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    living = json.loads((ROOT / "portable" / "BATCH379_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_force_republish"
+    assert living.get("living_tag") == "batch241-path-c-bundle"
+    assert living.get("lemma_closed") is False
+    unfreeze = json.loads((ROOT / "portable" / "BATCH379_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "379"
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 379)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 379
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 379
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 379
+    assert verify.get("lemma_closed") is False
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 379)
+    assert "STATUS (Batch 379 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
