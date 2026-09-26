@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 387 — tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 sources (2026-09-26)
+
+- Tip **moved** @ hardening `2f7a5a9` (Recover exact SIDE24 theorem-chain sources). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip-sync keep-prior; apply_all 0018/0019 semantic already-applied; `_LIVING_TIPS+=2f7a5a9`; STATUS_GUARD tip refresh; unfreeze 386→387. Follow-up after research audit peer. Inventable/research NOT promoted. Goal OPEN.
+
+
+
 ### Batch 387 — research_stack_audit_watch_no_promotion @7caac25 (2026-09-26)
 
 - Tip stable tip_match=1 @ `7caac254`; open stack 13/1/3; delta vs Batch 385 = 0; STATUS_GUARD living (no lag refresh); no promotion; evidence JSON only.

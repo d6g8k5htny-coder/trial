@@ -1,3 +1,7 @@
+## STATUS (Batch 387 tip-sync)
+
+tip `2f7a5a9` tip_match=true after tip-sync 7caac25→2f7a5a9; keep-prior; STATUS_GUARD living; unfreeze 386→387; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 387 research-audit-watch)
 
 tip `7caac254` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; delta 0 vs BATCH385; STATUS_GUARD living; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.

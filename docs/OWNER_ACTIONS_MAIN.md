@@ -1,3 +1,7 @@
+## STATUS (Batch 387 tip-sync)
+
+Hardening tip **moved** @ `2f7a5a9` (SIDE24 theorem-chain sources). Tip-sync keep-prior; STATUS_GUARD tip refresh; unfreeze 386→387. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 387 research-audit-watch)
 
 Hardening tip **stable** @ `7caac254`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH385; STATUS_GUARD living (no lag); no AUDIT re-copy. Evidence: `portable/BATCH387_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
