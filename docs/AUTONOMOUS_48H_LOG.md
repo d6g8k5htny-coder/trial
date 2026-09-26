@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 370 — tip_or_eng inv tip re-pin + living republish @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: inv tip lagged beyond parent after peer merges; living script_stale. PRESERVE_DURABLE re-pin→HEAD + living republish + unfreeze 369→370. Follow-up to tip/eng peer. Goal OPEN.
+
+
 ### Batch 369 — research_stack_audit_watch_no_promotion @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

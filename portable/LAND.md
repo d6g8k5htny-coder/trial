@@ -1,3 +1,7 @@
+## STATUS (Batch 370 tip-eng)
+
+tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent + living republish; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 369 research-audit-watch)
 
 tip `1ae02b9` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.

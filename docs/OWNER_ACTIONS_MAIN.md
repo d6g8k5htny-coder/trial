@@ -1,3 +1,7 @@
+## STATUS (Batch 370 tip-eng)
+
+Hardening tip **stable** @ `1ae02b9`. Trial inv tip lagged beyond parent after peer research/tip-eng merges; living script_stale. PRESERVE_DURABLE re-pin + batch241 republish; unfreeze 369→370. Evidence: `portable/BATCH370_TIP_ENG_*.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 369 research-audit-watch)
 
 Hardening tip **stable** @ `1ae02b9`. Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH367; STATUS_GUARD living; no full AUDIT re-copy. Evidence: `portable/BATCH369_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.

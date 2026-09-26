@@ -20603,7 +20603,8 @@ def test_batch369_idle_tip_sync_watch() -> None:
     inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
         encoding="utf-8"
     )
-    assert 'return "369"' in inv_py
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 369
     verify = json.loads(
         (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
             encoding="utf-8"
@@ -20754,3 +20755,53 @@ def test_batch369_research_stack_audit_watch() -> None:
     assert "STATUS (Batch 369 research-audit-watch)" in owner
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 369" in log_md and "research_stack_audit_watch" in log_md
+
+
+def test_batch370_tip_or_eng_inv_living() -> None:
+    """Batch 370: tip_or_eng inv tip re-pin + living republish @1ae02b9."""
+    import json
+
+    brief = json.loads(
+        (ROOT / "portable" / "BATCH370_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert brief.get("batch") == "370"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert brief.get("tip_match") is True
+    assert brief.get("script_stale_after") == 0
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH370_TIP_ENG_HUNT.json").read_text(encoding="utf-8")
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH370_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8")
+    )
+    assert evidence.get("upload_ok") is True
+    inv = json.loads(
+        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
+    )
+    assert int(str(inv.get("batch") or "0")) >= 370
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    assert inv.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 370)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(
+        encoding="utf-8"
+    )
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 370
+    verify = json.loads(
+        (ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert int(verify.get("refresh_batch") or 0) >= 370
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 370)
+    assert "STATUS (Batch 370 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(
+        encoding="utf-8"
+    )
+    assert "STATUS (Batch 370 tip-eng)" in (
+        ROOT / "docs" / "OWNER_ACTIONS_MAIN.md"
+    ).read_text(encoding="utf-8")

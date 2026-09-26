@@ -1,0 +1,23 @@
+{
+  "batch": "370",
+  "generated_at_utc": "2026-09-26T00:08:05Z",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip": "1ae02b9",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "inventable_promoted": false,
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "eng_inv_tip_repin_and_living_republish",
+  "defect_id": "inv_tip_lag_beyond_parent_after_peer_merges_plus_living_script_stale",
+  "trial_tip_before": "e18bd82f952372c51ccc418fa1e1b78370efc74c",
+  "trial_tip_after": "ec2ec7e0029c8d2cd2664a2ce9e31189fa13fa60",
+  "living_bytes": 698723,
+  "living_sha256": "3ca8877ca657a94527c190e4d9cf9d7e10a16e32026e5174bfc0b62299a14d86",
+  "script_stale_after": 0,
+  "coordinator_followup_to": "bc-dfd45dde-ca70-5895-8796-c35435b073eb"
+}
