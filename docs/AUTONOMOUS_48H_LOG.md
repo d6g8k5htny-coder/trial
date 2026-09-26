@@ -1,5 +1,12 @@
 # Autonomous 48h work log
 
+### Batch 500 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent restore: single living `=== Batch N — PERMANENT` header in print_owner.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @b682077. Inventable skipped. Goal OPEN.
+
+
 
 ### Batch 500 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
