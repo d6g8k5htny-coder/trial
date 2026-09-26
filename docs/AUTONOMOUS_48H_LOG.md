@@ -1,5 +1,12 @@
 # Autonomous 48h work log
 
+### Batch 513 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 514 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`keep_prior`; inv parent-pin @af92ea5. Inventable skipped. Goal OPEN.
+
+
 ### Batch 513 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 512/511/510/508/507 = 0 (research496/499/501/503/509 gap); STATUS_GUARD living; no promotion; evidence JSON only.
