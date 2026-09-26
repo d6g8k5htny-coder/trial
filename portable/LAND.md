@@ -1,3 +1,7 @@
+## STATUS (Batch 468 tip-eng-idle)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 467→468; inv parent-pin; VERIFY 468; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 467 tip-eng-idle)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng idle_no_commit; living current; unfreeze 466→467; inv parent-pin; VERIFY 467; durable 8/8; lemma_closed=false; goal OPEN.

@@ -1,3 +1,7 @@
+## STATUS (Batch 468 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 467→468; inv parent-pin. Evidence: `portable/BATCH468_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 467 tip-eng-idle)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 466→467; inv parent-pin. Evidence: `portable/BATCH467_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.

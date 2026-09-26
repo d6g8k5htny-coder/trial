@@ -1,5 +1,10 @@
 # Autonomous 48h work log
 
+### Batch 468 — tip_or_eng idle_no_commit hunt-negative + unfreeze 467→468 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 467→468; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after Batch467 parent-pin follow-up; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 467 — tip_or_eng idle_no_commit hunt-negative + unfreeze 466→467 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 466→467; living current need_upload=0; `lemma_closed=false`.
