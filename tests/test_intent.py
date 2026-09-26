@@ -37228,6 +37228,78 @@ def test_batch548_research_stack_audit_watch() -> None:
         assert soft.get("uploaded") is False
 
 
+def test_batch569_research_stack_audit_watch() -> None:
+    """Batch 569: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 568/566/565/564/563."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH569_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "569"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ("delta_vs_batch568", "delta_vs_batch566", "delta_vs_batch565", "delta_vs_batch564", "delta_vs_batch563"):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH569_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH569_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "569" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH569_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "569" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH569_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 569)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 569)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 569 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 569 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 569" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def test_batch568_research_stack_audit_watch() -> None:
     """Batch 568: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 566/565/564/563/562."""
     import json
