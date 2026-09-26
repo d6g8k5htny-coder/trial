@@ -24098,7 +24098,6 @@ def test_batch396_tip_or_eng_idle() -> None:
     assert "STATUS (Batch 396 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
-\n
 
 def test_batch396_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 396: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; inv JSON valid."""
