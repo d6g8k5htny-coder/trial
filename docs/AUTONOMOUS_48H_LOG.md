@@ -6,6 +6,11 @@
 - Hunt living negative (tar-noise only) after tip/eng593/research593 Soft Intent preserve; Soft Intent single === header →594; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 
+### Batch 595 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 594/593/592/591/590 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH595_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@595; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 594 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 593/592/591/590/589 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
