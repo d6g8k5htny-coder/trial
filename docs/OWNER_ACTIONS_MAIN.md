@@ -1,3 +1,7 @@
+## STATUS (Batch 396 tip-eng-idle-continue)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: hunt negative (living current; inv parent_pin; VERIFY/last-resort 398). `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
 ## STATUS (Batch 398 tip-eng-living)
 
 Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after peer SyntaxError-fix release race; republish; unfreeze 396→398. `lemma_closed=false`. Goal OPEN.

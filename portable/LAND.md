@@ -1,3 +1,7 @@
+## STATUS (Batch 396 tip-eng-idle-continue)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng continue hunt negative after Batch398 living; inv parent-pin; VERIFY 398; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 398 tip-eng-living)
 
 tip `2f7a5a9` tip_match=true; living script_stale republish; inv parent-pin; unfreeze 396→398; durable 8/8; lemma_closed=false; goal OPEN.

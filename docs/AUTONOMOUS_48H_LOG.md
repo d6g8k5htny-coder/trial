@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 396 — tip_or_eng idle_no_commit continue hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 398; `lemma_closed=false`.
+- Peer Batch398 cleared living script_stale. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 398 — tip_or_eng living script_stale republish + unfreeze 396→398 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
