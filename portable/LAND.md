@@ -2,6 +2,10 @@
 
 tip `1ae02b9` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
 
+## STATUS (Batch 376 tip-sync-idle)
+
+tip `1ae02b9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 376 idle-living-unfreeze)
 
 tip `1ae02b9` tip_match=true; idle tip-stable; living tgz content-delta republish; unfreeze 375→376; durable 8/8; lemma_closed=false; goal OPEN.
