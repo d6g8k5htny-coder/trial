@@ -1,3 +1,7 @@
+## STATUS (Batch 406 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 406 tip-eng-living)
 
 tip `2f7a5a9` tip_match=true; living release tgz asset missing → republish; unfreeze 405→406; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
