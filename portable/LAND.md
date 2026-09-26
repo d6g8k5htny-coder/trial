@@ -2,6 +2,10 @@
 
 tip `ebedb780` tip_match=true; inv tip re-pin after research; living script_stale republish; unfreeze 380→381; durable 8/8; lemma_closed=false; goal OPEN.
 
+## STATUS (Batch 380 tip-sync-idle)
+
+tip `ebedb780` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 380 research-audit-watch)
 
 tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.

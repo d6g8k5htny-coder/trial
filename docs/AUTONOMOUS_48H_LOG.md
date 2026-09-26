@@ -26,11 +26,16 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Timer tip_or_eng: tip stable @ebedb780; research land broke parent_pin; living script_stale=1.
 - Re-pin inv; force living upload; unfreeze last-resort/VERIFY/wake 380→381. Soften Intent hard ebedb78 tip pins to living. No research flip. Goal OPEN.
 
+### Batch 380 — tip_sync_watch idle_no_commit @ebedb780 (2026-09-26)
+
+- Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; inv parent-pin; inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
 ### Batch 380 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
 
 - Tip stable @ `ebedb78` tip_match=true; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
 - Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH379; STATUS_GUARD living; no full AUDIT re-copy. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN.
+
 
 ### Batch 380 — idle tip-stable + living tgz + unfreeze 379→380 @ebedb780 (2026-09-26)
 
