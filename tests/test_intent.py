@@ -20615,6 +20615,40 @@ def test_batch369_living_script_stale_republish() -> None:
     assert "STATUS (Batch 369 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
+def test_batch369_tip_or_eng_continue() -> None:
+    """Batch 369: tip_or_eng — inv tip re-pin beyond parent after living + living republish."""
+    import json
+    import re
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert int(str(inv.get("batch") or "0")) >= 369
+    assert inv.get("lemma_closed") is False
+    assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
+    trial = next(d for d in (inv.get("details") or []) if str(d.get("name") or "").endswith("/trial"))
+    tip = str(trial.get("tip_sha") or "")
+    assert tip and not tip.startswith("f73ab9a")
+    brief = json.loads((ROOT / "portable" / "BATCH369_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "369" and brief.get("lemma_closed") is False
+    assert brief.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert brief.get("trial_tip_matches_live_head") is True
+    assert brief.get("lag_beyond_parent") is True
+    assert brief.get("goal") == "OPEN"
+    assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH369_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads((ROOT / "portable" / "BATCH369_TIP_ENG_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "eng_inv_tip_repin_and_living_republish"
+    assert evidence.get("tip_match") is True
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 369)
+    helper = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in re.findall(r'return "(\d+)"', helper)]
+    assert _inv_rets and max(_inv_rets) >= 369
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 369)
+    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
 def test_batch369_research_stack_audit_watch() -> None:
     """Batch 369: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 367."""
     import json

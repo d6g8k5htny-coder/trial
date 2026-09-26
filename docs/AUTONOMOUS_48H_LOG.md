@@ -28,10 +28,17 @@ Path C dry-run ready on hardening; permanent window recorded.
 - Artifacts: `BATCH369_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
 
 
+### Batch 369 — tip_or_eng: inv tip re-pin beyond parent after living republish @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`; goal OPEN.
+- Eng: trial tip lagged beyond parent after living republish land; living CRITICAL scripts drifted vs release — PRESERVE_DURABLE re-pin→HEAD + batch241 force upload. Intent living >=N. Inventable skipped. NEVER flip research.
+
+
 ### Batch 369 — living script_stale republish after unfreeze idle @1ae02b9 (2026-09-26)
 
 - Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; inv parent-pinned; `lemma_closed=false`.
 - Living CRITICAL scripts drifted after Batch 369 unfreeze idle — republished batch241 (real script_stale, not 1-byte thrash). Inventable skipped. Goal OPEN.
+
 
 ### Batch 369 — idle_no_commit tip-stable watch @1ae02b9 (2026-09-25)
 

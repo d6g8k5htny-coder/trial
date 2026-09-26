@@ -7,6 +7,10 @@ python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 1ae02b9ab
 python3 -m pytest tests/test_intent.py::test_batch369_research_stack_audit_watch -q
 ```
 
+## STATUS (Batch 369 tip-eng)
+
+Hardening tip **stable** @ `1ae02b9`. Eng: inv tip lagged beyond parent after living republish land; living CRITICAL script drift cleared via batch241 upload. PRESERVE_DURABLE re-pin→HEAD. Intent living >=N. `lemma_closed=false`. Goal OPEN. action=`eng_inv_tip_repin_and_living_republish`.
+
 ## STATUS (Batch 369 living-republish)
 
 Hardening tip **stable** @ `1ae02b9`. Living `script_stale=1` after unfreeze idle (refresh/print_owner CRITICAL drift) — batch241 republish. Not 1-byte thrash. `lemma_closed=false`. Goal OPEN. action=`eng_living_script_stale_republish`.
