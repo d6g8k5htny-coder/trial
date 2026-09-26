@@ -1,3 +1,7 @@
+## STATUS (Batch 394 tip-eng-idle-after-post)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch394 post-idle pin/living/unfreeze; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 394 post-idle-pin-living)
 
 Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living + unfreeze 393→394. `lemma_closed=false`. Goal OPEN.

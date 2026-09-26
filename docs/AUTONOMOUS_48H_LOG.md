@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 394 — tip_or_eng idle_no_commit after post-idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 394; `lemma_closed=false`.
+- Hunt negative after Batch394 post-idle peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 394 — post-idle inv tip pin + living + unfreeze 393→394 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1; Batch394 tip/eng idle left inv tip lag (stamps still 393).

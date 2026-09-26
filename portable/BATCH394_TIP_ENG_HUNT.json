@@ -8,12 +8,12 @@
   "defect_found": false,
   "defect_shipped": false,
   "goal": "OPEN",
-  "generated_at_utc": "2026-09-26T02:57:02Z",
+  "generated_at_utc": "2026-09-26T02:58:58Z",
   "living": {
     "tip_stale": 0,
     "script_stale": 0,
     "need_upload": 0
   },
   "inv_parent_pin": true,
-  "verify_refresh_batch": 393
+  "verify_refresh_batch": 394
 }

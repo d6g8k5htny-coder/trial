@@ -1,3 +1,7 @@
+## STATUS (Batch 394 tip-eng-idle-after-post)
+
+tip `2f7a5a9` tip_match=true; tip_or_eng hunt negative after post-idle pin/living; living current; inv parent-pin; VERIFY 394; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 394 post-idle-pin-living)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin + living republish + unfreeze 393→394; durable 8/8; lemma_closed=false; goal OPEN.

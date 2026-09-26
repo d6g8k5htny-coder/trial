@@ -23870,3 +23870,20 @@ def test_batch394_post_idle_pin_living() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 394)
 
+def test_batch394_tip_or_eng_idle_after_post() -> None:
+    """Batch 394: tip_or_eng idle_no_commit after post-idle @2f7a5a9."""
+    import json
+    idle = json.loads((ROOT / "portable" / "BATCH394_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "394"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 394
+    assert _living_tip(str(idle.get("hardening_tip") or ""))
+    hunt = json.loads((ROOT / "portable" / "BATCH394_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert int(hunt.get("verify_refresh_batch") or 0) >= 394
+    assert "STATUS (Batch 394 tip-eng-idle-after-post)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 394)
