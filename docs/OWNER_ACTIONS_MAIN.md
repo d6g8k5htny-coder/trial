@@ -1,3 +1,13 @@
+## STATUS (Batch 388 research-audit-watch)
+
+Hardening tip **stable** @ `2f7a5a9` after tip-sync. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH387; STATUS_GUARD living (no lag); no AUDIT re-copy. Evidence: `portable/BATCH388_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch388_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 387 tip-sync)
 
 Hardening tip **moved** @ `2f7a5a9` (SIDE24 theorem-chain sources). Tip-sync keep-prior; STATUS_GUARD tip refresh; unfreeze 386→387. `lemma_closed=false`. Goal OPEN.

@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 388 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f` after Batch 387 tip-sync; open stack 13/1/3; delta vs Batch 387 = 0; STATUS_GUARD living (no lag); no promotion; evidence JSON only.
+- Artifacts: `BATCH388_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; inv parent-pin @53d029b. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
 ### Batch 387 — tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 sources (2026-09-26)
 
 - Tip **moved** @ hardening `2f7a5a9` (Recover exact SIDE24 theorem-chain sources). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
