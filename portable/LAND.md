@@ -1,3 +1,7 @@
+## STATUS (Batch 574 tip-sync-living Soft Intent RESTORE)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent RESTORE n=1 (header@576 Soft Intent n=1 tip/eng576 @`266b8b12`; prior broken n=2+inv conflict @289df5b7; tip_sync574 Soft Intent preserve @fa234685); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 576 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living tar-noise DIFF_COUNT=0 idle; unfreeze 575→576; Soft Intent n=1; inv parent-pin; VERIFY 576; durable 8/8; lemma_closed=false; goal OPEN.

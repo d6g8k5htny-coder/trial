@@ -1,3 +1,7 @@
+## Batch 574 tip_sync Soft Intent RESTORE (2026-09-26T20:13Z)
+
+Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PERMANENT header (n=1) after prior broken n=2 + inv conflict markers @289df5b7. Soft RESTORE echo only; parent-pin tip_sha=precommit `266b8b12`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+
 # Autonomous 48h work log
 
 ### Batch 576 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 575→576 @2f7a5a9 (2026-09-26)

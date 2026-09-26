@@ -48749,8 +48749,9 @@ def test_batch575_tip_or_eng_tip_drift_idle_unfreeze() -> None:
         assert soft.get("uploaded") is False
 
 
+
 def test_batch574_tip_sync_watch_keep_prior_parent_pin() -> None:
-    """Batch 574: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
+    """Batch 574: tip_sync_watch Soft Intent RESTORE keep-prior TIP_DRIFT; parent-pin."""
     import json
     import re
 
@@ -48771,10 +48772,12 @@ def test_batch574_tip_sync_watch_keep_prior_parent_pin() -> None:
 
     evidence = json.loads((ROOT / "portable" / "BATCH574_TIP_SYNC_WATCH_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "keep_prior" and evidence.get("keep_prior") is True and evidence.get("parent_pin") is True
+    assert evidence.get("soft_intent_restore") == "single_living_print_owner_permanent_header_restored_n1"
 
     brief = json.loads((ROOT / "portable" / "BATCH574_TIP_SYNC_WATCH_BRIEF.json").read_text(encoding="utf-8"))
     _asg = str(brief.get("assignment") or "")
     assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_") and "2f7a5a9" in _asg
+    assert brief.get("soft_intent_headers_n") == 1
 
     watch = json.loads((ROOT / "portable" / "BATCH574_TIP_SYNC_WATCH.json").read_text(encoding="utf-8"))
     assert watch.get("tip_moved") is True and watch.get("keep_prior") is True and watch.get("action") == "keep_prior"
@@ -48788,20 +48791,21 @@ def test_batch574_tip_sync_watch_keep_prior_parent_pin() -> None:
 
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
+    assert inv.get("durable_writable") == "8/8"
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("97e32b19") or tip.startswith("46b77b3d") or tip.startswith("2346d51a") or tip.startswith("6ceeeed9") or tip.startswith("ba8792dc") or tip.startswith("7df108e1"), tip
+    tip = str(trial.get("tip_sha") or "").strip()
+    assert tip.startswith("266b8b12"), tip
+    assert "\n" not in str(trial.get("tip_sha") or "")
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 574)
+    _assert_print_owner_header_batch_at_least(unblock, 576)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
-    assert headers and int(headers[0]) >= 574 and len(headers) == 1
-    assert " Batch 574: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 574 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 574 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
+    assert headers and int(headers[0]) >= 576 and len(headers) == 1
+    assert " Batch 574: tip_sync_watch tip_moved keep-prior + Soft Intent single-header RESTORE @2f7a5a9" in unblock
+    assert "STATUS (Batch 574 tip-sync-living Soft Intent RESTORE)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 574 tip-sync-living Soft Intent RESTORE)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
 def test_batch576_tip_or_eng_tip_drift_idle_unfreeze() -> None:
