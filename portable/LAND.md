@@ -1,3 +1,7 @@
+## STATUS (Batch 556 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@558 tip/eng558 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 558 tip-eng-keep-prior)
 
 tip BASE `2f7a5a9` LIVE `348754f` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 557→558; Soft Intent n=1; inv parent-pin; VERIFY 558; durable 8/8; lemma_closed=false; goal OPEN.
