@@ -1,5 +1,11 @@
 ## Batch 588 tip_sync Soft Intent preserve (2026-09-26T20:24Z)
 
+### Batch 578 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 577/576/575/574/573 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH578_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@578; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
 Soft Intent preserve tip_moved keep-prior @ BASE `2f7a5a9`: single living === Batch 578 PERMANENT header (n=1); soft tip_sync588 echo only; parent-pin tip_sha=precommit `d4bda504`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
 
 
