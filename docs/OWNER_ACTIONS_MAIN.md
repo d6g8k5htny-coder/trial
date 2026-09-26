@@ -1,3 +1,13 @@
+## STATUS (Batch 609 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 608→609; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH609_TIP_ENG_*.json` + `BATCH609_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch609_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
 ## STATUS (Batch 608 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH606/605/604/603/601 (covers research607 tip-race gap; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH608_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
