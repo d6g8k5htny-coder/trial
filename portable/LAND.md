@@ -1,3 +1,7 @@
+## STATUS (Batch 378 research-audit-watch)
+
+tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 378 tip-sync)
 
 tip `ebedb78` tip_match=true; tip-sync keep-prior 1ae02b9→ebedb78 after main #98; apply_all 0018/0019 semantic already-applied; durable 8/8; lemma_closed=false; goal OPEN.
