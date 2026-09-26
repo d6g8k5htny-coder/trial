@@ -1,7 +1,7 @@
 {
-  "batch": "557",
+  "batch": "556",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "live_tip": "7cf55ad82e48c7b00c5f4f9cd09ee94a8a1a2b1a",
+  "live_tip": "3feceafef91fe1becdc3afc0823eacdcaf51657b",
   "tip_match": false,
   "aligned": false,
   "tip_moved": true,
@@ -10,7 +10,7 @@
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "parent_pin": true,
-  "generated_at_utc": "2026-09-26T17:47:47Z",
+  "generated_at_utc": "2026-09-26T17:55:00Z",
   "action": "keep_prior",
   "goal_complete": false,
   "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9"

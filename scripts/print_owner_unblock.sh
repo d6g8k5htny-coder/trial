@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 558 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 558: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 557/556/555/554/553; covers research496/499/501/503/509/514/518/531/538/542/544/550 gap"
 echo " Batch 558: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 557→558 @2f7a5a9 (LIVE 348754f)"
 echo " Batch 557: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 555: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
@@ -55,6 +56,7 @@ echo " Batch 557: research_stack_audit_watch_no_promotion — open stack 13/1/3;
 echo " Batch 556: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 555/554/553/552/551; covers research496/499/501/503/509/514/518/531/538/542/544/550 gap"
 echo " Batch 555: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 554/553/552/551/549; covers research496/499/501/503/509/514/518/531/538/542/544/550 gap"
 echo " Batch 555: tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 554→555 @2f7a5a9 (LIVE d8a0f88)"
+echo " Batch 556: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 554: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 553: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9"
 echo " Batch 554: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 553/552/551/549/548; covers research496/499/501/503/509/514/518/531/538/542/544/550 gap"

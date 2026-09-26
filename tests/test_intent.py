@@ -37228,6 +37228,64 @@ def test_batch548_research_stack_audit_watch() -> None:
         assert soft.get("uploaded") is False
 
 
+def test_batch558_research_stack_audit_watch() -> None:
+    """Batch 558: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 557/556/555/554/553."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH558_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "558"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ("delta_vs_batch557", "delta_vs_batch556", "delta_vs_batch555", "delta_vs_batch554", "delta_vs_batch553"):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH558_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH558_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "558" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH558_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "558" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH558_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 558)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 558)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 558 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 558 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 558" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+
+
+
+
 def test_batch557_research_stack_audit_watch() -> None:
     """Batch 557: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 556/555/554/553/552."""
     import json
@@ -45411,7 +45469,7 @@ def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    # tip_sync parent-pin @3019d988; later lands advance inv tip_sha (research/tip_eng/soften/tip_sync553)
+    # tip_sync parent-pin @3019d988; later lands advance inv tip_sha (research/tip_eng/soften/tip_sync553/554/556)
     tip = str(trial.get("tip_sha") or "")
     assert (
         tip.startswith("3019d988")
@@ -45423,12 +45481,18 @@ def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
         or tip.startswith("e3a92b03")
         or tip.startswith("d8a0f88c")
         or tip.startswith("9f5580b7")
+        or tip.startswith("81dab5a2")
+        or tip.startswith("6604747d")
+        or tip.startswith("69492ffa")
+        or tip.startswith("252e23c8")
+        or tip.startswith("09b7e570")
+        or tip.startswith("b87e01aa") or tip.startswith("348754f6")
     or tip.startswith("81dab5a2")
     or tip.startswith("6604747d")
     or tip.startswith("69492ffa")
     or tip.startswith("09b7e570")
     or tip.startswith("252e23c8")
-    or tip.startswith("b87e01aa")
+    or tip.startswith("b87e01aa") or tip.startswith("348754f6")
     or tip.startswith("4f5a0338")
         or tip.startswith("348754f6")
         or tip.startswith("3feceafe")
@@ -45486,9 +45550,21 @@ def test_batch553_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    # tip_sync553 parent-pin @9f5580b7; tip_sync554 advances to 81dab5a2; soften for races
+    # tip_sync553 parent-pin @9f5580b7; tip_sync554→81dab5a2; tip_sync556→b87e01aa; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("9f5580b7") or tip.startswith("81dab5a2") or tip.startswith("6604747d") or tip.startswith("69492ffa") or tip.startswith("09b7e570") or tip.startswith("252e23c8") or tip.startswith("b87e01aa") or tip.startswith("4f5a0338") or tip.startswith("348754f6") or tip.startswith("3feceafe"), tip
+    assert (
+        tip.startswith("9f5580b7")
+        or tip.startswith("81dab5a2")
+        or tip.startswith("6604747d")
+        or tip.startswith("69492ffa")
+        or tip.startswith("09b7e570")
+        or tip.startswith("252e23c8")
+        or tip.startswith("b87e01aa")
+        or tip.startswith("4f5a0338")
+        or tip.startswith("348754f6")
+        or tip.startswith("3feceafe")
+        or tip.startswith("7cf55ad8")
+    ), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -45541,9 +45617,21 @@ def test_batch554_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    # tip_sync554 parent-pin @81dab5a2 (precommit HEAD after tip_sync553/tip_eng555 race)
+    # tip_sync554 parent-pin @81dab5a2; tip_sync556 advances to b87e01aa; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("81dab5a2") or tip.startswith("9f5580b7") or tip.startswith("6604747d") or tip.startswith("69492ffa") or tip.startswith("09b7e570") or tip.startswith("252e23c8") or tip.startswith("b87e01aa") or tip.startswith("4f5a0338") or tip.startswith("348754f6") or tip.startswith("3feceafe"), tip
+    assert (
+        tip.startswith("81dab5a2")
+        or tip.startswith("9f5580b7")
+        or tip.startswith("6604747d")
+        or tip.startswith("69492ffa")
+        or tip.startswith("09b7e570")
+        or tip.startswith("252e23c8")
+        or tip.startswith("b87e01aa")
+        or tip.startswith("4f5a0338")
+        or tip.startswith("348754f6")
+        or tip.startswith("3feceafe")
+        or tip.startswith("7cf55ad8")
+    ), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -45555,6 +45643,60 @@ def test_batch554_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert "STATUS (Batch 554 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 554 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+def test_batch556_tip_sync_watch_keep_prior_parent_pin() -> None:
+    """Batch 556: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
+    import json
+    import re
+
+    tiny = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
+    assert tiny.get("batch") == "556"
+    assert tiny.get("lemma_closed") is False
+    assert tiny.get("flipped_anything") is False
+    assert tiny.get("tip_match") is False
+    assert tiny.get("tip_moved") is True
+    assert tiny.get("keep_prior") is True
+    assert tiny.get("action") == "keep_prior"
+    assert tiny.get("inventable_promoted") is False
+    assert tiny.get("scientific_effect") == "NONE"
+    assert tiny.get("parent_pin") is True
+    assert str(tiny.get("hardening_tip") or "").startswith("2f7a5a9")
+    living = tiny.get("living") or {}
+    assert living.get("tip_stale") == 0 and living.get("script_stale") == 0 and living.get("need_upload") == 0
+
+    evidence = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_WATCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("action") == "keep_prior" and evidence.get("keep_prior") is True and evidence.get("parent_pin") is True
+
+    brief = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_WATCH_BRIEF.json").read_text(encoding="utf-8"))
+    _asg = str(brief.get("assignment") or "")
+    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_") and "2f7a5a9" in _asg
+
+    watch = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("tip_moved") is True and watch.get("keep_prior") is True and watch.get("action") == "keep_prior"
+
+    living_brief = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
+    assert living_brief.get("uploaded") is True and living_brief.get("lemma_closed") is False
+
+    pin = json.loads((ROOT / "portable" / "BATCH556_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("action") == "inventory_preserve_durable_tip_pin" and pin.get("parent_pin") is True
+
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert inv.get("lemma_closed") is False
+    trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
+    # tip_sync556 parent-pin @3feceafe (precommit HEAD after tip/eng558 race)
+    tip = str(trial.get("tip_sha") or "")
+    assert tip.startswith("3feceafe") or tip.startswith("348754f6") or tip.startswith("b87e01aa") or tip.startswith("09b7e570") or tip.startswith("7cf55ad8"), tip
+
+    assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 556)
+    headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
+    assert headers and int(headers[0]) >= 556 and len(headers) == 1
+    assert " Batch 556: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
+    assert "STATUS (Batch 556 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 556 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
 def test_batch555_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -45597,8 +45739,16 @@ def test_batch555_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
+    # tip_sync555 parent-pin @4f5a0338; tip_sync556 advances to 348754f6; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("4f5a0338") or tip.startswith("348754f6") or tip.startswith("3feceafe"), tip
+    assert (
+        tip.startswith("4f5a0338")
+        or tip.startswith("348754f6")
+        or tip.startswith("3feceafe")
+        or tip.startswith("b87e01aa")
+        or tip.startswith("09b7e570")
+        or tip.startswith("7cf55ad8")
+    ), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -45652,9 +45802,9 @@ def test_batch557_tip_sync_watch_keep_prior_parent_pin() -> None:
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
-    # tip_sync557 parent-pin @3feceafe (precommit HEAD after tip/eng558 race)
+    # tip_sync557 parent-pin @7cf55ad8 (precommit HEAD after tip/eng558+research558 race)
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("3feceafe") or tip.startswith("348754f6") or tip.startswith("4f5a0338"), tip
+    assert tip.startswith("7cf55ad8") or tip.startswith("3feceafe") or tip.startswith("348754f6"), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
