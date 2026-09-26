@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+
+### Batch 515 — tip_or_eng TIP_DRIFT keep-prior + unfreeze 514→515 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE `cd66a65` vs BASE `2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 514→515; living current need_upload=0; `lemma_closed=false`.
+- Hunt eng negative; Soft Intent single === header →515; inv parent_pin. Inventable skipped. action=`keep_prior`. Goal OPEN.
+
 ### Batch 513 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
 
 - TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
