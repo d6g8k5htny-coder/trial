@@ -1,3 +1,7 @@
+## STATUS (Batch 604 tip-eng parent-pin repair)
+
+tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng604 already on main @d9235e7b VERIFY604 Soft Intent n=1; inv parent-pin REPAIR tip_sha→d9235e7b (=precommit); durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 604 tip-eng-keep-prior)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 603→604; Soft Intent n=1; inv parent-pin; VERIFY 604; durable 8/8; lemma_closed=false; goal OPEN.

@@ -1,3 +1,12 @@
+## STATUS (Batch 604 tip-eng parent-pin repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng604 already landed VERIFY604 Soft Intent n=1; inv parent-pin REPAIR tip_sha→`d9235e7b`. Evidence: `portable/BATCH604_INV_TIP_PIN_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -c "import json; inv=json.load(open('portable/AI_AGENT_ACCESS_INVENTORY.json')); t=[d for d in inv['details'] if d['name'].endswith('/trial')][0]; print(t['tip_sha'])"
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
 ## STATUS (Batch 604 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 603→604; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH604_TIP_ENG_*.json` + `BATCH604_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
