@@ -1,3 +1,7 @@
+## STATUS (Batch 439 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch437 research; republish batch241; unfreeze 438→439; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 437 research-audit)
 
 Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH436/435/434/433; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH437_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
