@@ -21235,3 +21235,16 @@ def test_batch374_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 374)
     assert "STATUS (Batch 374 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch374_inv_tip_pin_after_research() -> None:
+    """Batch 374: inv tip parent_pin after research audit."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH374_INV_TIP_PIN_PARENT_TRUE_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "374"
+    assert brief.get("parent_pin") is True
+    assert brief.get("lemma_closed") is False
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    assert inv.get("lemma_closed") is False
+    assert str(inv.get("batch")) == "374" or int(str(inv.get("batch") or 0)) >= 374
