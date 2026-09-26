@@ -23926,3 +23926,16 @@ def test_batch394_tip_sync_watch_idle_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 394)
     assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+
+
+def test_batch394_post_tip_sync_inv_tip_pin() -> None:
+    """Batch 394: inv tip re-pin after tip_sync living @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH394_POST_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "394"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_tip_sync_living"
+    assert brief.get("parent_pin") is True
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert "STATUS (Batch 394 post-tip-sync-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
