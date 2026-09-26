@@ -23015,13 +23015,9 @@ def test_batch386_tip_or_eng_soften() -> None:
     assert living.get("action") == "living_tgz_content_delta_republish"
     unfreeze = json.loads((ROOT / "portable" / "BATCH386_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
     assert unfreeze.get("to_batch") == "386"
-    # softened historical pin in test_batch378_tip_sync_ebedb78 body
-    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
-    start = intent.index("def test_batch378_tip_sync_ebedb78")
-    end = intent.index("def test_batch378_research_stack_audit_watch")
-    body = intent[start:end]
-    assert 'assert "ebedb78" in base' not in body
-    assert "assert _living_tip(base)" in body
+    # Validate historical identity and current readiness without fixing source spelling.
+    test_batch378_tip_sync_ebedb78()
+    test_current_path_c_base_matches_bundle()
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 386)
     inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
