@@ -1,3 +1,7 @@
+## STATUS (Batch 401 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch400 post-living pin; republish batch241; unfreeze 400→401; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 400 post-living-inv-pin)
 
 Hardening tip **stable** @ . Post tip_or_eng living: inv parent-pin. . Goal OPEN.

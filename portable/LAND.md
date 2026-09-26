@@ -1,3 +1,7 @@
+## STATUS (Batch 401 tip-eng-living)
+
+tip `2f7a5a9` tip_match=true; living tgz_newer republish + unfreeze 400→401; inv parent-pin; VERIFY 401; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 400 post-living-inv-pin)
 
 tip  tip_match=true; inv tip re-pin after tip_or_eng living; durable 8/8; lemma_closed=false; goal OPEN.
