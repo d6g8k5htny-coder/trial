@@ -1,0 +1,13 @@
+{
+  "batch": "369",
+  "generated_at_utc": "2026-09-26T00:05:23Z",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "1ae02b9ab759fe5edb31ad04f2a47992a5dee2c5",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "eng_inv_tip_repin_and_living_republish",
+  "defect_id": "inventory_tip_lag_beyond_parent_after_batch369_living",
+  "defect_found": true,
+  "defect_shipped": true,
+  "goal": "OPEN"
+}

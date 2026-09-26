@@ -1,3 +1,7 @@
+## STATUS (Batch 369 tip-eng)
+
+tip `1ae02b9` tip_match=true; eng: inv tip re-pin beyond parent after living republish + living script_stale clear; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 369 living-republish)
 
 tip `1ae02b9` tip_match=true; living script_stale republish after Batch 369 unfreeze idle (CRITICAL script sha drift); durable 8/8; lemma_closed=false; goal OPEN.

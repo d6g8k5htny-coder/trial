@@ -1,0 +1,10 @@
+{
+  "batch": "369",
+  "generated_at_utc": "2026-09-26T00:05:23Z",
+  "defect_found": true,
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "action": "inventory_preserve_durable_tip_pin",
+  "goal": "OPEN",
+  "defect_id": "inventory_trial_tip_lag_beyond_parent"
+}
