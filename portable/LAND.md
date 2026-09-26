@@ -1,3 +1,7 @@
+## STATUS (Batch 385 status-guard-baseline-path)
+
+tip `7caac254` tip_match=true; STATUS_GUARD baseline_path portable/-relative; PATH_C_STATUS tip living; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 385 tip-sync)
 
 tip `7caac254` tip_match=true after tip-sync ebedb780→7caac25 (main #118); keep-prior; STATUS_GUARD living; unfreeze 384→385; durable 8/8; lemma_closed=false; goal OPEN.

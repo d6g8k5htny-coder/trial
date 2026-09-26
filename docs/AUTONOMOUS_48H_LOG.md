@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 385 — STATUS_GUARD baseline_path relative + PATH_C_STATUS tip @7caac25 (2026-09-26)
+
+- Eng: `guard_no_status_promotion` wrote absolute `baseline_path` under CI cwd → Intent `test_batch378_followup` red; store portable/-relative. PATH_C_STATUS tip refresh after tip-sync. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 385 — tip-sync ebedb780→7caac25 keep-prior after main #118 (2026-09-26)
 
 - Tip **moved** @ hardening `7caac25` (main #118 preserve exact Q0 ledger custody). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

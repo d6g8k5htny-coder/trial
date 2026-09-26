@@ -474,6 +474,14 @@ def _baseline_is_has_packet(
     return shape == "HAS_PACKET"
 
 
+def _portable_relpath(path: Path | str) -> str:
+    """Return portable/-relative path for snapshot fields (cwd-stable for Intent)."""
+    text = path.as_posix() if isinstance(path, Path) else str(path).replace("\\", "/")
+    if "portable/" in text:
+        return "portable/" + text.split("portable/", 1)[-1]
+    return text
+
+
 def build_snapshot(
     *,
     tip_sha: str,
@@ -501,7 +509,8 @@ def build_snapshot(
         "lemma_closed": False,
         "flipped_anything": False,
         "tip_sha": tip_sha,
-        "baseline_path": str(baseline_path),
+        # Batch 385: keep portable/-relative baseline_path (CI cwd absolute broke Intent).
+        "baseline_path": _portable_relpath(baseline_path),
         "baseline_tip_sha": _baseline_tip_sha(baseline_raw or {}, baseline_inv),
         "pass": len(violations) == 0,
         "violations": violations,

@@ -1,3 +1,7 @@
+## STATUS (Batch 385 status-guard-baseline-path)
+
+Hardening tip **stable** @ `7caac254`. Eng: STATUS_GUARD `baseline_path` portable/-relative (CI Intent soft); PATH_C_STATUS tip refresh. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 385 tip-sync)
 
 Hardening tip **moved** @ `7caac254` (main #118 Q0 ledger custody). Tip-sync keep-prior; apply_all 0018/0019 semantic already-applied; STATUS_GUARD tip refresh; unfreeze 384→385. `lemma_closed=false`. Goal OPEN.
