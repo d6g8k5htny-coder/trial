@@ -76,7 +76,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T01:39:51Z",
+      "pushed_at": "2026-09-26T01:49:55Z",
       "tip_sha": "7476e29c65ce82d23e0b39e7f7d98741a875a8ff",
       "has_agents": true,
       "write": "WRITABLE"
@@ -86,7 +86,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T01:40:44Z",
+      "pushed_at": "2026-09-26T01:49:17Z",
       "tip_sha": "01d4598f182c85a5c16d807472d1ef076f33b603",
       "has_agents": true,
       "write": "WRITABLE"
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T01:48:46Z",
-      "tip_sha": "177b9e7798cec980ea694f89ae265f44009789bc",
+      "pushed_at": "2026-09-26T01:48:59Z",
+      "tip_sha": "c127d6bbf916fe1984bad1520859b697aba8f9f7",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-26T01:48:46Z",
+  "generated_at_utc": "2026-09-26T01:50:34Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 385: inventory tip @488692f (living main pre-land tip-sync); durable 8/8; lemma_closed=false.",
+  "note": "Batch 385: inventory tip @c127d6b (living main pre-land research audit); durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {

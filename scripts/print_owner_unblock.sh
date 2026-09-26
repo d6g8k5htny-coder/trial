@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 385 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 385: tip-sync ebedb780→7caac25 keep-prior after main #118"
+echo " Batch 385: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @7caac25; no delta vs 383/380"
 echo " Batch 385: STATUS_GUARD tip refresh + unfreeze 384→385 @7caac25"
 echo " Batch 384: tip_or_eng idle tip-stable @ebedb780 + living script_stale republish"
 echo " Batch 384: unfreeze last-resort 383→384 + VERIFY refresh_batch 383→384 @ebedb780"

@@ -1,3 +1,7 @@
+## STATUS (Batch 385 research-audit-watch)
+
+tip `7caac254` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; delta 0 vs BATCH383/380; STATUS_GUARD living; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 385 status-guard-baseline-path)
 
 tip `7caac254` tip_match=true; STATUS_GUARD baseline_path portable/-relative; PATH_C_STATUS tip living; durable 8/8; lemma_closed=false; goal OPEN.
