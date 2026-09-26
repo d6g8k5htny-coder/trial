@@ -1,3 +1,7 @@
+## STATUS (Batch 404 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch403 idle; VERIFY/REFRESH lag 402→404; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 403 post-idle-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Post tip_or_eng idle: inv parent-pin. `lemma_closed=false`. Goal OPEN.
