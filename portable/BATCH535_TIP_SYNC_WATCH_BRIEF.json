@@ -1,0 +1,18 @@
+{
+  "batch": "535",
+  "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "cd66a655d0a922a7dcc1ffe8a28be62a43d7151d",
+  "tip_match": false,
+  "aligned": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "action": "keep_prior",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T15:32:27Z",
+  "soft_intent_restore": "single_living_print_owner_permanent_header_preserved",
+  "note": "Soft Intent single living header preserved; TIP_DRIFT keep-prior"
+}
