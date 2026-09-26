@@ -1,3 +1,7 @@
+## STATUS (Batch 557 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@557 tip/eng557+research557 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 557 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 556/555/554/553/552; STATUS_GUARD pass; stamps@557; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
