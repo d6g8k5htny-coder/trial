@@ -1,3 +1,7 @@
+## STATUS (Batch 550 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@551 tip/eng551 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 551 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `a844a8c` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 550→551; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH551_TIP_ENG_BRIEF.json` + `BATCH551_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
