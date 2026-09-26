@@ -1,3 +1,7 @@
+## STATUS (Batch 371 inv-tip-pin)
+
+tip `1ae02b9` tip_match=true; inv tip re-pin beyond parent after eng-hunt idle; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 371 idle)
 
 tip `1ae02b9` tip_match=true; tip_sync_watch idle_no_commit; living tip/script current; durable 8/8; lemma_closed=false; goal OPEN.

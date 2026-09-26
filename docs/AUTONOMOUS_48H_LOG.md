@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 371 — inv tip re-pin beyond parent after eng-hunt idle @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng-hunt peer idle land left inv tip lagging beyond parent — PRESERVE_DURABLE re-pin→HEAD. Goal OPEN.
+
+
 ### Batch 371 — idle_no_commit tip-stable watch @1ae02b9 (2026-09-26)
 
 - Goal continue pulse. Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; `lemma_closed=false`.

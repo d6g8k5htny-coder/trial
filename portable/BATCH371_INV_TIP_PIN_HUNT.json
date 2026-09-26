@@ -1,0 +1,15 @@
+{
+  "batch": "371",
+  "defect_shipped": true,
+  "defect_id": "inv_tip_lag_beyond_parent_after_eng_hunt_idle",
+  "hunt_0020": "NEGATIVE",
+  "patch_0020": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "avoided": [
+    "status/lemma promotion",
+    "inventable drafts"
+  ]
+}
