@@ -1,0 +1,17 @@
+{
+  "batch": "391",
+  "action": "living_script_stale_republish_after_idle",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "script_stale": 1,
+  "script_stale_after": 0,
+  "tip_stale": 0,
+  "parent_pin": true,
+  "uploaded": true,
+  "generated_at_utc": "2026-09-26T02:42:36Z",
+  "note": "living script_stale after Batch391 idle (print_owner/release drift); republish; parent_pin"
+}

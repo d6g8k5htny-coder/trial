@@ -1,6 +1,6 @@
-## STATUS (Batch 389 tip-sync-idle)
+## STATUS (Batch 391 post-idle-living)
 
-tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+tip `2f7a5a9` tip_match=true; living script_stale republish after idle; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 391 tip-eng-idle)
 
