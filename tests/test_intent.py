@@ -22557,3 +22557,62 @@ def test_batch382_idle_tip_sync_watch() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 382
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 382)
+
+
+def test_batch383_research_stack_audit_watch() -> None:
+    """Batch 383: research_stack_audit_watch_no_promotion @ebedb78; no delta vs 380."""
+    import json
+
+    watch = json.loads(
+        (ROOT / "portable" / "BATCH383_RESEARCH_AUDIT_WATCH.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert watch.get("batch") == "383"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert int(watch.get("open_premises") or 0) >= 13
+    assert int(watch.get("open_lemmas") or 0) >= 1
+    assert int(watch.get("open_prizes") or 0) >= 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    delta = watch.get("delta_vs_batch380") or {}
+    assert int(delta.get("open_premises") or 0) == 0
+    assert int(delta.get("open_lemmas") or 0) == 0
+    assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH383_RESEARCH_STACK_AUDIT.json").exists()
+
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH383_RESEARCH_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("batch") == "383"
+    assert evidence.get("lemma_closed") is False
+    assert evidence.get("flipped_anything") is False
+    assert evidence.get("action") == "research_stack_audit_watch"
+    assert evidence.get("goal") == "OPEN"
+
+    snap = json.loads(
+        (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
+    )
+    assert snap.get("lemma_closed") is False
+    assert snap.get("pass") is True
+    assert _living_tip(str(snap.get("tip_sha") or ""))
+
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 383)
+    assert "research_stack_audit_watch" in unblock
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 383 research-audit-watch)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 383 research-audit-watch)" in owner
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 383" in log_md and "research_stack_audit_watch" in log_md

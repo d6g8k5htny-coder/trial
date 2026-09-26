@@ -21,6 +21,11 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 383 — research_stack_audit_watch no-promotion @ebedb78 (2026-09-26)
+
+- Tip stable @ `ebedb78` tip_match=true; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Research stack audit watch no-promotion: open 13/1/3 unchanged vs BATCH380; STATUS_GUARD living; no full AUDIT re-copy. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN.
+
 ### Batch 382 — inv tip re-pin + unfreeze 381→382 @ebedb780 (2026-09-26)
 
 - Timer tip_or_eng: tip stable; peer living broke parent_pin; living need_upload=0.

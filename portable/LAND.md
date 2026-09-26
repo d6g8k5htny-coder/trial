@@ -1,3 +1,7 @@
+## STATUS (Batch 383 research-audit-watch)
+
+tip `ebedb78` tip_match=true; research_stack_audit_watch_no_promotion: open_premises=13 without promotion; STATUS_GUARD tip living; lemma_closed=false; action=research_stack_audit_watch; scientific effect NONE.
+
 ## STATUS (Batch 382 idle-pin-unfreeze)
 
 tip `ebedb780` tip_match=true; inv tip re-pin after peer living; unfreeze 381→382; durable 8/8; lemma_closed=false; goal OPEN.
