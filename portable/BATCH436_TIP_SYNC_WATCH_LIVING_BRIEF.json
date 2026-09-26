@@ -1,0 +1,17 @@
+{
+  "batch": "436",
+  "action": "living_current_after_tip_sync_watch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 0,
+  "tgz_newer": 0,
+  "need_upload": 0,
+  "uploaded": false,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T06:07:32Z"
+}
