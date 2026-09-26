@@ -1,6 +1,6 @@
 {
   "batch": "517",
-  "generated_at_utc": "2026-09-26T13:57:31Z",
+  "generated_at_utc": "2026-09-26T13:58:32Z",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
   "tip": "2f7a5a9",
   "tip_match": false,
@@ -14,10 +14,10 @@
   "path_c": "IDLE@0019",
   "durable": "8/8_WRITABLE",
   "action": "inventory_preserve_durable_tip_pin",
-  "defect_id": "inv_tip_parent_pin_after_tip_sync_keep_prior",
+  "defect_id": "inv_tip_parent_pin_after_tip_sync517_race",
   "parent_pin": true,
   "trial_tip_before": "b90d1398ad6233f25da5146997bc9d26f3e8e1a3",
-  "trial_tip_after": "e432c80490155cd1bc05f31f4cc8f99d6bc33199",
+  "trial_tip_after": "ed7f3dc54df7b3973dfc0cfa1dda37d0dc564555",
   "lag_beyond_parent": true,
-  "note": "parent-pin inv tip_sha=precommit HEAD (e432c80); was at b90d139"
+  "note": "re-pin inv tip_sha=precommit HEAD after tip_sync519 race left pin at research519"
 }
