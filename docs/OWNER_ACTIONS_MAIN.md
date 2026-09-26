@@ -1,3 +1,7 @@
+## STATUS (Batch 385 research-audit-watch)
+
+Hardening tip **stable** @ `7caac254`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH383/380; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH385_RESEARCH_AUDIT_WATCH.json`. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
 ## STATUS (Batch 385 status-guard-baseline-path)
 
 Hardening tip **stable** @ `7caac254`. Eng: STATUS_GUARD `baseline_path` portable/-relative (CI Intent soft); PATH_C_STATUS tip refresh. `lemma_closed=false`. Goal OPEN.

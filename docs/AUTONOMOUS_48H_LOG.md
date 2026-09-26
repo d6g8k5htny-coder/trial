@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 385 — research_stack_audit_watch_no_promotion @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1 @ `7caac254` after tip-sync; open stack 13/1/3; delta vs Batch 383/380 = 0; STATUS_GUARD living (no lag); no promotion.
+- Artifacts: `BATCH385_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
 ### Batch 385 — STATUS_GUARD baseline_path relative + PATH_C_STATUS tip @7caac25 (2026-09-26)
 
 - Eng: `guard_no_status_promotion` wrote absolute `baseline_path` under CI cwd → Intent `test_batch378_followup` red; store portable/-relative. PATH_C_STATUS tip refresh after tip-sync. `lemma_closed=false`. Goal OPEN.
