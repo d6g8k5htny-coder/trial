@@ -1,5 +1,11 @@
 # Autonomous 48h work log
 
+### Batch 569 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 568→569 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 568→569; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync566/research568; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
 ### Batch 566 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
 
 - TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header (never harden/stack); soft tip_sync566 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `b5bb9865`; tip/eng566 @`5b2becc6`; tip_sync565 @`9f5fbc2f`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
