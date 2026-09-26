@@ -21,6 +21,14 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 399 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
+- `audit_research_stack_open` HAS_PACKET @ tip: open 13/1/3; `guard_no_status_promotion` pass; delta=0 vs Batch396.
+- Unfreeze 398→399; inv batch 396→399 + parent-pin; living republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 396 — tip_or_eng idle_no_commit continue hunt-negative @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 398; `lemma_closed=false`.

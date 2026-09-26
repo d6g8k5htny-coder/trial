@@ -1,3 +1,7 @@
+## STATUS (Batch 399 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 396; STATUS_GUARD pass; unfreeze 398→399; inv batch sync; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 396 tip-eng-idle-continue)
 
 tip `2f7a5a9` tip_match=true; tip_or_eng continue hunt negative after Batch398 living; inv parent-pin; VERIFY 398; durable 8/8; action=idle_no_commit; lemma_closed=false; goal OPEN.
