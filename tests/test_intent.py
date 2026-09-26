@@ -37795,6 +37795,59 @@ def test_batch490_research_stack_audit_watch() -> None:
         assert soft.get("uploaded") is False
 
 
+def test_batch504_research_stack_audit_watch() -> None:
+    """Batch 504: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 502/500/498/497/495."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH504_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "504"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ("delta_vs_batch502", "delta_vs_batch500", "delta_vs_batch498", "delta_vs_batch497", "delta_vs_batch495"):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert not (ROOT / "portable" / "BATCH504_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH504_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "504" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH504_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "504" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH504_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 504)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 504)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 504 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 504 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 504" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
 def test_batch502_research_stack_audit_watch() -> None:
     """Batch 502: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 500/498/497/495/494 (research496/499/501 gap)."""
     import json
@@ -38647,164 +38700,6 @@ def test_batch500_tip_sync_watch_idle_parent_pin() -> None:
     assert len(headers) == 1
     assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
-
-def test_batch502_tip_sync_watch_idle_parent_pin() -> None:
-    """Batch 502: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
-    import json
-    import re
-
-    tiny = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
-    )
-    assert tiny.get("batch") == "502"
-    assert tiny.get("lemma_closed") is False
-    assert tiny.get("flipped_anything") is False
-    assert tiny.get("tip_match") is True
-    assert tiny.get("aligned") is True
-    assert tiny.get("action") == "idle_no_commit"
-    assert tiny.get("inventable_promoted") is False
-    assert tiny.get("scientific_effect") == "NONE"
-    assert tiny.get("parent_pin") is True
-    assert _living_tip(str(tiny.get("hardening_tip") or ""))
-    living = tiny.get("living") or {}
-    assert living.get("tip_stale") == 0
-    assert living.get("script_stale") == 0
-    assert living.get("need_upload") == 0
-
-    evidence = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert evidence.get("action") == "idle_no_commit"
-    assert evidence.get("parent_pin") is True
-
-    brief = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_WATCH_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    _asg = str(brief.get("assignment") or "")
-    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
-    assert _living_tip(_asg.rsplit("_", 1)[-1])
-
-    watch = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
-    )
-    assert watch.get("tip_match") is True
-    assert watch.get("action") == "idle_no_commit"
-    assert watch.get("parent_pin") is True
-
-    living_brief = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
-    assert living_brief.get("uploaded") is True
-    assert living_brief.get("lemma_closed") is False
-
-    pin = json.loads(
-        (ROOT / "portable" / "BATCH502_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
-    assert pin.get("parent_pin") is True
-
-    inv = json.loads(
-        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
-    )
-    assert inv.get("lemma_closed") is False
-
-    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 502)
-    headers = re.findall(r"=== Batch (\d+)\b", unblock)
-    assert headers and int(headers[0]) >= 502
-    assert len(headers) == 1
-    assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
-
-
-
-def test_batch504_tip_sync_watch_idle_parent_pin() -> None:
-    """Batch 504: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
-    import json
-    import re
-
-    tiny = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_IDLE.json").read_text(encoding="utf-8")
-    )
-    assert tiny.get("batch") == "504"
-    assert tiny.get("lemma_closed") is False
-    assert tiny.get("flipped_anything") is False
-    assert tiny.get("tip_match") is True
-    assert tiny.get("aligned") is True
-    assert tiny.get("action") == "idle_no_commit"
-    assert tiny.get("inventable_promoted") is False
-    assert tiny.get("scientific_effect") == "NONE"
-    assert tiny.get("parent_pin") is True
-    assert _living_tip(str(tiny.get("hardening_tip") or ""))
-    living = tiny.get("living") or {}
-    assert living.get("tip_stale") == 0
-    assert living.get("script_stale") == 0
-    assert living.get("need_upload") == 0
-
-    evidence = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_WATCH_EVIDENCE.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert evidence.get("action") == "idle_no_commit"
-    assert evidence.get("parent_pin") is True
-
-    brief = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_WATCH_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    _asg = str(brief.get("assignment") or "")
-    assert _asg.startswith("tip_sync_watch_vs_BASE_TIP_")
-    assert _living_tip(_asg.rsplit("_", 1)[-1])
-
-    watch = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_WATCH.json").read_text(encoding="utf-8")
-    )
-    assert watch.get("tip_match") is True
-    assert watch.get("action") == "idle_no_commit"
-    assert watch.get("parent_pin") is True
-
-    living_brief = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_WATCH_LIVING_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert living_brief.get("action") == "living_script_stale_republish_after_tip_sync_watch"
-    assert living_brief.get("uploaded") is True
-    assert living_brief.get("lemma_closed") is False
-
-    pin = json.loads(
-        (ROOT / "portable" / "BATCH504_TIP_SYNC_INV_TIP_PIN_BRIEF.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert pin.get("action") == "inventory_preserve_durable_tip_pin"
-    assert pin.get("parent_pin") is True
-
-    inv = json.loads(
-        (ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8")
-    )
-    assert inv.get("lemma_closed") is False
-
-    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
-    _assert_print_owner_header_batch_at_least(unblock, 504)
-    headers = re.findall(r"=== Batch (\d+)\b", unblock)
-    assert headers and int(headers[0]) >= 504
-    assert len(headers) == 1  # Soft Intent: single living PERMANENT header
-    assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
 
 
