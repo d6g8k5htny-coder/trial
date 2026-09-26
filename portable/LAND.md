@@ -1,3 +1,23 @@
+## STATUS (Batch 388 tip-eng-soften)
+
+tip `2f7a5a9` tip_match=true; soften Intent STATUS_GUARD tip_sha 7caac25 pin → living; living script_stale; unfreeze 387→388; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 387 post-tip-sync-living)
+
+tip `2f7a5a9` tip_match=true; living script_stale republish after tip_sync idle; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 387 tip-sync-idle)
+
+tip `2f7a5a9` tip_match=true; tip_sync_watch idle; living tip_stale=0 script_stale=0; action=idle_no_commit; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 387 tip-sync)
+
+tip `2f7a5a9` tip_match=true after tip-sync 7caac25→2f7a5a9; keep-prior; STATUS_GUARD living; unfreeze 386→387; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 387 research-audit-watch)
+
+tip `7caac254` tip_match=true; research_stack_audit_watch no-promotion; open 13/1/3; delta 0 vs BATCH385; STATUS_GUARD living; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 386 tip-eng-soften)
 
 tip `7caac254` tip_match=true; soften Intent BASE_TIP ebedb78 pin → living; living tgz; unfreeze 385→386; durable 8/8; lemma_closed=false; goal OPEN.

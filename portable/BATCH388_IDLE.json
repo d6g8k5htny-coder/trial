@@ -1,0 +1,15 @@
+{
+  "batch": "388",
+  "action": "soften_not_idle",
+  "assignment": "tip_or_eng_soften_status_guard_tip_pin_after_tip_move",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "generated_at_utc": "2026-09-26T02:10:44Z",
+  "note": "timer tip_or_eng @2f7a5a9: tip stable; CI red test_batch385_research STATUS_GUARD tip_sha 7caac25 pin → _living_tip; living script_stale; unfreeze 387→388"
+}

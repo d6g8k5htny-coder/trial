@@ -21,6 +21,39 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 388 — tip_or_eng soften Intent STATUS_GUARD tip_sha pin + living + unfreeze 387→388 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9` after Batch 387 tip-sync; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: CI red `test_batch385_research_stack_audit_watch` asserted STATUS_GUARD `tip_sha` startswith `7caac25` after tip-sync to `2f7a5a9` → `_living_tip`. Living script_stale republish; unfreeze last-resort/VERIFY/wake 387→388; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 387 — living script_stale republish after tip_sync idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; tip_sync_watch idle already on main with parent_pin.
+- Living `script_stale=1` vs pack → republish; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 387 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1 after peer tip-sync land; Path C IDLE@0019; durable 8/8; living tip/script current after watch republish; inv parent-pin @53d029b; `lemma_closed=false`.
+- Assignment: `tip_sync_watch_vs_BASE_TIP_7caac25` (tip moved path already landed by peer Batch387 tip-sync). No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 387 — tip-sync 7caac25→2f7a5a9 keep-prior after SIDE24 sources (2026-09-26)
+
+- Tip **moved** @ hardening `2f7a5a9` (Recover exact SIDE24 theorem-chain sources). Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Tip-sync keep-prior; apply_all 0018/0019 semantic already-applied; `_LIVING_TIPS+=2f7a5a9`; STATUS_GUARD tip refresh; unfreeze 386→387. Follow-up after research audit peer. Inventable/research NOT promoted. Goal OPEN.
+
+
+
+### Batch 387 — research_stack_audit_watch_no_promotion @7caac25 (2026-09-26)
+
+- Tip stable tip_match=1 @ `7caac254`; open stack 13/1/3; delta vs Batch 385 = 0; STATUS_GUARD living (no lag refresh); no promotion; evidence JSON only.
+- Artifacts: `BATCH387_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; inv parent-pin @1d91e28. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
 ### Batch 386 — tip_or_eng soften Intent BASE_TIP pin + living + unfreeze 385→386 @7caac25 (2026-09-26)
 
 - Tip stable tip_match=1 @ `7caac25`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.

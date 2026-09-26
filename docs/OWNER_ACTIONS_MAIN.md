@@ -1,3 +1,34 @@
+## STATUS (Batch 388 tip-eng-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch385_research` frozen STATUS_GUARD tip_sha 7caac25 pin → `_living_tip`; living script_stale republish; unfreeze 387→388. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch388_tip_or_eng_soften -q
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
+## STATUS (Batch 387 post-tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_sync_watch idle; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 387 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after peer tip-sync land; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH387_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 387 tip-sync)
+
+Hardening tip **moved** @ `2f7a5a9` (SIDE24 theorem-chain sources). Tip-sync keep-prior; STATUS_GUARD tip refresh; unfreeze 386→387. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 387 research-audit-watch)
+
+Hardening tip **stable** @ `7caac254`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH385; STATUS_GUARD living (no lag); no AUDIT re-copy. Evidence: `portable/BATCH387_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 7caac254cbba5f513b2dc0afb56b78a598bc0c93
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 7caac254cbba5f513b2dc0afb56b78a598bc0c93
+python3 -m pytest tests/test_intent.py::test_batch387_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 386 tip-eng-soften)
 
 Hardening tip **stable** @ `7caac254`. tip_or_eng: Intent `test_batch378_tip_sync_ebedb78` frozen BASE_TIP pin → `_living_tip`; living tgz; unfreeze 385→386. `lemma_closed=false`. Goal OPEN.
