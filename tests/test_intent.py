@@ -21963,13 +21963,12 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert brief.get("keep_prior") is True
     assert brief.get("goal") == "OPEN"
     assert _living_tip(str(brief.get("tip") or brief.get("hardening_tip") or ""))
-    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    assert brief.get("hardening_tip") == "ebedb7802024fa557e9071e4c9cec7cddc474b89"
     hunt = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_shipped") is True
     evidence = json.loads((ROOT / "portable" / "BATCH378_TIP_SYNC_EVIDENCE.json").read_text(encoding="utf-8"))
     assert evidence.get("action") == "tip_sync_landed"
-    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
-    assert _living_tip(base)  # Batch 386: tip moved ebedb78→7caac25
+    assert evidence.get("hardening_tip") == brief["hardening_tip"]
     apply_all = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
     assert "already-applied (semantic)" in apply_all
     assert 'grep -q \'"attestations"\'' in apply_all or '"attestations"' in apply_all
@@ -21983,6 +21982,17 @@ def test_batch378_tip_sync_ebedb78() -> None:
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
 
+
+
+def test_current_path_c_base_matches_bundle() -> None:
+    """Current readiness metadata must agree independently of historical receipts."""
+    import json
+    import re
+
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8").split()
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert re.fullmatch(r"[0-9a-f]{40}", str(verify.get("base_tip_sha") or ""))
+    assert base == [verify["hardening_ref"], verify["base_tip_sha"]]
 
 
 def test_batch378_research_stack_audit_watch() -> None:
@@ -22813,8 +22823,8 @@ def test_batch385_research_stack_audit_watch() -> None:
     )
     assert snap.get("lemma_closed") is False
     assert snap.get("pass") is True
+    # Batch 388: tip moved 7caac25→2f7a5a9; live STATUS_GUARD tip_sha must stay living.
     assert _living_tip(str(snap.get("tip_sha") or ""))
-    assert str(snap.get("tip_sha") or "").startswith("7caac25")
 
     pin = json.loads(
         (ROOT / "portable" / "BATCH385_POST_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(
@@ -23005,13 +23015,9 @@ def test_batch386_tip_or_eng_soften() -> None:
     assert living.get("action") == "living_tgz_content_delta_republish"
     unfreeze = json.loads((ROOT / "portable" / "BATCH386_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
     assert unfreeze.get("to_batch") == "386"
-    # softened historical pin in test_batch378_tip_sync_ebedb78 body
-    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
-    start = intent.index("def test_batch378_tip_sync_ebedb78")
-    end = intent.index("def test_batch378_research_stack_audit_watch")
-    body = intent[start:end]
-    assert 'assert "ebedb78" in base' not in body
-    assert "assert _living_tip(base)" in body
+    # Validate historical identity and current readiness without fixing source spelling.
+    test_batch378_tip_sync_ebedb78()
+    test_current_path_c_base_matches_bundle()
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 386)
     inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
@@ -23205,4 +23211,97 @@ def test_batch387_tip_sync_watch_idle_parent_pin() -> None:
     assert "STATUS (Batch 387 tip-sync-idle)" in land
     owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
     assert "STATUS (Batch 387 tip-sync-idle)" in owner
+
+
+def test_batch387_post_tip_sync_living() -> None:
+    """Batch 387: living script_stale republish after tip_sync idle @2f7a5a9."""
+    import json
+    living = json.loads((ROOT / "portable" / "BATCH387_POST_TIP_SYNC_LIVING_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("batch") == "387"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_sync_idle"
+    assert living.get("parent_pin") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH387_TIP_SYNC_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("action") == "idle_no_commit"
+    assert idle.get("lemma_closed") is False
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 387 post-tip-sync-living)" in land
+
+
+def test_batch388_tip_or_eng_soften() -> None:
+    """Batch 388: tip_or_eng soften STATUS_GUARD tip_sha pin + living + unfreeze @2f7a5a9."""
+    import json
+    brief = json.loads((ROOT / "portable" / "BATCH388_TIP_ENG_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "388"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("defect_shipped") is True
+    assert brief.get("action") == "soften_intent_status_guard_tip_pin"
+    assert _living_tip(str(brief.get("hardening_tip") or ""))
+    idle = json.loads((ROOT / "portable" / "BATCH388_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("tip_match") is True
+    living = json.loads((ROOT / "portable" / "BATCH388_LIVING_REPUBLISH_BRIEF.json").read_text(encoding="utf-8"))
+    assert living.get("action") == "living_script_stale_republish"
+    unfreeze = json.loads((ROOT / "portable" / "BATCH388_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "388"
+    pin = json.loads((ROOT / "portable" / "BATCH388_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    # softened live STATUS_GUARD tip_sha pin in test_batch385_research body
+    intent = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    start = intent.index("def test_batch385_research_stack_audit_watch")
+    end = intent.index("def test_batch385_post_research_living")
+    body = intent[start:end]
+    assert 'startswith("7caac25")' not in body or "hardening_tip" in body
+    assert 'snap.get("tip_sha")' in body
+    assert 'assert str(snap.get("tip_sha") or "").startswith("7caac25")' not in body
+    assert "assert _living_tip(str(snap.get(\"tip_sha\") or \"\"))" in body or '_living_tip(str(snap.get("tip_sha")' in body
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 388)
+    inv_py = (ROOT / "scripts" / "refresh_ai_agent_access_inventory.py").read_text(encoding="utf-8")
+    _inv_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', inv_py)]
+    assert _inv_rets and max(_inv_rets) >= 388
+    wake = (ROOT / "scripts" / "post_batch322_wake_comments.py").read_text(encoding="utf-8")
+    _wake_rets = [int(x) for x in __import__("re").findall(r'return "(\d+)"', wake)]
+    assert _wake_rets and max(_wake_rets) >= 388
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 388
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 388)
+    assert "STATUS (Batch 388 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
+
+def test_batch388_post_soften_living() -> None:
+    """Batch 388: living script_stale republish after tip_or_eng soften @2f7a5a9."""
+    import json
+    living = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_BRIEF.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert living.get("batch") == "388"
+    assert living.get("lemma_closed") is False
+    assert living.get("action") == "living_script_stale_republish_after_tip_eng_soften"
+    assert living.get("parent_pin") is True
+    assert living.get("uploaded") is True
+    assert _living_tip(str(living.get("hardening_tip") or ""))
+    hunt = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_HUNT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert hunt.get("defect_shipped") is True
+    evidence = json.loads(
+        (ROOT / "portable" / "BATCH388_POST_SOFTEN_LIVING_EVIDENCE.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence.get("script_stale_post") == 0
+    soften = json.loads(
+        (ROOT / "portable" / "BATCH388_TIP_ENG_BRIEF.json").read_text(encoding="utf-8")
+    )
+    assert soften.get("action") == "soften_intent_status_guard_tip_pin"
+    land = (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 post-soften-living)" in land
+    owner = (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 388 post-soften-living)" in owner
 

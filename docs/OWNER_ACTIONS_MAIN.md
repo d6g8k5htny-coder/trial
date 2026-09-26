@@ -1,3 +1,20 @@
+## STATUS (Batch 388 post-soften-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_or_eng soften land; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 388 tip-eng-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: Intent `test_batch385_research` frozen STATUS_GUARD tip_sha 7caac25 pin → `_living_tip`; living script_stale republish; unfreeze 387→388. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch388_tip_or_eng_soften -q
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
+## STATUS (Batch 387 post-tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after tip_sync_watch idle; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 387 tip-sync-idle)
 
 Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move after peer tip-sync land; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH387_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

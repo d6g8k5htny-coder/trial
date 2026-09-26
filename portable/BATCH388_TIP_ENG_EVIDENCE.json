@@ -1,0 +1,13 @@
+{
+  "batch": "388",
+  "action": "soften_intent_status_guard_tip_pin",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_script_stale_before": 1,
+  "living_tip_stale_before": 0,
+  "unfreeze": "387→388",
+  "generated_at_utc": "2026-09-26T02:10:44Z"
+}
