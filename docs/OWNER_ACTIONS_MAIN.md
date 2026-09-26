@@ -1,3 +1,7 @@
+## STATUS (Batch 395 idle-unfreeze)
+
+Hardening tip **stable** @ `2f7a5a9`. Idle tip-stable + unfreeze 394→395. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 394 post-tip-sync-inv-pin)
 
 Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after tip_sync living. `lemma_closed=false`. Goal OPEN.

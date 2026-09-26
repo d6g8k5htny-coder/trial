@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 395 — idle tip-stable + unfreeze 394→395 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8; living current; inv parent-pin; research 13/1/3.
+- Hunt negative → idle + unfreeze stamps 394→395. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
 ### Batch 394 — post tip_sync inv tip pin @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1; tip_sync living left inv tip lag.

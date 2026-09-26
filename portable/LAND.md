@@ -1,3 +1,7 @@
+## STATUS (Batch 395 idle-unfreeze)
+
+tip `2f7a5a9` tip_match=true; idle tip-stable + unfreeze 394→395; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 394 post-tip-sync-inv-pin)
 
 tip `2f7a5a9` tip_match=true; inv tip re-pin after tip_sync living; living current; durable 8/8; lemma_closed=false; goal OPEN.
