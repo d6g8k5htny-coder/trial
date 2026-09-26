@@ -1,5 +1,5 @@
 {
-  "batch": "557",
+  "batch": "555",
   "action": "living_script_stale_republish_after_tip_sync_watch",
   "lemma_closed": false,
   "flipped_anything": false,
@@ -15,6 +15,6 @@
   "need_upload": 0,
   "uploaded": true,
   "parent_pin": true,
-  "generated_at_utc": "2026-09-26T17:47:47Z",
-  "note": "living force republish need_upload=0; tip_sync557 Soft Intent preserve (header@557 tip/eng557+research557+tip_sync555 raced)"
+  "generated_at_utc": "2026-09-26T17:50:13Z",
+  "note": "living force republish need_upload=0; tip_sync555 Soft Intent preserve (header@557 research557 raced)"
 }

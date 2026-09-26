@@ -1,6 +1,10 @@
 ## STATUS (Batch 557 tip-sync-living)
 
-tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@557 tip/eng557+research557 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@557 tip/eng557+research557+tip_sync555 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 555 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@557 research557 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
 
 ## STATUS (Batch 557 research-audit)
 
