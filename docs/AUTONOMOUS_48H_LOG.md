@@ -1,5 +1,12 @@
 # Autonomous 48h work log
 
+### Batch 508 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 509 — PERMANENT` header preserved (n=1); tip_sync508 Soft Intent preserve.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @81a88c6. Inventable skipped. Goal OPEN.
+
+
 ### Batch 509 — tip_or_eng living tgz_newer republish + unfreeze 508→509 @2f7a5a9 (2026-09-26)
 
 - Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 508→509; living tgz_newer+bundle/patch need_upload=1; Soft Intent n=1 header replace; republish batch241; `lemma_closed=false`.
