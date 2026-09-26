@@ -21,6 +21,13 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 380 — idle tip-stable + living tgz + unfreeze 379→380 @ebedb780 (2026-09-26)
+
+- Timer tip_or_eng: tip stable tip_match=1 @ebedb780; Path C IDLE@0019; durable 8/8.
+- Living pack content-delta after Batch 379 pins — uploaded `batch241-path-c-bundle`.
+- Unfreeze last-resort + VERIFY + wake 379→380. No research flip. `lemma_closed=false`. Goal OPEN.
+
+
 ### Batch 379 — tip_or_eng living tgz_newer republish after tip-sync-idle @ebedb780 (2026-09-26)
 
 - Tip stable @ `ebedb780` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer need_upload=1 → force republish; inv parent-pin; stamps@379; `lemma_closed=false`.

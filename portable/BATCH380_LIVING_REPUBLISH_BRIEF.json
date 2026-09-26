@@ -1,0 +1,11 @@
+{
+  "batch": "380",
+  "action": "living_tgz_content_delta_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "living_tag": "batch241-path-c-bundle",
+  "generated_at_utc": "2026-09-26T01:30:58Z"
+}

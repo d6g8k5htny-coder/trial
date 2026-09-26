@@ -1,3 +1,7 @@
+## STATUS (Batch 380 idle-living-unfreeze)
+
+tip `ebedb780` tip_match=true; idle tip-stable; living tgz content-delta republish; unfreeze 379→380; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 379 tip-eng-living)
 
 tip `ebedb780` tip_match=true; tip_or_eng living tgz_newer republish after tip-sync-idle peer; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.

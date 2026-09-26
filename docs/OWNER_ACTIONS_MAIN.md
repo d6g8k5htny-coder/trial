@@ -1,3 +1,7 @@
+## STATUS (Batch 380 idle-living-unfreeze)
+
+Hardening tip **stable** @ `ebedb780`. Batch 380 idle + living pack content-delta + unfreeze 379→380. Evidence: `portable/BATCH380_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 379 tip-eng-living)
 
 Hardening tip **stable** @ `ebedb780` (tip_match=true; Path C; BASE==LIVE). tip_or_eng: living `tgz_newer` republish after tip-sync-idle peer; inv parent-pin; stamps@379. Evidence: `portable/BATCH379_TIP_ENG_IDLE.json`. `lemma_closed=false`. action=`living_republish`. Goal OPEN.
