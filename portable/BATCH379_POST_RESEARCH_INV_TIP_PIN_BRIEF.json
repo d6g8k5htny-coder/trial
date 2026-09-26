@@ -1,0 +1,10 @@
+{
+  "batch": "379",
+  "action": "post_research_inv_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "generated_at_utc": "2026-09-26T01:29:56Z",
+  "tip_match": true,
+  "hardening_tip": "ebedb7802024fa557e9071e4c9cec7cddc474b89",
+  "note": "re-pin after research_stack_audit_watch @ebedb78; tip_sha=precommit HEAD"
+}
