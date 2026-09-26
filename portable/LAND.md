@@ -1,3 +1,7 @@
+## STATUS (Batch 570 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (living header Soft Intent n=1 @571; tip/eng570 @859c3f85 Soft Intent n=1; research570 @176e55b7; tip/eng571 @3082ab67; tip_sync569 @59cc9f48); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
 ## STATUS (Batch 571 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living tar-noise DIFF_COUNT=0 idle; unfreeze 570→571; Soft Intent n=1; inv parent-pin; VERIFY 571; durable 8/8; lemma_closed=false; goal OPEN.
