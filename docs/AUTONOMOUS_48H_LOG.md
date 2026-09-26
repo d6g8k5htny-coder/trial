@@ -21,6 +21,12 @@ Path C dry-run ready on hardening; permanent window recorded.
 
 ## Batches
 
+### Batch 376 — tip_sync_watch idle_no_commit @1ae02b9 (2026-09-26)
+
+- Tip stable @ `1ae02b9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip_stale=0 script_stale=0; `lemma_closed=false`.
+- tip_sync_watch: no tip move; inv parent-pin; inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 376 — idle tip-stable + living tgz republish + unfreeze 375→376 @1ae02b9 (2026-09-26)
 
 - Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
