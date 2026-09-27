@@ -1,11 +1,11 @@
 {
-  "api_calls": 80,
+  "api_calls": 74,
   "authenticated": true,
   "counts": {
-    "CARD_OPEN": 5,
-    "LEASE_EXPIRED": 36,
-    "PR_CHECKS_FAILING": 4,
-    "PR_CONFLICTING": 2
+    "CARD_OPEN": 3,
+    "LEASE_EXPIRED": 37,
+    "PR_CHECKS_FAILING": 1,
+    "PR_CONFLICTING": 1
   },
   "findings": [
     {
@@ -41,92 +41,9 @@
       "url": "https://github.com/d6g8k5htny-coder/trial/pull/138"
     },
     {
-      "author": "d6g8k5htny-coder",
-      "detail": [
-        {
-          "conclusion": "failure",
-          "name": "portable-patches-on-main",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36343459561/job/108687906758"
-        },
-        {
-          "conclusion": "failure",
-          "name": "land-workflows-dry-run",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36343459561/job/108687906755"
-        },
-        {
-          "conclusion": "failure",
-          "name": "sanity",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36343459561/job/108687906735"
-        },
-        {
-          "conclusion": "failure",
-          "name": "path-c-applied-bundle-dry-apply",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36343459561/job/108687906626"
-        }
-      ],
-      "draft": true,
-      "head_ref": "chatgpt/trial-ci-deduplicate-premerge-20260926",
-      "kind": "PR_CHECKS_FAILING",
-      "pr": 142,
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "high",
-      "title": "Make idle_no_commit terminal before tracked-file writes",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/142"
-    },
-    {
-      "author": "d6g8k5htny-coder",
-      "detail": [
-        {
-          "conclusion": "failure",
-          "name": "sanity",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350433402/job/108707947352"
-        }
-      ],
-      "draft": true,
-      "head_ref": "cursor/tip-refresh-un-red-ci-ff72",
-      "kind": "PR_CHECKS_FAILING",
-      "pr": 152,
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "high",
-      "title": "apply_all: generic semantic already-applied check + machine-readable stack summary; PATH_C_STRICT_TIP escape hatch",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/152"
-    },
-    {
-      "author": "d6g8k5htny-coder",
-      "detail": [
-        {
-          "conclusion": "failure",
-          "name": "sanity",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36347560786/job/108699723778"
-        }
-      ],
-      "draft": true,
-      "head_ref": "cursor/ci-landed-ancestor-tip-gate-b8d6",
-      "kind": "PR_CHECKS_FAILING",
-      "pr": 154,
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "high",
-      "title": "[superseded by #153 landing] CI: landed-ancestor Path C tip gate (stop requiring live == BASE_TIP)",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/154"
-    },
-    {
-      "author": "d6g8k5htny-coder",
-      "detail": {
-        "mergeable_state": "dirty"
-      },
-      "draft": true,
-      "head_ref": "cursor/ci-landed-ancestor-tip-gate-b8d6",
-      "kind": "PR_CONFLICTING",
-      "pr": 154,
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "high",
-      "title": "[superseded by #153 landing] CI: landed-ancestor Path C tip gate (stop requiring live == BASE_TIP)",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/154"
-    },
-    {
       "expires_at": "2026-09-26T17:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 28.2,
+      "overdue_hours": 29.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Formal-lemma / certified-statement pilot under #95; separate from #98 adapter land",
@@ -139,7 +56,7 @@
     {
       "expires_at": "2026-09-26T18:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 27.2,
+      "overdue_hours": 28.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D1 inventable / dependency work \u2014 unclaimed offer",
@@ -152,7 +69,7 @@
     {
       "expires_at": "2026-09-26T18:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 27.2,
+      "overdue_hours": 28.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D2 inventable / dependency work \u2014 unclaimed offer",
@@ -165,7 +82,7 @@
     {
       "expires_at": "2026-09-26T18:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 27.2,
+      "overdue_hours": 28.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D3 inventable / dependency work \u2014 unclaimed offer",
@@ -178,7 +95,7 @@
     {
       "expires_at": "2026-09-26T18:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 27.2,
+      "overdue_hours": 28.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D4 inventable / dependency work \u2014 unclaimed offer",
@@ -191,7 +108,7 @@
     {
       "expires_at": "2026-09-26T18:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 27.2,
+      "overdue_hours": 28.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D6 inventable / dependency work \u2014 unclaimed offer",
@@ -204,7 +121,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Bounded P15 assumption probe (96 subsets / exact counterexamples); eng Path C only; no scientific promotion",
@@ -217,7 +134,7 @@
     {
       "expires_at": "2026-09-26T21:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 24.2,
+      "overdue_hours": 25.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Math- #26 nonauthor review PR (title: fixed-transverse R1\u2013R5); OA comment also pointed FIXED_ANNULUS stitch here \u2014 verify assignee scope before racing; Cursor already ACCEPTed #16 R1\u2013R5 on governance-",
@@ -230,7 +147,7 @@
     {
       "expires_at": "2026-09-26T21:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 24.2,
+      "overdue_hours": 25.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Math- #27 nonauthor replacement review of PR19+PR21 (title); OA comment also pointed TWO_SCALE S16\u2013S21 \u2014 verify assignee scope; Cursor already ACCEPTed #19 R1\u2013R6 and #21 (2)\u2013(8) on governance-",
@@ -243,7 +160,7 @@
     {
       "expires_at": "2026-09-26T22:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 23.2,
+      "overdue_hours": 24.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "OA-redirected: D6 analytic parent six-slice review (not SMT redo); SMT MATCH already complete",
@@ -256,7 +173,7 @@
     {
       "expires_at": "2026-09-27T00:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 21.2,
+      "overdue_hours": 22.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Integrate reviewed collision/simplex/contact-transfer from exact PR25 blobs; no semantic edits",
@@ -269,7 +186,7 @@
     {
       "expires_at": "2026-09-27T01:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 20.2,
+      "overdue_hours": 21.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Closed/open lemma and theorem reading maps; documentation/navigation only",
@@ -282,7 +199,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Q0-C103 source-bound typed pair-Palm cubic-rate successor; distinct from #98 adapter; eng\u2260theorem",
@@ -295,7 +212,7 @@
     {
       "expires_at": "2026-09-27T16:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 5.2,
+      "overdue_hours": 6.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "SARD-G execution repair: countable open charts + endpoint-support localization (KIMI-AUD-022 A/C)",
@@ -308,7 +225,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Nonauthor ACCEPT of PR25 D2 cumulative correction; review package",
@@ -321,7 +238,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Pin-neighborhood reconnaissance: desingularized endpoint chart",
@@ -334,7 +251,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Nonauthor review of PR53 pin-neighborhood chart",
@@ -347,7 +264,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Disposition missing TRANSVERSE_CONTACT_ASYMPTOTIC as unavailable (recovery open; related Math#56)",
@@ -360,7 +277,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Undraft+merge exact Math- #59 head 718029c with expected-head protection; then issue56 BLOCKED_ABSENT",
@@ -373,7 +290,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Q0-C103 C1/C2 honesty repair: branch-attached object + PREMISE-Z-LOWER; additive on #121 over ebedb78",
@@ -386,7 +303,7 @@
     {
       "expires_at": "2026-09-27T02:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 19.2,
+      "overdue_hours": 20.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Bounded nonauthor re-review of C1/C2 only at exact tip a380dcf; not self-review of repair author",
@@ -399,7 +316,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D5 shrinking witness pairs: divided-difference m=2 bound; additive recon; sci effect NONE",
@@ -412,7 +329,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Pin microdisk: anisotropic gradient covariance and density envelope",
@@ -425,7 +342,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Erratum: endpoint Hessian congruence in lifetime parent",
@@ -438,7 +355,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D0 audit: proof availability, absent carriers, regional supersession",
@@ -451,7 +368,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Cross-repository proof custody audit",
@@ -464,7 +381,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D5 pin microdisk: divided-difference frame after inner-disk gap",
@@ -477,7 +394,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Path C eng resume Batch 387 @ hardening 2f7a5a9; additive-only; IDLE@0019; no lemma_closed/claim promotion",
@@ -490,7 +407,7 @@
     {
       "expires_at": "2026-09-27T04:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 17.2,
+      "overdue_hours": 18.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Expected-head integration decision for Math- #49 @ 596e809 after OA integration-scope ACCEPT",
@@ -503,7 +420,7 @@
     {
       "expires_at": "2026-09-27T16:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 5.2,
+      "overdue_hours": 6.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Author clarification: relative-interior section hits, no earlier closed-section contact, compact travel in open tube (A1 membership)",
@@ -516,7 +433,7 @@
     {
       "expires_at": "2026-09-27T08:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 13.2,
+      "overdue_hours": 14.6,
       "owner": "cursor",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "D5 intermediate-scale envelope between fixed annulus and shrinking scale; recon/candidate; sci effect NONE",
@@ -529,7 +446,7 @@
     {
       "expires_at": "2026-09-27T08:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 13.2,
+      "overdue_hours": 14.6,
       "owner": null,
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Next obligation after #60 M1\u2013M5: conditioned determinant estimate with compensating h^2 (new immutable source + distinct reviewer)",
@@ -542,7 +459,7 @@
     {
       "expires_at": "2026-09-27T10:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 11.2,
+      "overdue_hours": 12.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Import hardening-commit proofs into default-branch custody; custody/nav only expected; sci effect NONE",
@@ -555,7 +472,7 @@
     {
       "expires_at": "2026-09-27T12:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 9.2,
+      "overdue_hours": 10.6,
       "owner": "openai",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Nonauthor re-review artifact of main #124 C1/C2 honesty repair; peer Math- lane",
@@ -568,7 +485,7 @@
     {
       "expires_at": "2026-09-27T16:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 5.2,
+      "overdue_hours": 6.6,
       "owner": "anthropic",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Interval research prose errata: two over-claim numbers vs code; docs/tests honesty; sci effect NONE expected",
@@ -581,7 +498,7 @@
     {
       "expires_at": "2026-09-27T16:00:00Z",
       "kind": "LEASE_EXPIRED",
-      "overdue_hours": 5.2,
+      "overdue_hours": 6.6,
       "owner": "anthropic",
       "repo": "d6g8k5htny-coder/governance-",
       "scope": "Claim-graph firewall fail-closed fixes + mutants; eng hardening; sci effect NONE",
@@ -590,6 +507,19 @@
       "source_repo": "d6g8k5htny-coder/main",
       "state": "OFFERED",
       "work_id": "main-134-claim-graph-firewall"
+    },
+    {
+      "expires_at": "2026-09-27T22:00:00Z",
+      "kind": "LEASE_EXPIRED",
+      "overdue_hours": 0.6,
+      "owner": "anthropic",
+      "repo": "d6g8k5htny-coder/governance-",
+      "scope": "Competing public workspace map proposal (submodules/ledgers); eng only; COI declared vs #2",
+      "severity": "medium",
+      "source_pr": 3,
+      "source_repo": "d6g8k5htny-coder/Universal-Law-Workspace",
+      "state": "OFFERED",
+      "work_id": "ulw-3-public-workspace-proposal"
     },
     {
       "card": "NA-0006",
@@ -610,15 +540,6 @@
       "title": "governance- work_leases/CURRENT.json is stale: 10 ACTIVE + 30 OFFERED leases past expires_at"
     },
     {
-      "card": "NA-0003",
-      "kind": "CARD_OPEN",
-      "path": "needs_attention/cards/NA-0003-trial-pr-149-dropbox-intake-digest-shows-4-faili.json",
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "info",
-      "status": "IN_PROGRESS",
-      "title": "trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content"
-    },
-    {
       "card": "NA-0005",
       "kind": "CARD_OPEN",
       "path": "needs_attention/cards/NA-0005-batch-loop-tip-eng-workers-write-trial-s-own-mai.json",
@@ -626,21 +547,12 @@
       "severity": "info",
       "status": "OPEN",
       "title": "batch-loop tip/eng workers write trial's own main SHA into live_tip / inventory sandbox.tip fields"
-    },
-    {
-      "card": "NA-0008",
-      "kind": "CARD_OPEN",
-      "path": "needs_attention/cards/NA-0008-trial-prs-142-and-138-chatgpt-branches-still-red-af.json",
-      "repo": "d6g8k5htny-coder/trial",
-      "severity": "info",
-      "status": "OPEN",
-      "title": "trial PRs #142 and #138 (chatgpt/* branches) still red after the tip-drift fix landed \u2014 need their author to merge main / re-run own gate"
     }
   ],
-  "generated_at": "2026-09-27T21:14:40Z",
+  "generated_at": "2026-09-27T22:33:12Z",
   "lease_ledger_updated_at": "2026-09-26T15:58:30Z",
   "lemma_closed_flipped": false,
-  "open_prs": 23,
+  "open_prs": 21,
   "repos_requested": [
     "d6g8k5htny-coder/main",
     "d6g8k5htny-coder/Math-",
