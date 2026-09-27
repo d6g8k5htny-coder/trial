@@ -297,50 +297,27 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       exit 2
     fi
     echo "live_hardening_sha=$LIVE_SHA"
-    git config user.name "owner-land-path-c-dry"
-    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then
-      git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
-      git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
-    fi
-    FB_TIP_DRIFT_TOLERATED=0
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      # Tip-drift tolerance: landed stack already on the live tip ⇒ drift tolerated (idle);
-      # otherwise keep the hard failure.
-      DRIFT_HELPER="$TRIAL_ROOT/scripts/path_c_tip_drift_tolerance.sh"
-      if [[ -f "$DRIFT_HELPER" ]] && bash "$DRIFT_HELPER" --workdir "$FB_WORKDIR/main" --live-sha "$LIVE_SHA"; then
-        FB_TIP_DRIFT_TOLERATED=1
-        echo "tip_matches_base=false tip_drift_tolerated=true (path_c_landed; stack already on live tip; keep-prior BASE_TIP)"
+      # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → the
+      # stack is already on tip; proceed (bundle is already_applied_on_tip).
+      # BEHIND / DIVERGED / UNKNOWN still exit 1.
+      DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$BASE_TIP_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+      DRIFT_LANDED="$(python3 -c 'import json,sys; print("1" if json.load(open(sys.argv[1])).get("path_c_landed") is True else "0")' "$VERIFY_JSON" 2>/dev/null || echo 0)"
+      if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
+        echo "tip_drift_class=DESCENDANT path_c_landed=true — live ${LIVE_SHA:0:7} ahead of BASE_TIP ${BASE_TIP_SHA:0:7} (informational; refresh at leisure: ./scripts/refresh_path_c_bundle.sh)"
+        echo "tip_matches_base=true (DESCENDANT_OK)"
       else
-        echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh bundle." >&2
+        echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (class=${DRIFT_CLASS:-UNKNOWN} landed=${DRIFT_LANDED}) — refresh bundle." >&2
         exit 1
       fi
     else
       echo "tip_matches_base=true"
     fi
-    if [[ "$FB_TIP_DRIFT_TOLERATED" -eq 1 ]]; then
-      # Bundle history was cut at BASE_TIP; on a moved tip the .bundle/.patch replay
-      # is moot — the drift helper already proved every patch is on the tree.
-      echo "already_applied_on_tip=true"
-      echo "apply_all_check=OK (via tip-drift tolerance; bundle replay skipped)"
-      STATUS_OUT="$(python3 tools/math_status_check.py 2>&1)" || {
-        echo "owner_land_path_c: ERROR: math_status_check failed on live tip." >&2
-        echo "$STATUS_OUT" >&2
-        exit 1
-      }
-      echo "$STATUS_OUT"
-      if ! echo "$STATUS_OUT" | grep -q 'lemma_closed=false'; then
-        echo "owner_land_path_c: ERROR: lemma_closed is not false on live tip." >&2
-        exit 1
-      fi
-      if ! echo "$STATUS_OUT" | grep -q 'problems=0'; then
-        echo "owner_land_path_c: ERROR: math_status problems!=0 on live tip." >&2
-        exit 1
-      fi
-      echo "owner_land_path_c: from-bundle dry-run OK — tip-drift tolerated (already_applied_on_tip); lemma_closed=false."
-      echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
-      echo "Scientific effect: NONE"
-      exit 0
+    git config user.name "owner-land-path-c-dry"
+    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then
+      git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
+      git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
     fi
     # Need BASE_TIP object for bundle prerequisite; LIVE_SHA == BASE_TIP when tip_matches.
     if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
@@ -411,16 +388,12 @@ except Exception:
   d={}
 print("true" if d.get("path_c_landed") is True else "false")
 print("true" if d.get("tip_matches_base") is True else "false")
-print("true" if d.get("tip_drift_tolerated") is True else "false")
-' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\nfalse\n')"
+' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\n')"
     LANDED_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '1p')"
     TIP_MATCH_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '2p')"
-    TIP_TOLERATED_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '3p')"
     rm -f "$DRY_JSON_OUT"
-    # Tip-drift tolerance: tip_drift_tolerated (landed + whole stack already on live tip)
-    # is the same idle class as an exact tip match.
-    if [[ "$LANDED_LINE" == "true" && ( "$TIP_MATCH_LINE" == "true" || "$TIP_TOLERATED_LINE" == "true" ) ]]; then
-      echo "already_on_tip=true path_c_landed=true tip_matches_base=${TIP_MATCH_LINE} tip_drift_tolerated=${TIP_TOLERATED_LINE}"
+    if [[ "$LANDED_LINE" == "true" && "$TIP_MATCH_LINE" == "true" ]]; then
+      echo "already_on_tip=true path_c_landed=true tip_matches_base=true"
       echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
       echo "owner_land_path_c: dry-run OK — already-on-tip idle (no no-op land)."
       echo "Scientific effect: NONE"

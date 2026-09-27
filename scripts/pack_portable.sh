@@ -265,7 +265,6 @@ tar -czf "$OUT" -C "$ROOT" \
   scripts/refresh_ai_agent_access_inventory.py \
   scripts/post_batch322_wake_comments.py \
   scripts/assert_path_c_ready.sh \
-  scripts/path_c_tip_drift_tolerance.sh \
   scripts/write_path_c_status.py \
   scripts/refresh_path_c_bundle.sh \
   scripts/dispatch_land_path_c.sh \

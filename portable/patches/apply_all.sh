@@ -169,6 +169,9 @@ apply_one() {
     N_ALREADY=$((N_ALREADY + 1))
     return 0
   fi
+  # 0017 (tip @e7652a1: third-hunk context drifted survey → full_survey while the
+  # close-handles change itself is on tip) is covered by the generic
+  # semantic_already_applied() fallback below — no per-patch grep needed.
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"

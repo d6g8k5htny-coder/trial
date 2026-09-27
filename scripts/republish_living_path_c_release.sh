@@ -291,9 +291,6 @@ CRITICAL = (
     # Batch 327: wake-comment poster paired with wake-batch322 workflow.
     "scripts/post_batch322_wake_comments.py",
     "scripts/refresh_path_c_bundle.sh",
-    # Tip-drift tolerance helper: called by refresh --dry-run and the owner
-    # land/open-PR dry-runs in the pack; drift here must flag script_stale.
-    "scripts/path_c_tip_drift_tolerance.sh",
     "scripts/pack_portable.sh",
     "scripts/probe_main_write.py",
     "scripts/probe_main_write_vectors.py",
