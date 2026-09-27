@@ -49,7 +49,9 @@ fi
 
 echo "=== Batch 773 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 773: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 772→773 @2f7a5a9"
+echo " Batch 773: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 771/770/769/768/767 (catch-up at tip VERIFY773 covering research772); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 772: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 771→772 @2f7a5a9"
+echo " Batch 772: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 771/770/769/768/767 (catch-up at tip VERIFY773 after tip/eng Soft Intent; covers research772 tip-race); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 771: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 770→771 @2f7a5a9"
 echo " Batch 771: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 769/768/767/766/765 (catch-up at tip VERIFY771 after tip/eng771 Soft Intent 770→771; covers research771+770 tip-race); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 770: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 769/768/767/766/765 (catch-up at tip VERIFY771 after tip/eng770+771 Soft Intent 770→771; covers research770 tip-race); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
