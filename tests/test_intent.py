@@ -102,24 +102,38 @@ def _descends_from_base_tip(sha: str) -> bool:
     if key in _DESCENDANT_CACHE:
         return _DESCENDANT_CACHE[key]
     ok = False
-    # A stale/bad GITHUB_TOKEN in the caller's env (App tokens rotate hourly;
-    # `gh auth token` echoes the env token) must not read as "not living":
-    # retry with env tokens stripped so gh uses its own store / anonymous.
-    for strip_env in (False, True):
-        env = dict(os.environ)
-        if strip_env:
-            for k in ("GITHUB_TOKEN", "GH_TOKEN", "MAIN_PUSH_TOKEN"):
-                env.pop(k, None)
-        try:
-            p = subprocess.run(
-                ["gh", "api", f"repos/d6g8k5htny-coder/main/compare/{key}", "--jq", ".status"],
-                capture_output=True, text=True, timeout=30, check=False, env=env,
-            )
-        except (OSError, subprocess.SubprocessError):
-            continue
-        if p.returncode == 0 and p.stdout.strip():
-            ok = p.stdout.strip() in ("ahead", "identical", "behind")
-            break
+    # Use the shared classifier transport: token → anonymous urllib (the
+    # research repo is public) → gh with/without env token. A stale env token
+    # (App tokens rotate hourly; `gh auth token` echoes the env token) or an
+    # unauthenticated `gh` on the Actions runner must not read as "not living".
+    status = ""
+    try:
+        import sys as _sys
+
+        if str(ROOT / "scripts") not in _sys.path:
+            _sys.path.insert(0, str(ROOT / "scripts"))
+        import tip_drift_class as _tdc  # noqa: PLC0415
+
+        status = _tdc._compare_status(base, sha)
+    except Exception:  # noqa: BLE001 — fall through to gh below
+        status = ""
+    if not status:
+        for strip_env in (False, True):
+            env = dict(os.environ)
+            if strip_env:
+                for k in ("GITHUB_TOKEN", "GH_TOKEN", "MAIN_PUSH_TOKEN"):
+                    env.pop(k, None)
+            try:
+                p = subprocess.run(
+                    ["gh", "api", f"repos/d6g8k5htny-coder/main/compare/{key}", "--jq", ".status"],
+                    capture_output=True, text=True, timeout=30, check=False, env=env,
+                )
+            except (OSError, subprocess.SubprocessError):
+                continue
+            if p.returncode == 0 and p.stdout.strip():
+                status = p.stdout.strip()
+                break
+    ok = status in ("ahead", "identical", "behind")
     _DESCENDANT_CACHE[key] = ok
     return ok
 
