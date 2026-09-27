@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": "659",
+  "batch": 659,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-27T04:21:08Z",
-      "tip_sha": "0d1201302176534818b9df346ea50f5e68cfc1ab",
+      "tip_sha": "7b6d8b281d594a76566cdc535062a5fbad87b6fc",
       "has_agents": true,
       "write": "WRITABLE"
     }
