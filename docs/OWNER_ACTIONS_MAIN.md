@@ -1,3 +1,11 @@
+## STATUS (Batch 750 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 748/747/746/745/744 (catch-up at tip VERIFY750 after tip/eng750 Soft Intent 749→750; covers research750+749 tip-race); STATUS_GUARD pass; stamps@750; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 749 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 748/747/746/745/744 (catch-up at tip VERIFY750 after tip/eng749+750 Soft Intent 749→750; covers research749 tip-race); STATUS_GUARD pass; stamps@749; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 750 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `af120bf` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→750; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH750_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
