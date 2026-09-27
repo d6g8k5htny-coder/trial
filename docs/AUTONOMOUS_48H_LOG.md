@@ -1,3 +1,8 @@
+### Batch 833 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `1b900fe3` left inv tip_sha at `cfb0c728` while Soft Intent/VERIFY833 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `78ebd3b0` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY833; research833/peer merges mid-repair (kept Soft Intent 833); `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 833 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Path C STATUS_GUARD re-audit at tip VERIFY833 Soft Intent n=1 after tip/eng833 Soft Intent 832→833; open stack 13/1/3 Δ0 vs 832/831/830/829/828; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`1b900fe3`.
