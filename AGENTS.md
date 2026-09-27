@@ -13,6 +13,7 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 - Keep scientific effect **NONE**: never promote, close, or discharge claims, premises, prizes, or lemmas.
 - After meaningful work: commit, push `cursor/*` branches, land on trial `main` when PR create is 403.
 - Owner land scripts (`owner_land_path_*.sh`) are technical fallback for GitHub App 403 only — not approval gates.
+- Blocked or need a second pair of hands? Drop a card in [`needs_attention/cards/`](needs_attention/README.md) (schema `needs_attention/v1`; `python3 scripts/needs_attention_check.py`). Helpers cycle that folder with `scripts/needs_attention_scan.py`. Before fixing a repo-wide problem, check the open cards — four agents shipped the same tip-drift fix in parallel (NA-0007).
 
 ## Never
 
