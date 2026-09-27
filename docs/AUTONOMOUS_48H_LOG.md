@@ -1,3 +1,8 @@
+### Batch 716 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 715→716 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 715→716; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→716; Soft Intent single === header →716; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
 ### Batch 715 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 714→715 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 714→715; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.

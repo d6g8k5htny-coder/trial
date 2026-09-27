@@ -1,3 +1,13 @@
+## STATUS (Batch 716 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 715→716; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH716_TIP_ENG_*.json` + `BATCH716_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch716_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
 ## STATUS (Batch 715 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 714→715; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH715_TIP_ENG_*.json` + `BATCH715_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
