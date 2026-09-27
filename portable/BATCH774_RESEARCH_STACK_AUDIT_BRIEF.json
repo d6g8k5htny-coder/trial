@@ -1,6 +1,6 @@
 {
   "batch": "774",
-  "generated_at_utc": "2026-09-27T15:50:08Z",
+  "generated_at_utc": "2026-09-27T15:54:40Z",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
   "hardening_tip_short": "2f7a5a9",
   "tip_match": true,
@@ -24,15 +24,17 @@
   "prior_audit_artifact": "portable/BATCH773_RESEARCH_AUDIT_WATCH.json",
   "living": {
     "tip_stale": 0,
-    "script_stale": 1
+    "script_stale": 0
   },
   "inventable_promoted": false,
   "full_audit_recopy": false,
   "coord_bc": "bc-ee63a10c-59c8-51d7-98d8-9d900a67a0f9",
   "coord_tip_sync_bc": "bc-fae8f3a1-56af-5254-9431-1413ca3708b4",
   "orchestrator_bc": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
-  "note": "no-promotion re-audit @2f7a5a9 at tip VERIFY774 after tip/eng774 Soft Intent 773\u2192774; open stack 13/1/3 \u03940 vs BATCH773/772/771/770/769; STATUS_GUARD living; Soft Intent n=1; lemma_closed=false",
+  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY775 after tip/eng Soft Intent\u2192775; covers research774 tip-race; open stack 13/1/3 \u03940 vs BATCH773/772/771/770/769; STATUS_GUARD living; Soft Intent n=1 @775; lemma_closed=false",
   "tip_raced_eng774": true,
+  "catch_up_at_verify": 775,
+  "research774_skipped_by_tip_race": true,
   "delta_vs_batch773": {
     "open_premises": 0,
     "open_lemmas": 0,
