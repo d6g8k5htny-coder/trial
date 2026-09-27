@@ -1,3 +1,17 @@
+## STATUS (Batch 833 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cfb0c72` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 832→833; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH833_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch833_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 832 tip-eng-parent-pin-repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after merge `bb24d803` left inv tip_sha stale @ `79d660e7`; re-pin to precommit `bdbbe6a8` (onto tip after research832/peer merges). Soft Intent single-header; VERIFY832. Evidence: `portable/BATCH832_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
+
+
 ## STATUS (Batch 832 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `17b5151` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 831→832; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH832_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.

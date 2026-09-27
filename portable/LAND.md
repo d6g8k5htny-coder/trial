@@ -1,3 +1,12 @@
+## STATUS (Batch 833 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `cfb0c72` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 832→833; Soft Intent n=1; inv parent-pin; VERIFY 833; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 832 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `bdbbe6a8` (was `79d660e7` after merge bb24d803 broke pin; rebased past research832/peer merges); Soft Intent n=1; VERIFY 832; durable 8/8; lemma_closed=false; goal OPEN.
+
+
 ## STATUS (Batch 832 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `17b5151` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 831→832; Soft Intent n=1; inv parent-pin; VERIFY 832; durable 8/8; lemma_closed=false; goal OPEN.
