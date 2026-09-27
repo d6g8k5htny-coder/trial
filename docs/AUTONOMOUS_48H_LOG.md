@@ -1,3 +1,8 @@
+### Batch 793 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 792→793 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`65ff69f6` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 792→793; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →793; inv parent_pin @65ff69f6. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 792 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Path C STATUS_GUARD re-audit at tip VERIFY792 Soft Intent n=1 after tip/eng792 Soft Intent 791→792; open stack 13/1/3 Δ0 vs 791/790/789/788/787; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`e6d06aac`.
