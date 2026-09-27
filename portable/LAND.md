@@ -1,3 +1,7 @@
+## STATUS (Batch 836 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `fede31a6` (was `ab267818` after merge 919d1c82 broke pin; rebased past research836 catch-up); Soft Intent n=1; VERIFY 836; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 836 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `ab26781` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 835→836; Soft Intent n=1; inv parent-pin; VERIFY 836; durable 8/8; lemma_closed=false; goal OPEN.
