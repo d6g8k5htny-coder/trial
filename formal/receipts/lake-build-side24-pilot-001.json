@@ -1,0 +1,103 @@
+{
+  "schema_id": "trial.formal.lean_build_receipt.v1",
+  "generated_at_utc": "2026-09-27T21:45:29Z",
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "lean_project_dir": "formal/lean",
+  "toolchain": "leanprover/lean4:v4.19.0",
+  "mathlib_rev": "c44e0c8ee63ca166450922a373c7409c5d26b00b",
+  "lake_bin": "/home/ubuntu/.elan/bin/lake",
+  "module_sha256": {
+    "Side24Formal.Glossary": "47802bd17eb534d8bffbc956c91521160e1ada554f75a88b34069b8d233ffb61",
+    "Side24Formal.Side24Pilot": "5cff633951426006d8b1d8456ad74ef8ec79d15dd642b06c7a73ca37d9aa6e3a"
+  },
+  "lake_build_exit_code": 0,
+  "lake_build_tail": "Build completed successfully.",
+  "axioms": {
+    "Side24Formal.cPlanar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanar_eq_div": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.torusAreaFactor_24": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.rpow_natDiv_le_of_pow_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.le_rpow_natDiv_of_pow_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.Gamma_one_sixth_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanar_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanarNumerator_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanarDenominator_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanar_mem_Icc_of_factor_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.two_rpow_two_thirds_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.three_rpow_five_sixths_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.pi_rpow_three_halves_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Side24Formal.cPlanar_decimal_enclosure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "axioms_exit_code": 0,
+  "negative_controls": [
+    {
+      "path": "controls/Mutant_WindowShift.lean",
+      "exit_code": 1,
+      "outcome": "REJECTED",
+      "tail": "    cPlanar\nhu :\n  cPlanar \u2264\n    1.5874010519681994747517057 * 2.4980495329668129588263591 * 5.5663160017802352042501 /\n      (54 * 5.56832799683170784527779)\n\u22a2 False"
+    },
+    {
+      "path": "controls/Mutant_WrongDenominator.lean",
+      "exit_code": 1,
+      "outcome": "REJECTED",
+      "tail": "h\u2083u : Gamma (1 / 6) \u2264 5.5663160017802352042501\nh\u2084l : 5.56832799683170784527779 \u2264 \u03c0 ^ (3 / 2)\nh\u2084u : \u03c0 ^ (3 / 2) \u2264 5.5683279968317078453043769\nh\u0393pos : 0 < Gamma (1 / 6)\na\u271d : 734069193060342710e-19 * (56 * \u03c0 ^ (3 / 2)) \u2265 2 ^ (2 / 3) * 3 ^ (5 / 6) * Gamma (1 / 6)\n\u22a2 False failed"
+    }
+  ]
+}

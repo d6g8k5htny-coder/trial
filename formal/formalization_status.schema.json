@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/d6g8k5htny-coder/trial/formal/formalization_status.schema.json",
+  "title": "trial.formal.formalization_status.v1",
+  "description": "Layer 1 formalization status ledger. Status is earned by scripts/formal_gate.py (fail-closed). kernel_checked is evidence metadata (L5), never scientific acceptance. Scientific effect: NONE.",
+  "type": "object",
+  "required": [
+    "schema_id", "schema_version", "scientific_effect", "lemma_closed",
+    "lean_project_dir", "toolchain", "modules", "theorems", "negative_controls"
+  ],
+  "properties": {
+    "schema_id": { "const": "trial.formal.formalization_status.v1" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "scientific_effect": { "const": "NONE" },
+    "lemma_closed": { "const": false },
+    "purpose": { "type": "string" },
+    "status_ladder": { "type": "array", "items": { "type": "string" } },
+    "status_ladder_meaning": { "type": "object" },
+    "lean_project_dir": { "type": "string" },
+    "toolchain": {
+      "type": "object",
+      "required": ["lean", "mathlib_rev"],
+      "properties": {
+        "lean": { "type": "string", "pattern": "^leanprover/lean4:v" },
+        "mathlib_rev": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "pin_rationale": { "type": "string" }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "lean_source_sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "lean_source_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "negative_controls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "expected"],
+        "properties": {
+          "path": { "type": "string" },
+          "expected": { "const": "REJECTED" },
+          "mutation": { "type": "string" }
+        }
+      }
+    },
+    "theorems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "informal_source", "informal_statement", "lean_module", "lean_decls",
+          "formalization_status", "explicit_axioms", "hypotheses_are_scope",
+          "does_not_claim", "alignment_review", "verification_level_if_kernel_checked"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z0-9-]+$" },
+          "title": { "type": "string" },
+          "informal_source": {
+            "type": "object",
+            "required": ["repo", "path", "sha256"],
+            "properties": {
+              "repo": { "type": "string" },
+              "branch": { "type": "string" },
+              "artifact_id": { "type": "string" },
+              "path": { "type": "string" },
+              "file_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "sha256_kind": { "type": "string" },
+              "frozen_body_marker": { "type": "string" },
+              "frozen_body_bytes": { "type": "integer" },
+              "equations": { "type": "array", "items": { "type": "string" } },
+              "informal_status_as_recorded": { "type": "string" }
+            }
+          },
+          "informal_statement": { "type": "string" },
+          "lean_module": { "type": "string" },
+          "lean_decls": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "formalization_status": { "enum": ["none", "specified", "proved", "kernel_checked"] },
+          "explicit_axioms": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Lean axioms beyond propext/Classical.choice/Quot.sound that the entry knowingly assumes (e.g. an unformalized parent theorem). Each must carry a scope note in the blueprint."
+          },
+          "hypotheses_are_scope": { "type": "array", "items": { "type": "string" } },
+          "scope_dispositions": { "type": "array", "items": { "type": "string" } },
+          "does_not_claim": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "alignment_review": {
+            "type": "object",
+            "required": ["status"],
+            "properties": {
+              "status": { "enum": ["unreviewed", "author_side", "distinct_reviewer"] },
+              "reviewer": { "type": ["string", "null"] },
+              "author": { "type": "string" },
+              "what_a_distinct_reviewer_checks": { "type": "string" }
+            }
+          },
+          "verification_level_if_kernel_checked": { "const": "L5" },
+          "ai_prover_cross_check": {
+            "type": "object",
+            "properties": {
+              "status": { "enum": ["NOT_RUN", "FAILED", "KERNEL_ACCEPTED"] },
+              "prover": { "type": "string" },
+              "receipt": { "type": "string" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

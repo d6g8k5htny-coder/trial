@@ -1,0 +1,99 @@
+{
+  "schema_id": "trial.formal.formalization_status.v1",
+  "schema_version": 1,
+  "scientific_effect": "NONE",
+  "lemma_closed": false,
+  "purpose": "Layer 1 (formal specification and proof) status ledger. Status is EARNED by scripts/formal_gate.py, never declared upward by hand. kernel_checked is verification-level evidence (L5 in main's VERIFICATION_LEVELS.json vocabulary), not scientific acceptance, claim promotion, or lemma closure.",
+  "status_ladder": ["none", "specified", "proved", "kernel_checked"],
+  "status_ladder_meaning": {
+    "none": "No Lean statement.",
+    "specified": "Definitions + theorem statement exist in a Lean module (statement is the scope).",
+    "proved": "Proof script present with no `sorry` token (still author-side text until kernel-checked).",
+    "kernel_checked": "A binding receipt (formal/receipts/) shows lake build exit 0, axioms ⊆ {propext, Classical.choice, Quot.sound} ∪ explicit_axioms, no sorryAx, negative controls REJECTED, module hashes + toolchain + Mathlib rev identical to this tree."
+  },
+  "lean_project_dir": "formal/lean",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.19.0",
+    "mathlib_rev": "c44e0c8ee63ca166450922a373c7409c5d26b00b",
+    "pin_rationale": "Same Lean/Mathlib pair as d6g8k5htny-coder/main research/formal/candidates/LEAN_RECOVERY_VERIFICATION_20260920_v1.md (13 recovered GP-FOR-192 theorems), so both trees share one kernel + library surface."
+  },
+  "modules": {
+    "Side24Formal.Glossary": {
+      "path": "Side24Formal/Glossary.lean",
+      "lean_source_sha256": "47802bd17eb534d8bffbc956c91521160e1ada554f75a88b34069b8d233ffb61"
+    },
+    "Side24Formal.Side24Pilot": {
+      "path": "Side24Formal/Side24Pilot.lean",
+      "lean_source_sha256": "5cff633951426006d8b1d8456ad74ef8ec79d15dd642b06c7a73ca37d9aa6e3a"
+    }
+  },
+  "negative_controls": [
+    {
+      "path": "controls/Mutant_WindowShift.lean",
+      "expected": "REJECTED",
+      "mutation": "19-digit window shifted +1 ulp; true value falls outside; norm_num must fail."
+    },
+    {
+      "path": "controls/Mutant_WrongDenominator.lean",
+      "expected": "REJECTED",
+      "mutation": "Denominator constant 54 → 56 (simulates LS-DER-042 §10 reopening condition 'contact factor other than 1/6'); same window claimed; kernel must reject."
+    }
+  ],
+  "theorems": [
+    {
+      "id": "SIDE24-PILOT-001",
+      "title": "Closed-form planar Bargmann–Fock short-lifetime coefficient: positivity and 19-digit rational enclosure",
+      "informal_source": {
+        "repo": "d6g8k5htny-coder/main",
+        "branch": "chatgpt/drive-github-hardening-20260919",
+        "artifact_id": "LS-DER-042-v1.0",
+        "path": "drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/LS-DER-042-v1.0 — Closed-Form Planar Bargmann–Fock Short-Lifetime Coefficient.export.txt",
+        "file_sha256": "6a24c1af04b1b4fdc482baf09e97da953284d3381853be09e2bbad4baacef25b",
+        "frozen_body_marker": "BEGIN_PLANAR_COEFFICIENT_FROZEN_BODY … END_PLANAR_COEFFICIENT_FROZEN_BODY",
+        "frozen_body_bytes": 7073,
+        "sha256": "54cedb1eba9d72648619468beed9b8870bb3d28dbe206805dc72b4f796557cf3",
+        "sha256_kind": "frozen body per the artifact's FREEZE POLICY (recomputed 2026-09-27 = declared BODY_SHA256)",
+        "equations": ["(30) closed form", "(31) decimal", "THEOREM 8.1"],
+        "informal_status_as_recorded": "COMPLETE CLOSED-FORM COEFFICIENT CANDIDATE / REVIEW DEFERRED (same-OpenAI-family; independence credit ZERO) — transcribed, not decided here"
+      },
+      "informal_statement": "c_∞ = 2^(2/3)·3^(5/6)·Γ(1/6)/(54·π^(3/2)) is finite and strictly positive, with decimal expansion 0.0734069193060342710301359629577740500…",
+      "lean_module": "Side24Formal.Side24Pilot",
+      "lean_decls": [
+        "cPlanar",
+        "cPlanar_pos",
+        "cPlanar_mem_Icc_of_factor_bounds",
+        "two_rpow_two_thirds_bounds",
+        "three_rpow_five_sixths_bounds",
+        "pi_rpow_three_halves_bounds",
+        "cPlanar_decimal_enclosure"
+      ],
+      "formalization_status": "kernel_checked",
+      "explicit_axioms": [],
+      "hypotheses_are_scope": [
+        "cPlanar_decimal_enclosure assumes Γ(1/6) ∈ [5.5663160017802352042500, 5.5663160017802352042501] as an explicit hypothesis. Mathlib has no numerical bound on Γ(1/6); the enclosure is an external input (mpmath 60-digit evaluation, author-side) and is NOT independently kernel-verified. Everything else (rpow monotonicity, π to 20 decimals via Real.pi_gt_d20 / Real.pi_lt_d20, rational arithmetic) is kernel-checked."
+      ],
+      "scope_dispositions": [
+        "Roadmap example window 0.07340691930603427103 < c < 0.07340691930603427104 (20 digits) is NOT formalized: Mathlib's π bounds (20 decimals) give a derived enclosure of width ≈ 3.5e-22 that does not fit; the formal window is loosened to 19 digits (0.0734069193060342710, 0.0734069193060342711).",
+        "cPlanar_pos is the positivity half of LS-DER-042 THEOREM 8.1 and is unconditional."
+      ],
+      "does_not_claim": [
+        "the exact finite side-24 torus coefficient c_24 (LS-DER-043) or the total 576·c_24",
+        "the periodization correction, its sign, or any relative interval (LS-DER-044/045/059/062/063)",
+        "commutation of the limits L→∞ and ℓ→0",
+        "that eq. (30) is the correct coefficient of the Gaussian-field model (derivation steps (1)–(29) are not formalized; only the closed-form constant is)",
+        "any change to lemma_closed, prizes, premises, obligations, or review status on d6g8k5htny-coder/main"
+      ],
+      "alignment_review": {
+        "status": "author_side",
+        "reviewer": null,
+        "author": "Cursor Cloud Agent (Claude) — same-provider as several prior program reviews; organizational-independence credit ZERO",
+        "what_a_distinct_reviewer_checks": "That the Lean statement of cPlanar and cPlanar_decimal_enclosure says what the informal LS-DER-042 eq. (30)/(31) says (constants, exponents, normalization 54, window digits) — not re-proving the theorem, which the kernel already did."
+      },
+      "verification_level_if_kernel_checked": "L5",
+      "ai_prover_cross_check": {
+        "status": "NOT_RUN",
+        "note": "Optional lane: an independent prover (e.g. Goedel-Prover / DeepSeek-Prover / AlphaProof-class) given only the statement of cPlanar_decimal_enclosure; a kernel-accepted proof is recorded here as an additional lane, never as acceptance."
+      }
+    }
+  ]
+}
