@@ -1,3 +1,7 @@
+## STATUS (Batch 678 tip-eng-keep-prior)
+
+tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 677→678; Soft Intent n=1; inv parent-pin; VERIFY 678; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 677 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 676/675/673/671/670 (catch-up after tip/eng677); STATUS_GUARD pass; stamps@677; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
