@@ -1,0 +1,123 @@
+0001 | # KIMI INDEPENDENT REVIEW VERDICT — LPW-CAND-20260912 (local-path candidate, existential cubic lower bound)
+0002 | 
+0003 | Reviewer: KIMI line (lead coordinator + four independent interface reviewers RA/RB/RC/RD).
+0004 | Date: 2026-09-13. Target: 02_LOCAL_PATH_LOWER_BOUND_CANDIDATE.md v1.0, body sha256
+0005 | cf58f72eb0399c626160c143b50f674ff3bd5c449225211edd6fd378a374e1a5 (matches the package MANIFEST).
+0006 | Review packet: 03_INDEPENDENT_REVIEW_PACKET.md (six interfaces, separate dispositions required).
+0007 | Exposure disclosure: the full candidate and packet were read before review — ordinary hostile review,
+0008 | not blind reconstruction. Review lineages: five (lead + RA + RB + RC + RD), each with its own
+0009 | independent scripts; no author-script lineage consumed.
+0010 | 
+0011 | ## VERDICT: APPROVE — all six interfaces PASS WITHIN SCOPE at the exact file version.
+0012 | 
+0013 | The candidate's theorem LPW is endorsed: **there exist c > 0 and r₀ > 0 such that
+0014 | 1 − q(r, 6/5) ≥ c·r³ for all 0 < r ≤ r₀**, under the exact normalized periodized side-24
+0015 | two-dimensional Bargmann–Fock field and the exact six-pin typed maximum–saddle pair-Palm law
+0016 | (pins f(M_r) = 6/5, f(S_r) = 6/5 − r³/6, ∇f = 0 at M_r = (−r/2, 0), S_r = (r/2, 0); weight
+0017 | W_r = |det H_M det H_S|·1{H_M ≺ 0, det H_S < 0}; q(r, b) = P_r{D_f(M_r) = S_r}, no adjacency
+0018 | conditioning, η_r untouched).
+0019 | 
+0020 | ## Interface dispositions (separate, per the packet's requirement)
+0021 | 
+0022 | | interface | reviewer | verdict | file (sha256) |
+0023 | |---|---|---|---|
+0024 | | R1 law and topology | RA | PASS WITHIN SCOPE | RA_R1_R6.md 3b7cda65… |
+0025 | | R2 six-/ten-coordinate Gaussian limit | RB | PASS WITHIN SCOPE | RB_R2.md 07ceb63c… |
+0026 | | R3 conditional C⁴ norm control | RC | PASS WITHIN SCOPE (2 non-blocking amendments) | RC_R3.md 29dcbc23… |
+0027 | | R4 deterministic lift | RD | PASS WITHIN SCOPE | RD_R4_R5.md 09aaac1d… |
+0028 | | R5 normalizer and final powers | RD | PASS WITHIN SCOPE | RD_R4_R5.md 09aaac1d… |
+0029 | | R6 scope and status | RA | PASS WITHIN SCOPE | RA_R1_R6.md 3b7cda65… |
+0030 | | lead's independent evidence pack | lead | consistent with all six | LEAD_EVIDENCE_PACK.md |
+0031 | 
+0032 | ## What was independently verified (each by at least two independent lineages)
+0033 | 
+0034 | 1. **The exact witness algebra**: F*'s pinned maximum/saddle (det 6, −14), the path height
+0035 |    R(x) = (2x+1)²(12x²+8x−17)/240, the exact identity R + 99/1280 = (4x+5)²(48x²−40x+1)/3840,
+0036 |    min R = −99/1280 > −1/6, endpoint 9/16 > 0, clearance 103/3840 > 0 under ε = 1/16,
+0037 |    Hessian interval bounds (81/16, −1673/128), weight product ≥ 65.
+0038 | 2. **The topological implication** (R1): a strict local maximum at b with a path to a point above b
+0039 |    whose minimum exceeds f(S) cannot die at S — proved tie-free; all four adversarial escapes fail;
+0040 |    the needed assumptions (a.s. Morse + distinct critical values, measurability) are already the
+0041 |    estimand's definitional package; NO Morse–Smale is consumed.
+0042 | 3. **The Hermite normalization** (R2/lead): V row-major with det −1; the displayed T_r with
+0043 |    det −r^{−5}, invertible for all r > 0; u_r = (b − r³/12, −r²/4, 0, 0, 0, 1/3); U_r → U_0 in
+0044 |    Gaussian L² with covariance convergence (exact through cubics; trapezoidal cancellations exact).
+0045 | 4. **The ten-jet nondegeneracy** (R2): the spectral-support argument is sound, and numerically the
+0046 |    exact field's ten-jet covariance at 0 has certified λ_min = 0.126553449667289 (eigen-residual
+0047 |    6.9e-50, spectral tail ≤ 1.2e-185); the r = 0 Schur complement is diag(2, 1/2, 1/2, 1/6) at
+0048 |    machine precision; rungs r = 0.5…0.025 converge to the endpoint (λ_min → 0.12656); conditional
+0049 |    means → (−b, 0, 0, 0).
+0050 | 5. **The density lower bound** (R2): the argument chain (uniform PD Schur + bounded
+0051 |    determinants/inverse/means on the compact parameter set [0, r_G] × K_J) is sound; evidence at
+0052 |    r = 0.025: density of J at the thin-box center 1.2832e-3, minimum over 16 corners 1.2781e-3.
+0053 | 6. **The conditional C⁴ moment** (R3): all six attack links held — the regression version is
+0054 |    everywhere-defined (no version trap), the representers' C⁴ norms are uniform (Cauchy–Schwarz +
+0055 |    covariance convergence, no hidden r-blowup through the Hermite frame), the residual's moments are
+0056 |    finite and v-independent, Γ_r^{-1} is bounded on [0, r_G], the Markov 1/2 bound is pointwise in j,
+0057 |    and the jet-box integration is measure-theoretically clean (no independence asserted, no
+0058 |    subtraction-order error).
+0059 | 7. **The Taylor lift** (RD/lead): all six 1D pin identities exact (1/24, 1/48, 5/16, 1/128,
+0060 |    23/384, and the y-equation Kr/48); the 2D remainder (9/2)Kr; monomial norms 1,2,1,4,2,12;
+0061 |    total 2089/384 < 8 (reproduced term-by-term); basis norms 4,4,2,6; tolerance 3/64 < 1/16;
+0062 |    Hessian scaling r per matrix, r² per determinant, r⁴ per pair.
+0063 | 8. **The normalizer and power ledger** (RD): Z_r ≤ 4B_3·r² = C_Z r² with correct polarity;
+0064 |    Z_r > 0 grounded by the constructed event (no circularity); E_r ⊂ K_J for r ≤ 1;
+0065 |    volume 32δ⁴r; numerator 1040mδ⁴r⁵; quotient c = 1040mδ⁴/C_Z = 260mδ⁴/B_3; exponent
+0066 |    1 + 4 − 2 = 3.
+0067 | 9. **The estimand** (R1/lead): the candidate's q is exactly the program's p_r (W10 §1 firewall;
+0068 |    manuscript Definition 2.8's "window" phrasing resolves to the exact pin f(S) = b − r³/6; the
+0069 |    corrected pin basis, the raw six pins, and T_r span the same σ-algebra; identical weight, types,
+0070 |    RN structure; no adjacency conditioning).
+0071 | 10. **Scope discipline** (R6): all constants structurally r-independent; no sampled
+0072 |     finite-difference modulus; no planar-moment substitution; no silent promotion (GP-LB-STAT-004
+0073 |     unchanged; the accepted 2D lower campaign stays OPEN); conclusion strictly existential (no
+0074 |     liminf coefficient, no numerical c or r₀, no dimension-3 or adjacency variant; η_r retained).
+0075 | 
+0076 | ## Amendments and scoped residues (none blocking)
+0077 | 
+0078 | - A1 (RC): the residual field is nonstationary, so its C⁴-moment bound should be stated explicitly
+0079 |   via the triangle inequality through the representers (substance present; presentation gap).
+0080 | - A2 (RC): the M₄ index convention (|α| = 4 vs |α| ≤ 4) should be stated once (immaterial to §8).
+0081 | - S1 (RA, non-blocking): equality with GP-DER-118-v1.10 §0 (candidate line 48) is
+0082 |   CANNOT-VERIFY-locally — that body is absent from the local corpus (Drive ID
+0083 |   1qc6ep2S4PIoPMEWDsdDQI1dr0LOwJiK9; hashes c1d6e559…/9b7901e1… as reported by the package).
+0084 |   The estimand of record is local and matches independently of that body.
+0085 | 
+0086 | ## Consequences for the program (stated exactly, no promotion)
+0087 | 
+0088 | 1. The existential cubic lower bound stands endorsed at review grade by an independent route that
+0089 |    consumes NONE of the open quantitative obligations (WP, Λ/H-B3, exit, γ-LOC, Bonferroni,
+0090 |    far-field, SARD-G, η_r). This is the program's first endorsed lower theorem for the 2D problem
+0091 |    at any scope: 1 − q(r, 6/5) ≥ c·r³ for all sufficiently small r, some c > 0.
+0092 | 2. The candidate does NOT establish: the 0.9144-class constant, a liminf coefficient, a numerical
+0093 |    c or r₀, a full lifetime distribution, a two-sided law at explicit constants, or any dimension-3
+0094 |    or adjacent-conditioned variant. The K3 assembly (K3-THM-001, conditional liminf at
+0095 |    measured/mixed tier with hypotheses H1–H12) is a SEPARATE, logically independent statement at
+0096 |    its own tiers; the candidate neither uses nor repairs its premises. The author-side state view's
+0097 |    "K3-THM-001 REFUTED AS WRITTEN / NONCONTROLLING" attaches to the v1.1-lineage defects already
+0098 |    quarantined by the K3 campaign; the K3 conditional assembly stands on its own receipts.
+0099 | 3. Follow-up available (not performed here): the constant expression c = 1040mδ⁴/C_Z is in
+0100 |    principle evaluable (RB's endpoint density evidence m ≈ 1.28e-3; B_3 via the regression moments)
+0101 |    — a certified evaluation would give a small but explicit numerical c and r₀.
+0102 | 4. The ratified upper chain (AO48-OPR-045) is untouched; combining it with this endorsed lower
+0103 |    bound gives the two-sided Θ(r³) at the existential level, subject to the upper chain's own
+0104 |    grades and to operator adjudication of any status change.
+0105 | 5. **Status firewall (exact):** this review endorses the candidate's mathematics at review grade.
+0106 |    It changes no LS-CTL Boolean, eligibility predicate, theorem status, RP status, AO48 operator
+0107 |    record, or q0 package status. Any status change requires separate operator adjudication. P0.1
+0108 |    remains HOLD; the accepted 2D lower campaign's quantitative obligations remain OPEN at their
+0109 |    own grades.
+0110 | 
+0111 | ## Falsifier (what would kill this endorsement)
+0112 | 
+0113 | A counterexample at any interface: a valid elder-rule interpretation in which M dies at S despite
+0114 | the path; a failure of the ten-jet covariance's positive-definiteness on the exact field; a
+0115 | conditional C⁴ moment that blows up uniformly over the compact box; a sign/typing error in the
+0116 | Taylor lift; a normalizer that is not O(r²); or a proof that the program's q differs from the
+0117 | candidate's under the records of record. Any one retracts the corresponding interface's PASS and,
+0118 | if load-bearing, this endorsement.
+0119 | 
+0120 | ---
+0121 | 
+0122 | SHA-256 of this report body (text after this line is excluded):
+0123 | d399e28378d177f88d08032c81f1573f35c9af2b600b9b775ebfe40f555cbbad
