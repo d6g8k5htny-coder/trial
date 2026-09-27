@@ -1,3 +1,8 @@
+### Batch 794 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 793→794 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d506370` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →794; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 793); Soft Intent single === header →794; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 793 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 792→793 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`65ff69f6` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 792→793; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
