@@ -1,0 +1,76 @@
+{
+  "plan_id": "LPW-RETURN05-DRIVE-ADDITIVE-UPDATE",
+  "status": "PREPARED_NOT_APPLIED",
+  "remote_writes": 0,
+  "operator_authorization": "GRANTED by Dylan Roy in the conversation; no repeated owner vote requested",
+  "implementation_blocker": "No upload/create/update action exposed by current Drive or Files tools; discovery attempted",
+  "verified_parent_id": "17gW4k8JTnwOo9VrRpQhSluQ3xTERIA1Q",
+  "verified_parent_name": "2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE",
+  "observed_parent_modified_time": "2026-09-12T22:47:23.883Z",
+  "new_child_name": "RETURN-05 — RAW ARCHIVE INTAKE AND CONSTANT REPAIR",
+  "preconditions": [
+    "Use an actually available Drive writer; do not simulate tool execution or obtain credentials outside the authorized connector",
+    "Recheck exact parent identity, latest state and applicable lease/budget rules under OP-PROT-012",
+    "Abort structural update on a conflicting active lease or intervening incompatible write",
+    "Verify this complete bundle root manifest before uploading",
+    "Retain the current raw sources, historical verdicts and frozen proofs unchanged"
+  ],
+  "operations": [
+    {
+      "action": "create_new_child_folder",
+      "parent_id": "17gW4k8JTnwOo9VrRpQhSluQ3xTERIA1Q",
+      "name": "RETURN-05 — RAW ARCHIVE INTAKE AND CONSTANT REPAIR"
+    },
+    {
+      "action": "upload_preserving_relative_paths",
+      "local_root": ".",
+      "exclude": [
+        "drive_apply/PLAN.json",
+        "drive_apply/README.md",
+        "MANIFEST.sha256"
+      ],
+      "identity_source": "root MANIFEST.sha256"
+    },
+    {
+      "action": "upload_plan_and_manifest_as_records",
+      "local_paths": [
+        "drive_apply/PLAN.json",
+        "drive_apply/README.md",
+        "MANIFEST.sha256"
+      ]
+    },
+    {
+      "action": "record_scoped_evidence_delta",
+      "source": "CURRENT_STATE.json",
+      "must_not_change": [
+        "LS-CTL-003 Boolean state",
+        "RP-C/RP-S",
+        "AO48 3D ratification",
+        "P0.1/P0.2 theorem status",
+        "frozen LPW candidate",
+        "K3 predecessor verdict"
+      ]
+    },
+    {
+      "action": "read_back_each_new_payload",
+      "verify": "bytes and SHA-256 match local manifest; issue separate receipt"
+    },
+    {
+      "action": "publish_one_navigation_pointer_if_authorized",
+      "source": "00_READ_FIRST.md",
+      "only_after": "successful scoped writes and readback"
+    }
+  ],
+  "no_overwrite": true,
+  "no_delete": true,
+  "rollback": "On failed upload or identity mismatch, leave old records intact, preserve partial transport receipts and mark the new folder incomplete; do not fabricate readback success.",
+  "evidence_changes": {
+    "raw_four_packages": "RECEIVED_AND_82_PAYLOAD_HASHES_VERIFIED",
+    "source_replay": "14_TOP_LEVEL_RUNS_MATCH_DELIVERED_OUTPUTS",
+    "qualitative_LPW": "REVIEW_ENDORSEMENT_RETAINED; body extraction convention correction required",
+    "fallback_QC": "ANALYTIC_PASS_RETAINED_AND_335_NUMERIC_CHECKS_REPRODUCED",
+    "strongest_constant": "RECEIVED_KIMI_PASS_PRESERVED; LOCAL_AMEND_REQUIRED_FOR_EXACT_FINDINGS",
+    "W8": "EXACT_MISSING_INPUT_RECOVERED; CONDITIONAL_LIMIT_FLOOR_AND_FINAL_KILL_FAILURE_PRESERVED; FULL_SWEEP_NOT_REPLAYED",
+    "matching_2D_upper": "OPEN"
+  }
+}
