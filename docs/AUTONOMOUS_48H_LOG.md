@@ -1,8 +1,38 @@
-### Batch 791 sidecar — Dropbox → Drive / GitHub gap audit (2026-09-27)
+### Batch 813 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 812→813 @2f7a5a9 (2026-09-27)
 
-- Dylan's Dropbox `scl/fo/9h5229ryu5pecpje7xgdh` (188.9 MB zip; 3,325 files / **1,695 distinct SHA-256**; 2,975 zip members) diffed byte-level against Drive (2026-09-17 export + deltas on `main@chatgpt/drive-github-hardening-20260919`: `drive/inventory.jsonl`, `Archive_Members.csv`, 414 `_MANIFEST.jsonl`) and every branch of all 8 owner repos (git blob SHA-1). Scientific effect: **NONE**; `lemma_closed=false`.
-- Result: in Drive exact **1,476**; **missing from Drive 183** (42 `master-final-v1`/`rn-sector-review-master-20260921` CI-replay receipts of `main@d107ab12` 2026-09-22; 33 `LPW_Return_05_Archive_Audit` audit layer; 14 MPV3/Master-Prompt; 38 other root docs; 21 `textNN.txt`; 8 psi/apoha; 13 git-mirror manifests; 12 Dropbox-local zip carriers whose members are all in Drive; 2 noise). **Missing from GitHub 975** (K3_SIDE24_LB/UPPER2D + LPW_CONSTANT/W*/INBOX trees, root docs); only **59** distinct files sit on any default branch (`Math-@main imports/upper2d_*`), **530** exist only on non-default `main` branches. **26** same-name/different-bytes rows (SIDE24 pre-review package vs Drive `SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31`; Return-05 vs `LPW — RAW ARCHIVE INTAKE R05`). Missing from both: 166.
-- Artifacts: `docs/DROPBOX_GAP_AUDIT_2026-09-27.md`, `portable/dropbox_gap_audit_2026-09-27/` (SUMMARY / MISSING_* / REVISION_DIFFERS_DRIVE / ZIP_CARRIER_COVERAGE / DROPBOX_INVENTORY.tsv), `scripts/dropbox_gap_audit.py` (reproducible; no Drive creds needed), `tests/test_dropbox_gap_audit.py`. Complements peer PR #149 `portable/dropbox_intake_2026-09-27/`. No Dropbox bodies copied into trial. Shared to peers via trial main land + PR #149 comment.
+- TIP_DRIFT LIVE=`8dcc589` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 812→813; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →813; inv parent_pin @8dcc589. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 812 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY812 Soft Intent n=1; catch-up at tip VERIFY812 after tip/eng812 Soft Intent 811→812 (covers research811 tip-race); open stack 13/1/3 Δ0 vs 811/810/809/808/807; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f0ab1d88`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@812.
+
+### Batch 811 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY812 Soft Intent n=1; covers research811 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f0ab1d88`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@811.
+
+### Batch 812 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 811→812 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d8b149b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →812; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 811); Soft Intent single === header →812; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 811 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent+VERIFY unfreeze 810→811 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`9c3ac46` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 810→811; living script_stale Soft Intent+VERIFY unfreeze then living force; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →811; inv parent_pin @9c3ac46. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 810 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY810 Soft Intent n=1; catch-up at tip VERIFY810 after tip/eng810 Soft Intent 809→810 (covers research809 tip-race); open stack 13/1/3 Δ0 vs 809/808/807/806/805; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`44152a0d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@810.
+
+### Batch 809 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY810 Soft Intent n=1; covers research809 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`44152a0d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@809.
+
 
 ### Batch 810 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 809→810 @2f7a5a9 (2026-09-27)
 
@@ -179,6 +209,12 @@
 
 - TIP_DRIFT LIVE=`14caee1` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →792; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no defect (living current after force republish Soft Intent 791); Soft Intent single === header →792; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 791 sidecar — Dropbox → Drive / GitHub gap audit (2026-09-27)
+
+- Dylan's Dropbox `scl/fo/9h5229ryu5pecpje7xgdh` (188.9 MB zip; 3,325 files / **1,695 distinct SHA-256**; 2,975 zip members) diffed byte-level against Drive (2026-09-17 export + deltas on `main@chatgpt/drive-github-hardening-20260919`: `drive/inventory.jsonl`, `Archive_Members.csv`, 414 `_MANIFEST.jsonl`) and every branch of all 8 owner repos (git blob SHA-1). Scientific effect: **NONE**; `lemma_closed=false`.
+- Result: in Drive exact **1,476**; **missing from Drive 183** (42 `master-final-v1`/`rn-sector-review-master-20260921` CI-replay receipts of `main@d107ab12` 2026-09-22; 33 `LPW_Return_05_Archive_Audit` audit layer; 14 MPV3/Master-Prompt; 38 other root docs; 21 `textNN.txt`; 8 psi/apoha; 13 git-mirror manifests; 12 Dropbox-local zip carriers whose members are all in Drive; 2 noise). **Missing from GitHub 975** (K3_SIDE24_LB/UPPER2D + LPW_CONSTANT/W*/INBOX trees, root docs); only **59** distinct files sit on any default branch (`Math-@main imports/upper2d_*`), **530** exist only on non-default `main` branches. **26** same-name/different-bytes rows (SIDE24 pre-review package vs Drive `SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31`; Return-05 vs `LPW — RAW ARCHIVE INTAKE R05`). Missing from both: 166.
+- Artifacts: `docs/DROPBOX_GAP_AUDIT_2026-09-27.md`, `portable/dropbox_gap_audit_2026-09-27/` (SUMMARY / MISSING_* / REVISION_DIFFERS_DRIVE / ZIP_CARRIER_COVERAGE / DROPBOX_INVENTORY.tsv), `scripts/dropbox_gap_audit.py` (reproducible; no Drive creds needed), `tests/test_dropbox_gap_audit.py`. Complements peer PR #149 `portable/dropbox_intake_2026-09-27/`. No Dropbox bodies copied into trial. Shared to peers via trial main land + PR #149 comment.
 
 ### Batch 791 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 

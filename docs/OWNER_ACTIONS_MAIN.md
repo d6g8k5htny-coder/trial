@@ -1,3 +1,41 @@
+## STATUS (Batch 813 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8dcc589` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 812→813; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH813_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch813_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 812 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d8b149b` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 811→812; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH812_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch812_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 812 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 811/810/809/808/807 (catch-up at tip VERIFY812 after tip/eng812 Soft Intent 811→812; covers research811 tip-race); STATUS_GUARD pass; stamps@812; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 811 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 810/809/808/807/806 (catch-up at tip VERIFY812 after tip/eng Soft Intent→812; covers research811 tip-race); STATUS_GUARD pass; stamps@811; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 811 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `9c3ac46` tip_moved). tip_or_eng: living script_stale Soft Intent+VERIFY unfreeze then living force; unfreeze VERIFY/last-resort 810→811; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH811_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch811_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
 ## STATUS (Batch 810 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `de7a454` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 809→810; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH810_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
@@ -6,6 +44,15 @@ Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `de7a454` tip_moved).
 ./scripts/refresh_path_c_bundle.sh --dry-run
 python3 -m pytest tests/test_intent.py::test_batch810_tip_or_eng_tip_drift_idle_unfreeze -q
 ```
+
+
+## STATUS (Batch 810 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 809/808/807/806/805 (catch-up at tip VERIFY810 after tip/eng810 Soft Intent 809→810; covers research809 tip-race); STATUS_GUARD pass; stamps@810; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 809 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 808/807/806/805/804 (catch-up at tip VERIFY810 after tip/eng Soft Intent→810; covers research809 tip-race); STATUS_GUARD pass; stamps@809; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 809 tip-eng-idle)
 
