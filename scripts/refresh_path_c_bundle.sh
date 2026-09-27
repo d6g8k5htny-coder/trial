@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-816}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-836}"
 
 usage() {
   cat <<'EOF'
@@ -236,21 +236,17 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "refresh_path_c_bundle: dry-run OK tip stable @ ${LIVE_SHORT} (no rebuild needed)"
     exit 0
   fi
-  # Landed-ancestor gate (scripts/path_c_tip_gate.py): Path C landed and BASE_TIP
-  # kept immutable while hardening moves is not drift — BASE_TIP + 0019 merge in
-  # live history means nothing needs rebuilding. Only real drift exits 1.
-  TIP_GATE_TIP_STATE="UNKNOWN"
-  TIP_GATE_REASON=""
-  if TIP_GATE_SH="$(python3 "$ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --trial-root "$ROOT" --sh 2>/dev/null)"; then
-    eval "$TIP_GATE_SH"
-  elif [[ -n "$TIP_GATE_SH" ]]; then
-    eval "$TIP_GATE_SH"
-  fi
-  if [[ "$TIP_GATE_TIP_STATE" == "LANDED_ANCESTOR" ]]; then
-    echo "refresh_path_c_bundle: dry-run OK landed-ancestor: BASE_TIP ${PRIOR_SHORT} + 0019 merge in live history @ ${LIVE_SHORT} (path_c_landed; no rebuild needed; tip_matches_base=false)"
+  # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → the
+  # stack is still on tip; report TIP_DRIFT_DESCENDANT_OK (exit 0) so CI stays
+  # green between upstream merges. BEHIND / DIVERGED / UNKNOWN keep exit 1.
+  DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$PRIOR_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+  DRIFT_LANDED="$(python3 -c "import json,sys; print('1' if json.load(open(sys.argv[1])).get('path_c_landed') is True else '0')" "$ROOT/portable/path-c-applied-bundle/VERIFY.json" 2>/dev/null || echo 0)"
+  if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
+    echo "refresh_path_c_bundle: dry-run TIP_DRIFT_DESCENDANT_OK ${PRIOR_SHORT} -> ${LIVE_SHORT} (Path C landed; live ahead of BASE_TIP — informational)"
+    echo "refresh_path_c_bundle: refresh at leisure: ./scripts/refresh_path_c_bundle.sh  # re-pins BASE_TIP + rebuilds bundle (does NOT push to main)"
     exit 0
   fi
-  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT} (tip_gate=${TIP_GATE_TIP_STATE}${TIP_GATE_REASON:+: $TIP_GATE_REASON})"
+  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT} (class=${DRIFT_CLASS:-UNKNOWN} landed=${DRIFT_LANDED})"
   echo "refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)"
   exit 1
 fi

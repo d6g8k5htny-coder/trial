@@ -19,13 +19,6 @@ still reflects apply_all --check.
 Batch 266: write_required_to_land must be false on already_on_tip / IDLE_PATH_C_DONE
 (Batch 261 left the hardcoded True). Idle means no land → no write required.
 
-Landed-ancestor gate: with Path C landed and BASE_TIP kept immutable while the
-hardening branch moves, tip_matches_base is permanently false. already_on_tip
-now keys off tip_ok (TIP_MATCH or LANDED_ANCESTOR from scripts/path_c_tip_gate.py);
-tip_matches_base stays literal equality. On LANDED_ANCESTOR the historical
-apply_all --check is skipped (patches are in history; forward/reverse --check
-on a moved tree is meaningless), mirroring the CI Batch 246 idle skip.
-
 Scientific effect: NONE.
 """
 
@@ -41,9 +34,6 @@ import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import path_c_tip_gate as tip_gate  # noqa: E402
 
 REPO = "d6g8k5htny-coder/main"
 HARDENING = "chatgpt/drive-github-hardening-20260919"
@@ -81,6 +71,33 @@ def _run(cmd: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess
         text=True,
         check=False,
     )
+
+
+def _tip_drift_class(clone: Path, base_sha: str, live_sha: str, tip_match: bool) -> str:
+    """MATCH | DESCENDANT | BEHIND | DIVERGED | UNKNOWN (local ancestry, API fallback).
+
+    The depth-80 clone answers ancestry locally when BASE_TIP is recent; older
+    BASE_TIPs fall back to scripts/tip_drift_class.py (one compare API call).
+    """
+    if tip_match:
+        return "MATCH"
+    if not (base_sha and live_sha):
+        return "UNKNOWN"
+    fwd = _run(["git", "merge-base", "--is-ancestor", base_sha, live_sha], cwd=clone)
+    if fwd.returncode == 0:
+        return "DESCENDANT"
+    back = _run(["git", "merge-base", "--is-ancestor", live_sha, base_sha], cwd=clone)
+    if back.returncode == 0:
+        return "BEHIND"
+    # rc 1 = both known but unrelated (shallow horizon may hide the link);
+    # rc 128 = base_sha not in the shallow clone. Ask the API either way.
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from tip_drift_class import classify  # noqa: PLC0415
+
+        return classify(base_sha, live_sha)
+    except Exception:  # noqa: BLE001 — offline / import failure → UNKNOWN
+        return "DIVERGED" if fwd.returncode == 1 and back.returncode == 1 else "UNKNOWN"
 
 
 def _tree_accepts_path_c(clone: Path, tip_ref: str) -> dict:
@@ -275,26 +292,25 @@ def main() -> int:
             return 2
         report["hardening_sha"] = hard_sha
         report["default_tip_sha"] = main_sha
+        tip_exact = bool(base_sha and hard_sha and hard_sha.startswith(base_sha[:7]))
+        report["tip_exact_match"] = tip_exact
+        path_c_landed = False
+        verify_path = trial / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+        if verify_path.is_file():
+            try:
+                verify = json.loads(verify_path.read_text(encoding="utf-8"))
+                path_c_landed = verify.get("path_c_landed") is True
+            except (OSError, json.JSONDecodeError):
+                path_c_landed = False
+        # Sidecar b3c6: hardening moves several times per hour. A live tip that
+        # descends from BASE_TIP still carries landed Path C, so
+        # tip_matches_base := exact MATCH, or DESCENDANT while path_c_landed.
+        # BEHIND / DIVERGED / UNKNOWN (reset, force-push, offline) stay False.
+        report["tip_drift_class"] = _tip_drift_class(clone_dir, base_sha, hard_sha, tip_exact)
+        report["tip_descends_from_base"] = report["tip_drift_class"] in ("MATCH", "DESCENDANT")
         report["tip_matches_base"] = bool(
-            base_sha and hard_sha and hard_sha.startswith(base_sha[:7])
+            tip_exact or (path_c_landed and report["tip_drift_class"] == "DESCENDANT")
         )
-        # Landed-ancestor tip gate (scripts/path_c_tip_gate.py). tip_matches_base
-        # stays literal equality; tip_ok/tip_state carry the gate decision
-        # (TIP_MATCH | LANDED_ANCESTOR pass; TIP_DRIFT | UNKNOWN do not).
-        gate = tip_gate.gate(hard_sha, trial_root=trial, repo_dir=clone_dir)
-        report["tip_ok"] = gate["tip_ok"] is True
-        report["tip_state"] = gate["tip_state"]
-        report["tip_gate"] = {
-            k: gate.get(k)
-            for k in (
-                "base_is_ancestor_of_live",
-                "landed_merge_is_ancestor_of_live",
-                "landed_merge_sha",
-                "ancestry_via",
-                "reason",
-            )
-            if k in gate
-        }
 
         hard_shape = _tree_accepts_path_c(clone_dir, f"origin/{HARDENING}")
         main_shape = _tree_accepts_path_c(clone_dir, "origin/main")
@@ -340,20 +356,9 @@ def main() -> int:
         # (already-applied skips); treat tip as apply_ready.
         apply_exit = None
         apply_out = ""
-        path_c_landed = False
-        verify_path = trial / "portable" / "path-c-applied-bundle" / "VERIFY.json"
-        if verify_path.is_file():
-            try:
-                verify = json.loads(verify_path.read_text(encoding="utf-8"))
-                path_c_landed = verify.get("path_c_landed") is True
-            except (OSError, json.JSONDecodeError):
-                path_c_landed = False
         report["path_c_landed"] = path_c_landed
-        landed_ancestor = path_c_landed and report.get("tip_state") == "LANDED_ANCESTOR"
         if args.skip_apply_check:
             report["apply_all_check"] = "skipped"
-        elif landed_ancestor:
-            report["apply_all_check"] = "skipped_landed_ancestor"
         else:
             apply_wt = work / "apply-check"
             if apply_wt.exists():
@@ -459,14 +464,15 @@ def main() -> int:
             "portable/PATH_C_REBASE_CONFLICT_REPORT_<batch>.json"
         )
 
-        apply_ok = args.skip_apply_check or landed_ancestor or apply_exit == 0
+        apply_ok = args.skip_apply_check or apply_exit == 0
         apply_check_ok = bool(apply_ok and hard_shape["accepts"])
         report["apply_check_ok"] = apply_check_ok
-        tip_ok = report.get("tip_ok") is True
+        tip_match = report.get("tip_matches_base") is True
         # Batch 261: landed + tip match → idle (same class as owner_land_path_c /
         # owner_open_path_c_pr already-on-tip). Do not advertise APPLY_READY land.
-        # Landed-ancestor gate: tip_ok (TIP_MATCH | LANDED_ANCESTOR) replaces the
-        # literal tip_matches_base here.
+        # Sidecar b3c6: landed + live DESCENDS from BASE_TIP is the same idle class
+        # (patches already on tip); BEHIND / DIVERGED never idle.
+        tip_ok = tip_match or (report.get("tip_descends_from_base") is True)
         already_on_tip = bool(path_c_landed and tip_ok and apply_check_ok)
         report["already_on_tip"] = already_on_tip
         if already_on_tip:
