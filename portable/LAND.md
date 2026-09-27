@@ -1,3 +1,7 @@
+## STATUS (Batch 841 tip-eng-parent-pin-repair-r2)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair r2: inv tip_sha→precommit `7cd9ba8b` (was `4dd7bdc1` after peer tip-race broke pin); Soft Intent n=1; VERIFY 841; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 841 tip-eng-parent-pin-repair)
 
 tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `4dd7bdc1` (was `372da8f0` after merge 53f8f875 broke pin); Soft Intent n=1; VERIFY 841; durable 8/8; lemma_closed=false; goal OPEN.

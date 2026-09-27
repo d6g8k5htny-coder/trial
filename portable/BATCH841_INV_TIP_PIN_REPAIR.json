@@ -2,10 +2,10 @@
   "batch": "841",
   "action": "inventory_parent_pin_repair",
   "parent_pin": true,
-  "defect": "merge_53f8f875_left_tip_sha_at_372da8f0_not_HEAD_hat",
-  "trial_tip_before": "372da8f0ef77267066fe32670735fc4c707afbdf",
-  "trial_tip_after": "4dd7bdc1c90884939239dbeebf6f6ac27cdec941",
-  "note": "parent-pin repair: inv tip_sha=precommit HEAD (4dd7bdc1); was at 372da8f0 (stale through merge 53f8f875 / sidecar 4dd7bdc1 / Soft Intent841); Soft Intent n=1 preserved; VERIFY841 kept; do not advance Soft Intent",
+  "defect": "peer_merge_7cd9ba8b_left_tip_sha_stale_not_HEAD_hat",
+  "trial_tip_before": "4dd7bdc1c90884939239dbeebf6f6ac27cdec941",
+  "trial_tip_after": "7cd9ba8bb76f0f11c606be59e6b3e64e53ec48d6",
+  "note": "parent-pin repair r2: inv tip_sha=precommit HEAD (7cd9ba8b); was at 4dd7bdc1 (stale through peer merges after Soft Intent841); Soft Intent n=1 preserved; VERIFY841 kept; do not advance Soft Intent",
   "tip_match": false,
   "tip_moved": true,
   "keep_prior": true,
@@ -16,5 +16,6 @@
   "verify_refresh_batch": 841,
   "soft_intent_single_header": true,
   "inventable_promoted": false,
-  "generated_at_utc": "2026-09-27T21:52:11Z"
+  "generated_at_utc": "2026-09-27T21:54:39Z",
+  "repair_round": 2
 }
