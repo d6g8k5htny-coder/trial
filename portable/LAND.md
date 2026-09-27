@@ -1,3 +1,7 @@
+## STATUS (Batch 619 tip-eng-keep-prior)
+
+tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 618→619; Soft Intent n=1; inv parent-pin; VERIFY 619; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 618 tip-eng-keep-prior)
 
 tip BASE `2f7a5a9` LIVE `96e5175` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 617→618; Soft Intent n=1; inv parent-pin; VERIFY 618; durable 8/8; lemma_closed=false; goal OPEN.
