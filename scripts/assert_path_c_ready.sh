@@ -142,12 +142,24 @@ if [[ ${#BASE_SHA} -eq 40 && "$LIVE_SHA" == "$BASE_SHA" ]]; then
 elif [[ ${#BASE_SHA} -ge 7 && ${#BASE_SHA} -lt 40 && "${LIVE_SHA:0:${#BASE_SHA}}" == "$BASE_SHA" ]]; then
   TIP_OK=1
 fi
+TIP_DRIFT_TOLERATED=0
 if [[ "$TIP_OK" -ne 1 ]]; then
-  echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA" >&2
-  echo "  refresh BASE_TIP + rebuild path-c-applied-bundle before land" >&2
-  exit 1
+  # Tip-drift tolerance: once Path C has landed, BASE_TIP lagging a moved hardening tip is
+  # tolerated iff every portable patch is already on the live tree
+  # (path_c_tip_drift_tolerance.sh → apply_all --check already_on_tip=1).
+  # Anything less keeps the hard failure below.
+  DRIFT_HELPER="${ROOT}/scripts/path_c_tip_drift_tolerance.sh"
+  if [[ -x "$DRIFT_HELPER" ]] && bash "$DRIFT_HELPER" --workdir "$WORKDIR" --live-sha "$LIVE_SHA"; then
+    TIP_DRIFT_TOLERATED=1
+    echo "assert_path_c_ready: WARN tip-drift live=${LIVE_SHA:0:7} != BASE_TIP=${BASE_SHA:0:7} — tolerated (path_c_landed; stack already on live tip; keep-prior BASE_TIP)"
+  else
+    echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA" >&2
+    echo "  refresh BASE_TIP + rebuild path-c-applied-bundle before land" >&2
+    exit 1
+  fi
+else
+  echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
 fi
-echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
 
 # Batch 230: Path C already merged on hardening — patches are on tip; do not re-apply.
 # Batch 246: post-0019 idle — skip redundant apply_all --check when landed+no pending
@@ -219,9 +231,16 @@ verify_math_on_tip() {
 
 if [[ "$PATH_C_LANDED" -eq 1 && "$PENDING_FOLLOWON" -eq 0 ]]; then
   echo "assert_path_c_ready: IDLE_PATH_C_DONE tip=${LIVE_SHA:0:7} stack_end=${STACK_END} resolved=${RESOLVED_IDS} pending=[]"
-  echo "assert_path_c_ready: path_c_landed through tip patches — apply_all --check SKIPPED (redundant; catch 0020 when pending)"
+  APPLY_CHECK_NOTE="skipped_redundant"
+  if [[ "$TIP_DRIFT_TOLERATED" -eq 1 ]]; then
+    # Drift tolerance already ran apply_all --check on the live tip (all already-applied).
+    APPLY_CHECK_NOTE="ok_already_on_tip"
+    echo "assert_path_c_ready: path_c_landed through tip patches — apply_all --check ran via drift tolerance (already_on_tip=1)"
+  else
+    echo "assert_path_c_ready: path_c_landed through tip patches — apply_all --check SKIPPED (redundant; catch 0020 when pending)"
+  fi
   verify_math_on_tip "landed idle tip"
-  echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} idle_status=IDLE_PATH_C_DONE apply_all_check=skipped_redundant stack_end=${STACK_END} path_c_landed=true lemma_closed=false scientific_effect=NONE"
+  echo "assert_path_c_ready: OK tip=${LIVE_SHA:0:7} idle_status=IDLE_PATH_C_DONE apply_all_check=${APPLY_CHECK_NOTE} tip_drift_tolerated=${TIP_DRIFT_TOLERATED} stack_end=${STACK_END} path_c_landed=true lemma_closed=false scientific_effect=NONE"
 elif [[ "$PATH_C_LANDED" -eq 1 && "$PENDING_FOLLOWON" -eq 1 ]]; then
   echo "assert_path_c_ready: path_c_landed=true but pending follow-ons [${PENDING_IDS}] — run apply_all --check (catch 0020+)"
   echo "assert_path_c_ready: apply_all --check"

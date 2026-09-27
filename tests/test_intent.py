@@ -892,7 +892,11 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert result.returncode == 0, result.stderr + result.stdout
     data = __import__("json").loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
-    assert data["tip_matches_base"] is True
+    # Tip-drift tolerance: exact tip match, or landed stack already on a moved live tip.
+    assert data["tip_matches_base"] is True or data.get("tip_drift_tolerated") is True
+    if data.get("tip_drift_tolerated") is True:
+        assert data.get("path_c_landed") is True
+        assert data.get("apply_all_already_on_tip") is True
     assert data["default_aligned"] is True
     assert data["default_path_c_shape"]["accepts"] is False
     assert data["hardening_path_c_shape"]["accepts"] is True
@@ -8441,7 +8445,8 @@ def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     data = json.loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
     assert data.get("path_c_landed") is True
-    assert data.get("tip_matches_base") is True
+    # Tip-drift tolerance: exact tip match, or landed stack already on a moved live tip.
+    assert data.get("tip_matches_base") is True or data.get("tip_drift_tolerated") is True
     assert data["state"] == "IDLE_PATH_C_DONE"
     assert data["apply_ready"] is False
     assert data.get("already_on_tip") is True
@@ -9528,7 +9533,7 @@ def test_batch269_verify_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "TIP_DRIFT tolerated" in combined
     assert _living_tip(combined)
 
     brief = json.loads(
@@ -10149,7 +10154,7 @@ def test_batch273_apply_verify_honesty_keep_prior() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "TIP_DRIFT tolerated" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH273_BRIEF.json").read_text(encoding="utf-8")
@@ -10268,7 +10273,7 @@ def test_batch275_manifest_verified_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "TIP_DRIFT tolerated" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH275_BRIEF.json").read_text(encoding="utf-8")

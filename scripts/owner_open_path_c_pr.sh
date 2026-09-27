@@ -236,12 +236,23 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   set +e
   LIVE_SHA="$(git ls-remote "https://github.com/${REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1)"
   set -e
+  TIP_DRIFT_TOLERATED=0
   if [[ -n "$LIVE_SHA" ]]; then
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      # Tip-drift tolerance: landed stack already on the live tip ⇒ drift tolerated (idle).
+      # The helper shallow-clones the live tip and runs apply_all --check.
+      DRIFT_HELPER="$TRIAL_ROOT/scripts/path_c_tip_drift_tolerance.sh"
+      [[ -f "$DRIFT_HELPER" ]] || DRIFT_HELPER="$(cd "$(dirname "$0")" && pwd)/path_c_tip_drift_tolerance.sh"
+      if [[ -f "$DRIFT_HELPER" ]] && bash "$DRIFT_HELPER" --live-sha "$LIVE_SHA"; then
+        TIP_DRIFT_TOLERATED=1
+        echo "tip_matches_base=false tip_drift_tolerated=true (path_c_landed; stack already on live tip; keep-prior BASE_TIP)"
+      else
+        die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      fi
+    else
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
   else
     echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
   fi
@@ -262,6 +273,8 @@ print("true" if d.get("path_c_landed") is True else "false")
 ' "$VERIFY_JSON" 2>/dev/null || echo false)"
   TIP_OK=0
   if [[ -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    TIP_OK=1
+  elif [[ "$TIP_DRIFT_TOLERATED" -eq 1 ]]; then
     TIP_OK=1
   elif [[ -z "$LIVE_SHA" && -n "$VERIFY_SHA" && ( "$VERIFY_SHA" == "$BASE_TIP_SHA" || "$VERIFY_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${VERIFY_SHA}"* ) ]]; then
     TIP_OK=1

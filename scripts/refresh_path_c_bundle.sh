@@ -237,6 +237,14 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     exit 0
   fi
   echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT}"
+  # Tip-drift tolerance: keep-prior is the steady state once Path C landed — drift is
+  # tolerated (exit 0, no rebuild needed) iff every portable patch is already on
+  # the live tip. PATH_C_STRICT_TIP=1 restores the exit-1 behaviour.
+  DRIFT_HELPER="${ROOT}/scripts/path_c_tip_drift_tolerance.sh"
+  if [[ -f "$DRIFT_HELPER" ]] && bash "$DRIFT_HELPER" --live-sha "$LIVE_SHA"; then
+    echo "refresh_path_c_bundle: dry-run OK TIP_DRIFT tolerated ${PRIOR_SHORT} -> ${LIVE_SHORT} (path_c_landed; stack already on live tip; keep-prior BASE_TIP; no rebuild needed)"
+    exit 0
+  fi
   echo "refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)"
   exit 1
 fi

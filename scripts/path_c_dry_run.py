@@ -334,11 +334,17 @@ def main() -> int:
             )
             check = _run(["bash", str(apply_all), "--check"], cwd=apply_wt)
             apply_exit = check.returncode
-            apply_out = ((check.stdout or "") + (check.stderr or ""))[-800:]
+            full_out = (check.stdout or "") + (check.stderr or "")
+            apply_out = full_out[-800:]
             report["apply_all_check_exit"] = apply_exit
             report["apply_all_check_tail"] = apply_out
             if path_c_landed and apply_exit == 0:
                 report["apply_all_check"] = "ok_already_landed_idempotent"
+            # apply_all summary: already_on_tip=1 ⇔ no patch needed a forward
+            # apply (each already-applied or intentionally skipped).
+            summary_match = re.search(r"^apply_all: summary .*already_on_tip=([01])", full_out, re.M)
+            stack_already_on_tip = bool(summary_match and summary_match.group(1) == "1")
+            report["apply_all_already_on_tip"] = stack_already_on_tip
             _run(["git", "worktree", "remove", "--force", str(apply_wt)], cwd=clone_dir)
 
         # Rebase probe: PATH_C_REBASE_ONTO_MAIN after #41 typically CONFLICTS.
@@ -433,9 +439,29 @@ def main() -> int:
         apply_check_ok = bool(apply_ok and hard_shape["accepts"])
         report["apply_check_ok"] = apply_check_ok
         tip_match = report.get("tip_matches_base") is True
+        # Tip-drift tolerance: BASE_TIP lagging a moved hardening tip is tolerated once Path C
+        # landed AND apply_all --check on the live tip reports the whole stack
+        # already on the tree (no forward apply). Fail-closed otherwise; the
+        # PATH_C_STRICT_TIP=1 env restores the pure SHA-equality gate.
+        tip_drift_tolerated = bool(
+            not tip_match
+            and path_c_landed
+            and apply_check_ok
+            and not args.skip_apply_check
+            and report.get("apply_all_already_on_tip") is True
+            and os.environ.get("PATH_C_STRICT_TIP") != "1"
+        )
+        report["tip_drift_tolerated"] = tip_drift_tolerated
+        if tip_drift_tolerated:
+            report["tip_drift_note"] = (
+                f"live hardening {hard_sha[:7]} != BASE_TIP {base_sha[:7]}; tolerated: "
+                "path_c_landed and every portable patch already on live tip (keep-prior BASE_TIP)"
+            )
         # Batch 261: landed + tip match → idle (same class as owner_land_path_c /
         # owner_open_path_c_pr already-on-tip). Do not advertise APPLY_READY land.
-        already_on_tip = bool(path_c_landed and tip_match and apply_check_ok)
+        already_on_tip = bool(
+            path_c_landed and (tip_match or tip_drift_tolerated) and apply_check_ok
+        )
         report["already_on_tip"] = already_on_tip
         if already_on_tip:
             report["state"] = "IDLE_PATH_C_DONE"
