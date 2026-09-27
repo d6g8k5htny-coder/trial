@@ -190,7 +190,8 @@ def test_ci_uses_exactly_one_tip_drift_gate() -> None:
     assert gates == ["tip_drift_class.py"], gates
     for stale in ("tip_drift_gate.py", "path_c_tip_gate.py", "path_c_tip_drift_tolerance.sh"):
         assert not (ROOT / "scripts" / stale).exists(), f"duplicate gate left in tree: {stale}"
-    assert 'if [[ "$TIP" != "$BASE_SHA" ]]' not in ci  # strict equality gate is gone
+    # a mismatch must route to the classifier, never straight to ::error
+    assert "DESCENDANT" in ci and "path_c_landed" in ci
     # lemma_closed gates on the live tip are untouched by the gate change
     assert "lemma_closed=false" in ci
 
