@@ -78,6 +78,17 @@ def test_acceptable_policy():
         assert tdc.acceptable(cls, landed=False) is False
 
 
+def test_strict_tip_env_restores_exact_equality(monkeypatch):
+    """PATH_C_STRICT_TIP=1: only MATCH is acceptable, even when Path C is landed."""
+    monkeypatch.setenv("PATH_C_STRICT_TIP", "1")
+    assert tdc.strict_tip() is True
+    assert tdc.acceptable("MATCH", landed=True) is True
+    assert tdc.acceptable("DESCENDANT", landed=True) is False
+    monkeypatch.delenv("PATH_C_STRICT_TIP")
+    assert tdc.strict_tip() is False
+    assert tdc.acceptable("DESCENDANT", landed=True) is True
+
+
 def test_bad_env_token_falls_back_to_anonymous(monkeypatch):
     """A 401 on the authenticated compare call must not yield UNKNOWN."""
     import urllib.error
@@ -274,9 +285,14 @@ def test_gates_carry_descendant_ok_and_keep_hard_fail():
 
 
 def test_apply_all_0017_semantic_guard_present():
+    """0017's drifted context is handled by the generic semantic already-applied
+    fallback (every '+' line present, every removed line absent) rather than a
+    per-patch grep; the fallback runs after forward and reverse --check fail."""
     text = (ROOT / "portable" / "patches" / "apply_all.sh").read_text(encoding="utf-8")
-    assert '"$bn" == 0017-*' in text
+    assert "semantic_already_applied()" in text
+    assert 'semantic_already_applied "$p"' in text
     assert "already-applied (semantic)" in text
+    assert "0017" in text
 
 
 def test_guard_prefers_checkout_head_over_wrong_tip_sha(tmp_path):
