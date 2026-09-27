@@ -1,3 +1,8 @@
+### Batch 703 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 702→703 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 702→703; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged); force republish Soft Intent→703; Soft Intent single === header →703; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
 ### Batch 702 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - At tip VERIFY702; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 701/699/698/697/696 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
