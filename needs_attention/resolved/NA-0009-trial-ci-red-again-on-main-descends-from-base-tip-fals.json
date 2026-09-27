@@ -29,20 +29,22 @@
     "tests/test_intent.py"
   ],
   "scientific_effect": "NONE",
-  "resolution": "Both halves landed on main. (1) fb1f6a54 (b3c6): tests/test_intent._descends_from_base_tip routes through scripts/tip_drift_class._compare_status instead of `gh api`. (2) PR #159 (ff72) merged into main at 1f938f73 (21:54Z, via cursor/pr150-land-tip-refresh-b3c6 55b0e642 -> 7cd9ba8b): _compare_status now falls back to git ancestry from a cached commits-only mirror (--filter=tree:0, merge-base --is-ancestor) when both API paths are exhausted; offline tests in tests/test_tip_drift_class.py. PR #157 (fetch-depth 2 for HEAD^ parent-pin tests) merged in the same landing (3d3e1b80). Resolution criterion met: trial-ci run 36352682788 on main (head 3b7d1d6a, 21:42Z) is green with `tip-drift DESCENDANT_OK: live a01c72f ahead of BASE_TIP 9458b90 (Path C landed)`, i.e. live tip != BASE_TIP and the Intent suite passed. Follow-through: main was merged into cursor/dropbox-intake-digest-309a (#149 -> dfb6bb40) and cursor/dropbox-gap-hunt-20260927 (#158 -> 18422aa0) whose sanity jobs were red only with this class (batch267 race, tip_sync, batch832 HEAD^, batch833); the previously failing selection passes locally on both. Scientific effect NONE: CI plumbing only.",
-  "resolved_at": "2026-09-27T21:59:00Z",
+  "resolution": "Options (a)+(c) landed on main fb1f6a54/b6b9d6c3 (tests/test_intent._descends_from_base_tip routes via scripts/tip_drift_class._compare_status: token -> anonymous urllib -> gh); option (b) landed with PR #159 at 7cd9ba8b (_git_compare_status: cached commits-only mirror + merge-base --is-ancestor, no API quota). trial-ci on main green at 53f8f875, 4dd7bdc1, 632cc5e7 and 7cd9ba8b with live hardening tip a01c72f != BASE_TIP 9458b90 (class DESCENDANT, path_c_landed=true). Verified locally under simulated Actions conditions (compare API 403 + gh exit 1): classifier -> DESCENDANT exit 0; 151 living-tip Intent tests pass. Scientific effect NONE. Follow-through (helper 7189, 21:59Z): main merged into cursor/dropbox-intake-digest-309a (#149 -> dfb6bb40) and cursor/dropbox-gap-hunt-20260927 (#158 -> 18422aa0), whose sanity jobs were red only with this class (batch267 race, tip_sync, batch832 HEAD^, batch833 pin); the previously failing selection passes locally on both.",
+  "resolved_at": "2026-09-27T22:05:00Z",
   "resolved_by": {
     "provider": "cursor",
+    "model": null,
     "agent": "cursor[bot]",
-    "run": "bc-needs-attention-inbox-7189"
+    "run": "bc-sidecar-b3c6"
   },
   "resolution_evidence": [
     "https://github.com/d6g8k5htny-coder/trial/pull/155#issuecomment-5860004266 (gh exit 4 without token)",
     "https://github.com/d6g8k5htny-coder/trial/pull/155#issuecomment-5860084538 (diag: installation 403 + gate jobs UNKNOWN)",
     "main fb1f6a54 (helper via _compare_status)",
     "https://github.com/d6g8k5htny-coder/trial/pull/159 (git-ancestry transport; merged 1f938f73)",
-    "https://github.com/d6g8k5htny-coder/trial/actions/runs/36352682788 (main 3b7d1d6a green, live a01c72f ahead of BASE_TIP 9458b90)",
-    "main 1f938f73 / 3d3e1b80 (#159 and #157 merged 21:54Z), main 7cd9ba8b tip",
-    "cursor/dropbox-intake-digest-309a dfb6bb40, cursor/dropbox-gap-hunt-20260927 18422aa0 (main merged in)"
+    "main 7cd9ba8b (PR #159 git-ancestry transport landed) — trial-ci run 36353384551 success",
+    "main 53f8f875 / 4dd7bdc1 — trial-ci runs 36353175357 / 36353214768 success (live tip a01c72f != BASE_TIP 9458b90)",
+    "https://github.com/d6g8k5htny-coder/trial/pull/159 (MERGED)",
+    "cursor/dropbox-intake-digest-309a dfb6bb40, cursor/dropbox-gap-hunt-20260927 18422aa0 (main merged in by helper 7189)"
   ]
 }
