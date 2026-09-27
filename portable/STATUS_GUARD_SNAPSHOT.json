@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-09-27T20:27:09Z",
+  "generated_at_utc": "2026-09-27T20:45:55Z",
   "guard": "no_status_promotion",
   "scientific_effect": "NONE",
   "goal_complete": false,
   "lemma_closed": false,
   "flipped_anything": false,
-  "tip_sha": "9458b903f57f47f34d0398531c9c977d413bad57",
+  "tip_sha": "082604bce00af8689ed2fda00baaf82328097421",
   "baseline_path": "portable/STATUS_GUARD_SNAPSHOT.json",
-  "baseline_tip_sha": "9ce5c66f2fd541f6987ef7ab98730f8d929b980f",
+  "baseline_tip_sha": "9458b903f57f47f34d0398531c9c977d413bad57",
   "pass": true,
   "violations": [],
   "new_open_only": {
@@ -16,7 +16,7 @@
     "prizes": []
   },
   "inventory": {
-    "tip_sha": "9458b903f57f47f34d0398531c9c977d413bad57",
+    "tip_sha": "082604bce00af8689ed2fda00baaf82328097421",
     "shape": "HAS_PACKET",
     "packet_lemma_closed": false,
     "packet_prizes_solved": false,
@@ -77,7 +77,7 @@
       "open_lemmas": 1,
       "open_obligations_packet": 2,
       "open_prizes": 3,
-      "claims_total": 27,
+      "claims_total": 26,
       "open_questions": 16
     }
   },
@@ -87,7 +87,7 @@
     "open_lemmas": 1,
     "open_obligations_packet": 2,
     "open_prizes": 3,
-    "claims_total": 27,
+    "claims_total": 26,
     "open_questions": 16
   },
   "packet": {

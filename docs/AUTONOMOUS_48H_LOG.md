@@ -1,3 +1,8 @@
+### Batch 832 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY832 Soft Intent n=1 after tip/eng832 Soft Intent 831→832; open stack 13/1/3 Δ0 vs 831/830/829/828/827; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`082604bc`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@832.
+
 ### Sidecar b3c6 — PR #150 land + tip-sync 2f7a5a9→e7652a1 (0017 semantic already-applied) + DESCENDANT_OK tip-drift gates (2026-09-27)
 
 - Owner mandate (merge-assist run): focus ready-to-merge trial PRs, assist peers, merge as needed. Scientific effect: **NONE**; `lemma_closed=false`; no claim/premise/prize/lemma touched.
