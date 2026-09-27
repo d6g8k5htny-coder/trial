@@ -1,7 +1,22 @@
+### Batch 843 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merges past Soft Intent843 left inv tip_sha at `321ea983` while tip advanced to `7e22df04`; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `7e22df04` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY843; Soft Intent844 not advanced; `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 843 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 842→843 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`321ea98` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →843; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no defect (living current after force republish Soft Intent 842); Soft Intent single === header →843; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 843 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY843 Soft Intent n=1 after tip/eng843 Soft Intent 842→843; covers research842 tip-race; open stack 13/1/3 Δ0 vs 842/841/840/839/838; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @\`6f55802a\`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@842,843.
+
+### Batch 842 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY843 Soft Intent n=1; covers research842 tip-race (Soft Intent raced 842→843); open stack 13/1/3 Δ0 vs 841/840/839/838/837; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @\`6f55802a\`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@842.
 
 ### Batch 842 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 841→842 @2f7a5a9 (2026-09-27)
 
