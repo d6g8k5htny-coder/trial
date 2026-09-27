@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 799 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 799: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 798/797/796/795/794 (at tip VERIFY799 after tip/eng799 Soft Intent 798→799; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 798: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 797→798 @2f7a5a9"
 echo " Batch 798: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 797/796/795/794/793 (at tip VERIFY798 after tip/eng798 Soft Intent 797→798; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 797: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 796/795/794/793/792 (at tip VERIFY797 after tip/eng797 Soft Intent 796→797; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
