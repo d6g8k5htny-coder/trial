@@ -1,3 +1,7 @@
+## STATUS (Batch 724 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 722/720/719/718/717 (catch-up at tip VERIFY724 after tip/eng723+724; covers research723 tip-race; research722 on tip); STATUS_GUARD pass; stamps@724; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 724 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 723→724; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH724_TIP_ENG_*.json` + `BATCH724_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
