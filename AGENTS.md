@@ -22,6 +22,12 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 - Enable or claim GitHub scheduled workflows on `main` solely to satisfy R2-06 prose.
 - Ask Dylan for approval in docs.
 
+## Operations lanes
+
+- Public-facing **storefront / exhibit / intake** work belongs in `main`: `main/docs/site` (public face) and `main/incoming` (intake). Do not build it here.
+- `trial` is the **internal load-test / workbench lane**: probes, smoke checks, portable engineering artifacts, wake/idle automation. It is **not** a public shop and **not** a status register.
+- Do not open new trial `Batch NNN` PRs to implement storefront or intake features; route that work to `main`.
+
 ## Start here
 
 1. `README.md`
