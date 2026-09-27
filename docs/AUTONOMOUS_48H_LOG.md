@@ -1,3 +1,8 @@
+### Batch 640 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng640 (post-research639 tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 639/638/636/634/633 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 640 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
 ### Batch 640 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 639→640 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 639→640; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
