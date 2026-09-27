@@ -178,9 +178,9 @@ Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `ca00b95` tip_moved).
 python3 -m pytest tests/test_intent.py::test_batch772_tip_or_eng_tip_drift_idle_unfreeze -q
 ```
 
-## STATUS (Batch 790 research-audit)
+## STATUS (Batch 791 research-audit)
 
-tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 789/788/787/786/785 (at tip VERIFY790 after tip/eng790 Soft Intent 789→790); STATUS_GUARD pass; stamps@790; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 790/789/788/787/786 (at tip VERIFY791 after tip/eng791 Soft Intent 790→791); STATUS_GUARD pass; stamps@791; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
 
 
 ## STATUS (Batch 770 research-audit)
