@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 661 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 661: tip_or_eng TIP_DRIFT keep-prior living script_stale republish + unfreeze 660→661 @2f7a5a9"
+echo " Batch 661: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 660/659/657/655/654 (catch-up after tip/eng661); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 660: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 659/657/655/654/653 (catch-up after tip/eng660); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 659: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 657/655/654/653/651 (covers research658 tip-race gap; catch-up at tip VERIFY659 after tip/eng658+659); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 658: tip_or_eng TIP_DRIFT keep-prior living script_stale republish + unfreeze 657→658 @2f7a5a9"
