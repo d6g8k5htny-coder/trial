@@ -1,0 +1,19 @@
+{
+  "batch": "687",
+  "action": "living_force_republish_script_stale",
+  "living_tag": "batch241-path-c-bundle",
+  "script_stale": 1,
+  "tip_stale": 0,
+  "need_upload": 1,
+  "uploaded": true,
+  "note": "Soft Intent/REFRESH bump script_stale \u2192 force republish until need_upload=0 STABLE\u00d72",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "38a3e070ff4c6cd071d38a09f050299494e06ada",
+  "generated_at_utc": "2026-09-27T06:47:30Z"
+}
