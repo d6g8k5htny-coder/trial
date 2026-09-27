@@ -1,3 +1,15 @@
+## STATUS (Batch 740 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research740+739+738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@740; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 739 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research739+738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@739; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 738 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng738+739+740; covers research738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@738; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 740 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 739→740; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH740_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
