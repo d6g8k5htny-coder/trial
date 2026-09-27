@@ -37350,6 +37350,959 @@ def test_batch548_research_stack_audit_watch() -> None:
 
 
 
+def test_batch824_research_stack_audit_watch() -> None:
+    """Batch 824: research_stack_audit_watch_no_promotion @2f7a5a9; VERIFY824; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH824_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "824"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch823', 'delta_vs_batch822', 'delta_vs_batch821', 'delta_vs_batch820', 'delta_vs_batch819'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH824_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH824_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "824" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH824_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "824" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH824_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 824)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 824)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 824 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 824 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 824" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch823_research_stack_audit_watch() -> None:
+    """Batch 823: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY823; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH823_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "823"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch822', 'delta_vs_batch821', 'delta_vs_batch820', 'delta_vs_batch819', 'delta_vs_batch818'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng823") is True
+    assert watch.get("research822_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 823
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH823_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH823_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "823" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH823_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "823" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH823_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 823)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 823)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 823 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 823 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 823" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch822_research_stack_audit_watch() -> None:
+    """Batch 822: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY823; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH822_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "822"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch821', 'delta_vs_batch820', 'delta_vs_batch819', 'delta_vs_batch818', 'delta_vs_batch817'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng822") is True
+    assert watch.get("research822_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 823
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH822_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH822_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "822" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH822_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "822" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH822_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 823)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 823)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 822 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 822 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 822" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch821_research_stack_audit_watch() -> None:
+    """Batch 821: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY821; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH821_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "821"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch820', 'delta_vs_batch819', 'delta_vs_batch818', 'delta_vs_batch817', 'delta_vs_batch816'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng821") is True
+    assert watch.get("research820_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 821
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH821_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH821_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "821" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH821_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "821" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH821_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 821)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 821)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 821 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 821 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 821" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch820_research_stack_audit_watch() -> None:
+    """Batch 820: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY821; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH820_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "820"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch819', 'delta_vs_batch818', 'delta_vs_batch817', 'delta_vs_batch816', 'delta_vs_batch815'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng820") is True
+    assert watch.get("research820_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 821
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH820_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH820_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "820" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH820_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "820" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH820_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 821)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 821)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 821 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 821 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 820" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch819_research_stack_audit_watch() -> None:
+    """Batch 819: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY819; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH819_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "819"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch818', 'delta_vs_batch817', 'delta_vs_batch816', 'delta_vs_batch815', 'delta_vs_batch814'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng819") is True
+    assert watch.get("research817_skipped_by_tip_race") is True
+    assert watch.get("research818_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 819
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH819_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH819_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "819" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH819_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "819" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH819_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 819)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 819)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 819" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch818_research_stack_audit_watch() -> None:
+    """Batch 818: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY819; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH818_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "818"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch817', 'delta_vs_batch816', 'delta_vs_batch815', 'delta_vs_batch814', 'delta_vs_batch813'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng818") is True
+    assert watch.get("research818_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 819
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH818_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH818_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "818" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH818_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "818" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH818_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 819)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 819)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 818" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch817_research_stack_audit_watch() -> None:
+    """Batch 817: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY819; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH817_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "817"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch816', 'delta_vs_batch815', 'delta_vs_batch814', 'delta_vs_batch813', 'delta_vs_batch812'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng817") is True
+    assert watch.get("research817_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 819
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH817_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH817_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "817" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH817_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "817" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH817_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 819)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 819)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 819 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 817" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch816_research_stack_audit_watch() -> None:
+    """Batch 816: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY816; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH816_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "816"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch815', 'delta_vs_batch814', 'delta_vs_batch813', 'delta_vs_batch812', 'delta_vs_batch811'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng816") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 816
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH816_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH816_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "816" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH816_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "816" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH816_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 816)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 816)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 816 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 816 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 816" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch815_research_stack_audit_watch() -> None:
+    """Batch 815: research_stack_audit_watch_no_promotion @2f7a5a9; VERIFY815; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH815_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "815"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch814', 'delta_vs_batch813', 'delta_vs_batch812', 'delta_vs_batch811', 'delta_vs_batch810'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng815") is True
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH815_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH815_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "815" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH815_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "815" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH815_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 815)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 815)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 815 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 815 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 815" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch814_research_stack_audit_watch() -> None:
+    """Batch 814: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY814; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH814_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "814"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch813', 'delta_vs_batch812', 'delta_vs_batch811', 'delta_vs_batch810', 'delta_vs_batch809'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng814") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 814
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH814_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH814_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "814" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH814_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "814" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH814_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 814)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 814)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 814 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 814 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 814" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch813_research_stack_audit_watch() -> None:
+    """Batch 813: research_stack_audit_watch_no_promotion @2f7a5a9; VERIFY813; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH813_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "813"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch812', 'delta_vs_batch811', 'delta_vs_batch810', 'delta_vs_batch809', 'delta_vs_batch808'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng813") is True
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH813_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH813_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "813" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH813_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "813" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH813_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 813)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 813)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 813 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 813 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 813" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch812_research_stack_audit_watch() -> None:
+    """Batch 812: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY812; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH812_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "812"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch811', 'delta_vs_batch810', 'delta_vs_batch809', 'delta_vs_batch808', 'delta_vs_batch807'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng812") is True
+    assert watch.get("research811_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 812
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH812_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH812_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "812" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH812_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "812" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH812_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 812)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 812)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 812 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 812 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 812" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch811_research_stack_audit_watch() -> None:
+    """Batch 811: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY812; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH811_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "811"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch810', 'delta_vs_batch809', 'delta_vs_batch808', 'delta_vs_batch807', 'delta_vs_batch806'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng811") is True
+    assert watch.get("research811_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 812
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH811_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH811_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "811" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH811_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "811" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH811_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 812)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 812)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 812 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 812 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 811" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch810_research_stack_audit_watch() -> None:
+    """Batch 810: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY810; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH810_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "810"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch809', 'delta_vs_batch808', 'delta_vs_batch807', 'delta_vs_batch806', 'delta_vs_batch805'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng810") is True
+    assert watch.get("research809_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 810
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH810_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH810_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "810" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH810_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "810" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH810_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 810)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 810)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 810 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 810 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 810" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch809_research_stack_audit_watch() -> None:
+    """Batch 809: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY810; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH809_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "809"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch808', 'delta_vs_batch807', 'delta_vs_batch806', 'delta_vs_batch805', 'delta_vs_batch804'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng809") is True
+    assert watch.get("research809_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 810
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH809_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH809_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "809" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH809_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "809" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH809_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 810)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 810)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 810 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 810 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 809" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
 def test_batch808_research_stack_audit_watch() -> None:
     """Batch 808: research_stack_audit_watch_no_promotion @2f7a5a9; VERIFY808; Δ0; Dropbox RN-UNIF/D1 OPEN."""
     import json
@@ -69787,6 +70740,737 @@ def test_batch808_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
     assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
     assert int(headers[0]) >= 808
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch809_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 809: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 808→809."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH809_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "809"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 809
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("710a38f")
+    hunt = json.loads((ROOT / "portable" / "BATCH809_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH809_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "809"
+    assert unfreeze.get("from_batch") == "808"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH809_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 809
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 809 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 809
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch810_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 810: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 809→810."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH810_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "810"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 810
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("de7a454")
+    hunt = json.loads((ROOT / "portable" / "BATCH810_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH810_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "810"
+    assert unfreeze.get("from_batch") == "809"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH810_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 810
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 810 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 810
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch811_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 811: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 810→811."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH811_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "811"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 811
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("9c3ac46")
+    hunt = json.loads((ROOT / "portable" / "BATCH811_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH811_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "811"
+    assert unfreeze.get("from_batch") == "810"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH811_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 811
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 811 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 811
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch812_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 812: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 811→812."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH812_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "812"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 812
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("d8b149b")
+    hunt = json.loads((ROOT / "portable" / "BATCH812_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH812_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "812"
+    assert unfreeze.get("from_batch") == "811"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH812_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 812
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 812 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 812
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch813_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 813: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 812→813."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH813_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "813"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 813
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("8dcc589")
+    hunt = json.loads((ROOT / "portable" / "BATCH813_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH813_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "813"
+    assert unfreeze.get("from_batch") == "812"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH813_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 813
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 813 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 813
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch814_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 814: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 813→814."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH814_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "814"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 814
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("619eaa9")
+    hunt = json.loads((ROOT / "portable" / "BATCH814_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH814_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "814"
+    assert unfreeze.get("from_batch") == "813"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH814_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 814
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 814 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 814
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch815_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 815: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 814→815."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH815_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "815"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 815
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("7549174")
+    hunt = json.loads((ROOT / "portable" / "BATCH815_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH815_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "815"
+    assert unfreeze.get("from_batch") == "814"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH815_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 815
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 815 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 815
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch816_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 816: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 815→816."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH816_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "816"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 816
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("3e74ac8")
+    hunt = json.loads((ROOT / "portable" / "BATCH816_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH816_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "816"
+    assert unfreeze.get("from_batch") == "815"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH816_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 816
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 816 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 816
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch817_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 817: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 816→817."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH817_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "817"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 817
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("807227a")
+    hunt = json.loads((ROOT / "portable" / "BATCH817_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH817_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "817"
+    assert unfreeze.get("from_batch") == "816"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH817_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 817
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 817 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 817
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch818_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 818: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 817→818."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH818_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "818"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 818
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("bc1513b")
+    hunt = json.loads((ROOT / "portable" / "BATCH818_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH818_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "818"
+    assert unfreeze.get("from_batch") == "817"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH818_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 818
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 818 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 818
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch819_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 819: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 818→819."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH819_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "819"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 819
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("0a566dc")
+    hunt = json.loads((ROOT / "portable" / "BATCH819_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH819_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "819"
+    assert unfreeze.get("from_batch") == "818"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH819_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 819
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 819 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 819
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch820_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 820: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 819→820."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH820_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "820"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 820
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("d96bc55")
+    hunt = json.loads((ROOT / "portable" / "BATCH820_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH820_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "820"
+    assert unfreeze.get("from_batch") == "819"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH820_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 820
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 820 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 820
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch821_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 821: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 820→821."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH821_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "821"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 821
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("6b6eac8")
+    hunt = json.loads((ROOT / "portable" / "BATCH821_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH821_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "821"
+    assert unfreeze.get("from_batch") == "820"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH821_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 821
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 821 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 821
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch822_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 822: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 821→822."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH822_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "822"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 822
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("13638cd")
+    hunt = json.loads((ROOT / "portable" / "BATCH822_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH822_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "822"
+    assert unfreeze.get("from_batch") == "821"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH822_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 822
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 822 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 822
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch823_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 823: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 822→823."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH823_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "823"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 823
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("d48582e")
+    hunt = json.loads((ROOT / "portable" / "BATCH823_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH823_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "823"
+    assert unfreeze.get("from_batch") == "822"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH823_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 823
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 823 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 823
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+def test_batch824_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 824: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 823→824."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH824_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "824"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 824
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("900fcfc")
+    hunt = json.loads((ROOT / "portable" / "BATCH824_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH824_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "824"
+    assert unfreeze.get("from_batch") == "823"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH824_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 824
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 824 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 824
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+
+def test_batch825_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 825: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 824→825."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH825_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "825"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 825
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("cdc0509")
+    hunt = json.loads((ROOT / "portable" / "BATCH825_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH825_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "825"
+    assert unfreeze.get("from_batch") == "824"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH825_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 825
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 825 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 825
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
