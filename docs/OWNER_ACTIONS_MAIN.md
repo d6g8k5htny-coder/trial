@@ -1,3 +1,13 @@
+## STATUS (Batch 659 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 658→659; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH659_TIP_ENG_IDLE.json` + `BATCH659_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch659_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 658 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 657→658; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH658_TIP_ENG_*.json` + `BATCH658_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
