@@ -1,3 +1,7 @@
+## STATUS (Batch 852 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `4588a7d1` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 851→852; Soft Intent n=1; inv parent-pin; VERIFY 852; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 851 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 850/849/848/847/846 (at tip VERIFY851 after tip/eng Soft Intent 850→851; research850 already on tip); STATUS_GUARD pass; stamps@851; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
