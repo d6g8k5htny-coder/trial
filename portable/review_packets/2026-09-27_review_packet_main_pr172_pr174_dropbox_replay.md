@@ -87,3 +87,21 @@ wake loop keeps BASE_TIP immutable. Three trial PRs fix it (#152 content check,
 #153 DESCENDANT_OK + BASE_TIP refresh + lands #150, #154 landed-ancestor gate);
 a convergence recommendation is on #153. Not a `main` matter beyond noting that
 trial red was never evidence of anything about `main`.
+
+## 5. Status at 21:00 UTC (post-merge check)
+
+- **main #174 merged** 2026-09-27T20:20:31Z (merge `3bfc7367`, base `main`).
+  `GET git/trees/main?recursive=1` returns **zero** `.pyc` paths and `.gitignore`
+  carries `__pycache__/` + `*.pyc`, so finding 1.1 did not land — resolved before
+  merge. Issue #160 (LB-RATE / KIMI-THM-023 HOLD) was closed by the merge at
+  20:20:32Z; #174's body frames the closure as a landing record, not scientific
+  acceptance. Finding 1.2 stands as a documentation gap only: the closure record
+  does not mention the newer KIMI LB material now in the Dropbox share
+  (`KIMI_EXPORT_2026-08-04_LB` addendum, `KIMI_LPW_VERDICT_ADDENDUM_4.pdf`; see
+  section 3 / the TSV). No status is promoted or discharged by noting this.
+- **main #172** still open, `MERGEABLE`; last review comment 20:14Z (`34807df`
+  fail-closed fix). Section 2 findings unchanged.
+- **trial:** #153 landed on trial `main` at 20:43Z (`tip_drift_class.py`,
+  DESCENDANT_OK; BASE_TIP → `9458b90`); first post-merge run 36349065906 has all
+  four gate jobs green. #150 merged. #152 reshaped to `apply_all.sh` semantic
+  check only; #155 being reshaped onto the landed gate; #154 superseded.
