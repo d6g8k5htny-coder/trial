@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-27T04:21:08Z",
-      "tip_sha": "6b6eac8c58510142161a40c03845743da02892a8",
+      "tip_sha": "fd808d4aca5d83718c182d41815d574d8caaeb62",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 821: tip_or_eng TIP_DRIFT keep-prior idle_no_commit living current; inv tip @6b6eac8c5851; durable 8/8; lemma_closed=false.",
+  "note": "Batch 821: research_stack_audit_watch_no_promotion catch-up VERIFY821 Soft Intent n=1; inv tip @fd808d4aca5d; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
