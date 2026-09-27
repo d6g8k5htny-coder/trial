@@ -1,3 +1,7 @@
+## STATUS (Batch 857 inv-tip-pin-repair)
+
+tip BASE  tip_moved keep-prior; research/inv parent-pin repair: inv tip_sha→precommit  (was  after PR#121 tip race); Soft Intent n=1 @857; VERIFY≥845; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 857 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 856/855/854/853/852 (catch-up at tip VERIFY857 after tip/eng Soft Intent 856→857; covers Batch845 VERIFY>=845); STATUS_GUARD pass; stamps@845,856,857; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.

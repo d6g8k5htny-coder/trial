@@ -7,7 +7,7 @@
   "scientific_effect": "NONE",
   "tip_match": true,
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "tip_sha": "05a081fe1404bdbf5efdc6b63519805a8c2beb7e",
-  "generated_at_utc": "2026-09-27T23:33:25Z",
-  "note": "parent-pin trial tip_sha=precommit HEAD after research VERIFY>=857 catch-up @2f7a5a9 (Soft Intent n=1 @857)"
+  "tip_sha": "0e30126a9d73fde047f6663e8d5ba7b1ea9dbfa4",
+  "generated_at_utc": "2026-09-27T23:36:41Z",
+  "note": "parent-pin trial tip_sha=precommit HEAD after PR#121 tip race @2f7a5a9 (Soft Intent n=1 @857; VERIFY>=857)"
 }

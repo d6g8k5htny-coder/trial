@@ -2,16 +2,12 @@
   "batch": "857",
   "action": "inventory_preserve_durable_tip_pin",
   "parent_pin": true,
-  "trial_tip_before": "ea2cc9f82da5519fa1f61af10773c94101f3af99",
-  "trial_tip_after": "1f88d69e3e8ac2be8b625454e61142f69dabbec4",
-  "note": "parent-pin inv tip_sha=precommit HEAD (1f88d69e); was at ea2cc9f8; TIP_DRIFT keep-prior; no tip-pin treadmill",
-  "tip_match": false,
-  "tip_moved": true,
-  "keep_prior": true,
   "lemma_closed": false,
   "flipped_anything": false,
   "scientific_effect": "NONE",
+  "tip_match": true,
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "live_tip": "1f88d69e3e8ac2be8b625454e61142f69dabbec4",
-  "generated_at_utc": "2026-09-27T23:31:24Z"
+  "tip_sha": "0e30126a9d73fde047f6663e8d5ba7b1ea9dbfa4",
+  "generated_at_utc": "2026-09-27T23:36:41Z",
+  "note": "parent-pin repair tip_sha->precommit after PR#121 merge broke pin; Soft Intent n=1 @857"
 }
