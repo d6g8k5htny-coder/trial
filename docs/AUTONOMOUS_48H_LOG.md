@@ -1,3 +1,8 @@
+### Batch 733 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 732→733 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 732→733; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →733; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 731 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Catch-up at tip VERIFY732 after tip/eng731+732 Soft Intent 731→732; covers research731+research730 tip-race; research729 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 729/728/727/726/725 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
