@@ -261,6 +261,13 @@ Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PER
 
 # Autonomous 48h work log
 
+### Batch 620 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 619→620 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 619→620; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research619 Soft Intent preserve; Soft Intent single === header →620; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
 ### Batch 618 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 617→618 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 617→618; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
