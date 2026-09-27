@@ -236,12 +236,20 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   set +e
   LIVE_SHA="$(git ls-remote "https://github.com/${REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1)"
   set -e
+  TIP_ANCESTOR=0
   if [[ -n "$LIVE_SHA" ]]; then
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      # needs_attention NA-0001: landed Path C + BASE_TIP in live history ⇒ lag, not drift.
+      if python3 "$ROOT/scripts/tip_drift_gate.py" --live "$LIVE_SHA" --base "$BASE_TIP_SHA" --verify "$VERIFY_JSON"; then
+        TIP_ANCESTOR=1
+        echo "tip_matches_base=false base_is_ancestor_of_live=true (path_c_landed; lag not drift)"
+      else
+        die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      fi
+    else
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
   else
     echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
   fi
@@ -262,6 +270,8 @@ print("true" if d.get("path_c_landed") is True else "false")
 ' "$VERIFY_JSON" 2>/dev/null || echo false)"
   TIP_OK=0
   if [[ -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    TIP_OK=1
+  elif [[ "$TIP_ANCESTOR" -eq 1 && "$PATH_C_LANDED" == "true" ]]; then
     TIP_OK=1
   elif [[ -z "$LIVE_SHA" && -n "$VERIFY_SHA" && ( "$VERIFY_SHA" == "$BASE_TIP_SHA" || "$VERIFY_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${VERIFY_SHA}"* ) ]]; then
     TIP_OK=1

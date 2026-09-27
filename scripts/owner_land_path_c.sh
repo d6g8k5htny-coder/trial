@@ -298,6 +298,28 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     fi
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
+      # needs_attention NA-0001: landed Path C + BASE_TIP in live history ⇒ lag, not drift;
+      # the bundle is historical then — idle, do not re-am it onto the moved tip.
+      if python3 "$ROOT/scripts/tip_drift_gate.py" --live "$LIVE_SHA" --base "$BASE_TIP_SHA" \
+          --verify "$TRIAL_ROOT/portable/path-c-applied-bundle/VERIFY.json" --repo-dir "$FB_WORKDIR/main"; then
+        echo "tip_matches_base=false base_is_ancestor_of_live=true path_c_landed=true"
+        echo "already_on_tip=true"
+        if ! git checkout -q --detach "$LIVE_SHA" 2>/dev/null; then
+          git fetch --depth 80 origin "$LIVE_SHA" 2>/dev/null || true
+          git checkout -q --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
+        fi
+        echo "--- math_status_check on live tip (assert lemma_closed=false) ---"
+        STATUS_OUT="$(python3 tools/math_status_check.py 2>&1 || true)"
+        echo "$STATUS_OUT"
+        if ! grep -q 'lemma_closed=false' <<<"$STATUS_OUT"; then
+          echo "owner_land_path_c: ERROR: lemma_closed is not false on live tip $LIVE_SHA (exit=1)." >&2
+          exit 1
+        fi
+        echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
+        echo "owner_land_path_c: dry-run OK — already-on-tip idle (from-bundle; no no-op land)."
+        echo "Scientific effect: NONE"
+        exit 0
+      fi
       echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh bundle." >&2
       exit 1
     fi
@@ -376,12 +398,13 @@ try:
 except Exception:
   d={}
 print("true" if d.get("path_c_landed") is True else "false")
-print("true" if d.get("tip_matches_base") is True else "false")
+print("true" if (d.get("tip_current") is True or d.get("tip_matches_base") is True) else "false")
 ' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\n')"
     LANDED_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '1p')"
     TIP_MATCH_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '2p')"
     rm -f "$DRY_JSON_OUT"
     if [[ "$LANDED_LINE" == "true" && "$TIP_MATCH_LINE" == "true" ]]; then
+      # NA-0001: tip_current covers exact match or landed BASE_TIP-ancestor lag.
       echo "already_on_tip=true path_c_landed=true tip_matches_base=true"
       echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
       echo "owner_land_path_c: dry-run OK — already-on-tip idle (no no-op land)."

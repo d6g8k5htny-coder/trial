@@ -15,6 +15,8 @@ jobs:
           python-version: "3.12"
       - name: Install pytest
         run: python -m pip install pytest
+      - name: needs_attention cards (fail-closed schema; coordination only)
+        run: python scripts/needs_attention_check.py
       - name: Intent suite
         env:
           # Batch 74: Intent suite runs live probes (write vectors / watch / Path C).
@@ -154,11 +156,21 @@ jobs:
           git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
             https://github.com/d6g8k5htny-coder/main.git main-work
           echo "TIP=$(git -C main-work rev-parse HEAD)"
-      - name: Tip-drift gate (BASE_TIP == live hardening SHA)
+      - name: Tip-drift gate (BASE_TIP == live, or landed ancestor)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # Batch 147: fail loudly when portable patches BASE_TIP lags the live tip.
           # Batch 176: document fix path = scripts/refresh_path_c_bundle.sh (no auto-push to main).
+          # needs_attention NA-0001: once VERIFY.path_c_landed=true the hardening
+          # branch keeps moving (other agents merge eng PRs several times an hour);
+          # strict equality painted 98/100 main runs red. scripts/tip_drift_gate.py
+          # accepts EXACT or landed-ANCESTOR (BASE_TIP still in live history) and
+          # fails closed otherwise with the fix path: refresh BASE_TIP +
+          # rebuild path-c-applied-bundle via ./scripts/refresh_path_c_bundle.sh
+          # (does NOT push to main; CI never auto-refresh onto main from Actions).
+          # lemma_closed=false gates below are unchanged.
           TIP="$(git -C main-work rev-parse HEAD)"
           BASE_LINE="$(tr -d '\r' < trial/portable/patches/BASE_TIP.txt | head -n1)"
           # Batch 155: hex SHA extract (single-quoted python -c: \b is word-boundary).
@@ -169,18 +181,18 @@ jobs:
             echo "::error::tip-drift: empty BASE_TIP.txt — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
-          if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
-            echo "::error::tip-drift: dry-sim only in CI — never auto-refresh onto main from Actions"
-            exit 1
-          fi
-          echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
+          python3 trial/scripts/tip_drift_gate.py --live "$TIP" --base "$BASE_SHA" \
+            --verify trial/portable/path-c-applied-bundle/VERIFY.json \
+            --repo-dir main-work --json | tee tip-drift-gate.json
       - name: Tip-drift dry-sim (refresh_path_c_bundle --dry-run)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TIP_DRIFT_REPO_DIR: ${{ github.workspace }}/main-work
         run: |
           set -euo pipefail
           # Batch 176: exercise refresh helper on tip-stable trees (exit 0 no-op).
-          # On TIP_DRIFT this exits 1 with the same fix-path message; never pushes to main.
+          # On TIP_DRIFT (not landed / not ancestor) this exits 1 with the same
+          # fix-path message; landed ancestor is OK. Never pushes to main.
           cd trial
           ./scripts/refresh_path_c_bundle.sh --dry-run
       - name: Apply portable patches
@@ -291,25 +303,17 @@ jobs:
             echo "::error::tip-drift: empty BASE_TIP or VERIFY.base_tip_sha — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
-          if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
-            echo "::error::tip-drift: CI dry-sim only — never auto-refresh onto main from Actions"
-            exit 1
-          fi
-          if [[ "$TIP" != "$VERIFY_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != VERIFY.json base_tip_sha $VERIFY_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh"
-            exit 1
-          fi
           if [[ "$BASE_SHA" != "$VERIFY_SHA" ]]; then
             echo "::error::tip-drift: BASE_TIP $BASE_SHA != VERIFY.json base_tip_sha $VERIFY_SHA — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
-          echo "tip-drift gate OK: live==BASE_TIP==VERIFY @ ${TIP:0:7}"
-          # Batch 176: dry-sim refresh helper (tip-stable → exit 0; never pushes to main).
+          # needs_attention NA-0001: EXACT or landed-ANCESTOR is OK (BASE_TIP==VERIFY
+          # still required above); anything else fails closed with the fix path.
+          python3 "${GITHUB_WORKSPACE}/trial/scripts/tip_drift_gate.py" --live "$TIP" --base "$BASE_SHA" \
+            --verify "$VERIFY_FILE" --repo-dir main-bundle --json | tee tip-drift-gate.json
+          # Batch 176: dry-sim refresh helper (tip-stable/landed-ancestor → exit 0; never pushes to main).
           echo "--- refresh_path_c_bundle.sh --dry-run (Batch 176 tip-drift dry-sim) ---"
-          (cd "${GITHUB_WORKSPACE}/trial" && ./scripts/refresh_path_c_bundle.sh --dry-run)
+          (cd "${GITHUB_WORKSPACE}/trial" && TIP_DRIFT_REPO_DIR="${GITHUB_WORKSPACE}/main-bundle" ./scripts/refresh_path_c_bundle.sh --dry-run)
           # Batch 230: when Path C already landed on hardening, patches are on tip —
           # do not re-git-am the historical cbaa056→fb3ffe6 bundle.
           LANDED="$(python3 -c "import json; print('1' if json.load(open('$VERIFY_FILE')).get('path_c_landed') is True else '0')")"

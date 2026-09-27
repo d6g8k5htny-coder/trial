@@ -27,6 +27,11 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+import tip_drift_gate  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "portable" / "PATH_C_STATUS.json"
 BASE_TIP_FILE = ROOT / "portable" / "patches" / "BASE_TIP.txt"
@@ -362,6 +367,18 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
     tip_match = _tip_matches(base_sha, live_sha)
     verify = _read_verify()
     land = _land_fields_from_verify(verify)
+    # NA-0001: landed Path C + BASE_TIP still in live history is lag, not
+    # TIP_DRIFT (scripts/tip_drift_gate.py; fail-closed when unresolvable).
+    tip_current = tip_match
+    base_is_ancestor = tip_match
+    tip_lag: int | None = 0 if tip_match else None
+    if tip_match is False and land.get("path_c_landed") is True:
+        gate = tip_drift_gate.evaluate(
+            live=live_sha, base=base_sha, landed=True, repo_dir=None
+        )
+        base_is_ancestor = gate.get("base_is_ancestor_of_live")
+        tip_lag = gate.get("ahead_by")
+        tip_current = bool(gate.get("ok"))
     prior = _prior_status(out)
     prior_ws = prior.get("write_state")
     if skip_write_probe:
@@ -369,7 +386,7 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         # WRITABLE. Do not sticky-preserve a later probe-clobber DENIED (hourly
         # watch uses --skip-write-probe and used to lock DENIED forever).
         # Also do not clobber a recorded land snapshot with SKIPPED.
-        if land.get("path_c_landed") and tip_match is True:
+        if land.get("path_c_landed") and tip_current is True:
             write_state = "WRITABLE"
         elif land.get("path_c_landed") and prior_ws in ("WRITABLE", "DENIED"):
             write_state = prior_ws
@@ -381,7 +398,7 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         # with a transient DENIED probe (ghs/cursor[bot] 403 while Dylan land stands).
         if (
             land.get("path_c_landed")
-            and tip_match is True
+            and tip_current is True
             and prior_ws == "WRITABLE"
             and write_state == "DENIED"
         ):
@@ -393,14 +410,14 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
     # Hard rule: never flip research — force false in status contract.
     lemma_closed = False if lemma_closed is not True else False
     blocked = _classify_blocked(
-        has_token=has_token, tip_match=tip_match, write_state=write_state
+        has_token=has_token, tip_match=tip_current, write_state=write_state
     )
 
     tip_short = (live_sha or "")[:7] or None
     base_short = (base_sha or "")[:7] or None
 
     # Operational Path C land goal (not research). VERIFY.goal_complete stays false.
-    goal_complete = bool(land.get("path_c_landed") is True and tip_match is True)
+    goal_complete = bool(land.get("path_c_landed") is True and tip_current is True)
 
     status = {
         "tip": tip_short,
@@ -408,6 +425,9 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         "base_tip": base_short,
         "base_tip_full": base_sha,
         "tip_match": tip_match,
+        "tip_current": tip_current,
+        "base_is_ancestor_of_live": base_is_ancestor,
+        "tip_lag_commits": tip_lag,
         "write_state": write_state,
         "lemma_closed": lemma_closed,
         "path_c_blocked": blocked,
@@ -490,7 +510,7 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         status["path_c_followon_pending_ids"] = pending_ids
         status["path_c_followon_resolved_ids"] = resolved_ids
         status["stack_end"] = stack_end
-        if status.get("path_c_landed") is True and tip_match is True and not pending:
+        if status.get("path_c_landed") is True and tip_current is True and not pending:
             status["idle_status"] = "IDLE_PATH_C_DONE"
             status["apply_all_check"] = "skipped_redundant"
         elif status.get("path_c_landed") is True and pending:

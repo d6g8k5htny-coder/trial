@@ -35,6 +35,11 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+import tip_drift_gate  # noqa: E402
+
 REPO = "d6g8k5htny-coder/main"
 HARDENING = "chatgpt/drive-github-hardening-20260919"
 APPLY_STACK = "0001-0004 + 0008-0019"
@@ -54,6 +59,16 @@ def _parse_base_tip_sha(line: str) -> str | None:
     if m:
         return m.group(1).lower()
     return None
+
+
+def _followon_pending() -> tuple[bool, dict]:
+    """(pending, detail) from when_writable_land; fail-closed to pending=True."""
+    try:
+        from when_writable_land import path_c_followon_pending  # noqa: E402
+
+        return path_c_followon_pending()
+    except Exception as exc:  # noqa: BLE001 — any import/scan failure ⇒ do not idle-skip
+        return True, {"pending_ids": [], "error": str(exc)[-300:]}
 
 
 def _trial_root() -> Path:
@@ -322,6 +337,17 @@ def main() -> int:
             except (OSError, json.JSONDecodeError):
                 path_c_landed = False
         report["path_c_landed"] = path_c_landed
+        # needs_attention NA-0001: landed Path C + BASE_TIP still in live history
+        # is lag (tip_current), not drift. Fail-closed when unresolvable.
+        report["base_is_ancestor_of_live"] = report["tip_matches_base"]
+        report["tip_current"] = report["tip_matches_base"]
+        if not report["tip_matches_base"] and base_sha and path_c_landed:
+            gate = tip_drift_gate.evaluate(
+                live=hard_sha, base=base_sha, landed=True, repo_dir=clone_dir
+            )
+            report["base_is_ancestor_of_live"] = gate.get("base_is_ancestor_of_live")
+            report["tip_lag_commits"] = gate.get("ahead_by")
+            report["tip_current"] = bool(gate.get("ok"))
         if args.skip_apply_check:
             report["apply_all_check"] = "skipped"
         else:
@@ -339,6 +365,19 @@ def main() -> int:
             report["apply_all_check_tail"] = apply_out
             if path_c_landed and apply_exit == 0:
                 report["apply_all_check"] = "ok_already_landed_idempotent"
+            elif path_c_landed and apply_exit != 0 and report.get("tip_current") is True:
+                # NA-0001 / Batch 246 parity with ci.yml + assert_path_c_ready:
+                # once Path C is landed and BASE_TIP is in the live history,
+                # the historical patch stack is redundant — later hardening
+                # commits may legitimately edit the same hunks (0017 vs
+                # tests/test_pinned_sources.py on e7652a1). Skip unless a
+                # follow-on (0020+) is pending; lemma_closed gates stay live.
+                pending, pend_detail = _followon_pending()
+                report["path_c_followon_pending"] = pending
+                report["path_c_followon_pending_ids"] = pend_detail.get("pending_ids", [])
+                if not pending:
+                    apply_exit = 0
+                    report["apply_all_check"] = "skipped_redundant_landed_ancestor"
             _run(["git", "worktree", "remove", "--force", str(apply_wt)], cwd=clone_dir)
 
         # Rebase probe: PATH_C_REBASE_ONTO_MAIN after #41 typically CONFLICTS.
@@ -432,9 +471,10 @@ def main() -> int:
         apply_ok = args.skip_apply_check or apply_exit == 0
         apply_check_ok = bool(apply_ok and hard_shape["accepts"])
         report["apply_check_ok"] = apply_check_ok
-        tip_match = report.get("tip_matches_base") is True
+        tip_match = report.get("tip_current") is True
         # Batch 261: landed + tip match → idle (same class as owner_land_path_c /
         # owner_open_path_c_pr already-on-tip). Do not advertise APPLY_READY land.
+        # NA-0001: tip_current also covers landed + BASE_TIP-is-ancestor lag.
         already_on_tip = bool(path_c_landed and tip_match and apply_check_ok)
         report["already_on_tip"] = already_on_tip
         if already_on_tip:

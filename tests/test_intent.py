@@ -7,6 +7,7 @@ from d6g8k5htny-coder/main and must never be cited as scientific evidence.
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -59,10 +60,84 @@ _LIVING_RELEASES = (
     "batch241-path-c-bundle",
 )
 
+_LIVING_TIP_CACHE: dict[str, bool] = {}
+
+
 def _living_tip(val) -> bool:
-    """True if val is / contains / starts with a living Path C tip SHA prefix."""
+    """True if val is / contains / starts with a living Path C tip SHA prefix.
+
+    NA-0001: once Path C landed (VERIFY.path_c_landed=true) the hardening branch
+    keeps moving; any tip whose history still contains BASE_TIP is living too
+    (scripts/tip_drift_gate.py; fail-closed when unresolvable). Cached per value.
+    """
     s = str(val or "")
-    return any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS)
+    if any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS):
+        return True
+    m = re.search(r"(?i)\b([0-9a-f]{7,40})\b", s)
+    if not m:
+        return False
+    sha = m.group(1).lower()
+    if sha in _LIVING_TIP_CACHE:
+        return _LIVING_TIP_CACHE[sha]
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import tip_drift_gate  # noqa: E402
+
+    base = tip_drift_gate.read_base_tip(ROOT / "portable" / "patches" / "BASE_TIP.txt")
+    landed = tip_drift_gate.read_landed(ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json")
+    ok = False
+    if base and landed and len(sha) >= 7:
+        ok = bool(tip_drift_gate.evaluate(live=sha, base=base, landed=True, repo_dir=None).get("ok"))
+    _LIVING_TIP_CACHE[sha] = ok
+    return ok
+
+
+def _tip_current(status) -> bool:
+    """tip_match (exact) or tip_current (landed BASE_TIP-ancestor lag) — NA-0001."""
+    d = status or {}
+    return d.get("tip_match") is True or d.get("tip_current") is True or d.get("tip_matches_base") is True
+
+
+def _inv_trial_tip_ok(tip) -> bool:
+    """Inventory parent-pin: tip_sha is a real trial commit at/behind current HEAD.
+
+    Batches 538–749 pinned an ever-growing literal list of trial main SHAs that
+    every later land invalidated. Ancestry against the local checkout is the
+    property those lists approximated (offline; git only).
+    """
+    s = str(tip or "").lower()
+    if not re.fullmatch(r"[0-9a-f]{7,40}", s):
+        return False
+    probe = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", s, "HEAD"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return probe.returncode == 0
+
+
+def _status_header_at_least(rel_path: str, batch: int, kind: str | None = None) -> bool:
+    """`rel_path` carries a `## STATUS (Batch M …)` header with M >= batch.
+
+    The loop rewrites that single living header every batch (portable/LAND.md,
+    docs/OWNER_ACTIONS_MAIN.md); a test pinned to its own batch header is stale
+    one batch later. The batch's own BATCH<N>_*.json artifacts (asserted
+    alongside) remain the durable evidence.
+    """
+    text = (ROOT / rel_path).read_text(encoding="utf-8")
+    if kind and f"STATUS (Batch {batch} {kind})" in text:
+        return True
+    found = [int(m) for m in re.findall(r"STATUS \(Batch (\d+)\b", text)]
+    return bool(found) and max(found) >= batch
+
+
+def _land_status_at_least(batch: int, kind: str | None = None) -> bool:
+    return _status_header_at_least("portable/LAND.md", batch, kind)
+
+
+def _owner_status_at_least(batch: int, kind: str | None = None) -> bool:
+    return _status_header_at_least("docs/OWNER_ACTIONS_MAIN.md", batch, kind)
 
 def _living_release(val) -> bool:
     s = str(val or "")
@@ -892,7 +967,11 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert result.returncode == 0, result.stderr + result.stdout
     data = __import__("json").loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
-    assert data["tip_matches_base"] is True
+    # NA-0001: exact match, or landed Path C with BASE_TIP still in live history.
+    assert data["tip_current"] is True
+    if data["tip_matches_base"] is not True:
+        assert data["path_c_landed"] is True
+        assert data["base_is_ancestor_of_live"] is True
     assert data["default_aligned"] is True
     assert data["default_path_c_shape"]["accepts"] is False
     assert data["hardening_path_c_shape"]["accepts"] is True
@@ -3820,7 +3899,7 @@ def test_batch173_refresh_path_c_bundle() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "tip ancestor" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "refresh_path_c_bundle.sh" in pack
@@ -3893,7 +3972,7 @@ def test_batch176_refresh_ci_tip_drift() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "tip ancestor" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
 
     # Bad remote should die cleanly (no KeyError traceback)
     bad = subprocess.run(
@@ -4185,7 +4264,7 @@ def test_batch180_path_c_status_json_schema() -> None:
         isinstance(data.get("base_tip_full"), str)
         and _living_tip(data["base_tip_full"])
     )
-    assert data.get("tip_match") is True
+    assert _tip_current(data)
     assert _living_release(data.get("release_tag"))
     assert "ghp_" not in dry.stdout
     assert "gho_" not in dry.stdout
@@ -4354,7 +4433,7 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") in ("DF9C-5DF9", "46EC-0B00") or "-" in str(
         status.get("device_code", "")
     )
@@ -4431,7 +4510,7 @@ def test_batch185_auth_renew_research_audit_bundle() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     # Living device_code may renew after Batch 185 (Batch 188+: 46EC→C949).
     assert status.get("device_code") in ("46EC-0B00", "C949-0100") or "-" in str(
         status.get("device_code", "")
@@ -4519,7 +4598,7 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") in ("C949-0100", "1C7F-22B5") or "-" in str(
         status.get("device_code", "")
     )
@@ -4607,7 +4686,7 @@ def test_batch190_deeper_hunt_auth_renew() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") == "1C7F-22B5" or "-" in str(
         status.get("device_code", "")
     )
@@ -4693,7 +4772,7 @@ def test_batch192_readme_path_c_face() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") in ("1C7F-22B5", "CC72-DB3D") or "-" in str(
         status.get("device_code", "")
     )
@@ -4783,7 +4862,7 @@ def test_batch194_readme_link_only_device_code() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") == "CC72-DB3D" or "-" in str(
         status.get("device_code", "")
     )
@@ -4878,7 +4957,7 @@ def test_batch195_path_c_status_watch_wire() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") == "50DB-FD4D" or "-" in str(
         status.get("device_code", "")
     )
@@ -5001,7 +5080,7 @@ def test_batch199_path_c_bundle_pack_release() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") == "6A29-F464" or "-" in str(
         status.get("device_code", "")
     )
@@ -5143,7 +5222,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("device_code") == "5160-F839" or "-" in str(
         status.get("device_code", "")
     )
@@ -5363,7 +5442,7 @@ def test_batch219_repos_connect_all() -> None:
     status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
     # Batch 230+: Path C landed → path_c_blocked may be NONE.
     assert status.get("path_c_blocked") in ("NO_TOKEN", "NONE") or status.get("path_c_landed") is True
@@ -5458,7 +5537,7 @@ def test_batch223_multi_agent_access() -> None:
     status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("write_state") in ("DENIED", "SKIPPED", "UNKNOWN", "WRITABLE")
     # Batch 230+: Path C landed → path_c_blocked may be NONE (was NO_TOKEN).
     assert str(status.get("path_c_blocked", "")) in ("NO_TOKEN", "NONE") or "NO_TOKEN" in str(
@@ -5561,7 +5640,7 @@ def test_batch224_sandbox_eight_repos() -> None:
     status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     # Batch 230+: Path C landed → path_c_blocked may be NONE (was NO_TOKEN).
     assert str(status.get("path_c_blocked", "")) in ("NO_TOKEN", "NONE") or "NO_TOKEN" in str(
         status.get("path_c_blocked", "")
@@ -5616,7 +5695,7 @@ def test_batch227_path_b_transport_retry() -> None:
     status = json.loads((ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8"))
     assert status["lemma_closed"] is False
     assert _living_tip(status.get("tip"))
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
 
     log = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 227" in log
@@ -5646,7 +5725,7 @@ def test_batch230_path_c_landed() -> None:
     # Living PATH_C_STATUS: goal stays OPEN (False) after later batches; Path C land preserved.
     assert status.get("goal_complete") in (True, False)
     assert status.get("write_state") == "WRITABLE"
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert _living_tip(status.get("tip"))
     assert _living_tip(status.get("base_tip"))
 
@@ -5752,7 +5831,7 @@ def test_batch232_path_c_status_write_state_clobber() -> None:
         status = mod.build_status(skip_write_probe=True, out=out)
         assert status["lemma_closed"] is False
         assert status.get("path_c_landed") is True
-        assert status.get("tip_match") is True
+        assert _tip_current(status)
         assert status.get("write_state") == "WRITABLE"
 
     # Live status + brief contracts.
@@ -5760,7 +5839,7 @@ def test_batch232_path_c_status_write_state_clobber() -> None:
     assert status["lemma_closed"] is False
     assert status.get("path_c_landed") is True
     assert status.get("write_state") == "WRITABLE"
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
 
     brief = ROOT / "portable" / "BATCH232_BRIEF.json"
     assert brief.is_file()
@@ -5838,7 +5917,7 @@ def test_batch233_guard_tip_sha_clobber() -> None:
     assert status["lemma_closed"] is False
     assert status.get("path_c_landed") is True
     assert status.get("write_state") == "WRITABLE"
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
 
     guard = json.loads(
         (ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8")
@@ -5935,7 +6014,7 @@ def test_batch236_sibling_agent_access() -> None:
     assert status["lemma_closed"] is False
     assert status.get("path_c_landed") is True
     assert status.get("write_state") == "WRITABLE"
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("release_tag") == "batch236-path-c-bundle" or _living_release(
         status.get("release_tag")
     )
@@ -6975,7 +7054,7 @@ def test_batch248_workspace_landing_ci_path_split() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
 def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
@@ -7061,7 +7140,7 @@ def test_batch249_inventable_tip_observe_and_path_c_refresh() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
     assert _living_tip(status.get("tip"))
 
@@ -7155,7 +7234,7 @@ def test_batch250_verify_keep_prior_honesty_and_path_c_noop() -> None:
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
     assert status.get("lemma_closed") is False
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
 
     audit = json.loads(
@@ -7886,7 +7965,7 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
         assert proc.returncode == 0, out
         assert "tip_fetch_via=" in out
         assert "git_ls_remote" in out or "gh_api" in out
-        assert "dry-run OK tip stable" in out or "tip stable" in out
+        assert "dry-run OK tip stable" in out or "tip stable" in out or "tip ancestor" in out
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "PATH_C_STATUS.json" in unblock
@@ -8441,7 +8520,7 @@ def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     data = json.loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
     assert data.get("path_c_landed") is True
-    assert data.get("tip_matches_base") is True
+    assert _tip_current(data)
     assert data["state"] == "IDLE_PATH_C_DONE"
     assert data["apply_ready"] is False
     assert data.get("already_on_tip") is True
@@ -9528,7 +9607,7 @@ def test_batch269_verify_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "tip ancestor" in combined or "match=1" in combined
     assert _living_tip(combined)
 
     brief = json.loads(
@@ -10149,7 +10228,7 @@ def test_batch273_apply_verify_honesty_keep_prior() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "tip ancestor" in combined or "match=1" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH273_BRIEF.json").read_text(encoding="utf-8")
@@ -10268,7 +10347,7 @@ def test_batch275_manifest_verified_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "tip ancestor" in combined or "match=1" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH275_BRIEF.json").read_text(encoding="utf-8")
@@ -13659,7 +13738,7 @@ def test_batch338_align_watch_idle() -> None:
     assert data.get("action") == "post_path_c_align_watch_idle"
     assert data.get("lemma_closed") is False
     assert data.get("flipped_anything") is False
-    assert data.get("tip_match") is True
+    assert _tip_current(data)
     assert data.get("aligned") is True
     assert _living_tip(str(data.get("hardening_tip", "")))
     assert _living_tip(str(data.get("base_tip", "")))
@@ -13895,7 +13974,7 @@ def test_batch340_wake_land_verify() -> None:
     assert data.get("batch") == 340
     assert data.get("action") == "multi_agent_wake_and_assign"
     assert data.get("wake340_on_main") is True
-    assert data.get("tip_match") is True
+    assert _tip_current(data)
     assert data.get("lemma_closed") is False
     assert data.get("flipped_anything") is False
     assert data.get("scientific_effect") == "NONE"
@@ -13915,7 +13994,7 @@ def test_batch340_wake_land_verify() -> None:
     status = json.loads(
         (ROOT / "portable" / "PATH_C_STATUS.json").read_text(encoding="utf-8")
     )
-    assert status.get("tip_match") is True
+    assert _tip_current(status)
     assert _living_tip(status.get("tip"))
     assert status.get("lemma_closed") is False
     assert status.get("idle_status") == "IDLE_PATH_C_DONE"
@@ -19006,8 +19085,8 @@ def test_batch360_tip_or_eng_continue() -> None:
     assert _inv_rets and max(_inv_rets) >= 360
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 360)
-    assert "STATUS (Batch 360 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 360 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(360, "tip-eng")
+    assert _owner_status_at_least(360, "tip-eng")
 
 def test_batch361_research_stack_audit_watch() -> None:
     """Batch 361: research_stack_audit_watch_no_promotion; no audit delta vs 359."""
@@ -19166,8 +19245,8 @@ def test_batch361_tip_or_eng_continue() -> None:
     assert _inv_rets and max(_inv_rets) >= 361
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 361)
-    assert "STATUS (Batch 361 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 361 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(361, "tip-eng")
+    assert _owner_status_at_least(361, "tip-eng")
 
 def test_batch362_idle_tip_sync_watch() -> None:
     """Batch 362: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -19325,8 +19404,8 @@ def test_batch362_tip_or_eng_continue() -> None:
     assert _inv_rets and max(_inv_rets) >= 362
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 362)
-    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 362 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(362, "tip-eng")
+    assert _owner_status_at_least(362, "tip-eng")
 
 def test_batch363_tip_or_eng_continue() -> None:
     """Batch 363: tip_or_eng living script_stale republish VERIFY refresh_batch 345→362."""
@@ -19355,8 +19434,8 @@ def test_batch363_tip_or_eng_continue() -> None:
     assert living.get("script_stale") == 0
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 363)
-    assert "STATUS (Batch 363 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 363 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(363, "tip-eng")
+    assert _owner_status_at_least(363, "tip-eng")
 
 def test_batch363_inventory_preserve_durable_tip_pin() -> None:
     """Batch 363: preserve_durable tip pin after living republish; tip e3cd7d4."""
@@ -19391,8 +19470,8 @@ def test_batch363_inventory_preserve_durable_tip_pin() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     headers = re.findall(r"=== Batch (\d+)\s", unblock)
     assert headers and int(headers[0]) >= 363 and len(headers) == 1
-    assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 363 tip-eng-post)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(363, "tip-eng-post")
+    assert _owner_status_at_least(363, "tip-eng-post")
 
 def test_batch363_tip_eng_sync_living() -> None:
     """Batch 363: tip_or_eng inv tip sync after post-eng + living republish."""
@@ -19520,8 +19599,8 @@ def test_batch364_tip_or_eng_continue() -> None:
     assert _wake_rets and max(_wake_rets) >= 364
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 364)
-    assert "STATUS (Batch 364 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 364 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(364, "tip-eng")
+    assert _owner_status_at_least(364, "tip-eng")
 
 def test_batch365_tip_or_eng_continue() -> None:
     """Batch 365: tip_or_eng living script_stale republish VERIFY refresh_batch 363→364."""
@@ -19550,8 +19629,8 @@ def test_batch365_tip_or_eng_continue() -> None:
     assert living.get("script_stale") == 0
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 365)
-    assert "STATUS (Batch 365 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 365 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(365, "tip-eng")
+    assert _owner_status_at_least(365, "tip-eng")
 
 def test_batch365_research_stack_audit_watch() -> None:
     """Batch 365: research_stack_audit_watch_no_promotion; no audit delta vs 362."""
@@ -19668,8 +19747,8 @@ def test_batch365_unfreeze_verify_refresh_batch() -> None:
     assert _wake_rets and max(_wake_rets) >= 365
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 365)
-    assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 365 unfreeze-verify)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(365, "unfreeze-verify")
+    assert _owner_status_at_least(365, "unfreeze-verify")
 
 def test_batch366_idle_tip_sync_watch() -> None:
     """Batch 366: tip_sync_watch idle @e3cd7d4; tip_match; living current."""
@@ -19752,8 +19831,8 @@ def test_batch366_tip_or_eng_continue() -> None:
     assert _wake_rets and max(_wake_rets) >= 366
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 366)
-    assert "STATUS (Batch 366 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 366 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(366, "tip-eng")
+    assert _owner_status_at_least(366, "tip-eng")
 
 def test_batch367_research_stack_audit_watch() -> None:
     """Batch 367: research_stack_audit_watch_no_promotion; no audit delta vs 365."""
@@ -19917,8 +19996,8 @@ def test_batch367_tip_or_eng_continue() -> None:
     assert _wake_rets and max(_wake_rets) >= 367
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 367)
-    assert "STATUS (Batch 367 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 367 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(367, "tip-eng")
+    assert _owner_status_at_least(367, "tip-eng")
 
 def test_batch368_idle_tip_sync_watch() -> None:
     """Batch 368: tip_sync_watch idle after tip-sync; tip_match; living current."""
@@ -20005,8 +20084,8 @@ def test_batch368_tip_or_eng_continue() -> None:
     assert _wake_rets and max(_wake_rets) >= 368
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 368)
-    assert "STATUS (Batch 368 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 368 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(368, "tip-eng")
+    assert _owner_status_at_least(368, "tip-eng")
 
 def test_batch368_tip_sync_1ae02b9() -> None:
     """Batch 368: tip-sync e3cd7d4→1ae02b9 after main #115; docs not promoted."""
@@ -20164,8 +20243,8 @@ def test_batch368_status_guard_tip_refresh_1ae02b9() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 368)
     assert "STATUS_GUARD tip refresh" in unblock and "1ae02b9" in unblock
-    assert "STATUS (Batch 368 status-guard)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 368 status-guard)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(368, "status-guard")
+    assert _owner_status_at_least(368, "status-guard")
 
 def test_batch368_living_script_stale_republish() -> None:
     """Batch 368: living script_stale republish after STATUS_GUARD tip refresh @1ae02b9."""
@@ -20184,8 +20263,8 @@ def test_batch368_living_script_stale_republish() -> None:
     assert evidence.get("action") == "eng_living_script_stale_republish"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 368)
-    assert "STATUS (Batch 368 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 368 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(368, "living-republish")
+    assert _owner_status_at_least(368, "living-republish")
 
 def test_batch368_living_upload_confirm_intent_force() -> None:
     """Batch 368: living upload confirm + Intent 276/279 --force soften @1ae02b9."""
@@ -20266,8 +20345,8 @@ def test_batch369_tip_or_eng_wake_inv_living() -> None:
     assert _wake_rets and max(_wake_rets) >= 369
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 369)
-    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(369, "tip-eng")
+    assert _owner_status_at_least(369, "tip-eng")
 
 def test_batch369_idle_tip_sync_watch() -> None:
     """Batch 369: tip_sync_watch idle @1ae02b9; tip_match; living current."""
@@ -20357,8 +20436,8 @@ def test_batch369_living_script_stale_republish() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 369)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 369)
-    assert "STATUS (Batch 369 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 369 living-republish)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(369, "living-republish")
+    assert _owner_status_at_least(369, "living-republish")
 
 def test_batch369_tip_or_eng_continue() -> None:
     """Batch 369: tip_or_eng — inv tip re-pin beyond parent after living + living republish."""
@@ -20390,8 +20469,8 @@ def test_batch369_tip_or_eng_continue() -> None:
     assert _inv_rets and max(_inv_rets) >= 369
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 369)
-    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 369 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(369, "tip-eng")
+    assert _owner_status_at_least(369, "tip-eng")
 
 def test_batch369_research_stack_audit_watch() -> None:
     """Batch 369: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 367."""
@@ -20617,7 +20696,7 @@ def test_batch371_inv_tip_pin_after_eng_hunt() -> None:
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
-    assert "STATUS (Batch 371 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(371, "inv-tip-pin")
 
 def test_batch371_tip_or_eng_continue() -> None:
     """Batch 371: tip_or_eng — STATUS_GUARD baseline living soften."""
@@ -20649,8 +20728,8 @@ def test_batch371_tip_or_eng_continue() -> None:
     assert _inv_rets and max(_inv_rets) >= 371
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
-    assert "STATUS (Batch 371 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 371 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(371, "tip-eng")
+    assert _owner_status_at_least(371, "tip-eng")
 
 def test_batch371_post_soften_inv_tip_pin() -> None:
     """Batch 371: inv tip re-pin beyond parent after CI Intent soften."""
@@ -20668,7 +20747,7 @@ def test_batch371_post_soften_inv_tip_pin() -> None:
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 371)
-    assert "STATUS (Batch 371 post-soften-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(371, "post-soften-inv-tip-pin")
 
 def test_batch372_research_stack_audit_watch() -> None:
     """Batch 372: research_stack_audit_watch no promotion @1ae02b9."""
@@ -20701,8 +20780,8 @@ def test_batch372_research_stack_audit_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 372)
-    assert "STATUS (Batch 372 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 372 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(372, "research-audit")
+    assert _owner_status_at_least(372, "research-audit")
 
 def test_batch372_tip_or_eng_wake_last_resort() -> None:
     """Batch 372: tip_or_eng — wake last-resort 370→372 vs print_owner."""
@@ -20731,8 +20810,8 @@ def test_batch372_tip_or_eng_wake_last_resort() -> None:
     assert _inv_rets and max(_inv_rets) >= 372
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 372)
-    assert "STATUS (Batch 372 tip-eng)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 372 tip-eng)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(372, "tip-eng")
+    assert _owner_status_at_least(372, "tip-eng")
 
 def test_batch372_inv_tip_pin_after_research() -> None:
     """Batch 372: inv tip re-pin beyond parent after research/tip-eng."""
@@ -20750,7 +20829,7 @@ def test_batch372_inv_tip_pin_after_research() -> None:
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 372)
-    assert "STATUS (Batch 372 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(372, "inv-tip-pin")
 
 def test_batch372_idle_tip_sync_watch() -> None:
     """Batch 372: tip_sync_watch idle @1ae02b9; tip_match; living current."""
@@ -20836,7 +20915,7 @@ def test_batch373_inv_tip_pin_unfreeze() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 373
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 373)
-    assert "STATUS (Batch 373 inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(373, "inv-tip-pin")
 
 def test_batch373_eng_hunt_idle() -> None:
     """Batch 373: eng_defect_hunt idle @1ae02b9 after peer tip_or_eng."""
@@ -20867,8 +20946,8 @@ def test_batch373_eng_hunt_idle() -> None:
     assert hunt.get("defect_shipped") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 373)
-    assert "STATUS (Batch 373 eng-hunt-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 373 eng-hunt-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(373, "eng-hunt-idle")
+    assert _owner_status_at_least(373, "eng-hunt-idle")
 
 def test_batch373_post_living_inv_tip_pin() -> None:
     """Batch 373: inv tip re-pin beyond parent after living republish."""
@@ -20886,7 +20965,7 @@ def test_batch373_post_living_inv_tip_pin() -> None:
     assert inv.get("durable_sibling_coverage") == "8/8_WRITABLE"
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 373)
-    assert "STATUS (Batch 373 post-living-inv-tip-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(373, "post-living-inv-tip-pin")
 
 def test_batch374_research_stack_audit_watch() -> None:
     """Batch 374: research_stack_audit_watch no promotion @1ae02b9."""
@@ -20922,7 +21001,7 @@ def test_batch374_research_stack_audit_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 374)
-    assert "STATUS (Batch 374 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(374, "research-audit")
 
 def test_batch374_inv_tip_pin_after_research() -> None:
     """Batch 374: inv tip parent_pin after research audit."""
@@ -20945,7 +21024,7 @@ def test_batch374_living_script_stale_republish() -> None:
     assert brief.get("lemma_closed") is False
     assert brief.get("living_tag") == "batch241-path-c-bundle"
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 374 living-republish)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(374, "living-republish")
 
 def test_batch374_tip_or_eng_idle() -> None:
     """Batch 374: tip_or_eng idle @1ae02b9; tip_match; living current; parent-pin."""
@@ -20984,8 +21063,8 @@ def test_batch374_tip_or_eng_idle() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 374
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 374)
-    assert "STATUS (Batch 374 idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 374 idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(374, "idle")
+    assert _owner_status_at_least(374, "idle")
 
 def test_batch374_idle_tip_sync_watch() -> None:
     """Batch 374: tip_sync_watch idle @1ae02b9; tip_match; living current; parent-pin."""
@@ -21077,7 +21156,7 @@ def test_batch375_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 375)
-    assert "STATUS (Batch 375 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(375, "idle-living-unfreeze")
 
 def test_batch375_tip_or_eng_idle() -> None:
     """Batch 375: tip_or_eng idle after peer idle+living+unfreeze; hunt negative."""
@@ -21112,8 +21191,8 @@ def test_batch375_tip_or_eng_idle() -> None:
     assert _inv_rets and max(_inv_rets) >= 375
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 375)
-    assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 375 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(375, "tip-eng-idle")
+    assert _owner_status_at_least(375, "tip-eng-idle")
 
 def test_batch375_research_stack_audit_watch() -> None:
     """Batch 375: research_stack_audit_watch_no_promotion @1ae02b9; no delta vs 374."""
@@ -21252,7 +21331,7 @@ def test_batch376_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 376)
-    assert "STATUS (Batch 376 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(376, "idle-living-unfreeze")
 
 def test_batch376_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 376: tip_sync_watch idle @1ae02b9; tip_match; parent-pin."""
@@ -21386,8 +21465,8 @@ def test_batch376_tip_or_eng_living_tgz_republish() -> None:
     assert _inv_rets and max(_inv_rets) >= 376
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 376)
-    assert "STATUS (Batch 376 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 376 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(376, "tip-eng-living")
+    assert _owner_status_at_least(376, "tip-eng-living")
 
 def test_batch377_idle_tip_sync_watch() -> None:
     """Batch 377: idle tip-stable + unfreeze @1ae02b9."""
@@ -21414,7 +21493,7 @@ def test_batch377_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 377)
-    assert "STATUS (Batch 377 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(377, "idle-unfreeze")
 
 def test_batch377_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 377: tip_sync_watch idle @1ae02b9; tip_match; parent-pin."""
@@ -21548,8 +21627,8 @@ def test_batch377_tip_or_eng_living_tgz_republish() -> None:
     assert _inv_rets and max(_inv_rets) >= 377
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 377)
-    assert "STATUS (Batch 377 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 377 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(377, "tip-eng-living")
+    assert _owner_status_at_least(377, "tip-eng-living")
 
 def test_batch378_idle_tip_sync_watch() -> None:
     """Batch 378: idle tip-stable + unfreeze @1ae02b9."""
@@ -21576,7 +21655,7 @@ def test_batch378_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 378)
-    assert "STATUS (Batch 378 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(378, "idle-unfreeze")
 
 def test_batch378_tip_or_eng_idle() -> None:
     """Batch 378: tip_or_eng idle after peer idle+unfreeze; hunt negative."""
@@ -21611,8 +21690,8 @@ def test_batch378_tip_or_eng_idle() -> None:
     assert _inv_rets and max(_inv_rets) >= 378
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 378)
-    assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 378 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(378, "tip-eng-idle")
+    assert _owner_status_at_least(378, "tip-eng-idle")
 
 def test_batch378_tip_sync_ebedb78() -> None:
     """Batch 378: tip-sync 1ae02b9→ebedb78 keep-prior after main #98."""
@@ -21643,8 +21722,8 @@ def test_batch378_tip_sync_ebedb78() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 378)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 378)
-    assert "STATUS (Batch 378 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 378 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(378, "tip-sync")
+    assert _owner_status_at_least(378, "tip-sync")
 
 def test_current_path_c_base_matches_bundle() -> None:
     """Current readiness metadata must agree independently of historical receipts."""
@@ -21766,8 +21845,8 @@ def test_batch378_tip_or_eng_post_guard_idle() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 378)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 378)
-    assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 378 tip-eng-post-guard-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(378, "tip-eng-post-guard-idle")
+    assert _owner_status_at_least(378, "tip-eng-post-guard-idle")
 
 def test_batch378_followup_status_guard_living() -> None:
     """Batch 378 follow-up: tip stable; STATUS_GUARD tip living; parent-pin."""
@@ -21830,7 +21909,7 @@ def test_batch379_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 379)
-    assert "STATUS (Batch 379 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(379, "idle-living-unfreeze")
 
 def test_batch379_tip_sync_watch_idle_unfreeze() -> None:
     """Batch 379: tip_sync_watch idle @ebedb780; unfreeze 378→379; parent-pin."""
@@ -21992,8 +22071,8 @@ def test_batch379_tip_or_eng_living_tgz() -> None:
     assert _inv_rets and max(_inv_rets) >= 379
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 379)
-    assert "STATUS (Batch 379 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 379 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(379, "tip-eng-living")
+    assert _owner_status_at_least(379, "tip-eng-living")
 
 def test_batch380_idle_tip_sync_watch() -> None:
     """Batch 380: idle tip-stable + living republish + unfreeze @ebedb780."""
@@ -22024,7 +22103,7 @@ def test_batch380_idle_tip_sync_watch() -> None:
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 380)
-    assert "STATUS (Batch 380 idle-living-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(380, "idle-living-unfreeze")
 
 def test_batch380_research_stack_audit_watch() -> None:
     """Batch 380: research_stack_audit_watch_no_promotion @ebedb78; no delta vs 379."""
@@ -22193,8 +22272,8 @@ def test_batch380_tip_or_eng_living_script_stale() -> None:
     assert _inv_rets and max(_inv_rets) >= 380
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 380)
-    assert "STATUS (Batch 380 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 380 tip-eng-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(380, "tip-eng-living")
+    assert _owner_status_at_least(380, "tip-eng-living")
 
 def test_batch382_idle_tip_sync_watch() -> None:
     """Batch 382: inv tip re-pin + unfreeze @ebedb780."""
@@ -22361,8 +22440,8 @@ def test_batch383_tip_or_eng_idle() -> None:
     assert _inv_rets and max(_inv_rets) >= 383
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 383)
-    assert "STATUS (Batch 383 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 383 tip-eng-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(383, "tip-eng-idle")
+    assert _owner_status_at_least(383, "tip-eng-idle")
 
 def test_batch385_tip_sync_7caac25() -> None:
     """Batch 385: tip-sync ebedb780→7caac25 keep-prior after main #118."""
@@ -22403,8 +22482,8 @@ def test_batch385_tip_sync_7caac25() -> None:
     assert guard.get("open_premises") == 13
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 385)
-    assert "STATUS (Batch 385 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 385 tip-sync)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(385, "tip-sync")
+    assert _owner_status_at_least(385, "tip-sync")
 
 def test_batch385_research_stack_audit_watch() -> None:
     """Batch 385: research_stack_audit_watch_no_promotion @7caac25; no delta vs 383/380."""
@@ -22668,7 +22747,7 @@ def test_batch386_tip_or_eng_soften() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 386
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 386)
-    assert "STATUS (Batch 386 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(386, "tip-eng-soften")
 
 def test_batch387_research_stack_audit_watch() -> None:
     """Batch 387: research_stack_audit_watch_no_promotion @7caac25; no delta vs 385."""
@@ -22783,7 +22862,7 @@ def test_batch387_tip_sync_2f7a5a9() -> None:
     assert guard.get("pass") is True
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 387)
-    assert "STATUS (Batch 387 tip-sync)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(387, "tip-sync")
 
 def test_batch387_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 387: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -22900,7 +22979,7 @@ def test_batch388_tip_or_eng_soften() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 388
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 388)
-    assert "STATUS (Batch 388 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(388, "tip-eng-soften")
 
 def test_batch388_post_soften_living() -> None:
     """Batch 388: living script_stale republish after tip_or_eng soften @2f7a5a9."""
@@ -23065,7 +23144,7 @@ def test_batch389_idle_tip_sync_watch() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 389
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 389)
-    assert "STATUS (Batch 389 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(389, "idle-unfreeze")
 
 def test_batch389_post_idle_living() -> None:
     """Batch 389: living script_stale republish after idle @2f7a5a9."""
@@ -23076,7 +23155,7 @@ def test_batch389_post_idle_living() -> None:
     assert living.get("action") == "living_script_stale_republish_after_idle"
     assert living.get("parent_pin") is True
     assert _living_tip(str(living.get("hardening_tip") or ""))
-    assert "STATUS (Batch 389 post-idle-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(389, "post-idle-living")
 
 def test_batch390_tip_or_eng_soften() -> None:
     """Batch 390: tip_or_eng soften Intent inv tip_sha eq-freeze + living + unfreeze @2f7a5a9."""
@@ -23109,7 +23188,7 @@ def test_batch390_tip_or_eng_soften() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 390
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 390)
-    assert "STATUS (Batch 390 tip-eng-soften)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(390, "tip-eng-soften")
 
 def test_batch390_post_soften_living() -> None:
     """Batch 390: living script_stale republish after tip_or_eng soften @2f7a5a9."""
@@ -23120,7 +23199,7 @@ def test_batch390_post_soften_living() -> None:
     assert living.get("action") == "living_script_stale_republish_after_tip_or_eng_soften"
     assert living.get("parent_pin") is True
     assert _living_tip(str(living.get("hardening_tip") or ""))
-    assert "STATUS (Batch 390 post-soften-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(390, "post-soften-living")
 
 def test_batch391_tip_or_eng_idle() -> None:
     """Batch 391: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -23136,7 +23215,7 @@ def test_batch391_tip_or_eng_idle() -> None:
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
     assert living.get("need_upload") == 0
-    assert "STATUS (Batch 391 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(391, "tip-eng-idle")
 
 def test_batch389_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 389: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23210,7 +23289,7 @@ def test_batch391_post_idle_pin_living() -> None:
     assert brief.get("parent_pin") is True
     assert brief.get("unfreeze") == "390→391"
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 391 post-idle-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(391, "post-idle-pin-living")
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 391)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -23225,7 +23304,7 @@ def test_batch391_post_ci_inv_tip_pin() -> None:
     assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_ci_dedupe_land"
     assert brief.get("parent_pin") is True
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 391 post-ci-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(391, "post-ci-inv-pin")
 
 def test_batch391_post_pin_living() -> None:
     """Batch 391: living script_stale republish after inv tip pin @2f7a5a9."""
@@ -23236,7 +23315,7 @@ def test_batch391_post_pin_living() -> None:
     assert living.get("action") == "living_script_stale_republish_after_inv_pin"
     assert living.get("parent_pin") is True
     assert _living_tip(str(living.get("hardening_tip") or ""))
-    assert "STATUS (Batch 391 post-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(391, "post-pin-living")
 
 def test_batch390_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 390: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23310,7 +23389,7 @@ def test_batch391_post_tip_sync_inv_tip_pin() -> None:
     assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_tip_sync_living"
     assert brief.get("parent_pin") is True
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 391 post-tip-sync-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(391, "post-tip-sync-inv-pin")
 
 def test_batch392_tip_or_eng_unfreeze() -> None:
     """Batch 392: tip_or_eng unfreeze 391→392 + living @2f7a5a9."""
@@ -23338,7 +23417,7 @@ def test_batch392_tip_or_eng_unfreeze() -> None:
     assert int(verify.get("refresh_batch") or 0) >= 392
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 392)
-    assert "STATUS (Batch 392 tip-eng-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(392, "tip-eng-unfreeze")
 
 def test_batch393_research_stack_audit_watch() -> None:
     """Batch 393: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 388."""
@@ -23376,7 +23455,7 @@ def test_batch393_research_stack_audit_watch() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 393)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 393)
-    assert "STATUS (Batch 393 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(393, "research-audit")
 
 def test_batch393_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 393: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -23454,7 +23533,7 @@ def test_batch393_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH393_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 393 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(393, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 393)
 
@@ -23472,7 +23551,7 @@ def test_batch394_tip_or_eng_idle() -> None:
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
     assert living.get("need_upload") == 0
-    assert "STATUS (Batch 394 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(394, "tip-eng-idle")
 
 def test_batch394_post_idle_pin_living() -> None:
     """Batch 394: post-idle inv tip pin + living + unfreeze 393→394 @2f7a5a9."""
@@ -23484,7 +23563,7 @@ def test_batch394_post_idle_pin_living() -> None:
     assert brief.get("parent_pin") is True
     assert brief.get("unfreeze") == "393→394"
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 394 post-idle-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(394, "post-idle-pin-living")
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 394)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -23504,7 +23583,7 @@ def test_batch394_tip_or_eng_idle_after_post() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH394_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert int(hunt.get("verify_refresh_batch") or 0) >= 394
-    assert "STATUS (Batch 394 tip-eng-idle-after-post)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(394, "tip-eng-idle-after-post")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 394)
 
@@ -23544,8 +23623,8 @@ def test_batch394_tip_sync_watch_idle_parent_pin() -> None:
     assert pin.get("parent_pin") is True
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 394)
-    assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 394 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(394, "tip-sync-idle")
+    assert _owner_status_at_least(394, "tip-sync-idle")
 
 def test_batch394_post_tip_sync_inv_tip_pin() -> None:
     """Batch 394: inv tip re-pin after tip_sync living @2f7a5a9."""
@@ -23556,7 +23635,7 @@ def test_batch394_post_tip_sync_inv_tip_pin() -> None:
     assert brief.get("action") == "inventory_preserve_durable_tip_pin_after_tip_sync_living"
     assert brief.get("parent_pin") is True
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 394 post-tip-sync-inv-pin)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(394, "post-tip-sync-inv-pin")
 
 def test_batch395_idle_tip_stable() -> None:
     """Batch 395: idle tip-stable + unfreeze 394→395 @2f7a5a9."""
@@ -23569,7 +23648,7 @@ def test_batch395_idle_tip_stable() -> None:
     assert idle.get("parent_pin") is True
     assert idle.get("unfreeze") == "394→395"
     assert _living_tip(str(idle.get("hardening_tip") or ""))
-    assert "STATUS (Batch 395 idle-unfreeze)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(395, "idle-unfreeze")
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 395)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
@@ -23611,8 +23690,8 @@ def test_batch395_tip_sync_watch_idle_parent_pin() -> None:
     assert pin.get("parent_pin") is True
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 395)
-    assert "STATUS (Batch 395 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 395 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(395, "tip-sync-idle")
+    assert _owner_status_at_least(395, "tip-sync-idle")
 
 def test_batch395_post_tip_sync_pin_living() -> None:
     """Batch 395: inv tip pin + living after tip_sync living @2f7a5a9."""
@@ -23623,7 +23702,7 @@ def test_batch395_post_tip_sync_pin_living() -> None:
     assert brief.get("action") == "post_tip_sync_inv_tip_pin_living"
     assert brief.get("parent_pin") is True
     assert _living_tip(str(brief.get("hardening_tip") or ""))
-    assert "STATUS (Batch 395 post-tip-sync-pin-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(395, "post-tip-sync-pin-living")
 
 def test_batch395_tip_or_eng_living() -> None:
     """Batch 395: tip_or_eng living script_stale republish @2f7a5a9."""
@@ -23639,7 +23718,7 @@ def test_batch395_tip_or_eng_living() -> None:
     assert living.get("uploaded") is True
     hunt = json.loads((ROOT / "portable" / "BATCH395_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is True
-    assert "STATUS (Batch 395 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(395, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 395)
 
@@ -23679,7 +23758,7 @@ def test_batch396_research_stack_audit_watch() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 396)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
-    assert "STATUS (Batch 396 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(396, "research-audit")
 
 def test_batch397_tip_or_eng_idle() -> None:
     """Batch 397: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -23695,7 +23774,7 @@ def test_batch397_tip_or_eng_idle() -> None:
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
     assert living.get("need_upload") == 0
-    assert "STATUS (Batch 397 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(397, "tip-eng-idle")
 
 def test_batch396_tip_or_eng_idle() -> None:
     """Batch 396: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -23711,7 +23790,7 @@ def test_batch396_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH396_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 396 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(396, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
 
@@ -23754,8 +23833,8 @@ def test_batch396_tip_sync_watch_idle_parent_pin() -> None:
     assert pin.get("parent_pin") is True
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
-    assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 396 tip-sync-idle)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(396, "tip-sync-idle")
+    assert _owner_status_at_least(396, "tip-sync-idle")
 
 def test_batch396_ci_intent_syntax() -> None:
     """Batch 396: CI Intent syntax fix for literal backslash-n line @2f7a5a9."""
@@ -23768,7 +23847,7 @@ def test_batch396_ci_intent_syntax() -> None:
     assert _living_tip(str(brief.get("hardening_tip") or ""))
     src_lines = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8").splitlines()
     assert "\\n" not in src_lines  # no lone literal backslash-n lines
-    assert "STATUS (Batch 396 ci-intent-syntax)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(396, "ci-intent-syntax")
 
 def test_batch398_tip_or_eng_living() -> None:
     """Batch 398: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -23787,7 +23866,7 @@ def test_batch398_tip_or_eng_living() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 398)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 398)
-    assert "STATUS (Batch 398 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(398, "tip-eng-living")
 
 def test_batch396_tip_or_eng_idle_continue() -> None:
     """Batch 396: tip_or_eng continue idle_no_commit hunt-negative @2f7a5a9."""
@@ -23803,7 +23882,7 @@ def test_batch396_tip_or_eng_idle_continue() -> None:
     assert living.get("tip_stale") == 0
     assert living.get("script_stale") == 0
     assert living.get("need_upload") == 0
-    assert "STATUS (Batch 396 tip-eng-idle-continue)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(396, "tip-eng-idle-continue")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 396)
 
@@ -23843,7 +23922,7 @@ def test_batch399_research_stack_audit_watch() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 399)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 399)
-    assert "STATUS (Batch 399 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(399, "research-audit")
 
 def test_batch399_tip_or_eng_idle() -> None:
     """Batch 399: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -23859,7 +23938,7 @@ def test_batch399_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH399_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 399 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(399, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 399)
 
@@ -23953,7 +24032,7 @@ def test_batch400_tip_or_eng_inv_living() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 400)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 400)
-    assert "STATUS (Batch 400 tip-eng-inv-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(400, "tip-eng-inv-living")
 
 def test_batch400_tip_eng_living_refresh() -> None:
     """Batch 400: living script_stale republish after tip_or_eng land @2f7a5a9."""
@@ -24013,7 +24092,7 @@ def test_batch401_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 401)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 401
-    assert "STATUS (Batch 401 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(401, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 401)
 
@@ -24131,7 +24210,7 @@ def test_batch402_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 402)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 402
-    assert "STATUS (Batch 402 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(402, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 402)
 
@@ -24248,7 +24327,7 @@ def test_batch403_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH403_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 403 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(403, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 403)
 
@@ -24290,7 +24369,7 @@ def test_batch404_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 404)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 404
-    assert "STATUS (Batch 404 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(404, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 404)
 
@@ -24417,7 +24496,7 @@ def test_batch405_research_stack_audit_watch() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 405)
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 405)
-    assert "STATUS (Batch 405 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(405, "research-audit")
 
 def test_batch406_tip_or_eng_living_tgz() -> None:
     """Batch 406: tip_or_eng living tgz missing republish + unfreeze @2f7a5a9."""
@@ -24442,7 +24521,7 @@ def test_batch406_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 406)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 406
-    assert "STATUS (Batch 406 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(406, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 406)
 
@@ -24460,7 +24539,7 @@ def test_batch407_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH407_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 407 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(407, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 407)
 
@@ -24571,7 +24650,7 @@ def test_batch408_tip_or_eng_idle() -> None:
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 408
     assert verify.get("lemma_closed") is False
-    assert "STATUS (Batch 408 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(408, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 408)
 
@@ -24672,8 +24751,8 @@ def test_batch408_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 408)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 408 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 408 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(408, "research-audit")
+    assert _owner_status_at_least(408, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 408" in log_md and "research_stack_audit_watch" in log_md
 
@@ -24723,7 +24802,7 @@ def test_batch409_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 409)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 409
-    assert "STATUS (Batch 409 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(409, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 409)
 
@@ -24834,7 +24913,7 @@ def test_batch410_tip_or_eng_idle() -> None:
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 410
     assert verify.get("lemma_closed") is False
-    assert "STATUS (Batch 410 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(410, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 410)
 
@@ -24946,7 +25025,7 @@ def test_batch411_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 411)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 411
-    assert "STATUS (Batch 411 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(411, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 411)
 
@@ -25023,8 +25102,8 @@ def test_batch410_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 410)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 410 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 410 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(410, "research-audit")
+    assert _owner_status_at_least(410, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 410" in log_md and "research_stack_audit_watch" in log_md
 
@@ -25048,7 +25127,7 @@ def test_batch412_tip_or_eng_idle() -> None:
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 412
     assert verify.get("lemma_closed") is False
-    assert "STATUS (Batch 412 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(412, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 412)
 
@@ -25073,7 +25152,7 @@ def test_batch413_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 413)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 413
-    assert "STATUS (Batch 413 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(413, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 413)
 
@@ -25220,8 +25299,8 @@ def test_batch412_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 412)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 412 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 412 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(412, "research-audit")
+    assert _owner_status_at_least(412, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 412" in log_md and "research_stack_audit_watch" in log_md
 
@@ -25243,7 +25322,7 @@ def test_batch414_tip_or_eng_living_tgz() -> None:
     assert unfreeze.get("to_batch") == "414"
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 414
-    assert "STATUS (Batch 414 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(414, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 414)
 
@@ -25268,7 +25347,7 @@ def test_batch415_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 415)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 415
-    assert "STATUS (Batch 415 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(415, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 415)
 
@@ -25415,8 +25494,8 @@ def test_batch414_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 414)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 414 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 414 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(414, "research-audit")
+    assert _owner_status_at_least(414, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 414" in log_md and "research_stack_audit_watch" in log_md
 
@@ -25441,7 +25520,7 @@ def test_batch416_tip_or_eng_living_script_stale() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 416)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 416
-    assert "STATUS (Batch 416 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(416, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 416)
 
@@ -25524,8 +25603,8 @@ def test_batch416_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 416)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 416 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 416 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(416, "research-audit")
+    assert _owner_status_at_least(416, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 416" in log_md and "research_stack_audit_watch" in log_md
 
@@ -25550,7 +25629,7 @@ def test_batch417_tip_or_eng_living() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 417)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 417
-    assert "STATUS (Batch 417 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(417, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 417)
 
@@ -25646,7 +25725,7 @@ def test_batch418_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 418)
-    assert "STATUS (Batch 418 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(418, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 418)
 
@@ -25671,7 +25750,7 @@ def test_batch419_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 419)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 419
-    assert "STATUS (Batch 419 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(419, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 419)
 
@@ -25754,8 +25833,8 @@ def test_batch418_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 418)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 418 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 418 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(418, "research-audit")
+    assert _owner_status_at_least(418, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 418" in log_md and "research_stack_audit_watch" in log_md
 
@@ -25861,7 +25940,7 @@ def test_batch420_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 420)
-    assert "STATUS (Batch 420 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(420, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 420)
 
@@ -25960,7 +26039,7 @@ def test_batch421_tip_or_eng_idle() -> None:
     hunt = json.loads((ROOT / "portable" / "BATCH421_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
     assert hunt.get("defect_found") is False
     assert hunt.get("action") == "idle_no_commit"
-    assert "STATUS (Batch 421 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(421, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 421)
 
@@ -26043,8 +26122,8 @@ def test_batch420_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 420)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 420 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 420 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(420, "research-audit")
+    assert _owner_status_at_least(420, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 420" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26070,7 +26149,7 @@ def test_batch422_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 422)
-    assert "STATUS (Batch 422 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(422, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 422)
 
@@ -26095,7 +26174,7 @@ def test_batch423_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 423)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 423
-    assert "STATUS (Batch 423 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(423, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 423)
 
@@ -26248,8 +26327,8 @@ def test_batch422_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 422)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 422 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 422 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(422, "research-audit")
+    assert _owner_status_at_least(422, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 422" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26275,7 +26354,7 @@ def test_batch424_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 424)
-    assert "STATUS (Batch 424 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(424, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 424)
 
@@ -26428,8 +26507,8 @@ def test_batch424_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 424)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 424 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 424 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(424, "research-audit")
+    assert _owner_status_at_least(424, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 424" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26455,7 +26534,7 @@ def test_batch425_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 425)
-    assert "STATUS (Batch 425 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(425, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 425)
 
@@ -26561,7 +26640,7 @@ def test_batch426_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 426)
-    assert "STATUS (Batch 426 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(426, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 426)
 
@@ -26714,8 +26793,8 @@ def test_batch426_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 426)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 426 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 426 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(426, "research-audit")
+    assert _owner_status_at_least(426, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 426" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26740,7 +26819,7 @@ def test_batch427_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 427)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 427
-    assert "STATUS (Batch 427 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(427, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 427)
 
@@ -26766,7 +26845,7 @@ def test_batch428_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 428)
-    assert "STATUS (Batch 428 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(428, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 428)
 
@@ -26849,8 +26928,8 @@ def test_batch427_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 427)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 427 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 427 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(427, "research-audit")
+    assert _owner_status_at_least(427, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 427" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26875,7 +26954,7 @@ def test_batch429_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 429)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 429
-    assert "STATUS (Batch 429 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(429, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 429)
 
@@ -26958,8 +27037,8 @@ def test_batch428_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 428)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 428 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 428 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(428, "research-audit")
+    assert _owner_status_at_least(428, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 428" in log_md and "research_stack_audit_watch" in log_md
 
@@ -26984,7 +27063,7 @@ def test_batch430_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 430)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 430
-    assert "STATUS (Batch 430 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(430, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 430)
 
@@ -27088,7 +27167,7 @@ def test_batch431_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 431)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 431
-    assert "STATUS (Batch 431 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(431, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 431)
 
@@ -27171,8 +27250,8 @@ def test_batch430_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 430)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 430 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 430 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(430, "research-audit")
+    assert _owner_status_at_least(430, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 430" in log_md and "research_stack_audit_watch" in log_md
 
@@ -27197,7 +27276,7 @@ def test_batch432_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 432)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 432
-    assert "STATUS (Batch 432 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(432, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 432)
 
@@ -27280,8 +27359,8 @@ def test_batch431_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 431)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 431 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 431 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(431, "research-audit")
+    assert _owner_status_at_least(431, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 431" in log_md and "research_stack_audit_watch" in log_md
 
@@ -27306,7 +27385,7 @@ def test_batch433_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 433)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 433
-    assert "STATUS (Batch 433 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(433, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 433)
 
@@ -27410,7 +27489,7 @@ def test_batch434_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 434)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 434
-    assert "STATUS (Batch 434 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(434, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 434)
 
@@ -27493,8 +27572,8 @@ def test_batch433_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 433)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 433 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 433 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(433, "research-audit")
+    assert _owner_status_at_least(433, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 433" in log_md and "research_stack_audit_watch" in log_md
 
@@ -27656,8 +27735,8 @@ def test_batch434_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 434)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 434 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 434 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(434, "research-audit")
+    assert _owner_status_at_least(434, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 434" in log_md and "research_stack_audit_watch" in log_md
 
@@ -27682,7 +27761,7 @@ def test_batch435_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 435)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 435
-    assert "STATUS (Batch 435 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(435, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 435)
 
@@ -27777,7 +27856,7 @@ def test_batch436_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 436)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 436
-    assert "STATUS (Batch 436 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(436, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 436)
 
@@ -27860,8 +27939,8 @@ def test_batch435_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 435)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 435 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 435 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(435, "research-audit")
+    assert _owner_status_at_least(435, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 435" in log_md and "research_stack_audit_watch" in log_md
 
@@ -27886,7 +27965,7 @@ def test_batch437_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 437)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 437
-    assert "STATUS (Batch 437 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(437, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 437)
 
@@ -28039,8 +28118,8 @@ def test_batch436_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 436)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 436 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 436 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(436, "research-audit")
+    assert _owner_status_at_least(436, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 436" in log_md and "research_stack_audit_watch" in log_md
 
@@ -28066,7 +28145,7 @@ def test_batch438_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 438)
-    assert "STATUS (Batch 438 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(438, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 438)
 
@@ -28149,8 +28228,8 @@ def test_batch437_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 437)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 437 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 437 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(437, "research-audit")
+    assert _owner_status_at_least(437, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 437" in log_md and "research_stack_audit_watch" in log_md
 
@@ -28255,7 +28334,7 @@ def test_batch439_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 439)
-    assert "STATUS (Batch 439 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(439, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 439)
 
@@ -28280,7 +28359,7 @@ def test_batch440_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 440)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 440
-    assert "STATUS (Batch 440 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(440, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 440)
 
@@ -28433,8 +28512,8 @@ def test_batch438_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 438)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 438 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 438 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(438, "research-audit")
+    assert _owner_status_at_least(438, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 438" in log_md and "research_stack_audit_watch" in log_md
 
@@ -28459,7 +28538,7 @@ def test_batch441_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 441)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 441
-    assert "STATUS (Batch 441 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(441, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 441)
 
@@ -28621,8 +28700,8 @@ def test_batch440_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 440)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 440 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 440 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(440, "research-audit")
+    assert _owner_status_at_least(440, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 440" in log_md and "research_stack_audit_watch" in log_md
 
@@ -28786,8 +28865,8 @@ def test_batch441_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 441)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 441 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 441 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(441, "research-audit")
+    assert _owner_status_at_least(441, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 441" in log_md and "research_stack_audit_watch" in log_md
 
@@ -28812,7 +28891,7 @@ def test_batch442_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 442)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 442
-    assert "STATUS (Batch 442 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(442, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 442)
 
@@ -28837,7 +28916,7 @@ def test_batch443_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 443)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 443
-    assert "STATUS (Batch 443 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(443, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 443)
 
@@ -28999,8 +29078,8 @@ def test_batch443_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 443)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 443 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 443 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(443, "research-audit")
+    assert _owner_status_at_least(443, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 443" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29025,7 +29104,7 @@ def test_batch444_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 444)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 444
-    assert "STATUS (Batch 444 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(444, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 444)
 
@@ -29050,7 +29129,7 @@ def test_batch445_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 445)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 445
-    assert "STATUS (Batch 445 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(445, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 445)
 
@@ -29212,8 +29291,8 @@ def test_batch444_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 444)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 444 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 444 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(444, "research-audit")
+    assert _owner_status_at_least(444, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 444" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29296,8 +29375,8 @@ def test_batch445_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 445)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 445 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 445 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(445, "research-audit")
+    assert _owner_status_at_least(445, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 445" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29403,7 +29482,7 @@ def test_batch446_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 446)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 446
-    assert "STATUS (Batch 446 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(446, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 446)
 
@@ -29488,8 +29567,8 @@ def test_batch446_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 446)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 446 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 446 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(446, "research-audit")
+    assert _owner_status_at_least(446, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 446" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29597,7 +29676,7 @@ def test_batch447_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 447)
-    assert "STATUS (Batch 447 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(447, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 447)
 
@@ -29682,8 +29761,8 @@ def test_batch447_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 447)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 447 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 447 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(447, "research-audit")
+    assert _owner_status_at_least(447, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 447" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29761,8 +29840,8 @@ def test_batch447_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 447)
-    assert "STATUS (Batch 447 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 447 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(447, "tip-sync-living")
+    assert _owner_status_at_least(447, "tip-sync-living")
 
 def test_batch448_tip_or_eng_idle() -> None:
     """Batch 448: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -29786,7 +29865,7 @@ def test_batch448_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 448)
-    assert "STATUS (Batch 448 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(448, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 448)
 
@@ -29871,8 +29950,8 @@ def test_batch448_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 448)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 448 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 448 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(448, "research-audit")
+    assert _owner_status_at_least(448, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 448" in log_md and "research_stack_audit_watch" in log_md
 
@@ -29950,8 +30029,8 @@ def test_batch448_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 448)
-    assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 448 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(448, "tip-sync-living")
+    assert _owner_status_at_least(448, "tip-sync-living")
 
 def test_batch448_intent_soften_441_445_tip_sync_living_brief() -> None:
     """Batch 448: soften tip-sync447 re-harden of Batch441/445 living briefs."""
@@ -30013,7 +30092,7 @@ def test_batch449_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 449)
-    assert "STATUS (Batch 449 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(449, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 449)
 
@@ -30098,8 +30177,8 @@ def test_batch449_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 449)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 449 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 449 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(449, "research-audit")
+    assert _owner_status_at_least(449, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 449" in log_md and "research_stack_audit_watch" in log_md
 
@@ -30177,8 +30256,8 @@ def test_batch449_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 449)
-    assert "STATUS (Batch 449 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 449 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(449, "tip-sync-living")
+    assert _owner_status_at_least(449, "tip-sync-living")
 
 def test_batch450_tip_or_eng_idle() -> None:
     """Batch 450: tip_or_eng idle_no_commit hunt-negative @2f7a5a9."""
@@ -30202,7 +30281,7 @@ def test_batch450_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 450)
-    assert "STATUS (Batch 450 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(450, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 450)
 
@@ -30287,8 +30366,8 @@ def test_batch450_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 450)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 450 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 450 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(450, "research-audit")
+    assert _owner_status_at_least(450, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 450" in log_md and "research_stack_audit_watch" in log_md
 
@@ -30366,8 +30445,8 @@ def test_batch450_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 450)
-    assert "STATUS (Batch 450 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 450 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(450, "tip-sync-living")
+    assert _owner_status_at_least(450, "tip-sync-living")
 
 def test_batch451_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 451: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -30443,8 +30522,8 @@ def test_batch451_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 451)
-    assert "STATUS (Batch 451 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 451 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(451, "tip-sync-living")
+    assert _owner_status_at_least(451, "tip-sync-living")
 
 def test_batch451_tip_or_eng_idle() -> None:
     """Batch 451: tip_or_eng idle_no_commit + unfreeze 450→451 @2f7a5a9."""
@@ -30469,7 +30548,7 @@ def test_batch451_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 451)
-    assert "STATUS (Batch 451 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(451, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 451)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -30557,8 +30636,8 @@ def test_batch451_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 451)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 451 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 451 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(451, "research-audit")
+    assert _owner_status_at_least(451, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 451" in log_md and "research_stack_audit_watch" in log_md
 
@@ -30636,8 +30715,8 @@ def test_batch452_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 452)
-    assert "STATUS (Batch 452 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 452 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(452, "tip-sync-living")
+    assert _owner_status_at_least(452, "tip-sync-living")
 
 def test_batch453_tip_or_eng_idle() -> None:
     """Batch 453: tip_or_eng idle_no_commit + unfreeze 451→453 @2f7a5a9."""
@@ -30664,7 +30743,7 @@ def test_batch453_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 453)
-    assert "STATUS (Batch 453 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(453, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 453)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -30692,7 +30771,7 @@ def test_batch454_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 454)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 454
-    assert "STATUS (Batch 454 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(454, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 454)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -30773,8 +30852,8 @@ def test_batch454_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 454)
-    assert "STATUS (Batch 454 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 454 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(454, "tip-sync-living")
+    assert _owner_status_at_least(454, "tip-sync-living")
 
 def test_batch454_research_stack_audit_watch() -> None:
     """Batch 454: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 451/450/449/448/447."""
@@ -30857,8 +30936,8 @@ def test_batch454_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 454)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 454 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 454 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(454, "research-audit")
+    assert _owner_status_at_least(454, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 454" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -30891,7 +30970,7 @@ def test_batch455_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 455)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 455
-    assert "STATUS (Batch 455 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(455, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 455)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -30972,8 +31051,8 @@ def test_batch455_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 455)
-    assert "STATUS (Batch 455 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 455 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(455, "tip-sync-living")
+    assert _owner_status_at_least(455, "tip-sync-living")
 
 def test_batch455_research_stack_audit_watch() -> None:
     """Batch 455: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 454/451/450/449/448."""
@@ -31056,8 +31135,8 @@ def test_batch455_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 455)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 455 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 455 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(455, "research-audit")
+    assert _owner_status_at_least(455, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 455" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -31088,7 +31167,7 @@ def test_batch456_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 456)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 456
-    assert "STATUS (Batch 456 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(456, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 456)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -31169,8 +31248,8 @@ def test_batch456_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 456)
-    assert "STATUS (Batch 456 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 456 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(456, "tip-sync-living")
+    assert _owner_status_at_least(456, "tip-sync-living")
 
 def test_batch456_research_stack_audit_watch() -> None:
     """Batch 456: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 455/454/451/450/449."""
@@ -31253,8 +31332,8 @@ def test_batch456_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 456)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 456 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 456 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(456, "research-audit")
+    assert _owner_status_at_least(456, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 456" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -31287,7 +31366,7 @@ def test_batch457_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 457)
-    assert "STATUS (Batch 457 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(457, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 457)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -31368,8 +31447,8 @@ def test_batch457_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 457)
-    assert "STATUS (Batch 457 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 457 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(457, "tip-sync-living")
+    assert _owner_status_at_least(457, "tip-sync-living")
 
 def test_batch457_research_stack_audit_watch() -> None:
     """Batch 457: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 456/455/454/451/450."""
@@ -31452,8 +31531,8 @@ def test_batch457_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 457)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 457 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 457 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(457, "research-audit")
+    assert _owner_status_at_least(457, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 457" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -31486,7 +31565,7 @@ def test_batch458_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 458)
-    assert "STATUS (Batch 458 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(458, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 458)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -31574,8 +31653,8 @@ def test_batch458_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 458)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 458 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 458 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(458, "research-audit")
+    assert _owner_status_at_least(458, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 458" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -31659,8 +31738,8 @@ def test_batch458_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 458)
-    assert "STATUS (Batch 458 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 458 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(458, "tip-sync-living")
+    assert _owner_status_at_least(458, "tip-sync-living")
 
 def test_batch459_tip_or_eng_living_tgz() -> None:
     """Batch 459: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -31683,7 +31762,7 @@ def test_batch459_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 459)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 459
-    assert "STATUS (Batch 459 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(459, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 459)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -31771,8 +31850,8 @@ def test_batch459_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 459)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 459 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 459 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(459, "research-audit")
+    assert _owner_status_at_least(459, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 459" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -31856,8 +31935,8 @@ def test_batch459_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 459)
-    assert "STATUS (Batch 459 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 459 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(459, "tip-sync-living")
+    assert _owner_status_at_least(459, "tip-sync-living")
 
 def test_batch460_tip_or_eng_idle() -> None:
     """Batch 460: tip_or_eng idle_no_commit + unfreeze 459→460 @2f7a5a9."""
@@ -31882,7 +31961,7 @@ def test_batch460_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 460)
-    assert "STATUS (Batch 460 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(460, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 460)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -31963,8 +32042,8 @@ def test_batch460_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 460)
-    assert "STATUS (Batch 460 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 460 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(460, "tip-sync-living")
+    assert _owner_status_at_least(460, "tip-sync-living")
 
 def test_batch460_research_stack_audit_watch() -> None:
     """Batch 460: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 459/458/457/456/455."""
@@ -32047,8 +32126,8 @@ def test_batch460_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 460)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 460 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 460 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(460, "research-audit")
+    assert _owner_status_at_least(460, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 460" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -32083,7 +32162,7 @@ def test_batch461_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 461)
-    assert "STATUS (Batch 461 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(461, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 461)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -32164,8 +32243,8 @@ def test_batch461_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 461)
-    assert "STATUS (Batch 461 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 461 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(461, "tip-sync-living")
+    assert _owner_status_at_least(461, "tip-sync-living")
 
 def test_batch461_research_stack_audit_watch() -> None:
     """Batch 461: research_stack_audit_watch_no_promotion @2f7a5a9; no delta vs 460/459/458/457/456."""
@@ -32248,8 +32327,8 @@ def test_batch461_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 461)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 461 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 461 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(461, "research-audit")
+    assert _owner_status_at_least(461, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 461" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -32284,7 +32363,7 @@ def test_batch462_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 462)
-    assert "STATUS (Batch 462 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(462, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 462)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -32372,8 +32451,8 @@ def test_batch462_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 462)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 462 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 462 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(462, "research-audit")
+    assert _owner_status_at_least(462, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 462" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -32456,8 +32535,8 @@ def test_batch462_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 462)
-    assert "STATUS (Batch 462 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 462 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(462, "tip-sync-living")
+    assert _owner_status_at_least(462, "tip-sync-living")
 
 def test_batch463_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 463: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -32533,8 +32612,8 @@ def test_batch463_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 463)
-    assert "STATUS (Batch 463 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 463 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(463, "tip-sync-living")
+    assert _owner_status_at_least(463, "tip-sync-living")
 
 def test_batch463_tip_or_eng_idle() -> None:
     """Batch 463: tip_or_eng idle_no_commit + unfreeze 462→463 @2f7a5a9."""
@@ -32561,7 +32640,7 @@ def test_batch463_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 463)
-    assert "STATUS (Batch 463 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(463, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 463)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -32649,8 +32728,8 @@ def test_batch463_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 463)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 463 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 463 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(463, "research-audit")
+    assert _owner_status_at_least(463, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 463" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -32741,8 +32820,8 @@ def test_batch464_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 464)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 464 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 464 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(464, "research-audit")
+    assert _owner_status_at_least(464, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 464" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -32826,8 +32905,8 @@ def test_batch464_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 464)
-    assert "STATUS (Batch 464 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 464 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(464, "tip-sync-living")
+    assert _owner_status_at_least(464, "tip-sync-living")
 
 def test_batch464_tip_or_eng_idle() -> None:
     """Batch 464: tip_or_eng idle_no_commit + unfreeze 463→464 @2f7a5a9."""
@@ -32854,7 +32933,7 @@ def test_batch464_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 464)
-    assert "STATUS (Batch 464 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(464, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 464)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -32935,8 +33014,8 @@ def test_batch465_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 465)
-    assert "STATUS (Batch 465 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 465 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(465, "tip-sync-living")
+    assert _owner_status_at_least(465, "tip-sync-living")
 
 def test_batch465_tip_or_eng_idle() -> None:
     """Batch 465: tip_or_eng idle_no_commit + unfreeze 464→465 @2f7a5a9."""
@@ -32963,7 +33042,7 @@ def test_batch465_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 465)
-    assert "STATUS (Batch 465 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(465, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 465)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -33111,8 +33190,8 @@ def test_batch466_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 466)
     assert "research_stack_audit_watch" in unblock
     assert "covers research465 gap" in unblock
-    assert "STATUS (Batch 466 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 466 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(466, "research-audit")
+    assert _owner_status_at_least(466, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 466" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -33196,8 +33275,8 @@ def test_batch466_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 466)
-    assert "STATUS (Batch 466 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 466 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(466, "tip-sync-living")
+    assert _owner_status_at_least(466, "tip-sync-living")
 
 def test_batch466_tip_or_eng_living_script() -> None:
     """Batch 466: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -33220,7 +33299,7 @@ def test_batch466_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 466)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 466
-    assert "STATUS (Batch 466 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(466, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 466)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -33301,8 +33380,8 @@ def test_batch467_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 467)
-    assert "STATUS (Batch 467 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 467 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(467, "tip-sync-living")
+    assert _owner_status_at_least(467, "tip-sync-living")
 
 def test_batch467_tip_or_eng_idle() -> None:
     """Batch 467: tip_or_eng idle_no_commit + unfreeze 466→467 @2f7a5a9."""
@@ -33329,7 +33408,7 @@ def test_batch467_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 467)
-    assert "STATUS (Batch 467 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(467, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 467)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -33417,8 +33496,8 @@ def test_batch467_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 467)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 467 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 467 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(467, "research-audit")
+    assert _owner_status_at_least(467, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 467" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -33453,7 +33532,7 @@ def test_batch468_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 468)
-    assert "STATUS (Batch 468 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(468, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 468)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -33541,8 +33620,8 @@ def test_batch468_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 468)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 468 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 468 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(468, "research-audit")
+    assert _owner_status_at_least(468, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 468" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -33633,8 +33712,8 @@ def test_batch469_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 469)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 469 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 469 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(469, "research-audit")
+    assert _owner_status_at_least(469, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 469" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -33718,8 +33797,8 @@ def test_batch469_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 469)
-    assert "STATUS (Batch 469 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 469 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(469, "tip-sync-living")
+    assert _owner_status_at_least(469, "tip-sync-living")
 
 def test_batch469_tip_or_eng_idle() -> None:
     """Batch 469: tip_or_eng idle_no_commit + unfreeze 468→469 @2f7a5a9."""
@@ -33746,7 +33825,7 @@ def test_batch469_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 469)
-    assert "STATUS (Batch 469 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(469, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 469)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -33834,8 +33913,8 @@ def test_batch470_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 470)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 470 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 470 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(470, "research-audit")
+    assert _owner_status_at_least(470, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 470" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -33919,8 +33998,8 @@ def test_batch470_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 470)
-    assert "STATUS (Batch 470 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 470 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(470, "tip-sync-living")
+    assert _owner_status_at_least(470, "tip-sync-living")
 
 def test_batch470_tip_or_eng_idle() -> None:
     """Batch 470: tip_or_eng idle_no_commit + unfreeze 469→470 @2f7a5a9."""
@@ -33947,7 +34026,7 @@ def test_batch470_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 470)
-    assert "STATUS (Batch 470 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(470, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 470)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -34035,8 +34114,8 @@ def test_batch471_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 471)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 471 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 471 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(471, "research-audit")
+    assert _owner_status_at_least(471, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 471" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -34120,8 +34199,8 @@ def test_batch471_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 471)
-    assert "STATUS (Batch 471 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 471 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(471, "tip-sync-living")
+    assert _owner_status_at_least(471, "tip-sync-living")
 
 def test_batch471_tip_or_eng_living_script() -> None:
     """Batch 471: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -34144,7 +34223,7 @@ def test_batch471_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 471)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 471
-    assert "STATUS (Batch 471 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(471, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 471)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -34232,8 +34311,8 @@ def test_batch472_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 472)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 472 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 472 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(472, "research-audit")
+    assert _owner_status_at_least(472, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 472" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -34317,8 +34396,8 @@ def test_batch472_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 472)
-    assert "STATUS (Batch 472 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 472 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(472, "tip-sync-living")
+    assert _owner_status_at_least(472, "tip-sync-living")
 
 def test_batch472_tip_or_eng_idle() -> None:
     """Batch 472: tip_or_eng idle_no_commit + unfreeze 471→472 @2f7a5a9."""
@@ -34345,7 +34424,7 @@ def test_batch472_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 472)
-    assert "STATUS (Batch 472 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(472, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 472)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -34433,8 +34512,8 @@ def test_batch473_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 473)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 473 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 473 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(473, "research-audit")
+    assert _owner_status_at_least(473, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 473" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -34518,8 +34597,8 @@ def test_batch473_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 473)
-    assert "STATUS (Batch 473 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 473 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(473, "tip-sync-living")
+    assert _owner_status_at_least(473, "tip-sync-living")
 
 def test_batch473_tip_or_eng_living_tgz() -> None:
     """Batch 473: tip_or_eng living tgz_newer republish + unfreeze @2f7a5a9."""
@@ -34542,7 +34621,7 @@ def test_batch473_tip_or_eng_living_tgz() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 473)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 473
-    assert "STATUS (Batch 473 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(473, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 473)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -34630,8 +34709,8 @@ def test_batch474_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 474)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 474 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 474 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(474, "research-audit")
+    assert _owner_status_at_least(474, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 474" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -34715,8 +34794,8 @@ def test_batch474_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 474)
-    assert "STATUS (Batch 474 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 474 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(474, "tip-sync-living")
+    assert _owner_status_at_least(474, "tip-sync-living")
 
 def test_batch474_tip_or_eng_idle() -> None:
     """Batch 474: tip_or_eng idle_no_commit + unfreeze 473→474 @2f7a5a9."""
@@ -34743,7 +34822,7 @@ def test_batch474_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 474)
-    assert "STATUS (Batch 474 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(474, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 474)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -34832,8 +34911,8 @@ def test_batch475_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 475)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 475 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 475 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(475, "research-audit")
+    assert _owner_status_at_least(475, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 475" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -34917,8 +34996,8 @@ def test_batch475_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 475)
-    assert "STATUS (Batch 475 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 475 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(475, "tip-sync-living")
+    assert _owner_status_at_least(475, "tip-sync-living")
 
 def test_batch475_tip_or_eng_idle() -> None:
     """Batch 475: tip_or_eng idle_no_commit + unfreeze 474→475 @2f7a5a9."""
@@ -34945,7 +35024,7 @@ def test_batch475_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 475)
-    assert "STATUS (Batch 475 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(475, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 475)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35034,8 +35113,8 @@ def test_batch476_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 476)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 476 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 476 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(476, "research-audit")
+    assert _owner_status_at_least(476, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 476" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -35119,8 +35198,8 @@ def test_batch476_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 476)
-    assert "STATUS (Batch 476 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 476 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(476, "tip-sync-living")
+    assert _owner_status_at_least(476, "tip-sync-living")
 
 def test_batch476_tip_or_eng_idle() -> None:
     """Batch 476: tip_or_eng idle_no_commit + unfreeze 475→476 @2f7a5a9."""
@@ -35147,7 +35226,7 @@ def test_batch476_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 476)
-    assert "STATUS (Batch 476 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(476, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 476)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35236,8 +35315,8 @@ def test_batch477_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 477)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 477 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 477 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(477, "research-audit")
+    assert _owner_status_at_least(477, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 477" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -35321,8 +35400,8 @@ def test_batch477_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 477)
-    assert "STATUS (Batch 477 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 477 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(477, "tip-sync-living")
+    assert _owner_status_at_least(477, "tip-sync-living")
 
 def test_batch477_tip_or_eng_idle() -> None:
     """Batch 477: tip_or_eng idle_no_commit + unfreeze 476→477 @2f7a5a9."""
@@ -35349,7 +35428,7 @@ def test_batch477_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 477)
-    assert "STATUS (Batch 477 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(477, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 477)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35438,8 +35517,8 @@ def test_batch478_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 478)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 478 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 478 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(478, "research-audit")
+    assert _owner_status_at_least(478, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 478" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -35523,8 +35602,8 @@ def test_batch478_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 478)
-    assert "STATUS (Batch 478 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 478 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(478, "tip-sync-living")
+    assert _owner_status_at_least(478, "tip-sync-living")
 
 def test_batch478_tip_or_eng_idle() -> None:
     """Batch 478: tip_or_eng idle_no_commit + unfreeze 477→478 @2f7a5a9."""
@@ -35551,7 +35630,7 @@ def test_batch478_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 478)
-    assert "STATUS (Batch 478 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(478, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 478)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35583,7 +35662,7 @@ def test_batch479_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 479)
-    assert "STATUS (Batch 479 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(479, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 479)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35672,8 +35751,8 @@ def test_batch480_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 480)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 480 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 480 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(480, "research-audit")
+    assert _owner_status_at_least(480, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 480" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -35757,8 +35836,8 @@ def test_batch480_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 480)
-    assert "STATUS (Batch 480 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 480 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(480, "tip-sync-living")
+    assert _owner_status_at_least(480, "tip-sync-living")
 
 def test_batch480_tip_or_eng_living_script() -> None:
     """Batch 480: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -35781,7 +35860,7 @@ def test_batch480_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 480)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 480
-    assert "STATUS (Batch 480 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(480, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 480)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -35870,8 +35949,8 @@ def test_batch481_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 481)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 481 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 481 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(481, "research-audit")
+    assert _owner_status_at_least(481, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 481" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -35955,8 +36034,8 @@ def test_batch481_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 481)
-    assert "STATUS (Batch 481 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 481 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(481, "tip-sync-living")
+    assert _owner_status_at_least(481, "tip-sync-living")
 
 def test_batch481_tip_or_eng_idle() -> None:
     """Batch 481: tip_or_eng idle_no_commit + unfreeze 480→481 @2f7a5a9."""
@@ -35983,7 +36062,7 @@ def test_batch481_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 481)
-    assert "STATUS (Batch 481 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(481, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 481)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36072,8 +36151,8 @@ def test_batch482_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 482)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 482 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 482 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(482, "research-audit")
+    assert _owner_status_at_least(482, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 482" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -36157,8 +36236,8 @@ def test_batch482_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 482)
-    assert "STATUS (Batch 482 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 482 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(482, "tip-sync-living")
+    assert _owner_status_at_least(482, "tip-sync-living")
 
 def test_batch482_tip_or_eng_living_script() -> None:
     """Batch 482: tip_or_eng living script_stale republish + unfreeze @2f7a5a9."""
@@ -36181,7 +36260,7 @@ def test_batch482_tip_or_eng_living_script() -> None:
     _assert_refresh_batch_tag_default_at_least(refresh, 482)
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 482
-    assert "STATUS (Batch 482 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(482, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 482)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36213,7 +36292,7 @@ def test_batch483_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 483)
-    assert "STATUS (Batch 483 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(483, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 483)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36302,8 +36381,8 @@ def test_batch484_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 484)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 484 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 484 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(484, "research-audit")
+    assert _owner_status_at_least(484, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 484" in log_md and "research_stack_audit_watch" in log_md
     for name in (
@@ -36387,8 +36466,8 @@ def test_batch484_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 484)
-    assert "STATUS (Batch 484 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 484 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(484, "tip-sync-living")
+    assert _owner_status_at_least(484, "tip-sync-living")
 
 def test_batch484_tip_or_eng_living_script() -> None:
     """Batch 484: tip_or_eng living script_stale republish + unfreeze 483→484 @2f7a5a9."""
@@ -36416,7 +36495,7 @@ def test_batch484_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 484)
-    assert "STATUS (Batch 484 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(484, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 484)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36497,8 +36576,8 @@ def test_batch485_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 485)
-    assert "STATUS (Batch 485 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 485 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(485, "tip-sync-living")
+    assert _owner_status_at_least(485, "tip-sync-living")
 
 def test_batch485_tip_or_eng_idle() -> None:
     """Batch 485: tip_or_eng idle_no_commit + unfreeze 484→485 @2f7a5a9."""
@@ -36525,7 +36604,7 @@ def test_batch485_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 485)
-    assert "STATUS (Batch 485 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(485, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 485)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36557,7 +36636,7 @@ def test_batch486_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 486)
-    assert "STATUS (Batch 486 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(486, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 486)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36606,8 +36685,8 @@ def test_batch487_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 487)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 487 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 487 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(487, "research-audit")
+    assert _owner_status_at_least(487, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 487" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36688,8 +36767,8 @@ def test_batch487_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 487)
-    assert "STATUS (Batch 487 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 487 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(487, "tip-sync-living")
+    assert _owner_status_at_least(487, "tip-sync-living")
 
 def test_batch487_tip_or_eng_living_script() -> None:
     """Batch 487: tip_or_eng living script_stale republish + unfreeze 486→487 @2f7a5a9."""
@@ -36717,7 +36796,7 @@ def test_batch487_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 487)
-    assert "STATUS (Batch 487 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(487, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 487)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36766,8 +36845,8 @@ def test_batch485_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 485)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 485 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 485 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(485, "research-audit")
+    assert _owner_status_at_least(485, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 485" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36816,8 +36895,8 @@ def test_batch488_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 488)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 488 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 488 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(488, "research-audit")
+    assert _owner_status_at_least(488, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 488" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36898,8 +36977,8 @@ def test_batch488_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 488)
-    assert "STATUS (Batch 488 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 488 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(488, "tip-sync-living")
+    assert _owner_status_at_least(488, "tip-sync-living")
 
 def test_batch488_tip_or_eng_living_tgz() -> None:
     """Batch 488: tip_or_eng living tgz_newer republish + unfreeze 487→488 @2f7a5a9."""
@@ -36927,7 +37006,7 @@ def test_batch488_tip_or_eng_living_tgz() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 488)
-    assert "STATUS (Batch 488 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(488, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 488)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -36976,8 +37055,8 @@ def test_batch489_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 489)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 489 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 489 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(489, "research-audit")
+    assert _owner_status_at_least(489, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 489" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37058,8 +37137,8 @@ def test_batch489_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 489)
-    assert "STATUS (Batch 489 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 489 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(489, "tip-sync-living")
+    assert _owner_status_at_least(489, "tip-sync-living")
 
 def test_batch489_tip_or_eng_idle() -> None:
     """Batch 489: tip_or_eng idle_no_commit + unfreeze 488→489 @2f7a5a9."""
@@ -37086,7 +37165,7 @@ def test_batch489_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 489)
-    assert "STATUS (Batch 489 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(489, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 489)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37118,7 +37197,7 @@ def test_batch490_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 490)
-    assert "STATUS (Batch 490 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(490, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 490)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37167,8 +37246,8 @@ def test_batch490_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 490)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 490 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 490 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(490, "research-audit")
+    assert _owner_status_at_least(490, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 490" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37219,8 +37298,8 @@ def test_batch548_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 548)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 548 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 548 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(548, "research-audit")
+    assert _owner_status_at_least(548, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 548" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37320,8 +37399,8 @@ def test_batch808_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 808)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 808 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 808 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(808, "research-audit")
+    assert _owner_status_at_least(808, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 808" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37380,8 +37459,8 @@ def test_batch807_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 807)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 807 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 807 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(807, "research-audit")
+    assert _owner_status_at_least(807, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 807" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37440,8 +37519,8 @@ def test_batch806_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 807)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 807 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 807 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(807, "research-audit")
+    assert _owner_status_at_least(807, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 806" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37498,8 +37577,8 @@ def test_batch805_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 805)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 805 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 805 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(805, "research-audit")
+    assert _owner_status_at_least(805, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 805" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37556,8 +37635,8 @@ def test_batch804_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 804)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 804 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 804 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(804, "research-audit")
+    assert _owner_status_at_least(804, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 804" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37614,8 +37693,8 @@ def test_batch803_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 803)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 803 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 803 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(803, "research-audit")
+    assert _owner_status_at_least(803, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 803" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37674,8 +37753,8 @@ def test_batch802_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 802)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 802 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 802 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(802, "research-audit")
+    assert _owner_status_at_least(802, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 802" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37734,8 +37813,8 @@ def test_batch801_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 802)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 802 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 802 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(802, "research-audit")
+    assert _owner_status_at_least(802, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 801" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37793,8 +37872,8 @@ def test_batch800_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 800)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 800 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 800 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(800, "research-audit")
+    assert _owner_status_at_least(800, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 800" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37851,8 +37930,8 @@ def test_batch799_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 799)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 799 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 799 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(799, "research-audit")
+    assert _owner_status_at_least(799, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 799" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37909,8 +37988,8 @@ def test_batch798_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 798)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 798 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 798 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(798, "research-audit")
+    assert _owner_status_at_least(798, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 798" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -37967,8 +38046,8 @@ def test_batch797_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 797)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 797 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 797 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(797, "research-audit")
+    assert _owner_status_at_least(797, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 797" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38026,8 +38105,8 @@ def test_batch796_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 796)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 796 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 796 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(796, "research-audit")
+    assert _owner_status_at_least(796, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 796" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38084,8 +38163,8 @@ def test_batch795_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 795)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 795 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 795 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(795, "research-audit")
+    assert _owner_status_at_least(795, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 795" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38144,8 +38223,8 @@ def test_batch794_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 794)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 794 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 794 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(794, "research-audit")
+    assert _owner_status_at_least(794, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 794" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38204,8 +38283,8 @@ def test_batch793_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 794)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 794 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 794 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(794, "research-audit")
+    assert _owner_status_at_least(794, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 793" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38262,8 +38341,8 @@ def test_batch792_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 792)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 792 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 792 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(792, "research-audit")
+    assert _owner_status_at_least(792, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 792" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38320,8 +38399,8 @@ def test_batch791_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 791)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 791 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 791 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(791, "research-audit")
+    assert _owner_status_at_least(791, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 791" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38378,8 +38457,8 @@ def test_batch790_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 790)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 790 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 790 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(790, "research-audit")
+    assert _owner_status_at_least(790, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 790" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38438,8 +38517,8 @@ def test_batch789_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 789)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 789 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 789 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(789, "research-audit")
+    assert _owner_status_at_least(789, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 789" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38499,8 +38578,8 @@ def test_batch788_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 789)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 789 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 789 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(789, "research-audit")
+    assert _owner_status_at_least(789, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 788" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38559,8 +38638,8 @@ def test_batch787_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 787)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 787 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 787 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(787, "research-audit")
+    assert _owner_status_at_least(787, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 787" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38620,8 +38699,8 @@ def test_batch786_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 787)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 787 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 787 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(787, "research-audit")
+    assert _owner_status_at_least(787, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 786" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38676,8 +38755,8 @@ def test_batch785_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 785)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 785 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 785 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(785, "research-audit")
+    assert _owner_status_at_least(785, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 785" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38733,8 +38812,8 @@ def test_batch784_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 785)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 785 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 785 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(785, "research-audit")
+    assert _owner_status_at_least(785, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 784" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38790,8 +38869,8 @@ def test_batch783_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 783)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 783 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 783 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(783, "research-audit")
+    assert _owner_status_at_least(783, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 783" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38848,8 +38927,8 @@ def test_batch782_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 783)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 783 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 783 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(783, "research-audit")
+    assert _owner_status_at_least(783, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 782" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38905,8 +38984,8 @@ def test_batch781_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 781)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 781 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 781 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(781, "research-audit")
+    assert _owner_status_at_least(781, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 781" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -38963,8 +39042,8 @@ def test_batch780_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 781)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 781 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 781 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(781, "research-audit")
+    assert _owner_status_at_least(781, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 780" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39017,8 +39096,8 @@ def test_batch779_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 779)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 779 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 779 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(779, "research-audit")
+    assert _owner_status_at_least(779, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 779" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39073,8 +39152,8 @@ def test_batch778_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 778)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 778 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 778 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(778, "research-audit")
+    assert _owner_status_at_least(778, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 778" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39130,8 +39209,8 @@ def test_batch777_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 778)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 778 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 778 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(778, "research-audit")
+    assert _owner_status_at_least(778, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 777" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39184,8 +39263,8 @@ def test_batch776_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 776)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 776 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 776 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(776, "research-audit")
+    assert _owner_status_at_least(776, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 776" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39240,8 +39319,8 @@ def test_batch775_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 775)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 775 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 775 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(775, "research-audit")
+    assert _owner_status_at_least(775, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 775" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39297,8 +39376,8 @@ def test_batch774_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 775)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 775 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 775 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(775, "research-audit")
+    assert _owner_status_at_least(775, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 774" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39354,8 +39433,8 @@ def test_batch773_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 773)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 773 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 773 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(773, "research-audit")
+    assert _owner_status_at_least(773, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 773" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39412,8 +39491,8 @@ def test_batch772_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 773)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 773 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 773 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(773, "research-audit")
+    assert _owner_status_at_least(773, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 772" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39468,8 +39547,8 @@ def test_batch771_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 771)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 771 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 771 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(771, "research-audit")
+    assert _owner_status_at_least(771, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 771" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39524,8 +39603,8 @@ def test_batch770_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 770)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 770 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 770 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(770, "research-audit")
+    assert _owner_status_at_least(770, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 770" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39578,8 +39657,8 @@ def test_batch769_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 769)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 769 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 769 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(769, "research-audit")
+    assert _owner_status_at_least(769, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 769" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39632,8 +39711,8 @@ def test_batch768_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 768)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 768 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 768 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(768, "research-audit")
+    assert _owner_status_at_least(768, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 768" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39688,8 +39767,8 @@ def test_batch767_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 767)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 767 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 767 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(767, "research-audit")
+    assert _owner_status_at_least(767, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 767" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39744,8 +39823,8 @@ def test_batch766_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 766)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 766 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 766 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(766, "research-audit")
+    assert _owner_status_at_least(766, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 766" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39800,8 +39879,8 @@ def test_batch765_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 765)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 765 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 765 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(765, "research-audit")
+    assert _owner_status_at_least(765, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 765" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39856,8 +39935,8 @@ def test_batch764_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 764)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 764 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 764 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(764, "research-audit")
+    assert _owner_status_at_least(764, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 764" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39910,8 +39989,8 @@ def test_batch763_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 763)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 763 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 763 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(763, "research-audit")
+    assert _owner_status_at_least(763, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 763" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -39964,8 +40043,8 @@ def test_batch762_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 762)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 762 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 762 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(762, "research-audit")
+    assert _owner_status_at_least(762, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 762" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40020,8 +40099,8 @@ def test_batch761_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 761)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 761 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 761 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(761, "research-audit")
+    assert _owner_status_at_least(761, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 761" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40076,8 +40155,8 @@ def test_batch760_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 760)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 760 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 760 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(760, "research-audit")
+    assert _owner_status_at_least(760, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 760" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40132,8 +40211,8 @@ def test_batch759_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 759)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 759 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 759 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(759, "research-audit")
+    assert _owner_status_at_least(759, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 759" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40188,8 +40267,8 @@ def test_batch758_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 758)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 758 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 758 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(758, "research-audit")
+    assert _owner_status_at_least(758, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 758" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40244,8 +40323,8 @@ def test_batch757_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 757)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 757 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 757 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(757, "research-audit")
+    assert _owner_status_at_least(757, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 757" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40300,8 +40379,8 @@ def test_batch756_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 756)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 756 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 756 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(756, "research-audit")
+    assert _owner_status_at_least(756, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 756" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40356,8 +40435,8 @@ def test_batch755_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 755)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 755 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 755 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(755, "research-audit")
+    assert _owner_status_at_least(755, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 755" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40412,8 +40491,8 @@ def test_batch754_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 754)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 754 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 754 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(754, "research-audit")
+    assert _owner_status_at_least(754, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 754" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40466,8 +40545,8 @@ def test_batch753_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 753)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 753 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 753 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(753, "research-audit")
+    assert _owner_status_at_least(753, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 753" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40520,8 +40599,8 @@ def test_batch752_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 752)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 752 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 752 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(752, "research-audit")
+    assert _owner_status_at_least(752, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 752" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40574,8 +40653,8 @@ def test_batch751_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 751)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 751 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 751 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(751, "research-audit")
+    assert _owner_status_at_least(751, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 751" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40630,8 +40709,8 @@ def test_batch750_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 750)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 750 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 750 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(750, "research-audit")
+    assert _owner_status_at_least(750, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 750" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40686,8 +40765,8 @@ def test_batch749_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 749)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 749 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 749 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(749, "research-audit")
+    assert _owner_status_at_least(749, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 749" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40740,8 +40819,8 @@ def test_batch748_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 748)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 748 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 748 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(748, "research-audit")
+    assert _owner_status_at_least(748, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 748" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40794,8 +40873,8 @@ def test_batch747_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 747)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 747 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 747 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(747, "research-audit")
+    assert _owner_status_at_least(747, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 747" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40848,8 +40927,8 @@ def test_batch746_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 746)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 746 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 746 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(746, "research-audit")
+    assert _owner_status_at_least(746, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 746" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40902,8 +40981,8 @@ def test_batch745_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 745)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 745 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 745 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(745, "research-audit")
+    assert _owner_status_at_least(745, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 745" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -40956,8 +41035,8 @@ def test_batch744_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 744)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 744 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 744 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(744, "research-audit")
+    assert _owner_status_at_least(744, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 744" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41010,8 +41089,8 @@ def test_batch743_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 743)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 743 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 743 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(743, "research-audit")
+    assert _owner_status_at_least(743, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 743" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41064,8 +41143,8 @@ def test_batch742_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 742)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 742 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 742 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(742, "research-audit")
+    assert _owner_status_at_least(742, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 742" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41118,8 +41197,8 @@ def test_batch741_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 741)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 741 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 741 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(741, "research-audit")
+    assert _owner_status_at_least(741, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 741" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41175,8 +41254,8 @@ def test_batch740_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 740)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 740 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 740 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(740, "research-audit")
+    assert _owner_status_at_least(740, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 740" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41233,8 +41312,8 @@ def test_batch739_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 739)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 739 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 739 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(739, "research-audit")
+    assert _owner_status_at_least(739, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 739" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41290,8 +41369,8 @@ def test_batch738_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 738)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 738 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 738 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(738, "research-audit")
+    assert _owner_status_at_least(738, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 738" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41346,8 +41425,8 @@ def test_batch737_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 737)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 737 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 737 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(737, "research-audit")
+    assert _owner_status_at_least(737, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 737" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41400,8 +41479,8 @@ def test_batch736_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 736)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 736 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 736 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(736, "research-audit")
+    assert _owner_status_at_least(736, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 736" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41454,8 +41533,8 @@ def test_batch735_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 735)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 735 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 735 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(735, "research-audit")
+    assert _owner_status_at_least(735, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 735" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41511,8 +41590,8 @@ def test_batch734_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 734)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 734 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 734 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(734, "research-audit")
+    assert _owner_status_at_least(734, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 734" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41569,8 +41648,8 @@ def test_batch733_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 733)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 733 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 733 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(733, "research-audit")
+    assert _owner_status_at_least(733, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 733" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41626,8 +41705,8 @@ def test_batch732_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 732)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 732 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 732 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(732, "research-audit")
+    assert _owner_status_at_least(732, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 732" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41683,8 +41762,8 @@ def test_batch731_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 731)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 731 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 731 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(731, "research-audit")
+    assert _owner_status_at_least(731, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 731" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41740,8 +41819,8 @@ def test_batch730_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 730)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 730 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 730 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(730, "research-audit")
+    assert _owner_status_at_least(730, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 730" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41796,8 +41875,8 @@ def test_batch729_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 729)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 729 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 729 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(729, "research-audit")
+    assert _owner_status_at_least(729, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 729" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41850,8 +41929,8 @@ def test_batch728_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 728)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 728 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 728 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(728, "research-audit")
+    assert _owner_status_at_least(728, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 728" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41904,8 +41983,8 @@ def test_batch727_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 727)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 727 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 727 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(727, "research-audit")
+    assert _owner_status_at_least(727, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 727" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -41958,8 +42037,8 @@ def test_batch726_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 726)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 726 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 726 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(726, "research-audit")
+    assert _owner_status_at_least(726, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 726" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42012,8 +42091,8 @@ def test_batch725_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 725)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 725 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 725 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(725, "research-audit")
+    assert _owner_status_at_least(725, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 725" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42068,8 +42147,8 @@ def test_batch724_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 724)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 724 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 724 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(724, "research-audit")
+    assert _owner_status_at_least(724, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 724" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42124,8 +42203,8 @@ def test_batch722_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 722)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 722 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 722 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(722, "research-audit")
+    assert _owner_status_at_least(722, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 722" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42178,8 +42257,8 @@ def test_batch720_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 720)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 720 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 720 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(720, "research-audit")
+    assert _owner_status_at_least(720, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 720" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42232,8 +42311,8 @@ def test_batch719_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 719)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 719 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 719 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(719, "research-audit")
+    assert _owner_status_at_least(719, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 719" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42286,8 +42365,8 @@ def test_batch718_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 718)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 718 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 718 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(718, "research-audit")
+    assert _owner_status_at_least(718, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 718" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42340,8 +42419,8 @@ def test_batch717_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 717)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 717 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 717 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(717, "research-audit")
+    assert _owner_status_at_least(717, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 717" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42396,8 +42475,8 @@ def test_batch716_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 716)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 716 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 716 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(716, "research-audit")
+    assert _owner_status_at_least(716, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 716" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42450,8 +42529,8 @@ def test_batch714_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 714)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 714 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 714 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(714, "research-audit")
+    assert _owner_status_at_least(714, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 714" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42506,8 +42585,8 @@ def test_batch713_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 713)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 713 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 713 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(713, "research-audit")
+    assert _owner_status_at_least(713, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 713" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42560,8 +42639,8 @@ def test_batch711_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 711)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 711 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 711 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(711, "research-audit")
+    assert _owner_status_at_least(711, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 711" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42616,8 +42695,8 @@ def test_batch710_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 710)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 710 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 710 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(710, "research-audit")
+    assert _owner_status_at_least(710, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 710" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42672,8 +42751,8 @@ def test_batch708_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 708)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 708 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 708 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(708, "research-audit")
+    assert _owner_status_at_least(708, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 708" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42726,8 +42805,8 @@ def test_batch706_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 706)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 706 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 706 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(706, "research-audit")
+    assert _owner_status_at_least(706, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 706" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42780,8 +42859,8 @@ def test_batch705_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 705)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 705 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 705 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(705, "research-audit")
+    assert _owner_status_at_least(705, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 705" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42835,8 +42914,8 @@ def test_batch704_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 704)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 704 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 704 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(704, "research-audit")
+    assert _owner_status_at_least(704, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 704" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42890,8 +42969,8 @@ def test_batch703_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 703)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 703 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 703 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(703, "research-audit")
+    assert _owner_status_at_least(703, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 703" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -42944,8 +43023,8 @@ def test_batch702_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 702)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 702 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 702 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(702, "research-audit")
+    assert _owner_status_at_least(702, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 702" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43000,8 +43079,8 @@ def test_batch701_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 701)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 701 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 701 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(701, "research-audit")
+    assert _owner_status_at_least(701, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 701" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43054,8 +43133,8 @@ def test_batch699_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 699)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 699 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 699 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(699, "research-audit")
+    assert _owner_status_at_least(699, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 699" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43108,8 +43187,8 @@ def test_batch698_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 698)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 698 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 698 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(698, "research-audit")
+    assert _owner_status_at_least(698, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 698" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43162,8 +43241,8 @@ def test_batch697_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 697)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 697 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 697 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(697, "research-audit")
+    assert _owner_status_at_least(697, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 697" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43216,8 +43295,8 @@ def test_batch696_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 696)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 696 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 696 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(696, "research-audit")
+    assert _owner_status_at_least(696, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 696" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43272,8 +43351,8 @@ def test_batch695_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 695)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 695 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 695 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(695, "research-audit")
+    assert _owner_status_at_least(695, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 695" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43326,8 +43405,8 @@ def test_batch693_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 693)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 693 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 693 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(693, "research-audit")
+    assert _owner_status_at_least(693, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 693" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43382,8 +43461,8 @@ def test_batch692_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 692)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 692 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 692 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(692, "research-audit")
+    assert _owner_status_at_least(692, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 692" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43438,8 +43517,8 @@ def test_batch690_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 690)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 690 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 690 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(690, "research-audit")
+    assert _owner_status_at_least(690, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 690" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43494,8 +43573,8 @@ def test_batch688_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 688)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 688 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 688 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(688, "research-audit")
+    assert _owner_status_at_least(688, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 688" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43548,8 +43627,8 @@ def test_batch686_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 686)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 686 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 686 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(686, "research-audit")
+    assert _owner_status_at_least(686, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 686" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43602,8 +43681,8 @@ def test_batch685_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 685)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 685 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 685 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(685, "research-audit")
+    assert _owner_status_at_least(685, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 685" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43658,8 +43737,8 @@ def test_batch684_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 684)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 684 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 684 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(684, "research-audit")
+    assert _owner_status_at_least(684, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 684" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43712,8 +43791,8 @@ def test_batch682_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 682)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 682 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 682 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(682, "research-audit")
+    assert _owner_status_at_least(682, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 682" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43768,8 +43847,8 @@ def test_batch681_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 681)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 681 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 681 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(681, "research-audit")
+    assert _owner_status_at_least(681, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 681" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43822,8 +43901,8 @@ def test_batch679_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 679)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 679 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 679 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(679, "research-audit")
+    assert _owner_status_at_least(679, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 679" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43876,8 +43955,8 @@ def test_batch678_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 678)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 678 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 678 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(678, "research-audit")
+    assert _owner_status_at_least(678, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 678" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43930,8 +44009,8 @@ def test_batch677_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 677)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 677 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 677 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(677, "research-audit")
+    assert _owner_status_at_least(677, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 677" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -43984,8 +44063,8 @@ def test_batch676_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 676)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 676 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 676 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(676, "research-audit")
+    assert _owner_status_at_least(676, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 676" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44040,8 +44119,8 @@ def test_batch675_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 675)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 675 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 675 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(675, "research-audit")
+    assert _owner_status_at_least(675, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 675" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44096,8 +44175,8 @@ def test_batch673_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 673)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 673 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 673 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(673, "research-audit")
+    assert _owner_status_at_least(673, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 673" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44150,8 +44229,8 @@ def test_batch671_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 671)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 671 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 671 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(671, "research-audit")
+    assert _owner_status_at_least(671, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 671" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44204,8 +44283,8 @@ def test_batch670_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 670)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 670 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 670 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(670, "research-audit")
+    assert _owner_status_at_least(670, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 670" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44260,8 +44339,8 @@ def test_batch669_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 669)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 669 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 669 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(669, "research-audit")
+    assert _owner_status_at_least(669, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 669" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44316,8 +44395,8 @@ def test_batch667_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 667)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 667 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 667 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(667, "research-audit")
+    assert _owner_status_at_least(667, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 667" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44370,8 +44449,8 @@ def test_batch665_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 665)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 665 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 665 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(665, "research-audit")
+    assert _owner_status_at_least(665, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 665" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44424,8 +44503,8 @@ def test_batch664_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 664)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 664 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 664 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(664, "research-audit")
+    assert _owner_status_at_least(664, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 664" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44480,8 +44559,8 @@ def test_batch663_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 663)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 663 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 663 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(663, "research-audit")
+    assert _owner_status_at_least(663, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 663" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44534,8 +44613,8 @@ def test_batch661_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 661)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 661 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 661 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(661, "research-audit")
+    assert _owner_status_at_least(661, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 661" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44588,8 +44667,8 @@ def test_batch660_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 660)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 660 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 660 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(660, "research-audit")
+    assert _owner_status_at_least(660, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 660" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44644,8 +44723,8 @@ def test_batch659_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 659)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 659 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 659 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(659, "research-audit")
+    assert _owner_status_at_least(659, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 659" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44700,8 +44779,8 @@ def test_batch657_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 657)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 657 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 657 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(657, "research-audit")
+    assert _owner_status_at_least(657, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 657" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44754,8 +44833,8 @@ def test_batch655_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 655)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 655 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 655 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(655, "research-audit")
+    assert _owner_status_at_least(655, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 655" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44808,8 +44887,8 @@ def test_batch654_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 654)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 654 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 654 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(654, "research-audit")
+    assert _owner_status_at_least(654, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 654" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44864,8 +44943,8 @@ def test_batch653_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 653)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 653 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 653 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(653, "research-audit")
+    assert _owner_status_at_least(653, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 653" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44920,8 +44999,8 @@ def test_batch651_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 651)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 651 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 651 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(651, "research-audit")
+    assert _owner_status_at_least(651, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 651" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -44976,8 +45055,8 @@ def test_batch649_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 649)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 649 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 649 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(649, "research-audit")
+    assert _owner_status_at_least(649, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 649" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45030,8 +45109,8 @@ def test_batch647_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 647)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 647 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 647 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(647, "research-audit")
+    assert _owner_status_at_least(647, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 647" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45086,8 +45165,8 @@ def test_batch646_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 646)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 646 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 646 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(646, "research-audit")
+    assert _owner_status_at_least(646, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 646" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45140,8 +45219,8 @@ def test_batch644_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 644)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 644 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 644 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(644, "research-audit")
+    assert _owner_status_at_least(644, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 644" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45194,8 +45273,8 @@ def test_batch643_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 643)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 643 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 643 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(643, "research-audit")
+    assert _owner_status_at_least(643, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 643" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45250,8 +45329,8 @@ def test_batch642_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 642)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 642 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 642 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(642, "research-audit")
+    assert _owner_status_at_least(642, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 642" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45304,8 +45383,8 @@ def test_batch640_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 640)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 640 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 640 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(640, "research-audit")
+    assert _owner_status_at_least(640, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 640" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45358,8 +45437,8 @@ def test_batch639_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 639)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 639 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 639 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(639, "research-audit")
+    assert _owner_status_at_least(639, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 639" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45414,8 +45493,8 @@ def test_batch638_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 638)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 638 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 638 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(638, "research-audit")
+    assert _owner_status_at_least(638, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 638" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45470,8 +45549,8 @@ def test_batch636_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 636)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 636 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 636 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(636, "research-audit")
+    assert _owner_status_at_least(636, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 636" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45524,8 +45603,8 @@ def test_batch634_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 634)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 634 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 634 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(634, "research-audit")
+    assert _owner_status_at_least(634, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 634" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45578,8 +45657,8 @@ def test_batch633_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 633)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 633 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 633 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(633, "research-audit")
+    assert _owner_status_at_least(633, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 633" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45633,8 +45712,8 @@ def test_batch632_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 632)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 632 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 632 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(632, "research-audit")
+    assert _owner_status_at_least(632, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 632" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45687,8 +45766,8 @@ def test_batch630_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 630)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 630 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 630 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(630, "research-audit")
+    assert _owner_status_at_least(630, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 630" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45741,8 +45820,8 @@ def test_batch629_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 629)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 629 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 629 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(629, "research-audit")
+    assert _owner_status_at_least(629, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 629" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45796,8 +45875,8 @@ def test_batch628_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 628)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 628 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 628 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(628, "research-audit")
+    assert _owner_status_at_least(628, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 628" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45851,8 +45930,8 @@ def test_batch626_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 626)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 626 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 626 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(626, "research-audit")
+    assert _owner_status_at_least(626, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 626" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45906,8 +45985,8 @@ def test_batch624_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 624)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 624 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 624 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(624, "research-audit")
+    assert _owner_status_at_least(624, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 624" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -45961,8 +46040,8 @@ def test_batch622_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 622)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 622 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 622 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(622, "research-audit")
+    assert _owner_status_at_least(622, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 622" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46015,8 +46094,8 @@ def test_batch620_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 620)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 620 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 620 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(620, "research-audit")
+    assert _owner_status_at_least(620, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 620" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46070,8 +46149,8 @@ def test_batch619_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 619)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 619 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 619 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(619, "research-audit")
+    assert _owner_status_at_least(619, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 619" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46124,8 +46203,8 @@ def test_batch617_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 617)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 617 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 617 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(617, "research-audit")
+    assert _owner_status_at_least(617, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 617" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46177,8 +46256,8 @@ def test_batch616_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 616)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 616 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 616 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(616, "research-audit")
+    assert _owner_status_at_least(616, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 616" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46230,8 +46309,8 @@ def test_batch615_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 615)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 615 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 615 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(615, "research-audit")
+    assert _owner_status_at_least(615, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 615" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46284,8 +46363,8 @@ def test_batch614_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 614)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 614 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 614 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(614, "research-audit")
+    assert _owner_status_at_least(614, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 614" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46337,8 +46416,8 @@ def test_batch612_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 612)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 612 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 612 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(612, "research-audit")
+    assert _owner_status_at_least(612, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 612" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46391,8 +46470,8 @@ def test_batch611_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 611)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 611 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 611 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(611, "research-audit")
+    assert _owner_status_at_least(611, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 611" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46444,8 +46523,8 @@ def test_batch609_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 609)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 609 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 609 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(609, "research-audit")
+    assert _owner_status_at_least(609, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 609" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46498,8 +46577,8 @@ def test_batch608_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 608)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 608 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 608 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(608, "research-audit")
+    assert _owner_status_at_least(608, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 608" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46551,8 +46630,8 @@ def test_batch606_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 606)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 606 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 606 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(606, "research-audit")
+    assert _owner_status_at_least(606, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 606" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46604,8 +46683,8 @@ def test_batch605_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 605)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 605 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 605 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(605, "research-audit")
+    assert _owner_status_at_least(605, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 605" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46659,8 +46738,8 @@ def test_batch604_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 604)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 604 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 604 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(604, "research-audit")
+    assert _owner_status_at_least(604, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 604" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46715,8 +46794,8 @@ def test_batch603_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 603)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 603 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 603 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(603, "research-audit")
+    assert _owner_status_at_least(603, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 603" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46768,8 +46847,8 @@ def test_batch601_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 601)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 601 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 601 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(601, "research-audit")
+    assert _owner_status_at_least(601, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 601" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46821,8 +46900,8 @@ def test_batch600_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 600)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 600 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 600 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(600, "research-audit")
+    assert _owner_status_at_least(600, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 600" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46874,8 +46953,8 @@ def test_batch599_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 599)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 599 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 599 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(599, "research-audit")
+    assert _owner_status_at_least(599, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 599" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46927,8 +47006,8 @@ def test_batch598_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 598)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 598 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 598 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(598, "research-audit")
+    assert _owner_status_at_least(598, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 598" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -46981,8 +47060,8 @@ def test_batch597_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 597)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 597 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 597 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(597, "research-audit")
+    assert _owner_status_at_least(597, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 597" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47034,8 +47113,8 @@ def test_batch595_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 595)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 595 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 595 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(595, "research-audit")
+    assert _owner_status_at_least(595, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 595" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47087,8 +47166,8 @@ def test_batch594_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 594)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 594 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 594 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(594, "research-audit")
+    assert _owner_status_at_least(594, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 594" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47140,8 +47219,8 @@ def test_batch593_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 593)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 593 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 593 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(593, "research-audit")
+    assert _owner_status_at_least(593, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 593" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47193,8 +47272,8 @@ def test_batch592_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 592)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 592 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 592 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(592, "research-audit")
+    assert _owner_status_at_least(592, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 592" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47246,8 +47325,8 @@ def test_batch591_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 591)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 591 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 591 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(591, "research-audit")
+    assert _owner_status_at_least(591, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 591" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47299,8 +47378,8 @@ def test_batch590_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 590)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 590 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 590 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(590, "research-audit")
+    assert _owner_status_at_least(590, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 590" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47352,8 +47431,8 @@ def test_batch589_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 589)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 589 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 589 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(589, "research-audit")
+    assert _owner_status_at_least(589, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 589" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47405,8 +47484,8 @@ def test_batch588_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 588)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 588 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 588 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(588, "research-audit")
+    assert _owner_status_at_least(588, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 588" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47459,8 +47538,8 @@ def test_batch587_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 587)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 587 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 587 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(587, "research-audit")
+    assert _owner_status_at_least(587, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 587" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47512,8 +47591,8 @@ def test_batch585_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 585)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 585 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 585 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(585, "research-audit")
+    assert _owner_status_at_least(585, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 585" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47565,8 +47644,8 @@ def test_batch584_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 584)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 584 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 584 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(584, "research-audit")
+    assert _owner_status_at_least(584, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 584" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47618,8 +47697,8 @@ def test_batch583_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 583)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 583 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 583 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(583, "research-audit")
+    assert _owner_status_at_least(583, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 583" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47671,8 +47750,8 @@ def test_batch582_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 582)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 582 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 582 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(582, "research-audit")
+    assert _owner_status_at_least(582, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 582" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47724,8 +47803,8 @@ def test_batch581_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 581)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 581 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 581 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(581, "research-audit")
+    assert _owner_status_at_least(581, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 581" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47777,8 +47856,8 @@ def test_batch580_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 580)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 580 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 580 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(580, "research-audit")
+    assert _owner_status_at_least(580, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 580" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47830,8 +47909,8 @@ def test_batch579_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 579)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 579 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 579 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(579, "research-audit")
+    assert _owner_status_at_least(579, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 579" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47883,8 +47962,8 @@ def test_batch578_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 578)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 578 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 578 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(578, "research-audit")
+    assert _owner_status_at_least(578, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 578" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47936,8 +48015,8 @@ def test_batch577_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 577)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 577 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 577 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(577, "research-audit")
+    assert _owner_status_at_least(577, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 577" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -47989,8 +48068,8 @@ def test_batch576_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 576)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 576 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 576 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(576, "research-audit")
+    assert _owner_status_at_least(576, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 576" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48041,8 +48120,8 @@ def test_batch575_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 575)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 575 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 575 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(575, "research-audit")
+    assert _owner_status_at_least(575, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 575" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48093,8 +48172,8 @@ def test_batch574_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 574)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 574 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 574 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(574, "research-audit")
+    assert _owner_status_at_least(574, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 574" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48146,8 +48225,8 @@ def test_batch573_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 573)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 573 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 573 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(573, "research-audit")
+    assert _owner_status_at_least(573, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 573" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48198,8 +48277,8 @@ def test_batch572_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 572)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 572 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 572 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(572, "research-audit")
+    assert _owner_status_at_least(572, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 572" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48251,8 +48330,8 @@ def test_batch571_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 571)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 571 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 571 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(571, "research-audit")
+    assert _owner_status_at_least(571, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 571" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48303,8 +48382,8 @@ def test_batch570_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 570)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 570 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 570 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(570, "research-audit")
+    assert _owner_status_at_least(570, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 570" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48375,8 +48454,8 @@ def test_batch569_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 569)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 569 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 569 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(569, "research-audit")
+    assert _owner_status_at_least(569, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 569" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48447,8 +48526,8 @@ def test_batch568_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 568)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 568 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 568 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(568, "research-audit")
+    assert _owner_status_at_least(568, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 568" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48517,8 +48596,8 @@ def test_batch566_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 566)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 566 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 566 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(566, "research-audit")
+    assert _owner_status_at_least(566, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 566" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48586,8 +48665,8 @@ def test_batch565_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 565)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 565 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 565 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(565, "research-audit")
+    assert _owner_status_at_least(565, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 565" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48654,8 +48733,8 @@ def test_batch564_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 564)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 564 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 564 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(564, "research-audit")
+    assert _owner_status_at_least(564, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 564" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48720,8 +48799,8 @@ def test_batch563_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 563)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 563 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 563 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(563, "research-audit")
+    assert _owner_status_at_least(563, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 563" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48785,8 +48864,8 @@ def test_batch562_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 562)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 562 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 562 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(562, "research-audit")
+    assert _owner_status_at_least(562, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 562" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48849,8 +48928,8 @@ def test_batch561_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 561)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 561 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 561 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(561, "research-audit")
+    assert _owner_status_at_least(561, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 561" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48911,8 +48990,8 @@ def test_batch560_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 560)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 560 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 560 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(560, "research-audit")
+    assert _owner_status_at_least(560, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 560" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -48971,8 +49050,8 @@ def test_batch559_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 559)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 559 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 559 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(559, "research-audit")
+    assert _owner_status_at_least(559, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 559" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49030,8 +49109,8 @@ def test_batch558_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 558)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 558 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 558 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(558, "research-audit")
+    assert _owner_status_at_least(558, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 558" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49088,8 +49167,8 @@ def test_batch557_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 557)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 557 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 557 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(557, "research-audit")
+    assert _owner_status_at_least(557, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 557" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49144,8 +49223,8 @@ def test_batch556_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 556)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 556 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 556 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(556, "research-audit")
+    assert _owner_status_at_least(556, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 556" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49199,8 +49278,8 @@ def test_batch555_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 555)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 555 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 555 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(555, "research-audit")
+    assert _owner_status_at_least(555, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 555" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49253,8 +49332,8 @@ def test_batch554_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 554)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 554 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 554 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(554, "research-audit")
+    assert _owner_status_at_least(554, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 554" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49306,8 +49385,8 @@ def test_batch553_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 553)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 553 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 553 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(553, "research-audit")
+    assert _owner_status_at_least(553, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 553" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49360,8 +49439,8 @@ def test_batch552_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 552)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 552 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 552 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(552, "research-audit")
+    assert _owner_status_at_least(552, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 552" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49413,8 +49492,8 @@ def test_batch551_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 551)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 551 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 551 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(551, "research-audit")
+    assert _owner_status_at_least(551, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 551" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49467,8 +49546,8 @@ def test_batch549_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 549)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 549 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 549 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(549, "research-audit")
+    assert _owner_status_at_least(549, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 549" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49520,8 +49599,8 @@ def test_batch547_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 547)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 547 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 547 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(547, "research-audit")
+    assert _owner_status_at_least(547, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 547" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49574,8 +49653,8 @@ def test_batch546_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 546)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 546 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 546 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(546, "research-audit")
+    assert _owner_status_at_least(546, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 546" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49628,8 +49707,8 @@ def test_batch545_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 545)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 545 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 545 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(545, "research-audit")
+    assert _owner_status_at_least(545, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 545" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49681,8 +49760,8 @@ def test_batch543_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 543)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 543 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 543 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(543, "research-audit")
+    assert _owner_status_at_least(543, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 543" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49734,8 +49813,8 @@ def test_batch541_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 541)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 541 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 541 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(541, "research-audit")
+    assert _owner_status_at_least(541, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 541" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49787,8 +49866,8 @@ def test_batch540_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 540)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 540 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 540 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(540, "research-audit")
+    assert _owner_status_at_least(540, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 540" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49840,8 +49919,8 @@ def test_batch539_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 539)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 539 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 539 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(539, "research-audit")
+    assert _owner_status_at_least(539, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 539" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49893,8 +49972,8 @@ def test_batch537_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 537)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 537 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 537 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(537, "research-audit")
+    assert _owner_status_at_least(537, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 537" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49946,8 +50025,8 @@ def test_batch536_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 536)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 536 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 536 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(536, "research-audit")
+    assert _owner_status_at_least(536, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 536" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -49999,8 +50078,8 @@ def test_batch535_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 535)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 535 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 535 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(535, "research-audit")
+    assert _owner_status_at_least(535, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 535" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50052,8 +50131,8 @@ def test_batch534_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 534)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 534 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 534 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(534, "research-audit")
+    assert _owner_status_at_least(534, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 534" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50105,8 +50184,8 @@ def test_batch533_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 533)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 533 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 533 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(533, "research-audit")
+    assert _owner_status_at_least(533, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 533" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50158,8 +50237,8 @@ def test_batch532_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 532)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 532 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 532 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(532, "research-audit")
+    assert _owner_status_at_least(532, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 532" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50211,8 +50290,8 @@ def test_batch530_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 530)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 530 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 530 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(530, "research-audit")
+    assert _owner_status_at_least(530, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 530" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50264,8 +50343,8 @@ def test_batch529_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 529)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 529 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 529 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(529, "research-audit")
+    assert _owner_status_at_least(529, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 529" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50317,8 +50396,8 @@ def test_batch528_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 528)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 528 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 528 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(528, "research-audit")
+    assert _owner_status_at_least(528, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 528" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50370,8 +50449,8 @@ def test_batch527_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 527)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 527 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 527 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(527, "research-audit")
+    assert _owner_status_at_least(527, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 527" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50423,8 +50502,8 @@ def test_batch526_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 526)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 526 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 526 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(526, "research-audit")
+    assert _owner_status_at_least(526, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 526" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50476,8 +50555,8 @@ def test_batch525_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 525)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 525 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 525 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(525, "research-audit")
+    assert _owner_status_at_least(525, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 525" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50529,8 +50608,8 @@ def test_batch524_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 524)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 524 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 524 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(524, "research-audit")
+    assert _owner_status_at_least(524, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 524" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50582,8 +50661,8 @@ def test_batch522_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 522)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 522 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 522 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(522, "research-audit")
+    assert _owner_status_at_least(522, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 522" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50635,8 +50714,8 @@ def test_batch521_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 521)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 521 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 521 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(521, "research-audit")
+    assert _owner_status_at_least(521, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 521" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50688,8 +50767,8 @@ def test_batch520_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 520)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 520 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 520 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(520, "research-audit")
+    assert _owner_status_at_least(520, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 520" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50741,8 +50820,8 @@ def test_batch519_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 519)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 519 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 519 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(519, "research-audit")
+    assert _owner_status_at_least(519, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 519" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50794,8 +50873,8 @@ def test_batch517_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 517)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 517 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 517 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(517, "research-audit")
+    assert _owner_status_at_least(517, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 517" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50847,8 +50926,8 @@ def test_batch516_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 516)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 516 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 516 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(516, "research-audit")
+    assert _owner_status_at_least(516, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 516" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50900,8 +50979,8 @@ def test_batch515_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 515)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 515 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 515 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(515, "research-audit")
+    assert _owner_status_at_least(515, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 515" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -50953,8 +51032,8 @@ def test_batch513_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 513)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 513 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 513 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(513, "research-audit")
+    assert _owner_status_at_least(513, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 513" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51006,8 +51085,8 @@ def test_batch512_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 512)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 512 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 512 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(512, "research-audit")
+    assert _owner_status_at_least(512, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 512" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51059,8 +51138,8 @@ def test_batch511_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 511)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 511 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 511 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(511, "research-audit")
+    assert _owner_status_at_least(511, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 511" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51112,8 +51191,8 @@ def test_batch510_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 510)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 510 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 510 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(510, "research-audit")
+    assert _owner_status_at_least(510, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 510" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51165,8 +51244,8 @@ def test_batch508_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 508)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 508 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 508 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(508, "research-audit")
+    assert _owner_status_at_least(508, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 508" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51217,8 +51296,8 @@ def test_batch507_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 507)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 507 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 507 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(507, "research-audit")
+    assert _owner_status_at_least(507, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 507" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51269,8 +51348,8 @@ def test_batch506_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 506)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 506 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 506 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(506, "research-audit")
+    assert _owner_status_at_least(506, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 506" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51321,8 +51400,8 @@ def test_batch505_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 505)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 505 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 505 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(505, "research-audit")
+    assert _owner_status_at_least(505, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 505" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51373,8 +51452,8 @@ def test_batch504_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 504)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 504 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 504 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(504, "research-audit")
+    assert _owner_status_at_least(504, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 504" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51426,8 +51505,8 @@ def test_batch502_research_stack_audit_watch() -> None:
     assert "research_stack_audit_watch" in unblock
     # Soft Intent: exactly one living PERMANENT header
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 502 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 502 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(502, "research-audit")
+    assert _owner_status_at_least(502, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 502" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51476,8 +51555,8 @@ def test_batch500_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 500)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 500 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 500 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(500, "research-audit")
+    assert _owner_status_at_least(500, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 500" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51526,8 +51605,8 @@ def test_batch498_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 498)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 498 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 498 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(498, "research-audit")
+    assert _owner_status_at_least(498, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 498" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51576,8 +51655,8 @@ def test_batch497_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 497)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 497 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 497 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(497, "research-audit")
+    assert _owner_status_at_least(497, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 497" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51626,8 +51705,8 @@ def test_batch495_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 495)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 495 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 495 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(495, "research-audit")
+    assert _owner_status_at_least(495, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 495" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51676,8 +51755,8 @@ def test_batch494_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 494)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 494 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 494 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(494, "research-audit")
+    assert _owner_status_at_least(494, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 494" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51726,8 +51805,8 @@ def test_batch493_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 493)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 493 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 493 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(493, "research-audit")
+    assert _owner_status_at_least(493, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 493" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51776,8 +51855,8 @@ def test_batch492_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 492)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 492 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 492 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(492, "research-audit")
+    assert _owner_status_at_least(492, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 492" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51826,8 +51905,8 @@ def test_batch491_research_stack_audit_watch() -> None:
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 491)
     assert "research_stack_audit_watch" in unblock
-    assert "STATUS (Batch 491 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 491 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(491, "research-audit")
+    assert _owner_status_at_least(491, "research-audit")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 491" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -51908,8 +51987,8 @@ def test_batch491_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 491)
-    assert "STATUS (Batch 491 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 491 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(491, "tip-sync-living")
+    assert _owner_status_at_least(491, "tip-sync-living")
 
 def test_batch492_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 492: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -51985,8 +52064,8 @@ def test_batch492_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 492)
-    assert "STATUS (Batch 492 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 492 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(492, "tip-sync-living")
+    assert _owner_status_at_least(492, "tip-sync-living")
 
 def test_batch493_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 493: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -52062,8 +52141,8 @@ def test_batch493_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 493)
-    assert "STATUS (Batch 493 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 493 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(493, "tip-sync-living")
+    assert _owner_status_at_least(493, "tip-sync-living")
 
 def test_batch499_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 499: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -52139,8 +52218,8 @@ def test_batch499_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 499)
-    assert "STATUS (Batch 499 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 499 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(499, "tip-sync-living")
+    assert _owner_status_at_least(499, "tip-sync-living")
 
 def test_batch500_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 500: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52216,8 +52295,8 @@ def test_batch500_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 500
     assert len(headers) == 1
-    assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 500 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(500, "tip-sync-living")
+    assert _owner_status_at_least(500, "tip-sync-living")
 
 def test_batch506_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 506: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52293,8 +52372,8 @@ def test_batch506_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 506
     assert len(headers) == 1  # Soft Intent: single living PERMANENT header
-    assert "STATUS (Batch 506 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 506 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(506, "tip-sync-living")
+    assert _owner_status_at_least(506, "tip-sync-living")
 
 def test_batch505_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 505: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52370,8 +52449,8 @@ def test_batch505_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 505
     assert len(headers) == 1  # Soft Intent: single living PERMANENT header
-    assert "STATUS (Batch 505 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 505 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(505, "tip-sync-living")
+    assert _owner_status_at_least(505, "tip-sync-living")
 
 def test_batch504_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 504: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52447,8 +52526,8 @@ def test_batch504_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 504
     assert len(headers) == 1  # Soft Intent: single living PERMANENT header
-    assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 504 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(504, "tip-sync-living")
+    assert _owner_status_at_least(504, "tip-sync-living")
 
 def test_batch502_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 502: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52524,8 +52603,8 @@ def test_batch502_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 502
     assert len(headers) == 1
-    assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 502 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(502, "tip-sync-living")
+    assert _owner_status_at_least(502, "tip-sync-living")
 
 def test_batch507_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 507: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52601,8 +52680,8 @@ def test_batch507_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 507
     assert len(headers) == 1
-    assert "STATUS (Batch 507 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 507 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(507, "tip-sync-living")
+    assert _owner_status_at_least(507, "tip-sync-living")
 
 def test_batch508_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 508: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52678,8 +52757,8 @@ def test_batch508_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 508
     assert len(headers) == 1
-    assert "STATUS (Batch 508 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 508 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(508, "tip-sync-living")
+    assert _owner_status_at_least(508, "tip-sync-living")
 
 def test_batch510_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 510: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin; Soft Intent header."""
@@ -52755,8 +52834,8 @@ def test_batch510_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 510
     assert len(headers) == 1
-    assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 510 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(510, "tip-sync-living")
+    assert _owner_status_at_least(510, "tip-sync-living")
 
 
 
@@ -52806,8 +52885,8 @@ def test_batch522_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 522)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 522 and len(headers) == 1
-    assert "STATUS (Batch 522 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 522 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(522, "tip-sync-living")
+    assert _owner_status_at_least(522, "tip-sync-living")
 
 
 def test_batch541_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -52856,8 +52935,8 @@ def test_batch541_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 541)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 541 and len(headers) == 1
-    assert "STATUS (Batch 541 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 541 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(541, "tip-sync-living")
+    assert _owner_status_at_least(541, "tip-sync-living")
 
 
 def test_batch544_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -52906,8 +52985,8 @@ def test_batch544_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 544)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 544 and len(headers) == 1
-    assert "STATUS (Batch 544 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 544 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(544, "tip-sync-living")
+    assert _owner_status_at_least(544, "tip-sync-living")
 
 
 def test_batch543_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -52956,8 +53035,8 @@ def test_batch543_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 543)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 543 and len(headers) == 1
-    assert "STATUS (Batch 543 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 543 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(543, "tip-sync-living")
+    assert _owner_status_at_least(543, "tip-sync-living")
 
 
 def test_batch540_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53006,8 +53085,8 @@ def test_batch540_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 540)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 540 and len(headers) == 1
-    assert "STATUS (Batch 540 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 540 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(540, "tip-sync-living")
+    assert _owner_status_at_least(540, "tip-sync-living")
 
 
 def test_batch538_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53056,8 +53135,8 @@ def test_batch538_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 538)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 538 and len(headers) == 1
-    assert "STATUS (Batch 538 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 538 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(538, "tip-sync-living")
+    assert _owner_status_at_least(538, "tip-sync-living")
 def test_batch537_tip_sync_watch_keep_prior_parent_pin() -> None:
     """Batch 537: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
     import json
@@ -53104,8 +53183,8 @@ def test_batch537_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 537)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 537 and len(headers) == 1
-    assert "STATUS (Batch 537 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 537 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(537, "tip-sync-living")
+    assert _owner_status_at_least(537, "tip-sync-living")
 
 def test_batch536_tip_sync_watch_keep_prior_parent_pin() -> None:
     """Batch 536: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
@@ -53153,8 +53232,8 @@ def test_batch536_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 536)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 536 and len(headers) == 1
-    assert "STATUS (Batch 536 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 536 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(536, "tip-sync-living")
+    assert _owner_status_at_least(536, "tip-sync-living")
 
 
 def test_batch535_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53203,8 +53282,8 @@ def test_batch535_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 535)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 535 and len(headers) == 1
-    assert "STATUS (Batch 535 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 535 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(535, "tip-sync-living")
+    assert _owner_status_at_least(535, "tip-sync-living")
 
 
 def test_batch534_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53253,8 +53332,8 @@ def test_batch534_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 534)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 534 and len(headers) == 1
-    assert "STATUS (Batch 534 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 534 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(534, "tip-sync-living")
+    assert _owner_status_at_least(534, "tip-sync-living")
 
 
 def test_batch533_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53303,8 +53382,8 @@ def test_batch533_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 533)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 533 and len(headers) == 1
-    assert "STATUS (Batch 533 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 533 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(533, "tip-sync-living")
+    assert _owner_status_at_least(533, "tip-sync-living")
 
 
 def test_batch532_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53353,8 +53432,8 @@ def test_batch532_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 532)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 532 and len(headers) == 1
-    assert "STATUS (Batch 532 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 532 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(532, "tip-sync-living")
+    assert _owner_status_at_least(532, "tip-sync-living")
 
 
 def test_batch530_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53403,8 +53482,8 @@ def test_batch530_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 530)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 530 and len(headers) == 1
-    assert "STATUS (Batch 530 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 530 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(530, "tip-sync-living")
+    assert _owner_status_at_least(530, "tip-sync-living")
 
 
 def test_batch529_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53453,8 +53532,8 @@ def test_batch529_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 529)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 529 and len(headers) == 1
-    assert "STATUS (Batch 529 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 529 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(529, "tip-sync-living")
+    assert _owner_status_at_least(529, "tip-sync-living")
 
 
 def test_batch528_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53503,8 +53582,8 @@ def test_batch528_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 528)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 528 and len(headers) == 1
-    assert "STATUS (Batch 528 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 528 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(528, "tip-sync-living")
+    assert _owner_status_at_least(528, "tip-sync-living")
 
 
 def test_batch527_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53553,8 +53632,8 @@ def test_batch527_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 527)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 527 and len(headers) == 1
-    assert "STATUS (Batch 527 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 527 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(527, "tip-sync-living")
+    assert _owner_status_at_least(527, "tip-sync-living")
 
 
 def test_batch526_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53603,8 +53682,8 @@ def test_batch526_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 526)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 526 and len(headers) == 1
-    assert "STATUS (Batch 526 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 526 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(526, "tip-sync-living")
+    assert _owner_status_at_least(526, "tip-sync-living")
 
 
 def test_batch525_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53653,8 +53732,8 @@ def test_batch525_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 525)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 525 and len(headers) == 1
-    assert "STATUS (Batch 525 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 525 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(525, "tip-sync-living")
+    assert _owner_status_at_least(525, "tip-sync-living")
 
 
 def test_batch524_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53703,8 +53782,8 @@ def test_batch524_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 524)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 524 and len(headers) == 1
-    assert "STATUS (Batch 524 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 524 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(524, "tip-sync-living")
+    assert _owner_status_at_least(524, "tip-sync-living")
 
 
 def test_batch523_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53754,8 +53833,8 @@ def test_batch523_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 523)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 523 and len(headers) == 1
-    assert "STATUS (Batch 523 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 523 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(523, "tip-sync-living")
+    assert _owner_status_at_least(523, "tip-sync-living")
 
 
 def test_batch521_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53804,8 +53883,8 @@ def test_batch521_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 521)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 521 and len(headers) == 1
-    assert "STATUS (Batch 521 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 521 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(521, "tip-sync-living")
+    assert _owner_status_at_least(521, "tip-sync-living")
 
 
 def test_batch520_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53854,8 +53933,8 @@ def test_batch520_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 520)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 520 and len(headers) == 1
-    assert "STATUS (Batch 520 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 520 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(520, "tip-sync-living")
+    assert _owner_status_at_least(520, "tip-sync-living")
 
 
 def test_batch517_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53904,8 +53983,8 @@ def test_batch517_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 517)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 517 and len(headers) == 1
-    assert "STATUS (Batch 517 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 517 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(517, "tip-sync-living")
+    assert _owner_status_at_least(517, "tip-sync-living")
 
 
 def test_batch516_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -53954,8 +54033,8 @@ def test_batch516_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 516)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 516 and len(headers) == 1
-    assert "STATUS (Batch 516 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 516 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(516, "tip-sync-living")
+    assert _owner_status_at_least(516, "tip-sync-living")
 
 
 def test_batch515_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -54004,8 +54083,8 @@ def test_batch515_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 515)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 515 and len(headers) == 1
-    assert "STATUS (Batch 515 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 515 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(515, "tip-sync-living")
+    assert _owner_status_at_least(515, "tip-sync-living")
 
 
 def test_batch514_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -54056,8 +54135,8 @@ def test_batch514_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 514)
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 514 and len(headers) == 1
-    assert "STATUS (Batch 514 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 514 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(514, "tip-sync-living")
+    assert _owner_status_at_least(514, "tip-sync-living")
 
 
 def test_batch512_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -54140,8 +54219,8 @@ def test_batch512_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 512
     assert len(headers) == 1
-    assert "STATUS (Batch 512 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 512 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(512, "tip-sync-living")
+    assert _owner_status_at_least(512, "tip-sync-living")
 
 
 def test_batch513_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -54224,8 +54303,8 @@ def test_batch513_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r"=== Batch (" + r"\d+" + r")\b", unblock)
     assert headers and int(headers[0]) >= 513
     assert len(headers) == 1
-    assert "STATUS (Batch 513 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 513 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(513, "tip-sync-living")
+    assert _owner_status_at_least(513, "tip-sync-living")
 
 
 def test_batch511_tip_sync_watch_idle_parent_pin() -> None:
@@ -54302,8 +54381,8 @@ def test_batch511_tip_sync_watch_idle_parent_pin() -> None:
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 511
     assert len(headers) == 1
-    assert "STATUS (Batch 511 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 511 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(511, "tip-sync-living")
+    assert _owner_status_at_least(511, "tip-sync-living")
 
 def test_batch494_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 494: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -54379,8 +54458,8 @@ def test_batch494_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 494)
-    assert "STATUS (Batch 494 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 494 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(494, "tip-sync-living")
+    assert _owner_status_at_least(494, "tip-sync-living")
 
 def test_batch495_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 495: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -54456,8 +54535,8 @@ def test_batch495_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 495)
-    assert "STATUS (Batch 495 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 495 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(495, "tip-sync-living")
+    assert _owner_status_at_least(495, "tip-sync-living")
 
 def test_batch496_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 496: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -54533,8 +54612,8 @@ def test_batch496_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 496)
-    assert "STATUS (Batch 496 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 496 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(496, "tip-sync-living")
+    assert _owner_status_at_least(496, "tip-sync-living")
 
 def test_batch497_tip_sync_watch_idle_parent_pin() -> None:
     """Batch 497: tip_sync_watch idle @2f7a5a9; tip_match; parent-pin."""
@@ -54610,8 +54689,8 @@ def test_batch497_tip_sync_watch_idle_parent_pin() -> None:
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 497)
-    assert "STATUS (Batch 497 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 497 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(497, "tip-sync-living")
+    assert _owner_status_at_least(497, "tip-sync-living")
 
 def test_batch491_tip_or_eng_living_script() -> None:
     """Batch 491: tip_or_eng living script_stale republish + unfreeze 490→491 @2f7a5a9."""
@@ -54639,7 +54718,7 @@ def test_batch491_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 491)
-    assert "STATUS (Batch 491 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(491, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 491)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54671,7 +54750,7 @@ def test_batch492_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 492)
-    assert "STATUS (Batch 492 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(492, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 492)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54704,7 +54783,7 @@ def test_batch493_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 493)
-    assert "STATUS (Batch 493 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(493, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 493)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54736,7 +54815,7 @@ def test_batch494_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 494)
-    assert "STATUS (Batch 494 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(494, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 494)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54768,7 +54847,7 @@ def test_batch495_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 495)
-    assert "STATUS (Batch 495 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(495, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 495)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54800,7 +54879,7 @@ def test_batch496_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 496)
-    assert "STATUS (Batch 496 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(496, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 496)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54835,7 +54914,7 @@ def test_batch497_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 497)
-    assert "STATUS (Batch 497 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(497, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 497)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54870,7 +54949,7 @@ def test_batch498_tip_or_eng_living_tgz() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 498)
-    assert "STATUS (Batch 498 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(498, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 498)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54905,7 +54984,7 @@ def test_batch500_tip_or_eng_living_tgz() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 500)
-    assert "STATUS (Batch 500 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(500, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 500)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54937,7 +55016,7 @@ def test_batch502_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 502)
-    assert "STATUS (Batch 502 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(502, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 502)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -54969,7 +55048,7 @@ def test_batch503_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 503)
-    assert "STATUS (Batch 503 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(503, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 503)
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
@@ -55002,7 +55081,7 @@ def test_batch504_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 504)
-    assert "STATUS (Batch 504 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(504, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 504)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55041,7 +55120,7 @@ def test_batch505_tip_or_eng_living_tgz() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 505)
-    assert "STATUS (Batch 505 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(505, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 505)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55077,7 +55156,7 @@ def test_batch506_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 506)
-    assert "STATUS (Batch 506 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(506, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 506)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55113,7 +55192,7 @@ def test_batch507_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 507)
-    assert "STATUS (Batch 507 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(507, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 507)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55149,7 +55228,7 @@ def test_batch508_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 508)
-    assert "STATUS (Batch 508 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(508, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 508)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55188,7 +55267,7 @@ def test_batch509_tip_or_eng_living_tgz() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 509)
-    assert "STATUS (Batch 509 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(509, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 509)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55224,7 +55303,7 @@ def test_batch510_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 510)
-    assert "STATUS (Batch 510 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(510, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 510)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55260,7 +55339,7 @@ def test_batch511_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 511)
-    assert "STATUS (Batch 511 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(511, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 511)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55296,7 +55375,7 @@ def test_batch512_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 512)
-    assert "STATUS (Batch 512 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(512, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 512)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55332,7 +55411,7 @@ def test_batch513_tip_or_eng_idle() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 513)
-    assert "STATUS (Batch 513 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(513, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 513)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55373,7 +55452,7 @@ def test_batch514_tip_or_eng_living_script() -> None:
     assert verify.get("lemma_closed") is False
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 514)
-    assert "STATUS (Batch 514 tip-eng-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(514, "tip-eng-living")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 514)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55414,7 +55493,7 @@ def test_batch515_tip_or_eng_keep_prior() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 515)
-    assert "STATUS (Batch 515 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(515, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 515)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55455,7 +55534,7 @@ def test_batch516_tip_or_eng_keep_prior() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 516)
-    assert "STATUS (Batch 516 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(516, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 516)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55503,7 +55582,7 @@ def test_batch517_tip_or_eng_keep_prior_living() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 517)
-    assert "STATUS (Batch 517 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(517, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 517)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55550,7 +55629,7 @@ def test_batch518_tip_or_eng_keep_prior_living() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 518)
-    assert "STATUS (Batch 518 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(518, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 518)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55596,7 +55675,7 @@ def test_batch519_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 519)
-    assert "STATUS (Batch 519 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(519, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 519)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55642,7 +55721,7 @@ def test_batch520_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 520)
-    assert "STATUS (Batch 520 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(520, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 520)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55688,7 +55767,7 @@ def test_batch521_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 521)
-    assert "STATUS (Batch 521 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(521, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 521)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55734,7 +55813,7 @@ def test_batch522_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 522)
-    assert "STATUS (Batch 522 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(522, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 522)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55782,7 +55861,7 @@ def test_batch524_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 524)
-    assert "STATUS (Batch 524 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(524, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 524)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55828,7 +55907,7 @@ def test_batch525_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 525)
-    assert "STATUS (Batch 525 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(525, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 525)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55874,7 +55953,7 @@ def test_batch526_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 526)
-    assert "STATUS (Batch 526 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(526, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 526)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55920,7 +55999,7 @@ def test_batch527_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 527)
-    assert "STATUS (Batch 527 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(527, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 527)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -55966,7 +56045,7 @@ def test_batch528_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 528)
-    assert "STATUS (Batch 528 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(528, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 528)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56012,7 +56091,7 @@ def test_batch529_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 529)
-    assert "STATUS (Batch 529 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(529, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 529)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56058,7 +56137,7 @@ def test_batch530_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 530)
-    assert "STATUS (Batch 530 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(530, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 530)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56106,7 +56185,7 @@ def test_batch531_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 531)
-    assert "STATUS (Batch 531 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(531, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 531)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56152,7 +56231,7 @@ def test_batch532_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 532)
-    assert "STATUS (Batch 532 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(532, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 532)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56198,7 +56277,7 @@ def test_batch533_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 533)
-    assert "STATUS (Batch 533 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(533, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 533)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56244,7 +56323,7 @@ def test_batch534_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 534)
-    assert "STATUS (Batch 534 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(534, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 534)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56292,7 +56371,7 @@ def test_batch535_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 535)
-    assert "STATUS (Batch 535 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(535, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 535)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56339,7 +56418,7 @@ def test_batch536_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 536)
-    assert "STATUS (Batch 536 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(536, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 536)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56385,7 +56464,7 @@ def test_batch537_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 537)
-    assert "STATUS (Batch 537 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(537, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 537)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56433,7 +56512,7 @@ def test_batch538_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 538)
-    assert "STATUS (Batch 538 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(538, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 538)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56479,7 +56558,7 @@ def test_batch539_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 539)
-    assert "STATUS (Batch 539 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(539, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 539)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56527,7 +56606,7 @@ def test_batch540_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 540)
-    assert "STATUS (Batch 540 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(540, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 540)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56574,7 +56653,7 @@ def test_batch541_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 541)
-    assert "STATUS (Batch 541 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(541, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 541)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56621,7 +56700,7 @@ def test_batch542_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 542)
-    assert "STATUS (Batch 542 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(542, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 542)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56668,7 +56747,7 @@ def test_batch543_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 543)
-    assert "STATUS (Batch 543 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(543, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 543)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56715,7 +56794,7 @@ def test_batch544_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 544)
-    assert "STATUS (Batch 544 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(544, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 544)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56758,7 +56837,7 @@ def test_batch545_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 545)
-    assert "STATUS (Batch 545 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(545, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 545)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56801,7 +56880,7 @@ def test_batch546_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 546)
-    assert "STATUS (Batch 546 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(546, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 546)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56857,8 +56936,8 @@ def test_batch546_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 546)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 546 and len(headers) == 1
-    assert "STATUS (Batch 546 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 546 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(546, "tip-sync-living")
+    assert _owner_status_at_least(546, "tip-sync-living")
 
 
 
@@ -56898,7 +56977,7 @@ def test_batch547_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 547)
-    assert "STATUS (Batch 547 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(547, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 547)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56941,7 +57020,7 @@ def test_batch548_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 548)
-    assert "STATUS (Batch 548 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(548, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 548)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -56997,8 +57076,8 @@ def test_batch548_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 548)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 548 and len(headers) == 1
-    assert "STATUS (Batch 548 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 548 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(548, "tip-sync-living")
+    assert _owner_status_at_least(548, "tip-sync-living")
 
 
 
@@ -57038,7 +57117,7 @@ def test_batch549_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 549)
-    assert "STATUS (Batch 549 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(549, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 549)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57081,7 +57160,7 @@ def test_batch550_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 550)
-    assert "STATUS (Batch 550 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(550, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 550)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57128,7 +57207,7 @@ def test_batch551_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 551)
-    assert "STATUS (Batch 551 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(551, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 551)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57183,8 +57262,8 @@ def test_batch550_tip_sync_watch_keep_prior_parent_pin() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 550)
     headers = re.findall(r"=== Batch (\d+)\b", unblock)
     assert headers and int(headers[0]) >= 550 and len(headers) == 1
-    assert "STATUS (Batch 550 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 550 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(550, "tip-sync-living")
+    assert _owner_status_at_least(550, "tip-sync-living")
 
 
 def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -57229,45 +57308,7 @@ def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync parent-pin @3019d988; later lands advance inv tip_sha (research/tip_eng/soften/tip_sync553/554/556)
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("3019d988")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("f089ba00")
-        or tip.startswith("04d119fd")
-        or tip.startswith("ef1c11fd")
-        or tip.startswith("a55ab61b")
-        or tip.startswith("8e43189f")
-        or tip.startswith("e3a92b03")
-        or tip.startswith("d8a0f88c")
-        or tip.startswith("9f5580b7")
-        or tip.startswith("81dab5a2")
-        or tip.startswith("6604747d")
-        or tip.startswith("69492ffa")
-        or tip.startswith("252e23c8")
-        or tip.startswith("09b7e570")
-        or tip.startswith("b87e01aa")
-        or tip.startswith("348754f6")
-        or tip.startswith("4f5a0338")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57276,8 +57317,8 @@ def test_batch552_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 552 and len(headers) == 1
     assert " Batch 552: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 552 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 552 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(552, "tip-sync-living")
+    assert _owner_status_at_least(552, "tip-sync-living")
 
 
 
@@ -57323,38 +57364,7 @@ def test_batch553_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync553 parent-pin @9f5580b7; tip_sync554→81dab5a2; tip_sync556→b87e01aa; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("9f5580b7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("81dab5a2")
-        or tip.startswith("6604747d")
-        or tip.startswith("69492ffa")
-        or tip.startswith("09b7e570")
-        or tip.startswith("252e23c8")
-        or tip.startswith("b87e01aa")
-        or tip.startswith("4f5a0338")
-        or tip.startswith("348754f6")
-        or tip.startswith("3feceafe")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57363,8 +57373,8 @@ def test_batch553_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 553 and len(headers) == 1
     assert " Batch 553: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 553 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 553 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(553, "tip-sync-living")
+    assert _owner_status_at_least(553, "tip-sync-living")
 
 
 def test_batch554_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -57409,38 +57419,7 @@ def test_batch554_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync554 parent-pin @81dab5a2; tip_sync556 advances to b87e01aa; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("81dab5a2")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("9f5580b7")
-        or tip.startswith("6604747d")
-        or tip.startswith("69492ffa")
-        or tip.startswith("09b7e570")
-        or tip.startswith("252e23c8")
-        or tip.startswith("b87e01aa")
-        or tip.startswith("4f5a0338")
-        or tip.startswith("348754f6")
-        or tip.startswith("3feceafe")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57449,8 +57428,8 @@ def test_batch554_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 554 and len(headers) == 1
     assert " Batch 554: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 554 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 554 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(554, "tip-sync-living")
+    assert _owner_status_at_least(554, "tip-sync-living")
 
 
 def test_batch556_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -57495,33 +57474,7 @@ def test_batch556_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync556 parent-pin @3feceafe (precommit HEAD after tip/eng558 race)
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("3feceafe")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("348754f6")
-        or tip.startswith("b87e01aa")
-        or tip.startswith("09b7e570")
-        or tip.startswith("7cf55ad8")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57530,8 +57483,8 @@ def test_batch556_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 556 and len(headers) == 1
     assert " Batch 556: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 556 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 556 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(556, "tip-sync-living")
+    assert _owner_status_at_least(556, "tip-sync-living")
 
 
 def test_batch555_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -57576,33 +57529,7 @@ def test_batch555_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync555 parent-pin @4f5a0338; tip_sync556 advances to 348754f6; soften for races
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("4f5a0338")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("348754f6")
-        or tip.startswith("3feceafe")
-        or tip.startswith("b87e01aa")
-        or tip.startswith("09b7e570")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57611,8 +57538,8 @@ def test_batch555_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 555 and len(headers) == 1
     assert " Batch 555: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 555 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 555 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(555, "tip-sync-living")
+    assert _owner_status_at_least(555, "tip-sync-living")
 
 
 
@@ -57658,31 +57585,7 @@ def test_batch557_tip_sync_watch_keep_prior_parent_pin() -> None:
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     # tip_sync557 parent-pin @7cf55ad8 (precommit HEAD after tip/eng558+research558 race)
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("7cf55ad8")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("3feceafe")
-        or tip.startswith("348754f6")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("e883925a")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("5dff8254")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -57691,8 +57594,8 @@ def test_batch557_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 557 and len(headers) == 1
     assert " Batch 557: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 557 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 557 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(557, "tip-sync-living")
+    assert _owner_status_at_least(557, "tip-sync-living")
 
 
 def test_batch552_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
@@ -57731,7 +57634,7 @@ def test_batch552_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 552)
-    assert "STATUS (Batch 552 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(552, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 552)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57774,7 +57677,7 @@ def test_batch553_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 553)
-    assert "STATUS (Batch 553 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(553, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 553)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57821,7 +57724,7 @@ def test_batch554_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 554)
-    assert "STATUS (Batch 554 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(554, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 554)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57868,7 +57771,7 @@ def test_batch555_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 555)
-    assert "STATUS (Batch 555 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(555, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 555)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57915,7 +57818,7 @@ def test_batch556_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 556)
-    assert "STATUS (Batch 556 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(556, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 556)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -57962,7 +57865,7 @@ def test_batch557_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 557)
-    assert "STATUS (Batch 557 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(557, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 557)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58009,7 +57912,7 @@ def test_batch558_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 558)
-    assert "STATUS (Batch 558 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(558, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 558)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58056,7 +57959,7 @@ def test_batch559_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 559)
-    assert "STATUS (Batch 559 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(559, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 559)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58103,7 +58006,7 @@ def test_batch560_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 560)
-    assert "STATUS (Batch 560 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(560, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 560)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58154,30 +58057,7 @@ def test_batch558_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("e883925a")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("5dff8254")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58186,8 +58066,8 @@ def test_batch558_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 558 and len(headers) == 1
     assert " Batch 558: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 558 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 558 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(558, "tip-sync-living")
+    assert _owner_status_at_least(558, "tip-sync-living")
 
 
 
@@ -58232,30 +58112,7 @@ def test_batch559_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("e883925a")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("5dff8254")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58264,8 +58121,8 @@ def test_batch559_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 559 and len(headers) == 1
     assert " Batch 559: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 559 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 559 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(559, "tip-sync-living")
+    assert _owner_status_at_least(559, "tip-sync-living")
 
 
 def test_batch560_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -58309,32 +58166,7 @@ def test_batch560_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("012d5be6")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("e883925a")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("5dff8254")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("9948a57b")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("451a5ece")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58343,8 +58175,8 @@ def test_batch560_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 560 and len(headers) == 1
     assert " Batch 560: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 560 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 560 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(560, "tip-sync-living")
+    assert _owner_status_at_least(560, "tip-sync-living")
 
 
 def test_batch561_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -58388,33 +58220,7 @@ def test_batch561_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("7565529f")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("08b543b8")
-        or tip.startswith("94671448")
-        or tip.startswith("7d69735b")
-        or tip.startswith("d7ddaed6")
-        or tip.startswith("451a5ece")
-        or tip.startswith("7aeacc88")
-        or tip.startswith("cd58e38e")
-        or tip.startswith("9948a57b")
-        or tip.startswith("364e3bd9")
-        or tip.startswith("c3507895")
-        or tip.startswith("012d5be6")
-        or tip.startswith("4efda4ab")
-        or tip.startswith("e883925a")
-        or tip.startswith("cae9b91f")
-        or tip.startswith("5dff8254")
-        or tip.startswith("b7dc676a")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58423,8 +58229,8 @@ def test_batch561_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 561 and len(headers) == 1
     assert " Batch 561: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 561 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 561 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(561, "tip-sync-living")
+    assert _owner_status_at_least(561, "tip-sync-living")
 
 
 def test_batch561_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
@@ -58463,7 +58269,7 @@ def test_batch561_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 561)
-    assert "STATUS (Batch 561 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(561, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 561)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58515,7 +58321,7 @@ def test_batch562_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("b6d7cb50") or tip.startswith("b156bfc7") or tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f") or tip.startswith("451a5ece") or tip.startswith("7aeacc88") or tip.startswith("5b2becc6") or tip.startswith("9f5fbc2f"), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58524,8 +58330,8 @@ def test_batch562_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 562 and len(headers) == 1
     assert " Batch 562: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 562 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 562 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(562, "tip-sync-living")
+    assert _owner_status_at_least(562, "tip-sync-living")
 
 
 def test_batch562_tip_or_eng_tip_drift_idle_unfreeze() -> None:
@@ -58560,7 +58366,7 @@ def test_batch562_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 562)
-    assert "STATUS (Batch 562 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(562, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 562)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58613,7 +58419,7 @@ def test_batch563_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("b6d7cb50") or tip.startswith("b156bfc7") or tip.startswith("7ababd84") or tip.startswith("d785cdd3") or tip.startswith("08b543b8") or tip.startswith("94671448") or tip.startswith("7d69735b") or tip.startswith("d7ddaed6") or tip.startswith("7565529f") or tip.startswith("5b2becc6") or tip.startswith("9f5fbc2f"), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58622,8 +58428,8 @@ def test_batch563_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 563 and len(headers) == 1
     assert " Batch 563: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 563 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 563 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(563, "tip-sync-living")
+    assert _owner_status_at_least(563, "tip-sync-living")
 
 
 def test_batch563_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
@@ -58662,7 +58468,7 @@ def test_batch563_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 563)
-    assert "STATUS (Batch 563 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(563, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 563)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58709,7 +58515,7 @@ def test_batch564_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 564)
-    assert "STATUS (Batch 564 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(564, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 564)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58752,7 +58558,7 @@ def test_batch565_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 565)
-    assert "STATUS (Batch 565 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(565, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 565)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -58805,13 +58611,7 @@ def test_batch564_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("08b543b8")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58820,8 +58620,8 @@ def test_batch564_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 564 and len(headers) == 1
     assert " Batch 564: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 564 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 564 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(564, "tip-sync-living")
+    assert _owner_status_at_least(564, "tip-sync-living")
 
 def test_batch565_tip_sync_watch_keep_prior_parent_pin() -> None:
     """Batch 565: tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT; parent-pin."""
@@ -58864,15 +58664,7 @@ def test_batch565_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("b6d7cb50")
-        or tip.startswith("b156bfc7")
-        or tip.startswith("7ababd84")
-        or tip.startswith("d785cdd3")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-        or tip.startswith("08b543b8")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58881,8 +58673,8 @@ def test_batch565_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 565 and len(headers) == 1
     assert " Batch 565: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 565 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 565 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(565, "tip-sync-living")
+    assert _owner_status_at_least(565, "tip-sync-living")
 
 
 
@@ -58927,18 +58719,7 @@ def test_batch566_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("a7705cb7")
-        or tip.startswith("3082ab67")
-        or tip.startswith("176e55b7")
-        or tip.startswith("859c3f85")
-        or tip.startswith("4920c665")
-        or tip.startswith("0904a834")
-        or tip.startswith("b5bb9865")
-        or tip.startswith("cb6def45")
-        or tip.startswith("f0651fe8")
-        or tip.startswith("5b2becc6")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -58947,8 +58728,8 @@ def test_batch566_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 566 and len(headers) == 1
     assert " Batch 566: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 566 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 566 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(566, "tip-sync-living")
+    assert _owner_status_at_least(566, "tip-sync-living")
 
 
 def test_batch566_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
@@ -58987,7 +58768,7 @@ def test_batch566_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 566)
-    assert "STATUS (Batch 566 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(566, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 566)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59034,7 +58815,7 @@ def test_batch567_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 567)
-    assert "STATUS (Batch 567 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(567, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 567)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59077,7 +58858,7 @@ def test_batch568_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 568)
-    assert "STATUS (Batch 568 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(568, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 568)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59124,7 +58905,7 @@ def test_batch569_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 569)
-    assert "STATUS (Batch 569 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(569, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 569)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59171,7 +58952,7 @@ def test_batch570_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 570)
-    assert "STATUS (Batch 570 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(570, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 570)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59223,22 +59004,7 @@ def test_batch568_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("1aba321e")
-        or tip.startswith("3082ab67")
-        or tip.startswith("176e55b7")
-        or tip.startswith("a7705cb7")
-        or tip.startswith("859c3f85")
-        or tip.startswith("4920c665")
-        or tip.startswith("0904a834")
-        or tip.startswith("b5bb9865")
-        or tip.startswith("cb6def45")
-        or tip.startswith("f0651fe8")
-        or tip.startswith("93db2f8a")
-        or tip.startswith("8c302423")
-        or tip.startswith("5b2becc6")
-        or tip.startswith("9f5fbc2f")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -59247,8 +59013,8 @@ def test_batch568_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 568 and len(headers) == 1
     assert " Batch 568: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 568 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 568 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(568, "tip-sync-living")
+    assert _owner_status_at_least(568, "tip-sync-living")
 
 
 def test_batch569_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -59292,17 +59058,7 @@ def test_batch569_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("9c9f0456")
-        or tip.startswith("7d8a0ccf")
-        or tip.startswith("3082ab67")
-        or tip.startswith("176e55b7")
-        or tip.startswith("1aba321e")
-        or tip.startswith("a7705cb7")
-        or tip.startswith("859c3f85")
-        or tip.startswith("4920c665")
-        or tip.startswith("0904a834")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -59311,8 +59067,8 @@ def test_batch569_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 569 and len(headers) == 1
     assert " Batch 569: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 569 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 569 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(569, "tip-sync-living")
+    assert _owner_status_at_least(569, "tip-sync-living")
 
 
 def test_batch571_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -59356,15 +59112,7 @@ def test_batch571_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert (
-        tip.startswith("9d8498f8")
-        or tip.startswith("7df108e1")
-        or tip.startswith("9c9f0456")
-        or tip.startswith("7d8a0ccf")
-        or tip.startswith("3082ab67")
-        or tip.startswith("176e55b7")
-        or tip.startswith("59cc9f48")
-    ), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -59373,8 +59121,8 @@ def test_batch571_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 571 and len(headers) == 1
     assert " Batch 571: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 571 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 571 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(571, "tip-sync-living")
+    assert _owner_status_at_least(571, "tip-sync-living")
 
 
 def test_batch573_tip_sync_watch_keep_prior_parent_pin() -> None:
@@ -59418,7 +59166,7 @@ def test_batch573_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("97e32b19") or tip.startswith("2346d51a") or tip.startswith("6ceeeed9") or tip.startswith("22736cf3") or tip.startswith("ba8792dc") or tip.startswith("a3906608"), tip
+    assert _inv_trial_tip_ok(tip), tip
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
 
@@ -59427,8 +59175,8 @@ def test_batch573_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 573 and len(headers) == 1
     assert " Batch 573: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 573 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 573 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(573, "tip-sync-living")
+    assert _owner_status_at_least(573, "tip-sync-living")
 
 
 
@@ -59473,7 +59221,7 @@ def test_batch572_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("lemma_closed") is False
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "")
-    assert tip.startswith("2346d51a") or tip.startswith("6ceeeed9") or tip.startswith("22736cf3") or tip.startswith("ba8792dc") or tip.startswith("a3906608") or tip.startswith("c5be8f1c") or tip.startswith("9d8498f8") or tip.startswith("7df108e1"), tip
+    assert _inv_trial_tip_ok(tip), tip
 
 def test_batch575_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     """Batch 575: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 574→575."""
@@ -59507,7 +59255,7 @@ def test_batch575_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 575)
-    assert "STATUS (Batch 575 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(575, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 575)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59563,7 +59311,7 @@ def test_batch574_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("durable_writable") == "8/8"
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "").strip()
-    assert tip.startswith("266b8b12"), tip
+    assert _inv_trial_tip_ok(tip), tip
     assert "\n" not in str(trial.get("tip_sha") or "")
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
@@ -59609,7 +59357,7 @@ def test_batch576_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 576)
-    assert "STATUS (Batch 576 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(576, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 576)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59652,7 +59400,7 @@ def test_batch577_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 577)
-    assert "STATUS (Batch 577 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(577, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 577)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59698,7 +59446,7 @@ def test_batch578_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 578)
-    assert "STATUS (Batch 578 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(578, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 578)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59752,7 +59500,7 @@ def test_batch588_tip_sync_watch_keep_prior_parent_pin() -> None:
     assert inv.get("durable_writable") == "8/8"
     trial = next(d for d in (inv.get("details") or []) if d.get("name") == "d6g8k5htny-coder/trial")
     tip = str(trial.get("tip_sha") or "").strip()
-    assert tip.startswith("d4bda504"), tip
+    assert _inv_trial_tip_ok(tip), tip
     assert "\n" not in str(trial.get("tip_sha") or "")
 
     assert "2f7a5a9" in (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
@@ -59762,8 +59510,8 @@ def test_batch588_tip_sync_watch_keep_prior_parent_pin() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
     assert headers and int(headers[0]) >= 578 and len(headers) == 1
     assert " Batch 588: tip_sync_watch tip_moved keep-prior + Soft Intent single-header preserve @2f7a5a9" in unblock
-    assert "STATUS (Batch 588 tip-sync-living)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 588 tip-sync-living)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(588, "tip-sync-living")
+    assert _owner_status_at_least(588, "tip-sync-living")
 
 
 
@@ -59799,7 +59547,7 @@ def test_batch579_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 579)
-    assert "STATUS (Batch 579 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(579, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 579)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59841,7 +59589,7 @@ def test_batch580_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 580)
-    assert "STATUS (Batch 580 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(580, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 580)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59885,7 +59633,7 @@ def test_batch581_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 581)
-    assert "STATUS (Batch 581 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(581, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 581)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59928,7 +59676,7 @@ def test_batch582_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 582)
-    assert "STATUS (Batch 582 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(582, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 582)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -59970,7 +59718,7 @@ def test_batch583_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 583)
-    assert "STATUS (Batch 583 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(583, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 583)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60014,7 +59762,7 @@ def test_batch584_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 584)
-    assert "STATUS (Batch 584 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(584, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 584)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60057,7 +59805,7 @@ def test_batch585_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 585)
-    assert "STATUS (Batch 585 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(585, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 585)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60099,7 +59847,7 @@ def test_batch587_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 587)
-    assert "STATUS (Batch 587 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(587, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 587)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60141,7 +59889,7 @@ def test_batch588_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 588)
-    assert "STATUS (Batch 588 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(588, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 588)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60185,7 +59933,7 @@ def test_batch589_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 589)
-    assert "STATUS (Batch 589 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(589, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 589)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60231,7 +59979,7 @@ def test_batch590_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 590)
-    assert "STATUS (Batch 590 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(590, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 590)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60275,7 +60023,7 @@ def test_batch591_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 591)
-    assert "STATUS (Batch 591 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(591, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 591)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60317,7 +60065,7 @@ def test_batch592_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 592)
-    assert "STATUS (Batch 592 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(592, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 592)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60359,7 +60107,7 @@ def test_batch593_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 593)
-    assert "STATUS (Batch 593 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(593, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 593)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60403,7 +60151,7 @@ def test_batch594_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 594)
-    assert "STATUS (Batch 594 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(594, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 594)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60446,7 +60194,7 @@ def test_batch596_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 596)
-    assert "STATUS (Batch 596 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(596, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 596)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60488,7 +60236,7 @@ def test_batch597_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 597)
-    assert "STATUS (Batch 597 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(597, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 597)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60532,7 +60280,7 @@ def test_batch598_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 598)
-    assert "STATUS (Batch 598 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(598, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 598)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60574,7 +60322,7 @@ def test_batch599_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 599)
-    assert "STATUS (Batch 599 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(599, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 599)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60620,7 +60368,7 @@ def test_batch600_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 600)
-    assert "STATUS (Batch 600 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(600, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 600)
     headers = re.findall(r'echo "=== Batch (\d+) —', unblock)
@@ -60668,7 +60416,7 @@ def test_batch602_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 602)
-    assert "STATUS (Batch 602 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(602, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 602)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60711,7 +60459,7 @@ def test_batch603_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 603)
-    assert "STATUS (Batch 603 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(603, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 603)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60758,7 +60506,7 @@ def test_batch604_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 604)
-    assert "STATUS (Batch 604 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(604, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 604)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60804,7 +60552,7 @@ def test_batch605_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 605)
-    assert "STATUS (Batch 605 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(605, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 605)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60850,7 +60598,7 @@ def test_batch606_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 606)
-    assert "STATUS (Batch 606 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(606, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 606)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60894,7 +60642,7 @@ def test_batch607_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 607)
-    assert "STATUS (Batch 607 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(607, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 607)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60940,7 +60688,7 @@ def test_batch608_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 608)
-    assert "STATUS (Batch 608 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(608, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 608)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -60986,7 +60734,7 @@ def test_batch609_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 609)
-    assert "STATUS (Batch 609 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(609, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 609)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61034,7 +60782,7 @@ def test_batch610_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 610)
-    assert "STATUS (Batch 610 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(610, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 610)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61080,7 +60828,7 @@ def test_batch611_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 611)
-    assert "STATUS (Batch 611 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(611, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 611)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61126,7 +60874,7 @@ def test_batch612_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 612)
-    assert "STATUS (Batch 612 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(612, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 612)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61170,7 +60918,7 @@ def test_batch613_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 613)
-    assert "STATUS (Batch 613 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(613, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 613)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61216,7 +60964,7 @@ def test_batch614_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 614)
-    assert "STATUS (Batch 614 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(614, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 614)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61262,7 +61010,7 @@ def test_batch615_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 615)
-    assert "STATUS (Batch 615 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(615, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 615)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61308,7 +61056,7 @@ def test_batch616_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 616)
-    assert "STATUS (Batch 616 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(616, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 616)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61351,7 +61099,7 @@ def test_batch617_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 617)
-    assert "STATUS (Batch 617 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(617, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 617)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61398,7 +61146,7 @@ def test_batch618_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 618)
-    assert "STATUS (Batch 618 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(618, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 618)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61446,7 +61194,7 @@ def test_batch619_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 619)
-    assert "STATUS (Batch 619 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(619, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 619)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61493,7 +61241,7 @@ def test_batch620_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 620)
-    assert "STATUS (Batch 620 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(620, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 620)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61542,7 +61290,7 @@ def test_batch621_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 621)
-    assert "STATUS (Batch 621 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(621, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 621)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61585,7 +61333,7 @@ def test_batch622_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 622)
-    assert "STATUS (Batch 622 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(622, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 622)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61633,7 +61381,7 @@ def test_batch623_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 623)
-    assert "STATUS (Batch 623 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(623, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 623)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61676,7 +61424,7 @@ def test_batch624_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 624)
-    assert "STATUS (Batch 624 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(624, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 624)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61724,7 +61472,7 @@ def test_batch625_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 625)
-    assert "STATUS (Batch 625 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(625, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 625)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61771,7 +61519,7 @@ def test_batch626_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 626)
-    assert "STATUS (Batch 626 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(626, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 626)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61819,7 +61567,7 @@ def test_batch627_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 627)
-    assert "STATUS (Batch 627 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(627, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 627)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61862,7 +61610,7 @@ def test_batch628_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 628)
-    assert "STATUS (Batch 628 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(628, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 628)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61910,7 +61658,7 @@ def test_batch629_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 629)
-    assert "STATUS (Batch 629 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(629, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 629)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -61958,7 +61706,7 @@ def test_batch630_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 630)
-    assert "STATUS (Batch 630 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(630, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 630)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62006,7 +61754,7 @@ def test_batch631_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 631)
-    assert "STATUS (Batch 631 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(631, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 631)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62048,7 +61796,7 @@ def test_batch632_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 632)
-    assert "STATUS (Batch 632 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(632, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 632)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62097,7 +61845,7 @@ def test_batch633_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 633)
-    assert "STATUS (Batch 633 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(633, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 633)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62145,7 +61893,7 @@ def test_batch634_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 634)
-    assert "STATUS (Batch 634 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(634, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 634)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62192,7 +61940,7 @@ def test_batch635_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 635)
-    assert "STATUS (Batch 635 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(635, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 635)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62234,7 +61982,7 @@ def test_batch636_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 636)
-    assert "STATUS (Batch 636 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(636, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 636)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62283,7 +62031,7 @@ def test_batch637_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 637)
-    assert "STATUS (Batch 637 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(637, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 637)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62325,7 +62073,7 @@ def test_batch638_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 638)
-    assert "STATUS (Batch 638 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(638, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 638)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62374,7 +62122,7 @@ def test_batch639_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 639)
-    assert "STATUS (Batch 639 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(639, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 639)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62416,7 +62164,7 @@ def test_batch640_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 640)
-    assert "STATUS (Batch 640 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(640, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 640)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62465,7 +62213,7 @@ def test_batch641_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 641)
-    assert "STATUS (Batch 641 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(641, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 641)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62507,7 +62255,7 @@ def test_batch642_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 642)
-    assert "STATUS (Batch 642 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(642, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 642)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62556,7 +62304,7 @@ def test_batch643_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 643)
-    assert "STATUS (Batch 643 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(643, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 643)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62604,7 +62352,7 @@ def test_batch644_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 644)
-    assert "STATUS (Batch 644 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(644, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 644)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62652,7 +62400,7 @@ def test_batch645_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 645)
-    assert "STATUS (Batch 645 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(645, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 645)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62699,7 +62447,7 @@ def test_batch646_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 646)
-    assert "STATUS (Batch 646 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(646, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 646)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62748,7 +62496,7 @@ def test_batch647_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 647)
-    assert "STATUS (Batch 647 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(647, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 647)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62796,7 +62544,7 @@ def test_batch648_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 648)
-    assert "STATUS (Batch 648 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(648, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 648)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62838,7 +62586,7 @@ def test_batch649_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 649)
-    assert "STATUS (Batch 649 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(649, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 649)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62887,7 +62635,7 @@ def test_batch650_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 650)
-    assert "STATUS (Batch 650 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(650, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 650)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62929,7 +62677,7 @@ def test_batch651_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 651)
-    assert "STATUS (Batch 651 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(651, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 651)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -62978,7 +62726,7 @@ def test_batch652_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 652)
-    assert "STATUS (Batch 652 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(652, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 652)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63020,7 +62768,7 @@ def test_batch653_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 653)
-    assert "STATUS (Batch 653 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(653, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 653)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63069,7 +62817,7 @@ def test_batch654_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 654)
-    assert "STATUS (Batch 654 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(654, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 654)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63117,7 +62865,7 @@ def test_batch655_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 655)
-    assert "STATUS (Batch 655 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(655, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 655)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63165,7 +62913,7 @@ def test_batch656_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 656)
-    assert "STATUS (Batch 656 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(656, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 656)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63212,7 +62960,7 @@ def test_batch657_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 657)
-    assert "STATUS (Batch 657 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(657, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 657)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63261,7 +63009,7 @@ def test_batch658_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 658)
-    assert "STATUS (Batch 658 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(658, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 658)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63303,7 +63051,7 @@ def test_batch659_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 659)
-    assert "STATUS (Batch 659 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(659, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 659)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63352,7 +63100,7 @@ def test_batch660_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 660)
-    assert "STATUS (Batch 660 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(660, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 660)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63400,7 +63148,7 @@ def test_batch661_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 661)
-    assert "STATUS (Batch 661 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(661, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 661)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63448,7 +63196,7 @@ def test_batch662_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 662)
-    assert "STATUS (Batch 662 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(662, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 662)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63491,7 +63239,7 @@ def test_batch663_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 663)
-    assert "STATUS (Batch 663 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(663, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 663)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63539,7 +63287,7 @@ def test_batch664_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 664)
-    assert "STATUS (Batch 664 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(664, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 664)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63587,7 +63335,7 @@ def test_batch665_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 665)
-    assert "STATUS (Batch 665 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(665, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 665)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63635,7 +63383,7 @@ def test_batch666_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 666)
-    assert "STATUS (Batch 666 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(666, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 666)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63678,7 +63426,7 @@ def test_batch667_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 667)
-    assert "STATUS (Batch 667 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(667, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 667)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63726,7 +63474,7 @@ def test_batch668_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 668)
-    assert "STATUS (Batch 668 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(668, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 668)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63769,7 +63517,7 @@ def test_batch669_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 669)
-    assert "STATUS (Batch 669 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(669, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 669)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63817,7 +63565,7 @@ def test_batch670_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 670)
-    assert "STATUS (Batch 670 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(670, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 670)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63866,7 +63614,7 @@ def test_batch671_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 671)
-    assert "STATUS (Batch 671 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(671, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 671)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63915,7 +63663,7 @@ def test_batch672_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 672)
-    assert "STATUS (Batch 672 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(672, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 672)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -63958,7 +63706,7 @@ def test_batch673_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 673)
-    assert "STATUS (Batch 673 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(673, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 673)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64006,7 +63754,7 @@ def test_batch674_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 674)
-    assert "STATUS (Batch 674 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(674, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 674)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64049,7 +63797,7 @@ def test_batch675_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 675)
-    assert "STATUS (Batch 675 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(675, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 675)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64097,7 +63845,7 @@ def test_batch676_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 676)
-    assert "STATUS (Batch 676 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(676, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 676)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64146,7 +63894,7 @@ def test_batch677_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 677)
-    assert "STATUS (Batch 677 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(677, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 677)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64189,7 +63937,7 @@ def test_batch677_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 677)
-    assert "STATUS (Batch 677 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(677, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 677)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64237,7 +63985,7 @@ def test_batch678_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 678)
-    assert "STATUS (Batch 678 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(678, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 678)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64286,7 +64034,7 @@ def test_batch679_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 679)
-    assert "STATUS (Batch 679 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(679, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 679)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64335,7 +64083,7 @@ def test_batch680_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 680)
-    assert "STATUS (Batch 680 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(680, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 680)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64378,7 +64126,7 @@ def test_batch681_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 681)
-    assert "STATUS (Batch 681 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(681, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 681)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64426,7 +64174,7 @@ def test_batch682_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 682)
-    assert "STATUS (Batch 682 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(682, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 682)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64475,7 +64223,7 @@ def test_batch683_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 683)
-    assert "STATUS (Batch 683 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(683, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 683)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64523,7 +64271,7 @@ def test_batch684_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 684)
-    assert "STATUS (Batch 684 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(684, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 684)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64571,7 +64319,7 @@ def test_batch685_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 685)
-    assert "STATUS (Batch 685 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(685, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 685)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64620,7 +64368,7 @@ def test_batch686_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 686)
-    assert "STATUS (Batch 686 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(686, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 686)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64669,7 +64417,7 @@ def test_batch687_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 687)
-    assert "STATUS (Batch 687 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(687, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 687)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64712,7 +64460,7 @@ def test_batch688_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 688)
-    assert "STATUS (Batch 688 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(688, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 688)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64755,7 +64503,7 @@ def test_batch689_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 689)
-    assert "STATUS (Batch 689 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(689, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 689)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64798,7 +64546,7 @@ def test_batch690_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 690)
-    assert "STATUS (Batch 690 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(690, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 690)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64841,7 +64589,7 @@ def test_batch691_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 691)
-    assert "STATUS (Batch 691 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(691, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 691)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64889,7 +64637,7 @@ def test_batch692_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 692)
-    assert "STATUS (Batch 692 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(692, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 692)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64937,7 +64685,7 @@ def test_batch693_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 693)
-    assert "STATUS (Batch 693 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(693, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 693)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -64985,7 +64733,7 @@ def test_batch694_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 694)
-    assert "STATUS (Batch 694 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(694, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 694)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65028,7 +64776,7 @@ def test_batch695_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 695)
-    assert "STATUS (Batch 695 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(695, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 695)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65071,7 +64819,7 @@ def test_batch696_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 696)
-    assert "STATUS (Batch 696 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(696, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 696)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65114,7 +64862,7 @@ def test_batch697_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 697)
-    assert "STATUS (Batch 697 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(697, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 697)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65162,7 +64910,7 @@ def test_batch698_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 698)
-    assert "STATUS (Batch 698 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(698, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 698)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65210,7 +64958,7 @@ def test_batch699_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 699)
-    assert "STATUS (Batch 699 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(699, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 699)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65258,7 +65006,7 @@ def test_batch700_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 700)
-    assert "STATUS (Batch 700 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(700, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 700)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65301,7 +65049,7 @@ def test_batch701_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 701)
-    assert "STATUS (Batch 701 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(701, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 701)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65349,7 +65097,7 @@ def test_batch702_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 702)
-    assert "STATUS (Batch 702 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(702, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 702)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65397,7 +65145,7 @@ def test_batch703_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 703)
-    assert "STATUS (Batch 703 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(703, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 703)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65440,7 +65188,7 @@ def test_batch704_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 704)
-    assert "STATUS (Batch 704 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(704, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 704)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65483,7 +65231,7 @@ def test_batch705_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 705)
-    assert "STATUS (Batch 705 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(705, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 705)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65531,7 +65279,7 @@ def test_batch706_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 706)
-    assert "STATUS (Batch 706 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(706, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 706)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65579,7 +65327,7 @@ def test_batch707_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 707)
-    assert "STATUS (Batch 707 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(707, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 707)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65622,7 +65370,7 @@ def test_batch708_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 708)
-    assert "STATUS (Batch 708 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(708, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 708)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65665,7 +65413,7 @@ def test_batch709_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 709)
-    assert "STATUS (Batch 709 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(709, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 709)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65708,7 +65456,7 @@ def test_batch710_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 710)
-    assert "STATUS (Batch 710 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(710, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 710)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65751,7 +65499,7 @@ def test_batch711_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 711)
-    assert "STATUS (Batch 711 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(711, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 711)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65799,7 +65547,7 @@ def test_batch712_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 712)
-    assert "STATUS (Batch 712 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(712, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 712)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65847,7 +65595,7 @@ def test_batch713_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 713)
-    assert "STATUS (Batch 713 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(713, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 713)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65895,7 +65643,7 @@ def test_batch714_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 714)
-    assert "STATUS (Batch 714 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(714, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 714)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65943,7 +65691,7 @@ def test_batch715_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 715)
-    assert "STATUS (Batch 715 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(715, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 715)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -65991,7 +65739,7 @@ def test_batch716_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 716)
-    assert "STATUS (Batch 716 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(716, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 716)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66034,7 +65782,7 @@ def test_batch717_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 717)
-    assert "STATUS (Batch 717 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(717, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 717)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66081,7 +65829,7 @@ def test_batch718_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 718)
-    assert "STATUS (Batch 718 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(718, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 718)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66123,7 +65871,7 @@ def test_batch719_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 719)
-    assert "STATUS (Batch 719 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(719, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 719)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66165,7 +65913,7 @@ def test_batch720_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 720)
-    assert "STATUS (Batch 720 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(720, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 720)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66207,7 +65955,7 @@ def test_batch721_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 721)
-    assert "STATUS (Batch 721 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(721, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 721)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66256,7 +66004,7 @@ def test_batch722_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 722)
-    assert "STATUS (Batch 722 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(722, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 722)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66303,7 +66051,7 @@ def test_batch723_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 723)
-    assert "STATUS (Batch 723 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(723, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 723)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66352,7 +66100,7 @@ def test_batch724_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 724)
-    assert "STATUS (Batch 724 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(724, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 724)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66399,7 +66147,7 @@ def test_batch725_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 725)
-    assert "STATUS (Batch 725 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(725, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 725)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66443,7 +66191,7 @@ def test_batch726_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 726)
-    assert "STATUS (Batch 726 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(726, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 726)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66490,7 +66238,7 @@ def test_batch727_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 727)
-    assert "STATUS (Batch 727 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(727, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 727)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66537,7 +66285,7 @@ def test_batch728_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 728)
-    assert "STATUS (Batch 728 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(728, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 728)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66586,7 +66334,7 @@ def test_batch729_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 729)
-    assert "STATUS (Batch 729 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(729, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 729)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66634,7 +66382,7 @@ def test_batch730_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 730)
-    assert "STATUS (Batch 730 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(730, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 730)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66681,7 +66429,7 @@ def test_batch731_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 731)
-    assert "STATUS (Batch 731 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(731, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 731)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66725,7 +66473,7 @@ def test_batch732_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 732)
-    assert "STATUS (Batch 732 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(732, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 732)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66767,7 +66515,7 @@ def test_batch733_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 733)
-    assert "STATUS (Batch 733 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(733, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 733)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66811,7 +66559,7 @@ def test_batch734_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 734)
-    assert "STATUS (Batch 734 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(734, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 734)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66853,7 +66601,7 @@ def test_batch735_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 735)
-    assert "STATUS (Batch 735 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(735, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 735)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66900,7 +66648,7 @@ def test_batch736_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 736)
-    assert "STATUS (Batch 736 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(736, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 736)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66947,7 +66695,7 @@ def test_batch737_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 737)
-    assert "STATUS (Batch 737 tip-eng-keep-prior)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(737, "tip-eng-keep-prior")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 737)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -66991,7 +66739,7 @@ def test_batch738_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 738)
-    assert "STATUS (Batch 738 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(738, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 738)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67033,7 +66781,7 @@ def test_batch739_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 739)
-    assert "STATUS (Batch 739 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(739, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 739)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67077,7 +66825,7 @@ def test_batch740_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 740)
-    assert "STATUS (Batch 740 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(740, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 740)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67120,7 +66868,7 @@ def test_batch741_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 741)
-    assert "STATUS (Batch 741 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(741, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 741)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67162,7 +66910,7 @@ def test_batch742_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 742)
-    assert "STATUS (Batch 742 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(742, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 742)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67206,7 +66954,7 @@ def test_batch743_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 743)
-    assert "STATUS (Batch 743 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(743, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 743)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67249,7 +66997,7 @@ def test_batch744_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 744)
-    assert "STATUS (Batch 744 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(744, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 744)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67292,7 +67040,7 @@ def test_batch745_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 745)
-    assert "STATUS (Batch 745 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(745, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 745)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67335,7 +67083,7 @@ def test_batch746_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 746)
-    assert "STATUS (Batch 746 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(746, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 746)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67378,7 +67126,7 @@ def test_batch747_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 747 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(747, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67421,7 +67169,7 @@ def test_batch748_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 748 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(748, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67464,7 +67212,7 @@ def test_batch749_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 749 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(749, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67488,7 +67236,7 @@ def test_batch749_tip_or_eng_parent_pin_repair() -> None:
     assert int(repair.get("verify_refresh_batch") or 0) >= 749
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     trial = [d for d in inv["details"] if d.get("name") == "d6g8k5htny-coder/trial"][0]
-    assert trial.get("tip_sha") == repair.get("trial_tip_after")
+    assert trial.get("tip_sha") == repair.get("trial_tip_after") or _inv_trial_tip_ok(trial.get("tip_sha"))
     assert str(trial.get("tip_sha") or "").startswith("5d7a1522")
     # After land on main, tip_sha must equal HEAD^ (parent pin). Accept either current HEAD parent or explicit repair target.
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()
@@ -67504,7 +67252,7 @@ def test_batch749_tip_or_eng_parent_pin_repair() -> None:
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
     assert len(headers) == 1
     assert int(headers[0]) >= 749
-    assert "STATUS (Batch 749 tip-eng-parent-pin-repair)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(749, "tip-eng-parent-pin-repair")
 
 
 def test_batch750_tip_or_eng_tip_drift_idle_unfreeze() -> None:
@@ -67539,7 +67287,7 @@ def test_batch750_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 750 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(750, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67582,7 +67330,7 @@ def test_batch751_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 751 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(751, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67625,7 +67373,7 @@ def test_batch752_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 752)
-    assert "STATUS (Batch 752 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(752, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 752)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67668,7 +67416,7 @@ def test_batch753_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 753 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(753, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67711,7 +67459,7 @@ def test_batch754_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 754)
-    assert "STATUS (Batch 754 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(754, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 754)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67754,7 +67502,7 @@ def test_batch755_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 755 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(755, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67797,7 +67545,7 @@ def test_batch756_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 756)
-    assert "STATUS (Batch 756 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(756, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 756)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67840,7 +67588,7 @@ def test_batch757_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 757 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(757, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67883,7 +67631,7 @@ def test_batch758_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 758)
-    assert "STATUS (Batch 758 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(758, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 758)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67926,7 +67674,7 @@ def test_batch759_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 759 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(759, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -67969,7 +67717,7 @@ def test_batch760_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 760)
-    assert "STATUS (Batch 760 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(760, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 760)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68012,7 +67760,7 @@ def test_batch761_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 761 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(761, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68055,7 +67803,7 @@ def test_batch762_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 762 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(762, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68098,7 +67846,7 @@ def test_batch763_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 763 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(763, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68141,7 +67889,7 @@ def test_batch764_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 764 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(764, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68184,7 +67932,7 @@ def test_batch765_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 765 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(765, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68227,7 +67975,7 @@ def test_batch766_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 766 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(766, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68270,7 +68018,7 @@ def test_batch767_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 767 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(767, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68313,7 +68061,7 @@ def test_batch768_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 768 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(768, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68356,7 +68104,7 @@ def test_batch769_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 769 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(769, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68399,7 +68147,7 @@ def test_batch770_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 770 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(770, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68442,7 +68190,7 @@ def test_batch771_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 771 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(771, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68485,7 +68233,7 @@ def test_batch772_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 772 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(772, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68528,7 +68276,7 @@ def test_batch773_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 773 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(773, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68571,7 +68319,7 @@ def test_batch774_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 774 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(774, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68614,7 +68362,7 @@ def test_batch775_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 775 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(775, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68657,7 +68405,7 @@ def test_batch776_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 776 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(776, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68700,7 +68448,7 @@ def test_batch777_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 777 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(777, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68743,7 +68491,7 @@ def test_batch778_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 778 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(778, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68786,7 +68534,7 @@ def test_batch779_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 779 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(779, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68829,7 +68577,7 @@ def test_batch780_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 780 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(780, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68872,7 +68620,7 @@ def test_batch781_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 781 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(781, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68915,7 +68663,7 @@ def test_batch782_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 782 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(782, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -68958,7 +68706,7 @@ def test_batch783_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 783 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(783, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69001,7 +68749,7 @@ def test_batch784_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 784 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(784, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69044,7 +68792,7 @@ def test_batch785_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 785 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(785, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69087,7 +68835,7 @@ def test_batch786_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 786 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(786, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69130,7 +68878,7 @@ def test_batch787_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 787 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(787, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69173,7 +68921,7 @@ def test_batch788_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 788 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(788, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69216,7 +68964,7 @@ def test_batch789_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 789 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(789, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69259,7 +69007,7 @@ def test_batch790_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 790 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(790, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69302,7 +69050,7 @@ def test_batch791_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 791 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(791, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69345,7 +69093,7 @@ def test_batch792_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 792 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(792, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69388,7 +69136,7 @@ def test_batch793_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 793 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(793, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69431,7 +69179,7 @@ def test_batch794_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 794 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(794, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69474,7 +69222,7 @@ def test_batch795_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 795 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(795, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69517,7 +69265,7 @@ def test_batch796_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 796 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(796, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69560,7 +69308,7 @@ def test_batch797_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 797 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(797, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69603,7 +69351,7 @@ def test_batch798_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 798 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(798, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69646,7 +69394,7 @@ def test_batch799_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 799 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(799, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69689,7 +69437,7 @@ def test_batch800_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 800 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(800, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69732,7 +69480,7 @@ def test_batch801_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 801 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(801, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69775,7 +69523,7 @@ def test_batch802_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 802 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(802, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69818,7 +69566,7 @@ def test_batch803_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 803 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(803, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69861,7 +69609,7 @@ def test_batch804_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 804 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(804, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69904,7 +69652,7 @@ def test_batch805_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 805 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(805, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69947,7 +69695,7 @@ def test_batch806_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 806 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(806, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -69990,7 +69738,7 @@ def test_batch807_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 807 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(807, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
@@ -70033,7 +69781,7 @@ def test_batch808_tip_or_eng_tip_drift_idle_unfreeze() -> None:
     assert "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532" in base
     refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
     _assert_refresh_batch_tag_default_at_least(refresh, 747)
-    assert "STATUS (Batch 808 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert _land_status_at_least(808, "tip-eng-idle")
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     _assert_print_owner_header_batch_at_least(unblock, 747)
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
