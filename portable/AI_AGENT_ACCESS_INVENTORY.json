@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-27T20:26:16Z",
-      "tip_sha": "f7db5940aca41ab7052954072ecdb9ccdf1201a3",
+      "tip_sha": "4a0b9c3d9d800af63b680fc2e015dd8a961d2064",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-27T21:06:38Z",
+  "generated_at_utc": "2026-09-27T21:10:14Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 835: tip_or_eng TIP_DRIFT keep-prior idle_no_commit living current; inv tip @f7db5940aca4; Soft Intent n=1 VERIFY835; durable 8/8; lemma_closed=false.",
+  "note": "Batch 835: research_stack_audit_watch_no_promotion VERIFY835 Soft Intent n=1; inv tip @4a0b9c3d9d80; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
