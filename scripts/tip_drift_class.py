@@ -20,7 +20,9 @@ Exit codes: 0 MATCH, 0 DESCENDANT only when ``--landed`` (or VERIFY.json says
 ``path_c_landed: true``), 1 otherwise, 2 UNKNOWN.
 
 Scientific effect: NONE. Never flips lemma_closed / prizes / premises / research.
-Read-only: one GitHub compare API call (token optional; never printed).
+Read-only: one GitHub compare API call (token optional; never printed); when
+the API is unavailable (rate limit / auth), ancestry is taken from a cached
+commits-only git mirror of the hardening branch (``_git_compare_status``).
 """
 from __future__ import annotations
 
@@ -30,6 +32,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -40,6 +43,7 @@ VERIFY_FILE = ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json"
 
 _HEX = re.compile(r"(?i)^[0-9a-f]{7,40}$")
 _CACHE: dict[str, str] = {}
+HARDENING_BRANCH = os.environ.get("HARDENING_BRANCH", "chatgpt/drive-github-hardening-20260919")
 
 
 def _token() -> str:
@@ -49,6 +53,63 @@ def _token() -> str:
         or os.environ.get("MAIN_PUSH_TOKEN")
         or ""
     )
+
+
+def _git_mirror_dir(repo: str) -> Path:
+    root = Path(os.environ.get("TIP_DRIFT_GIT_CACHE") or os.environ.get("RUNNER_TEMP") or tempfile.gettempdir())
+    return root / f"trial-tip-drift-{repo.replace('/', '__')}.git"
+
+
+def _git(args: list[str], cwd: Path | None, timeout: int = 120) -> subprocess.CompletedProcess[str]:
+    env = dict(os.environ)
+    env["GIT_TERMINAL_PROMPT"] = "0"
+    return subprocess.run(
+        ["git", *args], cwd=cwd, capture_output=True, text=True, timeout=timeout, check=False, env=env,
+    )
+
+
+def _git_compare_status(base: str, live: str, repo: str = MAIN_REPO, timeout: int = 120) -> str:
+    """Compare status from git ancestry instead of the REST API.
+
+    Cached bare mirror (commits only, ``--filter=tree:0``) of the hardening
+    branch of the public research repo; no token, no API rate limit. Returns
+    identical | ahead | behind | diverged, or '' when either SHA cannot be
+    resolved (unknown stays unknown — never guessed).
+    """
+    d = _git_mirror_dir(repo)
+    url = os.environ.get("TIP_DRIFT_GIT_URL") or f"https://github.com/{repo}.git"
+    try:
+        if not (d / "HEAD").is_file():
+            d.mkdir(parents=True, exist_ok=True)
+            if _git(["init", "-q", "--bare", str(d)], cwd=None).returncode != 0:
+                return ""
+        refspec = f"+refs/heads/{HARDENING_BRANCH}:refs/remotes/hardening/{HARDENING_BRANCH}"
+        if _git(["fetch", "-q", "--filter=tree:0", url, refspec], cwd=d, timeout=timeout).returncode != 0:
+            return ""
+
+        def resolve(sha: str) -> str:
+            r = _git(["rev-parse", "--verify", "-q", f"{sha}^{{commit}}"], cwd=d)
+            if r.returncode == 0:
+                return r.stdout.strip()
+            if len(sha) == 40:  # exact SHAs may be fetched directly when reachable from any ref
+                if _git(["fetch", "-q", "--filter=tree:0", url, sha], cwd=d, timeout=timeout).returncode == 0:
+                    r = _git(["rev-parse", "--verify", "-q", f"{sha}^{{commit}}"], cwd=d)
+                    if r.returncode == 0:
+                        return r.stdout.strip()
+            return ""
+
+        b, l = resolve(base), resolve(live)
+        if not b or not l:
+            return ""
+        if b == l:
+            return "identical"
+        if _git(["merge-base", "--is-ancestor", b, l], cwd=d).returncode == 0:
+            return "ahead"
+        if _git(["merge-base", "--is-ancestor", l, b], cwd=d).returncode == 0:
+            return "behind"
+        return "diverged"
+    except (OSError, subprocess.SubprocessError):
+        return ""
 
 
 def _compare_status(base: str, live: str, repo: str = MAIN_REPO, timeout: int = 30) -> str:
@@ -79,6 +140,11 @@ def _compare_status(base: str, live: str, repo: str = MAIN_REPO, timeout: int = 
     # Token first (higher rate limit); a bad/expired token (401/403) must not
     # poison the answer — the research repo is public, so retry anonymously.
     status = _fetch(with_token=True) or _fetch(with_token=False)
+    if not status:
+        # NA-0009: on Actions both API paths can be exhausted at once (the
+        # installation token's hourly budget is shared by every trial-ci run,
+        # anonymous is per-runner-IP). Ancestry needs no API at all.
+        status = _git_compare_status(base, live, repo)
     if not status:
         # gh CLI fallback: as-is, then with a possibly-bad env token stripped so
         # gh falls back to its own auth store (or anonymous on public repos).
