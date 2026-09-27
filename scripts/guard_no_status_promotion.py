@@ -620,7 +620,22 @@ def main(argv: list[str] | None = None) -> int:
         live_report = audit_checkout(checkout)
         # Batch 233: never clobber tip tracking. Prefer --tip-sha, else git HEAD,
         # else whatever the live audit already carried.
-        tip_sha = (args.tip_sha or "").strip() or _git_head_sha(checkout)
+        # Sidecar b3c6: the audited checkout's HEAD is authoritative. Batches
+        # 811–832 passed the *trial* HEAD as --tip-sha while auditing the
+        # hardening clone, stamping a non-hardening SHA into the snapshot
+        # (89 living-tip pins went red). If --tip-sha disagrees with a
+        # resolvable checkout HEAD, keep HEAD and warn; --tip-sha still wins
+        # for non-git trees (extracted tarballs).
+        requested = (args.tip_sha or "").strip().lower()
+        head = _git_head_sha(checkout).lower()
+        tip_sha = requested or head
+        if requested and head and not (head.startswith(requested) or requested.startswith(head)):
+            print(
+                f"guard_no_status_promotion: warn --tip-sha {requested[:12]} != checkout HEAD "
+                f"{head[:12]}; using HEAD (tip_sha must describe the audited tree)",
+                file=sys.stderr,
+            )
+            tip_sha = head
         if tip_sha:
             live_report["tip_sha"] = tip_sha
         current_inv = extract_open_inventory(live_report)
