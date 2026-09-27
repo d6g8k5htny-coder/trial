@@ -89,9 +89,61 @@ PATCHES=(
   "$ROOT/0019-attestations-close-file-handles.patch"
 )
 
+# Content-level already-applied test for a unified diff against the current
+# tree: for every target file, all '+' lines must be present and all '-' lines
+# (that are not re-added) must be absent. Whitespace-stripped line matching;
+# a patch that deletes or creates files never qualifies.
+semantic_already_applied() {
+  python3 - "$1" <<'PY'
+import sys
+from pathlib import Path
+
+patch = Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace").splitlines()
+files = {}
+target = None
+for line in patch:
+    if line.startswith("+++ "):
+        name = line[4:].split("\t")[0].strip()
+        if name == "/dev/null":
+            sys.exit(1)
+        target = name[2:] if name.startswith("b/") else name
+        files.setdefault(target, ([], []))
+    elif line.startswith("--- "):
+        if line[4:].split("\t")[0].strip() == "/dev/null":
+            sys.exit(1)
+    elif target is not None and line.startswith("+") and not line.startswith("+++"):
+        files[target][0].append(line[1:].strip())
+    elif target is not None and line.startswith("-") and not line.startswith("---"):
+        files[target][1].append(line[1:].strip())
+
+if not files:
+    sys.exit(1)
+for name, (added, removed) in files.items():
+    path = Path(name)
+    if not path.is_file():
+        sys.exit(1)
+    tree = {ln.strip() for ln in path.read_text(encoding="utf-8", errors="replace").splitlines()}
+    added_set = {ln for ln in added if ln}
+    removed_only = {ln for ln in removed if ln} - added_set
+    if not added_set and not removed_only:
+        sys.exit(1)
+    if not added_set <= tree:
+        sys.exit(1)
+    if removed_only & tree:
+        sys.exit(1)
+sys.exit(0)
+PY
+}
+
 # Batch 231: idempotent apply — if a patch is already on the tree (Path C landed
 # @ 93a4ecd / PR #64), skip it via reverse --check. Fail only when neither
 # forward nor reverse applies (real conflict / tip drift).
+# Outcome counters (summary line lets callers decide whether the whole stack is
+# already on the tree — the tip-drift tolerance signal — without parsing echoes).
+N_FORWARD=0
+N_ALREADY=0
+N_SKIPPED=0
+
 apply_one() {
   local p="$1"
   local check_only="${2:-0}"
@@ -101,6 +153,7 @@ apply_one() {
   bn="$(basename "$p")"
   if [[ ( "$bn" == 0018-* || "$bn" == 0019-* ) && ! -d attestations ]]; then
     echo "skip (attestations/ absent): ${bn}"
+    N_SKIPPED=$((N_SKIPPED + 1))
     return 0
   fi
   # Batch 378 tip-sync @ebedb78: 0018/0019 already on tip but context drifted
@@ -108,21 +161,17 @@ apply_one() {
   # Treat semantic already-applied as success so keep-prior refresh can proceed.
   if [[ "$bn" == 0018-* ]] && grep -q '"attestations"' engine/bridge/work_order.py 2>/dev/null; then
     echo "already-applied (semantic): ${bn}"
+    N_ALREADY=$((N_ALREADY + 1))
     return 0
   fi
   if [[ "$bn" == 0019-* ]] && grep -q 'with open(candidate' tools/attestations_check.py 2>/dev/null; then
     echo "already-applied (semantic): ${bn}"
+    N_ALREADY=$((N_ALREADY + 1))
     return 0
   fi
-  # Tip @e7652a1 (2026-09-27): 0017 close-handles already on tip but the third
-  # hunk's context drifted (survey → full_survey). Reverse --check fails while
-  # the semantic content is present: no bare INDEX_REL open().read() remains.
-  if [[ "$bn" == 0017-* && -f tests/test_pinned_sources.py ]] \
-    && grep -q 'with open(os.path.join(ROOT, INDEX_REL)' tests/test_pinned_sources.py \
-    && ! grep -q 'open(os.path.join(ROOT, INDEX_REL), encoding="utf-8").read()' tests/test_pinned_sources.py; then
-    echo "already-applied (semantic): ${bn}"
-    return 0
-  fi
+  # 0017 (tip @e7652a1: third-hunk context drifted survey → full_survey while the
+  # close-handles change itself is on tip) is covered by the generic
+  # semantic_already_applied() fallback below — no per-patch grep needed.
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"
@@ -133,10 +182,22 @@ apply_one() {
       git apply "$p"
       echo "check-ok: $(basename "$p")"
     fi
+    N_FORWARD=$((N_FORWARD + 1))
     return 0
   fi
   if git apply --reverse --check "$p" >/dev/null 2>&1; then
     echo "already-applied: $(basename "$p")"
+    N_ALREADY=$((N_ALREADY + 1))
+    return 0
+  fi
+  # Batch 810 tip-sync @e7652a1: landed patches whose surrounding context later
+  # drifted (e.g. 0017 after main #140 grew tests/test_pinned_sources.py) fail
+  # both forward and reverse --check although every hunk is on the tree. Generic
+  # semantic check: every added line present and every removed line absent in
+  # each target file ⇒ already-applied. Anything else still fails closed.
+  if semantic_already_applied "$p"; then
+    echo "already-applied (semantic): ${bn}"
+    N_ALREADY=$((N_ALREADY + 1))
     return 0
   fi
   echo "error: patch does not apply (forward or reverse): $(basename "$p")" >&2
@@ -152,6 +213,18 @@ apply_series() {
   done
 }
 
+# Machine-readable stack summary. already_on_tip=1 iff no patch needed a forward
+# apply (every patch already-applied or intentionally skipped) — this is the
+# signal tip-drift gates use to tolerate BASE_TIP lagging a moved hardening tip
+# once Path C has landed. Any forward apply or failure keeps it 0.
+print_summary() {
+  local on_tip=0
+  if [[ "$N_FORWARD" -eq 0 && "$N_ALREADY" -gt 0 ]]; then
+    on_tip=1
+  fi
+  echo "apply_all: summary forward=${N_FORWARD} already_applied=${N_ALREADY} skipped=${N_SKIPPED} already_on_tip=${on_tip} head=$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
+}
+
 if [[ "$CHECK_ONLY" -eq 1 ]]; then
   # Disposable worktree so sequential deps validate without dirtying the caller's tree.
   WT="$(mktemp -d "${TMPDIR:-/tmp}/trial-apply-all-check.XXXXXX")"
@@ -160,17 +233,22 @@ if [[ "$CHECK_ONLY" -eq 1 ]]; then
   }
   trap cleanup EXIT
   git worktree add --detach "$WT" HEAD >/dev/null
-  (
-    cd "$WT"
-    apply_series 1
-  )
+  # pushd (not a subshell) so the outcome counters survive for print_summary.
+  pushd "$WT" >/dev/null
+  if ! apply_series 1; then
+    popd >/dev/null
+    exit 1
+  fi
+  popd >/dev/null
   trap - EXIT
   cleanup
+  print_summary
   echo "Check OK (no changes applied; already-applied patches skipped)."
   exit 0
 fi
 
 apply_series 0
+print_summary
 echo "Applied (or already on tip). Recommended verification:"
 echo "  python3 tools/math_status_check.py"
 echo "  python3 -m pytest -q tests/test_carriers.py tests/test_math_status.py tests/test_inventable_jetmod_probes.py tests/test_gaussian_moments.py tests/test_inventable_jetmod_instrumentation_status.py tests/test_claims.py tests/test_recovery.py"
