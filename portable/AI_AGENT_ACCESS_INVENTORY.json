@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 834,
+  "batch": "836",
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -76,7 +76,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T20:22:35Z",
+      "pushed_at": "2026-09-27T21:24:49Z",
       "tip_sha": "ae1b92ef1bb794050e584bec1c6f58f9495a018e",
       "has_agents": true,
       "write": "WRITABLE"
@@ -86,8 +86,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T20:24:38Z",
-      "tip_sha": "3bfc7367a3526145ae7a79dbb902f53e14873473",
+      "pushed_at": "2026-09-27T21:25:50Z",
+      "tip_sha": "6a3a8ca356f0a1963614707b2773e652c8059a03",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -96,7 +96,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T18:33:39Z",
+      "pushed_at": "2026-09-27T21:25:02Z",
       "tip_sha": "3b2ac59f8f02b9573d01087aefff85bbc279a55a",
       "has_agents": true,
       "write": "WRITABLE"
@@ -106,7 +106,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T18:43:56Z",
+      "pushed_at": "2026-09-27T20:58:45Z",
       "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
@@ -126,7 +126,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T20:17:49Z",
+      "pushed_at": "2026-09-27T21:07:55Z",
       "tip_sha": "ea66efb6074b529adc5a09b2feb8a1e106a1520b",
       "has_agents": true,
       "write": "WRITABLE"
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T20:26:16Z",
-      "tip_sha": "f7db5940aca41ab7052954072ecdb9ccdf1201a3",
+      "pushed_at": "2026-09-27T21:26:45Z",
+      "tip_sha": "38729eae4637a88a92b69ab3eb11babe9600ba10",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-27T21:06:38Z",
+  "generated_at_utc": "2026-09-27T21:28:29Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 835: tip_or_eng TIP_DRIFT keep-prior idle_no_commit living current; inv tip @f7db5940aca4; Soft Intent n=1 VERIFY835; durable 8/8; lemma_closed=false.",
+  "note": "Batch 837: tip_or_eng parent-pin repair after merge 38729eae; inv tip_sha @38729eae4637 (=precommit HEAD); was @c43ffc905380 (stale through merge); Soft Intent n=1 VERIFY837 preserved; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
