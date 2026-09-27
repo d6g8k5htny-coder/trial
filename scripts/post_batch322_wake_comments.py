@@ -484,7 +484,8 @@ def _living_batch_n() -> str:
     # Batch 745: last-resort bumped off frozen "744".
     # Batch 746: last-resort bumped off frozen "745".
     # Batch 747: last-resort bumped off frozen "746".
-    return "747"
+    # Batch 748: last-resort bumped off frozen "747".
+    return "748"
 def batch_marker() -> str:
     """Living wake marker — tip move unlocks re-post."""
     return f"Batch {_living_batch_n()} wake @{_living_tip_short()}"
