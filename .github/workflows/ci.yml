@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Batch 832/833 parent-pin tests resolve `git rev-parse HEAD^`; the
+          # default depth-1 checkout has no parent and reds them on every push.
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

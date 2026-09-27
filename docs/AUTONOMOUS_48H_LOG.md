@@ -1,7 +1,27 @@
+### Batch 841 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `53f8f875` left inv tip_sha at `372da8f0` while Soft Intent/VERIFY841 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `4dd7bdc1` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY841; Soft Intent842 not advanced; `lemma_closed=false`. action=`parent_pin_repair`.
+
+### Batch 841 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 840→841 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`372da8f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →841; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after Soft Intent 840 / research840 catch-up); Soft Intent single === header →841; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 840 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 839→840 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`ae20fe0` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →840; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no defect (living current after force republish Soft Intent 839); Soft Intent single === header →840; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 840 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY840 Soft Intent n=1 after tip/eng840 Soft Intent 839→840; covers research839 tip-race; open stack 13/1/3 Δ0 vs 839/838/837/836/835; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`3b7d1d6a`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@839,840.
+
+### Batch 839 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY840 Soft Intent n=1; covers research839 tip-race (Soft Intent raced 839→840 mid-land); open stack 13/1/3 Δ0 vs 838/837/836/835/834; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`3b7d1d6a`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@839.
 
 ### Batch 839 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent+VERIFY unfreeze 838→839 @2f7a5a9 (2026-09-27)
 
@@ -106,6 +126,8 @@
 - Root cause of 30h red trial-ci on `main` (651 failing `trial-ci` runs since 2026-09-26 13:00Z; every open PR shows red checks): live hardening tip moved 139 commits past BASE_TIP `2f7a5a9` while `refresh_path_c_bundle.sh` **failed** on `apply_all --check` — `0017-pinned-sources-close-file-handles.patch` applies neither forward nor reverse on tip (`tests/test_pinned_sources.py` third hunk context drifted `P.survey`→`P.full_survey`; the close-handles change itself is already on tip). "keep-prior (BASE immutable)" batches 513–810 were the symptom, not a policy.
 - Fix (engineering only): `apply_all.sh` gains a **semantic already-applied** guard for 0017 (same pattern as Batch 378's 0018/0019): tip has `with open(os.path.join(ROOT, INDEX_REL)` and no bare `open(...).read()` → skip. `refresh_path_c_bundle.sh` then succeeds: BASE_TIP `2f7a5a9`→**`e7652a1`**; keep-prior `.patch`/`.bundle` (applied head `b4fdbdc`); VERIFY `refresh_batch=810`; `math_status_check problems=0 disposition=OPEN_HOLD lemma_closed=false`; focused **92 passed**, claims+recovery **86 passed**, 0 ResourceWarning.
 - Peer PRs left as-is this pass: [#149](https://github.com/d6g8k5htny-coder/trial/pull/149) DRAFT (companion to #150; red checks were the tip-drift only), [#142](https://github.com/d6g8k5htny-coder/trial/pull/142) DRAFT CLEAN (Codex review claimed; owner asked for AGENTS.md ops note), [#121](https://github.com/d6g8k5htny-coder/trial/pull/121) DRAFT (owner: keep DRAFT until distinct-agent review), [#138](https://github.com/d6g8k5htny-coder/trial/pull/138) DRAFT (`verify` job red on its own workflow).
+- CI `sanity` on the runner is unauthenticated for `gh api` (Actions token is trial-scoped; `main` compare needs anonymous transport) → `_descends_from_base_tip` now routes through `tip_drift_class._compare_status` (token → anonymous urllib → env-stripped `gh`). `sanity` green on `1b900fe3` / `51453892` / `838` / `839`.
+- Flake fixed forward (run 36352276336, tip `b6b9d6c3`): `test_batch267_when_writable_dual_daemon_status_race` read `ww.status.json` after a fixed 1.2 s sleep, but the daemon writes status only after its first (network-probing) dry-run cycle — `FileNotFoundError` on a slow runner. Test now waits bounded (40 s) for the file while asserting the daemon is still alive; behaviour under test unchanged.
 ### Batch 832 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 831→832 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`17b5151` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →832; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
