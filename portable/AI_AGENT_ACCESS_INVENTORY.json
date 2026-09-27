@@ -303,11 +303,11 @@
     "readable": true,
     "write": "WRITABLE",
     "has_agents": true,
-    "tip": "1f88d69e3e8ac2be8b625454e61142f69dabbec4",
+    "tip": "97680686e0067a7d022538458043649200d4f115",
     "app_read_http": 404,
     "durable_read_http": 200,
     "main_push_token_secret": true,
-    "tip_sha": "1f88d69e3e8ac2be8b625454e61142f69dabbec4"
+    "tip_sha": "97680686e0067a7d022538458043649200d4f115"
   },
   "sandbox_added": true,
   "scientific_effect": "NONE",
