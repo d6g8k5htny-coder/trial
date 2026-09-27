@@ -169,6 +169,39 @@ def _git_parent_or_head() -> str:
             return p.stdout.strip()
     return ""
 
+def _is_trial_commit(sha: str) -> bool:
+    """True when `sha` (7-40 hex) names a commit of this trial checkout.
+
+    Local object store first (covers HEAD/HEAD^ on fetch-depth-2 runners);
+    then the trial commits endpoint — anonymous (trial is public) and, if that
+    fails, with the runner token, which *is* scoped to trial unlike the
+    compare-against-main calls in `_descends_from_base_tip`.
+    """
+    import re
+    import urllib.error
+    import urllib.request
+
+    s = str(sha or "").strip()
+    if not re.fullmatch(r"(?i)[0-9a-f]{7,40}", s):
+        return False
+    p = subprocess.run(
+        ["git", "cat-file", "-e", f"{s}^{{commit}}"], cwd=ROOT, capture_output=True, text=True, check=False
+    )
+    if p.returncode == 0:
+        return True
+    url = f"https://api.github.com/repos/d6g8k5htny-coder/trial/commits/{s}"
+    for tok in ("", os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or ""):
+        headers = {"Accept": "application/vnd.github+json", "User-Agent": "trial-intent-tests"}
+        if tok:
+            headers["Authorization"] = f"Bearer {tok}"
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as r:
+                if r.status == 200:
+                    return True
+        except (urllib.error.URLError, OSError, ValueError):
+            continue
+    return False
+
 def _living_trial_tip(val) -> bool:
     """True if val is a full 40-hex trial commit SHA (inventory parent-pin).
 
@@ -12886,12 +12919,14 @@ def test_batch323_grant_check_inventory_refresh() -> None:
         import warnings
 
         trial_detail = next(d for d in details if str(d.get("name") or "").endswith("/trial"))
-        assert str(trial_detail.get("tip_sha") or "").startswith(tip7[:7]), (
+        # Batch 837+ pins the *parent* trial commit (HEAD^), so accept any trial
+        # commit — not only the detail tip_sha — as the known mis-pin class.
+        assert str(trial_detail.get("tip_sha") or "").startswith(tip7[:7]) or _is_trial_commit(tip7), (
             f"sandbox.tip {tip7[:7]} matches neither sandbox {str(sb_detail.get('tip_sha'))[:7]} "
-            f"nor trial {str(trial_detail.get('tip_sha'))[:7]} detail tip_sha"
+            f"nor trial {str(trial_detail.get('tip_sha'))[:7]} detail tip_sha, and is not a trial commit"
         )
         warnings.warn(
-            f"AI_AGENT_ACCESS_INVENTORY.sandbox.tip={tip7[:7]} is the TRIAL tip (peer hand-pin); "
+            f"AI_AGENT_ACCESS_INVENTORY.sandbox.tip={tip7[:7]} is a TRIAL commit (peer hand-pin); "
             "run scripts/refresh_ai_agent_access_inventory.py",
             stacklevel=1,
         )
@@ -37425,6 +37460,63 @@ def test_batch548_research_stack_audit_watch() -> None:
 
 
 
+
+
+def test_batch841_research_stack_audit_watch() -> None:
+    """Batch 841: research_stack_audit_watch_no_promotion @2f7a5a9; VERIFY841; Δ0; Dropbox RN-UNIF/D1 OPEN."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH841_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "841"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ('delta_vs_batch840', 'delta_vs_batch839', 'delta_vs_batch838', 'delta_vs_batch837', 'delta_vs_batch836'):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    db = watch.get("dropbox_awareness") or {}
+    assert db.get("d3_lemma_rn_unif") == "NOT_CLOSED"
+    assert db.get("obl_d1_promote") == "OPEN"
+    assert db.get("discharged_from_dropbox") is False
+    assert not (ROOT / "portable" / "BATCH841_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH841_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "841" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH841_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "841" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH841_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 841)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 841)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    _assert_land_status_at_least("research-audit", 841)
+    _assert_land_status_at_least("research-audit", 841, "docs/OWNER_ACTIONS_MAIN.md")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 841" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
 
 
 def test_batch840_research_stack_audit_watch() -> None:
@@ -73333,3 +73425,89 @@ def test_batch841_tip_or_eng_parent_pin_repair() -> None:
     assert int(headers[0]) >= 841
     assert "STATUS (Batch 841 tip-eng-parent-pin-repair)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+
+def test_batch842_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 842: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 841→842."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH842_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "842"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 842
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("894cfd9")
+    hunt = json.loads((ROOT / "portable" / "BATCH842_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH842_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "842"
+    assert unfreeze.get("from_batch") == "841"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH842_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 842
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 842 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 842
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch843_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 843: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 842→843."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH843_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "843"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 843
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("321ea98")
+    hunt = json.loads((ROOT / "portable" / "BATCH843_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH843_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "843"
+    assert unfreeze.get("from_batch") == "842"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH843_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 843
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 843 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 843
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
