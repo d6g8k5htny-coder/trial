@@ -1,3 +1,13 @@
+### Batch 778 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY778 after tip/eng Soft Intent; covers research777 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 777/776/775/774/773 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 778 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 777 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY778; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 777/776/775/774/773 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 778 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
 ### Batch 778 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 777→778 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`486c5ab` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →778; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
