@@ -114,6 +114,15 @@ apply_one() {
     echo "already-applied (semantic): ${bn}"
     return 0
   fi
+  # Tip @e7652a1 (2026-09-27): 0017 close-handles already on tip but the third
+  # hunk's context drifted (survey → full_survey). Reverse --check fails while
+  # the semantic content is present: no bare INDEX_REL open().read() remains.
+  if [[ "$bn" == 0017-* && -f tests/test_pinned_sources.py ]] \
+    && grep -q 'with open(os.path.join(ROOT, INDEX_REL)' tests/test_pinned_sources.py \
+    && ! grep -q 'open(os.path.join(ROOT, INDEX_REL), encoding="utf-8").read()' tests/test_pinned_sources.py; then
+    echo "already-applied (semantic): ${bn}"
+    return 0
+  fi
   if git apply --check "$p" >/dev/null 2>&1; then
     if [[ "$check_only" -eq 0 ]]; then
       git apply "$p"

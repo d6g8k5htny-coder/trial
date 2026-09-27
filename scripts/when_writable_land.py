@@ -807,12 +807,29 @@ def assess_path_c_readiness(
 
     base_sha = parse_base_tip_sha()
     live_sha = fetch_live_hardening_sha()
-    matches = tip_matches_base(base_sha, live_sha)
+    exact = tip_matches_base(base_sha, live_sha)
+    matches = exact
+    # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → the
+    # stack is on tip; treat as matching (apply_all --check still runs on the
+    # live SHA). BEHIND / DIVERGED / UNKNOWN keep TIP_DRIFT.
+    drift_class = "MATCH" if exact is True else ("UNKNOWN" if exact is None else "")
+    if exact is False:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from tip_drift_class import classify, path_c_landed as _landed  # noqa: PLC0415
+
+            drift_class = classify(base_sha, live_sha)
+            if drift_class == "DESCENDANT" and _landed():
+                matches = True
+        except Exception:  # noqa: BLE001 — offline / import failure
+            drift_class = "UNKNOWN"
     detail.update(
         {
             "base_tip_sha": base_sha,
             "live_hardening_sha": live_sha,
             "tip_matches_base": matches,
+            "tip_exact_match": exact,
+            "tip_drift_class": drift_class,
         }
     )
 

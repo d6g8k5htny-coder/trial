@@ -73,6 +73,33 @@ def _run(cmd: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess
     )
 
 
+def _tip_drift_class(clone: Path, base_sha: str, live_sha: str, tip_match: bool) -> str:
+    """MATCH | DESCENDANT | BEHIND | DIVERGED | UNKNOWN (local ancestry, API fallback).
+
+    The depth-80 clone answers ancestry locally when BASE_TIP is recent; older
+    BASE_TIPs fall back to scripts/tip_drift_class.py (one compare API call).
+    """
+    if tip_match:
+        return "MATCH"
+    if not (base_sha and live_sha):
+        return "UNKNOWN"
+    fwd = _run(["git", "merge-base", "--is-ancestor", base_sha, live_sha], cwd=clone)
+    if fwd.returncode == 0:
+        return "DESCENDANT"
+    back = _run(["git", "merge-base", "--is-ancestor", live_sha, base_sha], cwd=clone)
+    if back.returncode == 0:
+        return "BEHIND"
+    # rc 1 = both known but unrelated (shallow horizon may hide the link);
+    # rc 128 = base_sha not in the shallow clone. Ask the API either way.
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from tip_drift_class import classify  # noqa: PLC0415
+
+        return classify(base_sha, live_sha)
+    except Exception:  # noqa: BLE001 — offline / import failure → UNKNOWN
+        return "DIVERGED" if fwd.returncode == 1 and back.returncode == 1 else "UNKNOWN"
+
+
 def _tree_accepts_path_c(clone: Path, tip_ref: str) -> dict:
     """Hardening-shaped tree required by apply_all root guard + patch hunks."""
     needed = (
@@ -265,8 +292,24 @@ def main() -> int:
             return 2
         report["hardening_sha"] = hard_sha
         report["default_tip_sha"] = main_sha
+        tip_exact = bool(base_sha and hard_sha and hard_sha.startswith(base_sha[:7]))
+        report["tip_exact_match"] = tip_exact
+        path_c_landed = False
+        verify_path = trial / "portable" / "path-c-applied-bundle" / "VERIFY.json"
+        if verify_path.is_file():
+            try:
+                verify = json.loads(verify_path.read_text(encoding="utf-8"))
+                path_c_landed = verify.get("path_c_landed") is True
+            except (OSError, json.JSONDecodeError):
+                path_c_landed = False
+        # Sidecar b3c6: hardening moves several times per hour. A live tip that
+        # descends from BASE_TIP still carries landed Path C, so
+        # tip_matches_base := exact MATCH, or DESCENDANT while path_c_landed.
+        # BEHIND / DIVERGED / UNKNOWN (reset, force-push, offline) stay False.
+        report["tip_drift_class"] = _tip_drift_class(clone_dir, base_sha, hard_sha, tip_exact)
+        report["tip_descends_from_base"] = report["tip_drift_class"] in ("MATCH", "DESCENDANT")
         report["tip_matches_base"] = bool(
-            base_sha and hard_sha and hard_sha.startswith(base_sha[:7])
+            tip_exact or (path_c_landed and report["tip_drift_class"] == "DESCENDANT")
         )
 
         hard_shape = _tree_accepts_path_c(clone_dir, f"origin/{HARDENING}")
@@ -313,14 +356,6 @@ def main() -> int:
         # (already-applied skips); treat tip as apply_ready.
         apply_exit = None
         apply_out = ""
-        path_c_landed = False
-        verify_path = trial / "portable" / "path-c-applied-bundle" / "VERIFY.json"
-        if verify_path.is_file():
-            try:
-                verify = json.loads(verify_path.read_text(encoding="utf-8"))
-                path_c_landed = verify.get("path_c_landed") is True
-            except (OSError, json.JSONDecodeError):
-                path_c_landed = False
         report["path_c_landed"] = path_c_landed
         if args.skip_apply_check:
             report["apply_all_check"] = "skipped"
@@ -435,7 +470,10 @@ def main() -> int:
         tip_match = report.get("tip_matches_base") is True
         # Batch 261: landed + tip match → idle (same class as owner_land_path_c /
         # owner_open_path_c_pr already-on-tip). Do not advertise APPLY_READY land.
-        already_on_tip = bool(path_c_landed and tip_match and apply_check_ok)
+        # Sidecar b3c6: landed + live DESCENDS from BASE_TIP is the same idle class
+        # (patches already on tip); BEHIND / DIVERGED never idle.
+        tip_ok = tip_match or (report.get("tip_descends_from_base") is True)
+        already_on_tip = bool(path_c_landed and tip_ok and apply_check_ok)
         report["already_on_tip"] = already_on_tip
         if already_on_tip:
             report["state"] = "IDLE_PATH_C_DONE"
