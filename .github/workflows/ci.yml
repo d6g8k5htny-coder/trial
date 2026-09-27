@@ -170,17 +170,28 @@ jobs:
             exit 1
           fi
           if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
-            echo "::error::tip-drift: dry-sim only in CI — never auto-refresh onto main from Actions"
-            exit 1
+            # Sidecar b3c6: hardening merges land several times per hour; a live tip
+            # that DESCENDS from BASE_TIP while Path C is landed still carries the
+            # stack → informational, not red. BEHIND / DIVERGED (reset) stay red.
+            CLASS="$(python3 trial/scripts/tip_drift_class.py "$BASE_SHA" "$TIP" || true)"
+            LANDED="$(python3 -c "import json; print('1' if json.load(open('trial/portable/path-c-applied-bundle/VERIFY.json')).get('path_c_landed') is True else '0')" 2>/dev/null || echo 0)"
+            if [[ "$CLASS" == "DESCENDANT" && "$LANDED" == "1" ]]; then
+              echo "::notice::tip-drift DESCENDANT_OK: live ${TIP:0:7} ahead of BASE_TIP ${BASE_SHA:0:7} (Path C landed) — refresh at leisure: ./scripts/refresh_path_c_bundle.sh"
+            else
+              echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA (class=${CLASS:-UNKNOWN} landed=$LANDED)"
+              echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
+              echo "::error::tip-drift: dry-sim only in CI — never auto-refresh onto main from Actions"
+              exit 1
+            fi
+          else
+            echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
           fi
-          echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
       - name: Tip-drift dry-sim (refresh_path_c_bundle --dry-run)
         run: |
           set -euo pipefail
           # Batch 176: exercise refresh helper on tip-stable trees (exit 0 no-op).
           # On TIP_DRIFT this exits 1 with the same fix-path message; never pushes to main.
+          # Sidecar b3c6: DESCENDANT + path_c_landed → exit 0 (TIP_DRIFT_DESCENDANT_OK).
           cd trial
           ./scripts/refresh_path_c_bundle.sh --dry-run
       - name: Apply portable patches
@@ -291,22 +302,26 @@ jobs:
             echo "::error::tip-drift: empty BASE_TIP or VERIFY.base_tip_sha — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
-          if [[ "$TIP" != "$BASE_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
-            echo "::error::tip-drift: CI dry-sim only — never auto-refresh onto main from Actions"
-            exit 1
-          fi
-          if [[ "$TIP" != "$VERIFY_SHA" ]]; then
-            echo "::error::tip-drift: live hardening SHA $TIP != VERIFY.json base_tip_sha $VERIFY_SHA"
-            echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh"
-            exit 1
-          fi
           if [[ "$BASE_SHA" != "$VERIFY_SHA" ]]; then
             echo "::error::tip-drift: BASE_TIP $BASE_SHA != VERIFY.json base_tip_sha $VERIFY_SHA — fix: ./scripts/refresh_path_c_bundle.sh"
             exit 1
           fi
-          echo "tip-drift gate OK: live==BASE_TIP==VERIFY @ ${TIP:0:7}"
+          if [[ "$TIP" != "$BASE_SHA" ]]; then
+            # Sidecar b3c6: DESCENDANT (live ahead of BASE_TIP==VERIFY) with Path C
+            # landed is informational; BEHIND / DIVERGED / UNKNOWN stay red.
+            CLASS="$(python3 "${GITHUB_WORKSPACE}/trial/scripts/tip_drift_class.py" "$BASE_SHA" "$TIP" || true)"
+            LANDED="$(python3 -c "import json; print('1' if json.load(open('$VERIFY_FILE')).get('path_c_landed') is True else '0')")"
+            if [[ "$CLASS" == "DESCENDANT" && "$LANDED" == "1" ]]; then
+              echo "::notice::tip-drift DESCENDANT_OK: live ${TIP:0:7} ahead of BASE_TIP==VERIFY ${BASE_SHA:0:7} (Path C landed) — refresh at leisure: ./scripts/refresh_path_c_bundle.sh"
+            else
+              echo "::error::tip-drift: live hardening SHA $TIP != BASE_TIP $BASE_SHA (class=${CLASS:-UNKNOWN} landed=$LANDED)"
+              echo "::error::tip-drift: fix path: ./scripts/refresh_path_c_bundle.sh  (refresh BASE_TIP + rebuild path-c-applied-bundle; does NOT push to main hardening)"
+              echo "::error::tip-drift: CI dry-sim only — never auto-refresh onto main from Actions"
+              exit 1
+            fi
+          else
+            echo "tip-drift gate OK: live==BASE_TIP==VERIFY @ ${TIP:0:7}"
+          fi
           # Batch 176: dry-sim refresh helper (tip-stable → exit 0; never pushes to main).
           echo "--- refresh_path_c_bundle.sh --dry-run (Batch 176 tip-drift dry-sim) ---"
           (cd "${GITHUB_WORKSPACE}/trial" && ./scripts/refresh_path_c_bundle.sh --dry-run)

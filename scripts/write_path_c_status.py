@@ -128,6 +128,25 @@ def _tip_matches(base: str | None, live: str | None) -> bool | None:
     return None
 
 
+def _tip_drift_class(base: str | None, live: str | None, exact: bool | None) -> str:
+    """MATCH | DESCENDANT | BEHIND | DIVERGED | UNKNOWN via scripts/tip_drift_class.py.
+
+    Sidecar b3c6: hardening moves several times per hour; a live tip that
+    descends from BASE_TIP still carries landed Path C.
+    """
+    if exact is True:
+        return "MATCH"
+    if exact is None:
+        return "UNKNOWN"
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from tip_drift_class import classify  # noqa: PLC0415
+
+        return classify(base, live)
+    except Exception:  # noqa: BLE001 — offline / import failure
+        return "UNKNOWN"
+
+
 def _probe_write_state() -> str:
     """Lightweight write probe; never prints token material."""
     # Prefer existing probe script if available (captures DENIED/WRITABLE).
@@ -359,9 +378,15 @@ def _classify_blocked(
 def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> dict:
     base_sha, _base_line = _read_base_tip()
     live_sha = _fetch_live_tip()
-    tip_match = _tip_matches(base_sha, live_sha)
+    tip_exact = _tip_matches(base_sha, live_sha)
     verify = _read_verify()
     land = _land_fields_from_verify(verify)
+    # Sidecar b3c6: tip_match := exact MATCH, or DESCENDANT while path_c_landed
+    # (stack already on the moved tip). BEHIND / DIVERGED / UNKNOWN stay False.
+    tip_drift_class = _tip_drift_class(base_sha, live_sha, tip_exact)
+    tip_match: bool | None = tip_exact
+    if tip_exact is False and land.get("path_c_landed") is True and tip_drift_class == "DESCENDANT":
+        tip_match = True
     prior = _prior_status(out)
     prior_ws = prior.get("write_state")
     if skip_write_probe:
@@ -408,6 +433,8 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         "base_tip": base_short,
         "base_tip_full": base_sha,
         "tip_match": tip_match,
+        "tip_exact_match": tip_exact,
+        "tip_drift_class": tip_drift_class,
         "write_state": write_state,
         "lemma_closed": lemma_closed,
         "path_c_blocked": blocked,
