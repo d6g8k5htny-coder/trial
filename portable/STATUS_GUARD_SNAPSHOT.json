@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-09-27T20:17:50Z",
+  "generated_at_utc": "2026-09-27T20:24:43Z",
   "guard": "no_status_promotion",
   "scientific_effect": "NONE",
   "goal_complete": false,
   "lemma_closed": false,
   "flipped_anything": false,
   "tip_sha": "9ce5c66f2fd541f6987ef7ab98730f8d929b980f",
-  "baseline_path": "/tmp/guard_baseline.json",
-  "baseline_tip_sha": "e7652a130398e88b2119884498af0987eef135c0",
+  "baseline_path": "portable/STATUS_GUARD_SNAPSHOT.json",
+  "baseline_tip_sha": "9ce5c66f2fd541f6987ef7ab98730f8d929b980f",
   "pass": true,
   "violations": [],
   "new_open_only": {
