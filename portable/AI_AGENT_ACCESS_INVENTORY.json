@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 856,
+  "batch": 857,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-27T21:26:45Z",
-      "tip_sha": "ea2cc9f82da5519fa1f61af10773c94101f3af99",
+      "tip_sha": "1f88d69e3e8ac2be8b625454e61142f69dabbec4",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 845/856: research_stack_audit_watch_no_promotion VERIFY>=845 catch-up at Soft Intent856 after PR#161; inv tip @ea2cc9f82da5; Soft Intent n=1 @856; durable 8/8; lemma_closed=false.",
+  "note": "Batch 857: tip_or_eng TIP_DRIFT keep-prior idle_no_commit living current; inv tip @1f88d69e3e8a; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
@@ -303,11 +303,11 @@
     "readable": true,
     "write": "WRITABLE",
     "has_agents": true,
-    "tip": "212559c33aba0f4fb3521a6589f001e3031ebab8",
+    "tip": "1f88d69e3e8ac2be8b625454e61142f69dabbec4",
     "app_read_http": 404,
     "durable_read_http": 200,
     "main_push_token_secret": true,
-    "tip_sha": "212559c33aba0f4fb3521a6589f001e3031ebab8"
+    "tip_sha": "1f88d69e3e8ac2be8b625454e61142f69dabbec4"
   },
   "sandbox_added": true,
   "scientific_effect": "NONE",
