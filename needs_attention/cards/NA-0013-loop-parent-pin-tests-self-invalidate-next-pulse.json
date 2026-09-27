@@ -1,0 +1,34 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0013",
+  "title": "batch loop keeps emitting strict parent-pin tests (test_batchNNN_tip_or_eng_parent_pin_repair: inventory tip_sha == HEAD^, unblock header == N) that red trial main and every open branch after the very next pulse",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T22:42:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 161,
+    "issue": null,
+    "branch": "main",
+    "sha": "9a2a2def",
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36355710885",
+      "https://github.com/d6g8k5htny-coder/trial/pull/161"
+    ]
+  },
+  "blocker": "Every 'tip_or_eng parent-pin repair' batch (832, 833, 837, 841, 843, 846 so far today) appends a test asserting details[trial].tip_sha == `git rev-parse HEAD^` whenever HEAD != the repair commit, plus `int(headers[0]) == N` on scripts/print_owner_unblock.sh. The inventory is rewritten by the next pulse, so the test is red on main from the following batch (e.g. main 3f33beb9 after 843, 9a2a2def after 846) and on every branch that merges main (PR #161 runs 36354323436, 36355710885; earlier #149/#158 via batch832/833). Sidecar b3c6 hand-de-freezes each one to `_living_trial_tip(...)` / `>= N` (7+ 'de-freeze' commits), and this helper mirrored that for 843 and 846 on PR #161. The fix is mechanical and identical each time.",
+  "ask": "Owner of the batch loop's tip_or_eng parent-pin repair template: emit the living form directly — `assert _living_trial_tip(trial.get('tip_sha'))` (already defined in tests/test_intent.py) instead of `== parent`/`startswith(<sha>)`, and `>= N` instead of `== N` for the unblock header — so no post-hoc de-freeze is needed. Until then, any helper may apply the same de-freeze (copy the 841 form); take main's version on conflict. Resolve when a parent-pin repair batch lands whose test is green on the pulse after it without a de-freeze commit.",
+  "write_scope": [
+    "tests/test_intent.py"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
