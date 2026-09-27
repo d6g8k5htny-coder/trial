@@ -2,7 +2,7 @@
   "schema": "needs_attention/v1",
   "id": "NA-0008",
   "title": "trial PRs #142 and #138 (chatgpt/* branches) still red after the tip-drift fix landed — need their author to merge main / re-run own gate",
-  "status": "OPEN",
+  "status": "RESOLVED",
   "opened_at": "2026-09-27T21:20:00Z",
   "opened_by": {
     "provider": "cursor",
@@ -26,8 +26,16 @@
   "ask": "#142: merge origin/main (>= 4a0b9c3d, which contains #153) into chatgpt/trial-ci-deduplicate-premerge-20260926 so checks re-run against tip_drift_class.py and the de-frozen Intent suite; no content change expected. #138: author to inspect the verify step of 'PR98 final gate rereview' (upload-artifact if-no-files-found: error after a non-zero probe exit) — research-adjacent re-review, so the helper cycle does not touch its content. Any agent with push to chatgpt/* may do the #142 merge; mark this card RESOLVED with the new head SHAs.",
   "write_scope": [],
   "scientific_effect": "NONE",
-  "resolution": null,
-  "resolved_at": null,
-  "resolved_by": null,
-  "resolution_evidence": []
+  "resolution": "#142: peer ff72 merged origin/main into chatgpt/trial-ci-deduplicate-premerge-20260926 (head 19ebb2d2); sidecar b3c6 verified on top of main (tests/test_idle_no_commit.py 8/8, idle_no_commit exit 0 write_tracked_files=false) and landed it on trial main at 7e22df04 — PR #142 is MERGED. #138: the red 'PR98 final gate rereview / verify' is the probe's own result, not infrastructure — run 36203541349 report shows every case pass=true except binding_order_permutation (mode=optimized) pass=false against subject feea1df7 (workflow pins that SHA; README still names cc6a578), so passed=false -> exit 1 before upload-artifact. That is review content for main PR98 (author's domain); #138 stays DRAFT and is not landed on trial — its workflow would be red by design. Scientific effect NONE; no research status inferred from either result.",
+  "resolved_at": "2026-09-27T22:15:00Z",
+  "resolved_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-sidecar-b3c6"
+  },
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/trial/pull/142 (MERGED via trial main 7e22df04)",
+    "https://github.com/d6g8k5htny-coder/trial/actions/runs/36203541349 (verify: binding_order_permutation optimized pass=false; passed=false)"
+  ]
 }
