@@ -6,8 +6,8 @@
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "live_tip": "66235299d4eb6f04669e5676737f64506cacf614",
-  "generated_at_utc": "2026-09-27T23:35:44Z",
+  "live_tip": "97680686e0067a7d022538458043649200d4f115",
+  "generated_at_utc": "2026-09-27T23:38:15Z",
   "batch": "858",
   "hunt": "tip_or_eng",
   "action": "idle_no_commit",
@@ -20,5 +20,5 @@
   "verify_unfreeze": "857->858",
   "inv_parent_pin": true,
   "soft_intent_single_header": true,
-  "note": "TIP_DRIFT LIVE=66235299 BASE=2f7a5a9 keep-prior; living tip_stale=0 script_stale=0 need_upload=0 DIFF_COUNT=0; VERIFY 857->858; Soft Intent n=1->858; inv parent_pin"
+  "note": "TIP_DRIFT LIVE=97680686 BASE=2f7a5a9 keep-prior; living tip_stale=0 script_stale=0 need_upload=0 DIFF_COUNT=0; VERIFY 857->858; Soft Intent n=1->858; inv parent_pin"
 }

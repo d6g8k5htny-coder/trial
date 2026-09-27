@@ -1,3 +1,8 @@
+### Batch 858 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 857→858 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`97680686` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →858; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after Soft Intent 857 / BRIEF857 Δ0 / pin repair after PR#121); Soft Intent single === header →858; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 857 — inventory_preserve_durable_tip_pin after PR#121 @2f7a5a9 (2026-09-27)
 
 - Parent-pin repair: trial tip_sha→precommit  after PR#121 merge broke pin; Soft Intent n=1 @857; research845/857 stamps retained; ; no inventable promotion.
