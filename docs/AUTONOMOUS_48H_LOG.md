@@ -1,7 +1,27 @@
+### Batch 837 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 836→837 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`ec68091` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →837; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after Soft Intent 836); Soft Intent single === header →837; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 837 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY837 Soft Intent n=1 after tip/eng837 Soft Intent 836→837; open stack 13/1/3 Δ0 vs 836/835/834/833/832; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`6172573f`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@837.
+
+### Batch 836 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `919d1c82` left inv tip_sha at `ab267818` while Soft Intent/VERIFY836 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `fede31a6` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY836; research836 catch-up mid-repair (kept Soft Intent 836); `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 836 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 835→836 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`ab26781` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →836; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no defect (living current after force republish Soft Intent 835); Soft Intent single === header →836; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 836 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY836 Soft Intent n=1 after tip/eng836 Soft Intent 835→836; research835 already @`5f4c7117`; open stack 13/1/3 Δ0 vs 835/834/833/832/831; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`919d1c82`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@836.
 
 ### Batch 835 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
