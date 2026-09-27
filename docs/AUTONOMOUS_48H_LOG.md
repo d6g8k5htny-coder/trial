@@ -1,3 +1,8 @@
+### Batch 796 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY796 Soft Intent n=1 (tip raced Soft Intent796 while research795 finishing); open stack 13/1/3 Δ0 vs 795/794/793/792/791; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`23c072ff`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@796.
+
 ### Batch 796 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 795→796 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`92cbc2c` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →796; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
