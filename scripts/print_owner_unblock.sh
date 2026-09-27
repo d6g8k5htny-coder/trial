@@ -47,7 +47,8 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 740 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 741 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 741: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 740→741 @2f7a5a9"
 echo " Batch 740: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 739→740 @2f7a5a9"
 echo " Batch 740: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research740+739+738 tip-race; research737 on tip); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 739: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research739+738 tip-race; research737 on tip); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
