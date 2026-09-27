@@ -1,0 +1,19 @@
+{
+  "batch": "712",
+  "action": "soft_intent_restore",
+  "from_header": "711",
+  "to_header": "712",
+  "soft_intent_single_header": true,
+  "verify_refresh_batch": 712,
+  "peer_tip_eng_missed_print_owner": true,
+  "note": "Peer tip_eng712 landed VERIFY/last-resort/briefs without print_owner Soft Intent bump; restore === Batch 712 single PERMANENT",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "38a3e070ff4c6cd071d38a09f050299494e06ada",
+  "generated_at_utc": "2026-09-27T09:23:41Z"
+}

@@ -1,3 +1,12 @@
+## STATUS (Batch 712 soft-intent-restore)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng Soft Intent restore: single === Batch 712 PERMANENT after peer tip_eng712 missed `print_owner_unblock.sh`. VERIFY already 712. Evidence: `portable/BATCH712_SOFT_INTENT_RESTORE_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/print_owner_unblock.sh | head -5
+./scripts/republish_living_path_c_release.sh --force
+```
+
 ## STATUS (Batch 712 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 711→712; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH712_TIP_ENG_*.json` + `BATCH712_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.

@@ -60533,3 +60533,21 @@ def test_batch712_tip_or_eng_tip_drift_keep_prior_unfreeze() -> None:
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
+
+
+def test_batch712_soft_intent_restore() -> None:
+    """Batch 712: Soft Intent restore after peer tip_eng missed print_owner header."""
+    import json
+    import re
+    brief = json.loads((ROOT / "portable" / "BATCH712_SOFT_INTENT_RESTORE_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "712"
+    assert brief.get("action") == "soft_intent_restore"
+    assert brief.get("lemma_closed") is False
+    assert brief.get("keep_prior") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 712
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 712
+    assert "STATUS (Batch 712 soft-intent-restore)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")

@@ -1,3 +1,7 @@
+## STATUS (Batch 712 soft-intent-restore)
+
+tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; Soft Intent restore 711→712 after peer tip_eng712 missed print_owner; VERIFY 712; inv parent-pin; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 712 tip-eng-keep-prior)
 
 tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 711→712; Soft Intent n=1; inv parent-pin; VERIFY 712; durable 8/8; lemma_closed=false; goal OPEN.

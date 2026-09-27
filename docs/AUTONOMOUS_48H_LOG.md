@@ -1,3 +1,8 @@
+### Batch 712 — tip_or_eng Soft Intent restore 711→712 after peer miss @2f7a5a9 (2026-09-27)
+
+- Peer tip_eng712 landed VERIFY/last-resort/briefs without Soft Intent header bump (left === Batch 711). Restored single === Batch 712 PERMANENT; inv parent_pin; living force STABLE×2.
+- TIP_DRIFT keep-prior; lemma_closed=false; inventable skipped. Goal OPEN.
+
 ### Batch 712 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 711→712 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 711→712; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
