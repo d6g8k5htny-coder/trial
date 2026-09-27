@@ -120,6 +120,17 @@ def _descends_from_base_tip(sha: str) -> bool:
         if p.returncode == 0 and p.stdout.strip():
             ok = p.stdout.strip() in ("ahead", "identical", "behind")
             break
+    else:
+        # NA-0009: `gh api` fails on Actions once the shared token budget is
+        # spent and `gh` refuses anonymous use in CI. Same answer from git
+        # ancestry (scripts/tip_drift_class._git_compare_status), no API.
+        try:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            import tip_drift_class as _tdc  # noqa: PLC0415
+
+            ok = _tdc._git_compare_status(base, sha) in ("ahead", "identical", "behind")
+        except Exception:  # noqa: BLE001 — strict: unknown stays False
+            ok = False
     _DESCENDANT_CACHE[key] = ok
     return ok
 
