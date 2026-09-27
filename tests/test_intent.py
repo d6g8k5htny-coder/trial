@@ -37256,6 +37256,118 @@ def test_batch548_research_stack_audit_watch() -> None:
 
 
 
+def test_batch761_research_stack_audit_watch() -> None:
+    """Batch 761: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY761; Δ0 vs 759/758/757/756/755."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH761_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "761"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ("delta_vs_batch759", "delta_vs_batch758", "delta_vs_batch757", "delta_vs_batch756", "delta_vs_batch755"):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng761") is True
+    assert watch.get("research760_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 761
+    assert not (ROOT / "portable" / "BATCH761_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH761_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "761" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH761_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "761" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH761_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 761)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 761)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 761 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 761 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 761" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
+def test_batch760_research_stack_audit_watch() -> None:
+    """Batch 760: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY761; Δ0 vs 759/758/757/756/755."""
+    import json
+    import re
+
+    watch = json.loads((ROOT / "portable" / "BATCH760_RESEARCH_AUDIT_WATCH.json").read_text(encoding="utf-8"))
+    assert watch.get("batch") == "760"
+    assert watch.get("lemma_closed") is False
+    assert watch.get("flipped_anything") is False
+    assert watch.get("tip_match") is True
+    assert watch.get("action") == "research_stack_audit_watch"
+    assert watch.get("assignment") == "research_stack_audit_watch_no_promotion"
+    assert watch.get("scientific_effect") == "NONE"
+    assert watch.get("goal_complete") is False
+    assert watch.get("inventable_promoted") is False
+    assert watch.get("audit_delta_needed") is False
+    assert watch.get("status_guard_tip_living") is True
+    assert watch.get("status_guard_tip_lag") is False
+    assert watch.get("status_guard_pass") is True
+    assert int(watch.get("open_premises") or 0) == 13
+    assert int(watch.get("open_lemmas") or 0) == 1
+    assert int(watch.get("open_prizes") or 0) == 3
+    assert _living_tip(str(watch.get("hardening_tip") or ""))
+    assert str(watch.get("hardening_tip") or "").startswith("2f7a5a9")
+    for key in ("delta_vs_batch759", "delta_vs_batch758", "delta_vs_batch757", "delta_vs_batch756", "delta_vs_batch755"):
+        delta = watch.get(key) or {}
+        assert int(delta.get("open_premises") or 0) == 0
+        assert int(delta.get("open_lemmas") or 0) == 0
+        assert int(delta.get("open_prizes") or 0) == 0
+    assert watch.get("tip_raced_eng760") is True
+    assert watch.get("research760_skipped_by_tip_race") is True
+    assert int(watch.get("catch_up_at_verify") or 0) >= 761
+    assert not (ROOT / "portable" / "BATCH760_RESEARCH_STACK_AUDIT.json").exists()
+    brief = json.loads((ROOT / "portable" / "BATCH760_RESEARCH_STACK_AUDIT_BRIEF.json").read_text(encoding="utf-8"))
+    assert brief.get("batch") == "760" and brief.get("lemma_closed") is False
+    evidence = json.loads((ROOT / "portable" / "BATCH760_RESEARCH_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert evidence.get("batch") == "760" and evidence.get("inventable_promoted") is False
+    pin = json.loads((ROOT / "portable" / "BATCH760_RESEARCH_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    snap = json.loads((ROOT / "portable" / "STATUS_GUARD_SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert snap.get("pass") is True and snap.get("lemma_closed") is False
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 760)
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 760)
+    assert "research_stack_audit_watch" in unblock
+    assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
+    assert "STATUS (Batch 760 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    assert "STATUS (Batch 760 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
+    assert "Batch 760" in log_md and "research_stack_audit_watch" in log_md
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
+
+
 def test_batch759_research_stack_audit_watch() -> None:
     """Batch 759: research_stack_audit_watch_no_promotion @2f7a5a9; catch-up VERIFY759; Δ0 vs 757/756/755/754/753."""
     import json
