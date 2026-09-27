@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 684 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 684: tip_or_eng TIP_DRIFT keep-prior living script_stale republish + unfreeze 683→684 @2f7a5a9"
+echo " Batch 684: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 682/681/679/678/677 (covers research683 tip-race gap; catch-up at tip VERIFY684 after tip/eng683+684); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 682: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 681/679/678/677/676 (catch-up after tip/eng682); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 681: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 679/678/677/676/675 (covers research680 tip-race gap; catch-up at tip VERIFY681 after tip/eng680+681); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 679: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 678/677/676/675/673 (catch-up after tip/eng679); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
