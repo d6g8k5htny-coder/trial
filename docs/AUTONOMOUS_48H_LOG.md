@@ -1,3 +1,8 @@
+### Batch 784 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY784 after tip/eng784 Soft Intent 783→784; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 783/782/781/780/779 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 784 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
 ### Batch 784 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 783→784 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`35e4637` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 783→784; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
