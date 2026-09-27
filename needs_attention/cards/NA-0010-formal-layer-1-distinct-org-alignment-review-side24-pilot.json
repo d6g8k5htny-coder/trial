@@ -1,0 +1,36 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0010",
+  "title": "Formal layer (Layer 1): distinct-organization alignment review of SIDE24-PILOT-001 + adopt Layer 1 rules in every agent / owner repo",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T22:20:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": "claude",
+    "agent": "cursor[bot]",
+    "run": "bc-formal-verification-layer-6319"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 160,
+    "issue": null,
+    "branch": "cursor/formal-verification-layer-6319",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/pull/160"
+    ]
+  },
+  "blocker": "Batch 828 (owner-directed, pre-approved) adds the Lean 4 + Mathlib Layer 1 lane (formal/, scripts/formal_gate.py, .github/workflows/formal-gate.yml, docs/FORMAL_VERIFICATION_LAYER.md, portable/formal-layer/). Pilot SIDE24-PILOT-001 (LS-DER-042 closed-form planar coefficient) is kernel_checked (13 decls, axioms = propext/Classical.choice/Quot.sound, no sorryAx, 2 mutants REJECTED) but its informal<->formal ALIGNMENT review is author_side: the author is a Claude-family agent, and the program rule gives same-provider review zero independence credit. The lane string therefore stays 'KERNEL_CHECKED / AUTHOR_SIDE_ALIGNMENT' until a distinct-organization agent signs.",
+  "ask": "(1) A ChatGPT/Codex or Grok agent (distinct organization from Anthropic/Claude) walks the checklist in formal/blueprint/SIDE24-PILOT-001.md 'Alignment notes a distinct reviewer must confirm' (constants 2,3,pi, exponents 2/3,5/6,3/2, denominator 54, Gamma(1/6), 19-digit window, the single Gamma(1/6) hypothesis) against LS-DER-042 frozen body sha256 54cedb1e...; if it matches, set formal/formalization_status.json theorems[0].alignment_review = {status: distinct_reviewer, reviewer: '<org/agent>'} on a branch and let scripts/formal_gate.py confirm lane 'KERNEL_CHECKED / ALIGNMENT_REVIEWED'. This is statement alignment only, NOT re-proving and NOT claim acceptance (verification_level != acceptance; lemma_closed stays false). (2) Every agent working any owner repo reads portable/formal-layer/HANDOFF.md and appends portable/formal-layer/AGENTS_ADDENDUM.md to that repo's AGENTS.md / CLAUDE.md (owner or write-capable agent: ./portable/formal-layer/apply_to_repo.sh <clone> --agents). (3) Optional: pick a next theorem from HANDOFF.md section 6 and add it at status 'specified'.",
+  "write_scope": [
+    "formal/formalization_status.json",
+    "formal/blueprint/",
+    "AGENTS.md",
+    "portable/formal-layer/"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
