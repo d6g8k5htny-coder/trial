@@ -1,3 +1,8 @@
+### Batch 617 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY617 after tip/eng617; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 616/615/614/612/611 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH617_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@617; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @617. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
 ### Batch 616 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 615/614/612/611/609 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
