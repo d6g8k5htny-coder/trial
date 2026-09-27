@@ -99,11 +99,30 @@ def base_tip_vs_live(hardening_sha: str) -> dict:
     parts = line.split()
     base_sha = parts[-1] if parts else None
     matches = bool(base_sha and hardening_sha and hardening_sha.startswith(base_sha[:7]))
+    # Landed-ancestor gate (scripts/path_c_tip_gate.py): tip_ok/tip_state say
+    # whether a moved tip still carries Path C; tip_matches_base stays literal.
+    tip_ok, tip_state = matches, ("TIP_MATCH" if matches else "UNKNOWN")
+    if not matches and hardening_sha:
+        try:
+            import sys
+
+            here = str(Path(__file__).resolve().parent)
+            if here not in sys.path:
+                sys.path.insert(0, here)
+            import path_c_tip_gate as _tip_gate
+
+            gate = _tip_gate.gate(hardening_sha, trial_root=Path(__file__).resolve().parents[1])
+            tip_ok = gate.get("tip_ok") is True
+            tip_state = str(gate.get("tip_state") or "UNKNOWN")
+        except Exception:  # noqa: BLE001 - informational; soft-fail
+            pass
     return {
         "base_tip_file": line or None,
         "base_tip_sha": base_sha,
         "live_hardening_sha": hardening_sha,
         "tip_matches_base": matches,
+        "tip_ok": tip_ok,
+        "tip_state": tip_state,
         "apply_stack": "0001-0004 + 0008-0019",
         "path_c_note": (
             "Keep Path C on hardening when default tip lacks PACKET.json "

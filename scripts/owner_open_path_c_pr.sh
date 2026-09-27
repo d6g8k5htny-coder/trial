@@ -236,12 +236,24 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   set +e
   LIVE_SHA="$(git ls-remote "https://github.com/${REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1)"
   set -e
+  TIP_LANDED_ANCESTOR=0
   if [[ -n "$LIVE_SHA" ]]; then
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      # Landed-ancestor gate (scripts/path_c_tip_gate.py): Path C landed and
+      # BASE_TIP + 0019 merge in live history → idle, not drift.
+      TIP_GATE_TIP_STATE="UNKNOWN"
+      TIP_GATE_REASON=""
+      TIP_GATE_SH="$(python3 "$TRIAL_ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --trial-root "$TRIAL_ROOT" --sh 2>/dev/null || true)"
+      [[ -n "$TIP_GATE_SH" ]] && eval "$TIP_GATE_SH"
+      if [[ "$TIP_GATE_TIP_STATE" != "LANDED_ANCESTOR" ]]; then
+        die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (tip_gate=${TIP_GATE_TIP_STATE}${TIP_GATE_REASON:+: $TIP_GATE_REASON}) — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      fi
+      TIP_LANDED_ANCESTOR=1
+      echo "tip_matches_base=false tip_ok=true tip_state=LANDED_ANCESTOR"
+    else
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
   else
     echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
   fi
@@ -262,6 +274,8 @@ print("true" if d.get("path_c_landed") is True else "false")
 ' "$VERIFY_JSON" 2>/dev/null || echo false)"
   TIP_OK=0
   if [[ -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    TIP_OK=1
+  elif [[ "$TIP_LANDED_ANCESTOR" -eq 1 ]]; then
     TIP_OK=1
   elif [[ -z "$LIVE_SHA" && -n "$VERIFY_SHA" && ( "$VERIFY_SHA" == "$BASE_TIP_SHA" || "$VERIFY_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${VERIFY_SHA}"* ) ]]; then
     TIP_OK=1

@@ -142,12 +142,30 @@ if [[ ${#BASE_SHA} -eq 40 && "$LIVE_SHA" == "$BASE_SHA" ]]; then
 elif [[ ${#BASE_SHA} -ge 7 && ${#BASE_SHA} -lt 40 && "${LIVE_SHA:0:${#BASE_SHA}}" == "$BASE_SHA" ]]; then
   TIP_OK=1
 fi
+TIP_STATE="TIP_MATCH"
 if [[ "$TIP_OK" -ne 1 ]]; then
-  echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA" >&2
+  # Landed-ancestor gate (scripts/path_c_tip_gate.py): when Path C is landed and
+  # BASE_TIP + the 0019 merge are in live history, a moved tip is not drift.
+  TIP_GATE_TIP_STATE="UNKNOWN"
+  TIP_GATE_REASON=""
+  TIP_GATE_ANCESTRY_VIA=""
+  TIP_GATE_SH="$(python3 "$ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --repo-dir "$WORKDIR" --trial-root "$ROOT" --sh 2>/dev/null || true)"
+  [[ -n "$TIP_GATE_SH" ]] && eval "$TIP_GATE_SH"
+  if [[ "$TIP_GATE_TIP_STATE" == "LANDED_ANCESTOR" ]]; then
+    TIP_OK=1
+    TIP_STATE="LANDED_ANCESTOR"
+  fi
+fi
+if [[ "$TIP_OK" -ne 1 ]]; then
+  echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA (tip_gate=${TIP_GATE_TIP_STATE:-n/a}${TIP_GATE_REASON:+: $TIP_GATE_REASON})" >&2
   echo "  refresh BASE_TIP + rebuild path-c-applied-bundle before land" >&2
   exit 1
 fi
-echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
+if [[ "$TIP_STATE" == "TIP_MATCH" ]]; then
+  echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
+else
+  echo "assert_path_c_ready: tip gate OK LANDED_ANCESTOR live=${LIVE_SHA:0:7} BASE_TIP=${BASE_SHA:0:7} in history (tip_matches_base=false; via=${TIP_GATE_ANCESTRY_VIA})"
+fi
 
 # Batch 230: Path C already merged on hardening — patches are on tip; do not re-apply.
 # Batch 246: post-0019 idle — skip redundant apply_all --check when landed+no pending

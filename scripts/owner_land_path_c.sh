@@ -298,10 +298,23 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     fi
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh bundle." >&2
-      exit 1
+      # Landed-ancestor gate (scripts/path_c_tip_gate.py): Path C landed and
+      # BASE_TIP + 0019 merge in live history → already on tip, not drift.
+      TIP_GATE_TIP_STATE="UNKNOWN"
+      TIP_GATE_REASON=""
+      TIP_GATE_SH="$(python3 "$TRIAL_ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --repo-dir . --trial-root "$TRIAL_ROOT" --sh 2>/dev/null || true)"
+      [[ -n "$TIP_GATE_SH" ]] && eval "$TIP_GATE_SH"
+      if [[ "$TIP_GATE_TIP_STATE" != "LANDED_ANCESTOR" ]]; then
+        echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (tip_gate=${TIP_GATE_TIP_STATE}${TIP_GATE_REASON:+: $TIP_GATE_REASON}) — refresh bundle." >&2
+        exit 1
+      fi
+      TIP_LANDED_ANCESTOR=1
+      echo "tip_matches_base=false tip_ok=true tip_state=LANDED_ANCESTOR"
+      echo "already_on_tip=true path_c_landed=true (BASE_TIP ${BASE_TIP_SHA:0:7} + 0019 merge in live history @ ${LIVE_SHA:0:7})"
+    else
+      TIP_LANDED_ANCESTOR=0
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
     git config user.name "owner-land-path-c-dry"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then
@@ -309,7 +322,12 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       git checkout --detach "$LIVE_SHA" || die "cannot checkout live hardening $LIVE_SHA"
     fi
     # Need BASE_TIP object for bundle prerequisite; LIVE_SHA == BASE_TIP when tip_matches.
-    if [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
+    if [[ "$TIP_LANDED_ANCESTOR" -eq 1 ]]; then
+      # Historical bundle was cut on BASE_TIP; it is already in live history, so
+      # neither .bundle ff-merge nor apply_all --check is meaningful here.
+      echo "bundle_apply=skipped_landed_ancestor"
+      echo "already_applied_on_tip=true"
+    elif [[ "$USE_GIT_BUNDLE" -eq 1 ]]; then
       if ! git fetch "$BUNDLE_GIT" "$BUNDLE_BRANCH"; then
         echo "owner_land_path_c: ERROR: git fetch from .bundle failed on BASE_TIP (exit=1)." >&2
         exit 1
@@ -352,6 +370,12 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       echo "owner_land_path_c: ERROR: math_status problems!=0 after bundle apply." >&2
       exit 1
     fi
+    if [[ "$TIP_LANDED_ANCESTOR" -eq 1 ]]; then
+      echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
+      echo "owner_land_path_c: from-bundle dry-run OK — already-on-tip idle (LANDED_ANCESTOR; no no-op land); lemma_closed=false."
+      echo "Scientific effect: NONE"
+      exit 0
+    fi
     echo "owner_land_path_c: from-bundle dry-run OK — tip-drift clean; $([ "$USE_GIT_BUNDLE" -eq 1 ] && echo 'git bundle fetch' || echo 'git am') OK (or already_applied_on_tip); lemma_closed=false."
     echo "Land with write creds: $0 --from-bundle"
     echo "Scientific effect: NONE"
@@ -376,13 +400,17 @@ try:
 except Exception:
   d={}
 print("true" if d.get("path_c_landed") is True else "false")
+print("true" if (d.get("tip_ok") is True or d.get("tip_matches_base") is True) else "false")
+print(str(d.get("tip_state") or ("TIP_MATCH" if d.get("tip_matches_base") is True else "UNKNOWN")))
 print("true" if d.get("tip_matches_base") is True else "false")
-' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\n')"
+' "$DRY_JSON_OUT" 2>/dev/null || printf 'false\nfalse\nUNKNOWN\nfalse\n')"
     LANDED_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '1p')"
     TIP_MATCH_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '2p')"
+    TIP_STATE_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '3p')"
+    TIP_EQ_LINE="$(printf '%s\n' "$PATH_C_LANDED" | sed -n '4p')"
     rm -f "$DRY_JSON_OUT"
     if [[ "$LANDED_LINE" == "true" && "$TIP_MATCH_LINE" == "true" ]]; then
-      echo "already_on_tip=true path_c_landed=true tip_matches_base=true"
+      echo "already_on_tip=true path_c_landed=true tip_ok=true tip_state=${TIP_STATE_LINE} tip_matches_base=${TIP_EQ_LINE}"
       echo "would: NOT push / NOT open PR (Path C stack already on hardening tip; idle)"
       echo "owner_land_path_c: dry-run OK — already-on-tip idle (no no-op land)."
       echo "Scientific effect: NONE"

@@ -359,9 +359,28 @@ def _classify_blocked(
 def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> dict:
     base_sha, _base_line = _read_base_tip()
     live_sha = _fetch_live_tip()
-    tip_match = _tip_matches(base_sha, live_sha)
+    tip_match_literal = _tip_matches(base_sha, live_sha)
     verify = _read_verify()
     land = _land_fields_from_verify(verify)
+    # Landed-ancestor tip gate (scripts/path_c_tip_gate.py). `tip_match` below is
+    # the gate decision (tip_ok) so idle_status / goal_complete / PATH_C_BLOCKED
+    # stop reporting TIP_DRIFT for a landed Path C on a moving hardening branch;
+    # `tip_matches_base` keeps the literal equality and `tip_state` says which.
+    tip_state = "TIP_MATCH" if tip_match_literal is True else ("UNKNOWN" if tip_match_literal is None else "TIP_DRIFT")
+    tip_match = tip_match_literal
+    if tip_match_literal is False and live_sha:
+        try:
+            import sys as _sys
+
+            _sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import path_c_tip_gate as _tip_gate
+
+            gate = _tip_gate.gate(live_sha, trial_root=ROOT)
+            tip_state = str(gate.get("tip_state") or "UNKNOWN")
+            if gate.get("tip_ok") is True:
+                tip_match = True
+        except Exception:  # noqa: BLE001 - soft-fail to literal match
+            tip_state = "UNKNOWN"
     prior = _prior_status(out)
     prior_ws = prior.get("write_state")
     if skip_write_probe:
@@ -408,6 +427,9 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
         "base_tip": base_short,
         "base_tip_full": base_sha,
         "tip_match": tip_match,
+        "tip_matches_base": tip_match_literal,
+        "tip_ok": tip_match,
+        "tip_state": tip_state,
         "write_state": write_state,
         "lemma_closed": lemma_closed,
         "path_c_blocked": blocked,

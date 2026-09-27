@@ -815,6 +815,28 @@ def assess_path_c_readiness(
             "tip_matches_base": matches,
         }
     )
+    # Landed-ancestor tip gate (scripts/path_c_tip_gate.py): once Path C is landed
+    # and BASE_TIP is kept immutable, live != BASE is not TIP_DRIFT when BASE_TIP
+    # and the 0019 merge are in live history. tip_matches_base stays literal;
+    # the returned readiness flag (and PATH_C_BLOCKED) follows tip_ok.
+    tip_ok: bool | None = matches
+    if matches is False and live_sha:
+        try:
+            if str(Path(__file__).resolve().parent) not in sys.path:
+                sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import path_c_tip_gate as _tip_gate
+
+            gate = _tip_gate.gate(live_sha, trial_root=ROOT)
+        except Exception as exc:  # noqa: BLE001 - soft-fail to literal match
+            gate = {"tip_state": "UNKNOWN", "tip_ok": False, "reason": f"gate error: {exc}"}
+        detail["tip_state"] = gate.get("tip_state")
+        detail["tip_gate_reason"] = gate.get("reason")
+        detail["ancestry_via"] = gate.get("ancestry_via")
+        if gate.get("tip_ok") is True:
+            tip_ok = True
+    elif matches is True:
+        detail["tip_state"] = "TIP_MATCH"
+    detail["tip_ok"] = tip_ok
 
     do_apply = check_apply
     if do_apply is None:
@@ -824,13 +846,16 @@ def assess_path_c_readiness(
     if matches is True and do_apply and APPLY_ALL_SH.is_file():
         apply_ok, apply_detail = _apply_all_check_cached(live_sha or base_sha or "")
         detail["apply_check"] = apply_detail
+    elif matches is False and tip_ok is True:
+        # Patches are in live history; historical --check on a moved tree is meaningless.
+        detail["apply_check"] = {"skipped": True, "reason": "landed_ancestor"}
     elif matches is False:
         apply_ok = None  # tip drift dominates; skip apply
         detail["apply_check"] = {"skipped": True, "reason": "tip_drift"}
     else:
         detail["apply_check"] = {"skipped": True, "reason": "tip_unknown_or_disabled"}
 
-    return matches, apply_ok, detail
+    return tip_ok, apply_ok, detail
 
 
 def _apply_all_check_cached(tip_sha: str) -> tuple[bool | None, dict]:
