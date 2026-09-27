@@ -2,6 +2,10 @@
 
 tip BASE `2f7a5a9` LIVE `d1e944a` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 846→847; Soft Intent n=1; inv parent-pin; VERIFY 847; durable 8/8; lemma_closed=false; goal OPEN.
 
+## STATUS (Batch 847 research-audit)
+
+tip  tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 846/845/844/843/842 (at tip VERIFY847 after tip/eng Soft Intent 846→847); STATUS_GUARD pass; stamps@847; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 846 tip-eng-parent-pin-repair)
 
 tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `b3551103` (was `248f34c1` after tip race @1f967f72 broke pin); Soft Intent n=1; VERIFY 846; durable 8/8; lemma_closed=false; goal OPEN.

@@ -3,6 +3,11 @@
 - TIP_DRIFT LIVE=`d1e944a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →847; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no defect (living current after force republish Soft Intent 846); Soft Intent single === header →847; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
 
+### Batch 847 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY847 Soft Intent n=1 after tip/eng Soft Intent 846→847; open stack 13/1/3 Δ0 vs 846/845/844/843/842; ; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @.
+- action=; scientific_effect=NONE; Goal OPEN; stamps@847.
+
 ### Batch 846 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: tip race after Soft Intent846 / research846 — merge `1f967f72` (+ docs `b3551103`) left inv tip_sha at `248f34c1`; pin broken (`tip_sha != HEAD^`).
