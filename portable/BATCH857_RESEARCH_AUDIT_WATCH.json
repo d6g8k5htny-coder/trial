@@ -35,30 +35,30 @@
     "obl_d1_promote": "OPEN",
     "discharged_from_dropbox": false
   },
-  "batch": "845",
-  "prior_audit_artifact": "portable/BATCH844_RESEARCH_AUDIT_WATCH.json",
-  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY>=845 after Soft Intent857 tip race; open stack 13/1/3 Delta0 vs BATCH844/843/842/841/840; Soft Intent n=1 @857; parent-pin tip_sha=precommit; no inventable promotion",
-  "delta_vs_batch844": {
+  "batch": "857",
+  "prior_audit_artifact": "portable/BATCH856_RESEARCH_AUDIT_WATCH.json",
+  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY857 after tip/eng Soft Intent 856\u2192857; covers Batch845 VERIFY>=845; open stack 13/1/3 Delta0 vs BATCH856/855/854/853/852; Soft Intent n=1 @857; no inventable promotion",
+  "delta_vs_batch856": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch843": {
+  "delta_vs_batch855": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch842": {
+  "delta_vs_batch854": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch841": {
+  "delta_vs_batch853": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch840": {
+  "delta_vs_batch852": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0

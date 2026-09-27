@@ -1,3 +1,7 @@
+## STATUS (Batch 857 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 856/855/854/853/852 (catch-up at tip VERIFY857 after tip/eng Soft Intent 856→857; covers Batch845 VERIFY>=845); STATUS_GUARD pass; stamps@845,856,857; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 857 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `1f88d69` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 856→857; Soft Intent n=1; inv parent-pin; VERIFY 857; durable 8/8; lemma_closed=false; goal OPEN.
@@ -101,7 +105,7 @@ tip BASE `2f7a5a9` LIVE `a5891e61` tip_match=false tip_moved keep-prior; tip_or_
 
 ## STATUS (Batch 845 research-audit)
 
-tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 844/843/842/841/840 (catch-up at tip VERIFY>=845 after Soft Intent856 + PR#161 tip race; parent-pin tip_sha->precommit); STATUS_GUARD pass; stamps@845; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 844/843/842/841/840 (catch-up at tip VERIFY>=845 after Soft Intent857 tip race); STATUS_GUARD pass; stamps@845; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
 
 
 ## STATUS (Batch 844 tip-eng-idle)
