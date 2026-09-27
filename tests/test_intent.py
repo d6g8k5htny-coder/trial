@@ -101,25 +101,20 @@ def _descends_from_base_tip(sha: str) -> bool:
     key = f"{base}...{sha}"
     if key in _DESCENDANT_CACHE:
         return _DESCENDANT_CACHE[key]
-    ok = False
-    # A stale/bad GITHUB_TOKEN in the caller's env (App tokens rotate hourly;
-    # `gh auth token` echoes the env token) must not read as "not living":
-    # retry with env tokens stripped so gh uses its own store / anonymous.
-    for strip_env in (False, True):
-        env = dict(os.environ)
-        if strip_env:
-            for k in ("GITHUB_TOKEN", "GH_TOKEN", "MAIN_PUSH_TOKEN"):
-                env.pop(k, None)
-        try:
-            p = subprocess.run(
-                ["gh", "api", f"repos/d6g8k5htny-coder/main/compare/{key}", "--jq", ".status"],
-                capture_output=True, text=True, timeout=30, check=False, env=env,
-            )
-        except (OSError, subprocess.SubprocessError):
-            continue
-        if p.returncode == 0 and p.stdout.strip():
-            ok = p.stdout.strip() in ("ahead", "identical", "behind")
-            break
+    # NA-0009: `gh api` never falls back to anonymous — with no usable token it
+    # exits 4 before making a request, so on an Actions runner (whose token is
+    # scoped to trial, not main) both the as-is and the env-stripped attempts
+    # were dead and every live-tip test went red. Reuse the one classifier the
+    # CI gates already use: scripts/tip_drift_class._compare_status tries the
+    # token, then anonymous urllib (the research repo is public), then gh.
+    scripts_dir = str(ROOT / "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    from tip_drift_class import classify  # noqa: E402
+
+    # BEHIND kept: pinned prior hardening tips are living by construction; gate
+    # policy (BEHIND fails) lives in tip_drift_class.acceptable, not here.
+    ok = classify(base, sha) in ("MATCH", "DESCENDANT", "BEHIND")
     _DESCENDANT_CACHE[key] = ok
     return ok
 
