@@ -1,3 +1,12 @@
+## STATUS (Batch 847 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d1e944a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 846→847; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH847_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch847_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 846 tip-eng-parent-pin-repair)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after tip race @ `1f967f72` left inv tip_sha stale @ `248f34c1`; re-pin to precommit `b3551103`. Soft Intent single-header; VERIFY846. Evidence: `portable/BATCH846_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.

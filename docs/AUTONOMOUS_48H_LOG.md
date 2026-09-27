@@ -1,3 +1,8 @@
+### Batch 847 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 846→847 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d1e944a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →847; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 846); Soft Intent single === header →847; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 846 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: tip race after Soft Intent846 / research846 — merge `1f967f72` (+ docs `b3551103`) left inv tip_sha at `248f34c1`; pin broken (`tip_sha != HEAD^`).
