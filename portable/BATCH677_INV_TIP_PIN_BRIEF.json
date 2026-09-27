@@ -2,9 +2,9 @@
   "batch": "677",
   "action": "inventory_preserve_durable_tip_pin",
   "parent_pin": true,
-  "trial_tip_before": "0f62dcbd6ee8a1ad998d1672c7c2f0464f8d6065",
-  "trial_tip_after": "4f7bc015854e373f30f3d88453f26e8b6dc7ee34",
-  "note": "parent-pin inv tip_sha=precommit HEAD research676 (4f7bc015); was at 0f62dcbd; TIP_DRIFT keep-prior; no tip-pin treadmill",
+  "trial_tip_before": "4f7bc015854e373f30f3d88453f26e8b6dc7ee34",
+  "trial_tip_after": "480d53036c9b77d31e039151524f9c4834b4e6a4",
+  "note": "parent-pin inv tip_sha=precommit HEAD (480d5303); was at 4f7bc015; TIP_DRIFT keep-prior; no tip-pin treadmill",
   "tip_match": false,
   "tip_moved": true,
   "keep_prior": true,
@@ -13,5 +13,5 @@
   "scientific_effect": "NONE",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
   "live_tip": "38a3e070ff4c6cd071d38a09f050299494e06ada",
-  "generated_at_utc": "2026-09-27T05:48:30Z"
+  "generated_at_utc": "2026-09-27T05:49:39Z"
 }
