@@ -1,0 +1,13 @@
+{
+  "batch": "392",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "8f3ba8988a559d2dd198a3d21da440ea4834c1af",
+  "generated_at_utc": "2026-09-26T02:49:30Z",
+  "note": "parent_pin at precommit HEAD after Batch391 living"
+}

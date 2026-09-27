@@ -1,0 +1,14 @@
+{
+  "batch": "496",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "trial_tip_before": "155defee90bc0374551d6d37eb912931a4958ac3",
+  "trial_tip_after": "878eb9a337a61615c4b3c9c1726baac64a5c66eb",
+  "generated_at_utc": "2026-09-26T11:54:08Z",
+  "note": "parent-pin inv tip_sha=precommit HEAD (878eb9a); was at 155defe; no tip-pin treadmill"
+}

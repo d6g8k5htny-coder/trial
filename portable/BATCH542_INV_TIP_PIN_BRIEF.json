@@ -1,0 +1,15 @@
+{
+  "batch": "542",
+  "action": "inventory_preserve_durable_tip_pin",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "96e5175306f7ab791a9ad021d0d39ecc1fbfee57",
+  "trial_tip_before": "cda4b75802027268e0f2313884e0f15561e6b90a",
+  "generated_at_utc": "2026-09-26T16:07:17Z"
+}

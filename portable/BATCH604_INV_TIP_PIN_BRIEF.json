@@ -1,0 +1,17 @@
+{
+  "batch": "604",
+  "action": "inventory_parent_pin_repair",
+  "parent_pin": true,
+  "trial_tip_before": "83df413850ba4775fb4bf186220e6df754486eae",
+  "trial_tip_after": "d9235e7b3ad82c352b65154a2e99ae583661f66d",
+  "note": "parent-pin REPAIR inv tip_sha=precommit HEAD / tip_eng604 (d9235e7b); was stale @83df4138 after peer tip/eng604 land; TIP_DRIFT keep-prior",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "96e5175306f7ab791a9ad021d0d39ecc1fbfee57",
+  "generated_at_utc": "2026-09-26T23:03:37Z"
+}

@@ -1,0 +1,14 @@
+{
+  "batch": "405",
+  "from_batch": "404",
+  "to_batch": "405",
+  "from": "404",
+  "to": "405",
+  "action": "unfreeze_last_resort_and_verify_refresh_batch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "generated_at_utc": "2026-09-26T04:03:02Z"
+}

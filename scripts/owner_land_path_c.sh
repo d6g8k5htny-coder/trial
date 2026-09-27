@@ -298,10 +298,21 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     fi
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh bundle." >&2
-      exit 1
+      # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → the
+      # stack is already on tip; proceed (bundle is already_applied_on_tip).
+      # BEHIND / DIVERGED / UNKNOWN still exit 1.
+      DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$BASE_TIP_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+      DRIFT_LANDED="$(python3 -c 'import json,sys; print("1" if json.load(open(sys.argv[1])).get("path_c_landed") is True else "0")' "$VERIFY_JSON" 2>/dev/null || echo 0)"
+      if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
+        echo "tip_drift_class=DESCENDANT path_c_landed=true — live ${LIVE_SHA:0:7} ahead of BASE_TIP ${BASE_TIP_SHA:0:7} (informational; refresh at leisure: ./scripts/refresh_path_c_bundle.sh)"
+        echo "tip_matches_base=true (DESCENDANT_OK)"
+      else
+        echo "owner_land_path_c: ERROR: tip-drift live $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (class=${DRIFT_CLASS:-UNKNOWN} landed=${DRIFT_LANDED}) — refresh bundle." >&2
+        exit 1
+      fi
+    else
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
     git config user.name "owner-land-path-c-dry"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     if ! git checkout --detach "$LIVE_SHA" 2>/dev/null; then

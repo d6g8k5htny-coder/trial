@@ -1,0 +1,25 @@
+{
+  "batch": "486",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "assignment": "tip_or_eng_continue_vs_BASE_TIP_2f7a5a9",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0,
+    "tgz_newer": 1,
+    "diff_count": 0,
+    "tar_noise_only": true
+  },
+  "inventory_tip_pin": "preserve_parent_pin",
+  "verify_refresh_batch": 486,
+  "generated_at_utc": "2026-09-26T10:49:21Z",
+  "note": "tip_or_eng after tip-sync485: tip stable; living tar-noise DIFF_COUNT=0; VERIFY lag 485\u2192486 unfreeze; inv parent_pin; Intent soften 441/445 preserved"
+}

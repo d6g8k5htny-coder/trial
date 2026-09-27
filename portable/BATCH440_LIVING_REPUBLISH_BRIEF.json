@@ -1,0 +1,16 @@
+{
+  "batch": "440",
+  "action": "living_script_stale_republish",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 0,
+  "need_upload": 0,
+  "uploaded": true,
+  "generated_at_utc": "2026-09-26T06:15:14Z",
+  "living_sha256": "0ddc9443abf8a3a2c7e18302898c86f4cc98c8e25317498e537f17281050ad0b",
+  "living_bytes": 730672
+}

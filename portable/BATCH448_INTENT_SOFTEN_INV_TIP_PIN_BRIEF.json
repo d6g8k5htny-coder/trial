@@ -1,0 +1,13 @@
+{
+  "batch": "448",
+  "action": "inventory_preserve_durable_tip_pin",
+  "lemma_closed": false,
+  "parent_pin": true,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "trial_tip_sha": "0dd82e73d679783d61d96490bc6e2922a4f4ffad",
+  "note": "post-intent-soften parent-pin",
+  "generated_at_utc": "2026-09-26T07:08:44Z"
+}

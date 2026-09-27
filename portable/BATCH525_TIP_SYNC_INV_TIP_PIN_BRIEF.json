@@ -1,0 +1,23 @@
+{
+  "batch": "525",
+  "generated_at_utc": "2026-09-26T14:40:03Z",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip": "2f7a5a9",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "aligned": false,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "goal": "OPEN",
+  "path_c": "IDLE@0019",
+  "durable": "8/8_WRITABLE",
+  "action": "inventory_preserve_durable_tip_pin",
+  "defect_id": "inv_tip_parent_pin_after_tip_sync_keep_prior",
+  "parent_pin": true,
+  "trial_tip_before": "5ae3e7d8fc1d2c79f29bd15596f8ef88111a4f30",
+  "trial_tip_after": "cccf2a320bc3c78360e16d34932a2064a29af6bf",
+  "lag_beyond_parent": true,
+  "note": "parent-pin inv tip_sha=precommit HEAD (cccf2a3); was at 5ae3e7d"
+}

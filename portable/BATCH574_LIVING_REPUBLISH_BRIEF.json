@@ -1,0 +1,21 @@
+{
+  "batch": "574",
+  "action": "living_script_stale_republish_keep_prior",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 1,
+  "tgz_newer": 1,
+  "uploaded": true,
+  "parent_pin": true,
+  "pack_sha256": "67f77e30649a40fd893ac9eb3ad00f0853ed451a1958f66a168ad59d0a850bd2",
+  "note": "tip_or_eng TIP_DRIFT keep-prior: living script_stale after Soft Intent/REFRESH 574 atop tip/eng573; republish; BASE immutable",
+  "tip_match": false,
+  "tip_moved": true,
+  "keep_prior": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "live_tip": "96e5175306f7ab791a9ad021d0d39ecc1fbfee57",
+  "generated_at_utc": "2026-09-26T19:50:30Z"
+}

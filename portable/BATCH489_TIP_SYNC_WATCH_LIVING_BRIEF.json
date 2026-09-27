@@ -1,0 +1,18 @@
+{
+  "batch": "489",
+  "action": "living_script_stale_republish_after_tip_sync_watch",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "living_tag": "batch241-path-c-bundle",
+  "tip_stale": 0,
+  "script_stale": 1,
+  "tgz_newer": 0,
+  "need_upload": 1,
+  "uploaded": true,
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T11:10:47Z",
+  "note": "tip_sync_watch: living script_stale after print_owner stamp; republish batch241"
+}

@@ -1,0 +1,18 @@
+{
+  "batch": "395",
+  "action": "idle_tip_stable_unfreeze",
+  "assignment": "tip_or_eng_idle_after_aligned",
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "parent_pin": true,
+  "unfreeze": "394\u2192395",
+  "living_tag": "batch241-path-c-bundle",
+  "generated_at_utc": "2026-09-26T03:03:55Z",
+  "note": "tip stable @2f7a5a9; hunt negative (parent_pin, living current, VERIFY 394); idle + unfreeze 394\u2192395"
+}

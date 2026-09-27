@@ -236,12 +236,24 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   set +e
   LIVE_SHA="$(git ls-remote "https://github.com/${REPO}.git" "refs/heads/${HARDENING_REF}" 2>/dev/null | awk '{print $1}' | head -n1)"
   set -e
+  TIP_DESCENDANT_OK=0
   if [[ -n "$LIVE_SHA" ]]; then
     echo "live_hardening_sha=$LIVE_SHA"
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
-      die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → stack
+      # already on tip (idle class); BEHIND / DIVERGED / UNKNOWN still die.
+      DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$BASE_TIP_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+      DRIFT_LANDED="$(python3 -c 'import json,sys; print("1" if json.load(open(sys.argv[1])).get("path_c_landed") is True else "0")' "$VERIFY_JSON" 2>/dev/null || echo 0)"
+      if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
+        TIP_DESCENDANT_OK=1
+        echo "tip_drift_class=DESCENDANT path_c_landed=true — live ${LIVE_SHA:0:7} ahead of BASE_TIP ${BASE_TIP_SHA:0:7} (informational; refresh at leisure: ./scripts/refresh_path_c_bundle.sh)"
+        echo "tip_matches_base=true (DESCENDANT_OK)"
+      else
+        die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (class=${DRIFT_CLASS:-UNKNOWN} landed=${DRIFT_LANDED}) — refresh BASE_TIP + rebuild path-c-applied-bundle"
+      fi
+    else
+      echo "tip_matches_base=true"
     fi
-    echo "tip_matches_base=true"
   else
     echo "warn: could not ls-remote live hardening tip (transport); skipping live tip-drift"
   fi
@@ -262,6 +274,8 @@ print("true" if d.get("path_c_landed") is True else "false")
 ' "$VERIFY_JSON" 2>/dev/null || echo false)"
   TIP_OK=0
   if [[ -n "$LIVE_SHA" && ( "$LIVE_SHA" == "$BASE_TIP_SHA" || "$LIVE_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${LIVE_SHA}"* ) ]]; then
+    TIP_OK=1
+  elif [[ "$TIP_DESCENDANT_OK" -eq 1 ]]; then
     TIP_OK=1
   elif [[ -z "$LIVE_SHA" && -n "$VERIFY_SHA" && ( "$VERIFY_SHA" == "$BASE_TIP_SHA" || "$VERIFY_SHA" == "${BASE_TIP_SHA}"* || "$BASE_TIP_SHA" == "${VERIFY_SHA}"* ) ]]; then
     TIP_OK=1

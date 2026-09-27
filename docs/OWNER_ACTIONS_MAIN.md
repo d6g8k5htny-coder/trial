@@ -1,3 +1,7362 @@
+## STATUS (Batch 835 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `f7db594` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 834→835; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH835_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch835_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 834 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b9a1475` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 833→834; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH834_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch834_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 834 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 833/832/831/830/829 at tip VERIFY834 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH834_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch834_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 833 tip-eng-parent-pin-repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after merge `1b900fe3` left inv tip_sha stale @ `cfb0c728`; re-pin to precommit `78ebd3b0` (onto tip after research833/peer merges). Soft Intent single-header; VERIFY833. Evidence: `portable/BATCH833_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 833 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cfb0c72` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 832→833; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH833_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch833_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 833 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 832/831/830/829/828 at tip VERIFY833 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH833_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch833_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 832 tip-eng-parent-pin-repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after merge `bb24d803` left inv tip_sha stale @ `79d660e7`; re-pin to precommit `bdbbe6a8` (onto tip after research832/peer merges). Soft Intent single-header; VERIFY832. Evidence: `portable/BATCH832_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
+
+
+## STATUS (Batch 832 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `17b5151` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 831→832; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH832_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch832_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 832 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 831/830/829/828/827 at tip VERIFY832 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH832_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch832_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 831 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38697b1` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 830→831; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH831_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch831_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 831 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 830/829/828/827/826 at tip VERIFY831 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH831_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch831_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 830 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `511184d` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 829→830; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH830_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch830_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 830 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 829/828/827/826/825 catch-up at tip VERIFY830 Soft Intent n=1 (covers research829 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH830_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch830_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 829 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 828/827/826/825/824 catch-up at tip VERIFY830 Soft Intent n=1 (covers research829 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH829_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch829_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 829 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `6ef4d7b` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 828→829; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH829_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch829_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 828 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `5adb7c4` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 827→828; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH828_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch828_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 828 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 827/826/825/824/823 at tip VERIFY828 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH828_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch828_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 827 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a43b3f` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 826→827; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH827_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch827_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 827 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 826/825/824/823/822 catch-up at tip VERIFY827 Soft Intent n=1 (covers research826 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH827_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch827_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 826 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 825/824/823/822/821 catch-up at tip VERIFY827 Soft Intent n=1 (covers research826 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH826_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch826_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 826 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `ee1e9c9` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 825→826; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH826_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch826_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 825 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cdc0509` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 824→825; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH825_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch825_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 825 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 824/823/822/821/820 catch-up at tip VERIFY825 Soft Intent n=1 (research824 already landed); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH825_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch825_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 824 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `900fcfc` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 823→824; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH824_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch824_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 824 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 823/822/821/820/819 at tip VERIFY824 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH824_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch824_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 823 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d48582e` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 822→823; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH823_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch823_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 823 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 822/821/820/819/818 catch-up at tip VERIFY823 Soft Intent n=1 (covers research822 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH823_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch823_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 822 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 821/820/819/818/817 catch-up at tip VERIFY823 Soft Intent n=1 (covers research822 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH822_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch822_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 822 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `13638cd` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 821→822; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH822_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch822_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 821 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `6b6eac8` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 820→821; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH821_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch821_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 821 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 820/819/818/817/816 (catch-up at tip VERIFY821 after tip/eng821 Soft Intent 820→821; covers research820 tip-race); STATUS_GUARD pass; stamps@821; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 820 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 819/818/817/816/815 (catch-up at tip VERIFY821 after tip/eng Soft Intent→821; covers research820 tip-race); STATUS_GUARD pass; stamps@820; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 820 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d96bc55` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 819→820; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH820_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch820_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 819 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `0a566dc` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 818→819; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH819_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch819_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 819 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 818/817/816/815/814 (catch-up at tip VERIFY819 after tip/eng819 Soft Intent 818→819; covers research817/818 tip-race); STATUS_GUARD pass; stamps@819; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 818 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 817/816/815/814/813 (catch-up at tip VERIFY819 after tip/eng Soft Intent→819; covers research818 tip-race); STATUS_GUARD pass; stamps@818; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 817 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 816/815/814/813/812 (catch-up at tip VERIFY819 after tip/eng Soft Intent→819; covers research817 tip-race); STATUS_GUARD pass; stamps@817; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 818 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `bc1513b` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 817→818; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH818_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch818_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 817 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `807227a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 816→817; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH817_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch817_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 816 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `3e74ac8` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 815→816; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH816_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch816_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 816 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 815/814/813/812/811 (catch-up at tip VERIFY816 after tip/eng816 Soft Intent 815→816; raced while research815 finishing); STATUS_GUARD pass; stamps@816; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 815 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `7549174` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 814→815; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH815_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch815_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+
+## STATUS (Batch 815 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 814/813/812/811/810 (at tip VERIFY815 after tip/eng815 Soft Intent 814→815); STATUS_GUARD pass; stamps@815; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 814 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `619eaa9` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 813→814; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH814_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch814_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 814 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 813/812/811/810/809 (catch-up at tip VERIFY814 after tip/eng814 Soft Intent 813→814; raced while research813 finishing); STATUS_GUARD pass; stamps@814; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 813 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8dcc589` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze VERIFY/last-resort 812→813; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH813_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch813_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+
+## STATUS (Batch 813 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 812/811/810/809/808 (at tip VERIFY813 after tip/eng813 Soft Intent 812→813); STATUS_GUARD pass; stamps@813; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 812 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d8b149b` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 811→812; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH812_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch812_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 812 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 811/810/809/808/807 (catch-up at tip VERIFY812 after tip/eng812 Soft Intent 811→812; covers research811 tip-race); STATUS_GUARD pass; stamps@812; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 811 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 810/809/808/807/806 (catch-up at tip VERIFY812 after tip/eng Soft Intent→812; covers research811 tip-race); STATUS_GUARD pass; stamps@811; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 811 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `9c3ac46` tip_moved). tip_or_eng: living script_stale Soft Intent+VERIFY unfreeze then living force; unfreeze VERIFY/last-resort 810→811; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH811_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch811_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 810 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `de7a454` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 809→810; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH810_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch810_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 810 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 809/808/807/806/805 (catch-up at tip VERIFY810 after tip/eng810 Soft Intent 809→810; covers research809 tip-race); STATUS_GUARD pass; stamps@810; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 809 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 808/807/806/805/804 (catch-up at tip VERIFY810 after tip/eng Soft Intent→810; covers research809 tip-race); STATUS_GUARD pass; stamps@809; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 809 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `710a38f` tip_moved). tip_or_eng: living script_stale Soft Intent+VERIFY unfreeze then living force; unfreeze VERIFY/last-resort 808→809; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH809_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch809_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 808 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `bcac7e7` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 807→808; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH808_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch808_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 808 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 807/806/805/804/803 (at tip VERIFY808 after tip/eng808 Soft Intent 807→808); STATUS_GUARD pass; stamps@808; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 807 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b400315` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 806→807; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH807_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch807_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 807 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 806/805/804/803/802 (catch-up at tip VERIFY807 after tip/eng807 Soft Intent 806→807; covers research806 tip-race); STATUS_GUARD pass; stamps@807; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 806 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 805/804/803/802/801 (catch-up at tip VERIFY807 after tip/eng Soft Intent→807; covers research806 tip-race); STATUS_GUARD pass; stamps@806; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 806 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `750cc272` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 805→806; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH806_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch806_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 805 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b6ef18e5` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 804→805; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH805_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch805_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 804 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `23306c5a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 803→804; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH804_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch804_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 803 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8cf3d9f8` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 802→803; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH803_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch803_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 802 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `064343a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 801→802; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH802_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch802_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 801 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `303bb507` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 800→801; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH801_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch801_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 800 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `58df032` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 799→800; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH800_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch800_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 799 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d18596b3` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 798→799; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH799_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch799_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 798 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `ca0d4ef` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 797→798; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH798_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch798_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 797 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b640a761` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 796→797; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH797_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch797_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 796 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `92cbc2c` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 795→796; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH796_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch796_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 795 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `6901f3ac` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 794→795; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH795_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch795_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 794 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d506370` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 793→794; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH794_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch794_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 793 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `65ff69f6` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 792→793; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH793_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch793_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 792 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `14caee1` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 791→792; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH792_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch792_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 791 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `6e5c7adc` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 790→791; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH791_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch791_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 790 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `56040ea` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 789→790; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH790_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch790_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 789 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `64465bf` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 788→789; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH789_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch789_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 788 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b4e57bb` tip_moved). tip_or_eng: living tgz_newer; unfreeze VERIFY/last-resort 787→788; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH788_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch788_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 787 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `7b4d9b7` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 786→787; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH787_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch787_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 786 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `7b4d583` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 785→786; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH786_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch786_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 785 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4b71c7f` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 784→785; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH785_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch785_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 784 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `35e4637` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 783→784; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH784_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch784_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 783 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8dc0d13` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 782→783; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH783_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch783_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 782 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `c1e06f2` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 781→782; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH782_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch782_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 781 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `a5fea03` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 780→781; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH781_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch781_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 780 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d634ca8` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 779→780; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH780_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch780_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 779 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `54c4554` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 778→779; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH779_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch779_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 778 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `486c5ab` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 777→778; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH778_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch778_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 777 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `0ad6ebc` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 776→777; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH777_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch777_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 776 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8a024df` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 775→776; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH776_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch776_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 775 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8274c6f` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 774→775; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH775_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch775_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 774 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4b51229` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 773→774; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH774_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch774_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 773 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b4cc917` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 772→773; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH773_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch773_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 772 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `ca00b95` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 771→772; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH772_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch772_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 805 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 804/803/802/801/800 (at tip VERIFY805 after tip/eng805 Soft Intent 804→805); STATUS_GUARD pass; stamps@805; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+
+## STATUS (Batch 770 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 769/768/767/766/765 (catch-up at tip VERIFY771 after tip/eng770+771 Soft Intent 770→771; covers research770 tip-race); STATUS_GUARD pass; stamps@770; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 771 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `3e38462` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→771; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH771_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch771_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 770 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `e9ac05a` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 769→770; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH770_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch770_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 769 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 768/767/766/765/764 (at tip VERIFY769 after tip/eng769 Soft Intent 768→769); STATUS_GUARD pass; stamps@769; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 769 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `c507bb8` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→769; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH769_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch769_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 768 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 767/766/765/764/763 (at tip VERIFY768 after tip/eng768 Soft Intent 767→768); STATUS_GUARD pass; stamps@768; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 768 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `079b48e` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 767→768; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH768_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch768_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 767 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 765/764/763/762/761 (catch-up at tip VERIFY767 after tip/eng767 Soft Intent 766→767; covers research767+766 tip-race); STATUS_GUARD pass; stamps@767; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 766 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 765/764/763/762/761 (catch-up at tip VERIFY767 after tip/eng766+767 Soft Intent 766→767; covers research766 tip-race); STATUS_GUARD pass; stamps@766; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 767 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `841ff8b` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→767; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH767_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch767_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 766 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `35c6fba` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 765→766; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH766_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch766_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 765 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 763/762/761/760/759 (catch-up at tip VERIFY765 after tip/eng765 Soft Intent 764→765; covers research765+764 tip-race); STATUS_GUARD pass; stamps@765; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 764 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 763/762/761/760/759 (catch-up at tip VERIFY765 after tip/eng764+765 Soft Intent 764→765; covers research764 tip-race); STATUS_GUARD pass; stamps@764; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 765 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cf82214` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→765; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH765_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch765_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 764 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `7ba8fc7` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 763→764; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH764_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch764_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 763 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 762/761/760/759/758 (at tip VERIFY763 after tip/eng763 Soft Intent 762→763); STATUS_GUARD pass; stamps@763; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 763 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `148c702` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→763; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH763_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch763_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 762 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 761/760/759/758/757 (at tip VERIFY762 after tip/eng762 Soft Intent 761→762); STATUS_GUARD pass; stamps@762; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 762 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `adbb89a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→762; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH762_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch762_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 761 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 759/758/757/756/755 (catch-up at tip VERIFY761 after tip/eng761 Soft Intent 760→761; covers research761+760 tip-race); STATUS_GUARD pass; stamps@761; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 760 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 759/758/757/756/755 (catch-up at tip VERIFY761 after tip/eng760+761 Soft Intent 760→761; covers research760 tip-race); STATUS_GUARD pass; stamps@760; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 761 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `fc2f7ff` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→761; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH761_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch761_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 760 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 759→760; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH760_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch760_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 759 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 757/756/755/754/753 (catch-up at tip VERIFY759 after tip/eng759 Soft Intent 758→759; covers research759+758 tip-race); STATUS_GUARD pass; stamps@759; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 758 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 757/756/755/754/753 (catch-up at tip VERIFY759 after tip/eng758+759 Soft Intent 758→759; covers research758 tip-race); STATUS_GUARD pass; stamps@758; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 759 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b6a8adb` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→759; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH759_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch759_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 758 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 757→758; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH758_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch758_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 757 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 755/754/753/752/751 (catch-up at tip VERIFY757 after tip/eng757 Soft Intent 756→757; covers research757+756 tip-race); STATUS_GUARD pass; stamps@757; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 756 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 755/754/753/752/751 (catch-up at tip VERIFY757 after tip/eng756+757 Soft Intent 756→757; covers research756 tip-race); STATUS_GUARD pass; stamps@756; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 757 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `46283f9` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→757; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH757_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch757_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 756 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 755→756; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH756_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch756_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 755 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 753/752/751/750/749 (catch-up at tip VERIFY755 after tip/eng755 Soft Intent 754→755; covers research755+754 tip-race); STATUS_GUARD pass; stamps@755; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 754 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 753/752/751/750/749 (catch-up at tip VERIFY755 after tip/eng754+755 Soft Intent 754→755; covers research754 tip-race); STATUS_GUARD pass; stamps@754; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 755 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d0fa964` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→755; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH755_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch755_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 754 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 753→754; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH754_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch754_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 753 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 752/751/750/749/748 (at tip VERIFY753 after tip/eng753 Soft Intent 752→753); STATUS_GUARD pass; stamps@753; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 753 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `34e94c0` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→753; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH753_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch753_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 752 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 751/750/749/748/747 (at tip VERIFY752 after tip/eng752 Soft Intent 751→752); STATUS_GUARD pass; stamps@752; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 752 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 751→752; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH752_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch752_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 751 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 750/749/748/747/746 (at tip VERIFY751 after tip/eng751 Soft Intent 750→751); STATUS_GUARD pass; stamps@751; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 751 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `bc7bf75` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→751; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH751_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch751_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 750 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 748/747/746/745/744 (catch-up at tip VERIFY750 after tip/eng750 Soft Intent 749→750; covers research750+749 tip-race); STATUS_GUARD pass; stamps@750; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 749 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 748/747/746/745/744 (catch-up at tip VERIFY750 after tip/eng749+750 Soft Intent 749→750; covers research749 tip-race); STATUS_GUARD pass; stamps@749; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 750 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `af120bf` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→750; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH750_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch750_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 749 tip-eng-parent-pin-repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after 5d7a1522 left inv tip_sha stale @ `398d478d`; re-pin to precommit `5d7a1522`. Soft Intent single-header; VERIFY749. Evidence: `portable/BATCH749_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 749 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `398d478` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→749; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH749_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch749_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 748 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 747/746/745/744/743 (at tip VERIFY748 after tip/eng748); STATUS_GUARD pass; stamps@748; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 748 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cbfccd4` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→748; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH748_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch748_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 747 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 746/745/744/743/742 (at tip VERIFY747 after tip/eng747); STATUS_GUARD pass; stamps@747; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 747 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `bdf8eb3` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 746→747; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH747_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch747_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 746 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 745/744/743/742/741 (at tip VERIFY746 after tip/eng746); STATUS_GUARD pass; stamps@746; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 746 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `808cc6a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 745→746; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH746_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch746_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 745 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 744/743/742/741/740 (at tip VERIFY745 after tip/eng745); STATUS_GUARD pass; stamps@745; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 745 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 744→745; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH745_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch745_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 744 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 743/742/741/740/739 (at tip VERIFY744 after tip/eng744); STATUS_GUARD pass; stamps@744; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 744 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `9c526db` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 743→744; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH744_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch744_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 743 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 742/741/740/739/738 (at tip VERIFY743 after tip/eng743); STATUS_GUARD pass; stamps@743; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 743 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 742→743; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH743_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch743_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 742 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 741/740/739/738/737 (at tip VERIFY742 after tip/eng742); STATUS_GUARD pass; stamps@742; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 742 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 741→742; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH742_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch742_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 741 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 740/739/738/737/736 (at tip VERIFY741 after tip/eng741); STATUS_GUARD pass; stamps@741; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 741 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 740→741; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH741_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch741_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 740 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research740+739+738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@740; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 739 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng739+740; covers research739+738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@739; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 738 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 737/736/735/734/731 (catch-up at tip VERIFY740 after tip/eng738+739+740; covers research738 tip-race; research737 on tip); STATUS_GUARD pass; stamps@738; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 740 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 739→740; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH740_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch740_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 739 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 738→739; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH739_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch739_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 737 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 736/735/734/731/729 (catch-up at tip VERIFY738 after tip/eng737+738; covers research737 tip-race; research736 on tip); STATUS_GUARD pass; stamps@737; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 738 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 737→738; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH738_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch738_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 737 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 736→737; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH737_TIP_ENG_*.json` + `BATCH737_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch737_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 736 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 735/734/731/729/728 (at tip VERIFY736 after tip/eng736); STATUS_GUARD pass; stamps@736; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 736 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 735→736; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH736_TIP_ENG_*.json` + `BATCH736_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch736_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 735 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 734/731/729/728/727 (at tip VERIFY735 after tip/eng735); STATUS_GUARD pass; stamps@735; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 735 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 734→735; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH735_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch735_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 734 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 731/729/728/727/726 (catch-up at tip VERIFY734 after tip/eng733+734; covers research734+733+732 tip-race; research731 on tip); STATUS_GUARD pass; stamps@734; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 733 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 731/729/728/727/726 (catch-up at tip VERIFY734 after tip/eng733+734; covers research733+732 tip-race; research731 on tip); STATUS_GUARD pass; stamps@733; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 732 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 731/729/728/727/726 (catch-up at tip VERIFY734 after tip/eng732+733+734; covers research732 tip-race; research731 on tip); STATUS_GUARD pass; stamps@732; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 734 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 733→734; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH734_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch734_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 733 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 732→733; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH733_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch733_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 731 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 729/728/727/726/725 (catch-up at tip VERIFY732 after tip/eng731+732; covers research731+research730 tip-race; research729 on tip); STATUS_GUARD pass; stamps@731; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 730 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 729/728/727/726/725 (catch-up at tip VERIFY732 after tip/eng730+731+732; covers research730 tip-race; research729 on tip); STATUS_GUARD pass; stamps@730; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 732 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 731→732; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH732_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch732_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 731 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 730→731; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH731_TIP_ENG_*.json` + `BATCH731_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch731_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 729 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 728/727/726/725/724 (catch-up at tip VERIFY730 after tip/eng729+730; covers research729 tip-race; research728 on tip); STATUS_GUARD pass; stamps@729; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 730 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 729→730; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH730_TIP_ENG_*.json` + `BATCH730_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch730_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 729 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 728→729; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH729_TIP_ENG_*.json` + `BATCH729_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch729_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 728 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 727/726/725/724/722 (at tip VERIFY728 after tip/eng728); STATUS_GUARD pass; stamps@728; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 728 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 727→728; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH728_TIP_ENG_*.json` + `BATCH728_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch728_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 727 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 726/725/724/722/720 (at tip VERIFY727 after tip/eng727); STATUS_GUARD pass; stamps@727; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 727 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 726→727; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH727_TIP_ENG_*.json` + `BATCH727_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch727_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 726 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 725/724/722/720/719 (at tip VERIFY726 after tip/eng726); STATUS_GUARD pass; stamps@726; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 726 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 725→726; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH726_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch726_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 725 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 724/722/720/719/718 (at tip VERIFY725 after tip/eng725); STATUS_GUARD pass; stamps@725; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 725 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 724→725; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH725_TIP_ENG_*.json` + `BATCH725_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch725_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 724 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 722/720/719/718/717 (catch-up at tip VERIFY724 after tip/eng723+724; covers research723 tip-race; research722 on tip); STATUS_GUARD pass; stamps@724; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 724 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 723→724; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH724_TIP_ENG_*.json` + `BATCH724_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch724_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 723 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 722→723; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH723_TIP_ENG_*.json` + `BATCH723_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch723_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 722 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 720/719/718/717/716 (catch-up at tip VERIFY722 after tip/eng721+722; covers research721 tip-race; research720 on tip); STATUS_GUARD pass; stamps@722; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 722 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 721→722; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH722_TIP_ENG_*.json` + `BATCH722_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch722_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 721 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 720→721; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH721_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch721_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 720 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 719/718/717/716/714 (at tip VERIFY720 after tip/eng720); STATUS_GUARD pass; stamps@720; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 720 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 719→720; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH720_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch720_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 719 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 718/717/716/714/713 (at tip VERIFY719 after tip/eng719); STATUS_GUARD pass; stamps@719; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 719 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 718→719; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH719_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch719_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 718 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 717/716/714/713/711 (at tip VERIFY718 after tip/eng718); STATUS_GUARD pass; stamps@718; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 718 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 717→718; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH718_TIP_ENG_*.json` + `BATCH718_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch718_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 717 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 716/714/713/711/710 (at tip VERIFY717 after tip/eng717); STATUS_GUARD pass; stamps@717; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 717 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 716→717; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH717_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch717_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 716 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 714/713/711/710/708 (catch-up at tip VERIFY716 after tip/eng715+716; covers research715 tip-race; research714 on tip); STATUS_GUARD pass; stamps@716; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 716 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 715→716; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH716_TIP_ENG_*.json` + `BATCH716_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch716_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 715 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 714→715; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH715_TIP_ENG_*.json` + `BATCH715_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch715_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 714 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 713/711/710/708/706 (at tip VERIFY714 after tip/eng714); STATUS_GUARD pass; stamps@714; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 714 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 713→714; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH714_TIP_ENG_*.json` + `BATCH714_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch714_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 713 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 711/710/708/706/705 (catch-up at tip VERIFY713 after tip/eng712+713; covers research712 tip-race; research711 on tip); STATUS_GUARD pass; stamps@713; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 713 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent repair; unfreeze VERIFY/last-resort 712→713; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH713_TIP_ENG_*.json` + `BATCH713_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch713_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 712 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 711→712; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH712_TIP_ENG_*.json` + `BATCH712_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch712_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 711 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 710/708/706/705/704 (at tip VERIFY711 after tip/eng711); STATUS_GUARD pass; stamps@711; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 711 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 710→711; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH711_TIP_ENG_IDLE.json` + `BATCH711_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch711_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 710 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 708/706/705/704/703 (catch-up at tip VERIFY710 after tip/eng709+710; covers research709 tip-race; research708 on tip); STATUS_GUARD pass; stamps@710; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 710 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 709→710; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH710_TIP_ENG_IDLE.json` + `BATCH710_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch710_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 709 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 708→709; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH709_TIP_ENG_IDLE.json` + `BATCH709_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch709_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 708 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 706/705/704/703/702 (catch-up at tip VERIFY708 after tip/eng707+708; covers research707 tip-race; research706 on tip); STATUS_GUARD pass; stamps@708; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 708 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 707→708; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH708_TIP_ENG_IDLE.json` + `BATCH708_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch708_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 707 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 706→707; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH707_TIP_ENG_*.json` + `BATCH707_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch707_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 706 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 705/704/703/702/701 (at tip VERIFY706 after tip/eng706); STATUS_GUARD pass; stamps@706; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 706 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 705→706; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH706_TIP_ENG_*.json` + `BATCH706_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch706_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 705 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 704/703/702/701/699 (at tip VERIFY705 after tip/eng705); STATUS_GUARD pass; stamps@705; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 705 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 704→705; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH705_TIP_ENG_IDLE.json` + `BATCH705_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch705_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 704 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 703/702/701/699/698 (catch-up at tip VERIFY704 after tip/eng704; research702+703 on tip); STATUS_GUARD pass; stamps@704; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 704 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 703→704; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH704_TIP_ENG_IDLE.json` + `BATCH704_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch704_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 703 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 702/701/699/698/697 (catch-up at tip VERIFY703 after tip/eng703; research702 already on tip); STATUS_GUARD pass; stamps@703; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 703 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 702→703; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH703_TIP_ENG_*.json` + `BATCH703_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch703_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 702 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 701/699/698/697/696 (at tip VERIFY702 after tip/eng702); STATUS_GUARD pass; stamps@702; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 702 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 701→702; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH702_TIP_ENG_*.json` + `BATCH702_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch702_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 701 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 699/698/697/696/695 (covers research700 tip-race gap; catch-up at tip VERIFY701 after tip/eng700+701); STATUS_GUARD pass; stamps@701; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 701 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 700→701; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH701_TIP_ENG_IDLE.json` + `BATCH701_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch701_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 700 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 699→700; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH700_TIP_ENG_*.json` + `BATCH700_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch700_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 699 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 698/697/696/695/693 (at tip VERIFY699 after tip/eng699); STATUS_GUARD pass; stamps@699; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 699 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 698→699; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH699_TIP_ENG_*.json` + `BATCH699_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch699_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 698 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 697/696/695/693/692 (at tip VERIFY698 after tip/eng698); STATUS_GUARD pass; stamps@698; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 698 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 697→698; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH698_TIP_ENG_*.json` + `BATCH698_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch698_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 697 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 696/695/693/692/690 (at tip VERIFY697 after tip/eng697); STATUS_GUARD pass; stamps@697; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 697 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 696→697; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH697_TIP_ENG_IDLE.json` + `BATCH697_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch697_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 696 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 695/693/692/690/688 (at tip VERIFY696 after tip/eng696); STATUS_GUARD pass; stamps@696; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 696 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 695→696; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH696_TIP_ENG_IDLE.json` + `BATCH696_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch696_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 695 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 693/692/690/688/686 (covers research694 tip-race gap; catch-up at tip VERIFY695 after tip/eng694+695); STATUS_GUARD pass; stamps@695; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 695 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 694→695; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH695_TIP_ENG_IDLE.json` + `BATCH695_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch695_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 694 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 693→694; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH694_TIP_ENG_*.json` + `BATCH694_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch694_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 693 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 692/690/688/686/685 (at tip VERIFY693 after tip/eng693); STATUS_GUARD pass; stamps@693; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 693 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 692→693; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH693_TIP_ENG_*.json` + `BATCH693_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch693_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 692 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 690/688/686/685/684 (covers research691 tip-race gap; catch-up at tip VERIFY692 after tip/eng691+692); STATUS_GUARD pass; stamps@692; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 692 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 691→692; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH692_TIP_ENG_*.json` + `BATCH692_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch692_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 691 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 690→691; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH691_TIP_ENG_IDLE.json` + `BATCH691_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch691_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 690 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 688/686/685/684/682 (covers research689 tip-race gap; catch-up at tip VERIFY690 after tip/eng689+690); STATUS_GUARD pass; stamps@690; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 690 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 689→690; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH690_TIP_ENG_IDLE.json` + `BATCH690_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch690_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 689 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 688→689; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH689_TIP_ENG_IDLE.json` + `BATCH689_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch689_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 688 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 686/685/684/682/681 (covers research687 tip-race gap; catch-up at tip VERIFY688 after tip/eng687+688); STATUS_GUARD pass; stamps@688; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 688 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 687→688; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH688_TIP_ENG_IDLE.json` + `BATCH688_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch688_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 687 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 686→687 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=687; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 686 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 685/684/682/681/679 (at tip VERIFY686 after tip/eng686); STATUS_GUARD pass; stamps@686; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 686 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 685→686 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=686; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 685 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 684/682/681/679/678 (at tip VERIFY685 after tip/eng685); STATUS_GUARD pass; stamps@685; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 685 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 684→685 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=685; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 684 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 682/681/679/678/677 (covers research683 tip-race gap; catch-up at tip VERIFY684 after tip/eng683+684); STATUS_GUARD pass; stamps@684; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 684 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 683→684; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH684_TIP_ENG_*.json` + `BATCH684_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch684_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 683 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 682→683 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=683; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 682 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 681/679/678/677/676 (catch-up after tip/eng682); STATUS_GUARD pass; stamps@682; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 682 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 681→682 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=682; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 681 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 679/678/677/676/675 (covers research680 tip-race gap; catch-up at tip VERIFY681 after tip/eng680+681); STATUS_GUARD pass; stamps@681; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 681 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 680→681; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH681_TIP_ENG_IDLE.json` + `BATCH681_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch681_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 680 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 679→680 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=680; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 679 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 678/677/676/675/673 (catch-up after tip/eng679); STATUS_GUARD pass; stamps@679; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 679 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 678→679 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=679; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 678 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 677/676/675/673/671 (catch-up after tip/eng678); STATUS_GUARD pass; stamps@678; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 678 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 677→678 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=678; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 677 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 676/675/673/671/670 (catch-up after tip/eng677); STATUS_GUARD pass; stamps@677; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 677 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 676→677; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH677_TIP_ENG_IDLE.json` + `BATCH677_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch677_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 677 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 676→677 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=677; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 676 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 675/673/671/670/669 (catch-up after tip/eng676); STATUS_GUARD pass; stamps@676; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 676 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 675→676 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=676; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 675 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 673/671/670/669/667 (covers research674 tip-race gap; catch-up at tip VERIFY675 after tip/eng674+675); STATUS_GUARD pass; stamps@675; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 675 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 674→675; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH675_TIP_ENG_IDLE.json` + `BATCH675_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch675_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 674 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 673→674 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=674; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 673 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 671/670/669/667/665 (covers research672 tip-race gap; catch-up at tip VERIFY673 after tip/eng672+673); STATUS_GUARD pass; stamps@673; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 673 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 672→673; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH673_TIP_ENG_IDLE.json` + `BATCH673_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch673_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 672 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 671→672 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=672; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 671 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 670/669/667/665/664 (catch-up after tip/eng671); STATUS_GUARD pass; stamps@671; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 671 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 670→671 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=671; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 670 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 669/667/665/664/663 (catch-up after tip/eng670); STATUS_GUARD pass; stamps@670; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 670 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 669→670 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=670; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 669 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 667/665/664/663/661 (covers research668 tip-race gap; catch-up at tip VERIFY669 after tip/eng668+669); STATUS_GUARD pass; stamps@669; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 669 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 668→669; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH669_TIP_ENG_IDLE.json` + `BATCH669_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch669_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 668 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 667→668 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=668; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
+
+## STATUS (Batch 667 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 665/664/663/661/660 (covers research666 tip-race gap; catch-up at tip VERIFY667 after tip/eng666+667); STATUS_GUARD pass; stamps@667; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 667 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 666→667; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH667_TIP_ENG_IDLE.json` + `BATCH667_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch667_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 666 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 665→666; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH666_TIP_ENG_*.json` + `BATCH666_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch666_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 665 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 664/663/661/660/659 (catch-up after tip/eng665); STATUS_GUARD pass; stamps@665; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 665 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 664→665; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH665_TIP_ENG_*.json` + `BATCH665_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch665_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 664 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 663/661/660/659/657 (catch-up after tip/eng664); STATUS_GUARD pass; stamps@664; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 664 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 663→664; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH664_TIP_ENG_*.json` + `BATCH664_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch664_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 663 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 661/660/659/657/655 (covers research662 tip-race gap; catch-up at tip VERIFY663 after tip/eng662+663); STATUS_GUARD pass; stamps@663; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 663 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 662→663; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH663_TIP_ENG_IDLE.json` + `BATCH663_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch663_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 662 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 661→662; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH662_TIP_ENG_*.json` + `BATCH662_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch662_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 661 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 660/659/657/655/654 (catch-up after tip/eng661); STATUS_GUARD pass; stamps@661; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 661 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 660→661; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH661_TIP_ENG_*.json` + `BATCH661_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch661_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 660 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 659/657/655/654/653 (catch-up after tip/eng660); STATUS_GUARD pass; stamps@660; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 660 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 659→660; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH660_TIP_ENG_*.json` + `BATCH660_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch660_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 659 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 657/655/654/653/651 (covers research658 tip-race gap; catch-up at tip VERIFY659 after tip/eng658+659); STATUS_GUARD pass; stamps@659; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 659 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 658→659; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH659_TIP_ENG_IDLE.json` + `BATCH659_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch659_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 658 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 657→658; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH658_TIP_ENG_*.json` + `BATCH658_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch658_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 657 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 655/654/653/651/649 (covers research656 tip-race gap; catch-up at tip VERIFY657 after tip/eng656+657); STATUS_GUARD pass; stamps@657; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 657 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 656→657; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH657_TIP_ENG_*.json` + `BATCH657_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch657_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 656 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 655→656; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH656_TIP_ENG_*.json` + `BATCH656_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch656_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 655 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 654/653/651/649/647 (catch-up after tip/eng655); STATUS_GUARD pass; stamps@655; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 655 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 654→655; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH655_TIP_ENG_*.json` + `BATCH655_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch655_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 654 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 653/651/649/647/646 (catch-up after tip/eng654); STATUS_GUARD pass; stamps@654; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 654 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 653→654; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH654_TIP_ENG_*.json` + `BATCH654_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch654_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 653 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 651/649/647/646/644 (covers research652 tip-race gap; catch-up at tip VERIFY653 after tip/eng652+653); STATUS_GUARD pass; stamps@653; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 653 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 652→653; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH653_TIP_ENG_IDLE.json` + `BATCH653_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch653_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 652 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 651→652; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH652_TIP_ENG_*.json` + `BATCH652_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch652_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 651 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 649/647/646/644/643 (covers research650 tip-race gap; catch-up at tip VERIFY651 after tip/eng650+651); STATUS_GUARD pass; stamps@651; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 651 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 650→651; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH651_TIP_ENG_IDLE.json` + `BATCH651_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch651_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 650 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 649→650; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH650_TIP_ENG_*.json` + `BATCH650_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch650_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 649 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 647/646/644/643/642 (covers research648 tip-race gap; catch-up at tip VERIFY649 after tip/eng648+649); STATUS_GUARD pass; stamps@649; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 649 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 648→649; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH649_TIP_ENG_IDLE.json` + `BATCH649_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch649_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 648 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 647→648; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH648_TIP_ENG_*.json` + `BATCH648_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch648_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 647 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 646/644/643/642/640 (catch-up after tip/eng647); STATUS_GUARD pass; stamps@647; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 647 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 646→647; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH647_TIP_ENG_*.json` + `BATCH647_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch647_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 646 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 644/643/642/640/639 (covers research645 tip-race gap; catch-up at tip VERIFY646 after tip/eng645+646); STATUS_GUARD pass; stamps@646; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 646 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 645→646; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH646_TIP_ENG_*.json` + `BATCH646_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch646_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 645 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 644→645; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH645_TIP_ENG_*.json` + `BATCH645_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch645_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 644 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 643/642/640/639/638 (catch-up after tip/eng644); STATUS_GUARD pass; stamps@644; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 644 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 643→644; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH644_TIP_ENG_*.json` + `BATCH644_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch644_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 643 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 642/640/639/638/636 (catch-up after tip/eng643); STATUS_GUARD pass; stamps@643; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 643 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 642→643; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH643_TIP_ENG_*.json` + `BATCH643_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch643_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 642 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 640/639/638/636/634 (covers research641 tip-race gap; catch-up at tip VERIFY642 after tip/eng641+642); STATUS_GUARD pass; stamps@642; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 642 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 641→642; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH642_TIP_ENG_IDLE.json` + `BATCH642_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch642_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 641 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 640→641; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH641_TIP_ENG_*.json` + `BATCH641_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch641_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 640 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 639/638/636/634/633 (catch-up after tip/eng640; post-research639 tip race); STATUS_GUARD pass; stamps@640; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 640 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 639→640; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH640_TIP_ENG_IDLE.json` + `BATCH640_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch640_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 639 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 638/636/634/633/632 (catch-up after tip/eng639); STATUS_GUARD pass; stamps@639; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 639 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 638→639; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH639_TIP_ENG_*.json` + `BATCH639_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch639_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 638 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 636/634/633/632/630 (covers research637 tip-race gap; catch-up at tip VERIFY638 after tip/eng637+638); STATUS_GUARD pass; stamps@638; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 638 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 637→638; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH638_TIP_ENG_IDLE.json` + `BATCH638_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch638_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 637 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 636→637; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH637_TIP_ENG_*.json` + `BATCH637_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch637_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 636 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 634/633/632/630/629 (covers research635 tip-race gap; catch-up at tip VERIFY636 after tip/eng635+636); STATUS_GUARD pass; stamps@636; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 636 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 635→636; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH636_TIP_ENG_IDLE.json` + `BATCH636_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch636_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 635 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 634→635; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH635_TIP_ENG_*.json` + `BATCH635_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch635_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 634 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 633/632/630/629/628 (catch-up after tip/eng634); STATUS_GUARD pass; stamps@634; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 634 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 633→634; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH634_TIP_ENG_*.json` + `BATCH634_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch634_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 633 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH632/630/629/628/626 (catch-up after tip/eng633; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH633_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch633_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 633 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 632→633; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH633_TIP_ENG_*.json` + `BATCH633_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch633_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 632 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH630/629/628/626/624 (covers research631 tip-race gap; catch-up at tip VERIFY632 after tip/eng631+632; assigned research631 raced; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH632_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch632_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 632 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living tgz_newer tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 631→632; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH632_TIP_ENG_IDLE.json` + `BATCH632_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch632_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 631 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 630→631; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH631_TIP_ENG_*.json` + `BATCH631_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch631_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 630 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH629/628/626/624/622 (catch-up after tip/eng630; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH630_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch630_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 630 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 629→630; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH630_TIP_ENG_*.json` + `BATCH630_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch630_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 629 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH628/626/624/622/620 (catch-up after tip/eng629; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH629_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch629_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 629 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 628→629; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH629_TIP_ENG_*.json` + `BATCH629_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch629_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 628 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH626/624/622/620/619 (covers research627 tip-race gap; catch-up at tip VERIFY628 after tip/eng627+628; assigned research627 raced; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH628_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch628_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 628 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 627→628; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH628_TIP_ENG_IDLE.json` + `BATCH628_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch628_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 627 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 626→627; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH627_TIP_ENG_*.json` + `BATCH627_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch627_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 626 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH624/622/620/619/617 (covers research625 tip-race gap; catch-up at tip VERIFY626 after tip/eng625+626; assigned research625 raced mid-land; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH626_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch626_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 626 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 625→626; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH626_TIP_ENG_*.json` + `BATCH626_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch626_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 625 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 624→625; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH625_TIP_ENG_*.json` + `BATCH625_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch625_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 624 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH622/620/619/617/616 (covers research623 tip-race gap; catch-up at tip VERIFY624 after tip/eng623+624; assigned research623 raced; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH624_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch624_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 624 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 623→624; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH624_TIP_ENG_IDLE.json` + `BATCH624_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch624_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 623 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 622→623; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH623_TIP_ENG_*.json` + `BATCH623_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch623_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 622 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH620/619/617/616/615 (covers research621 tip-race gap; catch-up at tip VERIFY622 after tip/eng621+622; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH622_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch622_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 622 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 621→622; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH622_TIP_ENG_IDLE.json` + `BATCH622_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch622_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 621 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 620→621; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH621_TIP_ENG_*.json` + `BATCH621_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch621_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 620 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH619/617/616/615/614 (catch-up after tip/eng620; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH620_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch620_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 620 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 619→620; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH620_TIP_ENG_*.json` + `BATCH620_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch620_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 619 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH617/616/615/614/612 (covers research618 tip-race gap; catch-up at tip VERIFY619 after tip/eng618+619; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH619_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch619_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 619 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 618→619; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH619_TIP_ENG_*.json` + `BATCH619_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch619_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 618 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 617→618; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH618_TIP_ENG_*.json` + `BATCH618_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch618_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 617 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH616/615/614/612/611 (catch-up at tip VERIFY617 after tip/eng617; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH617_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch617_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 617 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 616→617; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH617_TIP_ENG_IDLE.json` + `BATCH617_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch617_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 616 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH615/614/612/611/609 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH616_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch616_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 616 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 615→616; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH616_TIP_ENG_*.json` + `BATCH616_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch616_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 615 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH614/612/611/609/608 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH615_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch615_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 615 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 614→615; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH615_TIP_ENG_*.json` + `BATCH615_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch615_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 614 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH612/611/609/608/606 (covers research613 tip-race gap; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH614_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch614_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 614 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 613→614; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH614_TIP_ENG_*.json` + `BATCH614_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch614_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 612 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH611/609/608/606/605 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH612_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch612_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 613 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 612→613; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH613_TIP_ENG_IDLE.json` + `BATCH613_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch613_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 612 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 611→612; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH612_TIP_ENG_*.json` + `BATCH612_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch612_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 611 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH609/608/606/605/604 (covers research610 tip-race gap; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH611_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch611_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 611 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 610→611; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH611_TIP_ENG_*.json` + `BATCH611_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch611_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 609 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH608/606/605/604/603 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH609_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch609_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 610 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 609→610; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH610_TIP_ENG_*.json` + `BATCH610_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch610_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 609 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 608→609; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH609_TIP_ENG_*.json` + `BATCH609_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch609_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 608 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH606/605/604/603/601 (covers research607 tip-race gap; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH608_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch608_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 608 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 607→608; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH608_TIP_ENG_*.json` + `BATCH608_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch608_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 606 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH605/604/603/601/600 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH606_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch606_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 607 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 606→607; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH607_TIP_ENG_IDLE.json` + `BATCH607_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch607_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 606 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 605→606; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH606_TIP_ENG_*.json` + `BATCH606_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch606_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 605 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH604/603/601/600/599 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH605_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch605_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 605 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 604→605; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH605_TIP_ENG_*.json` + `BATCH605_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch605_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 604 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH603/601/600/599/598 (catch-up after tip race; parent-pin repair tip/eng604; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH604_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch604_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 604 tip-eng parent-pin repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng604 already landed VERIFY604 Soft Intent n=1; inv parent-pin REPAIR tip_sha→`d9235e7b`. Evidence: `portable/BATCH604_INV_TIP_PIN_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+python3 -c "import json; inv=json.load(open('portable/AI_AGENT_ACCESS_INVENTORY.json')); t=[d for d in inv['details'] if d['name'].endswith('/trial')][0]; print(t['tip_sha'])"
+./scripts/republish_living_path_c_release.sh --dry-run
+```
+
+## STATUS (Batch 604 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 603→604; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH604_TIP_ENG_*.json` + `BATCH604_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch604_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 603 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH601/600/599/598/597 (covers research602 tip-race gap; parent-pin repair tip/eng603; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH603_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch603_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 603 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 602→603; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH603_TIP_ENG_IDLE.json` + `BATCH603_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch603_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 601 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH600/599/598/597/595 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH601_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch601_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 602 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 601→602; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH602_TIP_ENG_*.json` + `BATCH602_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch602_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 600 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH599/598/597/595/594 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH600_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch600_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 600 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 599→600; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH600_TIP_ENG_*.json` + `BATCH600_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch600_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 599 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH598/597/595/594/593 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH599_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch599_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 598 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH597/595/594/593/592 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH598_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header (tip Soft Intent@599). `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch598_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 599 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 598→599; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH599_TIP_ENG_IDLE.json` + `BATCH599_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch599_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 598 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale → force republish; unfreeze VERIFY/last-resort 597→598; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH598_TIP_ENG_IDLE.json` + `BATCH598_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch598_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 597 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH595/594/593/592/591 (research596 skipped by tip race — catch-up; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH597_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch597_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 597 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 596→597; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH597_TIP_ENG_IDLE.json` + `BATCH597_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch597_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 596 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 595→596; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH596_TIP_ENG_IDLE.json` + `BATCH596_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch596_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 595 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH594/593/592/591/590 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH595_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch595_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 594 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH593/592/591/590/589 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH594_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch594_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 594 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 593→594; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH594_TIP_ENG_IDLE.json` + `BATCH594_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch594_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 593 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH592/591/590/589/588 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH593_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch593_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 593 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 592→593; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH593_TIP_ENG_IDLE.json` + `BATCH593_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch593_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 592 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH591/590/589/588/587 (catch-up after tip race; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH592_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch592_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 591 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH590/589/588/587/585 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH591_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header (tip Soft Intent@592). `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch591_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 592 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 591→592; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH592_TIP_ENG_IDLE.json` + `BATCH592_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch592_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 591 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 590→591; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH591_TIP_ENG_IDLE.json` + `BATCH591_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch591_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 590 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH589/588/587/585/584 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH590_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch590_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 590 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 589→590; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH590_TIP_ENG_*.json` + `BATCH590_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch590_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 589 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH588/587/585/584/583 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH589_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch589_research_stack_audit_watch -q
+```
+
+```
+
+## STATUS (Batch 589 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 588→589; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH589_TIP_ENG_IDLE.json` + `BATCH589_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch589_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 588 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH587/585/584/583/582 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH588_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch588_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 588 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 587→588; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH588_TIP_ENG_IDLE.json` + `BATCH588_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch588_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 587 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH585/584/583/582/581 (research586 skipped by tip race — catch-up; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH587_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch587_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 587 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 586→587; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH587_TIP_ENG_IDLE.json` + `BATCH587_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch587_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 585 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH584/583/582/581/580 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH585_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch585_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 585 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 584→585; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH585_TIP_ENG_IDLE.json` + `BATCH585_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch585_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 584 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH583/582/581/580/579 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH584_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch584_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 584 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 583→584; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH584_TIP_ENG_IDLE.json` + `BATCH584_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch584_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 583 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH582/581/580/579/578 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH583_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch583_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 583 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 582→583; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH583_TIP_ENG_IDLE.json` + `BATCH583_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch583_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 582 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH581/580/579/578/577 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH582_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch582_research_stack_audit_watch -q
+```
+
+```
+
+## STATUS (Batch 582 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 581→582; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH582_TIP_ENG_IDLE.json` + `BATCH582_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch582_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 581 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH580/579/578/577/576 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH581_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch581_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 581 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 580→581; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH581_TIP_ENG_IDLE.json` + `BATCH581_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch581_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 580 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH579/578/577/576/575 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH580_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch580_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 579 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH578/577/576/575/574 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH579_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch579_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 580 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 579→580; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH580_TIP_ENG_IDLE.json` + `BATCH580_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch580_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 579 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 578→579; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH579_TIP_ENG_IDLE.json` + `BATCH579_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch579_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 578 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH577/576/575/574/573 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH578_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch578_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 588 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@578 Soft Intent n=1 @578 @`d4bda504`); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch588_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+
+## STATUS (Batch 577 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH576/575/574/573/572 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH577_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch577_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 578 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 577→578; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH578_TIP_ENG_*.json` + `BATCH578_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch578_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 577 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 576→577; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH577_TIP_ENG_IDLE.json` + `BATCH577_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch577_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 576 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH575/574/573/572/571 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH576_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch576_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 574 tip-sync-living Soft Intent RESTORE)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent RESTORE n=1 (header@576 Soft Intent n=1 tip/eng576 @`266b8b12`; prior broken n=2+inv conflict @289df5b7; tip_sync574 Soft Intent preserve @fa234685); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch574_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 576 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 575→576; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH576_TIP_ENG_IDLE.json` + `BATCH576_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch576_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 575 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH574/573/572/571/570 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH575_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch575_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 574 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@575 tip/eng575 Soft Intent n=1 @575 @97e32b19; tip/eng574 Soft Intent n=1 @574 @ba8792dc; tip_sync573 @46b77b3d; tip_sync572 @6ceeeed9); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch574_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 575 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 574→575; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH575_TIP_ENG_IDLE.json` + `BATCH575_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch575_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 573 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@574 Soft Intent n=1; tip/eng573 @a3906608 Soft Intent n=1 @573; tip_sync572 @6ceeeed9 landed; research574 @2346d51a; tip_sync571 @7df108e1; research573 @22736cf3); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch573_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 574 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH573/572/571/570/569 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH574_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch574_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 572 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@574 Soft Intent n=1; tip/eng572 @9d8498f8; tip_sync571 @7df108e1; research573 @22736cf3); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch572_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 573 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH572/571/570/569/568 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH573_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch573_research_stack_audit_watch -q
+```
+
+
+## STATUS (Batch 574 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 573→574; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH574_TIP_ENG_BRIEF.json` + `BATCH574_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch574_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+
+## STATUS (Batch 573 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 572→573; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH573_TIP_ENG_IDLE.json` + `BATCH573_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch573_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+
+## STATUS (Batch 572 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH571/570/569/568/566 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH572_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch572_research_stack_audit_watch -q
+```
+
+
+## STATUS (Batch 572 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 571→572; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH572_TIP_ENG_IDLE.json` + `BATCH572_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch572_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 571 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@571 tip/eng571 Soft Intent n=1 @571 @3082ab67; tip_sync570 @7d8a0ccf; research571 @9c9f0456; tip_sync569 @59cc9f48); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch571_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 571 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH570/569/568/566/565 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH571_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch571_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 570 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (living header Soft Intent n=1 @571; tip/eng570 @859c3f85 Soft Intent n=1; research570 @176e55b7; tip/eng571 @3082ab67; tip_sync569 @59cc9f48); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch570_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 571 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 570→571; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH571_TIP_ENG_IDLE.json` + `BATCH571_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch571_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 570 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH569/568/566/565/564 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH570_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch570_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 569 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (living header Soft Intent n=1 @570; tip/eng569 @4920c665 Soft Intent n=1 @569; tip_sync566 @0904a834; tip_sync568 @1aba321e landed; tip/eng570+research569 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch569_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 569 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH568/566/565/564/563 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH569_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch569_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 570 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 569→570; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH570_TIP_ENG_BRIEF.json` + `BATCH570_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch570_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 569 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 568→569; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH569_TIP_ENG_BRIEF.json` + hunt/living/unfreeze/pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch569_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 568 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@570 tip/eng570 Soft Intent n=1 @570; tip/eng569+research569+tip_sync566 raced; tip_sync564 @8c302423; tip_sync566 @0904a834); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch568_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 566 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (living header Soft Intent n=1; tip/eng566 @5b2becc6 Soft Intent n=1; tip_sync565 @9f5fbc2f); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch566_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 568 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH566/565/564/563/562 (no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH568_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch568_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 568 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 567→568; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH568_TIP_ENG_IDLE.json` + `BATCH568_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch568_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 567 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 566→567; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH567_TIP_ENG_BRIEF.json` + hunt/living/unfreeze/pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch567_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 566 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH565/564/563/562/561 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH566_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch566_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 564 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@566 tip/eng564+tip_sync565+tip/eng566 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch564_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 566 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 565→566; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH566_TIP_ENG_BRIEF.json` + `BATCH566_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch566_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 565 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@565 tip/eng565+research565+tip_sync563 raced; tip_sync562 @d7ddaed6); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch565_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 565 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH564/563/562/561/560 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH565_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch565_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 563 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@565 tip/eng565 raced; research564 @7ababd84; tip_sync562 @d7ddaed6); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch563_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 564 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH563/562/561/560/559 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH564_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch564_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 565 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle_no_commit; unfreeze VERIFY/last-resort 564→565; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH565_TIP_ENG_IDLE.json` + hunt/unfreeze/pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch565_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 564 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 563→564; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH564_TIP_ENG_BRIEF.json` + hunt/living/unfreeze/pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch564_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 563 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH562/561/560/559/558 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH563_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch563_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 563 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @  (LIVE  tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 562→563; Soft Intent single-header; inv parent-pin. Evidence:  + . Intent soften 441/445 preserved. . Goal OPEN.
+
+refresh_path_c_bundle: fetching live tip d6g8k5htny-coder/main@chatgpt/drive-github-hardening-20260919
+refresh_path_c_bundle: tip_fetch_via=curl_api
+refresh_path_c_bundle: BASE_TIP=2f7a5a9 live=96e5175 match=0 force=0 dry_run=1
+refresh_path_c_bundle: dry-run TIP_DRIFT 2f7a5a9 -> 96e5175
+refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)
+republish_living_path_c_release: packing → /tmp/trial-portable-main-fixes.tgz
+wrote /tmp/trial-portable-main-fixes.tgz (794314 bytes; living_tag=batch241-path-c-bundle; 28 restore plans; 21 token logs; 1 rebase reports; 1 rebase notes; 75 stack audits; 1 status guards; 1 objective evidence; 1570 briefs; 512 hunts)
+republish_living_path_c_release: upload target tag=batch241-path-c-bundle (post-pack)
+republish_living_path_c_release: local pack bytes=794314 sha256=8d4d8460003e266bad9f957b36cfc4b8bf348b35bb6ff2b005d4bfdcdbbec333
+republish_living_path_c_release: release tgz bytes=794318 sha256=ca0d89c8c9063c2c0ce1f0b233438625291a48c2ddee3717f026a7d670de9f53
+republish_living_path_c_release: local_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 release_pack_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 tip_stale=0
+republish_living_path_c_release: script_stale=0
+republish_living_path_c_release: tgz_newer=0 tip_stale=0 script_stale=0 bundle_newer=0 patch_newer=0 force=0 need_upload=0 dry_run=1
+republish_living_path_c_release: OK — release assets already current (no upload).
+
+## STATUS (Batch 562 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@562 tip/eng562+research562+tip_sync561 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch562_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 562 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH561/560/559/558/557 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH562_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch562_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 561 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@562 tip/eng562+research561+tip_sync559 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch561_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 561 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH560/559/558/557/556 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH561_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch561_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 562 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 561→562; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH562_TIP_ENG_IDLE.json` + `BATCH562_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch562_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 559 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@561 tip/eng561+tip_sync560 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch559_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 561 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @  (LIVE  tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 560→561; Soft Intent single-header; inv parent-pin. Evidence:  + . Intent soften 441/445 preserved. . Goal OPEN.
+
+refresh_path_c_bundle: fetching live tip d6g8k5htny-coder/main@chatgpt/drive-github-hardening-20260919
+refresh_path_c_bundle: tip_fetch_via=curl_api
+refresh_path_c_bundle: BASE_TIP=2f7a5a9 live=96e5175 match=0 force=0 dry_run=1
+refresh_path_c_bundle: dry-run TIP_DRIFT 2f7a5a9 -> 96e5175
+refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)
+republish_living_path_c_release: packing → /tmp/trial-portable-main-fixes.tgz
+wrote /tmp/trial-portable-main-fixes.tgz (792857 bytes; living_tag=batch241-path-c-bundle; 28 restore plans; 21 token logs; 1 rebase reports; 1 rebase notes; 75 stack audits; 1 status guards; 1 objective evidence; 1551 briefs; 507 hunts)
+republish_living_path_c_release: upload target tag=batch241-path-c-bundle (post-pack)
+republish_living_path_c_release: local pack bytes=792857 sha256=00df83a2bf5a5afe8061da9ef3948960fd8cf000d1166a6f08add3e36c5c99d8
+republish_living_path_c_release: release tgz bytes=792857 sha256=072d87e25c0806112d19380bd0a2f841c2c994722d44c593fdc7e9a3bb4f0313
+republish_living_path_c_release: local_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 release_pack_tip=2f7a5a9f10c9ed5f5b7792a8f2521318d9208532 tip_stale=0
+republish_living_path_c_release: script_stale=0
+republish_living_path_c_release: tgz_newer=0 tip_stale=0 script_stale=0 bundle_newer=0 patch_newer=0 force=0 need_upload=0 dry_run=1
+republish_living_path_c_release: OK — release assets already current (no upload).
+
+## STATUS (Batch 560 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@560 tip/eng560+research560 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch560_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 560 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH559/558/557/556/555 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH560_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch560_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 558 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@560 tip/eng560 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch558_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 560 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 559→560; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH560_TIP_ENG_BRIEF.json` + `BATCH560_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch560_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 559 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH558/557/556/555/554 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH559_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch559_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 559 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `5dff825` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 558→559; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH559_TIP_ENG_BRIEF.json` + `BATCH559_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch559_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 557 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@558 tip/eng558+research558 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch557_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 558 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH557/556/555/554/553 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH558_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch558_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 556 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@558 tip/eng558 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch556_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 558 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `348754f` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 557→558; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH558_TIP_ENG_BRIEF.json` + `BATCH558_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch558_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 555 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@557 research557 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch555_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 557 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH556/555/554/553/552 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH557_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch557_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 557 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 556→557; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH557_TIP_ENG_BRIEF.json` + `BATCH557_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch557_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 556 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH555/554/553/552/551 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH556_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch556_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 556 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 555→556; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH556_TIP_ENG_BRIEF.json` + `BATCH556_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch556_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 555 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH554/553/552/551/549 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH555_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch555_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 554 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@555 tip/eng555 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch554_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 553 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@555 tip/eng555 raced); living current; action=keep_prior; parent-pin inv tip_sha=precommit HEAD; lemma_closed=false; scientific effect NONE.
+
+```bash
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch553_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 555 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d8a0f88` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 554→555; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH555_TIP_ENG_BRIEF.json` + `BATCH555_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch555_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 554 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH553/552/551/549/548 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH554_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch554_research_stack_audit_watch -q
+```
+
+
+## STATUS (Batch 554 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8e43189` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 553→554; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH554_TIP_ENG_BRIEF.json` + `BATCH554_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch554_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 553 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH552/551/549/548/547 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH553_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch553_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 553 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living current idle; unfreeze VERIFY/last-resort 552→553; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH553_TIP_ENG_IDLE.json` + `BATCH553_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch553_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 552 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH551/549/548/547/546 (no research550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH552_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch552_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 552 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@552 tip/eng552 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 552 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `e356b98` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 551→552; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH552_TIP_ENG_BRIEF.json` + `BATCH552_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch552_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 548 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH551/549/547/546/545; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH548_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch548_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 551 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH549/547/546/545/543 (no research550/548); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH551_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch551_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 550 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@551 tip/eng551 raced); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 551 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `a844a8c` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 550→551; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH551_TIP_ENG_BRIEF.json` + `BATCH551_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch551_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 549 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH547/546/545/543/541 (no research548); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH549_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch549_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 550 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 549→550; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH550_TIP_ENG_IDLE.json` + `BATCH550_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch550_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 549 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `7980581` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 548→549; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH549_TIP_ENG_BRIEF.json` + `BATCH549_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch549_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 547 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH546/545/543/541/540; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH547_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch547_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 548 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@548); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 548 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 547→548; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH548_TIP_ENG_IDLE.json` + `BATCH548_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch548_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 547 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `f5e1e30` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 546→547; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH547_TIP_ENG_BRIEF.json` + `BATCH547_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch547_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 546 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH545/543/541/540/539 (no research544); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH546_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch546_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 546 tip-sync-living)
+
+tip BASE `2f7a5a9` tip_moved keep_prior; tip_sync_watch Soft Intent preserve n=1 (header@546); living current; action=keep_prior; parent-pin inv; lemma_closed=false; scientific effect NONE.
+
+## STATUS (Batch 546 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 545→546; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH546_TIP_ENG_IDLE.json` + `BATCH546_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch546_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 544 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 (header@545); keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch544_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 545 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH543/541/540/539/537 (no research544); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH545_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch545_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 541 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 (header@545); keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch541_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 545 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living tar-noise DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 544→545; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH545_TIP_ENG_IDLE.json` + `BATCH545_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch545_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
+## STATUS (Batch 543 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 (header@544); keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch543_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 544 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `d98dbde` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 543→544; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH544_TIP_ENG_BRIEF.json` + `BATCH544_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch544_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 543 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH541/540/539/537/536 (no research542); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH543_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch543_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 543 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b34a5eb` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 542→543; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH543_TIP_ENG_BRIEF.json` + `BATCH543_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch543_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 540 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch540_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 541 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH540/539/537/536/535; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH541_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch541_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 542 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 541→542; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH542_TIP_ENG_BRIEF.json` + `BATCH542_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 541 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `67c2543` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 540→541; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH541_TIP_ENG_BRIEF.json` + `BATCH541_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch541_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
+## STATUS (Batch 540 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH539/537/536/535/534; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH540_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch540_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 540 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 539→540; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH540_TIP_ENG_BRIEF.json` + `BATCH540_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+## STATUS (Batch 539 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH537/536/535/534/533 (no research538); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH539_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch539_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 537 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 (header@538); keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch537_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 539 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `70664bd` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 538→539; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH539_TIP_ENG_BRIEF.json` + `BATCH539_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+
+## STATUS (Batch 537 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH536/535/534/533/532; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH537_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch537_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 538 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 537→538; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH538_TIP_ENG_BRIEF.json` + `BATCH538_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 537 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `70664bd` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 536→537; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH537_TIP_ENG_BRIEF.json` + `BATCH537_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 536 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH535/534/533/532/530; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH536_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch536_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 536 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch536_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 536 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 535→536; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH536_TIP_ENG_BRIEF.json` + `BATCH536_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 535 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH534/533/532/530/529; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH535_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch535_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 535 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch535_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 535 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 534→535; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH535_TIP_ENG_BRIEF.json` + `BATCH535_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 534 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH533/532/530/529/528; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH534_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch534_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 534 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch534_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 534 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 533→534; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH534_TIP_ENG_BRIEF.json` + `BATCH534_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 533 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH532/530/529/528/527; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH533_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch533_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 533 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch533_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 533 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 532→533; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH533_TIP_ENG_BRIEF.json` + `BATCH533_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 532 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH530/529/528/527/526 (no research531); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH532_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch532_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 532 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch532_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 532 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 531→532; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH532_TIP_ENG_BRIEF.json` + `BATCH532_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 530 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH529/528/527/526/525; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH530_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch530_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 530 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch530_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 531 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 530→531; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH531_TIP_ENG_BRIEF.json` + `BATCH531_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 530 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 529→530; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH530_TIP_ENG_BRIEF.json` + `BATCH530_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 529 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH528/527/526/525/524; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH529_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch529_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 529 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch529_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 529 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 528→529; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH529_TIP_ENG_BRIEF.json` + `BATCH529_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 528 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH527/526/525/524/522; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH528_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch528_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 528 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch528_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 528 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 527→528; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH528_TIP_ENG_BRIEF.json` + `BATCH528_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 527 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH526/525/524/522/521; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH527_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch527_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 527 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch527_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 527 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 526→527; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH527_TIP_ENG_BRIEF.json` + `BATCH527_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 526 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH525/524/522/521/520; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH526_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch526_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 526 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch526_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 526 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 525→526; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH526_TIP_ENG_BRIEF.json` + `BATCH526_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 525 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH524/522/521/520/519 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH525_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch525_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 525 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch525_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 525 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `99f8c2b` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 524→525; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH525_TIP_ENG_BRIEF.json` + `BATCH525_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 524 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch524_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 524 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH522/521/520/519/518 (catch-up after research522; research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH524_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch524_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 524 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 523→524; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH524_TIP_ENG_BRIEF.json` + `BATCH524_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 522 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1 @523; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch522_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 523 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; recover tip-sync522 ERROR race with tip/eng523; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch523_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 522 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH521/520/519/518/517 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH522_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch522_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 523 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 522→523; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH523_TIP_ENG_BRIEF.json` + `BATCH523_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 522 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 521→522; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH522_TIP_ENG_BRIEF.json` + `BATCH522_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 521 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH520/519/518/517/516 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH521_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch521_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 521 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; keep_prior; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch521_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 521 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 520→521; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH521_TIP_ENG_BRIEF.json` + `BATCH521_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 520 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH519/518/517/516/515 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH520_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch520_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 520 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; tip_moved keep_prior; living STABLE; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch520_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 520 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 519→520; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH520_TIP_ENG_BRIEF.json` + `BATCH520_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 517 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch517_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 519 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live TIP_DRIFT). tip_sync_watch Soft Intent preserve n=1; tip_moved keep_prior; living script_stale republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch519_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 519 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH518/517/516/515/514 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH519_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch519_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 519 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `4a72a5a` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 518→519; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH519_TIP_ENG_BRIEF.json` + `BATCH519_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 516 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living current; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch516_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 517 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH516/515/514/513/512 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH517_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch517_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 518 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 517→518; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH518_TIP_ENG_BRIEF.json` + `BATCH518_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 515 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living script_stale republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch515_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 517 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `cd66a65` tip_moved). tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 516→517; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH517_TIP_ENG_BRIEF.json` + `BATCH517_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 516 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH515/514/513/512/511 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH516_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch516_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 514 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch keep_prior; Soft Intent single living print_owner header preserved; living tgz_newer republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch514_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 515 research-audit)
+
+## STATUS (Batch 516 tip-eng-keep-prior)
+
+Hardening tip **BASE** @ `2f7a5a9` (LIVE `cd66a65` tip_moved keep-prior). tip_or_eng: no eng defect; VERIFY 515→516; Soft Intent single === header; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch516_tip_or_eng_keep_prior -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH514/513/512/511/510 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH515_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch515_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 512 tip-sync-living)
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch gap-fill keep_prior; Soft Intent single living print_owner header preserved; living tgz_newer republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch512_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 513 tip-sync-living)
+
+## STATUS (Batch 515 tip-eng-keep-prior)
+
+Hardening tip **BASE** @ `2f7a5a9` (LIVE `cd66a65` tip_moved keep-prior). tip_or_eng: no eng defect; VERIFY 514→515; Soft Intent single === header; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch515_tip_or_eng_keep_prior -q
+```
+
+Hardening tip **BASE keep-prior** @ `2f7a5a9` (live `cd66a65` TIP_DRIFT). tip_sync_watch: keep_prior; Soft Intent single living print_owner header preserved; living script_stale republish; action=`keep_prior`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch513_tip_sync_watch_keep_prior_parent_pin -q
+```
+
+## STATUS (Batch 513 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH512/511/510/508/507 (research496/499/501/503/509 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH513_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch513_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 514 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 513→514; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH514_TIP_ENG_BRIEF.json` + `BATCH514_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 511 tip-sync-living)
+
+## STATUS (Batch 513 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 512→513; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch513_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch511_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 512 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH511/510/508/507/506 (research496/499/501/503/509 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH512_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch512_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 511 research-audit)
+
+## STATUS (Batch 512 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 511→512; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch512_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH510/508/507/506/505 (research496/499/501/503/509 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH511_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch511_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 510 research-audit)
+
+## STATUS (Batch 511 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 510→511; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch511_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH508/507/506/505/504 (research496/499/501/503/509 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH510_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch510_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 510 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch510_tip_sync_watch_idle_parent_pin -q
+```
+
+
+## STATUS (Batch 508 research-audit)
+
+## STATUS (Batch 510 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 509→510; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch510_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH507/506/505/504/502 (research496/499/501/503 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH508_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch508_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 508 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch508_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 509 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer republish batch241; unfreeze VERIFY/last-resort 508→509; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH509_TIP_ENG_BRIEF.json` + `BATCH509_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 507 tip-sync-living)
+
+## STATUS (Batch 508 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 507→508; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch508_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch507_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 507 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH506/505/504/502/500 (research496/499/501/503 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH507_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch507_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 507 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 506→507; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH507_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 506 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH505/504/502/500/498 (research496/499/501/503 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH506_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch506_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 506 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch506_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 505 research-audit)
+
+## STATUS (Batch 506 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 505→506; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch506_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH504/502/500/498/497 (research496/499/501/503 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH505_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch505_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 505 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch505_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 505 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer republish batch241; unfreeze VERIFY/last-resort 504→505; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH505_TIP_ENG_BRIEF.json` + `BATCH505_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 504 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH502/500/498/497/495 (research496/499/501/503 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH504_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch504_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 504 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header preserved; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch504_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 502 research-audit)
+
+## STATUS (Batch 504 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 503→504; inv parent-pin. Soft Intent single === header (no re-stack). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch504_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH500/498/497/495/494 (research496/499/501 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH502_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch502_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 502 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header restore; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch502_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 502 tip-eng-idle)
+
+## STATUS (Batch 503 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 502→503; inv parent-pin. Soft Intent only (no harden). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch503_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 501→502; inv parent-pin. Evidence: `portable/BATCH502_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 500 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; Soft Intent single living print_owner header restore; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch500_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 500 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH498/497/495/494/493 (research496/499 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH500_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch500_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 499 tip-sync-living)
+
+## STATUS (Batch 501 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 500→501; inv parent-pin. Soft Intent only (no harden). `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch501_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch499_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 500 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer republish batch241; unfreeze VERIFY/last-resort 499→500; inv parent-pin. Evidence: `portable/BATCH500_TIP_ENG_BRIEF.json` + `BATCH500_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 498 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH497/495/494/493/492 (research496 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH498_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch498_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 497 tip-sync-living)
+
+## STATUS (Batch 499 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living current; idle_no_commit + unfreeze 498→499; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch499_tip_or_eng_idle -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch497_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 496 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch496_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 495 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch495_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 494 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch494_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 497 research-audit)
+
+## STATUS (Batch 498 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: tip match; living tgz_newer republish + unfreeze 497→498; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch498_tip_or_eng_living_tgz -q
+```
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH495/494/493/492/491 (research496 gap); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH497_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch497_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 497 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale republish batch241; unfreeze VERIFY/last-resort 496→497; inv parent-pin. Evidence: `portable/BATCH497_TIP_ENG_BRIEF.json` + `BATCH497_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 496 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 495→496; inv parent-pin. Evidence: `portable/BATCH496_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 495 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH494/493/492/491/490; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH495_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch495_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 495 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 494→495; inv parent-pin. Evidence: `portable/BATCH495_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 494 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH493/492/491/490/489; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH494_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch494_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 494 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 493→494; inv parent-pin. Evidence: `portable/BATCH494_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 493 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch493_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 492 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch492_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 493 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH492/491/490/489/488; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH493_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch493_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 493 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch492 research; republish batch241; unfreeze VERIFY/last-resort 492→493; inv parent-pin. Evidence: `portable/BATCH493_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 492 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH491/490/489/488/487; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH492_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch492_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 492 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 491→492; inv parent-pin. Evidence: `portable/BATCH492_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 491 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH490/489/488/487/485; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH491_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch491_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 491 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch491_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 490 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH489/488/487/485/484; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH490_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch490_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 491 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch490 idle; republish batch241; unfreeze VERIFY/last-resort 490→491; inv parent-pin. Evidence: `portable/BATCH491_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 490 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 489→490; inv parent-pin. Evidence: `portable/BATCH490_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 489 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH488/487/485/484/482; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH489_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch489_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 489 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch489_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 489 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 488→489; inv parent-pin. Evidence: `portable/BATCH489_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 488 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch488_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 488 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH487/485/484/482/481; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH488_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch488_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 488 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch487 research; republish batch241; unfreeze VERIFY/last-resort 487→488; inv parent-pin. Evidence: `portable/BATCH488_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 487 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH485/484/482/481/480; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH487_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch487_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 487 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch487_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 485 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH484/482/481/480/478; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH485_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch485_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 487 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch486 idle; republish batch241; unfreeze VERIFY/last-resort 486→487; inv parent-pin. Evidence: `portable/BATCH487_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 486 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 485→486; inv parent-pin. Evidence: `portable/BATCH486_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 485 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch485_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 485 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 484→485; inv parent-pin. Evidence: `portable/BATCH485_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 484 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH482/481/480/478/477; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH484_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch484_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 484 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch484_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 484 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch483 idle; republish batch241; unfreeze VERIFY/last-resort 483→484; inv parent-pin. Evidence: `portable/BATCH484_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 483 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 482→483; inv parent-pin. Evidence: `portable/BATCH483_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 482 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch482_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 482 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH481/480/478/477/476; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH482_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch482_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 482 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch481 research; republish batch241; unfreeze 481→482; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch482_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 481 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH480/478/477/476/475; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH481_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch481_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 481 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch481_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 481 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 480→481; inv parent-pin. Evidence: `portable/BATCH481_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 480 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch480_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 480 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH478/477/476/475/474; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH480_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch480_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 480 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch479 tip_or_eng; republish batch241; unfreeze 479→480; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch480_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 479 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 478→479; inv parent-pin. Evidence: `portable/BATCH479_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 478 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH477/476/475/474/473; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH478_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch478_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 478 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch478_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 478 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 477→478; inv parent-pin. Evidence: `portable/BATCH478_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 477 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch477_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 477 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH476/475/474/473/472; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH477_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch477_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 477 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 476→477; inv parent-pin. Evidence: `portable/BATCH477_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 476 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch476_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 476 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH475/474/473/472/471; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH476_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch476_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 476 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 475→476; inv parent-pin. Evidence: `portable/BATCH476_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 475 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch475_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 475 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH474/473/472/471/470; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH475_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch475_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 475 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 474→475; inv parent-pin. Evidence: `portable/BATCH475_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 474 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch474_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 474 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH473/472/471/470/469; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH474_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch474_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 474 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 473→474; inv parent-pin. Evidence: `portable/BATCH474_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 473 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch473_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 473 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH472/471/470/469/468; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH473_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch473_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 473 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch471 tip_sync; republish batch241; unfreeze 472→473; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch473_tip_or_eng_living_tgz -q
+```
+
+## STATUS (Batch 471 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch471_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 472 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch472_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 472 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH471/470/469/468/467; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH472_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch472_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 472 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 471→472; inv parent-pin. Evidence: `portable/BATCH472_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 471 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH470/469/468/467/466; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH471_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch471_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 470 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch470_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 470 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH469/468/467/466/465; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH470_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch470_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 471 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch470 tip_or_eng; republish batch241; unfreeze 470→471; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch471_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 470 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 469→470; inv parent-pin. Evidence: `portable/BATCH470_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 469 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH468/467/466/465/464; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH469_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch469_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 469 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch469_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 468 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH467/466/465/464/463; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH468_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch468_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 469 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 468→469; inv parent-pin. Evidence: `portable/BATCH469_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 467 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch467_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 467 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH466/465/464/463/462; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH467_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch467_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 468 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 467→468; inv parent-pin. Evidence: `portable/BATCH468_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 467 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 466→467; inv parent-pin. Evidence: `portable/BATCH467_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 466 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH465/464/463/462/461; STATUS_GUARD living; no AUDIT re-copy; covers research465 gap. Evidence: `portable/BATCH466_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch466_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 465 research-audit gap-fill)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion gap-fill: open 13/1/3; delta 0 vs BATCH464/463/462/461/460; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH465_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 -m pytest tests/test_intent.py::test_batch465_research_stack_audit_watch_gap_fill -q
+```
+
+## STATUS (Batch 466 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch466_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 465 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch465_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 466 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch465 tip_or_eng; republish batch241; unfreeze 465→466; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch466_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 465 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 464→465; inv parent-pin. Evidence: `portable/BATCH465_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 464 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH463/462/461/460/459; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH464_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch464_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 464 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch464_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 463 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH462/461/460/459/458; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH463_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch463_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 464 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 463→464; inv parent-pin. Evidence: `portable/BATCH464_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 463 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch463_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 463 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 462→463; inv parent-pin. Evidence: `portable/BATCH463_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 462 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch462_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 462 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH461/460/459/458/457; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH462_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch462_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 462 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 461→462; inv parent-pin. Evidence: `portable/BATCH462_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 461 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH460/459/458/457/456; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH461_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch461_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 461 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch461_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 461 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 460→461; inv parent-pin. Evidence: `portable/BATCH461_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 460 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH459/458/457/456/455; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH460_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch460_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 460 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch460_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 460 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 459→460; inv parent-pin. Evidence: `portable/BATCH460_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 459 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch459_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 459 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH458/457/456/455/454; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH459_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch459_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 459 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch458 tip_sync; republish batch241; unfreeze 458→459; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch459_tip_or_eng_living_tgz -q
+```
+
+## STATUS (Batch 458 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch458_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 458 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH457/456/455/454/451; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH458_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch458_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 458 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 457→458; inv parent-pin. Evidence: `portable/BATCH458_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 457 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH456/455/454/451/450; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH457_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch457_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 457 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch457_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 457 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 456→457; inv parent-pin. Evidence: `portable/BATCH457_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 456 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH455/454/451/450/449; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH456_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch456_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 456 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch456_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 456 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch455 research; republish batch241; unfreeze 455→456; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch456_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 455 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH454/451/450/449/448; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH455_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch455_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 455 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch455_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 455 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 454→455; inv parent-pin. Evidence: `portable/BATCH455_TIP_ENG_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 454 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH451/450/449/448/447; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH454_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch454_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 454 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch454_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 454 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch453 idle; republish batch241; unfreeze 453→454; inv parent-pin. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch454_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 453 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tar-noise DIFF_COUNT=0; unfreeze VERIFY/last-resort 451→453; inv parent-pin. Evidence: `portable/BATCH453_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 452 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch452_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 451 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH450/449/448/447/446; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH451_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch451_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 451 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living current; unfreeze VERIFY/last-resort 450→451; inv parent-pin. Evidence: `portable/BATCH451_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 451 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living tgz_newer republish; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch451_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 450 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH449/448/447/446/445; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH450_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch450_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 450 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch450_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 450 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 449→450. Evidence: `portable/BATCH450_TIP_ENG_IDLE.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 449 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH448/447/446/445/444; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH449_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch449_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 449 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch449_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 449 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 448→449. Evidence: `portable/BATCH449_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 448 research-audit)
+
+
+## STATUS (Batch 448 intent-soften)
+
+Hardening tip **stable** @ `2f7a5a9`. Soften Batch441/445 tip_sync living-brief Intent asserts (tip-sync447 re-hardened to script_stale/uploaded=True while briefs stayed living_current/false → CI sanity red). `lemma_closed=false`. action=`intent_soften_441_445_tip_sync_living_brief`. Goal OPEN.
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH447/446/445/444/443; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH448_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch448_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 448 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch448_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 448 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 447→448. Evidence: `portable/BATCH448_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 447 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH446/445/444/443/441; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH447_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch447_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 447 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch447_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 447 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 446→447. Evidence: `portable/BATCH447_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 446 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch446_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 446 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH445/444/443/441/440; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH446_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch446_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 446 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch445 tip_sync/research; republish batch241; unfreeze 445→446; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch446_tip_or_eng_living_script -q
+```
+
+## STATUS (Batch 445 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH444/443/441/440; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH445_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch445_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 445 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch445_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 444 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH443/441/440/438; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH444_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch444_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 444 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch444_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 445 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch443 research; republish batch241; unfreeze 444→445; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 443 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH441/440/438/437; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH443_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch443_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 444 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch443 tip_sync living; republish batch241; unfreeze 443→444; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 443 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch443_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 441 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH440/438/437/436; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH441_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch441_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 443 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch441 tip_sync idle; republish batch241; unfreeze 442→443; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 441 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch441_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 442 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch441 tip_sync living; republish batch241; unfreeze 441→442; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+## STATUS (Batch 441 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch441_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 440 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH438/437/436/435; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH440_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch440_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 440 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch440_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 441 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch438 research; republish batch241; unfreeze 440→441; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 438 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH437/436/435/434; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH438_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch438_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 438 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch438_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 440 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch 439 idle; republish; unfreeze 439→440; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 439 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 438→439. Evidence: `portable/BATCH439_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 437 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch437_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 437 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH436/435/434/433; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH437_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch437_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 438 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 437→438. Evidence: `portable/BATCH438_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 436 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH435/434/433/431; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH436_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch436_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 436 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch436_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 437 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch435 research; republish batch241; unfreeze 436→437; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 435 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH434/433/431/430; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH435_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch435_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 436 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch434 tip_sync living; republish batch241; unfreeze 435→436; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 434 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living current; action=`idle_no_commit`; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch434_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 435 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch434 research; republish batch241; unfreeze 434→435; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 434 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH433/431/430/428; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH434_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch434_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 433 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch433_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 433 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH431/430/428/427; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH433_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch433_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 434 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch430 tip_sync living; republish batch241; unfreeze 433→434; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 430 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip match; living script_stale/tgz_newer → republish batch241; action=`idle_no_commit` after republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch430_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 433 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch 431 research; republish; unfreeze 432→433; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 431 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH430/428/427/426; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH431_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch431_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 432 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch430 research; republish batch241; unfreeze 431→432; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 430 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH428/427/426/424; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH430_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch430_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 431 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch427 tip_sync living; republish batch241; unfreeze 430→431; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 427 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish; parent-pin inv. Evidence: `portable/BATCH427_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch427_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 430 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch428 research; republish batch241; unfreeze 429→430; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 428 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH427/426/424/422; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH428_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch428_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 429 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch427 research; republish batch241; unfreeze 428→429; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 427 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH426/424/422/420; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH427_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch427_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 428 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 427→428. Evidence: `portable/BATCH428_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 427 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch426 tip_sync+research; republish batch241; unfreeze 426→427; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 426 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH424/422/420/418; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH426_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch426_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 426 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tip/script current; parent-pin inv; skip inventable. Evidence: `portable/BATCH426_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch426_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 426 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 425→426. Evidence: `portable/BATCH426_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 425 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish batch241; parent-pin inv; skip inventable. Evidence: `portable/BATCH425_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit` (post-republish). Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch425_tip_sync_watch_living_parent_pin -q
+```
+
+## STATUS (Batch 425 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 424→425. Evidence: `portable/BATCH425_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 424 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH422/420/418/416; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH424_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch424_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 424 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tip/script current; parent-pin inv; skip inventable. Evidence: `portable/BATCH424_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch424_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 424 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 423→424. Evidence: `portable/BATCH424_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 422 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH420/418/416/414; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH422_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch422_research_stack_audit_watch -q
+
+## STATUS (Batch 422 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tip/script current; parent-pin inv; skip inventable. Evidence: `portable/BATCH422_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch422_tip_sync_watch_idle_parent_pin -q
+```
+
+## STATUS (Batch 423 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch422 idle; republish batch241; unfreeze 422→423; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 422 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 421→422. Evidence: `portable/BATCH422_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 420 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH418/416/414/412; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH420_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch420_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 421 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch420 tip_sync living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 420 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish batch241; parent-pin inv; skip inventable. Evidence: `portable/BATCH420_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit` (post-republish). Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch420_tip_sync_watch_living_parent_pin -q
+```
+
+## STATUS (Batch 420 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 419→420. Evidence: `portable/BATCH420_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 418 tip-sync-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_sync_watch: tip_match; living tgz_newer → republish batch241; parent-pin inv; skip inventable. Evidence: `portable/BATCH418_TIP_SYNC_{IDLE,WATCH,WATCH_BRIEF,WATCH_EVIDENCE,WATCH_LIVING_BRIEF,INV_TIP_PIN_*}.json`. `lemma_closed=false`. action=`idle_no_commit` (post-republish). Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch418_tip_sync_watch_living_parent_pin -q
+```
+
+## STATUS (Batch 418 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH416/414/412; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH418_RESEARCH_AUDIT_WATCH.json`. Inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 419 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch418 idle; republish batch241; unfreeze 418→419; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 418 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: hunt-negative (living current; inv parent-pin); unfreeze 417→418. Evidence: `portable/BATCH418_TIP_ENG_IDLE.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 416 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH416_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 417 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch416 research; republish batch241; unfreeze 416→417; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 416 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH414/412/410/405; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH416_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch416_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 416 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after Batch414 research; republish batch241; unfreeze 415→416; inv parent-pin. Evidence: `portable/BATCH416_TIP_ENG_BRIEF.json`. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 414 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH412/410/405; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH414_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch414_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 414 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH414_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 415 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch414 living; republish batch241; unfreeze 414→415; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 414 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch412 research; republish batch241; unfreeze 413→414; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 412 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH410/408/405; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH412_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch412_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 412 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH412_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 413 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch412 idle; republish batch241; unfreeze 412→413; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 412 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch411 living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 410 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH408/405; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH410_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch410_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 411 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch410 tip_sync/post-pin; republish batch241; unfreeze 410→411; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 410 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living inv parent-pin (lag cleared). `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 410 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH410_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 410 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch409 tip_sync pin; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 409 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living inv parent-pin (lag cleared). `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 408 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH408_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 409 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch408 post-research living; republish batch241; unfreeze 408→409; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 408 post-research-living+inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post research_stack_audit living script_stale republish + inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 408 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH405; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH408_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch408_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 408 tip-eng-living+inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng living script_stale republish + inv parent-pin after idle. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 408 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch407 tip_sync pin; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 407 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 407 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH407_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 407 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch406 living; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 406 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living `trial-portable-main-fixes.tgz` missing from release after Batch 405 research; republish; unfreeze 405→406; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 405 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH401; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH405_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Unfreeze 404→405; inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+## STATUS (Batch 404 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 404 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH404_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 404 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch403 idle; VERIFY/REFRESH lag 402→404; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 403 post-idle-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_or_eng idle: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 403 tip-eng-idle)
+
+Hardening tip **stable** @ . tip_or_eng idle_no_commit after Batch401 research on Batch402 tip; living current; inv parent-pin. Hunt negative. . Goal OPEN.
+
+## STATUS (Batch 402 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch 401 post tip_sync; republish; unfreeze 401→402; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 401 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH399; STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH401_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Unfreeze 400→401; inv parent-pin. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "$HARDEN_CLONE" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch401_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 401 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_sync living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 401 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH401_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 401 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living tgz_newer after Batch400 post-living pin; republish batch241; unfreeze 400→401; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+
+## STATUS (Batch 400 post-living-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Post tip_or_eng living: inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 400 tip-eng-living-refresh)
+
+Hardening tip **stable** @ `2f7a5a9`. Living script_stale after Batch400 tip_or_eng land; republish batch241. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 400 tip-eng-inv-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: inv tip lag + living tgz_newer after tip_sync living; re-pin; republish; unfreeze 399→400. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 399 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH399_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 399 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch399 research; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 399 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. Research stack audit 13/1/3 no promotion; unfreeze 398→399. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 396 tip-eng-idle-continue)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: hunt negative (living current; inv parent_pin; VERIFY/last-resort 398). `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 398 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after peer SyntaxError-fix release race; republish; unfreeze 396→398. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 396 ci-intent-syntax)
+
+Hardening tip **stable** @ `2f7a5a9`. CI Intent SyntaxError fixed (lone literal `\\n` line). `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 396 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin; fixed inventory trailing literal `\\n`. Evidence: `portable/BATCH396_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 396 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch396 research; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 397 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peer Batch396 research; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH397_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 396 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. Research stack audit 13/1/3 no promotion; unfreeze 395→396. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 395 tip-eng-living)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: living script_stale after tip_sync/inv peers; republish batch241; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 395 post-tip-sync-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin + living after tip_sync living. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 395 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH395_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 395 idle-unfreeze)
+
+Hardening tip **stable** @ `2f7a5a9`. Idle tip-stable + unfreeze 394→395. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 394 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after tip_sync living. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 394 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH394_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 394 tip-eng-idle-after-post)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch394 post-idle pin/living/unfreeze; living current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 394 post-idle-pin-living)
+
+Hardening tip **stable** @ `2f7a5a9`. Post-idle: inv parent-pin + living + unfreeze 393→394. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 394 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng continue: peer Batch393 idle; hunt negative (living need_upload=0; inv==HEAD^; Intent green). Evidence: `portable/BATCH394_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 393 tip-eng-idle)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng idle_no_commit after Batch393 research; living tip/script current; inv parent-pin. Hunt negative. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 393 tip-sync-idle)
+
+Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH393_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.
+
+## STATUS (Batch 393 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. Research stack audit 13/1/3 no promotion; unfreeze 392→393. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 392 tip-eng-unfreeze)
+
+Hardening tip **stable** @ `2f7a5a9`. tip_or_eng: unfreeze last-resort/VERIFY/wake 391→392; living script_stale republish; inv parent-pin. `lemma_closed=false`. Goal OPEN.
+
+## STATUS (Batch 391 post-tip-sync-inv-pin)
+
+Hardening tip **stable** @ `2f7a5a9`. Inv parent-pin after Batch390 tip_sync living. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 390 tip-sync-idle)
 
 Hardening tip **stable** @ `2f7a5a9` (tip_match=true; Path C idle; BASE==LIVE). tip_sync_watch: no tip move; living tip_stale=0 script_stale=0; inv parent-pin. Evidence: `portable/BATCH390_TIP_SYNC_IDLE.json`. `lemma_closed=false`. action=`idle_no_commit`. Goal OPEN.

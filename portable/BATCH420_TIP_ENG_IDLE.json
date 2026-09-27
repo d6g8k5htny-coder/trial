@@ -1,0 +1,23 @@
+{
+  "batch": "420",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "lemma_closed": false,
+  "scientific_effect": "NONE",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "goal": "OPEN",
+  "assignment": "tip_or_eng_continue_vs_BASE_TIP_2f7a5a9",
+  "living": {
+    "tip_stale": 0,
+    "script_stale": 0,
+    "need_upload": 0,
+    "tgz_newer": 0
+  },
+  "inventory_tip_pin": "preserve_parent_pin",
+  "verify_refresh_batch": 420,
+  "generated_at_utc": "2026-09-26T05:10:48Z",
+  "note": "tip_or_eng after Batch419 living + Batch418 tip-sync/research: tip stable; living current; inv parent_pin; VERIFY 420; hunt negative"
+}

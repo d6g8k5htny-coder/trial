@@ -1,0 +1,13 @@
+{
+  "batch": "394",
+  "action": "inventory_preserve_durable_tip_pin_after_tip_sync_living",
+  "parent_pin": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_sha": "1a88f4d33e157b773046f8e50109395e3d811268",
+  "generated_at_utc": "2026-09-26T03:02:07Z",
+  "note": "Batch394 tip-sync living 1a88f4d3 left inv tip lag; re-pin; living script_stale=0; no unfreeze"
+}

@@ -1,4 +1,4205 @@
+### Batch 835 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 834→835 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`f7db594` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →835; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after Soft Intent 834); Soft Intent single === header →835; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 834 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY834 Soft Intent n=1 after tip/eng834 Soft Intent 833→834; open stack 13/1/3 Δ0 vs 833/832/831/830/829; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`3d22b453`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@834.
+
+### Batch 834 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 833→834 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b9a1475` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →834; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 833); Soft Intent single === header →834; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 833 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `1b900fe3` left inv tip_sha at `cfb0c728` while Soft Intent/VERIFY833 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `78ebd3b0` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY833; research833/peer merges mid-repair (kept Soft Intent 833); `lemma_closed=false`. action=`parent_pin_repair`.
+
+### Batch 833 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY833 Soft Intent n=1 after tip/eng833 Soft Intent 832→833; open stack 13/1/3 Δ0 vs 832/831/830/829/828; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`1b900fe3`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@833.
+
+### Batch 833 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 832→833 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`cfb0c72` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →833; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 832); Soft Intent single === header →833; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 832 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `bb24d803` left inv tip_sha at `79d660e7` while Soft Intent/VERIFY832 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `bdbbe6a8` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY832; research832/peer merges mid-repair (kept Soft Intent 832); `lemma_closed=false`. action=`parent_pin_repair`.
+
+### Batch 832 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY832 Soft Intent n=1 after tip/eng832 Soft Intent 831→832; open stack 13/1/3 Δ0 vs 831/830/829/828/827; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`082604bc`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@832.
+
+### Sidecar b3c6 — PR #150 land + tip-sync 2f7a5a9→e7652a1 (0017 semantic already-applied) + DESCENDANT_OK tip-drift gates (2026-09-27)
+
+- Owner mandate (merge-assist run): focus ready-to-merge trial PRs, assist peers, merge as needed. Scientific effect: **NONE**; `lemma_closed=false`; no claim/premise/prize/lemma touched.
+- **Tip-drift policy (engineering):** hardening moved again mid-run (`e7652a1`→`d4ad3bb`, several merges/hour), so strict `live == BASE_TIP` is a treadmill. New `scripts/tip_drift_class.py` (MATCH / DESCENDANT / BEHIND / DIVERGED / UNKNOWN via GitHub compare; local `merge-base` first where a clone exists). Every gate — `ci.yml` (both tip-drift jobs), `refresh_path_c_bundle.sh --dry-run` (`TIP_DRIFT_DESCENDANT_OK` exit 0), `assert_path_c_ready.sh`, `owner_open_path_c_pr.sh`, `owner_land_path_c.sh`, `path_c_dry_run.py`, `write_path_c_status.py`, `when_writable_land.py` — now treats **DESCENDANT while `VERIFY.path_c_landed=true`** as informational (stack already on tip; refresh at leisure). BEHIND / DIVERGED / UNKNOWN and `BASE_TIP≠VERIFY.base_tip_sha` still fail. JSON consumers: `tip_matches_base` / `tip_match` = MATCH-or-landed-DESCENDANT; strict value kept as `tip_exact_match`; class in `tip_drift_class`. Verified on live `d4ad3bb`: all five gates OK / IDLE_PATH_C_DONE, `apply_all --check` OK, `math_status problems=0 lemma_closed=false`; negative test with a diverged BASE_TIP → exit 1 / die. 15 offline tests `tests/test_tip_drift_class.py`.
+- **Peer-loop defect noted (for tip_or_eng / research_stack_audit_watch):** Batches 811–822 stamped **trial** commit SHAs where hardening SHAs belong — `STATUS_GUARD_SNAPSHOT.tip_sha=fd808d4` (= trial Batch 821) and `AI_AGENT_ACCESS_INVENTORY.sandbox.tip=13638cd` (= trial tip, not sandbox). `test_batch323` / `343` / `346` / `368` were red on `main` from this alone. Repaired here by regenerating both from their scripts (guard baseline = the `e7652a1` hardening snapshot; inventory `preserve_durable`, batch 822 kept). Loops should pass `--tip-sha` from the hardening clone and pin `sandbox.tip` from the sandbox repo.
+- **Guard hardened at source:** `guard_no_status_promotion.py` now treats the audited checkout's git HEAD as authoritative — a `--tip-sha` that disagrees (the trial HEAD the peer loop passes) is overridden with a warning. Batch 832 re-stamped `tip_sha=082604bc` (trial) minutes after the first land and turned 89 living-tip pins red; the peer's next pulse self-corrects with this change. Snapshot regenerated at hardening `a01c72f` (pass, violations=0, baseline in-repo).
+- Second real refresh at the end of this run: BASE_TIP `e7652a1`→**`9ce5c66`** (refresh_batch 822); live tip already `9458b90` by the time STATUS was written → `tip_match=true tip_exact_match=false tip_drift_class=DESCENDANT` — the gates now absorb that instead of going red.
+- `tests/test_intent.py` de-frozen mechanically (no test deleted): `_living_tip` accepts allowlist ∪ current BASE_TIP ∪ verified descendants; `_living_trial_tip` for parent-pin; `_assert_land_status_at_least` for `STATUS (Batch N …)` headers that peers overwrite in place; Batch 538/677/749 accept either recorded outcome.
+- Trial [PR #150](https://github.com/d6g8k5htny-coder/trial/pull/150) (Dropbox → Drive/GitHub gap audit; non-draft, `CONFLICTING` on this log only) — conflict resolved keep-both (main batches + Batch 791 sidecar); `tests/test_dropbox_gap_audit.py` 5 passed; landed on trial `main` via merge push (PR create/merge via App is 403).
+- Root cause of 30h red trial-ci on `main` (651 failing `trial-ci` runs since 2026-09-26 13:00Z; every open PR shows red checks): live hardening tip moved 139 commits past BASE_TIP `2f7a5a9` while `refresh_path_c_bundle.sh` **failed** on `apply_all --check` — `0017-pinned-sources-close-file-handles.patch` applies neither forward nor reverse on tip (`tests/test_pinned_sources.py` third hunk context drifted `P.survey`→`P.full_survey`; the close-handles change itself is already on tip). "keep-prior (BASE immutable)" batches 513–810 were the symptom, not a policy.
+- Fix (engineering only): `apply_all.sh` gains a **semantic already-applied** guard for 0017 (same pattern as Batch 378's 0018/0019): tip has `with open(os.path.join(ROOT, INDEX_REL)` and no bare `open(...).read()` → skip. `refresh_path_c_bundle.sh` then succeeds: BASE_TIP `2f7a5a9`→**`e7652a1`**; keep-prior `.patch`/`.bundle` (applied head `b4fdbdc`); VERIFY `refresh_batch=810`; `math_status_check problems=0 disposition=OPEN_HOLD lemma_closed=false`; focused **92 passed**, claims+recovery **86 passed**, 0 ResourceWarning.
+- Peer PRs left as-is this pass: [#149](https://github.com/d6g8k5htny-coder/trial/pull/149) DRAFT (companion to #150; red checks were the tip-drift only), [#142](https://github.com/d6g8k5htny-coder/trial/pull/142) DRAFT CLEAN (Codex review claimed; owner asked for AGENTS.md ops note), [#121](https://github.com/d6g8k5htny-coder/trial/pull/121) DRAFT (owner: keep DRAFT until distinct-agent review), [#138](https://github.com/d6g8k5htny-coder/trial/pull/138) DRAFT (`verify` job red on its own workflow).
+### Batch 832 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 831→832 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`17b5151` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →832; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 831); Soft Intent single === header →832; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 831 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY831 Soft Intent n=1 after tip/eng831 Soft Intent 830→831; open stack 13/1/3 Δ0 vs 830/829/828/827/826; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`8c055448`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@831.
+
+### Batch 831 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 830→831 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38697b1` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 830→831; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →831; inv parent_pin @38697b1. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 830 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY830 Soft Intent n=1; catch-up after tip/eng830 Soft Intent 829→830 (covers research829 tip-race); open stack 13/1/3 Δ0 vs 829/828/827/826/825; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f543dd38`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@830.
+
+### Batch 829 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY830 Soft Intent n=1; covers research829 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f543dd38`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@829.
+
+### Batch 830 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 829→830 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`511184d` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →830; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 829); Soft Intent single === header →830; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 829 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 828→829 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`6ef4d7b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 828→829; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →829; inv parent_pin @6ef4d7b. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 828 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY828 Soft Intent n=1 after tip/eng828 Soft Intent 827→828; open stack 13/1/3 Δ0 vs 827/826/825/824/823; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`79d660e7`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@828.
+
+### Batch 828 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 827→828 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`5adb7c4` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 827→828; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →828; inv parent_pin @5adb7c4. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 827 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY827 Soft Intent n=1; catch-up after tip/eng827 Soft Intent 826→827 (covers research826 tip-race); open stack 13/1/3 Δ0 vs 826/825/824/823/822; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`9ca713e3`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@827.
+
+### Batch 826 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY827 Soft Intent n=1; covers research826 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`9ca713e3`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@826.
+
+### Batch 827 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 826→827 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`4a43b3f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →827; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 826); Soft Intent single === header →827; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 826 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 825→826 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`ee1e9c9` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 825→826; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →826; inv parent_pin @ee1e9c9. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 825 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY825 Soft Intent n=1 after tip/eng825 Soft Intent 824→825 (research824 already landed @cdc05099 mid-living tip-race); open stack 13/1/3 Δ0 vs 824/823/822/821/820; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`e0d5c4ba`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@825.
+
+### Batch 825 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 824→825 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`cdc0509` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →825; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 824); Soft Intent single === header →825; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 824 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY824 Soft Intent n=1 after tip/eng824 Soft Intent 823→824; open stack 13/1/3 Δ0 vs 823/822/821/820/819; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`62969d78`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@824.
+
+### Batch 824 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 823→824 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`900fcfc` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 823→824; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →824; inv parent_pin @900fcfc. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 823 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY823 Soft Intent n=1; catch-up at tip VERIFY823 after tip/eng823 Soft Intent 822→823 (covers research822 tip-race); open stack 13/1/3 Δ0 vs 822/821/820/819/818; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`a741cc7d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@823.
+
+### Batch 822 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY823 Soft Intent n=1; covers research822 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`a741cc7d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@822.
+
+### Batch 823 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 822→823 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d48582e` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →823; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 822); Soft Intent single === header →823; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 822 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 821→822 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`13638cd` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 821→822; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →822; inv parent_pin @13638cd. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 821 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY821 Soft Intent n=1; catch-up at tip VERIFY821 after tip/eng821 Soft Intent 820→821 (covers research820 tip-race); open stack 13/1/3 Δ0 vs 820/819/818/817/816; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`fd808d4a`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@821.
+
+### Batch 820 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY821 Soft Intent n=1; covers research820 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`fd808d4a`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@820.
+
+### Batch 821 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 820→821 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`6b6eac8` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →821; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 820); Soft Intent single === header →821; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 820 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 819→820 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d96bc55` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 819→820; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →820; inv parent_pin @d96bc55. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 819 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY819 Soft Intent n=1; catch-up at tip VERIFY819 after tip/eng819 Soft Intent 818→819 (covers research817/818 tip-race); open stack 13/1/3 Δ0 vs 818/817/816/815/814; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`52fe1646`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@819.
+
+### Batch 818 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY819 Soft Intent n=1; covers research818 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`52fe1646`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@818.
+
+### Batch 817 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY819 Soft Intent n=1; covers research817 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`52fe1646`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@817.
+
+### Batch 819 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 818→819 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`0a566dc` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →819; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 818); Soft Intent single === header →819; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 818 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 817→818 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`bc1513b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →818; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 817); Soft Intent single === header →818; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 817 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 816→817 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`807227a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 816→817; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →817; inv parent_pin @807227a. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 816 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY816 Soft Intent n=1; catch-up at tip VERIFY816 after tip/eng816 Soft Intent 815→816 (raced while research815 finishing); open stack 13/1/3 Δ0 vs 815/814/813/812/811; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`5533cbd0`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@816.
+
+### Batch 816 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 815→816 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`3e74ac8` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →816; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 815); Soft Intent single === header →816; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 815 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY815 Soft Intent n=1; at tip VERIFY815 after tip/eng815 Soft Intent 814→815; open stack 13/1/3 Δ0 vs 814/813/812/811/810; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`cb8277e1`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@815.
+
+### Batch 815 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 814→815 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`7549174` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 814→815; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →815; inv parent_pin @7549174. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 814 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY814 Soft Intent n=1; catch-up at tip VERIFY814 after tip/eng814 Soft Intent 813→814 (raced while research813 finishing); open stack 13/1/3 Δ0 vs 813/812/811/810/809; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`df8c942d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@814.
+
+### Batch 814 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 813→814 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`619eaa9` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →814; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 813); Soft Intent single === header →814; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 813 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY813 Soft Intent n=1; at tip VERIFY813 after tip/eng813 Soft Intent 812→813; open stack 13/1/3 Δ0 vs 812/811/810/809/808; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`2571bf28`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@813.
+
+### Batch 813 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 812→813 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`8dcc589` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 812→813; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →813; inv parent_pin @8dcc589. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 812 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY812 Soft Intent n=1; catch-up at tip VERIFY812 after tip/eng812 Soft Intent 811→812 (covers research811 tip-race); open stack 13/1/3 Δ0 vs 811/810/809/808/807; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f0ab1d88`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@812.
+
+### Batch 811 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY812 Soft Intent n=1; covers research811 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f0ab1d88`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@811.
+
+### Batch 812 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 811→812 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d8b149b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →812; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 811); Soft Intent single === header →812; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 811 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent+VERIFY unfreeze 810→811 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`9c3ac46` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 810→811; living script_stale Soft Intent+VERIFY unfreeze then living force; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →811; inv parent_pin @9c3ac46. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 810 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY810 Soft Intent n=1; catch-up at tip VERIFY810 after tip/eng810 Soft Intent 809→810 (covers research809 tip-race); open stack 13/1/3 Δ0 vs 809/808/807/806/805; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`44152a0d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@810.
+
+### Batch 809 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY810 Soft Intent n=1; covers research809 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`44152a0d`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@809.
+
+### Batch 810 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 809→810 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`de7a454` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →810; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 809); Soft Intent single === header →810; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 809 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent+VERIFY unfreeze 808→809 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`710a38f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 808→809; living script_stale Soft Intent+VERIFY unfreeze then living force; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →809; inv parent_pin @710a38f. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 808 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY808 Soft Intent n=1; at tip VERIFY808 after tip/eng808 Soft Intent 807→808; open stack 13/1/3 Δ0 vs 807/806/805/804/803; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`5df503b5`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@808.
+
+### Batch 808 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 807→808 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`bcac7e7` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →808; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 807); Soft Intent single === header →808; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 807 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY807 Soft Intent n=1; catch-up at tip VERIFY807 after tip/eng807 Soft Intent 806→807 (covers research806 tip-race); open stack 13/1/3 Δ0 vs 806/805/804/803/802; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`764070b1`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@807.
+
+### Batch 806 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY807 Soft Intent n=1; covers research806 tip-race; open stack 13/1/3 Δ0; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`764070b1`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@806.
+
+### Batch 807 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 806→807 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b400315` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →807; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 806); Soft Intent single === header →807; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 806 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 805→806 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`750cc272` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 805→806; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →806; inv parent_pin @750cc272. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 805 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY805 Soft Intent n=1; at tip VERIFY805 after tip/eng805 Soft Intent 804→805; open stack 13/1/3 Δ0 vs 804/803/802/801/800; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`8cd13bf4`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@805.
+
+### Batch 805 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 804→805 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b6ef18e5` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 804→805; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →805; inv parent_pin @b6ef18e5. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 804 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY804 Soft Intent n=1; at tip VERIFY804 after tip/eng804 Soft Intent 803→804; open stack 13/1/3 Δ0 vs 803/802/801/800/799; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`ed537261`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@804.
+
+### Batch 804 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 803→804 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`23306c5a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 803→804; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →804; inv parent_pin @23306c5a. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 803 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY803 Soft Intent n=1; at tip VERIFY803 after tip/eng803 Soft Intent 802→803; open stack 13/1/3 Δ0 vs 802/801/800/799/798; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`2cba4a0c`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@803.
+
+### Batch 803 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 802→803 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`8cf3d9f8` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 802→803; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →803; inv parent_pin @8cf3d9f8. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 802 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY802 after tip/eng Soft Intent; covers research801 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 801/800/799/798/797 = 0; STATUS_GUARD living; no promotion; evidence `BATCH801/802_RESEARCH_*`; Dropbox PR#149 RN-UNIF/D1 remain OPEN; Soft Intent n=1 @802; inv parent-pin @`c1a11b11`; `lemma_closed=false`; Goal OPEN.
+
+### Batch 801 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY802; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; STATUS_GUARD living; no promotion; Soft Intent n=1 @802; `lemma_closed=false`; Goal OPEN.
+
+### Batch 802 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 801→802 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`064343a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →802; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 801); Soft Intent single === header →802; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 801 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 800→801 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`303bb507` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 800→801; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →801; inv parent_pin @303bb507. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 800 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY800 Soft Intent n=1 (tip raced Soft Intent800 while research799 finishing); open stack 13/1/3 Δ0 vs 799/798/797/796/795; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f4318b07`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@800.
+
+### Batch 800 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 799→800 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`58df032` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →800; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 799); Soft Intent single === header →800; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 799 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY799 Soft Intent n=1; at tip VERIFY799 after tip/eng799 Soft Intent 798→799; open stack 13/1/3 Δ0 vs 798/797/796/795/794; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`dc11fd5c`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@799.
+
+### Batch 799 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 798→799 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d18596b3` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 798→799; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →799; inv parent_pin @d18596b3. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 798 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY798 Soft Intent n=1; at tip VERIFY798 after tip/eng798 Soft Intent 797→798; open stack 13/1/3 Δ0 vs 797/796/795/794/793; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`c604fb29`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@798.
+
+### Batch 798 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 797→798 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`ca0d4ef` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →798; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 797); Soft Intent single === header →798; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 797 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY797 Soft Intent n=1; at tip VERIFY797 after tip/eng797 Soft Intent 796→797; open stack 13/1/3 Δ0 vs 796/795/794/793/792; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`f092dfaa`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@797.
+
+### Batch 797 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 796→797 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b640a761` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 796→797; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →797; inv parent_pin @b640a761. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 796 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY796 Soft Intent n=1 (tip raced Soft Intent796 while research795 finishing); open stack 13/1/3 Δ0 vs 795/794/793/792/791; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`23c072ff`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@796.
+
+### Batch 796 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 795→796 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`92cbc2c` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →796; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 795); Soft Intent single === header →796; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 795 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY795 Soft Intent n=1 after tip/eng795 Soft Intent 794→795; open stack 13/1/3 Δ0 vs 794/793/792/791/790; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`39760c74`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps `BATCH795_RESEARCH_*`.
+
+### Batch 795 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 794→795 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`6901f3ac` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 794→795; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →795; inv parent_pin @6901f3ac. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 794 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY794 after tip/eng Soft Intent; covers research793 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 793/792/791/790/789 = 0; STATUS_GUARD living; no promotion; evidence `BATCH793/794_RESEARCH_*`; Dropbox PR#149 RN-UNIF/D1 remain OPEN; Soft Intent n=1 @794; inv parent-pin @`f0ef39ad`; `lemma_closed=false`; Goal OPEN.
+
+### Batch 793 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY794; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 792/791/790/789/788 = 0; STATUS_GUARD living; no promotion; Soft Intent n=1 @794; `lemma_closed=false`; Goal OPEN.
+
+### Batch 794 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 793→794 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d506370` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →794; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 793); Soft Intent single === header →794; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 793 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 792→793 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`65ff69f6` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 792→793; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →793; inv parent_pin @65ff69f6. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 792 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY792 Soft Intent n=1 after tip/eng792 Soft Intent 791→792; open stack 13/1/3 Δ0 vs 791/790/789/788/787; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`e6d06aac`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps `BATCH792_RESEARCH_*`.
+
+### Batch 792 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 791→792 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`14caee1` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →792; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 791); Soft Intent single === header →792; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 791 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY791 Soft Intent n=1 after tip/eng791 Soft Intent 790→791; open stack 13/1/3 Δ0 vs 790/789/788/787/786; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`7dc811b2`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps `BATCH791_RESEARCH_*`.
+
+### Batch 791 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 790→791 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`6e5c7adc` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 790→791; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →791; inv parent_pin @6e5c7adc. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 791 sidecar — Dropbox → Drive / GitHub gap audit (2026-09-27)
+
+- Dylan's Dropbox `scl/fo/9h5229ryu5pecpje7xgdh` (188.9 MB zip; 3,325 files / **1,695 distinct SHA-256**; 2,975 zip members) diffed byte-level against Drive (2026-09-17 export + deltas on `main@chatgpt/drive-github-hardening-20260919`: `drive/inventory.jsonl`, `Archive_Members.csv`, 414 `_MANIFEST.jsonl`) and every branch of all 8 owner repos (git blob SHA-1). Scientific effect: **NONE**; `lemma_closed=false`.
+- Result: in Drive exact **1,476**; **missing from Drive 183** (42 `master-final-v1`/`rn-sector-review-master-20260921` CI-replay receipts of `main@d107ab12` 2026-09-22; 33 `LPW_Return_05_Archive_Audit` audit layer; 14 MPV3/Master-Prompt; 38 other root docs; 21 `textNN.txt`; 8 psi/apoha; 13 git-mirror manifests; 12 Dropbox-local zip carriers whose members are all in Drive; 2 noise). **Missing from GitHub 975** (K3_SIDE24_LB/UPPER2D + LPW_CONSTANT/W*/INBOX trees, root docs); only **59** distinct files sit on any default branch (`Math-@main imports/upper2d_*`), **530** exist only on non-default `main` branches. **26** same-name/different-bytes rows (SIDE24 pre-review package vs Drive `SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31`; Return-05 vs `LPW — RAW ARCHIVE INTAKE R05`). Missing from both: 166.
+- Artifacts: `docs/DROPBOX_GAP_AUDIT_2026-09-27.md`, `portable/dropbox_gap_audit_2026-09-27/` (SUMMARY / MISSING_* / REVISION_DIFFERS_DRIVE / ZIP_CARRIER_COVERAGE / DROPBOX_INVENTORY.tsv), `scripts/dropbox_gap_audit.py` (reproducible; no Drive creds needed), `tests/test_dropbox_gap_audit.py`. Complements peer PR #149 `portable/dropbox_intake_2026-09-27/`. No Dropbox bodies copied into trial. Shared to peers via trial main land + PR #149 comment.
+
+### Batch 790 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY790 after tip/eng790 Soft Intent 789→790; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 789/788/787/786/785 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Dropbox PR#149: RN-UNIF/D1 remain OPEN — no discharge. Soft Intent n=1 (=== Batch 790 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 790 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 789→790 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`56040ea` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 789→790; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →790; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 789 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY789 after tip/eng Soft Intent; covers research788 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 788/787/786/785/784 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Dropbox PR#149: RN-UNIF/D1 remain OPEN — no discharge. Soft Intent n=1 (=== Batch 789 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 788 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY789; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 788/787/786/785/784 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Dropbox PR#149: RN-UNIF/D1 remain OPEN — no discharge. Soft Intent n=1 (=== Batch 789 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 789 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 788→789 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`64465bf` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →789; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 788); Soft Intent single === header →789; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 788 — tip_or_eng TIP_DRIFT keep-prior living tgz_newer + unfreeze 787→788 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b4e57bb` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 787→788; living tip_stale=0 script_stale=0 tgz_newer=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →788; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 787 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY787 after tip/eng Soft Intent; covers research786 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 786/785/784/783/782 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Dropbox PR#149: RN-UNIF/D1 remain OPEN — no discharge. Soft Intent n=1 (=== Batch 787 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 786 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY787; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 786/785/784/783/782 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Dropbox PR#149: RN-UNIF/D1 remain OPEN — no discharge. Soft Intent n=1 (=== Batch 787 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 787 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 786→787 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`7b4d9b7` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →787; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 786); Soft Intent single === header →787; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 786 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 785→786 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`7b4d583` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 785→786; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →786; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 785 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY785 after tip/eng Soft Intent; covers research784 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 784/783/782/781/780 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 785 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 784 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up re-stamp at tip VERIFY785 after Soft Intent 784→785 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 784/783/782/781/780 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 785 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 785 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 784→785 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`4b71c7f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →785; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 784); Soft Intent single === header →785; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 784 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY784 after tip/eng784 Soft Intent 783→784; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 783/782/781/780/779 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 784 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 784 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 783→784 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`35e4637` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 783→784; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →784; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 783 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY783 after tip/eng Soft Intent; covers research782 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 782/781/780/779/778 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 783 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 782 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY783; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 782/781/780/779/778 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 783 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 783 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 782→783 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`8dc0d13` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →783; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 782); Soft Intent single === header →783; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 782 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 781→782 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`c1e06f2` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 781→782; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →782; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 781 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY781 after tip/eng Soft Intent; covers research780 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 780/779/778/777/776 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 781 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 780 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY781; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 780/779/778/777/776 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 781 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 781 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 780→781 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`a5fea03` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →781; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 780); Soft Intent single === header →781; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 780 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 779→780 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d634ca8` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 779→780; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →780; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 779 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY779 after tip/eng779 Soft Intent 778→779; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 778/777/776/775/774 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 779 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 779 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 778→779 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`54c4554` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →779; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 778); Soft Intent single === header →779; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 778 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY778 after tip/eng Soft Intent; covers research777 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 777/776/775/774/773 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 778 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 777 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY778; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 777/776/775/774/773 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 778 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 778 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 777→778 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`486c5ab` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →778; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 777); Soft Intent single === header →778; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 777 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 776→777 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`0ad6ebc` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 776→777; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →777; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 776 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY776 after tip/eng776 Soft Intent 775→776; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 775/774/773/772/771 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 776 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 776 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 775→776 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`8a024df` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 775→776; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →776; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 775 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY775 after tip/eng Soft Intent; covers research774 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 774/773/772/771/770 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 775 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 774 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up re-stamp at tip VERIFY775 after Soft Intent 774→775 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 774/773/772/771/770 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 775 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 775 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 774→775 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`8274c6f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →775; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 774); Soft Intent single === header →775; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 774 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY774 after tip/eng774 Soft Intent 773→774; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 773/772/771/770/769 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 774 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 774 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 773→774 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`4b51229` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 773→774; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →774; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 773 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY773 after tip/eng Soft Intent; covers research772 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 771/770/769/768/767 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 773 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 772 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY773; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 771/770/769/768/767 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 773 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 773 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 772→773 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b4cc917` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →773; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 772); Soft Intent single === header →773; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 772 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 771→772 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`ca00b95` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →772; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 771); Soft Intent single === header →772; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 771 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY771 after tip/eng771 Soft Intent 770→771; covers research771+770 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 769/768/767/766/765 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 771 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 770 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY771 after tip/eng770+771 Soft Intent 770→771; covers research770 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 769/768/767/766/765 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 771 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 771 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 770→771 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`3e38462` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→771; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →771; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 770 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 769→770 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`e9ac05a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 769→770; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →770; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 769 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY769 after tip/eng769 Soft Intent 768→769; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 768/767/766/765/764 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 769 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 769 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 768→769 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`c507bb8` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→769; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →769; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 768 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY768 after tip/eng768 Soft Intent 767→768; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 767/766/765/764/763 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 768 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 768 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 767→768 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`079b48e` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 767→768; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →768; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 767 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY767 after tip/eng767 Soft Intent 766→767; covers research767+766 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 765/764/763/762/761 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 767 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 766 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY767 after tip/eng766+767 Soft Intent 766→767; covers research766 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 765/764/763/762/761 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 767 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 767 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 766→767 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`841ff8b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→767; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →767; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 766 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 765→766 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`35c6fba` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 765→766; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →766; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 765 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY765 after tip/eng765 Soft Intent 764→765; covers research765+764 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 763/762/761/760/759 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 765 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 764 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY765 after tip/eng764+765 Soft Intent 764→765; covers research764 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 763/762/761/760/759 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 765 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 765 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 764→765 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`cf82214` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→765; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →765; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 764 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 763→764 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`7ba8fc7` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 763→764; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →764; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 763 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY763 after tip/eng763 Soft Intent 762→763; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 762/761/760/759/758 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 763 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 763 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 762→763 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`148c702` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→763; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →763; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 762 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY762 after tip/eng762 Soft Intent 761→762; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 761/760/759/758/757 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 762 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 762 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 761→762 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`adbb89a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→762; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →762; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 761 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY761 after tip/eng761 Soft Intent 760→761; covers research761+760 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 759/758/757/756/755 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 761 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 760 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY761 after tip/eng760+761 Soft Intent 760→761; covers research760 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 759/758/757/756/755 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 761 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 761 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 760→761 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`fc2f7ff` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→761; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →761; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 760 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 759→760 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 759→760; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →760; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 759 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY759 after tip/eng759 Soft Intent 758→759; covers research759+758 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 757/756/755/754/753 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 759 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 758 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY759 after tip/eng758+759 Soft Intent 758→759; covers research758 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 757/756/755/754/753 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 759 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 759 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 758→759 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b6a8adb` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→759; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →759; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 758 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 757→758 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 757→758; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →758; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 757 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY757 after tip/eng757 Soft Intent 756→757; covers research757+756 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 755/754/753/752/751 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 757 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 756 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY757 after tip/eng756+757 Soft Intent 756→757; covers research756 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 755/754/753/752/751 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 757 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 757 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 756→757 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`46283f9` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→757; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →757; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 756 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 755→756 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 755→756; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →756; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 755 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY755 after tip/eng755 Soft Intent 754→755; covers research755+754 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 753/752/751/750/749 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 755 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 754 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY755 after tip/eng754+755 Soft Intent 754→755; covers research754 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 753/752/751/750/749 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 755 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 755 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 754→755 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`d0fa964` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→755; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →755; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 754 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 753→754 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 753→754; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →754; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 753 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY753 after tip/eng753 Soft Intent 752→753; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 752/751/750/749/748 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 753 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 753 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 752→753 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`34e94c0` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→753; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →753; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 752 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY752 after tip/eng752 Soft Intent 751→752; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 751/750/749/748/747 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 752 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 752 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 751→752 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 751→752; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →752; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 751 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY751 after tip/eng751 Soft Intent 750→751; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 750/749/748/747/746 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 751 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 751 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 750→751 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`bc7bf75` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→751; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →751; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 750 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY750 after tip/eng750 Soft Intent 749→750; covers research750+749 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 748/747/746/745/744 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 750 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 749 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY750 after tip/eng749+750 Soft Intent 749→750; covers research749 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 748/747/746/745/744 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 750 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 750 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 749→750 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`af120bf` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→750; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →750; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 749 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: follow-up fix `5d7a1522` left inv tip_sha at `398d478d` while HEAD^ was `fe904fe3`; pin broken.
+- Repair: inv tip_sha→precommit `5d7a1522` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY749; `lemma_closed=false`. action=`parent_pin_repair`.
+
+### Batch 749 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 748→749 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`398d478` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→749; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →749; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 748 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY748 after tip/eng748 Soft Intent 747→748; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 747/746/745/744/743 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 748 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 748 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 747→748 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`cbfccd4` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→748; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →748; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 747 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY747 after tip/eng747 Soft Intent 746→747; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 746/745/744/743/742 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 747 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 747 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 746→747 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`bdf8eb3` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→747; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →747; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 746 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY746 after tip/eng746 Soft Intent 745→746; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 745/744/743/742/741 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 746 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 746 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 745→746 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`808cc6a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 745→746; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →746; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 745 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY745 after tip/eng745 Soft Intent 744→745; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 744/743/742/741/740 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 745 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 745 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 744→745 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 744→745; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →745; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 744 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY744 after tip/eng744 Soft Intent 743→744; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 743/742/741/740/739 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 744 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 744 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 743→744 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`9c526db` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 743→744; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →744; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 743 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY743 after tip/eng743 Soft Intent 742→743; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 742/741/740/739/738 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 743 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 743 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 742→743 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 742→743; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →743; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 742 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY742 after tip/eng742 Soft Intent 741→742; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 741/740/739/738/737 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 742 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 742 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 741→742 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 741→742; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →742; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 741 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY741 after tip/eng741 Soft Intent 740→741; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 740/739/738/737/736 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 741 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 741 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 740→741 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 740→741; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →741; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 740 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY740 after tip/eng739+740 Soft Intent 739→740; covers research740+research739+research738 tip-race; research737 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 737/736/735/734/731 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 740 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 739 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY740 after tip/eng739+740 Soft Intent 739→740; covers research739+research738 tip-race; research737 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 737/736/735/734/731 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 740 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 738 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY740 after tip/eng739+740 Soft Intent 739→740; covers research738 tip-race; research737 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 737/736/735/734/731 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 740 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 740 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 739→740 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 739→740; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →740; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 739 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 738→739 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 738→739; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →739; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 737 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY738 after tip/eng737+738 Soft Intent 737→738; covers research737 tip-race; research736 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 736/735/734/731/729 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 738 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 738 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 737→738 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 737→738; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →738; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 737 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 736→737 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 736→737; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→737; Soft Intent single === header →737; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 736 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY736 after tip/eng736 Soft Intent 735→736; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 735/734/731/729/728 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 736 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 736 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 735→736 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 735→736; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→736; Soft Intent single === header →736; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 735 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY735 after tip/eng735 Soft Intent 734→735; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 734/731/729/728/727 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 735 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 735 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 734→735 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 734→735; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →735; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 734 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY734 after tip/eng733+734 Soft Intent 733→734; covers research734+research733+research732 tip-race; research731 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 731/729/728/727/726 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 734 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 733 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY734 after tip/eng733+734 Soft Intent 733→734; covers research733+research732 tip-race; research731 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 731/729/728/727/726 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 734 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 732 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY734 after tip/eng733+734 Soft Intent 733→734; covers research732 tip-race; research731 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 731/729/728/727/726 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 734 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 734 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 733→734 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 733→734; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →734; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 733 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 732→733 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 732→733; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →733; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 731 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY732 after tip/eng731+732 Soft Intent 731→732; covers research731+research730 tip-race; research729 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 729/728/727/726/725 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 732 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 730 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY732 after tip/eng730+731+732 Soft Intent 731→732; covers research730 tip-race; research729 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 729/728/727/726/725 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 732 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 732 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 731→732 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 731→732; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →732; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 731 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 730→731 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 730→731; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→731; Soft Intent single === header →731; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 729 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY730 after tip/eng729+730 Soft Intent 729→730; covers research729 tip-race; research728 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 728/727/726/725/724 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 730 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 730 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 729→730 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 729→730; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→730; Soft Intent single === header →730; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 729 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 728→729 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 728→729; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged); force republish Soft Intent→729; Soft Intent single === header →729; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 728 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY728 after tip/eng728 Soft Intent 727→728; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 727/726/725/724/722 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 728 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 728 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 727→728 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 727→728; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→728; Soft Intent single === header →728; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 727 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY727 after tip/eng727 Soft Intent 726→727; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 726/725/724/722/720 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 727 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 727 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 726→727 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 726→727; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→727; Soft Intent single === header →727; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 726 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY726 after tip/eng726 Soft Intent 725→726; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 725/724/722/720/719 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 726 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 726 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 725→726 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 725→726; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →726; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 725 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY725 after tip/eng725 Soft Intent 724→725; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 724/722/720/719/718 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 725 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 725 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 724→725 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 724→725; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→725; Soft Intent single === header →725; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 724 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY724 after tip/eng723+724 Soft Intent 723→724; covers research723 tip-race gap; research722 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 722/720/719/718/717 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 724 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 724 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 723→724 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 723→724; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→724; Soft Intent single === header →724; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 723 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 722→723 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 722→723; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→723; Soft Intent single === header →723; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 722 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY722 after tip/eng721+722 Soft Intent 721→722; covers research721 tip-race gap; research720 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 720/719/718/717/716 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 722 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 722 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 721→722 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 721→722; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→722; Soft Intent single === header →722; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 721 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 720→721 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 720→721; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →721; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 720 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY720 after tip/eng720 Soft Intent 719→720; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 719/718/717/716/714 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 720 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 720 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 719→720 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 719→720; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →720; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 719 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY719 after tip/eng719 Soft Intent 718→719; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 718/717/716/714/713 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 719 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 719 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 718→719 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 718→719; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current); Soft Intent single === header →719; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 718 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY718 after tip/eng718 Soft Intent 717→718; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 717/716/714/713/711 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 718 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 718 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 717→718 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 717→718; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→718; Soft Intent single === header →718; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 717 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY717 after tip/eng717 Soft Intent 716→717; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 716/714/713/711/710 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 717 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 717 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 716→717 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 716→717; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →717; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 716 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY716 after tip/eng715+716 Soft Intent 715→716; covers research715 tip-race gap; research714 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 714/713/711/710/708 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 716 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 716 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 715→716 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 715→716; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→716; Soft Intent single === header →716; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 715 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 714→715 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 714→715; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged at 690); force republish Soft Intent→715; Soft Intent single === header →715; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 714 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY714 after tip/eng714 Soft Intent 713→714; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 713/711/710/708/706 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 714 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 714 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 713→714 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 713→714; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→714; Soft Intent single === header →714; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 713 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY713 after tip/eng712+713 Soft Intent repair 711→713; covers research712 tip-race gap; research711 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 711/710/708/706/705 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 713 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 713 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent repair 711→713 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 712→713; living script_stale Soft Intent header repair; Soft Intent n=1; `lemma_closed=false`.
+- Hunt Soft Intent header lagged at 711 after Batch712 tip-race; force republish Soft Intent→713; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 712 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 711→712 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 711→712; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent body drift); force republish Soft Intent→712; Soft Intent single === header →712; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 711 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY711 after tip/eng711 Soft Intent 710→711; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 710/708/706/705/704 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 711 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 711 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 710→711 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 710→711; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →711; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 710 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY710 after tip/eng709+710 Soft Intent 709→710; covers research709 tip-race gap; research708 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 708/706/705/704/703 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 710 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 710 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 709→710 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 709→710; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →710; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 709 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 708→709 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 708→709; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →709; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 708 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY708 after tip/eng707+708 Soft Intent 707→708; covers research707 tip-race gap; research706 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 706/705/704/703/702 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 708 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 708 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 707→708 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 707→708; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →708; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 707 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 706→707 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 706→707; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale; force republish Soft Intent→707; Soft Intent single === header →707; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 706 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY706; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 705/704/703/702/701 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 706 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 706 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 705→706 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 705→706; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→706; Soft Intent single === header →706; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 705 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY705; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 704/703/702/701/699 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 705 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 705 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 704→705 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 704→705; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →705; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 704 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY704; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 703/702/701/699/698 = 0 (research702+703 already landed; tip raced eng704); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 704 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 704 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 703→704 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 703→704; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →704; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 703 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY703; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 702/701/699/698/697 = 0 (research702 already landed; tip raced eng703); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 703 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 703 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 702→703 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 702→703; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale (Soft Intent lagged); force republish Soft Intent→703; Soft Intent single === header →703; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 702 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY702; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 701/699/698/697/696 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 702 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 702 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 701→702 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 701→702; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→702; Soft Intent single === header →702; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 701 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY701; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 699/698/697/696/695 = 0 (covers research700 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 701 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 701 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 700→701 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 700→701; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →701; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 700 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 699→700 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 699→700; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→700; Soft Intent single === header →700; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 699 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY699; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 698/697/696/695/693 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 699 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 699 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 698→699 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 698→699; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→699; Soft Intent single === header →699; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 698 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY698; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 697/696/695/693/692 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 698 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 698 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 697→698 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 697→698; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→698; Soft Intent single === header →698; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 697 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY697; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 696/695/693/692/690 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 697 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 697 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 696→697 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 696→697; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →697; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 696 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY696; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 695/693/692/690/688 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 696 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 696 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 695→696 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 695→696; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →696; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 695 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY695; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 693/692/690/688/686 = 0 (covers research694 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 695 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 695 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 694→695 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 694→695; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0 tar_noise; Soft Intent single === header →695; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 694 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 693→694 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 693→694; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→694; Soft Intent single === header →694; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 693 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY693; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 692/690/688/686/685 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 693 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 693 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 692→693 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 692→693; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→693; Soft Intent single === header →693; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 692 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY692; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 690/688/686/685/684 = 0 (covers research691 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 692 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 692 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 691→692 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 691→692; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→692; Soft Intent single === header →692; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 691 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 690→691 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 690→691; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →691; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 690 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY690; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 688/686/685/684/682 = 0 (covers research689 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 690 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 690 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 689→690 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 689→690; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →690; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 689 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 688→689 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 688→689; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →689; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 688 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY688; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 686/685/684/682/681 = 0 (covers research687 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 688 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 688 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 687→688 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 687→688; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →688; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 687 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 686→687 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 686→687; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 686 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY686; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 685/684/682/681/679 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 686 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 686 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 685→686 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 685→686; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 685 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- At tip VERIFY685; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 684/682/681/679/678 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 685 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 685 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 684→685 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 684→685; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 684 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY684; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 682/681/679/678/677 = 0 (covers research683 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 684 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 684 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 683→684 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 683→684; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→684; Soft Intent single === header →684; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 683 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 682→683 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 682→683; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 682 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY682; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 681/679/678/677/676 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 682 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 682 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 681→682 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 681→682; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 681 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY681; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 679/678/677/676/675 = 0 (covers research680 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 681 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 681 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 680→681 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 680→681; living tgz_newer tar-noise DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →681; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 680 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 679→680 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 679→680; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 679 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY679; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 678/677/676/675/673 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 679 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 679 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 678→679 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 678→679; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 678 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY678; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 677/676/675/673/671 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 678 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 678 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 677→678 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 677→678; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 677 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY677; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 676/675/673/671/670 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 677 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 677 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 676→677 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 676→677; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →677; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 677 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 676→677 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 676→677; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 676 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY676; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 675/673/671/670/669 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 676 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 676 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 675→676 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 675→676; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 675 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY675; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 673/671/670/669/667 = 0 (covers research674 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 675 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 675 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 674→675 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 674→675; living tgz_newer tar-noise DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →675; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 674 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 673→674 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 673→674; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 673 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY673; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 671/670/669/667/665 = 0 (covers research672 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 673 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 673 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 672→673 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 672→673; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →673; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 672 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 671→672 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 671→672; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 671 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY671; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 670/669/667/665/664 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 671 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 671 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 670→671 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 670→671; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 670 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY670; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 669/667/665/664/663 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 670 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 670 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 669→670 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 669→670; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 669 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY669; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 667/665/664/663/661 = 0 (covers research668 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 669 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 669 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 668→669 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 668→669; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →669; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 668 — tip_or_eng TIP_DRIFT keep-prior living unfreeze Soft Intent 667→668 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior; living script_stale after Soft Intent/REFRESH bump; VERIFY/last-resort 667→668; Soft Intent n=1; inv parent-pin; force living republish STABLE×2; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 667 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY667; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 665/664/663/661/660 = 0 (covers research666 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 667 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 667 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 666→667 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 666→667; living tgz_newer tar-noise DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →667; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 666 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 665→666 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 665→666; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→666; Soft Intent single === header →666; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 665 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY665; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 664/663/661/660/659 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 665 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 665 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 664→665 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 664→665; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→665; Soft Intent single === header →665; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 664 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY664; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 663/661/660/659/657 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 664 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 664 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 663→664 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 663→664; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→664; Soft Intent single === header →664; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 663 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY663; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 661/660/659/657/655 = 0 (covers research662 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 663 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 663 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 662→663 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 662→663; living tgz_newer tar-noise DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living tip_stale=0 script_stale=0 DIFF_COUNT=0; Soft Intent single === header →663; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 662 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 661→662 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 661→662; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→662; Soft Intent single === header →662; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 661 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY661; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 660/659/657/655/654 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 661 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 661 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 660→661 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 660→661; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→661; Soft Intent single === header →661; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 660 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY660; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 659/657/655/654/653 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 660 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 660 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 659→660 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 659→660; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→660; Soft Intent single === header →660; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 659 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY659; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 657/655/654/653/651 = 0 (covers research658 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 659 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 659 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 658→659 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 658→659; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng658 Soft Intent preserve; Soft Intent single === header →659; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 658 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 657→658 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 657→658; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→658; Soft Intent single === header →658; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 657 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY657; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 655/654/653/651/649 = 0 (covers research656 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 657 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 657 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 656→657 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 656→657; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→657; Soft Intent single === header →657; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 656 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 655→656 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 655→656; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→656; Soft Intent single === header →656; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 655 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY655; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 654/653/651/649/647 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 655 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 655 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 654→655 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 654→655; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→655; Soft Intent single === header →655; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 654 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY654; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 653/651/649/647/646 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 654 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 654 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 653→654 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 653→654; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→654; Soft Intent single === header →654; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 653 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY653 after tip/eng652+653 (assigned research652 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 651/649/647/646/644 = 0 (covers research652 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 653 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 653 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 652→653 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 652→653; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng652 Soft Intent preserve; Soft Intent single === header →653; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 652 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 651→652 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 651→652; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→652; Soft Intent single === header →652; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 651 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY651 after tip/eng650+651 (assigned research650 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 649/647/646/644/643 = 0 (covers research650 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 651 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 651 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 650→651 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 650→651; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng650 Soft Intent preserve; Soft Intent single === header →651; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 650 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 649→650 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 649→650; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→650; Soft Intent single === header →650; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 649 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY649 after tip/eng648+649 (assigned research648 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 647/646/644/643/642 = 0 (covers research648 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 649 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 649 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 648→649 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 648→649; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng648 Soft Intent preserve; Soft Intent single === header →649; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 648 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 647→648 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 647→648; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→648; Soft Intent single === header →648; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 647 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY647; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 646/644/643/642/640 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 647 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 647 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 646→647 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 646→647; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→647; Soft Intent single === header →647; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 646 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY646 after tip/eng645+646 (assigned research645 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 644/643/642/640/639 = 0 (covers research645 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 646 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 646 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 645→646 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 645→646; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→646; Soft Intent single === header →646; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 645 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 644→645 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 644→645; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research644); Soft Intent single === header →645; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 644 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY644; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 643/642/640/639/638 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 644 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 644 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 643→644 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 643→644; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research643); Soft Intent single === header →644; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 643 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY643; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 642/640/639/638/636 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 643 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 643 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 642→643 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 642→643; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research642); Soft Intent single === header →643; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 642 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY642 after tip/eng641+642 (assigned research641 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 640/639/638/636/634 = 0 (covers research641 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 642 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 642 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 641→642 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 641→642; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng641 Soft Intent preserve; Soft Intent single === header →642; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 641 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 640→641 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 640→641; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research640); Soft Intent single === header →641; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 640 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng640 (post-research639 tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 639/638/636/634/633 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 640 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 640 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 639→640 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 639→640; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng639 Soft Intent preserve; Soft Intent single === header →640; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 639 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY639; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 638/636/634/633/632 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 639 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 639 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 638→639 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 638→639; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research638); Soft Intent single === header →639; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 638 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY638 after tip/eng637+638 (assigned research637 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 636/634/633/632/630 = 0 (covers research637 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 638 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 638 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 637→638 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 637→638; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng637 Soft Intent preserve; Soft Intent single === header →638; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 637 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 636→637 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 636→637; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research636); Soft Intent single === header →637; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 636 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY636 after tip/eng635+636 (assigned research635 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 634/633/632/630/629 = 0 (covers research635 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 636 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 636 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 635→636 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 635→636; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng635 Soft Intent preserve; Soft Intent single === header →636; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 635 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 634→635 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 634→635; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after Soft Intent→635; Soft Intent single === header →635; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 634 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng634; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 633/632/630/629/628 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 634 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 634 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 633→634 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 633→634; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research633); Soft Intent single === header →634; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 633 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng633; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 632/630/629/628/626 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH633_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@633; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @633. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 633 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 632→633 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 632→633; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research632); Soft Intent single === header →633; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 632 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY632 after tip/eng631+632 (assigned research631 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 630/629/628/626/624 = 0 (covers research631 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH632_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@632; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @632. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 632 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 631→632 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 631→632; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng631 Soft Intent preserve; Soft Intent single === header →632; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 631 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 630→631 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 630→631; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research630); Soft Intent single === header →631; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 630 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng630; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 629/628/626/624/622 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH630_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@630; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @630. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 630 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 629→630 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 629→630; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research629); Soft Intent single === header →630; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 629 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng629; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 628/626/624/622/620 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH629_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@629; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @629. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 629 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 628→629 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 628→629; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research628); Soft Intent single === header →629; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 628 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY628 after tip/eng627+628 (assigned research627 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 626/624/622/620/619 = 0 (covers research627 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH628_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@628; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @628. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 628 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 627→628 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 627→628; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng627 Soft Intent preserve; Soft Intent single === header →628; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 627 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 626→627 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 626→627; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research626); Soft Intent single === header →627; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 626 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY626 after tip/eng625+626 (assigned research625 raced mid-land); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 624/622/620/619/617 = 0 (covers research625 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH626_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@626; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @626. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 626 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 625→626 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 625→626; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after tip/eng625; Soft Intent single === header →626; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 625 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 624→625 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 624→625; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research624); Soft Intent single === header →625; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 624 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY624 after tip/eng623+624 (assigned research623 raced); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 622/620/619/617/616 = 0 (covers research623 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH624_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@624; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @624. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 624 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 623→624 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 623→624; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng623 Soft Intent preserve; Soft Intent single === header →624; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 623 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 622→623 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 622→623; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research622); Soft Intent single === header →623; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 622 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY622 after tip/eng621+622; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 620/619/617/616/615 = 0 (covers research621 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH622_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@622; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @622. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 622 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 621→622 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 621→622; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng621 Soft Intent preserve; Soft Intent single === header →622; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 621 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 620→621 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 620→621; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after Soft Intent/REFRESH atop research620); Soft Intent single === header →621; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 620 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip/eng620; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 619/617/616/615/614 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH620_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@620; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @620. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 619 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY619 after tip/eng618+619; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 617/616/615/614/612 = 0 (covers research618 tip-race gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH619_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@619; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @619. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 619 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 618→619 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 618→619; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale after peer tip/eng618 upload race); Soft Intent single === header →619; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 617 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY617 after tip/eng617; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 616/615/614/612/611 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH617_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@617; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header @617. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 616 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 615/614/612/611/609 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH616_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@616; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 615 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 614/612/611/609/608 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH615_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@615; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 614 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race (covers research613 skipped by tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 612/611/609/608/606 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH614_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@614; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 612 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 611/609/608/606/605 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH612_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@612; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 613 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 612→613 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 612→613; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng612 Soft Intent preserve; Soft Intent single === header →613; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 611 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race (covers research610 skipped by tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 609/608/606/605/604 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH611_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@611; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 609 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 608/606/605/604/603 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH609_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@609; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 610 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 609→610 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 609→610; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after tip/eng609; Soft Intent single === header →610; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 608 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race (covers research607 skipped by tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 606/605/604/603/601 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH608_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@608; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 606 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 605/604/603/601/600 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH606_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@606; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 607 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 606→607 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 606→607; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng606 Soft Intent preserve; Soft Intent single === header →607; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 605 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 604/603/601/600/599 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH605_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@605; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 604 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 603/601/600/599/598 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only; parent-pin REPAIR (tip/eng604 tip_sha!=HEAD^).
+- Artifacts: `BATCH604_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@604; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 604 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 603→604 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 603→604; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after tip/eng603/research603 Soft Intent preserve; Soft Intent single === header →604; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 603 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race (covers research602 skipped by tip race); tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 601/600/599/598/597 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only; parent-pin REPAIR (tip/eng603 tip_sha!=HEAD^).
+- Artifacts: `BATCH603_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@603; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 603 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 602→603 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 602→603; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng602/research601 Soft Intent preserve; Soft Intent single === header →603; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 601 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 600/599/598/597/595 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH601_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@601; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 602 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 601→602 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 601→602; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after tip/eng601/research600 Soft Intent preserve; Soft Intent single === header →602; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+## Batch 588 tip_sync Soft Intent preserve (2026-09-26T20:24Z)
+
+### Batch 596 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 595→596 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 595→596; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng595/research595 Soft Intent preserve; Soft Intent single === header →596; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 594 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 593→594 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 593→594; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng593/research593 Soft Intent preserve; Soft Intent single === header →594; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 595 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 594/593/592/591/590 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH595_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@595; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 594 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 593/592/591/590/589 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH594_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@594; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 591 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 590→591 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 590→591; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng590/research590 Soft Intent preserve; Soft Intent single === header →591; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 589 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 588→589 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 588→589; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng588/research588 Soft Intent preserve; Soft Intent single === header →589; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 589 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 588/587/585/584/583 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH589_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@589; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 585 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 584→585 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 584→585; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng584/research584 Soft Intent preserve; Soft Intent single === header →585; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 585 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 584/583/582/581/580 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH585_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@585; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 584 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 583/582/581/580/579 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH584_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@584; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 584 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 583→584 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 583→584; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng583/research583 Soft Intent preserve; Soft Intent single === header →584; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 583 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 582/581/580/579/578 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH583_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@583; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 582 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 581/580/579/578/577 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH582_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@582; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 582 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 581→582 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 581→582; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng581/research581 Soft Intent preserve; Soft Intent single === header →582; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 581 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 580/579/578/577/576 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH581_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@581; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 581 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 580→581 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 580→581; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng580/research580 Soft Intent preserve; Soft Intent single === header →581; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 580 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 579/578/577/576/575 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH580_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@580; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 579 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 578/577/576/575/574 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH579_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@579; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 579 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 578→579 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 578→579; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync588/research578 Soft Intent preserve; Soft Intent single === header →579; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 578 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 577/576/575/574/573 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH578_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@578; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+Soft Intent preserve tip_moved keep-prior @ BASE `2f7a5a9`: single living === Batch 578 PERMANENT header (n=1); soft tip_sync588 echo only; parent-pin tip_sha=precommit `d4bda504`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+
+
+## Batch 574 tip_sync Soft Intent RESTORE (2026-09-26T20:13Z)
+
+### Batch 577 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 576/575/574/573/572 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH577_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@577; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 578 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 577→578 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 577→578; living script_stale republish pack_sha256=`3514c45a…`; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after tip/eng577 Soft Intent/REFRESH; Soft Intent single === header →578; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 577 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 576→577 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 576→577; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync574-RESTORE/research576 Soft Intent preserve; Soft Intent single === header →577; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 576 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 575/574/573/572/571 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH576_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@576; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+Soft Intent RESTORE keep-prior @ BASE `2f7a5a9`: single living === Batch 576 PERMANENT header (n=1) after prior broken n=2 + inv conflict markers @289df5b7. Soft RESTORE echo only; parent-pin tip_sha=precommit `266b8b12`; living batch241 need_upload=0; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+
 # Autonomous 48h work log
+
+### Batch 620 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 619→620 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 619→620; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research619 Soft Intent preserve; Soft Intent single === header →620; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 618 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 617→618 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 617→618; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research617 Soft Intent preserve; Soft Intent single === header →618; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 616 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 615→616 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 615→616; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research615 Soft Intent preserve; Soft Intent single === header →616; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 615 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 614→615 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 614→615; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research614 Soft Intent preserve; Soft Intent single === header →615; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 614 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 613→614 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 613→614; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research612 Soft Intent preserve; Soft Intent single === header →614; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 612 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 611→612 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 611→612; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research611 Soft Intent preserve; Soft Intent single === header →612; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 611 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 610→611 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 610→611; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research609 Soft Intent preserve; Soft Intent single === header →611; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 609 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 608→609 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 608→609; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research608 Soft Intent preserve; Soft Intent single === header →609; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 608 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 607→608 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 607→608; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research606 Soft Intent preserve; Soft Intent single === header →608; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 606 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 605→606 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 605→606; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research605 Soft Intent preserve; Soft Intent single === header →606; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 605 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 604→605 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 604→605; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive (script_stale) after research604 Soft Intent preserve; Soft Intent single === header →605; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+
+### Batch 604 — tip_or_eng parent-pin REPAIR @2f7a5a9 (2026-09-26)
+
+- Peer tip/eng604 @d9235e7b already unfroze VERIFY/Soft Intent 603→604; inv tip_sha left stale @83df4138.
+- REPAIR: parent-pin inv tip_sha→precommit tip/eng604 d9235e7b (HEAD^ after this land). Soft Intent n=1 unchanged; VERIFY 604; lemma_closed=false. Goal OPEN.
+
+
+
+
+
+### Batch 600 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 599→600 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 599→600; living script_stale republish pack_sha256=`6334734e…`; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after tip/eng599/research599 Soft Intent/REFRESH; Soft Intent single === header →600; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 600 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 599/598/597/595/594 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH600_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@600; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 599 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 598→599 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 598→599; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng598/research597; Soft Intent single === header →599; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 599 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 598/597/595/594/593 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH599_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@599; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 598 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip raced eng599 Soft Intent@599 n=1; open stack 13/1/3; delta vs Batch 597/595/594/593/592 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH598_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@598; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 598 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 597→598 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 597→598; living script_stale → force republish; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after research597; Soft Intent single === header →598; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 597 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 596→597 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 596→597; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng596; Soft Intent single === header →597; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 597 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 595/594/593/592/591 = 0 (research596 skipped by tip race — catch-up covers gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH597_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@597; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 593 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 592→593 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 592→593; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng592/research592; Soft Intent single === header →593; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 593 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 592/591/590/589/588 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH593_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@593; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 592 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 591→592 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 591→592; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng591; Soft Intent single === header →592; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 592 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Catch-up after tip race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 591/590/589/588/587 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH592_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@592; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 591 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip raced eng592 Soft Intent@592 n=1; open stack 13/1/3; delta vs Batch 590/589/588/587/585 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH591_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@591; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 590 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 589→590 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 589→590; living script_stale republish pack_sha256=`59905c6e…`; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living script_stale after tip/eng589 Soft Intent/REFRESH; Soft Intent single === header →590; inv parent_pin. Inventable skipped. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 590 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 589/588/587/585/584 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH590_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@590; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 588 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 587→588 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 587→588; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng587/research587; Soft Intent single === header →588; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 588 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 587/585/584/583/582 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH588_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@588; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 587 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 586→587 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 586→587; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng586/research585; Soft Intent single === header →587; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 587 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 585/584/583/582/581 = 0 (research586 skipped by tip race — catch-up covers gap; no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH587_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@587; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 583 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 582→583 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 582→583; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative after tip/eng582; Soft Intent single === header →583; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 580 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 579→580 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 579→580; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng579; Soft Intent single === header →580; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 576 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 575→576 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 575→576; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync574/research575 Soft Intent preserve; Soft Intent single === header →576; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 575 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 574/573/572/571/570 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH575_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@575; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 574 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @575 (never harden/stack); soft tip_sync574 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `97e32b19`; tip/eng575 @`97e32b19`; tip/eng574 @`ba8792dc` Soft Intent n=1 @574; tip_sync573 @`46b77b3d`; tip_sync572 @`6ceeeed9`; research574 @`2346d51a`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH574_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch574_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 575 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 574→575 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 574→575; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync573/research574 Soft Intent preserve; Soft Intent single === header →575; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 573 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @574 (never harden/stack); soft tip_sync573 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `2346d51a`; tip/eng573 @`a3906608` Soft Intent n=1 @573; tip/eng574 @`ba8792dc`; tip_sync572 @`6ceeeed9` landed; research574 @`2346d51a`; tip_sync571 @`7df108e1`; research573 @`22736cf3`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH573_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch573_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+
+### Batch 574 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 573/572/571/570/569 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH574_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@574; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 572 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @574 (never harden/stack); soft tip_sync572 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `22736cf3`; tip/eng572 @`9d8498f8`; tip_sync571 @`7df108e1`; research572 @`c5be8f1c`; research573 @`22736cf3`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH572_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch572_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 573 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 572/571/570/569/568 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH573_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@573; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 574 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 573→574 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 573→574; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip/eng573 idle; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 573 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 572→573 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 572→573; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng572/research572; Soft Intent single === header →573; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 572 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 571/570/569/568/566 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH572_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@572; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 572 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 571→572 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 571→572; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync571 Soft Intent preserve; Soft Intent single === header →572; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 571 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @571 (never harden/stack); soft tip_sync571 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `9c9f0456`; tip/eng571 @`3082ab67` Soft Intent n=1 @571; tip_sync570 @`7d8a0ccf`; research571 @`9c9f0456`; tip_sync569 @`59cc9f48`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH571_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch571_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 571 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 570/569/568/566/565 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH571_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@571; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 570 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @571 (never harden/stack); soft tip_sync570 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `3082ab67`; tip/eng570 @`859c3f85`; research570 @`176e55b7`; tip/eng571 @`3082ab67`; tip_sync569 @`59cc9f48`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH570_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch570_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 571 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 570→571 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 570→571; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after research570/tip_sync569 Soft Intent preserve; Soft Intent single === header →571; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 570 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 569/568/566/565/564 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH570_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@570; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 569 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @570 (never harden/stack); soft tip_sync569 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `1aba321e`; tip/eng569 @`4920c665` Soft Intent n=1 @569; tip_sync566 @`0904a834`; tip_sync568 @`1aba321e` landed; tip/eng570+research569 raced; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH569_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch569_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 569 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 568/566/565/564/563 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH569_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@569; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 570 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 569→570 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 569→570; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync566/research568/tip_eng569; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 569 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 568→569 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 568→569; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync566/research568; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 568 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @570 (tip/eng570 raced Soft Intent n=1 @570; tip/eng569 Soft Intent n=1 @569; tip/eng568 @cb6def45 Soft Intent n=1 @568; research568+tip_sync566 raced); soft tip_sync568 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `a7705cb7` (research569); tip_sync564 @`8c302423`; tip_sync566 @`0904a834`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH568_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch568_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 566 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header (never harden/stack); soft tip_sync566 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `b5bb9865`; tip/eng566 @`5b2becc6`; tip_sync565 @`9f5fbc2f`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH566_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch566_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 568 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 566/565/564/563/562 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH568_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@568; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 568 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 567→568 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 567→568; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng567 living script_stale; Soft Intent single === header →568; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 567 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 566→567 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 566→567; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync564/research566; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 566 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 565/564/563/562/561 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH566_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@566; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 564 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @566 (tip/eng564 @08b543b8 Soft Intent n=1 @564; tip_sync565+tip/eng566 raced ahead); soft tip_sync564 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `5b2becc6` (tip/eng566); tip_sync562 @`d7ddaed6`; tip_sync563 @`b156bfc7`; tip_sync565 @`9f5fbc2f`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH564_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch564_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 566 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 565→566 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 565→566; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync565/research565; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 565 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @565; soft tip_sync565 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `b6d7cb50` (research565); tip/eng565 @`d785cdd3`; tip_sync563 @`b156bfc7`; tip_sync562 @`d7ddaed6`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH565_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch565_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 565 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 564/563/562/561/560 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH565_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@565; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 563 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @565 (tip/eng565 raced); soft tip_sync563 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `7ababd84` (research564); tip/eng565 @`d785cdd3`; tip/eng564 @`08b543b8`; tip_sync562 @`d7ddaed6`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH563_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch563_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 564 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 563/562/561/560/559 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH564_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@564; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 565 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 564→565 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 564→565; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng564 living script_stale; Soft Intent single === header →565; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 564 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 563→564 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 563→564; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip/eng563/research563; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 563 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 562/561/560/559/558 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH563_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@563; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 563 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 562→563 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE= BASE= keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 562→563; living script_stale need_upload=1; Soft Intent n=1; .
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync562/research562; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=. Goal OPEN.
+
+### Batch 562 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @562; soft tip_sync562 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `7565529f` (research562); tip_sync561 @`451a5ece`; tip_sync559 @`9948a57b`; tip/eng562 @`cd58e38e`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH562_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch562_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 562 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 561/560/559/558/557 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH562_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@562; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 561 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior; Soft Intent n=1 === header @562 (tip/eng562+research561+tip_sync559 raced); soft tip_sync561 echo only; living need_upload=0; inv parent-pin `7aeacc88`; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH561_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch561_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 561 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 560/559/558/557/556 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH561_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@561; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 562 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 561→562 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 561→562; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync559 Soft Intent preserve; Soft Intent single === header →562; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 559 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior; Soft Intent n=1 === header @561 (tip/eng561+tip_sync560 raced); soft tip_sync559 echo only; living need_upload=0; inv parent-pin `364e3bd9`; lemma_closed=false; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH559_TIP_SYNC_*.json`; test_batch559_tip_sync_watch_keep_prior_parent_pin. NEVER flip research.
+
+### Batch 561 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 560→561 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE= BASE= keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 560→561; living script_stale need_upload=1; Soft Intent n=1; .
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after tip_sync560/research560; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=. Goal OPEN.
+
+### Batch 560 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @560; soft tip_sync560 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `012d5be6` (research560); tip_sync558 @`4efda4ab`; tip/eng560 @`e883925a`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH560_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch560_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 560 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 559/558/557/556/555 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH560_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@560; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 558 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @560; soft tip_sync558 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `e883925a` (tip/eng560); tip_sync555 @`348754f6`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH558_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch558_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 560 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 559→560 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 559→560; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after research559/tip_eng559; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 559 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 558/557/556/555/554 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH559_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@559; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 559 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 558→559 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`5dff825` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 558→559; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync557/research558; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 558 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 557/556/555/554/553 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH558_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@558; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 556 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @558 (tip/eng558 raced); soft tip_sync556 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `3feceafe`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH556_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch556_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 558 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 557→558 @2f7a5a9 (2026-09-26)
+
+- tip_sync557 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng558+research558 race; Soft Intent n=1 @558; living force need_upload=0; inv parent-pin precommit 7cf55ad8; lemma_closed=false; goal OPEN.
+- tip_sync556 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng558 race; Soft Intent n=1 @558; living force need_upload=0; inv parent-pin precommit 3feceafe; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`348754f` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 557→558; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync555/research557; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 555 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- tip_sync556 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip_sync555 race; Soft Intent n=1 @557; living force need_upload=0; inv parent-pin precommit 348754f6; lemma_closed=false; goal OPEN.
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @557; soft tip_sync555 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `4f5a0338` (research557); tip_eng557 @`b87e01aa`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH555_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch555_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+
+### Batch 557 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- tip_sync557 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng558 race; Soft Intent n=1 @557; living force need_upload=0; inv parent-pin precommit 3feceafe; lemma_closed=false; goal OPEN.
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 556/555/554/553/552 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH557_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@557; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 557 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 556→557 @2f7a5a9 (2026-09-26)
+
+- tip_sync557 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng558 race; Soft Intent n=1 @558; living force need_upload=0; inv parent-pin precommit 7cf55ad8; lemma_closed=false; goal OPEN.
+- tip_sync556 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng557 race; Soft Intent n=1 @557; living force need_upload=0; inv parent-pin precommit b87e01aa; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 556→557; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: Soft Intent/REFRESH unfreeze under tip drift after research556; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 556 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 555/554/553/552/551 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH556_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@556; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 556 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 555→556 @2f7a5a9 (2026-09-26)
+
+- tip_sync556 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng556+research556+tip/eng557 race; Soft Intent n=1 @556; living force need_upload=0; inv parent-pin precommit b87e01aa; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 555→556; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research555/tip_sync554; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 555 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 554/553/552/551/549 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH555_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@555; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 555 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 554→555 @2f7a5a9 (2026-09-26)
+
+- tip_sync554 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng555 race; Soft Intent n=1 @555; living force need_upload=0; inv parent-pin precommit 81dab5a2; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`d8a0f88` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 554→555; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research554; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 554 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 553/552/551/549/548 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH554_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@554; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 554 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 553→554 @2f7a5a9 (2026-09-26)
+
+- tip_sync554 Soft Intent preserve tip_moved keep-prior @2f7a5a9 (post tip/eng555); Soft Intent n=1 @555; living force need_upload=0; inv parent-pin precommit 81dab5a2; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`8e43189` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 553→554; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research553/tip_sync552; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 553 — tip_sync_watch Soft Intent preserve tip_moved keep-prior @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT vs BASE `2f7a5a9` keep-prior (BASE immutable); Soft Intent n=1 single === header @555 (tip/eng555 raced); soft tip_sync553 echo only; living force need_upload=0; inv parent-pin tip_sha=precommit HEAD `9f5580b7`; `lemma_closed=false`; scientific_effect=NONE; goal OPEN.
+- Evidence: `portable/BATCH553_TIP_SYNC_*.json`; LAND/OWNER tip-sync-living; test_batch553_tip_sync_watch_keep_prior_parent_pin. Inventable skipped. NEVER flip research.
+
+### Batch 553 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 552/551/549/548/547 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH553_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@553; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 553 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 552→553 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 552→553; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative after research552/tip_sync552/tip_eng552; Soft Intent single === header →553; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 552 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 551/549/548/547/546 = 0 (no research550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH552_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@552; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 552 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 551→552 @2f7a5a9 (2026-09-26)
+
+- tip_sync552 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng552 race; Soft Intent n=1 @552; living force need_upload=0; inv parent-pin precommit 3019d988; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`e356b98` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 551→552; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research548/551; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 548 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 551/549/547/546/545 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH548_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@548; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 551 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 549/547/546/545/543 = 0 (no research550/548); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH551_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@551; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 551 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 550→551 @2f7a5a9 (2026-09-26)
+
+- tip_sync550 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng551 race; Soft Intent n=1 @551; living force need_upload=0; inv parent-pin precommit 4096dff9; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`a844a8c` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 550→551; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research549; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 549 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 547/546/545/543/541 = 0 (no research548); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH549_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@549; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header (tip raced eng550). action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 550 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 549→550 @2f7a5a9 (2026-09-26)
+
+- tip_sync550 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng550; tip/eng551 raced (header@551 n=1); living force need_upload=0; inv parent-pin precommit 4096dff9; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 549→550; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng549 living script_stale; Soft Intent single === header →550; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 549 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 548→549 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`7980581` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 548→549; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research547/tip_sync548; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 547 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 546/545/543/541/540 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH547_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@547; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 548 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 547→548 @2f7a5a9 (2026-09-26)
+
+- tip_sync548 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng548 race; Soft Intent n=1 @548; living force need_upload=0; inv parent-pin precommit a22a16d0; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 547→548; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng547 living script_stale; Soft Intent single === header →548; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 547 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 546→547 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`f5e1e30` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 546→547; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research546/tip_sync546; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 546 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 545/543/541/540/539 = 0 (no research544); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH546_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@546; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 546 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 545→546 @2f7a5a9 (2026-09-26)
+
+- tip_sync546 Soft Intent preserve tip_moved keep-prior @2f7a5a9 after tip/eng546 race; Soft Intent n=1 @546; living force need_upload=0; inv parent-pin precommit 3a86f7ba; lemma_closed=false; goal OPEN.
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 545→546; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync544 Soft Intent preserve; Soft Intent single === header →546; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 544 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 545 — PERMANENT` header preserved (n=1; tip/eng545 raced).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @1ec0c38 (precommit). Inventable skipped. Goal OPEN.
+
+### Batch 545 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 543/541/540/539/537 = 0 (no research544); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH545_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@545; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 541 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 545 — PERMANENT` header preserved (n=1; tip/eng raced ahead).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @dd349ee (precommit). Inventable skipped. Goal OPEN.
+
+### Batch 545 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 544→545 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 544→545; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip_sync543 Soft Intent preserve; Soft Intent single === header →545; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 543 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 544 — PERMANENT` header preserved (n=1; tip/eng544 raced).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @0f91948 (precommit). Inventable skipped. Goal OPEN.
+
+### Batch 544 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 543→544 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`d98dbde` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 543→544; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research543; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 543 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 541/540/539/537/536 = 0 (no research542); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH543_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@543; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 543 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 542→543 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`b34a5eb` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 542→543; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync540/research541; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 540 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 542 — PERMANENT` header preserved (n=1; tip/eng raced).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @fcacfce (precommit). Inventable skipped. Goal OPEN.
+
+
+### Batch 541 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 540/539/537/536/535 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH541_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@541; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 542 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 541→542 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 541→542; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_or_eng541; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 541 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 540→541 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`67c2543` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 540→541; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research540; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 540 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 539/537/536/535/534 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH540_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@540; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 540 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 539→540 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 539→540; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync537 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+### Batch 539 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 537/536/535/534/533 = 0 (no research538); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH539_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@539; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 537 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 539 — PERMANENT` header preserved (n=1; tip/eng538/539 raced ahead).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @d8d3a6c (precommit; peers re-pinned). Inventable skipped. Goal OPEN.
+
+### Batch 539 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 538→539 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`70664bd` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 538→539; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after research537; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+
+### Batch 537 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 536/535/534/533/532 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH537_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@537; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 538 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 537→538 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 537→538; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_or_eng537; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 537 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 536→537 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`70664bd` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 536→537; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync536 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 536 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 535/534/533/532/530 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH536_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@536; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 536 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 536 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @d5651c6. Inventable skipped. Goal OPEN.
+
+
+### Batch 536 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 535→536 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 535→536; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync/research535; living script_stale (print_owner drift + header replace); inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 535 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 534/533/532/530/529 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH535_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@535; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 535 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 535 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @6a4065e. Inventable skipped. Goal OPEN.
+
+
+### Batch 535 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 534→535 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 534→535; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync/research534; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 534 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 533/532/530/529/528 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH534_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@534; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 534 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 534 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @f33b633. Inventable skipped. Goal OPEN.
+
+
+### Batch 534 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 533→534 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 533→534; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync533 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 533 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 532/530/529/528/527 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH533_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@533; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 533 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 533 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @0bc200d. Inventable skipped. Goal OPEN.
+
+
+### Batch 533 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 532→533 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 532→533; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync532 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 532 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 530/529/528/527/526 = 0 (no research531); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH532_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@532; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 532 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 532 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @5ee5f35. Inventable skipped. Goal OPEN.
+
+
+### Batch 532 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 531→532 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 531→532; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync530 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 530 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 529/528/527/526/525 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH530_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@530; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 530 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 531 — PERMANENT` header preserved (n=1; tip/eng531 raced ahead of tip_sync530).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @841761e. Inventable skipped. Goal OPEN.
+
+
+### Batch 531 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 530→531 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 530→531; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_or_eng530; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 530 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 529→530 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 529→530; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync529 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 529 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 528/527/526/525/524 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH529_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@529; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 529 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 529 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @e27901d. Inventable skipped. Goal OPEN.
+
+
+### Batch 529 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 528→529 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 528→529; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync528 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 528 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 527/526/525/524/522 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH528_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@528; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 528 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 528 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @6952a05. Inventable skipped. Goal OPEN.
+
+
+### Batch 528 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 527→528 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 527→528; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync527 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 527 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 526/525/524/522/521 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH527_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@527; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 527 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 527 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @ff373ea. Inventable skipped. Goal OPEN.
+
+
+### Batch 527 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 526→527 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 526→527; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync526 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 526 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 525/524/522/521/520 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH526_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@526; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 526 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 526 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @a3b6e35. Inventable skipped. Goal OPEN.
+
+
+### Batch 526 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 525→526 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 525→526; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync525 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 525 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 524/522/521/520/519 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH525_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@525; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 525 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 525 — PERMANENT` header preserved (n=1).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @cccf2a3. Inventable skipped. Goal OPEN.
+
+
+### Batch 525 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 524→525 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`99f8c2b` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 524→525; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync524 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 524 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 524 — PERMANENT` header preserved (n=1).
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @a832400. Inventable skipped. Goal OPEN.
+### Batch 524 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 522/521/520/519/518 = 0 (catch-up after research522@33d2805f; research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH524_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@524; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 524 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 523→524 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 523→524; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync523; living script_stale (print_owner drift + header replace); inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 522 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 523 — PERMANENT` header preserved (n=1; tip/eng523+research522 raced).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @33d2805. Inventable skipped. Goal OPEN.
+
+
+### Batch 523 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT recover tip-sync522 ERROR @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 523 — PERMANENT` header preserved (n=1). tip-sync522 ERROR raced tip/eng523 @7ef3d8ff — recover via tip_sync523.
+- Living force republish need_upload=0; action=`keep_prior`; inv parent-pin @33d2805. Inventable skipped. Goal OPEN. idle_recover_ok=true.
+
+
+### Batch 522 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 521/520/519/518/517 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH522_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@522; inv parent-pin. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 523 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 522→523 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 522→523; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive under tip drift after tip_or_eng522; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 522 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 521→522 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`4a72a5a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 521→522; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync521 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 521 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 520/519/518/517/516 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH521_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@521; inv parent-pin @33e2c3e. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 521 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 521 — PERMANENT` header preserved (n=1).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @c1497e1. Inventable skipped. Goal OPEN.
+
+
+### Batch 521 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 520→521 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`4a72a5a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 520→521; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync520 Soft Intent; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 520 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 519/518/517/516/515 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH520_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@520; inv parent-pin @576c682. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 520 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT live; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 520 — PERMANENT` header preserved (n=1).
+- Living need_upload=0 STABLE; action=`keep_prior`; inv parent-pin @b114c85. Inventable skipped. Goal OPEN.
+
+
+### Batch 520 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 519→520 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`4a72a5a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 519→520; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync519 Soft Intent race; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 517 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 519 — PERMANENT` header preserved (n=1).
+- Living republish; action=`keep_prior`; inv parent-pin @b90d139. Inventable skipped. Goal OPEN.
+
+
+### Batch 519 — tip_sync_watch Soft Intent preserve keep-prior TIP_DRIFT @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT live; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 519 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`keep_prior`; inv parent-pin @b90d139. Inventable skipped. Goal OPEN.
+
+
+### Batch 519 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 518/517/516/515/514 = 0 (research496/499/501/503/509/514/518 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH519_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@519; inv parent-pin @b5d64b1. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 519 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 518→519 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`4a72a5a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 518→519; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt: VERIFY lag + Soft Intent/REFRESH unfreeze under tip drift after tip_sync516; living script_stale after header replace; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 516 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 518 — PERMANENT` header preserved (n=1).
+- Living current need_upload=0; action=`keep_prior`; inv parent-pin @ceae3ec. Inventable skipped. Goal OPEN.
+
+
+### Batch 517 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 516/515/514/513/512 = 0 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH517_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@517; inv parent-pin @c360442. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 518 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 517→518 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 517→518; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive under tip drift after tip_sync515; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 515 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 517 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`keep_prior`; inv parent-pin @bfe9dbb. Inventable skipped. Goal OPEN.
+
+
+### Batch 517 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 516→517 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE=`cd66a65` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 516→517; living script_stale need_upload=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living positive under tip drift after research516; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`keep_prior_living_script_stale`. Goal OPEN.
+
+### Batch 516 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 515/514/513/512/511 = 0 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH516_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@516; inv parent-pin @e7383cc. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 514 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 516 — PERMANENT` header preserved (n=1).
+- Living tgz_newer republish; action=`keep_prior`; inv parent-pin @812c272. Inventable skipped. Goal OPEN.
+
+
+### Batch 516 — tip_or_eng TIP_DRIFT keep-prior + unfreeze 515→516 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE `cd66a65` vs BASE `2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 515→516; living current need_upload=0; `lemma_closed=false`.
+- Hunt eng negative; Soft Intent single === header →516; inv parent_pin. Inventable skipped. action=`keep_prior`. Goal OPEN.
+
+### Batch 515 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 514/513/512/511/510 = 0 (research496/499/501/503/509/514 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH515_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@515; inv parent-pin @2788224. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 512 — tip_sync_watch keep-prior TIP_DRIFT gap-fill @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 515 — PERMANENT` header preserved (n=1).
+- Living tgz_newer republish; action=`keep_prior`; inv parent-pin @724052b. Inventable skipped. Goal OPEN.
+
+
+### Batch 515 — tip_or_eng TIP_DRIFT keep-prior + unfreeze 514→515 @2f7a5a9 (2026-09-26)
+
+- TIP_DRIFT LIVE `cd66a65` vs BASE `2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 514→515; living current need_upload=0; `lemma_closed=false`.
+- Hunt eng negative; Soft Intent single === header →515; inv parent_pin. Inventable skipped. action=`keep_prior`. Goal OPEN.
+
+### Batch 513 — tip_sync_watch keep-prior TIP_DRIFT @2f7a5a9→cd66a65 (2026-09-26)
+
+- TIP_DRIFT live=`cd66a65`; BASE immutable `2f7a5a9`; Path C IDLE@0019 keep-prior; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 514 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`keep_prior`; inv parent-pin @af92ea5. Inventable skipped. Goal OPEN.
+
+
+### Batch 513 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 512/511/510/508/507 = 0 (research496/499/501/503/509 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH513_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@513; inv parent-pin @f15900e. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 514 — tip_or_eng living script_stale republish + unfreeze 513→514 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 513→514; living script_stale need_upload=1; Soft Intent n=1 header replace; republish batch241; `lemma_closed=false`.
+- Hunt living positive after idle513; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+
+
+### Batch 513 — tip_or_eng idle_no_commit hunt-negative + unfreeze 512→513 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 512→513; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync511 Soft Intent (post research512); Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 511 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living PERMANENT header preserved (n=1; living@512).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @e0e7f10. Inventable skipped. Goal OPEN.
+
+
+### Batch 512 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 511/510/508/507/506 = 0 (research496/499/501/503/509 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH512_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@512; inv parent-pin @67077d8. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 512 — tip_or_eng idle_no_commit hunt-negative + unfreeze 511→512 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 511→512; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research511; Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 511 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 510/508/507/506/505 = 0 (research496/499/501/503/509 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH511_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@511; inv parent-pin @147e2de. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 511 — tip_or_eng idle_no_commit hunt-negative + unfreeze 510→511 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 510→511; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research510; Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 510 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 508/507/506/505/504 = 0 (research496/499/501/503/509 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH510_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@510; inv parent-pin @37703c7. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 510 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 510 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @85983a0. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 510 — tip_or_eng idle_no_commit hunt-negative + unfreeze 509→510 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 509→510; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research508; Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 508 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 507/506/505/504/502 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH508_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@508; inv parent-pin @880927d. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 508 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 509 — PERMANENT` header preserved (n=1); tip_sync508 Soft Intent preserve.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @81a88c6. Inventable skipped. Goal OPEN.
+
+
+### Batch 509 — tip_or_eng living tgz_newer republish + unfreeze 508→509 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 508→509; living tgz_newer+bundle/patch need_upload=1; Soft Intent n=1 header replace; republish batch241; `lemma_closed=false`.
+- Hunt living positive after idle508; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+
+### Batch 508 — tip_or_eng idle_no_commit hunt-negative + unfreeze 507→508 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 507→508; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync507 Soft Intent; Soft Intent single === header preserved. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 507 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 507 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @d0e92f6. Inventable skipped. Goal OPEN.
+
+
+### Batch 507 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 506/505/504/502/500 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH507_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@507; inv parent-pin @726241d. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 507 — tip_or_eng idle_no_commit hunt-negative + unfreeze 506→507 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 506→507; living current need_upload=0; Soft Intent n=1 header replace; `lemma_closed=false`.
+- Hunt living negative after tip_sync506+research506; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 506 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 505/504/502/500/498 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH506_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@506; inv parent-pin @c75e73f. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 506 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 506 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @92d019c. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 506 — tip_or_eng idle_no_commit hunt-negative + unfreeze 505→506 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 505→506; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research505; unfreeze VERIFY lag; inv parent_pin. Soft Intent single === header preserved (no re-stack). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 505 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 504/502/500/498/497 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH505_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@505; inv parent-pin @0b02ed6. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 505 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 505 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @3a42c61. Inventable skipped. Goal OPEN.
+
+
+### Batch 505 — tip_or_eng living tgz_newer republish + unfreeze 504→505 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 504→505; living tgz_newer need_upload=1; Soft Intent n=1 header replace; republish batch241; `lemma_closed=false`.
+- Hunt living positive after research504; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+### Batch 504 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 502/500/498/497/495 = 0 (research496/499/501/503 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH504_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@504; inv parent-pin @81c13c5. Inventable skipped. Intent soften 441/445 preserved. Soft Intent single === header. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 504 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent: single living `=== Batch 504 — PERMANENT` header preserved (n=1).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @f26b0c1. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 504 — tip_or_eng idle_no_commit hunt-negative + unfreeze 503→504 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 503→504; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research502; unfreeze VERIFY lag; inv parent_pin. Soft Intent single === header preserved (no re-stack). Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 502 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 500/498/497/495/494 = 0 (research496/499/501 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH502_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@502; inv parent-pin @124868b. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 502 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent restore: single living `=== Batch N — PERMANENT` header in print_owner (tip/eng re-broke dual headers).
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @fcff65b. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 503 — tip_or_eng idle_no_commit hunt-negative + unfreeze 502→503 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 502→503; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after peer idle502; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Soft Intent only (441/445 uploaded=false; no harden). action=`idle_no_commit`. Goal OPEN.
+
+### Batch 502 — tip_or_eng idle_no_commit hunt-negative + unfreeze 501→502 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 501→502; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync500+research500; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 500 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Soft Intent restore: single living `=== Batch N — PERMANENT` header in print_owner.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @b682077. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 500 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 498/497/495/494/493 = 0 (research496/499 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH500_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@500; inv parent-pin @91cdba0. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 501 — tip_or_eng idle_no_commit hunt-negative + unfreeze 500→501 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 500→501; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync499; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Soft Intent only (441/445 uploaded=false; no harden). action=`idle_no_commit`. Goal OPEN.
+
+### Batch 499 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @82a593f. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 500 — tip_or_eng living tgz_newer republish + unfreeze 499→500 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 499→500; living tgz_newer need_upload=1; republish batch241; `lemma_closed=false`.
+- Hunt living positive after research498; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+
+### Batch 498 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 497/495/494/493/492 = 0 (research496 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH498_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@498; inv parent-pin @cc2e092. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 499 — tip_or_eng idle_no_commit hunt-negative + unfreeze 498→499 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 498→499; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync497; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 497 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @1401da9. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 498 — tip_or_eng living tgz_newer republish + unfreeze 497→498 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 497→498; living tgz_newer need_upload=1; republish batch241; `lemma_closed=false`.
+- Hunt living positive after research497; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+### Batch 497 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 495/494/493/492/491 = 0 (research496 gap); STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH497_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@497; inv parent-pin @55ffec2. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 497 — tip_or_eng living script_stale republish + unfreeze 496→497 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 496→497; living script_stale need_upload=1; republish batch241; `lemma_closed=false`.
+- Hunt living positive after idle496; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+### Batch 496 — tip_or_eng idle_no_commit hunt-negative + unfreeze 495→496 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 495→496; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research495; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 495 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 494/493/492/491/490 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH495_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@495; inv parent-pin @155defe. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 495 — tip_or_eng idle_no_commit hunt-negative + unfreeze 494→495 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 494→495; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync494+research494; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 494 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 493/492/491/490/489 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH494_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@494; inv parent-pin @c300bf4. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 494 — tip_or_eng idle_no_commit hunt-negative + unfreeze 493→494 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 493→494; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync493; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 493 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @7bf16b9. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 493 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 492/491/490/489/488 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH493_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@493; inv parent-pin @0dd4279. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 493 — tip_or_eng living script_stale republish + unfreeze 492→493 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 492→493; living script_stale republish; `lemma_closed=false`.
+- After research492; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+
+### Batch 492 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 491/490/489/488/487 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH492_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@492; inv parent-pin @aa19cfa. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 492 — tip_or_eng idle_no_commit hunt-negative + unfreeze 491→492 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 491→492; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync491+research491; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 491 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 490/489/488/487/485 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH491_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@491; inv parent-pin @0a14896. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 491 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @306e872. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 490 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 489/488/487/485/484 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH490_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@490; inv parent-pin @ccb017e. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 491 — tip_or_eng living script_stale republish + unfreeze 490→491 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 490→491; living script_stale republish; `lemma_closed=false`.
+- After Batch490 idle; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+
+### Batch 490 — tip_or_eng idle_no_commit hunt-negative + unfreeze 489→490 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 489→490; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after research489; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 489 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 488/487/485/484/482 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH489_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@489; inv parent-pin @c0118dd. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 489 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @3939b17. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 489 — tip_or_eng idle_no_commit hunt-negative + unfreeze 488→489 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 488→489; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync488; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 488 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @bb511c1. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 488 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 487/485/484/482/481 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH488_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@488; inv parent-pin @2873da7. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 488 — tip_or_eng living tgz_newer republish + unfreeze 487→488 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 487→488; living tgz_newer republish; `lemma_closed=false`.
+- After research487; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_tgz_newer_unfreeze`. Goal OPEN.
+
+
+### Batch 487 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 485/484/482/481/480 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH487_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@487; inv parent-pin @109aa3b. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 487 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @2492014. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 485 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 484/482/481/480/478 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH485_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@485; inv parent-pin @7539f18. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 487 — tip_or_eng living script_stale republish + unfreeze 486→487 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 486→487; living script_stale republish; `lemma_closed=false`.
+- After Batch486 idle; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+
+### Batch 486 — tip_or_eng idle_no_commit hunt-negative + unfreeze 485→486 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 485→486; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after tip-sync485; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 485 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @4bb9f41. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 485 — tip_or_eng idle_no_commit hunt-negative + unfreeze 484→485 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 484→485; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync484+research484; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 484 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 482/481/480/478/477 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH484_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@484; inv parent-pin @4311ef5. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 484 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @00da14e. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 484 — tip_or_eng living script_stale republish + unfreeze 483→484 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 483→484; living script_stale republish; `lemma_closed=false`.
+- After Batch483 idle; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`living_script_stale_unfreeze`. Goal OPEN.
+
+
+### Batch 483 — tip_or_eng idle_no_commit hunt-negative + unfreeze 482→483 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 482→483; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip-sync482; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 482 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @472ba11. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 482 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 481/480/478/477/476 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH482_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@482; inv parent-pin @5a93daf. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 482 — tip_or_eng living script_stale republish + unfreeze 481→482 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch481 research print_owner drift; republish batch241; unfreeze VERIFY/last-resort 481→482; inv parent-pin @e78b091. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 481 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 480/478/477/476/475 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH481_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@481; inv parent-pin @0dd7aa6. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 481 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @5e52903. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 481 — tip_or_eng idle_no_commit hunt-negative + unfreeze 480→481 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 480→481; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync480; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 480 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @0a3868e. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 480 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 478/477/476/475/474 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH480_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@480; inv parent-pin @008fbac. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 480 — tip_or_eng living script_stale republish + unfreeze 479→480 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch479 tip_or_eng print_owner drift; republish batch241; unfreeze VERIFY/last-resort 479→480; inv parent-pin @cf19a87. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 479 — tip_or_eng idle_no_commit hunt-negative + unfreeze 478→479 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 478→479; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after research478; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 478 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 477/476/475/474/473 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH478_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@478; inv parent-pin @05ae111. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 478 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @f1f14fb. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 478 — tip_or_eng idle_no_commit hunt-negative + unfreeze 477→478 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 477→478; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after tip-sync477; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 477 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @697a43a. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 477 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 476/475/474/473/472 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH477_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@477; inv parent-pin @fda2206. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 477 — tip_or_eng idle_no_commit hunt-negative + unfreeze 476→477 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 476→477; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync476; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 476 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @190cad6. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 476 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 475/474/473/472/471 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH476_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@476; inv parent-pin @1f5b52b. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 476 — tip_or_eng idle_no_commit hunt-negative + unfreeze 475→476 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 475→476; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync475; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 475 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @1513c9b. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 475 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 474/473/472/471/470 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH475_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@475; inv parent-pin @dd7b857. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 475 — tip_or_eng idle_no_commit hunt-negative + unfreeze 474→475 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 474→475; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync474; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 474 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 474 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 473/472/471/470/469 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH474_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@474; inv parent-pin @d431147. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 474 — tip_or_eng idle_no_commit hunt-negative + unfreeze 473→474 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 473→474; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync473; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 473 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @6ccc845. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 473 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 472/471/470/469/468 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH473_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@473; inv parent-pin @5a1f994. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 473 — tip_or_eng living tgz_newer republish + unfreeze 472→473 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living tgz_newer after Batch471 tip_sync; republish batch241; unfreeze VERIFY/last-resort 472→473; inv parent-pin @27f4ea2. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 471 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @aeb4326. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 472 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @ccc173e. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 472 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 471/470/469/468/467 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH472_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@472; inv parent-pin @7fa5f81. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 472 — tip_or_eng idle_no_commit hunt-negative + unfreeze 471→472 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 471→472; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research471; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 471 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 470/469/468/467/466 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH471_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@471; inv parent-pin @339d6e6. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 470 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @02e74e3. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 470 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 469/468/467/466/465 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH470_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@470; inv parent-pin @c2b8d5b. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 471 — tip_or_eng living script_stale republish + unfreeze 470→471 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch470 tip_or_eng print_owner drift; republish batch241; unfreeze VERIFY/last-resort 470→471; inv parent-pin @1567511. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 470 — tip_or_eng idle_no_commit hunt-negative + unfreeze 469→470 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 469→470; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after research469; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 469 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 468/467/466/465/464 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH469_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@469; inv parent-pin @5bcb6ec. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 469 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @a35cd7a. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 468 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 467/466/465/464/463 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH468_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@468; inv parent-pin @24fc311. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 469 — tip_or_eng idle_no_commit hunt-negative + unfreeze 468→469 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 468→469; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync467; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 467 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @49c500a. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 467 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 466/465/464/463/462 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH467_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@467; inv parent-pin @fbdfe9a. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 468 — tip_or_eng idle_no_commit hunt-negative + unfreeze 467→468 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 467→468; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after Batch467 parent-pin follow-up; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 467 — tip_or_eng idle_no_commit hunt-negative + unfreeze 466→467 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 466→467; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research466; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 466 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 465/464/463/462/461 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH466_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@466; covers research465 gap; inv parent-pin @b43e596. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 465 — research_stack_audit_watch_no_promotion gap-fill @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 464/463/462/461/460 = 0; STATUS_GUARD living; no promotion; gap-fill evidence JSON only.
+- Artifacts: `BATCH465_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@465; inv parent-pin @b43e596 (landed with research466). Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 466 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @74537e6. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 465 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @3db8b3e. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 466 — tip_or_eng living script_stale republish + unfreeze 465→466 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch465 tip_or_eng print_owner drift; republish batch241; unfreeze VERIFY/last-resort 465→466; inv parent-pin @49cb074. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+### Batch 465 — tip_or_eng idle_no_commit hunt-negative + unfreeze 464→465 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 464→465; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after research464; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 464 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 463/462/461/460/459 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH464_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@464; inv parent-pin @2340068. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 464 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @a9b86b6. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 463 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 462/461/460/459/458 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH463_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@463; inv parent-pin @93941df. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 464 — tip_or_eng idle_no_commit hunt-negative + unfreeze 463→464 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 463→464; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync463; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 463 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @f8468c0. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 463 — tip_or_eng idle_no_commit hunt-negative + unfreeze 462→463 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 462→463; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after tip_sync462; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 462 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @47f08a7. Inventable skipped. Goal OPEN. NEVER flip research.
+
+### Batch 462 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 461/460/459/458/457 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH462_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@462; inv parent-pin @a4aa923. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 462 — tip_or_eng idle_no_commit hunt-negative + unfreeze 461→462 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 461→462; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research461; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 461 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 460/459/458/457/456 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH461_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@461; inv parent-pin @8a9314a. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 461 — tip_or_eng idle_no_commit hunt-negative + unfreeze 460→461 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 460→461; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative after research460; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 455 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 454/451/450/449/448 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH455_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@455; inv parent-pin @22c5f66. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 455 — tip_or_eng living script_stale republish + unfreeze 454→455 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 454→455; living script_stale after research454; `lemma_closed=false`.
+- Eng: living script_stale → republish; inv parent-pin; unfreeze. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN.
+
+### Batch 453 — tip_or_eng idle_no_commit hunt-negative + unfreeze 451→453 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 451→453; living tar-noise DIFF_COUNT=0; `lemma_closed=false`.
+- Hunt living negative after tip-sync452; unfreeze VERIFY lag; inv parent_pin. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 448 — CI Intent soften 441/445 tip_sync living briefs (2026-09-26T07:07Z)
+
+- tip_match @2f7a5a9; tip-sync447 re-hardened test_batch441/445 living_brief asserts → CI sanity failed on cursor/batch447-tip-sync-watch-idle-309a.
+- Softened asserts back to living_current/uploaded=False matching portable briefs. lemma_closed=false. Goal OPEN.
 
 Window start (UTC): see `/cursor/stores/self/autonomous_48h_started_at.txt` on the agent host.
 **Window mode (Batch 61):** `PERMANENT_UNTIL_OWNER_INTERVENES` — Dylan Roy extended
@@ -20,6 +4221,978 @@ Path C dry-run ready on hardening; permanent window recorded.
 5. Do not ask Dylan for approval in docs. Owner land scripts remain technical fallback for GitHub App 403 only.
 
 ## Batches
+
+### Batch 461 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @8a9314a. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 460 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 459/458/457/456/455 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH460_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@460; inv parent-pin @bf09a3d. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 460 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @bf09a3d. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 460 — tip_or_eng idle_no_commit hunt-negative + unfreeze 459→460 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 459→460; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative; unfreeze VERIFY lag after tip-sync459+research459. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 459 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @2da62de. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 459 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 458/457/456/455/454 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH459_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@459; inv parent-pin @ad5dfd8. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 459 — tip_or_eng living tgz_newer republish + unfreeze 458→459 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living tgz_newer after Batch458 tip_sync; republish batch241; unfreeze VERIFY/last-resort 458→459; inv parent-pin @6b00c31. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 458 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @1a2c4e6. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 458 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 457/456/455/454/451 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH458_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@458; inv parent-pin @1a2c4e6. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 458 — tip_or_eng idle_no_commit hunt-negative + unfreeze 457→458 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 457→458; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative; unfreeze VERIFY lag after tip-sync457+research457. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 457 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 456/455/454/451/450 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH457_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@457; inv parent-pin @2b496b9. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 457 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @2b496b9. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 457 — tip_or_eng idle_no_commit hunt-negative + unfreeze 456→457 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 456→457; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative; unfreeze VERIFY lag after tip-sync456+research456. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 456 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 455/454/451/450/449 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH456_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@456; inv parent-pin @f165828. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 456 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @f165828. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 456 — tip_or_eng living script_stale republish + unfreeze 455→456 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch455 research print_owner drift; republish batch241; unfreeze VERIFY/last-resort 455→456; inv parent-pin @e4b2bb2. Inventable skipped. Intent soften 441/445 preserved. Goal OPEN. NEVER flip research.
+
+
+### Batch 455 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @8652682. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 454 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 451/450/449/448/447 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH454_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@454; inv parent-pin @196bdbb. Inventable skipped. Intent soften 441/445 preserved. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 454 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale republish; action=`idle_no_commit`; inv parent-pin @370816f. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 454 — tip_or_eng living script_stale republish + unfreeze 453→454 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch453 idle stamps; republish batch241; unfreeze VERIFY/last-resort 453→454; inv parent-pin @f29a81b. Batch452 tip_or_eng raced (peer tip-sync452+tip_or_eng453). Intent soften 441/445 preserved. Goal OPEN.
+
+
+### Batch 452 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer republish; action=`idle_no_commit`; inv parent-pin @84cd041. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 451 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 450/449/448/447/446 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH451_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@451; inv parent-pin @db8d3e9. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 451 — tip_or_eng idle_no_commit hunt-negative + unfreeze 450→451 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 450→451; living current need_upload=0; `lemma_closed=false`.
+- Hunt living negative; unfreeze VERIFY lag after tip-sync451. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 451 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living tgz_newer republish; action=`idle_no_commit`; inv parent-pin @e975b3b. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 450 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 449/448/447/446/445 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH450_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@450; inv parent-pin @340adf4. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 450 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @97e8229. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 450 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 449→450; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. Intent soften 441/445 preserved. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 449 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 448/447/446/445/444 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH449_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@449; inv parent-pin @fe1b278. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 449 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @839abeb. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 449 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 448→449; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 448 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 447/446/445/444/443 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH448_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@448; inv parent-pin @d4ec03b. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 448 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @78a7bf3. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 448 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 447→448; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 447 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 446/445/444/443/441 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH447_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@447; inv parent-pin @dfac065. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 447 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @1a6b1fd. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 447 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 446→447; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 446 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale → republish; action=`idle_no_commit`; inv parent-pin @1e3a49a. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 446 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 445/444/443/441/440 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH446_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@446; inv parent-pin @2937a22. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 446 — tip_or_eng living script_stale republish + unfreeze 445→446 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale after Batch445 tip_sync/research print_owner drift; republish batch241; unfreeze VERIFY/last-resort 445→446; inv parent-pin @bd64165. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 445 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 444/443/441/440 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH445_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@445; inv parent-pin @6f1a6c3. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 445 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @6691dda. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 444 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 443/441/440/438 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH444_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@444; inv parent-pin @5e4895e. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 444 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @534e59f. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 445 — tip_or_eng living script_stale republish + unfreeze 444→445 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 444→445; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 443 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 441/440/438/437 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH443_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@443; inv parent-pin @e2cc5eb. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 444 — tip_or_eng living script_stale republish + unfreeze 443→444 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 443→444; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 443 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @c5f1efe. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 441 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 440/438/437/436 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH441_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@441; inv parent-pin @f1fabe1. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 441 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+### Batch 443 — tip_or_eng living script_stale republish + unfreeze 442→443 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 442→443; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+### Batch 442 — tip_or_eng living tgz_newer republish + unfreeze 441→442 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 441→442; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 441 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @3f03ae4. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 440 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 438/437/436/435 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH440_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@440; inv parent-pin @2c4b1a7. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 440 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @1eee20b. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 441 — tip_or_eng living script_stale republish + unfreeze 440→441 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 440→441; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 438 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 437/436/435/434 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH438_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@438; inv parent-pin @61046e3. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 438 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @dee85ce. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 440 — tip_or_eng living script_stale republish + unfreeze 439→440 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living script_stale after Batch 439 idle → republish; inv parent-pin; unfreeze 439→440. Inventable skipped. Goal OPEN.
+
+### Batch 439 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 438→439; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 437 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @f88a13e. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 437 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 436/435/434/433 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH437_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@437; inv parent-pin @f530e2f. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 438 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 437→438; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 436 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 435/434/433/431 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH436_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@436; inv parent-pin @38aed28. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 436 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @3484153. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 437 — tip_or_eng living script_stale republish + unfreeze 436→437 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 436→437; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 435 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 434/433/431/430 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH435_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@435; inv parent-pin @6e0f79c. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 436 — tip_or_eng living script_stale republish + unfreeze 435→436 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 435→436; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 434 — tip_sync_watch idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living current; action=`idle_no_commit`; inv parent-pin @5c54faa. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 435 — tip_or_eng living script_stale republish + unfreeze 434→435 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 434→435; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 434 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 433/431/430/428 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH434_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@434; inv parent-pin @025bb1b. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 433 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @bb4a143. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 433 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 431/430/428/427 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH433_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@433; inv parent-pin @28eb19c. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 434 — tip_or_eng living script_stale republish + unfreeze 433→434 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 433→434; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 430 — tip_sync_watch living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale/tgz_newer → republish batch241; action=`idle_no_commit`; inv parent-pin @67f47bf. Inventable skipped. Goal OPEN. NEVER flip research.
+
+
+### Batch 433 — tip_or_eng living script_stale republish + unfreeze 432→433 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living script_stale after Batch 431 research → republish; inv parent-pin; unfreeze 432→433. Inventable skipped. Goal OPEN.
+
+### Batch 431 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 430/428/427/426 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH431_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@431; inv parent-pin @dfb534e. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 432 — tip_or_eng living script_stale republish + unfreeze 431→432 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 431→432; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 430 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 428/427/426/424 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH430_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@430; inv parent-pin @dcd6699. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 431 — tip_or_eng living script_stale republish + unfreeze 430→431 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 430→431; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 427 — tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; inv parent-pin @62bc23d; under Batch430 stamps; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 430 — tip_or_eng living script_stale republish + unfreeze 429→430 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 429→430; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 428 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 427/426/424/422 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH428_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@428; inv parent-pin @ffb6dd1. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 429 — tip_or_eng living script_stale republish + unfreeze 428→429 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 428→429; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 427 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 426/424/422/420 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH427_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@427; inv parent-pin @1045b16. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 428 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 427→428; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 427 — tip_or_eng living script_stale republish + unfreeze 426→427 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 426→427; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 426 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 424/422/420/418 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH426_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@426; inv parent-pin @b7ceeeb. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 426 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin @b7e9856; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 426 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 425→426; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 425 — tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer → republish batch241; inv parent-pin @27e29a4; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit` after living republish. Goal OPEN.
+
+### Batch 425 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 424→425; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 424 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 422/420/418/416 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH424_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@424; inv parent-pin @8a5a764. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 424 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin @4e29bd6; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 424 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 423→424; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 422 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 420/418/416/414 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH422_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@422; inv parent-pin @4afd9d4. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 422 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin @5135f53; under Batch423 stamps; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 423 — tip_or_eng living tgz_newer republish + unfreeze 422→423 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 422→423; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 422 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 421→422; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 420 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 418/416/414/412 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH420_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@420; inv parent-pin @c805b58. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 421 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 421; `lemma_closed=false`.
+- Peer Batch420 tip_sync living already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 420 — tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer → republish batch241; inv parent-pin @d486560; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit` after living republish. Goal OPEN.
+
+### Batch 420 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 419→420; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 418 — tip_sync_watch living tgz_newer republish + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tgz_newer → republish batch241; inv parent-pin @0ccaa2f; under Batch419 stamps; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit` after living republish. Goal OPEN.
+
+### Batch 418 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 416/414/412 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH418_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps@418/419; inv parent-pin. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 419 — tip_or_eng living tgz_newer republish + unfreeze 418→419 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 418→419; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 418 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 417→418; living current need_upload=0; `lemma_closed=false`.
+- Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 416 — tip_sync_watch living tgz_newer republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; living tgz_newer after tip_sync idle land → republish batch241; inv parent-pin; `lemma_closed=false`.
+- action=`living_script_stale_republish_after_tip_sync_watch`. Goal OPEN.
+
+### Batch 416 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 417 — tip_or_eng living script_stale republish + unfreeze 416→417 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 416→417; `lemma_closed=false`.
+- Living script_stale=1 after research → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 416 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 414/412/410/405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH416_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@416; inv parent-pin @f6b438a. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 416 — tip_or_eng living script_stale republish + unfreeze 415→416 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 415→416; `lemma_closed=false`.
+- Living script_stale=1 after Batch414 research → republish batch241; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 414 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 412/410/405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH414_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@414/415; inv parent-pin @55ab184. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 414 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; VERIFY 414+; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 415 — tip_or_eng living tgz_newer republish + unfreeze 414→415 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 414→415; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 414 — tip_or_eng living tgz_newer republish + unfreeze 413→414 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 413→414; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+
+### Batch 412 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; VERIFY 412+; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 413 — tip_or_eng living tgz_newer republish + unfreeze 412→413 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 412→413; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 412 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 412; `lemma_closed=false`.
+- Peer Batch411 living + Batch410 research already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 410 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 408/405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH410_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@410/411; inv parent-pin @02f4b93. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+### Batch 411 — tip_or_eng living tgz_newer republish + unfreeze 410→411 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 410→411; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 410 — post tip_sync living inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After tip_sync living `a35c7ad`: inv tip lagged; re-pinned parent_pin; tip_match; living current; `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 410 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; VERIFY 410; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 410 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 410; `lemma_closed=false`.
+- Peer Batch409 tip_sync pin already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 409 — post tip_sync living inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After tip_sync living : inv tip lagged at Batch409 precommit; re-pinned parent_pin; tip_match; living current; . Goal OPEN.
+
+
+
+### Batch 408 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; VERIFY 408+; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 409 — tip_or_eng living tgz_newer republish + unfreeze 408→409 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 408→409; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 408 — post-research living script_stale republish + inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After research land `3eac052`: living `script_stale=1` → republish; inv parent-pin; tip_match; `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 408 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 405 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH408_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; stamps already@408 (no re-unfreeze); inv parent-pin @45357c8. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 408 — tip_or_eng living script_stale republish + inv parent-pin @2f7a5a9 (2026-09-26)
+
+- After idle land: living `script_stale=1` → republish `batch241-path-c-bundle`; inv parent-pin @ precommit HEAD; tip_match; `lemma_closed=false`. Goal OPEN.
+
+
+### Batch 408 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 408; `lemma_closed=false`.
+- Peer Batch407 tip_sync pin already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 407 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 407 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 407; `lemma_closed=false`.
+- Peer Batch406 living already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 406 — tip_or_eng living tgz missing republish + unfreeze 405→406 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living release missing `trial-portable-main-fixes.tgz` after Batch 405 research → republish + unfreeze 405→406; inv parent-pin. Inventable skipped. Goal OPEN.
+
+### Batch 405 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 401 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH405_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; unfreeze 404→405; inv parent-pin. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+
+
+### Batch 404 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 404 — tip_or_eng living tgz_newer republish + unfreeze 402→404 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/REFRESH 402→404; last-resort 403→404; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 403 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living current; inv parent-pin; VERIFY 402; `lemma_closed=false`.
+- tip_or_eng after Batch401 research on Batch402 tip: hunt negative. action=`idle_no_commit`. Goal OPEN.
+
+
+
+### Batch 402 — tip_or_eng living tgz_newer republish + unfreeze 401→402 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: living tgz_newer=1 need_upload=1 after Batch 401 post tip_sync → republish + unfreeze 401→402; inv parent-pin. Inventable skipped. Goal OPEN.
+
+### Batch 401 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; open stack 13/1/3; delta vs Batch 399 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Artifacts: `BATCH401_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`; unfreeze already@402 via tip_or_eng; inv parent-pin. Inventable skipped. action=`research_stack_audit_watch`. Goal OPEN. NEVER flip research.
+
+### Batch 401 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 401 — tip_or_eng living tgz_newer republish + unfreeze 400→401 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 400→401; `lemma_closed=false`.
+- Living tgz_newer=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+
+### Batch 400 — tip_or_eng inv tip re-pin + living tgz + unfreeze 399→400 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Eng: tip_sync living left inv tip lagging HEAD^; living tgz_newer=1 → re-pin + republish; unfreeze 399→400. Inventable skipped. Goal OPEN.
+
+
+### Batch 399 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 399 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 399; `lemma_closed=false`.
+- Peer Batch399 research already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 399 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
+- `audit_research_stack_open` HAS_PACKET @ tip: open 13/1/3; `guard_no_status_promotion` pass; delta=0 vs Batch396.
+- Unfreeze 398→399; inv batch 396→399 + parent-pin; living republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 396 — tip_or_eng idle_no_commit continue hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 398; `lemma_closed=false`.
+- Peer Batch398 cleared living script_stale. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 398 — tip_or_eng living script_stale republish + unfreeze 396→398 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Living script_stale=1 (release raced ahead of main after peer SyntaxError fix) → republish; inv parent-pin; unfreeze 396→398. Inventable skipped. Goal OPEN.
+
+
+### Batch 396 — CI Intent syntax fix (lone literal \\n line) @2f7a5a9 (2026-09-26)
+
+- sanity failed on `2d15fa33` / still broken on `26b9c648`: `SyntaxError` at a lone `\\n` line after tip_or_eng idle Intent append.
+- Removed the bad line; inventory parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 396 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent-pin; fixed inventory trailing literal `\\n` from tip_or_eng idle; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+
+### Batch 397 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv==HEAD^; Intent green; `lemma_closed=false`.
+- Peer Batch396 research already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 396 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
+- `audit_research_stack_open` HAS_PACKET @ tip: open 13/1/3; `guard_no_status_promotion` pass violations=0; delta=0 vs Batch393.
+- Unfreeze 395→396; inv parent-pin; living republish. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 395 — tip_or_eng living script_stale republish @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; VERIFY/last-resort 395; `lemma_closed=false`.
+- Living script_stale=1 → republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+### Batch 395 — post tip_sync inv tip pin + living @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; tip_sync living left inv tip lag + living script_stale.
+- Re-pin inv; force living. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 395 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+
+### Batch 395 — idle tip-stable + unfreeze 394→395 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8; living current; inv parent-pin; research 13/1/3.
+- Hunt negative → idle + unfreeze stamps 394→395. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 394 — post tip_sync inv tip pin @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; tip_sync living left inv tip lag.
+- Re-pin inv to HEAD^; living script_stale=0. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 394 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+
+### Batch 394 — tip_or_eng idle_no_commit after post-idle @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv parent_pin; VERIFY/last-resort 394; `lemma_closed=false`.
+- Hunt negative after Batch394 post-idle peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 394 — post-idle inv tip pin + living + unfreeze 393→394 @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch394 tip/eng idle left inv tip lag (stamps still 393).
+- Re-pin inv; living force republish; unfreeze 393→394. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 394 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current; inv==HEAD^; Intent green; `lemma_closed=false`.
+- Peer Batch393 tip_or_eng idle already landed. Hunt negative. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+### Batch 393 — tip_or_eng idle_no_commit hunt-negative @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent_pin; VERIFY/last-resort 393; `lemma_closed=false`.
+- Hunt negative after Batch393 research/tip_sync peers. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 393 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
+
+- Tip stable @ `2f7a5a9` tip_match=1; Path C IDLE@0019; durable 8/8; living tip/script current need_upload=0; inv parent-pin; `lemma_closed=false`.
+- No tip move. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
+
+
+### Batch 393 — research_stack_audit_watch no-promotion @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Path C IDLE@0019; durable 8/8.
+- `audit_research_stack_open` HAS_PACKET @ tip: open 13/1/3; `guard_no_status_promotion` pass violations=0; delta=0 vs Batch388.
+- Unfreeze 392→393; inv parent-pin. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
+
+### Batch 392 — tip_or_eng unfreeze 391→392 + living @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1 @ `2f7a5a9`; Path C IDLE@0019; durable 8/8; `lemma_closed=false`.
+- Unfreeze last-resort/VERIFY/wake 391→392; living script_stale republish; inv parent-pin. Inventable skipped. Goal OPEN.
+
+### Batch 391 — post tip_sync inv tip pin @2f7a5a9 (2026-09-26)
+
+- Tip stable tip_match=1; Batch390 tip_sync living left inv tip lag.
+- Re-pin inv to HEAD^; living script_stale=0. Inventable skipped. `lemma_closed=false`. Goal OPEN.
+
+
 
 ### Batch 390 — tip_sync_watch idle_no_commit + parent-pin inv @2f7a5a9 (2026-09-26)
 

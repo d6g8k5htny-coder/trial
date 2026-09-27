@@ -1,0 +1,14 @@
+{
+  "batch": "497",
+  "assignment": "tip_sync_watch_vs_BASE_TIP_2f7a5a9",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "aligned": true,
+  "lemma_closed": false,
+  "action": "idle_no_commit",
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "parent_pin": true,
+  "generated_at_utc": "2026-09-26T12:02:25Z",
+  "note": "tip_sync_watch brief; tip stable; parent-pin inv"
+}

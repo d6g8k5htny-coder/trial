@@ -1,0 +1,16 @@
+{
+  "batch": "459",
+  "assignment": "tip_or_eng_continue_vs_BASE_TIP_2f7a5a9",
+  "action": "living_tgz_newer_unfreeze",
+  "defect_id": "living_tgz_newer_after_batch458_tip_sync",
+  "defect_shipped": true,
+  "lemma_closed": false,
+  "flipped_anything": false,
+  "scientific_effect": "NONE",
+  "tip_match": true,
+  "goal": "OPEN",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "path_c": "IDLE@0019",
+  "durable": "8/8",
+  "generated_at_utc": "2026-09-26T08:05:19Z"
+}

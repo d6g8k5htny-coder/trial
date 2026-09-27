@@ -1,0 +1,10 @@
+{
+  "batch": "588",
+  "action": "inventory_tip_pin_hunt",
+  "parent_pin": true,
+  "tip_sha": "d4bda50423b1cd40bdde50781c9e67b02f1ec307",
+  "lemma_closed": false,
+  "generated_at_utc": "2026-09-26T20:26:12Z",
+  "hits": 0,
+  "scientific_effect": "NONE"
+}

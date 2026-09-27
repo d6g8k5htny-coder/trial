@@ -1,0 +1,18 @@
+{
+  "batch": "500",
+  "hunt": "tip_or_eng",
+  "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
+  "tip_match": true,
+  "lemma_closed": false,
+  "action": "living_tgz_newer_unfreeze",
+  "defect_id": "living_tgz_newer_after_research498",
+  "defect_found": true,
+  "defect_shipped": true,
+  "goal": "OPEN",
+  "living_need_upload": 1,
+  "inventable_skipped": true,
+  "verify_unfreeze": "499\u2192500",
+  "inv_parent_pin": true,
+  "generated_at_utc": "2026-09-26T12:07:44Z",
+  "note": "tip_match; living tgz_newer after research498; republish + VERIFY/last-resort unfreeze; inv parent_pin"
+}
