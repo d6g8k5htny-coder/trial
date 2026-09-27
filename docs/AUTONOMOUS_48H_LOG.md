@@ -1,3 +1,9 @@
+### Batch 632 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 631→632 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 631→632; living tgz_newer tar-noise DIFF_COUNT=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (tar-noise only) after tip/eng631 Soft Intent preserve; Soft Intent single === header →632; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 631 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 630→631 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 630→631; living script_stale republish; Soft Intent n=1; `lemma_closed=false`.
