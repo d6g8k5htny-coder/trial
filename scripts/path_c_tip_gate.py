@@ -118,6 +118,16 @@ def _token() -> str:
     return ""
 
 
+def _clone_urls(token: str = "") -> list[str]:
+    """Anonymous URL first: the research repo is public, and a stale/invalid
+    GITHUB_TOKEN in the pod (seen 2026-09-27: `gh auth status` → invalid) would
+    otherwise turn every tokenized clone / ls-remote into a 401."""
+    urls = [f"https://github.com/{REPO}.git"]
+    if token:
+        urls.append(f"https://x-access-token:{token}@github.com/{REPO}.git")
+    return urls
+
+
 def _has_commit(repo_dir: Path, sha: str) -> bool:
     return _run(["git", "cat-file", "-e", f"{sha}^{{commit}}"], cwd=repo_dir).returncode == 0
 
@@ -165,7 +175,12 @@ def is_ancestor_api(ancestor: str, descendant: str, token: str = "") -> bool | N
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310 - fixed https host
             data = json.loads(resp.read().decode("utf-8"))
-    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError):
+    except urllib.error.HTTPError as exc:
+        if token and exc.code == 401:
+            # Invalid pod token: retry once anonymously (public repo).
+            return is_ancestor_api(ancestor, descendant, "")
+        return None
+    except (urllib.error.URLError, json.JSONDecodeError, TimeoutError, OSError):
         return None
     status = str(data.get("status") or "")
     if status in ("ahead", "identical"):
@@ -190,26 +205,30 @@ def _history_clone(token: str = "") -> Path | None:
         return _HISTORY_CLONE["clone"]
     import tempfile
 
-    url = f"https://github.com/{REPO}.git"
-    if token:
-        url = f"https://x-access-token:{token}@github.com/{REPO}.git"
     cache_root = Path(os.environ.get("PATH_C_TIP_GATE_CACHE") or (Path(tempfile.gettempdir()) / "path-c-tip-gate-cache"))
     dest = cache_root / "main"
     if (dest / ".git").is_dir():
-        fetch = _run(
+        _run(
             ["git", "fetch", "--quiet", "origin", f"+refs/heads/{HARDENING}:refs/remotes/origin/{HARDENING}"],
             cwd=dest,
             timeout=600,
         )
-        _HISTORY_CLONE["clone"] = dest if fetch.returncode == 0 else dest
+        _HISTORY_CLONE["clone"] = dest
         return dest
     cache_root.mkdir(parents=True, exist_ok=True)
-    r = _run(
-        ["git", "clone", "--quiet", "--filter=blob:none", "--no-checkout", "--depth", str(_DEEPEN_STEPS[0]), "--branch", HARDENING, url, str(dest)],
-        timeout=900,
-    )
-    _HISTORY_CLONE["clone"] = dest if r.returncode == 0 else None
-    return _HISTORY_CLONE["clone"]
+    for url in _clone_urls(token):
+        r = _run(
+            ["git", "clone", "--quiet", "--filter=blob:none", "--no-checkout", "--depth", str(_DEEPEN_STEPS[0]), "--branch", HARDENING, url, str(dest)],
+            timeout=900,
+        )
+        if r.returncode == 0:
+            _HISTORY_CLONE["clone"] = dest
+            return dest
+        import shutil
+
+        shutil.rmtree(dest, ignore_errors=True)
+    _HISTORY_CLONE["clone"] = None
+    return None
 
 
 def is_ancestor(ancestor: str, descendant: str, repo_dir: Path | None, token: str = "") -> tuple[bool | None, str]:
@@ -238,14 +257,12 @@ def resolve_live_sha(repo_dir: Path | None, token: str = "") -> str:
             sha = r.stdout.strip().lower()
             if r.returncode == 0 and _SHA40.fullmatch(sha):
                 return sha
-    url = f"https://github.com/{REPO}.git"
-    if token:
-        url = f"https://x-access-token:{token}@github.com/{REPO}.git"
-    r = _run(["git", "ls-remote", url, f"refs/heads/{HARDENING}"], timeout=120)
-    for line in r.stdout.splitlines():
-        parts = line.split()
-        if parts and _SHA40.fullmatch(parts[0].lower()):
-            return parts[0].lower()
+    for url in _clone_urls(token):
+        r = _run(["git", "ls-remote", url, f"refs/heads/{HARDENING}"], timeout=120)
+        for line in r.stdout.splitlines():
+            parts = line.split()
+            if parts and _SHA40.fullmatch(parts[0].lower()):
+                return parts[0].lower()
     return ""
 
 
