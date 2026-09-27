@@ -1,3 +1,8 @@
+### Batch 813 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY813 Soft Intent n=1; at tip VERIFY813 after tip/eng813 Soft Intent 812→813; open stack 13/1/3 Δ0 vs 812/811/810/809/808; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`2571bf28`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@813.
+
 ### Batch 813 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze 812→813 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`8dcc589` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 812→813; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
