@@ -1,0 +1,629 @@
+[
+ {
+  "dropbox_path": "00/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/README.md",
+  "dropbox_bytes": 6088,
+  "dropbox_sha256": "10d61aefac0b639434b6ad96d025df2334db86ccbb01d291b1e1850310e54b22",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/README.md",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "00/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/README.md",
+  "dropbox_bytes": 5298,
+  "dropbox_sha256": "3d2ea30fdd3b510a94d1bf7eae8f57f3c8b0687e6da1eaba13aa6f9db969dc1b",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/README.md",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "00/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/README.md",
+  "dropbox_bytes": 5410,
+  "dropbox_sha256": "dc878a1748401468a7bc4102c88593ad590b266eac043fda0e30c15f55b8e757",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/README.md",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "00_READ_ME_FIRST.pdf",
+  "dropbox_bytes": 208953,
+  "dropbox_sha256": "e29f0f0cfff415ff8c5f88d122d112c2fcf7d7351332026ef03bbac4cb3d3025",
+  "drive_candidates": [
+   {
+    "id": "1e_rHzfZE6RJdu0ZTvIJE_4Jj_8sCJBpw",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/00_READ_ME_FIRST.pdf",
+    "bytes": 215004,
+    "sha256": "97675012d56dd59808e25754d7e7ea7bd670459edcff0e0c4d9f09d230c892a9",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/00_READ_ME_FIRST.docx",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/2026-08-01-to-08-03 — SIDE24 RATIFICATION + P0.1 POST-RATIFICATION/01_SIDE24_3D_RATIFICATION_AND_RECOVERY/00_SIDE24_G9_R2_RECOVERY — 2026-08-01/00_READ_ME_FIRST.md"
+  ]
+ },
+ {
+  "dropbox_path": "01_COVER_LETTER.txt",
+  "dropbox_bytes": 2855,
+  "dropbox_sha256": "e6ad9516301fa1bb6f9bd5d09f119b9e257aff0ad706e75f87e0b4dc4f08797e",
+  "drive_candidates": [
+   {
+    "id": "1g_T5vNcAB_SKnbmrPXvly5S71PLBxwKk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/01_COVER_LETTER.txt",
+    "bytes": 3645,
+    "sha256": "b0bb64f404475b22f9a7246a00b6774ec1e1eb29e6d97828ee96d282eb4ac16b",
+    "mime": "text/plain"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/01_COVER_LETTER.txt",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/01_COVER_LETTER.txt"
+  ]
+ },
+ {
+  "dropbox_path": "02_PRE_REVIEW_DOSSIER.pdf",
+  "dropbox_bytes": 374433,
+  "dropbox_sha256": "c3ac18eec81263b8e17c3d823d93cf0794a12f28dae919862f56b96001d5c7d8",
+  "drive_candidates": [
+   {
+    "id": "12t7MWiQFHdr8-yI3kyP48hUfsbgxGYMG",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/02_PRE_REVIEW_DOSSIER.pdf",
+    "bytes": 383005,
+    "sha256": "2959ef1dc6212d8f4b333e344c72b3e4849a78c6be0ff879e261f9227538e786",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/02_PRE_REVIEW_DOSSIER.docx",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/02_PRE_REVIEW_DOSSIER.docx"
+  ]
+ },
+ {
+  "dropbox_path": "03_SIDE24_MANUSCRIPT.pdf",
+  "dropbox_bytes": 244324,
+  "dropbox_sha256": "0732973c3f397357ec70a46001141d21acc713042e9231eabda5b4d56c84f2f0",
+  "drive_candidates": [
+   {
+    "id": "11sK_ziAroem_8t2VPjZWF8QxJihEcLp2",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/03_SIDE24_MANUSCRIPT.pdf",
+    "bytes": 418398,
+    "sha256": "4c6af724e848a38e41199bbffbb1a041b2b2bfefd9bd8751f49a98658da2b4ed",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/03_SIDE24_MANUSCRIPT.docx",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/03_SIDE24_MANUSCRIPT.docx"
+  ]
+ },
+ {
+  "dropbox_path": "04_TECHNICAL_APPENDIX.pdf",
+  "dropbox_bytes": 411660,
+  "dropbox_sha256": "1c7a5ea3d695b0a003f2b697570e6fb69bc5ebbbdc1ab2d929b2407449fd7938",
+  "drive_candidates": [
+   {
+    "id": "1_9pWtyobw7URTPanLMJD1qORGQ4WGMex",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/04_TECHNICAL_APPENDIX.pdf",
+    "bytes": 555959,
+    "sha256": "595804a53f182a2c8cafc9cb79ca90fdf59302719f1994874cb647c84d5c8f82",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/04_TECHNICAL_APPENDIX.docx",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/04_TECHNICAL_APPENDIX.docx"
+  ]
+ },
+ {
+  "dropbox_path": "05_REPRODUCTION_GUIDE.pdf",
+  "dropbox_bytes": 191732,
+  "dropbox_sha256": "d37d8796d67484faa1abe1d08436a8d46ffa17757869c964072535a671b629f3",
+  "drive_candidates": [
+   {
+    "id": "1PWooYJIMIUJQhP9wVPtNJiQ_mLXEP5HC",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/05_REPRODUCTION_GUIDE.pdf",
+    "bytes": 199438,
+    "sha256": "ad8752560511f85059fcdb2b894e429b752d5b73f9da9d6950779270046c31fd",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/05_REPRODUCTION_GUIDE.docx",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/05_REPRODUCTION_GUIDE.docx"
+  ]
+ },
+ {
+  "dropbox_path": "07_REVIEW_RESPONSE_FORM.docx",
+  "dropbox_bytes": 16417,
+  "dropbox_sha256": "93efd6dad1d2f4ca8be53bfc4723eeacb87bb04607be156d64858f489abed99b",
+  "drive_candidates": [
+   {
+    "id": "1WkhhyUNTnOff5BU-sTdf1KNKv0CkD5i9",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/07_REVIEW_RESPONSE_FORM.docx",
+    "bytes": 16903,
+    "sha256": "c7c074ef960b6db9e6168bf0c2f51b995b17c82adc55d75af3530c6612222ecf",
+    "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/07_REVIEW_RESPONSE_FORM.docx",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/07_REVIEW_RESPONSE_FORM.docx"
+  ]
+ },
+ {
+  "dropbox_path": "09_PACKAGE_MANIFEST.csv",
+  "dropbox_bytes": 12393,
+  "dropbox_sha256": "88e0f8d85e8fd8b427c764b9e6eea1708fc2915a6e0b8dd392a5da20672d1c1e",
+  "drive_candidates": [
+   {
+    "id": "1um5ltSpE8TMpSFgOCCPCqymmPn7cPEy9",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/09_PACKAGE_MANIFEST.csv",
+    "bytes": 15920,
+    "sha256": "4631fcf8c1842d481fb400fbb88735623c33f4f5799514a13f202e6e972e3920",
+    "mime": "text/csv"
+   },
+   {
+    "id": "1IK7FAWwpLyJUaM-gO_fF1kw_p3JGjK3w",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/2026-09-16 — HOLD_NOT_FOR_SUBMISSION/HOLD — PKG-LPW-CONSTANT-V4-BRICK (NOT READY)/09_PACKAGE_MANIFEST.csv",
+    "bytes": 668,
+    "sha256": "b7f65bffaf488ebaea29b04a4b7a2c4839a28ac8ca1dcede96af867562e4f743",
+    "mime": "text/csv"
+   },
+   {
+    "id": "1zPti39ErhTgHnrHqdaG3Ji2C1_aRU1eo",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/PKG-01 — U2D_CONDITIONAL_UPPER_D1_v2_2/09_PACKAGE_MANIFEST.csv",
+    "bytes": 660,
+    "sha256": "3fb96b00f50b2a134313fdcd955fd352d4d8a51ba5211581b0349c119cc11450",
+    "mime": "text/csv"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/09_PACKAGE_MANIFEST.csv",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/2026-09-16 — HOLD_NOT_FOR_SUBMISSION/HOLD — PKG-LPW-CONSTANT-V4-BRICK (NOT READY)/09_PACKAGE_MANIFEST.csv"
+  ]
+ },
+ {
+  "dropbox_path": "11_COMPLETE_PRE_REVIEW_PACKET.pdf",
+  "dropbox_bytes": 886214,
+  "dropbox_sha256": "05941355208ce76b15556d10f37319c0e9781ba98dfb738379602ac4259531da",
+  "drive_candidates": [
+   {
+    "id": "1muWEyommyuDX-CAgLbwi6Y3PhR-xFVXQ",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/15_REVIEWS_RESPONSES_AND_CLOSURES/THEOREM_B — STATUS RETRACTION AND REPAIR PROGRAM/PKG-SIDE24-001 — External Peer-Review Capsule/SIDE24_PROFESSOR_PRE_REVIEW_PACKAGE_2026-07-31/11_COMPLETE_PRE_REVIEW_PACKET.pdf",
+    "bytes": 1119127,
+    "sha256": "b652a8b31820a458b43b46d7f83eb5b842b973c0a8bd37d8cb9e0ff95cb9c83f",
+    "mime": "application/pdf"
+   },
+   {
+    "id": "1FTszHIMbspCunI99xOZEVbj5NntBd4_u",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/PKG-05 — SIDE24_3D_FIXED_SCOPE_v2026-08/11_COMPLETE_PRE_REVIEW_PACKET.pdf",
+    "bytes": 1119127,
+    "sha256": "b652a8b31820a458b43b46d7f83eb5b842b973c0a8bd37d8cb9e0ff95cb9c83f",
+    "mime": "application/pdf"
+   }
+  ],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/00_READ_FIRST.md",
+  "dropbox_bytes": 4446,
+  "dropbox_sha256": "fe8fe06b4aef3c37dc8b40b741f632f02f42c027849e04941b14c0b5d5759644",
+  "drive_candidates": [
+   {
+    "id": "1UMqbuUfIUkbzrcx9JrIiylj2QcdComMrRxTpm6RCPtE",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_READ_FIRST.md",
+    "bytes": 4820,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "12qBSGNyBWV9SA6uVBBA-dKncKjycpEfh",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/00_READ_FIRST.md",
+    "bytes": 5015,
+    "sha256": "22c303cbbaa4e2234575bc07bb2cfbafb950abc8a9bb71a34f4b529d0cb6a10e",
+    "mime": "text/markdown"
+   },
+   {
+    "id": "1LXFfTTSU7vSVbm4bA53X8Q1rar8E28c_",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/REVIEW_INTAKE — 2026-09-12 — KIMI LPW/00_READ_FIRST.md",
+    "bytes": 8033,
+    "sha256": "3ece660f0743117e925ee6d1ec202bd8c377f1f0bb798c92d7eaa5667a050f19",
+    "mime": "text/markdown"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/00_READ_FIRST.md",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/REVIEW_INTAKE — 2026-09-12 — KIMI LPW/00_READ_FIRST.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/04_RETURN_TO_KIMI.md",
+  "dropbox_bytes": 7558,
+  "dropbox_sha256": "983e1ba95431e538d9b07b862a409bbd161abcf7fe60495fb7e05141ebd8f855",
+  "drive_candidates": [
+   {
+    "id": "13qNig9FMjW1cTU4TIWugs43qrLdfPX_l",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/04_RETURN_TO_KIMI.md",
+    "bytes": 6903,
+    "sha256": "18b7c8540632fc9f39f92874e679fd72e4e70e3f4017f9b43016a833b0c18729",
+    "mime": "text/markdown"
+   },
+   {
+    "id": "1n_6aKhiaaDepGiuq-A-MYSXaHiv4wLS8",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/04_RETURN_TO_KIMI.md",
+    "bytes": 6272,
+    "sha256": "db879f1471114f6d8dc257d31cc77e8b8f2e54714f4f4371fc0c8ee2fc300c08",
+    "mime": "text/markdown"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/04_RETURN_TO_KIMI.md",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/04_RETURN_TO_KIMI.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/05_MATCHING_2D_UPPER_WORK_ORDER.md",
+  "dropbox_bytes": 3339,
+  "dropbox_sha256": "521870da3c56e1c0b01d1ddd95ed159b89925bc31957b6efecd8aa307e76c479",
+  "drive_candidates": [
+   {
+    "id": "13cjGtUB5Ag49eCyvbsTo-yBWRJLbgohG",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/05_MATCHING_2D_UPPER_WORK_ORDER.md",
+    "bytes": 4350,
+    "sha256": "8f193fb358e02ff6e9545d2ebc4d4c1e6a1146e4bb28eebfff8cab0123aaab2d",
+    "mime": "text/markdown"
+   },
+   {
+    "id": "1b-oSNqN3i73jUh5GN84mBMxwUUSnUr1_",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/05_MATCHING_2D_UPPER_WORK_ORDER.md",
+    "bytes": 3770,
+    "sha256": "bb045007eb61814d7b919e82621fe4411ee8e6e351495d5dae00df08ebfbf385",
+    "mime": "text/markdown"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/05_MATCHING_2D_UPPER_WORK_ORDER.md",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/05_MATCHING_2D_UPPER_WORK_ORDER.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/CURRENT_STATE.json",
+  "dropbox_bytes": 3202,
+  "dropbox_sha256": "6910bd9036a15107cfed45b30165db8cc5268b4445cb1dff87bf2d2cbf9827e7",
+  "drive_candidates": [
+   {
+    "id": "13LjNTNpCC7B2kxjFRbhmp0YoRvJ_2wpt",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/CURRENT_STATE.json",
+    "bytes": 3422,
+    "sha256": "f86dc4f317091ba24aefc9fd060d262f5a7853d4b41c2466b764354c09103788",
+    "mime": "application/json"
+   },
+   {
+    "id": "1uXV6L232oBf5BRobxLPHSiGDAlZjfY6J",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/CURRENT_STATE.json",
+    "bytes": 4744,
+    "sha256": "ac96d2bc920d2ebef759d3eb7d1afee356af54c4e164923721b203e8396e40fa",
+    "mime": "application/json"
+   },
+   {
+    "id": "1T5id6TUIoXyyOnISFRsP6td765TbcH4L",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/CURRENT_STATE.json",
+    "bytes": 3022,
+    "sha256": "29e886e7a47821a9e5bcae083e00622f8794c85149334c342977e61bb8807337",
+    "mime": "application/json"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/CURRENT_STATE.json",
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/CURRENT_STATE.json"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/MANIFEST.sha256",
+  "dropbox_bytes": 19211,
+  "dropbox_sha256": "4f58c49ca006bc63c8f149e1650789d9e99f09bb7b137910c741a046a747b104",
+  "drive_candidates": [
+   {
+    "id": "1PdA9N93PTbJX1Pm-ZqninxBEb9bGjJsp",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/MANIFEST.sha256",
+    "bytes": 1427,
+    "sha256": "433bc58cfd9a53160f91f206d351bb53602142ad5a7a0dbe4c91fd80990f799e",
+    "mime": "application/octet-stream"
+   },
+   {
+    "id": "1lHo-eY-mcwhWl1sQ9LtgLhoxNECKj5Uf",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/2026-09-12 — NEXT PHASE — LOCAL PATH LOWER-BOUND CANDIDATE/REVIEW_INTAKE — 2026-09-12 — KIMI LPW/MANIFEST.sha256",
+    "bytes": 1380,
+    "sha256": "ef0497423d26bbe2efaa37e640936a425757d16b1375aee809b411c0910a0e45",
+    "mime": "application/octet-stream"
+   },
+   {
+    "id": "1mZ2CAcRP2vZ-f2g4d2AhqlYGdiyW372H",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — OPERATOR FOLD R04 — 2026-09-12/MANIFEST.sha256",
+    "bytes": 10595,
+    "sha256": "7ae518bfd8ab4bce52060950273166512ed5fe2348aa31a6d56c01dac113e8e3",
+    "mime": "application/octet-stream"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "Math-@chatgpt/bf-scalar-certificate-20260926:imports/upper2d_h5_ledgers_20260926/MANIFEST.sha256",
+   "Math-@chatgpt/bf-scalar-certificate-20260926:imports/upper2d_stage_e_20260926/MANIFEST.sha256"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/drive_apply/PLAN.json",
+  "dropbox_bytes": 3266,
+  "dropbox_sha256": "372f99aca47a1020d41dfb96a2d7633f93d606751276b07ed64bc55af4f7e493",
+  "drive_candidates": [
+   "Prize_Research_P15_Palette_20260917.zip::Prize_Research_P15_Palette_20260917/drive_apply/PLAN.json",
+   "Prize_Research_P14_Fractional_20260917.zip::Prize_Research_P14_Fractional_20260917/drive_apply/PLAN.json",
+   "Prize_Research_P14_Fractional_20260917.zip::Prize_Research_P14_Fractional_20260917/inputs/P13_ORIGINAL.zip!/Prize_Research_P13_Weighted_20260917/drive_apply/PLAN.json"
+  ],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/drive_apply/README.md",
+  "dropbox_bytes": 1241,
+  "dropbox_sha256": "4116b1393d13e4614bce162d2e97a61559be97cdf1fd1a4e675497861a527eed",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "Math-@chatgpt/bf-scalar-certificate-20260926:README.md",
+   "Math-@chatgpt/bf-scalar-certificate-20260926:frontiers/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/drive_supplements/README.md",
+  "dropbox_bytes": 1132,
+  "dropbox_sha256": "7ffb730cc94b62d74e65d425e2a5f2d9e1c8420614a10201b9ee2ba919367c43",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "Math-@chatgpt/bf-scalar-certificate-20260926:README.md",
+   "Math-@chatgpt/bf-scalar-certificate-20260926:frontiers/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/BODY_HASH_AUDIT.json",
+  "dropbox_bytes": 3158,
+  "dropbox_sha256": "214fc904c8f503368712d066efb9ce1a35b4c5a7e18aa108de8b07fba92e6fff",
+  "drive_candidates": [
+   {
+    "id": "1Ezbg_g_u5-Bh6AxlMNQUg-uFGDWmGKIX",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/BODY_HASH_AUDIT.json",
+    "bytes": 2918,
+    "sha256": "20bc965abeb9cf2dd90ba28c72867cc9a1d4cae8070ba0747b982c5c2552c57e",
+    "mime": "application/json"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/BODY_HASH_AUDIT.json",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/BODY_HASH_AUDIT.json"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/MANIFEST_AUDIT.json",
+  "dropbox_bytes": 397889,
+  "dropbox_sha256": "5cfbcfaa4025c95acaa7714fc722b31569a16a5392b0ae37dfa095925e8e7aed",
+  "drive_candidates": [
+   {
+    "id": "1FdmSd-OT0W1MN2mJVtX1MdDlGDp87bzQ",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/MANIFEST_AUDIT.json",
+    "bytes": 527693,
+    "sha256": "3bc1e17b1e87ed22230fcadf18432dd9a7aefd062b257e585e7615aac6e9d9e1",
+    "mime": "application/json"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/MANIFEST_AUDIT.json",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/MANIFEST_AUDIT.json"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/REPLAY_RECEIPT.json",
+  "dropbox_bytes": 10613,
+  "dropbox_sha256": "9824a50ba6c784df2b1ea1db0c73506fd1011d447ec82f6c70496f3da9715ee2",
+  "drive_candidates": [
+   {
+    "id": "1ZW5YzdSSVtQcmyEeapWXTddGdj5mo0T6",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/REPLAY_RECEIPT.json",
+    "bytes": 8742,
+    "sha256": "3baba9dd113665979432b64699b118d3a4090767081c326618b6ddf4f889dfce",
+    "mime": "application/json"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/REPLAY_RECEIPT.json",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/LPW — RAW ARCHIVE INTAKE R05/checks/REPLAY_RECEIPT.json"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/tools/README.md",
+  "dropbox_bytes": 1124,
+  "dropbox_sha256": "588d8e727c514c0c1bb1446b91cbe8366bf24701672dd6888d8ea809351ac4a4",
+  "drive_candidates": [
+   {
+    "id": "1rooPbn2uyC3CIvke629ht9-MIzFrKfi4uldtUB2pwWk",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/00_INGEST_DUMP/README.md",
+    "bytes": 1024,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1qLbWwNeNzz1OntCbzCeVibtlrWncVVPdt1Ga8U068tY",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/01_PREPPING_GROUNDS/README.md",
+    "bytes": 2351,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   },
+   {
+    "id": "1fM_AFIjgpEGhD4FQTpd4gkQfEOYCHmvI7I-MJwKoc-E",
+    "path": "01_ACTIVE_RESEARCH_PACKAGES/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/02_CORE_LEMMAS/README.md",
+    "bytes": 2138,
+    "sha256": null,
+    "mime": "application/vnd.google-apps.document"
+   }
+  ],
+  "github": "name_only",
+  "github_where": [
+   "Math-@chatgpt/bf-scalar-certificate-20260926:README.md",
+   "Math-@chatgpt/bf-scalar-certificate-20260926:frontiers/README.md"
+  ]
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/tools/replay_received.py",
+  "dropbox_bytes": 4334,
+  "dropbox_sha256": "8e06f341cc4759a30c474fd2b3aa0d0943c2bb58f618ade3bcbe655d869f8290",
+  "drive_candidates": [
+   "LPW_Return_05_2026-09-12.zip::LPW_Return_05_2026-09-12/checks/replay_received.py"
+  ],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "dropbox_path": "LPW_Return_05_Archive_Audit_2026-09-12/tools/verify_bundle.py",
+  "dropbox_bytes": 2040,
+  "dropbox_sha256": "68950909d98292f98b43e6e67f3b53722f20b5c1775d5f477535692e5df68b8a",
+  "drive_candidates": [
+   "MATH-20260917-b9c2_PROOFS_CODE_AND_VERIFICATION.zip::MATH-20260917-b9c2/output/verify_bundle.py"
+  ],
+  "github": "none",
+  "github_where": []
+ }
+]
