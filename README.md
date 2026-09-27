@@ -71,6 +71,32 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).
 
+## Formal verification layer (Layer 1 — Lean 4 + Mathlib)
+
+Batch 828 adds a **machine-checked lane** on top of the existing provenance /
+scope / no-promotion stack (owner directive; scientific effect **NONE**).
+Design + agent coordination: [`docs/FORMAL_VERIFICATION_LAYER.md`](docs/FORMAL_VERIFICATION_LAYER.md).
+
+| Piece | Path |
+|-------|------|
+| Lake project (Lean `v4.19.0`, Mathlib `c44e0c8e…` — pins shared with `main`'s recovered GP-FOR-192 bundle) | [`formal/lean/`](formal/lean/) |
+| Pilot **SIDE24-PILOT-001** — `LS-DER-042` closed-form planar coefficient: `0 < cPlanar` (unconditional) and 19-digit enclosure `0.0734069193060342710 < c < 0.0734069193060342711` given an explicit `Γ(1/6)` hypothesis | [`formal/lean/Side24Formal/Side24Pilot.lean`](formal/lean/Side24Formal/Side24Pilot.lean) |
+| Status ledger (`none → specified → proved → kernel_checked`; earned, never declared) | [`formal/formalization_status.json`](formal/formalization_status.json) |
+| Informal ↔ formal alignment sheet (blueprint) | [`formal/blueprint/SIDE24-PILOT-001.md`](formal/blueprint/SIDE24-PILOT-001.md) |
+| Glossary: program term → standard maths → Lean | [`formal/GLOSSARY.md`](formal/GLOSSARY.md) |
+| Fail-closed gate (hash lock, receipt binding, axioms, negative controls, blueprint) | [`scripts/formal_gate.py`](scripts/formal_gate.py) |
+| CI: static gate → fresh-runner `lake build` → optional AI-prover lane | [`.github/workflows/formal-gate.yml`](.github/workflows/formal-gate.yml) |
+| Cross-repo handoff for all agents / owner repos | [`portable/formal-layer/`](portable/formal-layer/) |
+
+```bash
+python3 scripts/formal_gate.py                 # no Lean needed; fail-closed
+python3 -m pytest -q tests/test_formal_gate.py
+```
+
+`kernel_checked` maps to verification level **L5** in `main`'s
+`VERIFICATION_LEVELS.json` — and that file's rule holds: *verification_level ≠
+acceptance*. `lemma_closed` stays `false`.
+
 ## Quick check
 
 ```bash

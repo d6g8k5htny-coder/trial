@@ -1,3 +1,10 @@
+### Batch 828 — formal_verification_layer_1 Lean pilot SIDE24-PILOT-001 kernel_checked (2026-09-27)
+
+- Owner directive (pre-approved): add a formal layer (Lean 4 + Mathlib) on top of Layer 0 (provenance / scope / no-status-promotion gate / museum). Implemented in `formal/` + `scripts/formal_gate.py` + `.github/workflows/formal-gate.yml` + `tests/test_formal_gate.py` (20 tests) + `docs/FORMAL_VERIFICATION_LAYER.md` + `formal/GLOSSARY.md` + `portable/formal-layer/` cross-repo handoff (all agents, all 8 owner repos). Pins Lean `v4.19.0` / Mathlib `c44e0c8e…` == `main` recovered GP-FOR-192 bundle.
+- Pilot: `LS-DER-042` closed form `c_∞ = 2^(2/3)·3^(5/6)·Γ(1/6)/(54π^(3/2))` (frozen body `54cedb1e…` recomputed = declared BODY_SHA256). Kernel-checked: `cPlanar_pos` (unconditional), factor enclosures (25 digits), `cPlanar_decimal_enclosure` 19-digit window given explicit `Γ(1/6)` hypothesis (hypothesis = scope). Axioms all 13 decls = `[propext, Classical.choice, Quot.sound]`; no `sorryAx`; 2 semantic mutants REJECTED. Scope disposition: roadmap 20-digit window NOT provable from Mathlib's 20-decimal π → loosened to 19 digits, recorded not hidden.
+- Gate: status ladder earned not declared; hash lock; receipt binding (toolchain / mathlib / module sha / axioms / controls); blueprint alignment; status-vocabulary guard. `kernel_checked` ⇒ L5 metadata only (`verification_level ≠ acceptance`). Alignment review lane = `author_side` (no distinct reviewer yet). AI-prover lane `NOT_RUN`.
+- action=`formal_layer_pilot`; scientific_effect=NONE; `lemma_closed=false`; no premise/prize/obligation/claim touched; Goal OPEN.
+
 ### Batch 827 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Path C STATUS_GUARD re-audit at tip VERIFY827 Soft Intent n=1; catch-up after tip/eng827 Soft Intent 826→827 (covers research826 tip-race); open stack 13/1/3 Δ0 vs 826/825/824/823/822; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`9ca713e3`.
