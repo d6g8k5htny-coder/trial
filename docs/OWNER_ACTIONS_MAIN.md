@@ -1,3 +1,13 @@
+## STATUS (Batch 619 research-audit)
+
+Hardening tip **stable** @ `2f7a5a9`. research_stack_audit_watch_no_promotion: open 13/1/3; delta 0 vs BATCH617/616/615/614/612 (covers research618 tip-race gap; catch-up at tip VERIFY619 after tip/eng618+619; no research567/550); STATUS_GUARD living; no AUDIT re-copy. Evidence: `portable/BATCH619_RESEARCH_{AUDIT_WATCH,STACK_AUDIT_BRIEF,EVIDENCE}.json`. Inv parent-pin. Intent soften 441/445 preserved. Soft Intent single === header. `lemma_closed=false`. action=`research_stack_audit_watch`. Goal OPEN.
+
+```bash
+python3 scripts/audit_research_stack_open.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 scripts/guard_no_status_promotion.py "" --tip-sha 2f7a5a9f10c9ed5f5b7792a8f2521318d9208532
+python3 -m pytest tests/test_intent.py::test_batch619_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 619 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `96e5175` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 618→619; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH619_TIP_ENG_*.json` + `BATCH619_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
