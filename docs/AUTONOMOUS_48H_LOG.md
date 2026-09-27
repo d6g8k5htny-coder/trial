@@ -1,3 +1,8 @@
+### Batch 858 — research_stack_audit_watch_no_promotion catch-up @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit catch-up at tip VERIFY858 Soft Intent n=1 after tip/eng Soft Intent 857→858; covers Batch845/856 tip-race; open stack 13/1/3 Δ0 vs 857/856/855/854/853; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin @`72edb717`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@858.
+
 ### Batch 858 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: tip race after Soft Intent858 left inv tip_sha at `97680686` while tip advanced to `8351cf46`; pin broken (`tip_sha != HEAD^`).

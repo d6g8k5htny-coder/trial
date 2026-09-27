@@ -1,3 +1,12 @@
+## STATUS (Batch 858 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 857/856/855/854/853 catch-up at tip VERIFY858 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH858_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch858_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 858 tip-eng-parent-pin-repair)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after tip race past Soft Intent858 left inv tip_sha stale @ `97680686`; re-pin to precommit `8351cf46`. Soft Intent single-header; VERIFY858. Evidence: `portable/BATCH858_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
