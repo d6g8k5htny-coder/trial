@@ -155,6 +155,10 @@ jobs:
             https://github.com/d6g8k5htny-coder/main.git main-work
           echo "TIP=$(git -C main-work rev-parse HEAD)"
       - name: Tip-drift gate (BASE_TIP == live hardening SHA)
+        env:
+          # Sidecar b3c6: compare API for DESCENDANT classification — Actions
+          # token lifts the anonymous per-IP rate limit on shared runners.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # Batch 147: fail loudly when portable patches BASE_TIP lags the live tip.
@@ -187,6 +191,8 @@ jobs:
             echo "tip-drift gate OK: live==BASE_TIP @ ${TIP:0:7}"
           fi
       - name: Tip-drift dry-sim (refresh_path_c_bundle --dry-run)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # Batch 176: exercise refresh helper on tip-stable trees (exit 0 no-op).

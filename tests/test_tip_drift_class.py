@@ -78,6 +78,41 @@ def test_acceptable_policy():
         assert tdc.acceptable(cls, landed=False) is False
 
 
+def test_bad_env_token_falls_back_to_anonymous(monkeypatch):
+    """A 401 on the authenticated compare call must not yield UNKNOWN."""
+    import urllib.error
+
+    monkeypatch.undo()  # use the real _compare_status, with urllib stubbed
+    tdc._CACHE.clear()
+    monkeypatch.setenv("GITHUB_TOKEN", "ghp_definitely_bad")
+    seen: list[bool] = []
+
+    class _Resp:
+        def __init__(self, status):
+            self._s = status
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return json.dumps({"status": self._s}).encode()
+
+    def fake_urlopen(req, timeout=30):
+        authed = "Authorization" in req.headers or "authorization" in {k.lower() for k in req.headers}
+        seen.append(authed)
+        if authed:
+            raise urllib.error.HTTPError(req.full_url, 401, "Bad credentials", {}, None)
+        return _Resp("ahead")
+
+    monkeypatch.setattr(tdc.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(tdc.subprocess, "run", lambda *a, **k: pytest.fail("gh should not be needed"))
+    assert tdc.classify(BASE, LIVE) == "DESCENDANT"
+    assert seen == [True, False]
+
+
 def test_path_c_landed_reads_verify(tmp_path):
     good = tmp_path / "VERIFY.json"
     good.write_text(json.dumps({"path_c_landed": True}), encoding="utf-8")

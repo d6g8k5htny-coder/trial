@@ -57,34 +57,50 @@ def _compare_status(base: str, live: str, repo: str = MAIN_REPO, timeout: int = 
     if key in _CACHE:
         return _CACHE[key]
     url = f"https://api.github.com/repos/{repo}/compare/{base}...{live}"
-    headers = {
+    base_headers = {
         "Accept": "application/vnd.github+json",
         "User-Agent": "trial-tip-drift-class",
     }
-    tok = _token()
-    if tok:
-        headers["Authorization"] = f"Bearer {tok}"
-    status = ""
-    try:
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
-            data = json.load(resp)
-        status = str(data.get("status") or "")
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError, OSError):
-        status = ""
-    if not status:
+
+    def _fetch(with_token: bool) -> str:
+        headers = dict(base_headers)
+        tok = _token() if with_token else ""
+        if with_token and not tok:
+            return ""
+        if tok:
+            headers["Authorization"] = f"Bearer {tok}"
         try:
-            p = subprocess.run(
-                ["gh", "api", f"repos/{repo}/compare/{base}...{live}", "--jq", ".status"],
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-                check=False,
-            )
-            if p.returncode == 0:
-                status = p.stdout.strip()
-        except (OSError, subprocess.SubprocessError):
-            status = ""
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
+                return str(json.load(resp).get("status") or "")
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError, OSError):
+            return ""
+
+    # Token first (higher rate limit); a bad/expired token (401/403) must not
+    # poison the answer — the research repo is public, so retry anonymously.
+    status = _fetch(with_token=True) or _fetch(with_token=False)
+    if not status:
+        # gh CLI fallback: as-is, then with a possibly-bad env token stripped so
+        # gh falls back to its own auth store (or anonymous on public repos).
+        for strip_env in (False, True):
+            env = dict(os.environ)
+            if strip_env:
+                for k in ("GITHUB_TOKEN", "GH_TOKEN", "MAIN_PUSH_TOKEN"):
+                    env.pop(k, None)
+            try:
+                p = subprocess.run(
+                    ["gh", "api", f"repos/{repo}/compare/{base}...{live}", "--jq", ".status"],
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout,
+                    check=False,
+                    env=env,
+                )
+                if p.returncode == 0 and p.stdout.strip():
+                    status = p.stdout.strip()
+                    break
+            except (OSError, subprocess.SubprocessError):
+                status = ""
     _CACHE[key] = status
     return status
 
