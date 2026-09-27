@@ -25,7 +25,7 @@
     "living_tag": "batch241-path-c-bundle"
   },
   "inventory_tip_pin": "preserve_parent_pin",
-  "verify_refresh_batch": 748,
+  "verify_refresh_batch": 749,
   "soft_intent_single_header": true,
   "inventable_promoted": false,
   "note": "tip_or_eng TIP_DRIFT keep-prior BASE=2f7a5a9 live=398d478; living tip_stale=0 script_stale=0 DIFF_COUNT=0 current => idle; Soft Intent n=1->748; VERIFY 748->749; inv parent_pin"
