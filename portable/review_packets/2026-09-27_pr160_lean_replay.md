@@ -41,7 +41,11 @@ Only `generated_at_utc` and `lake_bin` differ. Compact replay receipt:
 
 The PR prepends its Batch 828 entry at line 1 of `docs/AUTONOMOUS_48H_LOG.md`; the wake loop prepends
 there every ~3 min, so the PR re-conflicts after every batch and GitHub schedules no `pull_request`
-workflows on a conflicting PR — neither `trial-ci` nor `formal-gate` had ever run on it. Suggested fix:
+workflows while it is conflicting. Correction (from helper run ff72): CI *did* run in the window
+between the author's keep-both merge `18b06e56` (22:03Z) and the next loop pulse — `formal-gate`
+run 36353931138 (`lean-kernel-check` success, "committed receipt reproduced on fresh runner") and
+`trial-ci` run 36353931091 (all five jobs green). So the GitHub fresh-runner receipt, this pod's replay
+and the committed receipt agree three ways. Suggested fix so the PR stays green between pulses:
 place the entry in its chronological slot (below the `### Batch 829 — tip_or_eng …` header) or drop the hunk.
 
 ## Trial suite on `main` + #160 (this pod)
