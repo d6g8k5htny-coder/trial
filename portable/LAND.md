@@ -1,3 +1,7 @@
+## STATUS (Batch 768 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 767/766/765/764/763 (at tip VERIFY768 after tip/eng768 Soft Intent 767→768); STATUS_GUARD pass; stamps@768; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 768 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `079b48e` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale Soft Intent+VERIFY unfreeze then living force; unfreeze 767→768; Soft Intent n=1; inv parent-pin; VERIFY 768; durable 8/8; lemma_closed=false; goal OPEN.
