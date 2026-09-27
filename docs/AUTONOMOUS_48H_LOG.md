@@ -1,3 +1,8 @@
+### Batch 777 — tip_or_eng TIP_DRIFT keep-prior living script_stale + unfreeze 776→777 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`0ad6ebc` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 776→777; living tip_stale=0 script_stale=1; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no inventable defect; Soft Intent single === header →777; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 776 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - At tip VERIFY776 after tip/eng776 Soft Intent 775→776; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 775/774/773/772/771 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
