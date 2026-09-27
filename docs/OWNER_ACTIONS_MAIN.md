@@ -7,6 +7,11 @@ Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `bcac7e7` tip_moved).
 python3 -m pytest tests/test_intent.py::test_batch808_tip_or_eng_tip_drift_idle_unfreeze -q
 ```
 
+
+## STATUS (Batch 808 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 807/806/805/804/803 (at tip VERIFY808 after tip/eng808 Soft Intent 807→808); STATUS_GUARD pass; stamps@808; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 807 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b400315` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 806→807; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH807_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
