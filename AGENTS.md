@@ -12,6 +12,7 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 - Prefer portable artifacts under `portable/` when this environment cannot push to `main`.
 - Keep scientific effect **NONE**: never promote, close, or discharge claims, premises, prizes, or lemmas.
 - After meaningful work: commit, push `cursor/*` branches, land on trial `main` when PR create is 403.
+- `idle_no_commit` is terminal. Run `python3 scripts/idle_no_commit.py` before an automation pulse. Exit 0 means source identity and capabilities are unchanged and no substantive defect is present: report that result and return before tracked-file writes. Leave batch headers, `REFRESH_BATCH_TAG` defaults, last-resort fallbacks, `VERIFY.refresh_batch`, schedules, and the release content-hash detector as they are.
 - Owner land scripts (`owner_land_path_*.sh`) are technical fallback for GitHub App 403 only — not approval gates.
 - Blocked or need a second pair of hands? Drop a card in [`needs_attention/cards/`](needs_attention/README.md) (schema `needs_attention/v1`; `python3 scripts/needs_attention_check.py`). Helpers cycle that folder with `scripts/needs_attention_scan.py`. Before fixing a repo-wide problem, check the open cards — four agents shipped the same tip-drift fix in parallel (NA-0007).
 
@@ -47,6 +48,12 @@ Grok, future):
 - Declare `kernel_checked` without a binding receipt in `formal/receipts/`.
 - Enable or claim GitHub scheduled workflows on `main` solely to satisfy R2-06 prose.
 - Ask Dylan for approval in docs.
+
+## Operations lanes
+
+- Public-facing **storefront / exhibit / intake** work belongs in `main`: `main/docs/site` (public face) and `main/incoming` (intake). Do not build it here.
+- `trial` is the **internal load-test / workbench lane**: probes, smoke checks, portable engineering artifacts, wake/idle automation. It is **not** a public shop and **not** a status register.
+- Do not open new trial `Batch NNN` PRs to implement storefront or intake features; route that work to `main`.
 
 ## Start here
 

@@ -1,0 +1,110 @@
+{
+  "kind": "DROPBOX_INTAKE_DIGEST",
+  "source_url": "https://www.dropbox.com/scl/fo/9h5229ryu5pecpje7xgdh/APr763YsXKpEuYaQ1Idd1HY?rlkey=rr8v0tet6e5i31o6gkup83tqf&st=t3lekpe9&dl=0",
+  "downloaded_zip_bytes": 188397410,
+  "file_count": 2950,
+  "ts_utc": "2026-09-27T16:53:01.106728+00:00",
+  "orchestrator": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
+  "path_c_constraint": "lemma_closed=false forever; never promote inventable; research no-promotion stack 13/1/3",
+  "upload_capability": "NO Dropbox/Drive write credentials in this environment \u2014 write destinations listed for Dylan/manual or credentialed tooling",
+  "relevance_to_path_c": {
+    "open_stack_confirmed": "D3-LEMMA-RN-UNIF still NOT CLOSED (lemma_closed:false); OBL-D1-PROMOTE OPEN; matches research stack open_lemmas=1 / open_premises\u224813 / open_prizes=3 posture",
+    "q0_rate_program": "Full Master Set inventory+completeness (Theorem A 0.8411\u00b7r\u00b3 \u2264 1\u2212q \u2264 4.3\u00b7r\u00b3); 5 live bibliographic [MISSING] markers; SARD-G program-grade with external referee outstanding",
+    "gate_instruments": "q0_verify.py, gate_kernel_v2_0.py, q0_machine.json, Q0_LEDGER/MASTER present in Dropbox",
+    "lpw": "LPW_Return_03 packages + PKG-04 LPW lower review READY; LPW-CONSTANT-V4 HOLD NOT READY"
+  },
+  "canonical_drive_destinations": {
+    "PEER_REVIEW_SUBMISSION_ROOT": "https://drive.google.com/drive/folders/185P0tWR23btObvqZu9PgoBt4I13xA-H4",
+    "MASTER_ROUTING": "https://drive.google.com/drive/folders/12TU7GhyFA3fcKN5yhC9qUULvLRHzbbw_",
+    "HOLD_NOT_FOR_SUBMISSION": "https://drive.google.com/drive/folders/1gAcsNddLR5NshuCR4zZOU1YzP_ttUW-U",
+    "OPEN_PREMISES_WORKLIST": "https://drive.google.com/file/d/1Emg4xc4TBNIFudd3vVpQXQjZcDdw02bY/view",
+    "PREMISE_BLOCKERS_D1_PROMOTE_AND_RN_UNIF": "https://drive.google.com/file/d/1s3y5xKxFQi0qcj2Tj8RtoVna-D4jqh_F/view",
+    "REPRO_CHECKS_H5_RN_UNIF": "https://drive.google.com/file/d/12zQxxBo0Jj-yXihlwzqeutm8HqBnPI90/view",
+    "GAP_CHECKLIST_PKG01-05": "https://drive.google.com/file/d/1weRQP55xu4euij3YnQOJVy7YCMWkwTYR/view",
+    "PKG-01_U2D": "https://drive.google.com/drive/folders/1F3TKsC9JamPxb5XcArFzy2dOVer5ZnQv",
+    "PKG-02_RUNG_BRICK": "https://drive.google.com/drive/folders/1LJMO3H57AAxpBnHXb21vLRkh2HfBCdWi",
+    "PKG-03_MANUSCRIPT": "https://drive.google.com/drive/folders/1NzKmQzLf-zLif2QU3dfJaLiQ2OxkmsFj",
+    "PKG-04_LPW_LOWER": "https://drive.google.com/drive/folders/1xFOTj_zBm4DaGHPh4V7r8IIY5EYrFicZ",
+    "PKG-05_3D": "https://drive.google.com/drive/folders/1emewC2F5_SWXnfFr0Ltmrqf6L35q5Hea",
+    "HOLD_LPW_CONSTANT_V4": "https://drive.google.com/drive/folders/1IP-r3hESWbOaXpl2H64NzvTnOU8Ur85V",
+    "DO_NOT_OPEN_VAULT": "https://drive.google.com/drive/folders/1VTiBaRlBvHGptiXqoEli4E5630nO7mNb"
+  },
+  "key_asset_hashes": {
+    "q0_verify.py": {
+      "sha256": "eca1755d25375adfe4ccd3366b0c696ea5214d3267cffe7df9160ed6136d34f4",
+      "bytes": 957321
+    },
+    "Q0_MASTER.md": {
+      "sha256": "3112fb610f27feea8ff84b8bdf9b475fc17c2e9cf12b4173866cb6ae2d9e22cc",
+      "bytes": 1831987
+    },
+    "Q0_LEDGER.md": {
+      "sha256": "d1fea170ee04c93b075786ed636c3d9088fd80f2c0def51a6a2dbc0812e3e80a",
+      "bytes": 253067
+    },
+    "q0_machine.json": {
+      "sha256": "c3a93bd250c49e256467939bf714c18488fa506e87ae10636608fae99fb9cd38",
+      "bytes": 5910703
+    },
+    "gate_kernel_v2_0.py": {
+      "sha256": "9747f8572e13c7d2799b83d7e7e47bf2bd46f1c687ff9dd10953c67890ae4962",
+      "bytes": 95017
+    },
+    "00_READ_ME_FIRST.pdf": {
+      "sha256": "e29f0f0cfff415ff8c5f88d122d112c2fcf7d7351332026ef03bbac4cb3d3025",
+      "bytes": 208953
+    },
+    "Lemma I Packagea.pdf": {
+      "sha256": "11aa6b4aa22c90227f7f7ea1ab0fe87acf86ebfbc6ce00e3923841f827822d80",
+      "bytes": 60760
+    },
+    "Lemma LB Packagea.pdf": {
+      "sha256": "3d91487be1dabf2046884b04aaf18e0f5064f5ed77ec12dca130c8d51abf61e1",
+      "bytes": 55060
+    },
+    "Lemma ADJ Packagea.pdf": {
+      "sha256": "3ba677df18e1b24fead428085b2dbe15c857e65d2ebd4032796dc50f1de04e6d",
+      "bytes": 54510
+    },
+    "LPW_Return_03_2026-09-12.zip": {
+      "sha256": "fb81f8c1774d851775a025ac08750fa9e98e7b04d0e6844e7aebfd14456de2c7",
+      "bytes": 306334
+    },
+    "00_MASTER_INDEX_AND_ROUTING.zip": {
+      "sha256": "5473005331d5d98962594a5b1baf4e541b7f0831574c54f0a333da8264f24e64",
+      "bytes": 45850
+    },
+    "UPPER2D.zip": {
+      "sha256": "4464df46e135e31bf9707755603eff1bb444fe3488b0f198599755ea2abfff84",
+      "bytes": 2052290
+    },
+    "K3_SIDE24_LB.zip": {
+      "sha256": "0b2c693a0eedb6e5285cc2b320ebf0cfc12190dc9924d9fec584510c0e88b523",
+      "bytes": 19175951
+    },
+    "master-final-v1.zip": {
+      "sha256": "947839ecac8b83a057320de8a5dc8c178319a09d1fd6c475a5ac76a6ed624aa7",
+      "bytes": 695348
+    },
+    "05_MASTER_SETUP.zip": {
+      "sha256": "50a0b41bd9c3a10798d14973e8cb72079cb8b727a20a0aa61538b128bcc27545",
+      "bytes": 53048
+    }
+  },
+  "top_level_clusters": [
+    "q0 Rate Program Master Set (00\u201308 + Q0_MASTER/LEDGER/verify/machine)",
+    "MPV3 constitution + gate framework",
+    "LPW Return_03 / constant review / KIMI verdicts",
+    "UPPER2D + K3_SIDE24_LB research trees",
+    "00_MASTER_INDEX_AND_ROUTING (Drive peer-review PKG map)",
+    "C096\u2013C104 gate/contract JSON scans",
+    "Lemma I / LB / ADJ packages (PDFs)",
+    "ChatGPT.dmg (macOS app \u2014 ignore for Path C math)"
+  ],
+  "agent_routing": {
+    "research": "Primary consumer \u2014 open premises worklist, RN-UNIF blockers, q0 ledger/verify, completeness MISSING markers; NO promotion",
+    "tip_or_eng": "Secondary \u2014 eng defects only if tooling gaps; do NOT close lemmas or promote inventable from this corpus",
+    "tip_sync": "Awareness only \u2014 Soft Intent n=1 preserve; link for mid-flight explore"
+  },
+  "local_mirrors": "/opt/cursor/artifacts/dropbox_intake_2026-09-27/"
+}
