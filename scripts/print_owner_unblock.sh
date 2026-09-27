@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 859 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 859: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 858→859 @2f7a5a9"
+echo " Batch 859: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 858/857/856/855/854 (catch-up at tip VERIFY859 after tip/eng Soft Intent 858→859; covers Batch845/858 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 858: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 857→858 @2f7a5a9"
 echo " Batch 858: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 857/856/855/854/853 (catch-up at tip VERIFY858 after tip/eng Soft Intent 857→858; covers Batch845/856 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 857: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 856→857 @2f7a5a9"
