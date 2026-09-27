@@ -1,3 +1,7 @@
+## STATUS (Batch 669 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 667/665/664/663/661 (covers research668 tip-race gap; catch-up at tip VERIFY669 after tip/eng668+669); STATUS_GUARD pass; stamps@669; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 669 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 668→669; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH669_TIP_ENG_IDLE.json` + `BATCH669_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
