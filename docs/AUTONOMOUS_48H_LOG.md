@@ -1,3 +1,8 @@
+### Batch 713 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY713 after tip/eng712+713 Soft Intent repair 711→713; covers research712 tip-race gap; research711 on tip; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 711/710/708/706/705 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 713 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
 ### Batch 713 — tip_or_eng TIP_DRIFT keep-prior living script_stale Soft Intent repair 711→713 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`38a3e07` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 712→713; living script_stale Soft Intent header repair; Soft Intent n=1; `lemma_closed=false`.
