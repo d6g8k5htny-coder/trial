@@ -59,10 +59,45 @@ _LIVING_RELEASES = (
     "batch241-path-c-bundle",
 )
 
+_TIP_GATE_CACHE: dict[str, dict] = {}
+
+def _tip_gate_for(sha: str = "") -> dict:
+    """Landed-ancestor gate for a hardening SHA ("" = live tip); cached per value.
+
+    Uses scripts/path_c_tip_gate.py (git ancestry / compare API). Soft-fails to
+    {} so callers fall back to the static allowlist only.
+    """
+    key = (sha or "").lower()
+    if key not in _TIP_GATE_CACHE:
+        try:
+            scripts_dir = str(ROOT / "scripts")
+            if scripts_dir not in sys.path:
+                sys.path.insert(0, scripts_dir)
+            import path_c_tip_gate  # noqa: PLC0415
+
+            _TIP_GATE_CACHE[key] = path_c_tip_gate.gate(key, trial_root=ROOT)
+        except Exception:  # noqa: BLE001 - informational fallback
+            _TIP_GATE_CACHE[key] = {}
+    return _TIP_GATE_CACHE[key]
+
 def _living_tip(val) -> bool:
-    """True if val is / contains / starts with a living Path C tip SHA prefix."""
+    """True if val is / contains / starts with a living Path C tip SHA prefix.
+
+    Landed-ancestor gate: a hardening tip that carries landed Path C (BASE_TIP
+    and the 0019 merge in its history) is living too, so the allowlist above no
+    longer has to be edited every time the hardening branch moves.
+    """
     s = str(val or "")
-    return any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS)
+    if any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS):
+        return True
+    import re as _re
+
+    m = _re.search(r"(?i)\b([0-9a-f]{7,40})\b", s)
+    if not m:
+        return False
+    cand = m.group(1).lower()
+    gate = _tip_gate_for(cand)
+    return gate.get("tip_ok") is True and gate.get("tip_state") in ("TIP_MATCH", "LANDED_ANCESTOR")
 
 def _living_release(val) -> bool:
     s = str(val or "")
@@ -116,6 +151,24 @@ def _living_tip_refresh(val) -> bool:
 
 def _assert_living_tip_refresh(val) -> None:
     assert _living_tip_refresh(val), f"VERIFY.tip_refresh not living bool: {val!r}"
+
+def _tip_ok(data: dict) -> bool:
+    """Landed-ancestor tip gate (scripts/path_c_tip_gate.py).
+
+    Path C is landed and BASE_TIP is kept immutable while the hardening branch
+    moves, so literal ``tip_matches_base`` can no longer be True. The gate
+    contract is ``tip_ok`` (TIP_MATCH or LANDED_ANCESTOR: BASE_TIP and the 0019
+    merge both in live history). Accept either; never accept TIP_DRIFT/UNKNOWN.
+    """
+    if data.get("tip_matches_base") is True:
+        return True
+    return data.get("tip_ok") is True and data.get("tip_state") in ("TIP_MATCH", "LANDED_ANCESTOR")
+
+def _assert_tip_ok(data: dict) -> None:
+    assert _tip_ok(data), (
+        f"tip gate not OK: tip_matches_base={data.get('tip_matches_base')!r} "
+        f"tip_ok={data.get('tip_ok')!r} tip_state={data.get('tip_state')!r}"
+    )
 
 def test_readme_states_sandbox_boundary() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -892,7 +945,7 @@ def test_path_c_dry_run_post_aligned_keep_hardening() -> None:
     assert result.returncode == 0, result.stderr + result.stdout
     data = __import__("json").loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["default_aligned"] is True
     assert data["default_path_c_shape"]["accepts"] is False
     assert data["hardening_path_c_shape"]["accepts"] is True
@@ -2879,7 +2932,7 @@ def test_batch153_base_tip_parse_and_from_bundle_dry_run() -> None:
         assert "dry-run OK" in fb_out or "from-bundle dry-run OK" in fb_out
     else:
         assert already_on_tip, fb_out
-        assert "tip_matches_base=true" in fb_out
+        assert "tip_matches_base=true" in fb_out or "tip_ok=true" in fb_out
         assert "Not possible to fast-forward" in fb_out or "diverg" in fb_out.lower()
 
     brief = ROOT / "portable" / "BATCH153_BRIEF.json"
@@ -3195,7 +3248,7 @@ def test_batch164_auth_ci_issue_refresh() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "C8FC-A08F"
     assert data["auth_renewed"] is False
@@ -3315,7 +3368,7 @@ def test_batch169_git_bundle_path_c() -> None:
         assert "lemma_closed=false" in fb_out
     else:
         assert already_on_tip, fb_out
-        assert "tip_matches_base=true" in fb_out
+        assert "tip_matches_base=true" in fb_out or "tip_ok=true" in fb_out
         assert "Not possible to fast-forward" in fb_out or "diverg" in fb_out.lower()
 
     brief = ROOT / "portable" / "BATCH169_BRIEF.json"
@@ -3328,7 +3381,7 @@ def test_batch169_git_bundle_path_c() -> None:
     assert data["path_c_landed"] is False
     assert data["git_bundle"] is True
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["device_code"] in ("831C-CB1C", "EC83-CFC2", "7BCB-0057") or "-" in str(data["device_code"])
     # Renew path keeps prior 831C when Batch 169 renewed near expiry.
     if data["device_code"] != "831C-CB1C":
@@ -3431,7 +3484,7 @@ def test_batch168_oneshot_pack_ci() -> None:
     assert data["oneshot"] is True
     assert data["dry_run_ok"] is True
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "831C-CB1C"
     assert data["prior_device_code"] == "905D-02F4"
@@ -3545,7 +3598,7 @@ def test_batch165_owner_path_c_oneshot() -> None:
     assert data["path_c_landed"] is False
     assert data["oneshot"] is True
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["device_code"] == "905D-02F4"
     assert data["auth_renewed"] is True
     assert data["prior_device_code"] == "C8FC-A08F"
@@ -3704,7 +3757,7 @@ def test_batch170_bundle_e2e_and_ci_intent_fix() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["bundle_verify_ok"] is True
     assert data["device_code"] in ("EC83-CFC2", "7BCB-0057")
     assert data["write"] == "DENIED"
@@ -3740,7 +3793,7 @@ def test_batch172_issue_hygiene_and_non_rw_hunt() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["device_code"] == "7BCB-0057"
     assert data["write"] == "DENIED"
     assert data.get("patch_0017") is False
@@ -3784,7 +3837,7 @@ def test_batch173_refresh_path_c_bundle() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "9671-4918"
     assert data["prior_device_code"] == "7BCB-0057"
@@ -3820,7 +3873,7 @@ def test_batch173_refresh_path_c_bundle() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr) or "landed-ancestor" in (dry.stdout + dry.stderr)
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "refresh_path_c_bundle.sh" in pack
@@ -3862,7 +3915,7 @@ def test_batch176_refresh_ci_tip_drift() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "5E05-EA04"
     assert data["prior_device_code"] == "9671-4918"
@@ -3893,7 +3946,7 @@ def test_batch176_refresh_ci_tip_drift() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr) or "landed-ancestor" in (dry.stdout + dry.stderr)
 
     # Bad remote should die cleanly (no KeyError traceback)
     bad = subprocess.run(
@@ -3949,7 +4002,7 @@ def test_batch178_owner_pr_bundle_link_ci_fix() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "AD78-6206"
     assert data["prior_device_code"] == "5E05-EA04"
@@ -4036,7 +4089,7 @@ def test_batch179_path_c_bundle_release() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8ea3b5f"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "AD78-6206"
     assert data["auth_renewed"] is False
@@ -4304,7 +4357,7 @@ def test_batch183_ci_tip_drift_auth_renew() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     # Living device_code may renew after Batch 183 (Batch 185+: DF9C→46EC).
     assert data["device_code"] in ("DF9C-5DF9", "46EC-0B00") or "-" in str(
@@ -4403,7 +4456,7 @@ def test_batch185_auth_renew_research_audit_bundle() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "46EC-0B00"
     assert data["prior_device_code"] == "DF9C-5DF9"
@@ -4484,7 +4537,7 @@ def test_batch188_align_watch_auth_renew_idle() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     # Living device_code may renew after Batch 188 (Batch 190+: C949→1C7F).
     assert data["device_code"] in ("C949-0100", "1C7F-22B5") or "-" in str(
@@ -4570,7 +4623,7 @@ def test_batch190_deeper_hunt_auth_renew() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "1C7F-22B5"
     assert data["prior_device_code"] == "C949-0100"
@@ -4651,7 +4704,7 @@ def test_batch192_readme_path_c_face() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] in ("1C7F-22B5", "CC72-DB3D") or "-" in str(
         data["device_code"]
@@ -4741,7 +4794,7 @@ def test_batch194_readme_link_only_device_code() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "CC72-DB3D" or "-" in str(data["device_code"])
     assert data["auth_renewed"] is False
@@ -4834,7 +4887,7 @@ def test_batch195_path_c_status_watch_wire() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "50DB-FD4D" or "-" in str(data["device_code"])
     assert data["prior_device_code"] == "CC72-DB3D" or "-" in str(
@@ -4936,7 +4989,7 @@ def test_batch199_path_c_bundle_pack_release() -> None:
     assert data["flipped_anything"] is False
     assert data["path_c_landed"] is False
     assert data["tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is False
     assert data["device_code"] == "6A29-F464" or "-" in str(data["device_code"])
     assert data["prior_device_code"] == "50DB-FD4D" or "-" in str(
@@ -5055,7 +5108,7 @@ def test_batch202_ci_sanity_tip_refresh() -> None:
     assert data["path_c_landed"] is False
     assert data["tip"] == "b89448d"
     assert data["prior_base_tip"] == "8bd1f03"
-    assert data["tip_matches_base"] is True
+    _assert_tip_ok(data)
     assert data["tip_refresh"] is True
     assert data["bundle_refresh"] is True
     assert data["device_code"] == "5160-F839" or "-" in str(data["device_code"])
@@ -7886,7 +7939,7 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
         assert proc.returncode == 0, out
         assert "tip_fetch_via=" in out
         assert "git_ls_remote" in out or "gh_api" in out
-        assert "dry-run OK tip stable" in out or "tip stable" in out
+        assert "dry-run OK tip stable" in out or "tip stable" in out or "landed-ancestor" in out
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "PATH_C_STATUS.json" in unblock
@@ -8441,7 +8494,7 @@ def test_batch261_path_c_dry_run_idle_when_already_on_tip() -> None:
     data = json.loads(result.stdout)
     assert data["scientific_effect"] == "NONE"
     assert data.get("path_c_landed") is True
-    assert data.get("tip_matches_base") is True
+    _assert_tip_ok(data)
     assert data["state"] == "IDLE_PATH_C_DONE"
     assert data["apply_ready"] is False
     assert data.get("already_on_tip") is True
@@ -9528,7 +9581,7 @@ def test_batch269_verify_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "landed-ancestor" in combined
     assert _living_tip(combined)
 
     brief = json.loads(
@@ -10149,7 +10202,7 @@ def test_batch273_apply_verify_honesty_keep_prior() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "landed-ancestor" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH273_BRIEF.json").read_text(encoding="utf-8")
@@ -10268,7 +10321,7 @@ def test_batch275_manifest_verified_batch_release_align() -> None:
     )
     assert proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    assert "tip stable" in combined or "match=1" in combined
+    assert "tip stable" in combined or "match=1" in combined or "landed-ancestor" in combined
 
     brief = json.loads(
         (ROOT / "portable" / "BATCH275_BRIEF.json").read_text(encoding="utf-8")

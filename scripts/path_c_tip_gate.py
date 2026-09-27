@@ -175,33 +175,41 @@ def is_ancestor_api(ancestor: str, descendant: str, token: str = "") -> bool | N
     return None
 
 
-_TEMP_CLONE: dict[str, Path | None] = {}
+_HISTORY_CLONE: dict[str, Path | None] = {}
 
 
-def _temp_history_clone(token: str = "") -> Path | None:
+def _history_clone(token: str = "") -> Path | None:
     """Blobless shallow clone of the hardening branch (commits+trees only).
 
-    Used only when no --repo-dir was given and the compare API is unavailable
-    (unauthenticated rate limit on shared runners). Cached per process.
+    Used when no --repo-dir was given. Lives in a reusable cache dir
+    (PATH_C_TIP_GATE_CACHE, default $TMPDIR/path-c-tip-gate-cache) so repeated
+    gate calls across processes cost one fetch, not one compare-API call each
+    (anonymous API quota is 60/h on shared runners). Cached per process too.
     """
-    if "clone" in _TEMP_CLONE:
-        return _TEMP_CLONE["clone"]
-    import atexit
-    import shutil
+    if "clone" in _HISTORY_CLONE:
+        return _HISTORY_CLONE["clone"]
     import tempfile
 
     url = f"https://github.com/{REPO}.git"
     if token:
         url = f"https://x-access-token:{token}@github.com/{REPO}.git"
-    tmp = Path(tempfile.mkdtemp(prefix="path-c-tip-gate."))
-    atexit.register(shutil.rmtree, tmp, ignore_errors=True)
-    dest = tmp / "main"
+    cache_root = Path(os.environ.get("PATH_C_TIP_GATE_CACHE") or (Path(tempfile.gettempdir()) / "path-c-tip-gate-cache"))
+    dest = cache_root / "main"
+    if (dest / ".git").is_dir():
+        fetch = _run(
+            ["git", "fetch", "--quiet", "origin", f"+refs/heads/{HARDENING}:refs/remotes/origin/{HARDENING}"],
+            cwd=dest,
+            timeout=600,
+        )
+        _HISTORY_CLONE["clone"] = dest if fetch.returncode == 0 else dest
+        return dest
+    cache_root.mkdir(parents=True, exist_ok=True)
     r = _run(
         ["git", "clone", "--quiet", "--filter=blob:none", "--no-checkout", "--depth", str(_DEEPEN_STEPS[0]), "--branch", HARDENING, url, str(dest)],
         timeout=900,
     )
-    _TEMP_CLONE["clone"] = dest if r.returncode == 0 else None
-    return _TEMP_CLONE["clone"]
+    _HISTORY_CLONE["clone"] = dest if r.returncode == 0 else None
+    return _HISTORY_CLONE["clone"]
 
 
 def is_ancestor(ancestor: str, descendant: str, repo_dir: Path | None, token: str = "") -> tuple[bool | None, str]:
@@ -211,15 +219,15 @@ def is_ancestor(ancestor: str, descendant: str, repo_dir: Path | None, token: st
         got = is_ancestor_git(repo_dir, ancestor, descendant)
         if got is not None:
             return got, "git"
-    got = is_ancestor_api(ancestor, descendant, token)
-    if got is not None:
-        return got, "api"
     if os.environ.get("PATH_C_TIP_GATE_NO_CLONE", "") != "1":
-        clone = _temp_history_clone(token)
+        clone = _history_clone(token)
         if clone is not None:
             got = is_ancestor_git(clone, ancestor, descendant)
             if got is not None:
-                return got, "git_temp_clone"
+                return got, "git_cache_clone"
+    got = is_ancestor_api(ancestor, descendant, token)
+    if got is not None:
+        return got, "api"
     return None, "none"
 
 

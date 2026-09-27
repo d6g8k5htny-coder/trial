@@ -19,6 +19,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.error
@@ -109,10 +110,26 @@ def _fetch_live_tip() -> str | None:
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.load(resp)
     except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, json.JSONDecodeError):
-        return None
+        data = {}
     sha = (data.get("sha") or "").strip().lower()
     if re.fullmatch(r"[0-9a-f]{40}", sha):
         return sha
+    # Anonymous REST quota (60/h) is easily exhausted on shared runners; a null
+    # tip then poisons tip_match / idle_status. git ls-remote has no such quota.
+    try:
+        ls = subprocess.run(
+            ["git", "ls-remote", f"https://github.com/{MAIN_REPO}.git", f"refs/heads/{HARDENING_REF}"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    for line in (ls.stdout or "").splitlines():
+        cand = line.split()[0].lower() if line.split() else ""
+        if re.fullmatch(r"[0-9a-f]{40}", cand):
+            return cand
     return None
 
 

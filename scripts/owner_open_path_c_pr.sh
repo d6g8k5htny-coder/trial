@@ -244,7 +244,7 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
       # BASE_TIP + 0019 merge in live history → idle, not drift.
       TIP_GATE_TIP_STATE="UNKNOWN"
       TIP_GATE_REASON=""
-      TIP_GATE_SH="$(python3 "$TRIAL_ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --trial-root "$TRIAL_ROOT" --sh 2>/dev/null || true)"
+      TIP_GATE_SH="$(python3 "$ROOT/scripts/path_c_tip_gate.py" --live "$LIVE_SHA" --trial-root "$TRIAL_ROOT" --sh 2>/dev/null || true)"
       [[ -n "$TIP_GATE_SH" ]] && eval "$TIP_GATE_SH"
       if [[ "$TIP_GATE_TIP_STATE" != "LANDED_ANCESTOR" ]]; then
         die "tip-drift: live hardening $LIVE_SHA != BASE_TIP $BASE_TIP_SHA (tip_gate=${TIP_GATE_TIP_STATE}${TIP_GATE_REASON:+: $TIP_GATE_REASON}) — refresh BASE_TIP + rebuild path-c-applied-bundle"
