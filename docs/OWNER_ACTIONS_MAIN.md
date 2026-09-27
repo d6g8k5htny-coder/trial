@@ -7,6 +7,15 @@ Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `ec68091` tip_moved).
 python3 -m pytest tests/test_intent.py::test_batch837_tip_or_eng_tip_drift_idle_unfreeze -q
 ```
 
+## STATUS (Batch 837 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 836/835/834/833/832 at tip VERIFY837 Soft Intent n=1; STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH837_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch837_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 836 tip-eng-parent-pin-repair)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after merge `919d1c82` left inv tip_sha stale @ `ab267818`; re-pin to precommit `fede31a6` (onto tip after research836 catch-up). Soft Intent single-header; VERIFY836. Evidence: `portable/BATCH836_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
