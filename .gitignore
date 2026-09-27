@@ -6,3 +6,5 @@ __pycache__/
 .DS_Store
 # Batch 256: runtime flock for concurrent Path B restores
 portable/.aligned_drift_restore.lock
+# Ignore Lean build outputs (Batch 828 formal layer)
+formal/lean/.lake/

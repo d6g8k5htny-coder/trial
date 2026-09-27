@@ -1,0 +1,24 @@
+# Side24Formal — Layer 1 (formal specification and proof) pilot for the
+# q0 / SIDE24 program, hosted in the `trial` sandbox.
+#
+# Toolchain and Mathlib revision are pinned to the SAME values the research
+# repository's recovered Lean bundle already compiled against
+# (research/formal/candidates/LEAN_RECOVERY_VERIFICATION_20260920_v1.md on
+# d6g8k5htny-coder/main hardening: Lean v4.19.0, Mathlib
+# c44e0c8ee63ca166450922a373c7409c5d26b00b) so both trees share one trusted
+# kernel + library surface.
+#
+# Scientific effect: NONE. A green `lake build` is a kernel check of the
+# statements in this directory; it is not claim promotion, lemma closure, or
+# prize status on the research program.
+
+name = "side24formal"
+defaultTargets = ["Side24Formal"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "c44e0c8ee63ca166450922a373c7409c5d26b00b"
+
+[[lean_lib]]
+name = "Side24Formal"
