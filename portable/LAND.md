@@ -102,9 +102,9 @@ tip BASE `2f7a5a9` LIVE `b4cc917` tip_match=false tip_moved keep-prior; tip_or_e
 
 tip BASE `2f7a5a9` LIVE `ca00b95` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 771→772; Soft Intent n=1; inv parent-pin; VERIFY 772; durable 8/8; lemma_closed=false; goal OPEN.
 
-## STATUS (Batch 796 research-audit)
+## STATUS (Batch 797 research-audit)
 
-tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 795/794/793/792/791 (catch-up at tip VERIFY796 after tip/eng796 Soft Intent 795→796 (raced while research795 finishing)); STATUS_GUARD pass; stamps@796; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 796/795/794/793/792 (at tip VERIFY797 after tip/eng797 Soft Intent 796→797); STATUS_GUARD pass; stamps@797; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
 
 
 ## STATUS (Batch 770 research-audit)
