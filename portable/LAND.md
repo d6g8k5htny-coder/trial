@@ -1,6 +1,54 @@
+## STATUS (Batch 847 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `d1e944a` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 846→847; Soft Intent n=1; inv parent-pin; VERIFY 847; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 846 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `b3551103` (was `248f34c1` after tip race @1f967f72 broke pin); Soft Intent n=1; VERIFY 846; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 846 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `8fd99a7` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 845→846; Soft Intent n=1; inv parent-pin; VERIFY 846; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 846 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 845/844/843/842/841 (catch-up at tip VERIFY846 after tip/eng Soft Intent 845→846; covers research845 tip-race); STATUS_GUARD pass; stamps@845,846; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 845 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `a5891e61` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 844→845; Soft Intent n=1; inv parent-pin; VERIFY 845; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 845 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 844/843/842/841/840 (catch-up at tip VERIFY846 after tip/eng Soft Intent→846; covers research845 tip-race); STATUS_GUARD pass; stamps@845; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 844 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `667e5a1` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 843→844; Soft Intent n=1; inv parent-pin; VERIFY 844; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 844 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 843/842/841/840/839 (at tip VERIFY844 after tip/eng844 Soft Intent 843→844); STATUS_GUARD pass; stamps@844; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 843 tip-eng-parent-pin-repair-r2)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair r2: inv tip_sha→precommit `4444b0f4` (was `6f55802a` after merges broke pin); Soft Intent n=1; VERIFY 843; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 843 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `7e22df04` (was `321ea983` after merges broke pin); Soft Intent n=1; VERIFY 843; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 843 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `321ea98` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 842→843; Soft Intent n=1; inv parent-pin; VERIFY 843; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 843 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 842/841/840/839/838 (catch-up at tip VERIFY843 after tip/eng843 Soft Intent 842→843; covers research842 tip-race); STATUS_GUARD pass; stamps@842,843; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 842 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 841/840/839/838/837 (catch-up at tip VERIFY843 after tip/eng Soft Intent→843; covers research842 tip-race); STATUS_GUARD pass; stamps@842; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
 
 ## STATUS (Batch 842 tip-eng-idle)
 

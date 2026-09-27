@@ -1,0 +1,16 @@
+{
+ "dropbox_zip_sha256": "2ac17b308d0462e30508470c9b5e1d5f0b02cc08032d1bb934fd0e5be9711214",
+ "dropbox_zip_bytes": 198053310,
+ "files_after_recursive_extraction": 8498,
+ "archives_extracted_recursively": 65,
+ "unique_byte_objects": 2583,
+ "unique_outside_ChatGPT_dmg": 1764,
+ "held_by_exact_bytes_in_main_any_branch_or_trial": 917,
+ "held_additionally_by_digest_known_to_main_text_or_Drive_inventory": 592,
+ "not_held_anywhere": 255,
+ "main_branches_scanned": 128,
+ "main_archive_blobs_downloaded_and_expanded": 161,
+ "main_tip_used_for_text_search": "chatgpt/drive-github-hardening-20260919 @ 9458b903f57f47f34d0398531c9c977d413bad57",
+ "main_text_digests_harvested": 7523,
+ "generated_utc": "2026-09-27T20:36:42Z"
+}
