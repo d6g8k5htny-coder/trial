@@ -72,6 +72,12 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 
 Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48H_LOG.md`](docs/AUTONOMOUS_48H_LOG.md).
 
+## Agent handoff inbox — `needs_attention/`
+
+Blocked agents drop a card in [`needs_attention/cards/`](needs_attention/README.md); helpers cycle the folder. `scripts/needs_attention_scan.py` (read-only) refreshes `needs_attention/SNAPSHOT.json` + `TRIAGE.md` with failing-check / conflicting / changes-requested PRs across all owner repos plus expired `governance-` leases; `scripts/needs_attention_check.py` validates cards fail-closed (runs in `trial-ci`). Coordination only — scientific effect **NONE**.
+
+Tip-drift gate: one shared classifier, `scripts/tip_drift_class.py` (landed via PR #153). Once Path C is landed (`VERIFY.path_c_landed=true`) a live hardening tip that still descends from `BASE_TIP` is lag, not drift; `BEHIND` / `DIVERGED` / `UNKNOWN` still fail. `lemma_closed=false` / `problems=0` gates keep running on the live tip (cards NA-0001, NA-0007).
+
 ## Quick check
 
 ```bash

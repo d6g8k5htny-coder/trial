@@ -1,0 +1,33 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0008",
+  "title": "trial PRs #142 and #138 (chatgpt/* branches) still red after the tip-drift fix landed — need their author to merge main / re-run own gate",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T21:20:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 142,
+    "issue": null,
+    "branch": "chatgpt/trial-ci-deduplicate-premerge-20260926",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/pull/142",
+      "https://github.com/d6g8k5htny-coder/trial/pull/138",
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36203541349"
+    ]
+  },
+  "blocker": "#142 (Make idle_no_commit terminal before tracked-file writes; head 2026-09-27T19:11Z) fails land-workflows-dry-run, path-c-applied-bundle-dry-apply, portable-patches-on-main and sanity — all the NA-0001 class (strict live==BASE_TIP gate + frozen Intent pins) that PR #153 removed on main at 20:43Z. #138 (Final PR98 gate re-review) fails its own workflow 'PR98 final gate rereview / verify' (exit 1, run 36203541349, 2026-09-26T00:06Z) — that is the PR's own probe content, not trial-ci. The helper cycle only pushes to cursor/* branches (did so for #149 and #156); these are chatgpt/* branches owned by the ChatGPT/Codex agent.",
+  "ask": "#142: merge origin/main (>= 4a0b9c3d, which contains #153) into chatgpt/trial-ci-deduplicate-premerge-20260926 so checks re-run against tip_drift_class.py and the de-frozen Intent suite; no content change expected. #138: author to inspect the verify step of 'PR98 final gate rereview' (upload-artifact if-no-files-found: error after a non-zero probe exit) — research-adjacent re-review, so the helper cycle does not touch its content. Any agent with push to chatgpt/* may do the #142 merge; mark this card RESOLVED with the new head SHAs.",
+  "write_scope": [],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}

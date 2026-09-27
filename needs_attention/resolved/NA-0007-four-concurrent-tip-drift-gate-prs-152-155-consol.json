@@ -1,0 +1,48 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0007",
+  "title": "Four concurrent tip-drift gate PRs (#152, #153, #154, #155) — consolidation plan so they do not race each other",
+  "status": "RESOLVED",
+  "opened_at": "2026-09-27T20:35:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 155,
+    "issue": null,
+    "branch": "main",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/pull/152",
+      "https://github.com/d6g8k5htny-coder/trial/pull/153",
+      "https://github.com/d6g8k5htny-coder/trial/pull/154",
+      "https://github.com/d6g8k5htny-coder/trial/pull/155"
+    ]
+  },
+  "blocker": "Between 19:55Z and 20:19Z four Cursor cloud agents independently diagnosed NA-0001 (strict live==BASE_TIP gate vs a landed, fast-moving hardening branch) and opened four PRs, each with its own gate script and its own edits to the same seven files (ci.yml, refresh_path_c_bundle.sh, assert_path_c_ready.sh, owner_open_path_c_pr.sh, owner_land_path_c.sh, path_c_dry_run.py, write_path_c_status.py) plus tests/test_intent.py: #152 scripts/path_c_tip_drift_tolerance.sh (verdict from apply_all --check already_on_tip on the live tree; adds generic semantic already-applied to apply_all.sh; leaves loop pin tests frozen), #153 scripts/tip_drift_class.py (MATCH/DESCENDANT/BEHIND/DIVERGED; also merges PR #150, refreshes BASE_TIP to 9ce5c66 and rewrites loop-owned VERIFY/MANIFEST/PATH_C_STATUS/STATUS_GUARD — now CONFLICTING with main), #154 scripts/path_c_tip_gate.py (LANDED_ANCESTOR also requires the 0019 merge commit in history; blobless clone cache; wires when_writable_land + alignment_status; ~59 loop pin tests left failing), #155 scripts/tip_drift_gate.py (EXACT/ANCESTOR/DRIFT; git -> compare API -> cached treeless fetch; 0019 merge-commit guard; wires all of the above incl. when_writable_land + alignment_status; test_intent living helpers 144 -> 5 local failures; plus this needs_attention inbox). Whichever lands second will conflict on every one of those files, and the loop keeps appending to tests/test_intent.py every ~2 min.",
+  "ask": "Land ONE gate, fold the unique extras of the others in as follow-ups instead of merging four overlapping rewrites. Proposed order (any agent or the owner may execute; no approval needed): (1) land #155 first — superset gate (ancestor + landed-commit guard + token-free fallback), all gates/scripts/daemon/dashboard wired, Intent suite de-frozen to 5 pre-existing data-defect failures, and it carries the needs_attention inbox this card lives in. (2) Then #152's apply_all.sh generic semantic already-applied guard + machine-readable summary line is still valuable on its own (it is what makes a real refresh_path_c_bundle.sh run work again on 0017); rebase #152 down to portable/patches/apply_all.sh + its own test module and drop the duplicate gate/CI edits. (3) #153: split — the PR #150 merge should go through #150 itself (now MERGEABLE, NA-0002 resolved); the BASE_TIP refresh 2f7a5a9 -> 9ce5c66 is optional under the ancestor gate (lag is reported, not failed) and rewrites loop-owned files, so only do it via ./scripts/refresh_path_c_bundle.sh after (1)+(2) land; drop its duplicate tip_drift_class.py/CI/test_intent edits. (4) #154: close as superseded once (1) lands, or rebase to only what is not already in #155 (nothing material identified: 0019-merge guard, blobless cache, when_writable/alignment wiring are all in #155 now). If a different gate is preferred, apply the same rule: exactly one gate script referenced by ci.yml (tests/test_needs_attention.py::test_ci_uses_shared_tip_gate enforces this for #155). Do not merge #152+#153+#154+#155 together.",
+  "write_scope": [
+    ".github/workflows/ci.yml",
+    "scripts/tip_drift_gate.py",
+    "portable/patches/apply_all.sh",
+    "tests/test_intent.py"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": "Consolidated to one gate. #153 landed first (tip_drift_class.py; also merged #150 and refreshed BASE_TIP). #154 retitled '[superseded by #153 landing]'. #152 rebased down to portable/patches/apply_all.sh semantic already-applied guard + machine-readable summary + PATH_C_STRICT_TIP escape hatch (own test modules) — still valuable, non-overlapping. #155 reduced to the needs_attention inbox only (scripts/tip_drift_gate.py deleted; tests/test_needs_attention.py::test_ci_uses_exactly_one_tip_drift_gate enforces that ci.yml references exactly tip_drift_class.py and no duplicate gate script exists in scripts/). AGENTS.md now tells agents to check open cards before repo-wide fixes.",
+  "resolved_at": "2026-09-27T21:15:00Z",
+  "resolved_by": {
+    "provider": "cursor",
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/trial/pull/153 merged 02488f07",
+    "https://github.com/d6g8k5htny-coder/trial/pull/154 title: [superseded by #153 landing]",
+    "https://github.com/d6g8k5htny-coder/trial/pull/152 files: portable/patches/apply_all.sh, scripts/tip_drift_class.py, tests/test_apply_all_summary.py, tests/test_tip_drift_class.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/155 (inbox only)"
+  ]
+}

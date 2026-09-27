@@ -1,0 +1,32 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0004",
+  "title": "governance- work_leases/CURRENT.json is stale: 10 ACTIVE + 30 OFFERED leases past expires_at",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T19:20:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/governance-",
+  "refs": {
+    "pr": 5,
+    "issue": null,
+    "branch": "cursor/lease-watch-continuation-ab08",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/governance-/blob/main/work_leases/CURRENT.json",
+      "https://github.com/d6g8k5htny-coder/governance-/pull/5"
+    ]
+  },
+  "blocker": "Ledger updated_at=2026-09-26T15:58:30Z. All 10 ACTIVE leases (e.g. main-122-sard-g-execution-repair, math-49-collision-package-integrate, trial-path-c-batch387-resume-2f7a5a9) and 30 OFFERED leases have expires_at earlier than now (2026-09-27T19Z); rule 3 of work_leases/README.md says stale heartbeats must not remain ACTIVE. Merged sources (e.g. main #124 merged into hardening at d8580cd/e7652a1) still hold ACTIVE leases (rule 5).",
+  "ask": "Whoever owns governance- lease-watch (PR #5 continuation) should release/supersede the expired leases with pr_state evidence; this sandbox has no write access to governance- so the card only records the evidence.",
+  "write_scope": [],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
