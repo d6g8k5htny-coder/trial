@@ -187,8 +187,12 @@ def test_intent_descends_helper_uses_git_fallback():
     text = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     i = text.index("def _descends_from_base_tip(")
     body = text[i: text.index("\ndef _living_tip(", i)]
-    assert "_git_compare_status(base, sha)" in body
+    # main fb1f6a54: the helper routes through the shared classifier transport, which
+    # (this PR) now includes the git-ancestry step, so no gh-only path remains.
+    assert "_tdc._compare_status(base, sha)" in body
     assert 'in ("ahead", "identical", "behind")' in body
+    src = (ROOT / "scripts" / "tip_drift_class.py").read_text(encoding="utf-8")
+    assert "status = _git_compare_status(base, live, repo)" in src
 
 
 def test_path_c_landed_reads_verify(tmp_path):
