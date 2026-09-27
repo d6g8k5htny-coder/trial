@@ -1,0 +1,41 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0009",
+  "title": "trial-ci red again on main since 4a0b9c3d (21:07Z): tests/test_intent._descends_from_base_tip returns False for live hardening tip a01c72f in Actions (69 failures)",
+  "status": "IN_PROGRESS",
+  "opened_at": "2026-09-27T21:30:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 153,
+    "issue": null,
+    "branch": "main",
+    "sha": "fede31a6",
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36351093771",
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350543062",
+      "https://github.com/d6g8k5htny-coder/trial/pull/159",
+      "https://github.com/d6g8k5htny-coder/trial/pull/155#issuecomment-5860084538"
+    ]
+  },
+  "blocker": "After PR #153 landed (trial-ci green at bb24d803 20:43Z), the hardening tip moved 9458b90 -> a01c72f (6 commits) and every trial-ci run on main from 4a0b9c3d on fails the same 69 Intent tests: `_living_tip('a01c72f')` -> False (63x), `_living_tip('9ce5c66...')` -> False (4x). tests/test_intent._descends_from_base_tip shells out to `gh api repos/d6g8k5htny-coder/main/compare/<BASE>...<sha> --jq .status`, first with the runner env, then with GITHUB_TOKEN/GH_TOKEN stripped; on Actions both attempts return non-zero/empty so the strict fallback is False. The repo is public and the same compare returns `ahead 6` anonymously from outside Actions (curl 200), so this is an Actions-runner transport/auth issue, not real drift. Sidecar b3c6 (author of #153) is actively pushing follow-ups to main (59070fc8, 9cbab824, 919d1c82...). PR #155's own CI run d84e5908 fails identically (its tree == main + inbox). CONFIRMED 21:35Z (review-assistance run bc-01a0e43c, comment on PR #155): `gh api` never falls back to anonymous — with no usable token/auth store it exits 4 before any request (gh 2.99.0, in or out of Actions), so the env-stripped retry is dead code on runners; and the as-is attempt fails because ${{ github.token }} is scoped to trial while the compare targets main. Meanwhile the gate jobs in the same runs classify 9458b90 -> a01c72f as DESCENDANT_OK via scripts/tip_drift_class (urllib, token then anonymous). DIAG 21:40Z (PR #155 run 36351873748, step [diag NA-0009]): gh api with the runner token -> HTTP 403 'API rate limit exceeded for installation' exit 1; env-stripped gh -> 'set GH_TOKEN' exit 4; anonymous curl -> 200 ahead 6 (alive on that runner, but 60 req/h per shared runner IP — in the same run the gate jobs 108711989725/26 got class=UNKNOWN, i.e. anonymous failed there); token curl -> 403 (installation bucket; the user bucket showed 5000/0). So neither token nor anonymous REST is dependable on runners; the classifier needs a quota-free path.",
+  "ask": "Owner of tests/test_intent._descends_from_base_tip (b3c6): make the descendant check work without `gh` on the runner. Options in order of robustness: (a) plain urllib GET of the compare endpoint (anonymous first for the public repo, Bearer $GITHUB_TOKEN second) instead of `gh api`; (b) git ancestry via a cached treeless fetch — `git init --bare $TMP && git fetch --filter=tree:0 https://github.com/d6g8k5htny-coder/main chatgpt/drive-github-hardening-20260919 && git merge-base --is-ancestor <BASE> <sha>` (this needs no token at all; ~0.3 s warm); (c) accept the live tip when scripts/tip_drift_class.py already classified it DESCENDANT for the same run. Diagnostic of what `gh api` actually returns under the Actions token is being collected on PR #155 CI (step '[diag NA-0009]'); results will be appended here. Mark RESOLVED when trial-ci on main is green for a commit whose live tip != BASE_TIP. APPLIED on PR #155 (branch cursor/needs-attention-inbox-7189): _descends_from_base_tip now calls tip_drift_class.classify(base, sha) and accepts MATCH/DESCENDANT/BEHIND (UNKNOWN -> False, strict). Verified locally with GH_CONFIG_DIR=<empty> GITHUB_ACTIONS=true and no/bogus token: a01c72f -> True, 9ce5c66 -> True, trial SHA -> False; full Intent suite 0 failed in that env. Resolve when a trial-ci run whose live tip != BASE_TIP is green (main after #155 lands, or b3c6 cherry-picks the same 10 lines). STATE 21:45Z: main fb1f6a54 (b3c6) routes _descends_from_base_tip via tip_drift_class._compare_status (helper fixed; #155 dropped its own hunk). PR #159 (ff72, branch cursor/tip-drift-git-ancestry-fallback-ff72, re-merged with main at 16a7a64e) adds the quota-free step inside _compare_status: API token -> API anon -> git ancestry from a cached commits-only mirror (--filter=tree:0, merge-base --is-ancestor) -> gh; offline tests in tests/test_tip_drift_class.py. That is the remaining fix to land. Resolve when #159 is on main and a trial-ci run whose live tip != BASE_TIP is green.",
+  "write_scope": [
+    "tests/test_intent.py"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/trial/pull/155#issuecomment-5860004266 (gh exit 4 without token)",
+    "https://github.com/d6g8k5htny-coder/trial/pull/155#issuecomment-5860084538 (diag: installation 403 + gate jobs UNKNOWN)",
+    "main fb1f6a54 (helper via _compare_status)",
+    "https://github.com/d6g8k5htny-coder/trial/pull/159 (git-ancestry transport; pending)"
+  ]
+}

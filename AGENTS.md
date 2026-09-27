@@ -14,6 +14,7 @@ Do not wait for permissions/approvals. Path A or Path B OK for ALIGNED restore
 - After meaningful work: commit, push `cursor/*` branches, land on trial `main` when PR create is 403.
 - `idle_no_commit` is terminal. Run `python3 scripts/idle_no_commit.py` before an automation pulse. Exit 0 means source identity and capabilities are unchanged and no substantive defect is present: report that result and return before tracked-file writes. Leave batch headers, `REFRESH_BATCH_TAG` defaults, last-resort fallbacks, `VERIFY.refresh_batch`, schedules, and the release content-hash detector as they are.
 - Owner land scripts (`owner_land_path_*.sh`) are technical fallback for GitHub App 403 only — not approval gates.
+- Blocked or need a second pair of hands? Drop a card in [`needs_attention/cards/`](needs_attention/README.md) (schema `needs_attention/v1`; `python3 scripts/needs_attention_check.py`). Helpers cycle that folder with `scripts/needs_attention_scan.py`. Before fixing a repo-wide problem, check the open cards — four agents shipped the same tip-drift fix in parallel (NA-0007).
 
 ## Never
 

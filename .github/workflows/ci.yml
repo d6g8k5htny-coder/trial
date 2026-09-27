@@ -10,11 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Batch 832/833 parent-pin tests resolve `git rev-parse HEAD^`; the
+          # default depth-1 checkout has no parent and reds them on every push.
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install pytest
         run: python -m pip install pytest
+      - name: needs_attention cards (fail-closed schema; coordination only)
+        run: python scripts/needs_attention_check.py
       - name: Intent suite
         env:
           # Batch 74: Intent suite runs live probes (write vectors / watch / Path C).
