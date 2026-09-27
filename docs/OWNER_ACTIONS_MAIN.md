@@ -1,3 +1,7 @@
+## STATUS (Batch 858 tip-eng-parent-pin-repair)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9`. tip_or_eng: parent-pin repair after tip race past Soft Intent858 left inv tip_sha stale @ `97680686`; re-pin to precommit `8351cf46`. Soft Intent single-header; VERIFY858. Evidence: `portable/BATCH858_INV_TIP_PIN_REPAIR.json`. `lemma_closed=false`. Goal OPEN.
+
 ## STATUS (Batch 858 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `97680686` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 857→858; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH858_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
