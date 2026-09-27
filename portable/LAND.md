@@ -1,3 +1,8 @@
+## STATUS (Batch 820 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `d96bc55` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; unfreeze 819→820; Soft Intent n=1; inv parent-pin; VERIFY 820; durable 8/8; lemma_closed=false; goal OPEN.
+
+
 ## STATUS (Batch 819 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `0a566dc` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 818→819; Soft Intent n=1; inv parent-pin; VERIFY 819; durable 8/8; lemma_closed=false; goal OPEN.
