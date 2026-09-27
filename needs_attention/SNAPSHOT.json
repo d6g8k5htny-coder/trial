@@ -1,11 +1,11 @@
 {
-  "api_calls": 77,
+  "api_calls": 80,
   "authenticated": true,
   "counts": {
-    "CARD_OPEN": 4,
+    "CARD_OPEN": 5,
     "LEASE_EXPIRED": 36,
-    "PR_CHECKS_FAILING": 5,
-    "PR_CONFLICTING": 1
+    "PR_CHECKS_FAILING": 4,
+    "PR_CONFLICTING": 2
   },
   "findings": [
     {
@@ -79,17 +79,17 @@
         {
           "conclusion": "failure",
           "name": "sanity",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36349927928/job/108706500105"
+          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350433402/job/108707947352"
         }
       ],
       "draft": true,
-      "head_ref": "cursor/dropbox-intake-digest-309a",
+      "head_ref": "cursor/tip-refresh-un-red-ci-ff72",
       "kind": "PR_CHECKS_FAILING",
-      "pr": 149,
+      "pr": 152,
       "repo": "d6g8k5htny-coder/trial",
       "severity": "high",
-      "title": "Dropbox intake digest \u2014 Dylan shared math corpus pointers",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/149"
+      "title": "apply_all: generic semantic already-applied check + machine-readable stack summary; PATH_C_STRICT_TIP escape hatch",
+      "url": "https://github.com/d6g8k5htny-coder/trial/pull/152"
     },
     {
       "author": "d6g8k5htny-coder",
@@ -111,21 +111,17 @@
     },
     {
       "author": "d6g8k5htny-coder",
-      "detail": [
-        {
-          "conclusion": "failure",
-          "name": "sanity",
-          "url": "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350206773/job/108707303899"
-        }
-      ],
+      "detail": {
+        "mergeable_state": "dirty"
+      },
       "draft": true,
-      "head_ref": "cursor/review-packet-main-172-174-b8d6",
-      "kind": "PR_CHECKS_FAILING",
-      "pr": 156,
+      "head_ref": "cursor/ci-landed-ancestor-tip-gate-b8d6",
+      "kind": "PR_CONFLICTING",
+      "pr": 154,
       "repo": "d6g8k5htny-coder/trial",
       "severity": "high",
-      "title": "Review packet: main PR #172 / #174 findings + Dropbox replay diff vs #150",
-      "url": "https://github.com/d6g8k5htny-coder/trial/pull/156"
+      "title": "[superseded by #153 landing] CI: landed-ancestor Path C tip gate (stop requiring live == BASE_TIP)",
+      "url": "https://github.com/d6g8k5htny-coder/trial/pull/154"
     },
     {
       "expires_at": "2026-09-26T17:00:00Z",
@@ -619,7 +615,7 @@
       "path": "needs_attention/cards/NA-0003-trial-pr-149-dropbox-intake-digest-shows-4-faili.json",
       "repo": "d6g8k5htny-coder/trial",
       "severity": "info",
-      "status": "OPEN",
+      "status": "IN_PROGRESS",
       "title": "trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content"
     },
     {
@@ -630,12 +626,21 @@
       "severity": "info",
       "status": "OPEN",
       "title": "batch-loop tip/eng workers write trial's own main SHA into live_tip / inventory sandbox.tip fields"
+    },
+    {
+      "card": "NA-0008",
+      "kind": "CARD_OPEN",
+      "path": "needs_attention/cards/NA-0008-trial-prs-142-and-138-chatgpt-branches-still-red-af.json",
+      "repo": "d6g8k5htny-coder/trial",
+      "severity": "info",
+      "status": "OPEN",
+      "title": "trial PRs #142 and #138 (chatgpt/* branches) still red after the tip-drift fix landed \u2014 need their author to merge main / re-run own gate"
     }
   ],
-  "generated_at": "2026-09-27T21:12:08Z",
+  "generated_at": "2026-09-27T21:14:40Z",
   "lease_ledger_updated_at": "2026-09-26T15:58:30Z",
   "lemma_closed_flipped": false,
-  "open_prs": 22,
+  "open_prs": 23,
   "repos_requested": [
     "d6g8k5htny-coder/main",
     "d6g8k5htny-coder/Math-",

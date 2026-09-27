@@ -1,27 +1,28 @@
 # needs_attention — TRIAGE (auto-generated; scientific effect NONE)
 
-Generated `2026-09-27T21:12:08Z` · repos scanned 10 · open PRs 22 · API calls 77
+Generated `2026-09-27T21:14:40Z` · repos scanned 10 · open PRs 23 · API calls 80
 
 Findings are coordination signals only. Nothing here promotes, closes, or discharges research status.
 
-## CARD_OPEN (4)
+## CARD_OPEN (5)
 
 - `NA-0006` [OPEN] Universal-Law-Workspace PR #3 (Claude public workspace proposal) is CONFLICTING with main — `needs_attention/cards/NA-0006-universal-law-workspace-pr-3-claude-public-works.json`
 - `NA-0004` [OPEN] governance- work_leases/CURRENT.json is stale: 10 ACTIVE + 30 OFFERED leases past expires_at — `needs_attention/cards/NA-0004-governance-work-leases-current-json-is-stale-10.json`
-- `NA-0003` [OPEN] trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content — `needs_attention/cards/NA-0003-trial-pr-149-dropbox-intake-digest-shows-4-faili.json`
+- `NA-0003` [IN_PROGRESS] trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content — `needs_attention/cards/NA-0003-trial-pr-149-dropbox-intake-digest-shows-4-faili.json`
 - `NA-0005` [OPEN] batch-loop tip/eng workers write trial's own main SHA into live_tip / inventory sandbox.tip fields — `needs_attention/cards/NA-0005-batch-loop-tip-eng-workers-write-trial-s-own-mai.json`
+- `NA-0008` [OPEN] trial PRs #142 and #138 (chatgpt/* branches) still red after the tip-drift fix landed — need their author to merge main / re-run own gate — `needs_attention/cards/NA-0008-trial-prs-142-and-138-chatgpt-branches-still-red-af.json`
 
-## PR_CHECKS_FAILING (5)
+## PR_CHECKS_FAILING (4)
 
 - [trial#138](https://github.com/d6g8k5htny-coder/trial/pull/138) Final PR98 gate re-review: A–E and precision-upgrade boundary probes (draft=True) — failing: verify
 - [trial#142](https://github.com/d6g8k5htny-coder/trial/pull/142) Make idle_no_commit terminal before tracked-file writes (draft=True) — failing: land-workflows-dry-run, path-c-applied-bundle-dry-apply, portable-patches-on-main, sanity
-- [trial#149](https://github.com/d6g8k5htny-coder/trial/pull/149) Dropbox intake digest — Dylan shared math corpus pointers (draft=True) — failing: sanity
+- [trial#152](https://github.com/d6g8k5htny-coder/trial/pull/152) apply_all: generic semantic already-applied check + machine-readable stack summary; PATH_C_STRICT_TIP escape hatch (draft=True) — failing: sanity
 - [trial#154](https://github.com/d6g8k5htny-coder/trial/pull/154) [superseded by #153 landing] CI: landed-ancestor Path C tip gate (stop requiring live == BASE_TIP) (draft=True) — failing: sanity
-- [trial#156](https://github.com/d6g8k5htny-coder/trial/pull/156) Review packet: main PR #172 / #174 findings + Dropbox replay diff vs #150 (draft=True) — failing: sanity
 
-## PR_CONFLICTING (1)
+## PR_CONFLICTING (2)
 
 - [Universal-Law-Workspace#3](https://github.com/d6g8k5htny-coder/Universal-Law-Workspace/pull/3) Proposal: public workspace map — seven submodule-pinned packages, four ledgers, 26 negative controls (draft=True)
+- [trial#154](https://github.com/d6g8k5htny-coder/trial/pull/154) [superseded by #153 landing] CI: landed-ancestor Path C tip gate (stop requiring live == BASE_TIP) (draft=True)
 
 ## PR_CHANGES_REQUESTED (0)
 
