@@ -12,9 +12,10 @@ Gate semantics (fail-closed):
 
 * ``EXACT``     — live tip == BASE_TIP → OK (unchanged behaviour).
 * ``ANCESTOR``  — Path C is landed **and** BASE_TIP is an ancestor of the live
-  tip → OK. The landed Path C commits are still in history (no rewrite) and the
-  downstream ``math_status_check`` / ``lemma_closed=false`` gates still run on
-  the live tip. Lag is reported as a notice, not an error.
+  tip **and** the recorded landed commit (VERIFY ``path_c_0019_merge_commit_sha``)
+  is too → OK. The landed Path C commits are still in history (no rewrite) and
+  the downstream ``math_status_check`` / ``lemma_closed=false`` gates still run
+  on the live tip. Lag is reported as a notice, not an error.
 * ``DRIFT``     — anything else (not landed, BASE_TIP not in live history,
   ancestry unresolvable) → exit 1 with the documented fix path.
 
@@ -63,14 +64,35 @@ def read_base_tip(path: Path) -> str | None:
     return parse_sha(first[0]) if first else None
 
 
-def read_landed(verify_path: Path | None) -> bool:
+def _read_verify(verify_path: Path | None) -> dict:
     if verify_path is None or not verify_path.is_file():
-        return False
+        return {}
     try:
         with verify_path.open(encoding="utf-8") as fh:
-            return json.load(fh).get("path_c_landed") is True
+            data = json.load(fh)
     except (OSError, json.JSONDecodeError):
-        return False
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def read_landed(verify_path: Path | None) -> bool:
+    return _read_verify(verify_path).get("path_c_landed") is True
+
+
+def read_landed_sha(verify_path: Path | None) -> str | None:
+    """SHA that proves the stack landed (0019 merge commit, else the Path C merge commit)."""
+    data = _read_verify(verify_path)
+    for key in ("path_c_0019_merge_commit_sha", "merge_commit_sha"):
+        sha = parse_sha(str(data.get(key) or ""))
+        if sha and len(sha) == 40:
+            return sha
+    return None
+
+
+def landed_args(verify_path: Path | None) -> dict:
+    """``landed`` / ``landed_sha`` kwargs for :func:`evaluate` from a VERIFY.json."""
+    landed = read_landed(verify_path)
+    return {"landed": landed, "landed_sha": read_landed_sha(verify_path) if landed else None}
 
 
 def sha_matches(base: str | None, live: str | None) -> bool | None:
@@ -212,8 +234,14 @@ def evaluate(
     repo_dir: Path | None = None,
     use_api: bool = True,
     use_temp_fetch: bool = True,
+    landed_sha: str | None = None,
 ) -> dict:
-    """Return gate verdict dict; ``ok`` True only for EXACT or landed ANCESTOR."""
+    """Return gate verdict dict; ``ok`` True only for EXACT or landed ANCESTOR.
+
+    ``landed_sha`` (VERIFY ``path_c_0019_merge_commit_sha``) when given must
+    also be in the live history — a rewrite that keeps BASE_TIP ancestry but
+    drops the landed stack still fails closed.
+    """
     report: dict = {
         "live_sha": live,
         "base_tip_sha": base,
@@ -235,32 +263,31 @@ def evaluate(
         report.update(mode="EXACT", ok=True, base_is_ancestor_of_live=True, ahead_by=0)
         return report
 
-    anc: bool | None = None
-    if repo_dir is not None:
-        try:
-            anc = ancestor_via_git(base, live, repo_dir)
-        except (OSError, subprocess.SubprocessError):
-            anc = None
-        if anc is not None:
-            report["ancestry_via"] = "git"
-    if anc is None and use_api:
-        anc, ahead = ancestor_via_api(base, live)
-        if anc is not None:
-            report["ancestry_via"] = "github_compare_api"
-            report["ahead_by"] = ahead
-    if anc is None and use_temp_fetch:
-        anc, ahead = ancestor_via_temp_fetch(base, live)
-        if anc is not None:
-            report["ancestry_via"] = "git_temp_fetch"
-            report["ahead_by"] = ahead
+    anc, via, ahead = _resolve_ancestry(base, live, repo_dir=repo_dir, use_api=use_api, use_temp_fetch=use_temp_fetch)
     report["base_is_ancestor_of_live"] = anc
-    if anc is True and report["ahead_by"] is None and repo_dir is not None:
-        cnt = _run(["git", "rev-list", "--count", f"{base}..{live}"], cwd=repo_dir)
-        if cnt.returncode == 0 and cnt.stdout.strip().isdigit():
-            report["ahead_by"] = int(cnt.stdout.strip())
+    report["ancestry_via"] = via
+    report["ahead_by"] = ahead
 
-    if anc is True and landed:
+    landed_anc: bool | None = None
+    if anc is True and landed and landed_sha:
+        report["landed_sha"] = landed_sha
+        if sha_matches(landed_sha, live) is True:
+            landed_anc = True
+        else:
+            landed_anc, _via, _ahead = _resolve_ancestry(
+                landed_sha, live, repo_dir=repo_dir, use_api=use_api, use_temp_fetch=use_temp_fetch
+            )
+        report["landed_sha_is_ancestor_of_live"] = landed_anc
+
+    if anc is True and landed and (landed_sha is None or landed_anc is True):
         report.update(mode="ANCESTOR", ok=True)
+    elif anc is True and landed and landed_anc is False:
+        report["reason"] = (
+            f"BASE_TIP is an ancestor but the landed Path C commit {landed_sha[:7]} is not in the live "
+            "tip history (stack rewritten/reverted?)"
+        )
+    elif anc is True and landed:
+        report["reason"] = f"landed Path C commit {landed_sha[:7]} ancestry unresolvable; failing closed"
     elif anc is True and not landed:
         report["reason"] = "BASE_TIP is an ancestor but Path C is not landed; bundle must be re-cut on the live tip"
     elif anc is False:
@@ -268,6 +295,40 @@ def evaluate(
     else:
         report["reason"] = "ancestry unresolvable (no clone / API transport); failing closed"
     return report
+
+
+def _resolve_ancestry(
+    base: str,
+    live: str,
+    *,
+    repo_dir: Path | None,
+    use_api: bool,
+    use_temp_fetch: bool,
+) -> tuple[bool | None, str | None, int | None]:
+    """(is_ancestor, via, ahead_by) trying local git → compare API → cached treeless fetch."""
+    anc: bool | None = None
+    via: str | None = None
+    ahead: int | None = None
+    if repo_dir is not None:
+        try:
+            anc = ancestor_via_git(base, live, repo_dir)
+        except (OSError, subprocess.SubprocessError):
+            anc = None
+        if anc is not None:
+            via = "git"
+            if anc:
+                cnt = _run(["git", "rev-list", "--count", f"{base}..{live}"], cwd=repo_dir)
+                if cnt.returncode == 0 and cnt.stdout.strip().isdigit():
+                    ahead = int(cnt.stdout.strip())
+    if anc is None and use_api:
+        anc, ahead = ancestor_via_api(base, live)
+        if anc is not None:
+            via = "github_compare_api"
+    if anc is None and use_temp_fetch:
+        anc, ahead = ancestor_via_temp_fetch(base, live)
+        if anc is not None:
+            via = "git_temp_fetch"
+    return anc, via, ahead
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -293,7 +354,8 @@ def main(argv: list[str] | None = None) -> int:
     if not base:
         print(f"::error::tip-drift: empty BASE_TIP — fix: {FIX_PATH}")
         return 1
-    landed = read_landed(Path(args.verify) if args.verify else None)
+    verify_path = Path(args.verify) if args.verify else None
+    landed = read_landed(verify_path)
     report = evaluate(
         live=live,
         base=base,
@@ -301,6 +363,7 @@ def main(argv: list[str] | None = None) -> int:
         repo_dir=Path(args.repo_dir) if args.repo_dir else None,
         use_api=not args.no_api,
         use_temp_fetch=not args.no_temp_fetch,
+        landed_sha=read_landed_sha(verify_path) if landed else None,
     )
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))

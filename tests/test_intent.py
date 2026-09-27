@@ -68,7 +68,12 @@ def _living_tip(val) -> bool:
 
     NA-0001: once Path C landed (VERIFY.path_c_landed=true) the hardening branch
     keeps moving; any tip whose history still contains BASE_TIP is living too
-    (scripts/tip_drift_gate.py; fail-closed when unresolvable). Cached per value.
+    (scripts/tip_drift_gate.py; fail-closed when unresolvable).
+    NA-0005: the batch loop sometimes records trial's *own* main SHA in
+    ``tip_sha`` fields (e.g. STATUS_GUARD_SNAPSHOT Batch 824); a real trial
+    commit in HEAD's history is accepted as living as well so those tests check
+    "a real living commit" instead of flapping on which repo the loop wrote.
+    Cached per value.
     """
     s = str(val or "")
     if any(s == t or s.startswith(t) or t in s for t in _LIVING_TIPS):
@@ -79,14 +84,15 @@ def _living_tip(val) -> bool:
     sha = m.group(1).lower()
     if sha in _LIVING_TIP_CACHE:
         return _LIVING_TIP_CACHE[sha]
-    sys.path.insert(0, str(ROOT / "scripts"))
-    import tip_drift_gate  # noqa: E402
+    ok = _inv_trial_tip_ok(sha)
+    if not ok:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import tip_drift_gate  # noqa: E402
 
-    base = tip_drift_gate.read_base_tip(ROOT / "portable" / "patches" / "BASE_TIP.txt")
-    landed = tip_drift_gate.read_landed(ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json")
-    ok = False
-    if base and landed and len(sha) >= 7:
-        ok = bool(tip_drift_gate.evaluate(live=sha, base=base, landed=True, repo_dir=None).get("ok"))
+        base = tip_drift_gate.read_base_tip(ROOT / "portable" / "patches" / "BASE_TIP.txt")
+        landed = tip_drift_gate.landed_args(ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json")
+        if base and landed["landed"] and len(sha) >= 7:
+            ok = bool(tip_drift_gate.evaluate(live=sha, base=base, repo_dir=None, **landed).get("ok"))
     _LIVING_TIP_CACHE[sha] = ok
     return ok
 

@@ -259,6 +259,43 @@ def test_tip_gate_temp_fetch_fallback_needs_no_api(tmp_path: Path, monkeypatch) 
     assert unknown["ok"] is False and "unresolvable" in unknown["reason"]
 
 
+def test_tip_gate_requires_landed_commit_in_live_history(tmp_path: Path) -> None:
+    """BASE_TIP ancestry alone is not enough: the recorded landed commit must be in history too."""
+    repo = tmp_path / "r"
+    base, live = _two_commit_repo(repo)
+    common = dict(live=live, base=base, landed=True, repo_dir=repo, use_api=False, use_temp_fetch=False)
+
+    ok = tdg.evaluate(**common, landed_sha=base)  # landed commit == BASE_TIP → in history
+    assert ok["ok"] is True and ok["landed_sha_is_ancestor_of_live"] is True
+
+    live_is_landed = tdg.evaluate(**common, landed_sha=live)
+    assert live_is_landed["ok"] is True
+
+    gone = tdg.evaluate(**common, landed_sha="b" * 40)  # not an object in the repo → unresolvable
+    assert gone["ok"] is False and gone["mode"] == "DRIFT" and "landed Path C commit" in gone["reason"]
+
+    # a side branch commit that is NOT in live history → DRIFT
+    side = subprocess.run(
+        ["git", "commit-tree", f"{base}^{{tree}}", "-p", base, "-m", "side"],
+        cwd=repo, capture_output=True, text=True, check=True,
+    ).stdout.strip()
+    rewritten = tdg.evaluate(**common, landed_sha=side)
+    assert rewritten["ok"] is False and rewritten["landed_sha_is_ancestor_of_live"] is False
+    assert "rewritten/reverted" in rewritten["reason"]
+
+
+def test_tip_gate_landed_args_from_verify(tmp_path: Path) -> None:
+    v = tmp_path / "VERIFY.json"
+    v.write_text(json.dumps({"path_c_landed": True, "path_c_0019_merge_commit_sha": "c" * 40}), encoding="utf-8")
+    assert tdg.landed_args(v) == {"landed": True, "landed_sha": "c" * 40}
+    v.write_text(json.dumps({"path_c_landed": False, "merge_commit_sha": "d" * 40}), encoding="utf-8")
+    assert tdg.landed_args(v) == {"landed": False, "landed_sha": None}
+    assert tdg.landed_args(tmp_path / "missing.json") == {"landed": False, "landed_sha": None}
+    # the committed VERIFY records the 0019 merge commit
+    real = tdg.landed_args(ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json")
+    assert real["landed"] is True and real["landed_sha"] and len(real["landed_sha"]) == 40
+
+
 def test_ci_uses_shared_tip_gate() -> None:
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert ci.count("scripts/tip_drift_gate.py") >= 2

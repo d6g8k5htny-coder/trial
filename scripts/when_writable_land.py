@@ -808,11 +808,19 @@ def assess_path_c_readiness(
     base_sha = parse_base_tip_sha()
     live_sha = fetch_live_hardening_sha()
     matches = tip_matches_base(base_sha, live_sha)
+    # Landed Path C + BASE_TIP still in live history is lag, not drift
+    # (scripts/tip_drift_gate.py; fail-closed). Strict equality stays in
+    # ``tip_matches_base``; the decision is ``tip_current``.
+    tip_current = matches
+    if matches is False:
+        tip_current, gate = _tip_current_via_gate(base_sha, live_sha)
+        detail["tip_drift_gate"] = gate
     detail.update(
         {
             "base_tip_sha": base_sha,
             "live_hardening_sha": live_sha,
             "tip_matches_base": matches,
+            "tip_current": tip_current,
         }
     )
 
@@ -824,13 +832,33 @@ def assess_path_c_readiness(
     if matches is True and do_apply and APPLY_ALL_SH.is_file():
         apply_ok, apply_detail = _apply_all_check_cached(live_sha or base_sha or "")
         detail["apply_check"] = apply_detail
-    elif matches is False:
+    elif tip_current is True:
+        # landed ancestor: the historical apply_all --check is redundant (Batch 246 idle skip)
+        detail["apply_check"] = {"skipped": True, "reason": "landed_ancestor"}
+    elif tip_current is False:
         apply_ok = None  # tip drift dominates; skip apply
         detail["apply_check"] = {"skipped": True, "reason": "tip_drift"}
     else:
         detail["apply_check"] = {"skipped": True, "reason": "tip_unknown_or_disabled"}
 
-    return matches, apply_ok, detail
+    return tip_current, apply_ok, detail
+
+
+def _tip_current_via_gate(base_sha: str | None, live_sha: str | None) -> tuple[bool | None, dict]:
+    """(tip_current, gate_report) from scripts/tip_drift_gate.py; unresolvable → False (fail closed)."""
+    if not base_sha or not live_sha:
+        return None, {"skipped": True, "reason": "missing_sha"}
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import tip_drift_gate  # noqa: WPS433
+
+        rep = tip_drift_gate.evaluate(
+            live=live_sha, base=base_sha, repo_dir=None, **tip_drift_gate.landed_args(VERIFY_FILE)
+        )
+    except Exception as exc:  # noqa: BLE001 - soft-fail to strict semantics
+        return False, {"error": str(exc)[:200]}
+    keys = ("mode", "ok", "base_is_ancestor_of_live", "ahead_by", "ancestry_via", "reason", "path_c_landed")
+    return bool(rep.get("ok")), {k: rep.get(k) for k in keys if k in rep}
 
 
 def _apply_all_check_cached(tip_sha: str) -> tuple[bool | None, dict]:

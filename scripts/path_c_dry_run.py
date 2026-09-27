@@ -343,7 +343,7 @@ def main() -> int:
         report["tip_current"] = report["tip_matches_base"]
         if not report["tip_matches_base"] and base_sha and path_c_landed:
             gate = tip_drift_gate.evaluate(
-                live=hard_sha, base=base_sha, landed=True, repo_dir=clone_dir
+                live=hard_sha, base=base_sha, repo_dir=clone_dir, **tip_drift_gate.landed_args(verify_path)
             )
             report["base_is_ancestor_of_live"] = gate.get("base_is_ancestor_of_live")
             report["tip_lag_commits"] = gate.get("ahead_by")

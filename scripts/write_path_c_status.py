@@ -374,7 +374,7 @@ def build_status(*, skip_write_probe: bool = False, out: Path | None = None) -> 
     tip_lag: int | None = 0 if tip_match else None
     if tip_match is False and land.get("path_c_landed") is True:
         gate = tip_drift_gate.evaluate(
-            live=live_sha, base=base_sha, landed=True, repo_dir=None
+            live=live_sha, base=base_sha, repo_dir=None, **tip_drift_gate.landed_args(VERIFY_FILE)
         )
         base_is_ancestor = gate.get("base_is_ancestor_of_live")
         tip_lag = gate.get("ahead_by")
