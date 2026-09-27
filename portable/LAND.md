@@ -1,3 +1,7 @@
+## STATUS (Batch 846 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `b3551103` (was `248f34c1` after tip race @1f967f72 broke pin); Soft Intent n=1; VERIFY 846; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 846 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `8fd99a7` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 845→846; Soft Intent n=1; inv parent-pin; VERIFY 846; durable 8/8; lemma_closed=false; goal OPEN.
