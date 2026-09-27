@@ -76,11 +76,15 @@ def _base_tip_sha() -> str:
     return m.group(1).lower() if m else ""
 
 def _descends_from_base_tip(sha: str) -> bool:
-    """True if `sha` is BASE_TIP or a descendant of it on d6g8k5htny-coder/main.
+    """True if `sha` is on the hardening line relative to BASE_TIP.
 
     Sidecar b3c6: hardening merges land several times per hour. Path C is
     landed (patches already on tip), so any descendant of BASE_TIP is a living
-    Path C tip; only diverged / behind tips are drift that needs a refresh.
+    Path C tip. Ancestors are accepted too: pinned artifacts such as
+    STATUS_GUARD_SNAPSHOT.baseline_tip_sha are *prior* hardening tips by
+    construction and BASE_TIP may legitimately move past them. Only diverged
+    SHAs (e.g. default-main history) or unknown SHAs are rejected. Gate policy
+    (BEHIND still fails) lives in scripts/tip_drift_class.py, not here.
     Uses `gh api compare` (cached per SHA); network failure → False (strict).
     """
     import json
@@ -103,7 +107,7 @@ def _descends_from_base_tip(sha: str) -> bool:
             ["gh", "api", f"repos/d6g8k5htny-coder/main/compare/{key}", "--jq", ".status"],
             capture_output=True, text=True, timeout=30, check=False,
         )
-        ok = p.returncode == 0 and p.stdout.strip() in ("ahead", "identical")
+        ok = p.returncode == 0 and p.stdout.strip() in ("ahead", "identical", "behind")
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError):
         ok = False
     _DESCENDANT_CACHE[key] = ok
