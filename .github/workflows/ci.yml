@@ -154,7 +154,7 @@ jobs:
           git clone --depth 1 --branch chatgpt/drive-github-hardening-20260919 \
             https://github.com/d6g8k5htny-coder/main.git main-work
           echo "TIP=$(git -C main-work rev-parse HEAD)"
-      - name: Tip gate (BASE_TIP == live, or landed ancestor)
+      - name: Tip-drift gate (BASE_TIP == live, or landed ancestor)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
