@@ -195,8 +195,15 @@ def path_c_landed(verify_file: Path = VERIFY_FILE) -> bool:
         return False
 
 
+def strict_tip() -> bool:
+    """PATH_C_STRICT_TIP=1 restores the pre-b3c6 exact-equality gate (operator escape hatch)."""
+    return os.environ.get("PATH_C_STRICT_TIP") == "1"
+
+
 def acceptable(cls: str, landed: bool) -> bool:
-    """MATCH always; DESCENDANT only when Path C is landed on tip."""
+    """MATCH always; DESCENDANT only when Path C is landed on tip (and not strict)."""
+    if strict_tip():
+        return cls == "MATCH"
     return cls == "MATCH" or (cls == "DESCENDANT" and landed)
 
 
