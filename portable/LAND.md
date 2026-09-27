@@ -6,6 +6,14 @@ tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_s
 
 tip BASE `2f7a5a9` LIVE `321ea98` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 842→843; Soft Intent n=1; inv parent-pin; VERIFY 843; durable 8/8; lemma_closed=false; goal OPEN.
 
+## STATUS (Batch 843 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 842/841/840/839/838 (catch-up at tip VERIFY843 after tip/eng843 Soft Intent 842→843; covers research842 tip-race); STATUS_GUARD pass; stamps@842,843; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 842 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 841/840/839/838/837 (catch-up at tip VERIFY843 after tip/eng Soft Intent→843; covers research842 tip-race); STATUS_GUARD pass; stamps@842; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 842 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `894cfd9` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 841→842; Soft Intent n=1; inv parent-pin; VERIFY 842; durable 8/8; lemma_closed=false; goal OPEN.
