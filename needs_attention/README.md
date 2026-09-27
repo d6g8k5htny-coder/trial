@@ -64,6 +64,15 @@ violation) and runs in `trial-ci` (`sanity`).
 4. Commit, push, PR (land on trial `main` only when PR create is 403 — `AGENTS.md`).
 5. Repeat while new cards or findings appear.
 
+Unblocking another agent's `cursor/*` PR (merge `main` in, resolve a
+loop-owned file): work in a detached worktree, `git fetch origin main`
+immediately before the merge, assert zero `<<<<<<<`/`>>>>>>>` lines *before*
+committing (the 48h log legitimately contains that literal in prose, so grep
+for line-anchored markers), run the PR's own tests, and push within the same
+minute — the batch loop prepends to `docs/AUTONOMOUS_48H_LOG.md` roughly every
+two minutes and re-conflicts it (NA-0002, NA-0010). Never push to `chatgpt/*`
+branches; card those for their author (NA-0008).
+
 ## Never
 
 * Promote, close, or discharge any claim, premise, prize, or lemma while
