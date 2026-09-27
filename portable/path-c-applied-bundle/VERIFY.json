@@ -1,6 +1,6 @@
 {
   "batch": "241",
-  "refresh_batch": "827",
+  "refresh_batch": "831",
   "generated_at_utc": "2026-09-27T20:26:56Z",
   "base_tip_sha": "9458b903f57f47f34d0398531c9c977d413bad57",
   "applied_commit_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
@@ -35,7 +35,7 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 827: refresh_path_c_bundle.sh @ 9458b90; kept prior .patch+.bundle (already-on-tip); lemma_closed=false; problems=0",
+  "note": "Batch 827: refresh_path_c_bundle.sh @ 9458b90; kept prior .patch+.bundle (already-on-tip); lemma_closed=false; problems=0; refresh_batch\u2192831 (stamp carried forward at merge; bundle unchanged)",
   "force": false,
   "local_allow_empty_sha": "5961a10c8300629e4464d498493dfe1bb70b80a9",
   "path_c_landed": true,
