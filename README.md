@@ -54,6 +54,7 @@ This sandbox cannot push to `d6g8k5htny-coder/main`. Ready-to-apply artifacts:
 - [`portable/CONFLICTING_PR_NOTES.md`](portable/CONFLICTING_PR_NOTES.md) — rebase/close guidance for dirty drafts #3/#12
 - [`portable/patches/`](portable/patches/) — engineering patches 0001–0004 + 0008–0017 + [`COMPATIBILITY.md`](portable/patches/COMPATIBILITY.md) matrix (BASE_TIP `b89448d`; tip-cut 0005/0006/0007 dropped; post-#41 topology guard in `apply_all.sh`)
 - [`scripts/audit_main_alignment.py`](scripts/audit_main_alignment.py) — read-only GitHub API check (exit 0 while default tip is ALIGNED)
+- [`docs/DROPBOX_GAP_AUDIT_2026-09-27.md`](docs/DROPBOX_GAP_AUDIT_2026-09-27.md) + [`scripts/dropbox_gap_audit.py`](scripts/dropbox_gap_audit.py) — byte-level diff of Dylan's Dropbox share vs Drive export + all owner-repo branches (`portable/dropbox_gap_audit_2026-09-27/`; scientific effect NONE)
 - [`scripts/audit_research_stack_open.py`](scripts/audit_research_stack_open.py) — read-only OPEN premises/lemmas/prizes/claims inventory (never flips status)
 - [`scripts/alignment_status.py`](scripts/alignment_status.py) — combined alignment dashboard JSON (window + Path C tip + post-#41 critical_path)
 - [`scripts/watch_main_alignment.py`](scripts/watch_main_alignment.py) — timer-friendly ALIGNED/MISALIGNED watcher (embeds permanent window + route)
@@ -75,7 +76,7 @@ Agent rules: [`AGENTS.md`](AGENTS.md). Autonomous work log: [`docs/AUTONOMOUS_48
 
 Blocked agents drop a card in [`needs_attention/cards/`](needs_attention/README.md); helpers cycle the folder. `scripts/needs_attention_scan.py` (read-only) refreshes `needs_attention/SNAPSHOT.json` + `TRIAGE.md` with failing-check / conflicting / changes-requested PRs across all owner repos plus expired `governance-` leases; `scripts/needs_attention_check.py` validates cards fail-closed (runs in `trial-ci`). Coordination only — scientific effect **NONE**.
 
-Tip-drift gate: once Path C is landed (`VERIFY.path_c_landed=true`), `scripts/tip_drift_gate.py` accepts a live hardening tip that still contains `BASE_TIP` in its history (lag) and fails closed otherwise; `lemma_closed=false` / `problems=0` gates keep running on the live tip (card NA-0001).
+Tip-drift gate: one shared classifier, `scripts/tip_drift_class.py` (landed via PR #153). Once Path C is landed (`VERIFY.path_c_landed=true`) a live hardening tip that still descends from `BASE_TIP` is lag, not drift; `BEHIND` / `DIVERGED` / `UNKNOWN` still fail. `lemma_closed=false` / `problems=0` gates keep running on the live tip (cards NA-0001, NA-0007).
 
 ## Quick check
 

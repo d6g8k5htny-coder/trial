@@ -34,7 +34,7 @@ SKIP_PYTEST=0
 # VERIFY.batch itself must stay release-aligned (see VERIFY write below) so
 # pack_portable's release|batch fallback cannot invent batch250-path-c-bundle
 # while living release stays batch241-path-c-bundle.
-BATCH_TAG="${REFRESH_BATCH_TAG:-832}"
+BATCH_TAG="${REFRESH_BATCH_TAG:-835}"
 
 usage() {
   cat <<'EOF'
@@ -236,17 +236,17 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "refresh_path_c_bundle: dry-run OK tip stable @ ${LIVE_SHORT} (no rebuild needed)"
     exit 0
   fi
-  # needs_attention NA-0001: Path C landed ⇒ a moved tip whose history still
-  # contains BASE_TIP is lag, not drift (scripts/tip_drift_gate.py; fail-closed).
-  GATE_ARGS=(--live "$LIVE_SHA" --base "$PRIOR_SHA" --verify "$ROOT/portable/path-c-applied-bundle/VERIFY.json")
-  if [[ -n "${TIP_DRIFT_REPO_DIR:-}" && -d "${TIP_DRIFT_REPO_DIR}" ]]; then
-    GATE_ARGS+=(--repo-dir "$TIP_DRIFT_REPO_DIR")
-  fi
-  if python3 "$ROOT/scripts/tip_drift_gate.py" "${GATE_ARGS[@]}"; then
-    echo "refresh_path_c_bundle: dry-run OK tip ancestor ${PRIOR_SHORT} -> ${LIVE_SHORT} (path_c_landed; no rebuild required)"
+  # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → the
+  # stack is still on tip; report TIP_DRIFT_DESCENDANT_OK (exit 0) so CI stays
+  # green between upstream merges. BEHIND / DIVERGED / UNKNOWN keep exit 1.
+  DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$PRIOR_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+  DRIFT_LANDED="$(python3 -c "import json,sys; print('1' if json.load(open(sys.argv[1])).get('path_c_landed') is True else '0')" "$ROOT/portable/path-c-applied-bundle/VERIFY.json" 2>/dev/null || echo 0)"
+  if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
+    echo "refresh_path_c_bundle: dry-run TIP_DRIFT_DESCENDANT_OK ${PRIOR_SHORT} -> ${LIVE_SHORT} (Path C landed; live ahead of BASE_TIP — informational)"
+    echo "refresh_path_c_bundle: refresh at leisure: ./scripts/refresh_path_c_bundle.sh  # re-pins BASE_TIP + rebuilds bundle (does NOT push to main)"
     exit 0
   fi
-  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT}"
+  echo "refresh_path_c_bundle: dry-run TIP_DRIFT ${PRIOR_SHORT} -> ${LIVE_SHORT} (class=${DRIFT_CLASS:-UNKNOWN} landed=${DRIFT_LANDED})"
   echo "refresh_path_c_bundle: fix path: ./scripts/refresh_path_c_bundle.sh  # updates BASE_TIP + rebuilds .patch+.bundle+VERIFY (does NOT push to main)"
   exit 1
 fi

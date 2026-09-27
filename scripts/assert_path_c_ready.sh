@@ -142,21 +142,27 @@ if [[ ${#BASE_SHA} -eq 40 && "$LIVE_SHA" == "$BASE_SHA" ]]; then
 elif [[ ${#BASE_SHA} -ge 7 && ${#BASE_SHA} -lt 40 && "${LIVE_SHA:0:${#BASE_SHA}}" == "$BASE_SHA" ]]; then
   TIP_OK=1
 fi
-TIP_MODE="exact"
+TIP_DRIFT_CLASS="MATCH"
 if [[ "$TIP_OK" -ne 1 ]]; then
-  # needs_attention NA-0001: landed Path C + BASE_TIP in live history ⇒ lag, not drift.
-  if python3 "$ROOT/scripts/tip_drift_gate.py" --live "$LIVE_SHA" --base "$BASE_SHA" \
-      --verify "$ROOT/portable/path-c-applied-bundle/VERIFY.json" --repo-dir "$WORKDIR"; then
-    TIP_OK=1
-    TIP_MODE="ancestor"
+  # Sidecar b3c6: Path C landed ⇒ a live tip that descends from BASE_TIP still
+  # carries the stack (DESCENDANT_OK, informational). Behind/diverged still fail.
+  TIP_DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$BASE_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+  TIP_DRIFT_CLASS="${TIP_DRIFT_CLASS:-UNKNOWN}"
+  LANDED_FOR_DRIFT=0
+  if python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); sys.exit(0 if d.get("path_c_landed") is True else 1)' \
+      "${ROOT}/portable/path-c-applied-bundle/VERIFY.json" 2>/dev/null; then
+    LANDED_FOR_DRIFT=1
   fi
+  if [[ "$TIP_DRIFT_CLASS" == "DESCENDANT" && "$LANDED_FOR_DRIFT" -eq 1 ]]; then
+    echo "assert_path_c_ready: tip-drift DESCENDANT_OK live=${LIVE_SHA:0:7} ahead of BASE_TIP=${BASE_SHA:0:7} (Path C landed; informational — ./scripts/refresh_path_c_bundle.sh at leisure)"
+  else
+    echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA class=$TIP_DRIFT_CLASS" >&2
+    echo "  refresh BASE_TIP + rebuild path-c-applied-bundle before land" >&2
+    exit 1
+  fi
+else
+  echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7}"
 fi
-if [[ "$TIP_OK" -ne 1 ]]; then
-  echo "assert_path_c_ready: FAIL tip-drift live=$LIVE_SHA != BASE_TIP=$BASE_SHA" >&2
-  echo "  refresh BASE_TIP + rebuild path-c-applied-bundle before land" >&2
-  exit 1
-fi
-echo "assert_path_c_ready: tip match OK @ ${LIVE_SHA:0:7} (mode=${TIP_MODE})"
 
 # Batch 230: Path C already merged on hardening — patches are on tip; do not re-apply.
 # Batch 246: post-0019 idle — skip redundant apply_all --check when landed+no pending

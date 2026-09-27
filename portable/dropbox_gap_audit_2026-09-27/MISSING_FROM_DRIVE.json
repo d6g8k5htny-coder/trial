@@ -1,0 +1,1986 @@
+[
+ {
+  "path": "00/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl",
+  "bytes": 5852,
+  "sha256": "61417c1e139533f8f306033dd24b389c3ad54d7529ed1afc617d2d3c280ebb95",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl"
+  ],
+  "dropbox_duplicate_paths": [
+   "00_CANONICAL_MASTERS_AND_SOURCE/00_CANONICAL_MASTERS_AND_SOURCE/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "00/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl",
+  "bytes": 4726,
+  "sha256": "e9c118a52fb3ede76dc85bcadb88707966ec0cac8535f3772a489f619e2d390d",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/01_ADJUDICATIONS_AND_ERRATA/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "00/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl",
+  "bytes": 6452,
+  "sha256": "55b1a970f8b512a914e883fb727ffd4195dc3b49ba77f833bf8223af34f83e61",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/10_AXIOMATIC_CORE_SPINE/00.2_CANONICAL_MASTER/02_FREEZES_AND_MACHINE_CONTRACTS/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "001claude.txt.txt",
+  "bytes": 2490,
+  "sha256": "1f6bdfef1f38d7b11533c109346d440093e928b6dd568222f64a9bbeaa8fd89d",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "00_MASTER_INDEX_AND_ROUTING/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl",
+  "bytes": 67959,
+  "sha256": "66e362ef8e60e31dc388781d2e47067a2bef1a038fc3671686c60494eeb68b9f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/2026-09-16 — PEER_REVIEW_SUBMISSION_PACKAGES/00_MASTER_INDEX_AND_ROUTING/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "00_MASTER_INDEX_AND_ROUTING.zip",
+  "bytes": 45850,
+  "sha256": "5473005331d5d98962594a5b1baf4e541b7f0831574c54f0a333da8264f24e64",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.json",
+  "bytes": 7364,
+  "sha256": "d8e559e94081cc1022aeae45a22ae8ea7480d93755fb694abfdc8ddb431006f3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/04_ACTIVE_GOVERNANCE_AND_DIRECTIVES/_AUTONOMOUS_DECISIONS — EVIDENCE GATED/02_EVIDENCE_CONDITIONAL — AUTO-EXECUTE WHEN READY/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/04_ACTIVE_GOVERNANCE_AND_DIRECTIVES/_AUTONOMOUS_DECISIONS — EVIDENCE GATED/02_EVIDENCE_CONDITIONAL — AUTO-EXECUTE WHEN READY/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/04_ACTIVE_GOVERNANCE_AND_DIRECTIVES/_AUTONOMOUS_DECISIONS — EVIDENCE GATED/02_EVIDENCE_CONDITIONAL — AUTO-EXECUTE WHEN READY/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/04_ACTIVE_GOVERNANCE_AND_DIRECTIVES/_AUTONOMOUS_DECISIONS — EVIDENCE GATED/02_EVIDENCE_CONDITIONAL — AUTO-EXECUTE WHEN READY/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/04_ACTIVE_GOVERNANCE_AND_DIRECTIVES/_AUTONOMOUS_DECISIONS — EVIDENCE GATED/02_EVIDENCE_CONDITIONAL — AUTO-EXECUTE WHEN READY/01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT.zip",
+  "bytes": 11532,
+  "sha256": "a6025361bb59e94cfd0f798b86c1c4b3d511a36032b34c687cb0ca2f6d5cef89",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "030726 Bibliographic and Mathematical Verification Report_ Color-Kinematics Duality, Cosmic Web Topology, Fractional Gravity, and Related Citations.pdf",
+  "bytes": 115019,
+  "sha256": "2e7c4430be92d0c116f314fcab150dcc98f1f9a0784e9987b13b9b42e9df24cf",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "05_MASTER_SETUP/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl",
+  "bytes": 9887,
+  "sha256": "330cd649533a07a55a61a13e4ee88c1c916733f277d9c440f3887388cf0fbb69",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/MATHEMATICAL_AUTONOMY_LAYER/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "05_MASTER_SETUP/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl",
+  "bytes": 6198,
+  "sha256": "7d1be3c32fc8e580fd047f10fe4e5066ce4aa656c38c986ddf54954334157af2",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/SCHEMAS_AND_TEMPLATES/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "05_MASTER_SETUP/05_MASTER_SETUP/_MANIFEST.jsonl",
+  "bytes": 42195,
+  "sha256": "c58961f00303b438c412ac6bfe9e666de9cf42f3b15d8ef917d3f047fe722fdc",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/01_RESEARCH_PLATFORM_AND_VERIFICATION_ARCHITECTURE/02_FORMAL_AND_LEAN_RESEARCH_SYSTEM/05_MASTER_SETUP/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "05_MASTER_SETUP.zip",
+  "bytes": 53048,
+  "sha256": "50a0b41bd9c3a10798d14973e8cb72079cb8b727a20a0aa61538b128bcc27545",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "070326claufe.pdf",
+  "bytes": 78852,
+  "sha256": "b45c6efc3963a73053b7be6fb2e6383c99716e41884f000cad23635444354230",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "64_FORMAL_CORE_R2_P02_LM008_LM009/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt",
+  "bytes": 564,
+  "sha256": "83f0d3f6bd1c0ed69efbc76e6e4e378fa4317975bce1bb7b053720532fb5a1ca",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt"
+  ],
+  "dropbox_duplicate_paths": [
+   "64_FORMAL_CORE_R2_P02_LM008_LM009 (1)/64_FORMAL_CORE_R2_P02_LM008_LM009/GP-FOR-192-v1.0_research-formal-core-r2.zip.members.txt"
+  ]
+ },
+ {
+  "path": "64_FORMAL_CORE_R2_P02_LM008_LM009/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl",
+  "bytes": 13159,
+  "sha256": "a069e49daa1961c943ba32730c666ee2e7562f12d8f8cd3e8daf490279a9c732",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/02_RESEARCH_CARRY_FORWARD_CANON/00 — PRIORITY OPEN MATHEMATICAL TARGETS/GP-FOR-189 — Formal-Core Source-Recovery Bundle/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl"
+  ],
+  "dropbox_duplicate_paths": [
+   "64_FORMAL_CORE_R2_P02_LM008_LM009 (1)/64_FORMAL_CORE_R2_P02_LM008_LM009/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "64_FORMAL_CORE_R2_P02_LM008_LM009.zip",
+  "bytes": 23277,
+  "sha256": "a98bf32c0e59e186b6b054f11e6062e9ed21db73232bfe881adcfcd7bce93782",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "ARCHITECTURE FOR LONG HORIZON RESEARCH.pdf",
+  "bytes": 266299,
+  "sha256": "2fa3927ac80a7f901a2c1487e5d759e2100ab58a70ca88aa89fe8364f3d91317",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Algebraic Structures from Global Traditions That Could Reshape AI Reasoning.pdf",
+  "bytes": 147699,
+  "sha256": "ed8cfa988c156b57ceca4a8a0377df7a551346f6d7e4234d78774012c4309a3c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "ChatGPT.dmg",
+  "bytes": 59030727,
+  "sha256": "1e719b6ea342548793122190ec8ef9df1208e957dcd5d84646d7748689760e36",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Claude.txt.txt",
+  "bytes": 5071,
+  "sha256": "50335ec81eae2fc19453ddd6d8a4e961bb4fad08d2e5c16042157bca85c203fd",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Claudebreakdown13M+.txt.txt",
+  "bytes": 4445,
+  "sha256": "378259ad16fd9359c0f1caecc3697ee2ab77db2ff81e212623105024dfe166b1",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Cross-Disciplinary Connections for Persistence-Thermodynamic Cosmological Fingerprints13m.pdf",
+  "bytes": 133547,
+  "sha256": "9b4104e1b9eae1d48a2286c55701855d88b767e7d88c85817e4a7ccbf4bafc75",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Drive manifest (condensed, all 964 files flags  folder  title) — Part 01 of 13 — canonical impact NONE.pdf",
+  "bytes": 57674,
+  "sha256": "38c72b909b2fe48950a53a6ccb8872d46ddaa9843732ee18d5963f17c0f4eb06",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "K3_SIDE24_LB.zip",
+  "bytes": 19175951,
+  "sha256": "0b2c693a0eedb6e5285cc2b320ebf0cfc12190dc9924d9fec584510c0e88b523",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "LPW_Return_04_Operator_2026-09-12.zip",
+  "bytes": 529626,
+  "sha256": "60784ea94cc801b2293371253d9856cbfdb77576e6d0cbbbcdd5dd6469fcaae4",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12/prior_packages/LPW_Return_04_Operator_2026-09-12.zip",
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/prior_packages/LPW_Return_04_Operator_2026-09-12.zip"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/01_ARCHIVE_AND_REPLAY_AUDIT.md",
+  "bytes": 6457,
+  "sha256": "97abdb5bf6ab9674d42c95dcaef8acd55ded01dcd315b6d0b5b242e0cf43fdaa",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/01_ARCHIVE_AND_REPLAY_AUDIT.md"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/02_CONSTANT_FINDINGS_AND_REPAIR.md",
+  "bytes": 8381,
+  "sha256": "feb8aa30795cfe44d5c9e49b1793e6cd5f62729b922af0b0aff5fe076868146a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/02_CONSTANT_FINDINGS_AND_REPAIR.md"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/03_CURRENT_STATE_AND_AUTHORIZED_UPDATE.md",
+  "bytes": 3659,
+  "sha256": "cfdebf4e2e61a0128448bd7beeb438a19cee5c2c2d68454d3a0aca920663787f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/03_CURRENT_STATE_AND_AUTHORIZED_UPDATE.md"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/ARCHIVE_INTAKE.json",
+  "bytes": 6132,
+  "sha256": "341b6922a156272b645bbe384ebae051ae8b6582d608d808e2411915bbd9d795",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/ARCHIVE_INTAKE.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/DRIVE_CAPABILITY_AND_SOURCE_RECEIPT.json",
+  "bytes": 837,
+  "sha256": "7d4528f1ccbee7bdab4a1b96f9c3c41504f18ee754ede812fd6f16fe345c6053",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/DRIVE_CAPABILITY_AND_SOURCE_RECEIPT.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/FINAL_EXECUTION_RECEIPT.json",
+  "bytes": 2090,
+  "sha256": "4970aed2062011b5c0596bf7cedb98e16d842660514d13a13be1ab8e68bca667",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/FINAL_EXECUTION_RECEIPT.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/FINDINGS_NORMAL.json",
+  "bytes": 6811,
+  "sha256": "6844245890199d0d2739c14c9419efcc875052825ed6645086d43bfc445313df",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12/receipts/FINDINGS_OPTIMIZED.json",
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/FINDINGS_NORMAL.json",
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/FINDINGS_OPTIMIZED.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/LOCAL_MUTATION_RECEIPTS.json",
+  "bytes": 1939,
+  "sha256": "beaa2ae3bf8c31edda9f67c5eb257c9bbb71f9ebfbbce3ca9d79f864fbfc5f52",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/LOCAL_MUTATION_RECEIPTS.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/PORTABLE_RUNNER_QUICK_TEST.json",
+  "bytes": 2251,
+  "sha256": "0ac78c8f33fd3562ae5fab04eaaac7ee223fe2cfdfcccb81feb5f55baede6df3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/PORTABLE_RUNNER_QUICK_TEST.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/W8_RECOVERED_PREFLIGHT.json",
+  "bytes": 818,
+  "sha256": "f6ee26f88dbf2fc804963c61c502acfd66126a0d132b2fbd698106faa9807d16",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/W8_RECOVERED_PREFLIGHT.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/W8_RECOVERED_PREFLIGHT.out",
+  "bytes": 3431,
+  "sha256": "85b1c5c424c931e1e01c99c2adbc38dafe2b50a3dcb7cf8c1e159f6272c5e953",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/W8_RECOVERED_PREFLIGHT.out"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/intake_initial.json",
+  "bytes": 346,
+  "sha256": "bb2b926a8fc6dd70d6eb769ce4e017bca18ce8721e83c38dc7af58d49fa87df3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/intake_initial.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/constant_falsify_O.json",
+  "bytes": 650,
+  "sha256": "c529e8105342a7ea1c6d7bf3312d36b11a973f323d5d45779caeb64e85e81b65",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/constant_falsify_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/constant_falsify_normal.json",
+  "bytes": 645,
+  "sha256": "499f7ff4f0c6ff7a5c3c7258c8489784549c4f9795ff2a2f7eeefc5ae3c68c4c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/constant_falsify_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/constant_lpw_constant_O.json",
+  "bytes": 659,
+  "sha256": "57ab7e376adf58ad2b9da41e3bf2feae52012cb187241e2dade4be5a881bacfa",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/constant_lpw_constant_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/constant_lpw_constant_normal.json",
+  "bytes": 654,
+  "sha256": "34bc3907536639dc9dee0c4b72ddc31165a8aba8fd47145ecccd9dd7045a3b43",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/constant_lpw_constant_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/qc_qc_return03_numeric_O.json",
+  "bytes": 668,
+  "sha256": "cf0d51a8f8d1d9c8530a5171e646dcf55e907a7e1d7ae9bd643255308d971928",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/qc_qc_return03_numeric_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/qc_qc_return03_numeric_normal.json",
+  "bytes": 663,
+  "sha256": "b55843a2b685a28302afcd090e8347003c1293915f69b1056c90e355ab275cc6",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/qc_qc_return03_numeric_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_RB_R2_part1_symbolic_O.json",
+  "bytes": 643,
+  "sha256": "55dd7086078cf6700d52c9deaf42f0ac57c097bb4442e9d7cf2214468d9e6a23",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_RB_R2_part1_symbolic_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_RB_R2_part1_symbolic_normal.json",
+  "bytes": 638,
+  "sha256": "7f39533502be7949e0f61fc5d88a6d349c1aa6c6e62352e76c43bea2d5444430",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_RB_R2_part1_symbolic_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rb_r2_part2_spectral_v2_O.json",
+  "bytes": 648,
+  "sha256": "9e698498569f3990b4f3cd09069fba10baaf7bb782eadb300a8e84fdd6f9ff23",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rb_r2_part2_spectral_v2_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rb_r2_part2_spectral_v2_normal.json",
+  "bytes": 643,
+  "sha256": "2991e34e9dc30940b6970295dcce40588ef45a676b0ed478939ee3e72c99d2e2",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rb_r2_part2_spectral_v2_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rc_r3_numeric_O.json",
+  "bytes": 630,
+  "sha256": "620e145ba96e5307a5601ea7043ee36ed6ef12643428cde889e4056e277450b4",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rc_r3_numeric_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rc_r3_numeric_normal.json",
+  "bytes": 625,
+  "sha256": "48fa37eb599b34d845255aee36093cefc10f5a4be130c561adf98583b839fbfb",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rc_r3_numeric_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rd_r4r5_verify_O.json",
+  "bytes": 631,
+  "sha256": "a3dbf3180f648fd7d885638e564227e829e5d4b63f5acdfcf44f3f5d77556f7c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rd_r4r5_verify_O.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/review_rd_r4r5_verify_normal.json",
+  "bytes": 625,
+  "sha256": "b69eaaa54ab8c6efbd2cdc0f9f79dffca223a905818f03a1151a0f402eb27de0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/review_rd_r4r5_verify_normal.json"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/w8_input_boundary.err",
+  "bytes": 628,
+  "sha256": "241537aa7324ec76bfc86569c9f98ae7003c2d8de96c206edd39f26215304d73",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/w8_input_boundary.err"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/receipts/replay_logs/w8_input_boundary.out",
+  "bytes": 993,
+  "sha256": "025c0f1bb3a845410382222594e137ad55c3ea05bc5861284d70aac15b2bb04f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/receipts/replay_logs/w8_input_boundary.out"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/source_excerpts/KIMI_VERDICT.numbered.txt",
+  "bytes": 10080,
+  "sha256": "7f3505571d5e9ed934666ab06f4b8a03fd0889df24828b6462399f02acc49295",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/source_excerpts/KIMI_VERDICT.numbered.txt"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/source_excerpts/LEAD_REVIEW.numbered.txt",
+  "bytes": 7157,
+  "sha256": "f65d9358f9cae17129d808a52fec980bda33c2a9395ced78c834679b3ef5b59c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/source_excerpts/LEAD_REVIEW.numbered.txt"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/source_excerpts/LPW_CONSTANT_REPORT.numbered.txt",
+  "bytes": 14365,
+  "sha256": "b82f1031c64cd1872c7bdfa2f621c8fecc7b2c88d8626a4938119c996d3cddc0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/source_excerpts/LPW_CONSTANT_REPORT.numbered.txt"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/source_excerpts/lpw_constant.py.numbered.txt",
+  "bytes": 29272,
+  "sha256": "2f66f49286e6d90df34f933314b84ad8dc0bf5c6c47b552678ca89bae38143be",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/source_excerpts/lpw_constant.py.numbered.txt"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12/tools/check_findings.py",
+  "bytes": 6041,
+  "sha256": "55d6a213a42e729d5ff6687d1552a1b512e00638d73f9d4e5be6b867e86aa67e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "LPW_Return_05_Archive_Audit_2026-09-12 (1)/tools/check_findings.py"
+  ]
+ },
+ {
+  "path": "LPW_Return_05_Archive_Audit_2026-09-12.zip",
+  "bytes": 1244032,
+  "sha256": "ae03fbbddc1797176d6bca5aebf586026f9deb68255cc03a36016fc957071a4f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "LPW_Review_Reconciliation_2026-09-12.zip",
+  "bytes": 137941,
+  "sha256": "782cac8ec69db17c00ed2a2507ba2ad7dd9156c27cfbbf59b8791f2eb1565b1f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MASTER BACKUP March2026.pdf",
+  "bytes": 190340,
+  "sha256": "8663e8794c9acfeebe5361db21bf5bd0caac0ea4892cd48177f96e2be20c5d9e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MASTER BACKUP March202613M.pdf",
+  "bytes": 181764,
+  "sha256": "d0ae6ceff88c88124f440111142edf6c5f166887bfdb7351c57dd3a95b10a0a7",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MASTER PROMPT AI DISCOVERY V2 1.pdf",
+  "bytes": 299843,
+  "sha256": "e3205daf976aad790e8bb29d5440dd298b5592e9068b59aae52a9c742cfb34d1",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MASTER PROMPT AI DISCOVERY V2.md",
+  "bytes": 54543,
+  "sha256": "8eafe8cfa726d9c12524e007e7d8e44441169210dc18ac7a254b53cf03c6dd16",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MECHANICAL ARCHITECTURE FOR LONG HORIZON RESEARCH.pdf",
+  "bytes": 398926,
+  "sha256": "7935c7127d54ec076c74b75dbb54b48e48d3f436599668e029a54cc1be74fa30",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 GRAMMATICA.pdf",
+  "bytes": 105068,
+  "sha256": "29cd7d6e94155e15da921cda845706eb02b7b4c005def3efd3cc3542fe661049",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 LEXICON.pdf",
+  "bytes": 100519,
+  "sha256": "6c2ce4ece480d3632b306ebfe206ac9aabe53f475e06d1dee088004ccc0b457f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 LINGUA.pdf",
+  "bytes": 222296,
+  "sha256": "0b6137314b8c30ef9a6f8cdc489417518c0f732ea83f4beaf5f564f5af4a15d9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 MANIFEST.md",
+  "bytes": 5484,
+  "sha256": "59270a5d700f92860b06bfa8e1f49bfcbae0e003e26268d0807503d87fbf123d",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 MANIFEST.pdf",
+  "bytes": 57562,
+  "sha256": "0defc146c6faf5f5d8a9ebd663bef08f2033fe4a917f023bfc4cb12350d7f200",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 MASTER.md",
+  "bytes": 35527,
+  "sha256": "cfbd546c3084fcd8531c1183df5299ab07f259bcc5ab48a5550b911059fd80a6",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 MASTER.pdf",
+  "bytes": 191148,
+  "sha256": "d5a7702a92752ac8ca129c8046f7f8f942810bae21170ebdd9919a8f371b5ad3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 START HERE.md",
+  "bytes": 1338,
+  "sha256": "96b347ac1c3d1824944624f682914b446a48e6a19f1d32d0b7bd47ae8a916938",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 START HERE.pdf",
+  "bytes": 32315,
+  "sha256": "a0e87e7b246a509a4b483410ba16f8e05fb9a953e3aa826c84ecb0ac3ae26d68",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 TORSIO PROPOSAL.md",
+  "bytes": 16716,
+  "sha256": "e1460be0845d6e2bc05c339ee699d291f50875753c4628752e52e0a23f971b0e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "MPV3 TORSIO PROPOSAL.pdf",
+  "bytes": 81885,
+  "sha256": "f399b9748c9ae85003b88e96bf5edd52f156f59a8cd63f2ef069bfed65ec12b1",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Master Prompt AI Discovery.pdf",
+  "bytes": 139954,
+  "sha256": "af8e8d4ddf88f261a8198b97b1af118971b7f59af4033e350a360fa6de5b69c2",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Novelty Confirmation Sweep_ Multivariate Information Measures and Apoha-Contrastive Learning Claims Assessed Against Prior Art.pdf",
+  "bytes": 83277,
+  "sha256": "ca9eeab557466906ccdf9edb3123bcbaf15c706b7e953e6cacc5fbc887ad26c9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Protocol .txt",
+  "bytes": 12277,
+  "sha256": "dd55835f1ac0b999fc949ae2e72dd354ca8c8d4ec227e6d566cfc51aa0b058b9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:governance/withdrawal/PROTOCOL.md",
+   "main@chatgpt/c101-source-bound-successor-20260925:governance/withdrawal/PROTOCOL.md",
+   "main@chatgpt/cover-accounting-audit-20260924:governance/withdrawal/PROTOCOL.md",
+   "main@chatgpt/downstream-crosswalk-20260925:governance/withdrawal/PROTOCOL.md",
+   "main@chatgpt/drive-github-hardening-20260919:governance/withdrawal/PROTOCOL.md"
+  ]
+ },
+ {
+  "path": "Running Computations on Quijote Simulation Data_ Access, Infrastructure, and Minimal Viable Workflows.pdf",
+  "bytes": 137826,
+  "sha256": "175d9f8ef2aa45d9fb1b474088cd6a245b5fc3ed4113f04d132cbfe77f735bdb",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Science 2026.txt",
+  "bytes": 7064,
+  "sha256": "8173902308db10debc57e6a560f9e78498e60d6e781c68103eeb546741d64adb",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "Science question that explains the work.txt"
+  ]
+ },
+ {
+  "path": "Scientific explanation.txt (1).txt",
+  "bytes": 3266,
+  "sha256": "42330947881c91b4a75f944e3723540af12a85d5f440c8ee5074eb281893a4b0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "Scientific explanation.txt.txt"
+  ]
+ },
+ {
+  "path": "Seven Bridges Between Mathematical Traditions and Neural Computation_ A Rigorous Assessment.pdf",
+  "bytes": 107409,
+  "sha256": "85dff974bdc0a1d918bbf892f8ba2a45b21a66169f69709af9cbc11a21e22f0f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "T2 — SARD-G Transversality/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl",
+  "bytes": 864,
+  "sha256": "f86ff4131655f5aed92c3ef839110946a1550c5ea5053a2c958b12bbe057cbe6",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/00_CHARTER_AND_SCOPE/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "T2 — SARD-G Transversality/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl",
+  "bytes": 1103,
+  "sha256": "25ffea6307a630d8c6273960bc50147b930f6ffa51a25cd7af077193ae446871",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/01_TRANSVERSALITY_MANUSCRIPTS/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "T2 — SARD-G Transversality/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl",
+  "bytes": 1829,
+  "sha256": "0505e389f25dea5f2ee4e252a27aa5df70f1c8c71e7d2222102b087ac0e30c40",
+  "drive": "none",
+  "drive_where": [],
+  "github": "exact_blob",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl",
+   "main@chatgpt/c101-source-bound-successor-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl",
+   "main@chatgpt/cover-accounting-audit-20260924:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl",
+   "main@chatgpt/downstream-crosswalk-20260925:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl",
+   "main@chatgpt/drive-github-hardening-20260919:drive/mirrors/16_THEMATIC_RESEARCH_TRACKS/T2 — SARD-G Transversality/02_SUPPORTING_CERTIFICATES_AND_ATLAS/_MANIFEST.jsonl"
+  ]
+ },
+ {
+  "path": "T2 — SARD-G Transversality.zip",
+  "bytes": 16894,
+  "sha256": "46923d44cd2573dd57c211d3a3c88e037124f527eef6225c59bbdf1f3987a233",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Three Bridges from Persistence Thermodynamics to Geometry, Entropy, and Field Theory13M+.pdf",
+  "bytes": 169172,
+  "sha256": "e132a7d5dadf2d0ee280ae4ab040b3346fc49a85eec9d31a7bccf318f795375a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "Topological Fingerprint for Random Fields_ Prior-Art and Data Audit on Persistence Thermodynamics and Non-Gaussianity Diagnostics.pdf",
+  "bytes": 117903,
+  "sha256": "bf8864bce0504fc8af2421127e832bcdef66ff83a07aafda26c6c7f8377fd0b0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "UPPER2D.zip",
+  "bytes": 2052290,
+  "sha256": "4464df46e135e31bf9707755603eff1bb444fe3488b0f198599755ea2abfff84",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "apoha contrastive paper.docx",
+  "bytes": 14629,
+  "sha256": "b8410cdae82483232e39c11335369752726817a90c8e55cab32808fc2ffa3ccd",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "c033 resolution.json",
+  "bytes": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "c033 supplement.json"
+  ]
+ },
+ {
+  "path": "connections_map (1).md",
+  "bytes": 1288,
+  "sha256": "1c6089e01665be5156d24bd63e692708127f44509786c8a58306cff91158d5c6",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "connections_map.md"
+  ]
+ },
+ {
+  "path": "correction ledger.json",
+  "bytes": 4166,
+  "sha256": "18aee3b38b46c91fff9608b4c415d908e2c10501fe9d2d947bc459a3a129baef",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "deep analysis results.json",
+  "bytes": 1776,
+  "sha256": "561b045510fd46d592098ed313458f8f07f2729331e2c41e50129420ff9a1de8",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "deep analysis.pdf",
+  "bytes": 57289,
+  "sha256": "5bdc18c666170eb9faf866dc4e6c4c18303205bade8bdb288fa376f2e459665f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "fig B renyi profiles13M+.png",
+  "bytes": 282714,
+  "sha256": "eb0de6520cf96832bdb3965166737608af0a70fd9aec98dbcfae9dc64c368fc6",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "fig C crossover line13M+.png",
+  "bytes": 537140,
+  "sha256": "14a9a24d9114e32e793fcaf8a39c691aada4a4b7d2d8021aba49ae52c76230cb",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "fig D unified framework13M+.png",
+  "bytes": 626048,
+  "sha256": "f9fe85866b296d7390e69df03b442b8f7f04182783762da2ecdcbf12cab721f1",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "generative-reasoning-protocol.pdf",
+  "bytes": 27985,
+  "sha256": "809f5abb7f07470c6f66a85c101eeb45ee96628de772d02e6928d22bea129499",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "gpt2 simulator.pdf",
+  "bytes": 58717,
+  "sha256": "82384e171edd99d7d40bf91bca49333956b1aa846a59d2309185a4a5af9500ee",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "lambda loop benchmark.pdf",
+  "bytes": 46317,
+  "sha256": "66a2198001bd9b2981ddeaa607eaad77d59342d38e62542e3275bf51430e2f79",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "lambda loop benchmark123.pdf",
+  "bytes": 46317,
+  "sha256": "740e52df9978ff32c0995ec01e720a4e48ef1225fea2facd4ea9106452739060",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "master-final-v1/master-final-v1/01.log",
+  "bytes": 40,
+  "sha256": "2b1129bb10c03acd17d093d7fd7864de29b996985cb55a87d67d6a0fb6d33f6b",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/01.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/06.log",
+  "bytes": 39,
+  "sha256": "4a0891acbc58850fe34089f3d8e08caa335bc1935b6eed231aa9982aa282a838",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/06.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/07.log",
+  "bytes": 511685,
+  "sha256": "93e3a91f53873b241aee9aecea01dda8939b313f99d4871a5e1d072ec9020e4f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "master-final-v1/master-final-v1/08.log",
+  "bytes": 159,
+  "sha256": "afcba1512f3ad853e94af2ec7d37760eaa1689468a76f574352658975c1c0bf5",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/08.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/09.log",
+  "bytes": 120,
+  "sha256": "b4ae7b4c95958bb865c1b8d00f81e38cd8ef3c71f890dbd17fb300644fb26d28",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/09.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/10.log",
+  "bytes": 127,
+  "sha256": "2d6a90839acffc4da75e5dbf50597122059003a41ffa6adca64631d249d9db04",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/10.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/11.log",
+  "bytes": 171,
+  "sha256": "77dc67b9db062fba9b70b88344914a9f679142206d4012d228427507228bddcc",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/11.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/12.log",
+  "bytes": 162,
+  "sha256": "d69183497efaac26df046279ea320319efdd5e810ddb59a520e5da5fa1f21df9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/12.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/13.log",
+  "bytes": 203,
+  "sha256": "b6906dcbbe3bd5d31050d98238ba314cd10769e4be2e85ef4dce3680db06eaaa",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/13.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/14.log",
+  "bytes": 61,
+  "sha256": "e48f6acacb84eda5c88ac972d7d0aa107ec52e1ad90620c39faf395690ad1bcf",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/14.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/15.log",
+  "bytes": 188,
+  "sha256": "1b7260bdbb14e936257223f8139645727e780aa4b2889f7c7451f30477d47ad9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/15.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/16.log",
+  "bytes": 192,
+  "sha256": "7202f4a60f7d687b7bdf12fcec3ad19ae01ce2efe87c80d8627ed1216b70862f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/16.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/17.log",
+  "bytes": 95,
+  "sha256": "6e98f2ac61f0c2da4d455a9488a2ee3bd8edf310918c6b71f4302b3b545cfd30",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/17.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/18.log",
+  "bytes": 286,
+  "sha256": "f9543e9c828e3ec77e344753263bc286d3648caa86cb92691fd548890e2e413f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/18.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/19.log",
+  "bytes": 92,
+  "sha256": "996961d8b35458aef09fbffd0c31481b63295804f0f0d99e95306e2c52d90f4a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/19.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/21.log",
+  "bytes": 120,
+  "sha256": "ac8b22fcb1fcac406a5b8c9f26fd295246382a7090136977f6395cc289c2ae85",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/21.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/22.log",
+  "bytes": 402,
+  "sha256": "29656a73e70b24d8d7b6f23770af18acdc0d3a1731c7967c4e669a803560e69c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/22.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/23.log",
+  "bytes": 2250,
+  "sha256": "058ec59da44333821aebfd2c45c8343025ad44e6928ae78fe2aac1d9db42282b",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/23.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/24.log",
+  "bytes": 419,
+  "sha256": "3f39aa55c4eada810fc11d88d48140e60946c6f4ee94e9df2a1c83ae603922af",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/24.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/25.log",
+  "bytes": 73,
+  "sha256": "1dc83c740f8d83dce98149c4e6a43f53a101173d69bbb44f5c82acf611dd5b8f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/25.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/26.log",
+  "bytes": 465,
+  "sha256": "40a1677ecea3911114c67fcc3f11ccc05f03698995c3f2c802cda63b71349472",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/26.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/27.log",
+  "bytes": 873,
+  "sha256": "9f0f1de263d058a5229b49230e07fc3da74e9dd735b6694410ab451c7dcd88c0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/27.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/28.log",
+  "bytes": 148,
+  "sha256": "d870b6cde95ac5885e2aaf7925c444f3424691b344117a59636805849e523551",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/28.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/29.log",
+  "bytes": 101,
+  "sha256": "ea75d9f0214ea475b3477bb05c186ef052d14beebf727a9944b03e9b41a787b2",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/29.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/30.log",
+  "bytes": 139,
+  "sha256": "ded60ef12a10c0b166c40c20312fcbefc78aedcc8f2a434c6e3960149331667e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/30.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/31.log",
+  "bytes": 149,
+  "sha256": "6c2c528bf191e0c07e285721682851ccb5d83bba12a9d47f413a630fadba8731",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/31.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/32.log",
+  "bytes": 155,
+  "sha256": "fe65cf2d6e9859bc3203ef330a1d08897f7b80e80137ff577a121601a6aaaaa7",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/32.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/33.log",
+  "bytes": 110,
+  "sha256": "208e9dd2c281a41110299d7dcc56ed1533d895369817a298d64b32f2e48f8c02",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/33.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/34.log",
+  "bytes": 89,
+  "sha256": "3d2e8e7c55d1b41488de0016de06c88b203934efe436dfeb6e8eb7bf4aec349a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/34.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/35.log",
+  "bytes": 98,
+  "sha256": "63a2f55d94152fcf7e8bea1bbd745c636aa53f482934e50aff1c3ccfa3f00ff4",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/35.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/36.log",
+  "bytes": 134,
+  "sha256": "9817e346b26e877ff6b3b937d7bdaa0fb029607f791ab922e5bf9020bbc84d18",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/36.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/37.log",
+  "bytes": 110,
+  "sha256": "0bf4533f494e4ead285e20ce7942e36e2f16b2ffd7bf55c7482a50721d7887be",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/37.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/38.log",
+  "bytes": 110,
+  "sha256": "64857b4e08f4c2906056e6f4490e9135addfe5307029e98eca8b166d60188056",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/38.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/39.log",
+  "bytes": 154,
+  "sha256": "7bea41cf867f29ae94b91112f0a2ff424a98added0f1036547f40afd1ef4d03e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/39.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/40.log",
+  "bytes": 92,
+  "sha256": "e3ac9f015a21e8e3966e75a501eab0175792b4a78fdfc42ff3de2ceebe84fa9a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "rn-sector-review-master-20260921/rn-sector-review-master-20260921/40.log"
+  ]
+ },
+ {
+  "path": "master-final-v1/master-final-v1/41.log",
+  "bytes": 3324,
+  "sha256": "e4558550a3c94f77f1c649e40271d9fb4a9047d03d9ed675a20f659ce9ae08bc",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "master-final-v1/master-final-v1/pytest.xml",
+  "bytes": 504961,
+  "sha256": "654896eb6f3e5b0fcfdc7e10d776dc7b60f4c5378722a8fb03a58d400009c8ae",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "master-final-v1/master-final-v1/report.json",
+  "bytes": 2962992,
+  "sha256": "a70263a2e574b5eca507b245ca96b3540db9cf03bb568b05f8b892d01dedabe9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "name_only",
+  "github_where": [
+   "sandbox@cursor/d0-crosswalk-allowlist-8fb0:experiments/d7_drift_scan_20260925/REPORT.json"
+  ]
+ },
+ {
+  "path": "master-final-v1.zip",
+  "bytes": 695348,
+  "sha256": "947839ecac8b83a057320de8a5dc8c178319a09d1fd6c475a5ac76a6ed624aa7",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "master_findings.md",
+  "bytes": 3813,
+  "sha256": "a21f4c484661858863b502f1623a5030209d8c469ed0ea8a1c2080a8970b66cd",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "methodology_playbook (1).md",
+  "bytes": 1836,
+  "sha256": "9cd225c7b1d63d3e44e50ba6666fd1ca0d7e405df8c1e6934589ab4406c7a25c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "methodology_playbook.md"
+  ]
+ },
+ {
+  "path": "open_questions.md",
+  "bytes": 1965,
+  "sha256": "f25a5fc080dbfbe29efa4c54a18f8591d58b0f373492ae96d0584ea81a76e9e3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "stem_only",
+  "github_where": [
+   "main@agent3/jetmod-rnunif-status-open-hold:registers/csv/open_questions.csv",
+   "main@agent3/jetmod-rnunif-status-open-hold:registers/json/open_questions.json",
+   "main@chatgpt/c101-source-bound-successor-20260925:registers/csv/open_questions.csv",
+   "main@chatgpt/c101-source-bound-successor-20260925:registers/json/open_questions.json",
+   "main@chatgpt/cover-accounting-audit-20260924:registers/csv/open_questions.csv"
+  ]
+ },
+ {
+  "path": "pass_report_2025-12-18_round3.md",
+  "bytes": 5651,
+  "sha256": "446f6f5fc56c9281e7f1fc6abb5cc9b695ff60bb3afb9d404ca196f9fa2c8398",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi dashboard.pdf",
+  "bytes": 55880,
+  "sha256": "4ff654c618f0daba4f73f5c3a4843126049d5a9fada9d5410c6e1306070188ae",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi dashboard123.pdf",
+  "bytes": 55880,
+  "sha256": "8f4cd56afef926c81dfd573c451166935ea8c7bd86a76cba6bb153b67befcf2a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi experiment.pdf",
+  "bytes": 83997,
+  "sha256": "728b7616dd8c526aacc4baec96be3b69d2bb6af68ce32979abbb416dff877e6a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi experiment02.pdf",
+  "bytes": 88788,
+  "sha256": "26af011fd65e6e29c82a18c47928c3483040ca1eac5c4af383f1718da3ad1e34",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi paper v2 corrected.docx",
+  "bytes": 12999,
+  "sha256": "92cefa8f1d016e34d258a16a8e6012ff9d34ded60598c11c8017c58b9be45b58",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "psi stream.pdf",
+  "bytes": 47160,
+  "sha256": "040873901b816b65793987bfab04f678dfc9920a38d5917748be2a09a9cc6545",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "public presentation self contained.pdf",
+  "bytes": 79476,
+  "sha256": "73029d1cbc096a664ad1f1dc09aa2b5a1ecd09bf463434c4c1de3f1cd68486f3",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "rn-sector-review-master-20260921/rn-sector-review-master-20260921/07.log",
+  "bytes": 560309,
+  "sha256": "b2099673f66a693346f92673b0c998cc27048c85dec2697cf804c641184b3fe9",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "rn-sector-review-master-20260921/rn-sector-review-master-20260921/41.log",
+  "bytes": 3324,
+  "sha256": "51f3133b9985a70712821c23da026469fb6cc60fab677782a6ee095cc51314c0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "rn-sector-review-master-20260921/rn-sector-review-master-20260921/pytest.xml",
+  "bytes": 505348,
+  "sha256": "31d9a88df1a44348df91ce6a5256993f4c1aca77c286cb4aa7c664a7d1693c10",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "rn-sector-review-master-20260921/rn-sector-review-master-20260921/report.json",
+  "bytes": 2971824,
+  "sha256": "3412fdd07f34c77a732dc943f6ce65c357d24c546613a9defd342b2e58617e15",
+  "drive": "none",
+  "drive_where": [],
+  "github": "name_only",
+  "github_where": [
+   "sandbox@cursor/d0-crosswalk-allowlist-8fb0:experiments/d7_drift_scan_20260925/REPORT.json"
+  ]
+ },
+ {
+  "path": "rn-sector-review-master-20260921.zip",
+  "bytes": 700996,
+  "sha256": "f2ac3d897471238db705aa0ba1208435b97449a40e8ac5461e11f07427eab062",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "synthetic results.json",
+  "bytes": 825,
+  "sha256": "151fd881d01ad01c273e5442ebb48a67e6f8faba188f62d289ca6dbd9b06307d",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "synthetic results13M.json"
+  ]
+ },
+ {
+  "path": "terminology_dictionary.md",
+  "bytes": 1356,
+  "sha256": "02e4bdf3f88fc4659187ebc599914a782f7b11fda066ce5f3b290014882e5292",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text102 (1).txt",
+  "bytes": 3299,
+  "sha256": "b1f4b3b474652c7d955d41efcb9d60d93869ed0b30439e641d721f7b26836c32",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "text102.txt"
+  ]
+ },
+ {
+  "path": "text103 (1).txt",
+  "bytes": 9096,
+  "sha256": "bf0b226f39a17c785f3c4104a12dd936c1105bb5fd2c310ca49dd809825a4f04",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "text103.txt"
+  ]
+ },
+ {
+  "path": "text115.txt",
+  "bytes": 9489,
+  "sha256": "d9ca5bee11a4864e94412e0ddacde48281ab288bced9e00e0e216422a20d670a",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text128.txt",
+  "bytes": 599,
+  "sha256": "687e03794f34c4e267ed9a8977ab43856ef84330c96ea512ef156cc89980335e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text129.txt",
+  "bytes": 727,
+  "sha256": "8301502ea438607fddbf29f34fd6f4fd6c3fe76729995397ef1b83b3e12673d7",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text131.txt",
+  "bytes": 101012,
+  "sha256": "3007a35f52d319cf7dc979b0f2a50ae4d185e0c9da9f8cb7c8972833b492c965",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text132.txt",
+  "bytes": 9914,
+  "sha256": "c5a7f67964cd52267b6e1896986c1188c8016b046be1f299b19305a630a9f13c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text137.txt",
+  "bytes": 114924,
+  "sha256": "57b3f8d10df9ce256025c0b543c80f034e52265376010e27c8decd6fcef513d1",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text138.txt",
+  "bytes": 9305,
+  "sha256": "7d16c2574c52813e3afb56a5066291f1f94a09efd7ad86161383cc540fdbbbaa",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text140.txt",
+  "bytes": 6514,
+  "sha256": "7e59441a21f92fb86ac5598009b541ce401b9050811057fcda3f38e73e087ecf",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text53.txt",
+  "bytes": 9047,
+  "sha256": "f474e71af77519a8dbaf27c568e37aa8be0f237e742a1ff7c5919c45a350f119",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text54.txt",
+  "bytes": 8534,
+  "sha256": "18efc2df19fd982850d1cceb63a135ad391623402a86cc802bcf46bd55101d4c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text66.txt",
+  "bytes": 9457,
+  "sha256": "c8d09da778e7ca9a9bb780ed20bb7f92b0f4f74df28c28f3726c3bc4d1d682a7",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text67 (1).txt",
+  "bytes": 8987,
+  "sha256": "5a482c9a54db06069c0dc0a80f777914f241f8211bc943e01319605a07150a45",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": [],
+  "dropbox_duplicate_paths": [
+   "text67.txt"
+  ]
+ },
+ {
+  "path": "text68.txt",
+  "bytes": 9693,
+  "sha256": "7e6a5319d4d422072a7e79d256cf9a4b9f60b2b4853bfbe5faf6559786c6717e",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text70.txt",
+  "bytes": 8894,
+  "sha256": "9bcc1c384c0ebffb3baf1f17dfb96ce99383c493b479082918c630f217b1f89c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text71.txt",
+  "bytes": 9742,
+  "sha256": "08540ef55d098fd3f874f3a3f8557fb62247c321abd1bd3424a41bcc899f822f",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text76.txt",
+  "bytes": 9645,
+  "sha256": "d72c39518d2b8878fc0d93f6eed9f54db4e5cc45e44629b448a0298cb630ba95",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text78.txt",
+  "bytes": 9335,
+  "sha256": "2c071596185b8200f6f116315991896122cb7833910934b26f739400cb5ce998",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text79.txt",
+  "bytes": 9441,
+  "sha256": "662b63111e510e02bcafb56ccfa08532ee43d494a5cc6f325288881ded562f6c",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "text93.txt",
+  "bytes": 160609,
+  "sha256": "4cf0d1d7f59f1ac5fba47108d9cfd2bd31b6649813bf7ccdac95886e0927e2e2",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ },
+ {
+  "path": "uts46data.cpython-311.pyc",
+  "bytes": 163255,
+  "sha256": "14568994c66ae09a80a8e3371532cb74a7dfb3292db74d4e56e1b81a40cf07d0",
+  "drive": "none",
+  "drive_where": [],
+  "github": "none",
+  "github_where": []
+ }
+]

@@ -2,7 +2,7 @@
   "schema": "needs_attention/v1",
   "id": "NA-0007",
   "title": "Four concurrent tip-drift gate PRs (#152, #153, #154, #155) — consolidation plan so they do not race each other",
-  "status": "OPEN",
+  "status": "RESOLVED",
   "opened_at": "2026-09-27T20:35:00Z",
   "opened_by": {
     "provider": "cursor",
@@ -32,8 +32,17 @@
     "tests/test_intent.py"
   ],
   "scientific_effect": "NONE",
-  "resolution": null,
-  "resolved_at": null,
-  "resolved_by": null,
-  "resolution_evidence": []
+  "resolution": "Consolidated to one gate. #153 landed first (tip_drift_class.py; also merged #150 and refreshed BASE_TIP). #154 retitled '[superseded by #153 landing]'. #152 rebased down to portable/patches/apply_all.sh semantic already-applied guard + machine-readable summary + PATH_C_STRICT_TIP escape hatch (own test modules) — still valuable, non-overlapping. #155 reduced to the needs_attention inbox only (scripts/tip_drift_gate.py deleted; tests/test_needs_attention.py::test_ci_uses_exactly_one_tip_drift_gate enforces that ci.yml references exactly tip_drift_class.py and no duplicate gate script exists in scripts/). AGENTS.md now tells agents to check open cards before repo-wide fixes.",
+  "resolved_at": "2026-09-27T21:15:00Z",
+  "resolved_by": {
+    "provider": "cursor",
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/trial/pull/153 merged 02488f07",
+    "https://github.com/d6g8k5htny-coder/trial/pull/154 title: [superseded by #153 landing]",
+    "https://github.com/d6g8k5htny-coder/trial/pull/152 files: portable/patches/apply_all.sh, scripts/tip_drift_class.py, tests/test_apply_all_summary.py, tests/test_tip_drift_class.py",
+    "https://github.com/d6g8k5htny-coder/trial/pull/155 (inbox only)"
+  ]
 }

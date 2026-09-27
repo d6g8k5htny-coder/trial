@@ -99,32 +99,11 @@ def base_tip_vs_live(hardening_sha: str) -> dict:
     parts = line.split()
     base_sha = parts[-1] if parts else None
     matches = bool(base_sha and hardening_sha and hardening_sha.startswith(base_sha[:7]))
-    tip_current: bool | None = matches
-    tip_drift_mode = "EXACT" if matches else None
-    tip_lag = 0 if matches else None
-    if not matches and base_sha and hardening_sha:
-        # Landed Path C + BASE_TIP in live history is lag, not drift (fail-closed gate).
-        try:
-            sys.path.insert(0, str(Path(__file__).resolve().parent))
-            import tip_drift_gate
-
-            verify = Path(__file__).resolve().parents[1] / "portable" / "path-c-applied-bundle" / "VERIFY.json"
-            rep = tip_drift_gate.evaluate(
-                live=hardening_sha, base=base_sha, repo_dir=None, **tip_drift_gate.landed_args(verify)
-            )
-            tip_current = bool(rep.get("ok"))
-            tip_drift_mode = rep.get("mode")
-            tip_lag = rep.get("ahead_by")
-        except Exception:  # noqa: BLE001 - dashboard stays read-only / soft
-            tip_current, tip_drift_mode = None, "UNKNOWN"
     return {
         "base_tip_file": line or None,
         "base_tip_sha": base_sha,
         "live_hardening_sha": hardening_sha,
         "tip_matches_base": matches,
-        "tip_current": tip_current,
-        "tip_drift_mode": tip_drift_mode,
-        "tip_lag_commits": tip_lag,
         "apply_stack": "0001-0004 + 0008-0019",
         "path_c_note": (
             "Keep Path C on hardening when default tip lacks PACKET.json "
