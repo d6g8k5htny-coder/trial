@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": "632",
+  "batch": 632,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T01:41:14Z",
-      "tip_sha": "04fb8266fdab0edced7acc4570b05831313d9eb3",
+      "pushed_at": "2026-09-27T01:43:52Z",
+      "tip_sha": "9584756c30db0f44296a3e7b7b42574740cc975c",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-27T01:41:14Z",
+  "generated_at_utc": "2026-09-27T01:43:52Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 632: tip_or_eng TIP_DRIFT keep-prior idle_no_commit tar-noise; inv tip @04fb8266; durable 8/8; lemma_closed=false.",
+  "note": "Batch 632: research_stack_audit_watch_no_promotion catch-up at tip VERIFY632 after tip/eng631+632 (covers research631 tip-race gap; assigned research631 raced); inv tip @9584756c; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {

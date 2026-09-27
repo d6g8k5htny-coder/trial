@@ -48,6 +48,7 @@ fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
 echo "=== Batch 632 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo " Batch 632: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 630/629/628/626/624 (covers research631 tip-race gap; catch-up at tip VERIFY632 after tip/eng631+632); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 632: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 631→632 @2f7a5a9"
 echo " Batch 630: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 629/628/626/624/622 (catch-up after tip/eng630); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 629: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 628/626/624/622/620 (catch-up after tip/eng629); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
