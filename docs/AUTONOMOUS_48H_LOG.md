@@ -1,3 +1,8 @@
+### Batch 838 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merges past Soft Intent838 @`75e7e23b` left inv tip_sha at `abae0b4f` while tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `51453892` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY838; Soft Intent839 not advanced; `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 838 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 837→838 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`abae0b4` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →838; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.

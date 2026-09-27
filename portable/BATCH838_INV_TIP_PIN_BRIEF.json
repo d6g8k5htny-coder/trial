@@ -2,9 +2,9 @@
   "batch": "838",
   "action": "inventory_preserve_durable_tip_pin",
   "parent_pin": true,
-  "trial_tip_before": "38729eae4637a88a92b69ab3eb11babe9600ba10",
-  "trial_tip_after": "abae0b4f931e988f582d629f932bb35623dc3af9",
-  "note": "parent-pin inv tip_sha=precommit HEAD (abae0b4f); was at 38729eae; TIP_DRIFT keep-prior; no tip-pin treadmill",
+  "trial_tip_before": "abae0b4f931e988f582d629f932bb35623dc3af9",
+  "trial_tip_after": "51453892245c0ef8f9e550f0547c0af9245704ce",
+  "note": "parent-pin repair: inv tip_sha=precommit HEAD (51453892); Soft Intent n=1 preserved; VERIFY838 kept; no tip-pin treadmill",
   "tip_match": false,
   "tip_moved": true,
   "keep_prior": true,
@@ -12,6 +12,7 @@
   "flipped_anything": false,
   "scientific_effect": "NONE",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
-  "live_tip": "abae0b4f931e988f582d629f932bb35623dc3af9",
-  "generated_at_utc": "2026-09-27T21:33:38Z"
+  "live_tip": "51453892245c0ef8f9e550f0547c0af9245704ce",
+  "generated_at_utc": "2026-09-27T21:38:41Z",
+  "parent_pin_repair": true
 }

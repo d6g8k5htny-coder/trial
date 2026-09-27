@@ -73050,3 +73050,34 @@ def test_batch838_tip_or_eng_tip_drift_idle_unfreeze() -> None:
         soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
         assert soft.get("uploaded") is False
 
+
+
+def test_batch838_tip_or_eng_parent_pin_repair() -> None:
+    """Batch 838: tip_or_eng parent-pin repair after merges past Soft Intent838 left inv tip_sha stale."""
+    import json
+    import re
+    import subprocess
+    repair = json.loads((ROOT / "portable" / "BATCH838_INV_TIP_PIN_REPAIR.json").read_text(encoding="utf-8"))
+    assert repair.get("batch") == "838"
+    assert repair.get("parent_pin") is True
+    assert repair.get("action") == "inventory_parent_pin_repair"
+    assert repair.get("lemma_closed") is False
+    assert int(repair.get("verify_refresh_batch") or 0) >= 838
+    inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
+    trial = [d for d in inv["details"] if d.get("name") == "d6g8k5htny-coder/trial"][0]
+    assert trial.get("tip_sha") == repair.get("trial_tip_after")
+    assert str(trial.get("tip_sha") or "").startswith("5145389")
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()
+    parent = subprocess.check_output(["git", "rev-parse", "HEAD^"], cwd=ROOT).decode().strip()
+    assert trial.get("tip_sha") in (parent, repair.get("trial_tip_after"))
+    if not head.startswith("5145389"):
+        assert trial.get("tip_sha") == parent
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 838
+    assert verify.get("lemma_closed") is False
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1
+    assert int(headers[0]) == 838
+    assert "STATUS (Batch 838 tip-eng-parent-pin-repair)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+
