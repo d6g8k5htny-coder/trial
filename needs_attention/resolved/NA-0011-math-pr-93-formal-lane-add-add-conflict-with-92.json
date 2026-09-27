@@ -2,7 +2,7 @@
   "schema": "needs_attention/v1",
   "id": "NA-0011",
   "title": "Math- PR #93 (Layer 1 Lean lane, cursor/formal-verification-layer-ae3b) add/add-conflicts with #92's formal/ lane already on Math- main",
-  "status": "OPEN",
+  "status": "RESOLVED",
   "opened_at": "2026-09-27T22:08:00Z",
   "opened_by": {
     "provider": "cursor",
@@ -15,7 +15,7 @@
     "pr": 93,
     "issue": null,
     "branch": "cursor/formal-verification-layer-ae3b",
-    "sha": "35045870",
+    "sha": "a6637061",
     "urls": [
       "https://github.com/d6g8k5htny-coder/Math-/pull/93",
       "https://github.com/d6g8k5htny-coder/Math-/pull/92"
@@ -28,8 +28,15 @@
     "formal/README.md"
   ],
   "scientific_effect": "NONE",
-  "resolution": null,
-  "resolved_at": null,
-  "resolved_by": null,
-  "resolution_evidence": []
+  "resolution": "Resolved by the PR author, not this helper: #93 gained ee0d3474 'Document the two Lean lanes and their coordination rules' (plus lakefile/nanoda follow-ups 6c22a6e7, a6637061), reconciling formal/GLOSSARY.md and formal/README.md with #92's lane. GitHub now reports mergeable=MERGEABLE at a6637061. No status-ladder value changed; scientific effect NONE.",
+  "resolved_at": "2026-09-27T22:37:00Z",
+  "resolved_by": {
+    "provider": "cursor",
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189 (observed; work done by #93 author)"
+  },
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/Math-/pull/93 (MERGEABLE a6637061)",
+    "Math- ee0d3474 (two-lane coordination rules)"
+  ]
 }
