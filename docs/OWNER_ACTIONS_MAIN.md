@@ -1,3 +1,30 @@
+## STATUS (Batch 854 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 853/852/851/850/849 catch-up at tip VERIFY854 Soft Intent n=1 (covers research852/853 tip-race; stamps@852,853,854); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH854_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch854_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 853 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 852/851/850/849/848 catch-up at tip VERIFY854 Soft Intent n=1 (covers research853 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH853_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch853_research_stack_audit_watch -q
+```
+
+## STATUS (Batch 852 research-audit)
+
+Hardening tip BASE **stable** @ `2f7a5a9`. research_stack_audit_watch no-promotion 13/1/3 Δ0 vs 851/850/849/848/847 catch-up at tip VERIFY854 Soft Intent n=1 (covers research852 tip-race); STATUS_GUARD living; Dropbox PR#149 RN-UNIF/D1 remain OPEN; no inventable promotion; inv parent-pin. Evidence: `portable/BATCH852_RESEARCH_*.json`. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch852_research_stack_audit_watch -q
+```
+
 ## STATUS (Batch 854 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `b1152e8` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 853→854; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH854_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.

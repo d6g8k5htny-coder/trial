@@ -49,8 +49,11 @@ fi
 
 echo "=== Batch 854 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 854: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 853→854 @2f7a5a9"
+echo " Batch 854: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 853/852/851/850/849 (catch-up at tip VERIFY854 after tip/eng Soft Intent 853→854; covers research852/853 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 853: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 852→853 @2f7a5a9"
+echo " Batch 853: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 852/851/850/849/848 (catch-up at tip VERIFY854; covers research853 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 852: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 851→852 @2f7a5a9"
+echo " Batch 852: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 851/850/849/848/847 (catch-up at tip VERIFY854; covers research852 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 851: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 850→851 @2f7a5a9"
 echo " Batch 851: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 850/849/848/847/846 (at tip VERIFY851 after tip/eng Soft Intent 850→851; research850 already on tip; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 850: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 849→850 @2f7a5a9"
