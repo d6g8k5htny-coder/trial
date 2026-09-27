@@ -72294,19 +72294,60 @@ def test_batch832_tip_or_eng_parent_pin_repair() -> None:
     assert int(repair.get("verify_refresh_batch") or 0) >= 832
     inv = json.loads((ROOT / "portable" / "AI_AGENT_ACCESS_INVENTORY.json").read_text(encoding="utf-8"))
     trial = [d for d in inv["details"] if d.get("name") == "d6g8k5htny-coder/trial"][0]
-    assert trial.get("tip_sha") == repair.get("trial_tip_after")
-    assert str(trial.get("tip_sha") or "").startswith("bdbbe6a")
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()
     parent = subprocess.check_output(["git", "rev-parse", "HEAD^"], cwd=ROOT).decode().strip()
-    assert trial.get("tip_sha") in (parent, repair.get("trial_tip_after"))
-    if not head.startswith("bdbbe6a"):
-        assert trial.get("tip_sha") == parent
+    # Batch 833+: inv tip_sha advances with parent_pin; repair snapshot remains historical.
+    assert trial.get("tip_sha") in (parent, repair.get("trial_tip_after"), head)
+    assert str(trial.get("tip_sha") or "")[:7]
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 832
     assert verify.get("lemma_closed") is False
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
     assert len(headers) == 1
-    assert int(headers[0]) == 832
+    assert int(headers[0]) >= 832
     assert "STATUS (Batch 832 tip-eng-parent-pin-repair)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
 
+
+
+def test_batch833_tip_or_eng_tip_drift_idle_unfreeze() -> None:
+    """Batch 833: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 832→833."""
+    import json
+    import re
+    idle = json.loads((ROOT / "portable" / "BATCH833_TIP_ENG_IDLE.json").read_text(encoding="utf-8"))
+    assert idle.get("batch") == "833"
+    assert idle.get("lemma_closed") is False
+    assert idle.get("flipped_anything") is False
+    assert idle.get("tip_match") is False
+    assert idle.get("tip_moved") is True
+    assert idle.get("keep_prior") is True
+    assert idle.get("action") == "idle_no_commit"
+    assert int(idle.get("verify_refresh_batch") or 0) >= 833
+    assert str(idle.get("hardening_tip") or "").startswith("2f7a5a9")
+    assert str(idle.get("live_tip") or "").startswith("cfb0c72")
+    hunt = json.loads((ROOT / "portable" / "BATCH833_TIP_ENG_HUNT.json").read_text(encoding="utf-8"))
+    assert hunt.get("defect_found") is False
+    assert hunt.get("action") == "idle_no_commit"
+    assert hunt.get("keep_prior") is True
+    unfreeze = json.loads((ROOT / "portable" / "BATCH833_UNFREEZE_BRIEF.json").read_text(encoding="utf-8"))
+    assert unfreeze.get("to_batch") == "833"
+    assert unfreeze.get("from_batch") == "832"
+    assert unfreeze.get("lemma_closed") is False
+    pin = json.loads((ROOT / "portable" / "BATCH833_INV_TIP_PIN_BRIEF.json").read_text(encoding="utf-8"))
+    assert pin.get("parent_pin") is True
+    verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
+    assert int(verify.get("refresh_batch") or 0) >= 833
+    assert verify.get("lemma_closed") is False
+    base = (ROOT / "portable" / "patches" / "BASE_TIP.txt").read_text(encoding="utf-8")
+    assert _living_tip(base)
+    refresh = (ROOT / "scripts" / "refresh_path_c_bundle.sh").read_text(encoding="utf-8")
+    _assert_refresh_batch_tag_default_at_least(refresh, 747)
+    assert "STATUS (Batch 833 tip-eng-idle)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
+    unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
+    _assert_print_owner_header_batch_at_least(unblock, 747)
+    headers = re.findall(r'echo "=== Batch (\d+) ', unblock)
+    assert len(headers) == 1, f"Soft Intent single-header required, got {headers}"
+    assert int(headers[0]) >= 833
+    for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
+        soft = json.loads((ROOT / "portable" / name).read_text(encoding="utf-8"))
+        assert soft.get("uploaded") is False
