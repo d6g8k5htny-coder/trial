@@ -187,7 +187,9 @@ def test_intent_descends_helper_uses_git_fallback():
     text = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
     i = text.index("def _descends_from_base_tip(")
     body = text[i: text.index("\ndef _living_tip(", i)]
-    assert "_git_compare_status(base, sha)" in body
+    # Either the shared transport (token → anon → git → gh) or the git step
+    # directly; both stop the helper from depending on `gh` alone.
+    assert "_tdc._compare_status(base, sha)" in body or "_git_compare_status(base, sha)" in body
     assert 'in ("ahead", "identical", "behind")' in body
 
 
