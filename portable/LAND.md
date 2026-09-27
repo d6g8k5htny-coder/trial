@@ -2,6 +2,14 @@
 
 tip BASE `2f7a5a9` LIVE `ae20fe0` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 839→840; Soft Intent n=1; inv parent-pin; VERIFY 840; durable 8/8; lemma_closed=false; goal OPEN.
 
+## STATUS (Batch 840 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 839/838/837/836/835 (catch-up at tip VERIFY840 after tip/eng840 Soft Intent 839→840; covers research839 tip-race); STATUS_GUARD pass; stamps@839,840; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 839 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 838/837/836/835/834 (catch-up at tip VERIFY840 after tip/eng Soft Intent→840; covers research839 tip-race); STATUS_GUARD pass; stamps@839; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 839 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `5145389` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 838→839; Soft Intent n=1; inv parent-pin; VERIFY 839; durable 8/8; lemma_closed=false; goal OPEN.
