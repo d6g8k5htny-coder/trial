@@ -1,3 +1,13 @@
+### Batch 757 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY757 after tip/eng757 Soft Intent 756→757; covers research757+756 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 755/754/753/752/751 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 757 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
+### Batch 756 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY757 after tip/eng756+757 Soft Intent 756→757; covers research756 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 755/754/753/752/751 = 0; STATUS_GUARD living; no promotion; evidence JSON only.
+- Soft Intent n=1 (=== Batch 757 — PERMANENT); parent-pin tip_sha=precommit; living STABLE; lemma_closed=false; goal OPEN; Path C IDLE@0019.
+
 ### Batch 757 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 756→757 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`46283f9` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 746→757; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
