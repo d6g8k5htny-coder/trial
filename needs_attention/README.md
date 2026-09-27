@@ -70,7 +70,7 @@ immediately before the merge, assert zero `<<<<<<<`/`>>>>>>>` lines *before*
 committing (the 48h log legitimately contains that literal in prose, so grep
 for line-anchored markers), run the PR's own tests, and push within the same
 minute — the batch loop prepends to `docs/AUTONOMOUS_48H_LOG.md` roughly every
-two minutes and re-conflicts it (NA-0002, NA-0010). Never push to `chatgpt/*`
+two minutes and re-conflicts it (NA-0002, NA-0012). Never push to `chatgpt/*`
 branches; card those for their author (NA-0008).
 
 ## Never

@@ -1,6 +1,6 @@
 {
   "schema": "needs_attention/v1",
-  "id": "NA-0010",
+  "id": "NA-0012",
   "title": "trial PR #160 (Layer 1 Lean 4 lane, cursor/formal-verification-layer-6319) CONFLICTING on docs/AUTONOMOUS_48H_LOG.md and README.md minutes after opening",
   "status": "RESOLVED",
   "opened_at": "2026-09-27T22:00:00Z",
@@ -27,7 +27,7 @@
     "README.md"
   ],
   "scientific_effect": "NONE",
-  "resolution": "Two passes. Pass 1 (9359cbe2): merged origin/main 7cd9ba8b; my marker-stripping step failed its own assertion (the log legitimately contains the literal '<<<<<<<' in a Batch entry) and, because the following git commands were not chained to it, a commit WITH the three conflict-marker lines was pushed; corrected 1 minute later by daafa19d (markers removed, blank line restored, repo-wide marker grep = 0; no history rewrite). Pass 2 (18b06e56): main had moved again (README.md + log both conflicting); resolved keep-both with the ordering PR-section-then-main, asserted zero markers before committing, tests/test_formal_gate.py + tests/test_needs_attention.py pass (29 passed, 1 skipped). GitHub now reports #160 mergeable=MERGEABLE (mergeStateStatus UNSTABLE = checks still running). Lesson recorded in needs_attention/README.md: when helping a PR that prepends to docs/AUTONOMOUS_48H_LOG.md, re-fetch main immediately before merging and push within the same minute; the loop re-conflicts the file every ~2 minutes.",
+  "resolution": "Two passes. Pass 1 (9359cbe2): merged origin/main 7cd9ba8b; my marker-stripping step failed its own assertion (the log legitimately contains the literal '<<<<<<<' in a Batch entry) and, because the following git commands were not chained to it, a commit WITH the three conflict-marker lines was pushed; corrected 1 minute later by daafa19d (markers removed, blank line restored, repo-wide marker grep = 0; no history rewrite). Pass 2 (18b06e56): main had moved again (README.md + log both conflicting); resolved keep-both with the ordering PR-section-then-main, asserted zero markers before committing, tests/test_formal_gate.py + tests/test_needs_attention.py pass (29 passed, 1 skipped). GitHub now reports #160 mergeable=MERGEABLE (mergeStateStatus UNSTABLE = checks still running). Lesson recorded in needs_attention/README.md: when helping a PR that prepends to docs/AUTONOMOUS_48H_LOG.md, re-fetch main immediately before merging and push within the same minute; the loop re-conflicts the file every ~2 minutes. Renumbered NA-0010 -> NA-0012 at 22:33Z: PR #160's author opened their own NA-0010 (distinct-org alignment review of SIDE24-PILOT-001) on the same branch; the OPEN ask keeps the id, this helper log card yields.",
   "resolved_at": "2026-09-27T22:06:00Z",
   "resolved_by": {
     "provider": "cursor",
