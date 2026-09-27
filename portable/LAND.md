@@ -1,3 +1,7 @@
+## STATUS (Batch 729 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 728/727/726/725/724 (catch-up at tip VERIFY730 after tip/eng729+730; covers research729 tip-race; research728 on tip); STATUS_GUARD pass; stamps@729; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 730 tip-eng-keep-prior)
 
 tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; tip_or_eng living script_stale republish; unfreeze 729→730; Soft Intent n=1; inv parent-pin; VERIFY 730; durable 8/8; lemma_closed=false; goal OPEN.
