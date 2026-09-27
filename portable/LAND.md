@@ -1,3 +1,7 @@
+## STATUS (Batch 726 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 725→726; Soft Intent n=1; inv parent-pin; VERIFY 726; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 725 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 724/722/720/719/718 (at tip VERIFY725 after tip/eng725); STATUS_GUARD pass; stamps@725; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
