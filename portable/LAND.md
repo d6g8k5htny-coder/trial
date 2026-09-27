@@ -1,3 +1,7 @@
+## STATUS (Batch 649 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 647/646/644/643/642 (covers research648 tip-race gap; catch-up at tip VERIFY649 after tip/eng648+649); STATUS_GUARD pass; stamps@649; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 649 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `38a3e07` tip_match=false tip_moved keep-prior; tip_or_eng living current need_upload=0 idle; unfreeze 648→649; Soft Intent n=1; inv parent-pin; VERIFY 649; durable 8/8; lemma_closed=false; goal OPEN.
