@@ -37,7 +37,7 @@
     "tests/test_needs_attention.py"
   ],
   "scientific_effect": "NONE",
-  "resolution": "Landed on trial main via PR #153 (merge 02488f07, 2026-09-27T20:43Z): shared classifier scripts/tip_drift_class.py (MATCH / DESCENDANT-with-path_c_landed OK; BEHIND / DIVERGED / UNKNOWN fail) wired into ci.yml, refresh/assert/dry-run/owner scripts, when_writable_land, write_path_c_status; plus a real BASE_TIP refresh 2f7a5a9 -> 9458b90 (refresh_batch 827) and de-frozen Intent pins. trial-ci on main green at f7db5940 (runs 36350418398, 36350475883) — first green since 2026-09-26. PR #155 (this inbox) dropped its duplicate tip_drift_gate.py in favour of the landed classifier (NA-0007: one gate).",
+  "resolution": "Landed on trial main via PR #153 (merge 02488f07, 2026-09-27T20:43Z): shared classifier scripts/tip_drift_class.py (MATCH / DESCENDANT-with-path_c_landed OK; BEHIND / DIVERGED / UNKNOWN fail) wired into ci.yml, refresh/assert/dry-run/owner scripts, when_writable_land, write_path_c_status; plus a real BASE_TIP refresh 2f7a5a9 -> 9458b90 (refresh_batch 827) and de-frozen Intent pins. trial-ci on main green at bb24d803 (the #153 merge; run 20:43:10Z) — first trial-ci green since 2026-09-26. CORRECTION 21:30Z: f7db5940 runs cited earlier were the land-path-c-on-main workflow, not trial-ci. trial-ci went red again from 4a0b9c3d (21:07Z) for a different reason — tracked as NA-0009. PR #155 (this inbox) dropped its duplicate tip_drift_gate.py in favour of the landed classifier (NA-0007: one gate).",
   "resolved_at": "2026-09-27T21:15:00Z",
   "resolved_by": {
     "provider": "cursor",
@@ -49,6 +49,6 @@
     "commit 16fd5930 tip-drift gate: accept landed BASE_TIP ancestor, fail closed otherwise",
     "local: python3 scripts/tip_drift_gate.py --live 9458b903f57f47f34d0398531c9c977d413bad57 --no-api -> ANCESTOR ahead_by=160 via git_temp_fetch; base^ as live -> DRIFT; unknown sha -> DRIFT (fail closed)",
     "https://github.com/d6g8k5htny-coder/trial/pull/153 (merged 02488f07)",
-    "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350475883 (main f7db5940 success)"
+    "trial-ci run on main bb24d803 2026-09-27T20:43:10Z conclusion=success (gh run list --workflow trial-ci --branch main --status success)"
   ]
 }

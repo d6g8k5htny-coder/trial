@@ -1,0 +1,34 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0009",
+  "title": "trial-ci red again on main since 4a0b9c3d (21:07Z): tests/test_intent._descends_from_base_tip returns False for live hardening tip a01c72f in Actions (69 failures)",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T21:30:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 153,
+    "issue": null,
+    "branch": "main",
+    "sha": "fede31a6",
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36351093771",
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36350543062"
+    ]
+  },
+  "blocker": "After PR #153 landed (trial-ci green at bb24d803 20:43Z), the hardening tip moved 9458b90 -> a01c72f (6 commits) and every trial-ci run on main from 4a0b9c3d on fails the same 69 Intent tests: `_living_tip('a01c72f')` -> False (63x), `_living_tip('9ce5c66...')` -> False (4x). tests/test_intent._descends_from_base_tip shells out to `gh api repos/d6g8k5htny-coder/main/compare/<BASE>...<sha> --jq .status`, first with the runner env, then with GITHUB_TOKEN/GH_TOKEN stripped; on Actions both attempts return non-zero/empty so the strict fallback is False. The repo is public and the same compare returns `ahead 6` anonymously from outside Actions (curl 200), so this is an Actions-runner transport/auth issue, not real drift. Sidecar b3c6 (author of #153) is actively pushing follow-ups to main (59070fc8, 9cbab824, 919d1c82...). PR #155's own CI run d84e5908 fails identically (its tree == main + inbox).",
+  "ask": "Owner of tests/test_intent._descends_from_base_tip (b3c6): make the descendant check work without `gh` on the runner. Options in order of robustness: (a) plain urllib GET of the compare endpoint (anonymous first for the public repo, Bearer $GITHUB_TOKEN second) instead of `gh api`; (b) git ancestry via a cached treeless fetch — `git init --bare $TMP && git fetch --filter=tree:0 https://github.com/d6g8k5htny-coder/main chatgpt/drive-github-hardening-20260919 && git merge-base --is-ancestor <BASE> <sha>` (this needs no token at all; ~0.3 s warm); (c) accept the live tip when scripts/tip_drift_class.py already classified it DESCENDANT for the same run. Diagnostic of what `gh api` actually returns under the Actions token is being collected on PR #155 CI (step '[diag NA-0009]'); results will be appended here. Mark RESOLVED when trial-ci on main is green for a commit whose live tip != BASE_TIP.",
+  "write_scope": [
+    "tests/test_intent.py"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
