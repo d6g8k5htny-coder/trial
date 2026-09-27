@@ -1,3 +1,8 @@
+### Batch 841 — tip_or_eng parent-pin repair r3 @2f7a5a9 (2026-09-27)
+
+- Defect: pr150 merges past Soft Intent841 / research841 left inv tip_sha at `7cd9ba8b` while tip advanced to `894cfd92`; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `894cfd92` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY841; Soft Intent842 not advanced; `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 841 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: merge `53f8f875` left inv tip_sha at `372da8f0` while Soft Intent/VERIFY841 tip advanced; pin broken (`tip_sha != HEAD^`).
