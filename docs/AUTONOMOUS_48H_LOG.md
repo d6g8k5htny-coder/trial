@@ -1,3 +1,9 @@
+### Batch 621 — tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 620→621 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`96e5175` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 620→621; living current need_upload=0; Soft Intent n=1; `lemma_closed=false`.
+- Hunt living negative (release current) after tip/eng620/research620 Soft Intent preserve; Soft Intent single === header →621; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+
 ### Batch 620 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
 - Catch-up after tip/eng620; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 619/617/616/615/614 = 0 (no research567/550); STATUS_GUARD living; no promotion; evidence JSON only.
