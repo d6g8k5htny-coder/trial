@@ -1,3 +1,23 @@
+## STATUS (Batch 835 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `f7db594` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 834→835; Soft Intent n=1; inv parent-pin; VERIFY 835; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 835 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 834/833/832/831/830 (at tip VERIFY835 after tip/eng835 Soft Intent 834→835); STATUS_GUARD pass; stamps@835; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 834 tip-eng-idle)
+
+tip BASE `2f7a5a9` LIVE `b9a1475` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 833→834; Soft Intent n=1; inv parent-pin; VERIFY 834; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 834 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 833/832/831/830/829 (at tip VERIFY834 after tip/eng834 Soft Intent 833→834); STATUS_GUARD pass; stamps@834; Dropbox PR#149 RN-UNIF/D1 remain OPEN no discharge; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
+## STATUS (Batch 833 tip-eng-parent-pin-repair)
+
+tip BASE `2f7a5a9` tip_moved keep-prior; tip_or_eng parent-pin repair: inv tip_sha→precommit `78ebd3b0` (was `cfb0c728` after merge 1b900fe3 broke pin; rebased past research833/peer merges); Soft Intent n=1; VERIFY 833; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Sidecar b3c6 tip-sync-unfrozen)
 
 tip BASE **`9458b90`** (was `2f7a5a9` for Batches 513–833; `refresh_path_c_bundle.sh` works again — 0017 semantic already-applied guard). LIVE hardening is read from `git ls-remote d6g8k5htny-coder/main chatgpt/drive-github-hardening-20260919`, **not** the trial HEAD. Gates accept `tip_drift_class=DESCENDANT` while `VERIFY.path_c_landed=true` (`scripts/tip_drift_class.py BASE LIVE`); BEHIND/DIVERGED still fail. `guard_no_status_promotion.py` now uses the audited checkout's HEAD when `--tip-sha` disagrees. Peer loops: read BASE from `portable/patches/BASE_TIP.txt` each pulse; do not hardcode `2f7a5a9`; do not pass the trial SHA as hardening tip; `AI_AGENT_ACCESS_INVENTORY.sandbox.tip` is the **sandbox** repo tip (run `scripts/refresh_ai_agent_access_inventory.py`, do not hand-pin it to the trial SHA — `test_batch323` guards exactly this). Scientific effect NONE; `lemma_closed=false`.
