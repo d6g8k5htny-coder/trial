@@ -1,3 +1,13 @@
+## STATUS (Batch 737 tip-eng-keep-prior)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale republish; unfreeze VERIFY/last-resort 736→737; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH737_TIP_ENG_*.json` + `BATCH737_LIVING_REPUBLISH_BRIEF.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --force
+python3 -m pytest tests/test_intent.py::test_batch737_tip_or_eng_tip_drift_keep_prior_unfreeze -q
+```
+
 ## STATUS (Batch 736 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 735/734/731/729/728 (at tip VERIFY736 after tip/eng736); STATUS_GUARD pass; stamps@736; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
