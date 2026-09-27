@@ -37424,8 +37424,8 @@ def test_batch832_research_stack_audit_watch() -> None:
     _assert_print_owner_header_batch_at_least(unblock, 832)
     assert "research_stack_audit_watch" in unblock
     assert len(re.findall(r'echo "=== Batch \d+ — PERMANENT window;', unblock)) == 1
-    assert "STATUS (Batch 832 research-audit)" in (ROOT / "portable" / "LAND.md").read_text(encoding="utf-8")
-    assert "STATUS (Batch 832 research-audit)" in (ROOT / "docs" / "OWNER_ACTIONS_MAIN.md").read_text(encoding="utf-8")
+    _assert_land_status_at_least("research-audit", 832)
+    _assert_land_status_at_least("research-audit", 832, "docs/OWNER_ACTIONS_MAIN.md")
     log_md = (ROOT / "docs" / "AUTONOMOUS_48H_LOG.md").read_text(encoding="utf-8")
     assert "Batch 832" in log_md and "research_stack_audit_watch" in log_md
     for name in ("BATCH441_TIP_SYNC_WATCH_LIVING_BRIEF.json", "BATCH445_TIP_SYNC_WATCH_LIVING_BRIEF.json"):
