@@ -1,3 +1,8 @@
+### Batch 843 — tip_or_eng parent-pin repair r2 @2f7a5a9 (2026-09-27)
+
+- Defect: merges past pin repair `6f55802a` / research `040b07f6` left inv tip_sha at `6f55802a` while tip advanced to `4444b0f4`; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `4444b0f4` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY843; Soft Intent844 not advanced; `lemma_closed=false`. action=`parent_pin_repair`.
+
 ### Batch 843 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: merges past Soft Intent843 left inv tip_sha at `321ea983` while tip advanced to `7e22df04`; pin broken (`tip_sha != HEAD^`).
