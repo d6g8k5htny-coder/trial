@@ -242,7 +242,7 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
     if [[ "$LIVE_SHA" != "$BASE_TIP_SHA" && "$LIVE_SHA" != "${BASE_TIP_SHA}"* && "$BASE_TIP_SHA" != "${LIVE_SHA}"* ]]; then
       # Sidecar b3c6: live DESCENDS from BASE_TIP while Path C is landed → stack
       # already on tip (idle class); BEHIND / DIVERGED / UNKNOWN still die.
-      DRIFT_CLASS="$(python3 "$TRIAL_ROOT/scripts/tip_drift_class.py" "$BASE_TIP_SHA" "$LIVE_SHA" 2>/dev/null || true)"
+      DRIFT_CLASS="$(python3 "$ROOT/scripts/tip_drift_class.py" "$BASE_TIP_SHA" "$LIVE_SHA" 2>/dev/null || true)"
       DRIFT_LANDED="$(python3 -c 'import json,sys; print("1" if json.load(open(sys.argv[1])).get("path_c_landed") is True else "0")' "$VERIFY_JSON" 2>/dev/null || echo 0)"
       if [[ "$DRIFT_CLASS" == "DESCENDANT" && "$DRIFT_LANDED" == "1" ]]; then
         TIP_DESCENDANT_OK=1
