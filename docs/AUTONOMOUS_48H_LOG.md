@@ -1,3 +1,8 @@
+### Batch 802 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 801→802 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`064343a` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →802; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 801); Soft Intent single === header →802; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 801 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 800→801 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`303bb507` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 800→801; living tip_stale=0 script_stale=0; Soft Intent n=1; `lemma_closed=false`.
