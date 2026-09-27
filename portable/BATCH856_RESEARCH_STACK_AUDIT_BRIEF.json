@@ -35,30 +35,30 @@
     "obl_d1_promote": "OPEN",
     "discharged_from_dropbox": false
   },
-  "batch": "845",
-  "prior_audit_artifact": "portable/BATCH844_RESEARCH_AUDIT_WATCH.json",
-  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY>=845 after Soft Intent856 + PR#161 tip race; open stack 13/1/3 Delta0 vs BATCH844/843/842/841/840; STATUS_GUARD living; Soft Intent n=1 @856; lemma_closed=false; parent-pin tip_sha=precommit; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge; no inventable promotion",
-  "delta_vs_batch844": {
+  "batch": "856",
+  "prior_audit_artifact": "portable/BATCH855_RESEARCH_AUDIT_WATCH.json",
+  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY856 after tip/eng Soft Intent 855\u2192856; covers Batch845 VERIFY>=845 tip-race; open stack 13/1/3 Delta0 vs BATCH855/854/853/852/851; STATUS_GUARD living; Soft Intent n=1 @856; lemma_closed=false; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge; no inventable promotion",
+  "delta_vs_batch855": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch843": {
+  "delta_vs_batch854": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch842": {
+  "delta_vs_batch853": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch841": {
+  "delta_vs_batch852": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
   },
-  "delta_vs_batch840": {
+  "delta_vs_batch851": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0

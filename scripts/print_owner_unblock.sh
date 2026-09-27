@@ -49,6 +49,7 @@ fi
 
 echo "=== Batch 856 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 856: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 855→856 @2f7a5a9"
+echo " Batch 856: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 855/854/853/852/851 (catch-up at tip VERIFY856 after tip/eng Soft Intent 855→856; covers Batch845 VERIFY≥845 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 855: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 854→855 @2f7a5a9"
 echo " Batch 855: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 854/853/852/851/850 (catch-up at tip VERIFY855 after tip/eng Soft Intent raced while research852 auth-blocked; covers research852/853/854 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 854: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 853→854 @2f7a5a9"
@@ -70,7 +71,7 @@ echo " Batch 847: research_stack_audit_watch_no_promotion — open stack 13/1/3;
 echo " Batch 846: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 845→846 @2f7a5a9"
 echo " Batch 846: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 845/844/843/842/841 (catch-up at tip VERIFY846 after tip/eng Soft Intent 845→846; covers research845 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 845: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 844→845 @2f7a5a9"
-echo " Batch 845: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 844/843/842/841/840 (catch-up at tip VERIFY846; covers research845 tip-race; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
+echo " Batch 845: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 844/843/842/841/840 (catch-up at tip VERIFY≥845 after Soft Intent856 + PR#161 tip race; parent-pin repair; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 844: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 843→844 @2f7a5a9"
 echo " Batch 844: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 843/842/841/840/839 (at tip VERIFY844 after tip/eng844 Soft Intent 843→844; Dropbox PR#149 RN-UNIF/D1 OPEN no discharge); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 843: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 842→843 @2f7a5a9"
