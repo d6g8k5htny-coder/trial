@@ -1,3 +1,11 @@
+### Batch 794 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Catch-up at tip VERIFY794 after tip/eng Soft Intent; covers research793 tip-race; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 793/792/791/790/789 = 0; STATUS_GUARD living; no promotion; evidence `BATCH793/794_RESEARCH_*`; Dropbox PR#149 RN-UNIF/D1 remain OPEN; Soft Intent n=1 @794; inv parent-pin @`f0ef39ad`; `lemma_closed=false`; Goal OPEN.
+
+### Batch 793 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Skipped mid-flight by tip race; catch-up stamped at tip VERIFY794; tip_match=1 @ `2f7a5a9f`; open stack 13/1/3; delta vs Batch 792/791/790/789/788 = 0; STATUS_GUARD living; no promotion; Soft Intent n=1 @794; `lemma_closed=false`; Goal OPEN.
+
 ### Batch 794 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 793→794 @2f7a5a9 (2026-09-27)
 
 - TIP_DRIFT LIVE=`d506370` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →794; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
