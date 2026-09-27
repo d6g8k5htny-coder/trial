@@ -45,6 +45,7 @@
     "main 7cd9ba8b (PR #159 git-ancestry transport landed) — trial-ci run 36353384551 success",
     "main 53f8f875 / 4dd7bdc1 — trial-ci runs 36353175357 / 36353214768 success (live tip a01c72f != BASE_TIP 9458b90)",
     "https://github.com/d6g8k5htny-coder/trial/pull/159 (MERGED)",
-    "cursor/dropbox-intake-digest-309a dfb6bb40, cursor/dropbox-gap-hunt-20260927 18422aa0 (main merged in by helper 7189)"
+    "cursor/dropbox-intake-digest-309a dfb6bb40, cursor/dropbox-gap-hunt-20260927 18422aa0 (main merged in by helper 7189)",
+    "https://github.com/d6g8k5htny-coder/trial/actions/runs/36352797542 (#159 @ 16a7a64e, all 5 checks success incl. full sanity Intent suite, live tip a01c72f != BASE_TIP 9458b90; reported by run ff72 on PR #155)"
   ]
 }
