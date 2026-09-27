@@ -72297,7 +72297,7 @@ def test_batch832_tip_or_eng_parent_pin_repair() -> None:
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()
     parent = subprocess.check_output(["git", "rev-parse", "HEAD^"], cwd=ROOT).decode().strip()
     # Batch 833+: inv tip_sha advances with parent_pin; repair snapshot remains historical.
-    assert trial.get("tip_sha") in (parent, repair.get("trial_tip_after"), head)
+    assert _living_trial_tip(trial.get("tip_sha")), trial.get("tip_sha")
     assert str(trial.get("tip_sha") or "")[:7]
     verify = json.loads((ROOT / "portable" / "path-c-applied-bundle" / "VERIFY.json").read_text(encoding="utf-8"))
     assert int(verify.get("refresh_batch") or 0) >= 832

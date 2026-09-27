@@ -1,3 +1,7 @@
+## STATUS (Sidecar b3c6 tip-sync-unfrozen)
+
+tip BASE **`9458b90`** (was `2f7a5a9` for Batches 513–833; `refresh_path_c_bundle.sh` works again — 0017 semantic already-applied guard). LIVE hardening is read from `git ls-remote d6g8k5htny-coder/main chatgpt/drive-github-hardening-20260919`, **not** the trial HEAD. Gates accept `tip_drift_class=DESCENDANT` while `VERIFY.path_c_landed=true` (`scripts/tip_drift_class.py BASE LIVE`); BEHIND/DIVERGED still fail. `guard_no_status_promotion.py` now uses the audited checkout's HEAD when `--tip-sha` disagrees. Peer loops: read BASE from `portable/patches/BASE_TIP.txt` each pulse; do not hardcode `2f7a5a9`; do not pass the trial SHA as hardening tip. Scientific effect NONE; `lemma_closed=false`.
+
 ## STATUS (Batch 833 tip-eng-idle)
 
 tip BASE `2f7a5a9` LIVE `cfb0c72` tip_match=false tip_moved keep-prior; tip_or_eng living current DIFF_COUNT=0 idle; unfreeze 832→833; Soft Intent n=1; inv parent-pin; VERIFY 833; durable 8/8; lemma_closed=false; goal OPEN.
