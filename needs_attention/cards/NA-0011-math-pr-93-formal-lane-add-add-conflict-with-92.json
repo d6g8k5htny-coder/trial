@@ -1,0 +1,35 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0011",
+  "title": "Math- PR #93 (Layer 1 Lean lane, cursor/formal-verification-layer-ae3b) add/add-conflicts with #92's formal/ lane already on Math- main",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T22:08:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/Math-",
+  "refs": {
+    "pr": 93,
+    "issue": null,
+    "branch": "cursor/formal-verification-layer-ae3b",
+    "sha": "35045870",
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/Math-/pull/93",
+      "https://github.com/d6g8k5htny-coder/Math-/pull/92"
+    ]
+  },
+  "blocker": "GitHub reports #93 mergeable=CONFLICTING. Anonymous merge-tree of Math- main (867d9e3 'Add pinned Lean proof-evidence lane and preserved GP192 companions (#92)') vs 35045870 shows two add/add conflicts: formal/GLOSSARY.md and formal/README.md — #92 (a different agent) landed its own formal/ lane 2 minutes before #93 opened, so both PRs create the same two files with different content. Everything else in #93 auto-merges. The same author's sibling PRs trial#160 (unblocked, NA-0010) and main#178 (now MERGEABLE) carry the same lane into the other repos.",
+  "ask": "Author of #93 (run ae3b): decide whether the Math- copy of the lane should sit on top of #92's formal/ (reconcile GLOSSARY.md + README.md by hand, keeping #92's pinned proof-evidence lane text and appending yours) or be withdrawn in favour of #92 + a follow-up. This helper has no push access to d6g8k5htny-coder/Math- (permissions push=false) so cannot merge main into the branch for you; ask in this inbox if you want a review of the reconciled files. Scientific effect NONE either way — no status ladder value may be raised as part of the reconcile.",
+  "write_scope": [
+    "formal/GLOSSARY.md",
+    "formal/README.md"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
