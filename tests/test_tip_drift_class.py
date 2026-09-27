@@ -113,6 +113,88 @@ def test_bad_env_token_falls_back_to_anonymous(monkeypatch):
     assert seen == [True, False]
 
 
+def test_api_exhausted_falls_back_to_git_ancestry_before_gh(monkeypatch):
+    """NA-0009: both API paths dead (rate limit) → git ancestry answers; gh never needed."""
+    monkeypatch.undo()
+    tdc._CACHE.clear()
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    monkeypatch.delenv("MAIN_PUSH_TOKEN", raising=False)
+
+    def dead_urlopen(req, timeout=30):
+        raise OSError("API rate limit exceeded")
+
+    monkeypatch.setattr(tdc.urllib.request, "urlopen", dead_urlopen)
+    monkeypatch.setattr(tdc, "_git_compare_status", lambda base, live, repo=None, timeout=120: "ahead")
+    monkeypatch.setattr(tdc.subprocess, "run", lambda *a, **k: pytest.fail("gh should not be needed"))
+    assert tdc.classify(BASE, LIVE) == "DESCENDANT"
+
+
+def _seed_remote(tmp_path: Path, branch: str) -> tuple[Path, dict[str, str]]:
+    """Local 'research repo': A -> B -> C on `branch`; D diverges from A on 'other'."""
+    src = tmp_path / "src"
+    src.mkdir()
+    env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
+
+    def g(*a: str) -> str:
+        import os
+
+        return subprocess.run(["git", "-C", str(src), *a], check=True, capture_output=True, text=True,
+                              env={**os.environ, **env}).stdout.strip()
+
+    g("init", "-q", "-b", branch)
+    shas: dict[str, str] = {}
+    for name in ("A", "B", "C"):
+        (src / name).write_text(name, encoding="utf-8")
+        g("add", name)
+        g("commit", "-q", "-m", name)
+        shas[name] = g("rev-parse", "HEAD")
+    g("checkout", "-q", "-b", "other", shas["A"])
+    (src / "D").write_text("D", encoding="utf-8")
+    g("add", "D")
+    g("commit", "-q", "-m", "D")
+    shas["D"] = g("rev-parse", "HEAD")
+    g("checkout", "-q", branch)
+    return src, shas
+
+
+def test_git_compare_status_classes_offline(monkeypatch, tmp_path):
+    """identical / ahead / behind / diverged / unknown from a local mirror; no network, no token."""
+    monkeypatch.undo()
+    branch = "chatgpt/drive-github-hardening-test"
+    src, s = _seed_remote(tmp_path, branch)
+    monkeypatch.setenv("TIP_DRIFT_GIT_URL", str(src))
+    monkeypatch.setenv("TIP_DRIFT_GIT_CACHE", str(tmp_path / "cache"))
+    monkeypatch.setattr(tdc, "HARDENING_BRANCH", branch)
+    monkeypatch.setattr(tdc.urllib.request, "urlopen", lambda *a, **k: (_ for _ in ()).throw(OSError("no api")))
+
+    assert tdc._git_compare_status(s["A"], s["C"]) == "ahead"
+    assert tdc._git_compare_status(s["C"], s["A"]) == "behind"
+    assert tdc._git_compare_status(s["B"], s["B"][:7]) == "identical"
+    assert tdc._git_compare_status(s["B"], s["D"]) == "diverged"  # D is off-branch: 40-hex, fetched by SHA
+    assert tdc._git_compare_status(s["A"], "deadbeef") == ""  # unknown stays unknown
+    mirror = tdc._git_mirror_dir(tdc.MAIN_REPO)
+    assert (mirror / "HEAD").is_file()  # cached for later calls in the same run
+
+    tdc._CACHE.clear()
+    assert tdc.classify(s["A"], s["C"]) == "DESCENDANT"
+    assert tdc.classify(s["B"], s["D"]) == "DIVERGED"
+    assert tdc.classify(s["A"], "deadbeef") == "UNKNOWN"
+
+
+def test_intent_descends_helper_uses_git_fallback():
+    """tests/test_intent._descends_from_base_tip must not depend on `gh` alone (NA-0009)."""
+    text = (ROOT / "tests" / "test_intent.py").read_text(encoding="utf-8")
+    i = text.index("def _descends_from_base_tip(")
+    body = text[i: text.index("\ndef _living_tip(", i)]
+    # main fb1f6a54: the helper routes through the shared classifier transport, which
+    # (this PR) now includes the git-ancestry step, so no gh-only path remains.
+    assert "_tdc._compare_status(base, sha)" in body
+    assert 'in ("ahead", "identical", "behind")' in body
+    src = (ROOT / "scripts" / "tip_drift_class.py").read_text(encoding="utf-8")
+    assert "status = _git_compare_status(base, live, repo)" in src
+
+
 def test_path_c_landed_reads_verify(tmp_path):
     good = tmp_path / "VERIFY.json"
     good.write_text(json.dumps({"path_c_landed": True}), encoding="utf-8")

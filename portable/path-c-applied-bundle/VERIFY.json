@@ -1,7 +1,7 @@
 {
   "batch": "241",
-  "refresh_batch": 835,
-  "generated_at_utc": "2026-09-27T21:06:38Z",
+  "refresh_batch": 841,
+  "generated_at_utc": "2026-09-27T21:47:49Z",
   "base_tip_sha": "9458b903f57f47f34d0398531c9c977d413bad57",
   "applied_commit_sha": "b4fdbdc1aaf43aede7f42b6dca2358806f7299ed",
   "hardening_ref": "chatgpt/drive-github-hardening-20260919",
@@ -35,7 +35,7 @@
   "patch_file": "path-c-on-hardening.patch",
   "scientific_effect": "NONE",
   "goal_complete": false,
-  "note": "Batch 834: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle; refresh_batch\u2192834 @2f7a5a9; kept prior .patch+.bundle; lemma_closed=false; problems=0",
+  "note": "Batch 841: tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle; refresh_batch\u2192841 @2f7a5a9; kept prior .patch+.bundle; lemma_closed=false; problems=0",
   "force": false,
   "local_allow_empty_sha": "5961a10c8300629e4464d498493dfe1bb70b80a9",
   "path_c_landed": true,
