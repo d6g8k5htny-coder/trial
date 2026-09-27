@@ -59,14 +59,14 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": 824,
+  "batch": 841,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T00:04:32Z",
+      "pushed_at": "2026-09-27T01:07:47Z",
       "tip_sha": "ea55c6e76edb31c48da5ce5aa0c3761d3ee49146",
       "has_agents": true,
       "write": "WRITABLE"
@@ -76,8 +76,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T06:44:45Z",
-      "tip_sha": "7476e29c65ce82d23e0b39e7f7d98741a875a8ff",
+      "pushed_at": "2026-09-27T21:24:49Z",
+      "tip_sha": "ae1b92ef1bb794050e584bec1c6f58f9495a018e",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -86,8 +86,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T07:06:08Z",
-      "tip_sha": "4a72a5ab381ce44523f2fafe922dc8c3a7e03f21",
+      "pushed_at": "2026-09-27T21:25:50Z",
+      "tip_sha": "6a3a8ca356f0a1963614707b2773e652c8059a03",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -96,8 +96,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T02:04:59Z",
-      "tip_sha": "10e1f191c7d9f2755ca971ddbba87874d2475619",
+      "pushed_at": "2026-09-27T21:25:02Z",
+      "tip_sha": "3b2ac59f8f02b9573d01087aefff85bbc279a55a",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -106,7 +106,7 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T06:31:14Z",
+      "pushed_at": "2026-09-27T20:58:45Z",
       "tip_sha": "14f6836e7ccf6a463ef6da745602debfea4d15ee",
       "has_agents": true,
       "write": "WRITABLE"
@@ -116,8 +116,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T02:57:00Z",
-      "tip_sha": "a61656fc7cbe704f5b874e1cae08637fb914227f",
+      "pushed_at": "2026-09-26T16:49:39Z",
+      "tip_sha": "c88768bb11efd1f7d6bda188f13064bedec54a06",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -126,8 +126,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-26T07:06:19Z",
-      "tip_sha": "49ae345a92826a4ff2435a0e9907aa9c73028d8e",
+      "pushed_at": "2026-09-27T21:07:55Z",
+      "tip_sha": "ea66efb6074b529adc5a09b2feb8a1e106a1520b",
       "has_agents": true,
       "write": "WRITABLE"
     },
@@ -136,8 +136,8 @@
       "push": true,
       "admin": true,
       "default_branch": "main",
-      "pushed_at": "2026-09-27T04:21:08Z",
-      "tip_sha": "900fcfc5ab54cf86b6c0d8554b64d68c6721bea1",
+      "pushed_at": "2026-09-27T21:26:45Z",
+      "tip_sha": "4dd7bdc1c90884939239dbeebf6f6ac27cdec941",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-27T20:02:54Z",
+  "generated_at_utc": "2026-09-27T21:52:11Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 824: tip_or_eng TIP_DRIFT keep-prior idle_no_commit living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; inv tip @900fcfc5ab54; durable 8/8; lemma_closed=false.",
+  "note": "Batch 841: tip_or_eng parent-pin repair after merge 53f8f875 (+sidecar 4dd7bdc1); inv tip_sha @4dd7bdc1c908 (=precommit HEAD); was @372da8f0ef77 (stale through merge); Soft Intent n=1 VERIFY841 preserved; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
@@ -303,11 +303,10 @@
     "readable": true,
     "write": "WRITABLE",
     "has_agents": true,
-    "tip": "900fcfc5ab54cf86b6c0d8554b64d68c6721bea1",
+    "tip": "ea66efb",
     "app_read_http": 404,
     "durable_read_http": 200,
-    "main_push_token_secret": true,
-    "tip_sha": "900fcfc5ab54cf86b6c0d8554b64d68c6721bea1"
+    "main_push_token_secret": true
   },
   "sandbox_added": true,
   "scientific_effect": "NONE",
