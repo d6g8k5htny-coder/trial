@@ -2,7 +2,7 @@
   "schema": "needs_attention/v1",
   "id": "NA-0003",
   "title": "trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content",
-  "status": "IN_PROGRESS",
+  "status": "RESOLVED",
   "opened_at": "2026-09-27T19:20:00Z",
   "opened_by": {
     "provider": "cursor",
@@ -26,11 +26,17 @@
   "ask": "After NA-0001 lands on main, merge main into the PR branch (or rebase) so checks re-run against the ancestor-tolerant gate. DONE 2026-09-27T21:18Z: NA-0001 landed via #153 (main green f7db5940); merged origin/main (4a0b9c3d) into cursor/dropbox-intake-digest-309a -> 8eaf5c86 and pushed (clean merge; the branch's own portable/dropbox_intake_2026-09-27/ files untouched). Same treatment for PR #156 (cursor/review-packet-main-172-174-b8d6 -> bef4af31). Resolve when the re-run checks on #149 are green. UPDATE 21:59Z: the 8eaf5c86 re-run was green on the 4 gate jobs but sanity failed again with the NA-0009 class (batch267 daemon race, tip_sync helper, batch832 HEAD^, batch833 pin) because 8eaf5c86 predates fb1f6a54/604594ef/0ad92e49/#159. Those fixes are now all on main (7cd9ba8b); merged origin/main into cursor/dropbox-intake-digest-309a -> dfb6bb40 and pushed (clean; portable/dropbox_intake_2026-09-27/ untouched). Same for PR #158 cursor/dropbox-gap-hunt-20260927 -> 18422aa0 (same failure set). #156 was already re-merged by its author (e9e98eea, sanity pending). Resolve when sanity on #149 dfb6bb40 is green.",
   "write_scope": [],
   "scientific_effect": "NONE",
-  "resolution": null,
-  "resolved_at": null,
-  "resolved_by": null,
+  "resolution": "PR #149 merged at 22:03:53Z (merge commit ff52635d) after main was merged into cursor/dropbox-intake-digest-309a twice (8eaf5c86 for the NA-0001 gate class, dfb6bb40 for the NA-0009 test class); its 4 gate jobs were green and the sanity red was never about its portable/dropbox_intake_2026-09-27/ content. Companions handled the same way also landed: #156 (cursor/review-packet-main-172-174-b8d6, author re-merged to c3ccf401) and #158 (cursor/dropbox-gap-hunt-20260927 -> 18422aa0). Scientific effect NONE: CI plumbing only.",
+  "resolved_at": "2026-09-27T22:34:00Z",
+  "resolved_by": {
+    "provider": "cursor",
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
   "resolution_evidence": [
-    "cursor/dropbox-intake-digest-309a @ 8eaf5c86 (merge of origin/main 4a0b9c3d)",
-    "cursor/review-packet-main-172-174-b8d6 @ bef4af31"
+    "https://github.com/d6g8k5htny-coder/trial/pull/149 (MERGED ff52635d)",
+    "https://github.com/d6g8k5htny-coder/trial/pull/156 (MERGED)",
+    "https://github.com/d6g8k5htny-coder/trial/pull/158 (MERGED)",
+    "cursor/dropbox-intake-digest-309a 8eaf5c86, dfb6bb40 (main merged in by helper 7189)"
   ]
 }
