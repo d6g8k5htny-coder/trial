@@ -1,3 +1,12 @@
+## STATUS (Batch 766 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `35c6fba` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 765→766; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH766_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch766_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 765 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 763/762/761/760/759 (catch-up at tip VERIFY765 after tip/eng765 Soft Intent 764→765; covers research765+764 tip-race); STATUS_GUARD pass; stamps@765; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
