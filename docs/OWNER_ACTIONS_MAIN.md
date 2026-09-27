@@ -1,3 +1,13 @@
+## STATUS (Batch 640 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living current need_upload=0 idle; unfreeze VERIFY/last-resort 639→640; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH640_TIP_ENG_IDLE.json` + `BATCH640_TIP_ENG_HUNT.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+./scripts/republish_living_path_c_release.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch640_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 639 research-audit)
 
 tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 638/636/634/633/632 (catch-up after tip/eng639); STATUS_GUARD pass; stamps@639; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
