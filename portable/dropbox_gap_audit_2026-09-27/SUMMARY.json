@@ -1,0 +1,186 @@
+{
+  "dropbox_files": 3325,
+  "dropbox_distinct_sha256": 1695,
+  "dropbox_bytes": 188945044,
+  "dropbox_zip_members": 2975,
+  "drive_reference": {
+    "inventory": "main@chatgpt/drive-github-hardening-20260919:drive/inventory.jsonl (2026-09-17 export)",
+    "archive_members_csv": "drive/source_map/Archive_Members.csv",
+    "payloads_csv": "drive/source_map/Payloads.csv",
+    "delta_and_mirror_manifests": 414,
+    "drive_items_non_folder": 3714,
+    "drive_native_docs_no_digest": 1655,
+    "distinct_sha256_known": 5621,
+    "caveat": "No Drive API credentials in this pod; live Drive (post 2026-09-20) may differ. Native Google Docs/Sheets carry no SHA-256 so they match by name only."
+  },
+  "github_reference": {
+    "main": {
+      "refs": 145,
+      "tree_entries": 395021
+    },
+    "google-drive": {
+      "refs": 6,
+      "tree_entries": 52
+    },
+    "governance-": {
+      "refs": 8,
+      "tree_entries": 159
+    },
+    "Math-": {
+      "refs": 70,
+      "tree_entries": 8526
+    },
+    "meta-framework": {
+      "refs": 10,
+      "tree_entries": 375
+    },
+    "query-": {
+      "refs": 19,
+      "tree_entries": 348
+    },
+    "sandbox": {
+      "refs": 5,
+      "tree_entries": 79
+    },
+    "trial": {
+      "refs": 1399,
+      "tree_entries": 2784936
+    }
+  },
+  "drive_match_tally_all_files": {
+    "exact_sha256": 3002,
+    "name_and_bytes": 2,
+    "name_only": 41,
+    "none": 266,
+    "stem_only": 14
+  },
+  "drive_match_tally_distinct": {
+    "exact_sha256": 1476,
+    "name_and_bytes": 1,
+    "name_only": 26,
+    "none": 183,
+    "stem_only": 9
+  },
+  "github_match_tally_all_files": {
+    "exact_blob": 1066,
+    "name_only": 184,
+    "none": 2008,
+    "stem_only": 67
+  },
+  "github_match_tally_distinct": {
+    "exact_blob": 589,
+    "name_only": 81,
+    "none": 975,
+    "stem_only": 50
+  },
+  "github_exact_on_default_branch_distinct": 59,
+  "github_exact_only_on_non_default_branches_distinct": 530,
+  "zip_members_drive_tally": {
+    "exact_sha256": 2821,
+    "name_and_bytes": 1,
+    "name_only": 18,
+    "none": 125,
+    "stem_only": 10
+  },
+  "zip_members_github_tally": {
+    "exact_blob": 958,
+    "name_only": 200,
+    "none": 1764,
+    "stem_only": 53
+  },
+  "missing_from_drive_strict_by_top_dir": {
+    "(root)": {
+      "missing": 95,
+      "total": 561
+    },
+    "00": {
+      "missing": 3,
+      "total": 23
+    },
+    "00_MASTER_INDEX_AND_ROUTING": {
+      "missing": 1,
+      "total": 31
+    },
+    "01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT": {
+      "missing": 1,
+      "total": 4
+    },
+    "05_MASTER_SETUP": {
+      "missing": 3,
+      "total": 15
+    },
+    "64_FORMAL_CORE_R2_P02_LM008_LM009": {
+      "missing": 2,
+      "total": 17
+    },
+    "K3_SIDE24_LB": {
+      "missing": 0,
+      "total": 940
+    },
+    "LPW_Return_05_Archive_Audit_2026-09-12": {
+      "missing": 33,
+      "total": 53
+    },
+    "T2 — SARD-G Transversality": {
+      "missing": 3,
+      "total": 4
+    },
+    "master-final-v1": {
+      "missing": 38,
+      "total": 43
+    },
+    "rn-sector-review-master-20260921": {
+      "missing": 4,
+      "total": 4
+    }
+  },
+  "missing_from_github_strict_by_top_dir": {
+    "(root)": {
+      "missing": 336,
+      "total": 561
+    },
+    "00": {
+      "missing": 0,
+      "total": 23
+    },
+    "00_MASTER_INDEX_AND_ROUTING": {
+      "missing": 0,
+      "total": 31
+    },
+    "01_TIER-2_CLASS_A_B_AUTHORIZATION_AND_PILOT": {
+      "missing": 0,
+      "total": 4
+    },
+    "05_MASTER_SETUP": {
+      "missing": 0,
+      "total": 15
+    },
+    "64_FORMAL_CORE_R2_P02_LM008_LM009": {
+      "missing": 6,
+      "total": 17
+    },
+    "K3_SIDE24_LB": {
+      "missing": 551,
+      "total": 940
+    },
+    "LPW_Return_05_Archive_Audit_2026-09-12": {
+      "missing": 37,
+      "total": 53
+    },
+    "T2 — SARD-G Transversality": {
+      "missing": 0,
+      "total": 4
+    },
+    "master-final-v1": {
+      "missing": 42,
+      "total": 43
+    },
+    "rn-sector-review-master-20260921": {
+      "missing": 3,
+      "total": 4
+    }
+  },
+  "missing_from_both_strict_distinct": 166,
+  "missing_from_both_loose_distinct": 202,
+  "zip_carriers": 37
+}
