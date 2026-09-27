@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 ### Batch 828 — formal_verification_layer_1 Lean pilot SIDE24-PILOT-001 kernel_checked (2026-09-27)
 
 - Owner directive (pre-approved): add a formal layer (Lean 4 + Mathlib) on top of Layer 0 (provenance / scope / no-status-promotion gate / museum). Implemented in `formal/` + `scripts/formal_gate.py` + `.github/workflows/formal-gate.yml` + `tests/test_formal_gate.py` (20 tests) + `docs/FORMAL_VERIFICATION_LAYER.md` + `formal/GLOSSARY.md` + `portable/formal-layer/` cross-repo handoff (all agents, all 8 owner repos). Pins Lean `v4.19.0` / Mathlib `c44e0c8e…` == `main` recovered GP-FOR-192 bundle.
 - Pilot: `LS-DER-042` closed form `c_∞ = 2^(2/3)·3^(5/6)·Γ(1/6)/(54π^(3/2))` (frozen body `54cedb1e…` recomputed = declared BODY_SHA256). Kernel-checked: `cPlanar_pos` (unconditional), factor enclosures (25 digits), `cPlanar_decimal_enclosure` 19-digit window given explicit `Γ(1/6)` hypothesis (hypothesis = scope). Axioms all 13 decls = `[propext, Classical.choice, Quot.sound]`; no `sorryAx`; 2 semantic mutants REJECTED. Scope disposition: roadmap 20-digit window NOT provable from Mathlib's 20-decimal π → loosened to 19 digits, recorded not hidden.
 - Gate: status ladder earned not declared; hash lock; receipt binding (toolchain / mathlib / module sha / axioms / controls); blueprint alignment; status-vocabulary guard. `kernel_checked` ⇒ L5 metadata only (`verification_level ≠ acceptance`). Alignment review lane = `author_side` (no distinct reviewer yet). AI-prover lane `NOT_RUN`.
 - action=`formal_layer_pilot`; scientific_effect=NONE; `lemma_closed=false`; no premise/prize/obligation/claim touched; Goal OPEN.
-=======
+
 ### Batch 841 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: merge `53f8f875` left inv tip_sha at `372da8f0` while Soft Intent/VERIFY841 tip advanced; pin broken (`tip_sha != HEAD^`).
@@ -180,7 +179,6 @@
 
 - TIP_DRIFT LIVE=`5adb7c4` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort 827→828; living current DIFF_COUNT=0 idle Soft Intent+VERIFY unfreeze; Soft Intent n=1; `lemma_closed=false`.
 - Hunt no inventable defect; Soft Intent single === header →828; inv parent_pin @5adb7c4. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
->>>>>>> origin/main
 
 ### Batch 827 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
 
