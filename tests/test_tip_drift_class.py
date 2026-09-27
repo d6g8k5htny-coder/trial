@@ -211,3 +211,19 @@ def test_apply_all_0017_semantic_guard_present():
     assert 'semantic_already_applied "$p"' in text
     assert "already-applied (semantic)" in text
     assert "0017" in text
+
+
+def test_guard_prefers_checkout_head_over_wrong_tip_sha(tmp_path):
+    """A --tip-sha that is not the audited checkout's HEAD must not be stamped."""
+    import guard_no_status_promotion as g  # noqa: PLC0415
+
+    repo = tmp_path / "co"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q", repo], check=True)
+    subprocess.run(["git", "-C", repo, "-c", "user.email=t@t", "-c", "user.name=t",
+                    "commit", "-q", "--allow-empty", "-m", "x"], check=True)
+    head = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True,
+                          text=True, check=True).stdout.strip()
+    assert g._git_head_sha(repo) == head
+    src = (ROOT / "scripts" / "guard_no_status_promotion.py").read_text(encoding="utf-8")
+    assert "using HEAD (tip_sha must describe the audited tree)" in src

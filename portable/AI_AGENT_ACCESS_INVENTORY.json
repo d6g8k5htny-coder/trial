@@ -59,7 +59,7 @@
     "claude",
     "grok-pat-fallback"
   ],
-  "batch": "827",
+  "batch": 834,
   "details": [
     {
       "name": "d6g8k5htny-coder/google-drive",
@@ -137,7 +137,7 @@
       "admin": true,
       "default_branch": "main",
       "pushed_at": "2026-09-27T20:26:16Z",
-      "tip_sha": "bdbbe6a8d1a60468b0f421e24f16db28d1994356",
+      "tip_sha": "3d22b453263c5cfb1fa6af2327f137f11497e40e",
       "has_agents": true,
       "write": "WRITABLE"
     }
@@ -146,7 +146,7 @@
   "durable_sibling_coverage": "8/8_WRITABLE",
   "durable_writable": "8/8",
   "flipped_anything": false,
-  "generated_at_utc": "2026-09-27T20:48:49Z",
+  "generated_at_utc": "2026-09-27T21:03:41Z",
   "gh_api_inventory": [
     {
       "api_ok": true,
@@ -261,7 +261,7 @@
   "lemma_closed": false,
   "main_writable": true,
   "multi_agent_script": "scripts/owner_grant_ai_agent_access.sh",
-  "note": "Batch 832: tip_or_eng parent-pin repair after merge bb24d803; inv tip_sha @bdbbe6a8d1a6 (=precommit HEAD); was stale @79d660e775ac through merges; Soft Intent n=1 VERIFY832 preserved; durable 8/8; lemma_closed=false.",
+  "note": "Batch 834: research_stack_audit_watch_no_promotion VERIFY834 Soft Intent n=1; inv tip @3d22b453263c; durable 8/8; lemma_closed=false.",
   "owner_next": "On Cursor+Codex+Claude App UIs select ALL repositories including sandbox; RELAUNCH so install matches device-token R/W",
   "repos_connected": [
     {
@@ -303,10 +303,11 @@
     "readable": true,
     "write": "WRITABLE",
     "has_agents": true,
-    "tip": "ea66efb",
+    "tip": "b9a1475f8d2c863686a39c6dd3aea0299c0b40ad",
     "app_read_http": 404,
     "durable_read_http": 200,
-    "main_push_token_secret": true
+    "main_push_token_secret": true,
+    "tip_sha": "b9a1475f8d2c863686a39c6dd3aea0299c0b40ad"
   },
   "sandbox_added": true,
   "scientific_effect": "NONE",

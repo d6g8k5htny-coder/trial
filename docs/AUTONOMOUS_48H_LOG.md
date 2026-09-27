@@ -1,3 +1,28 @@
+### Batch 834 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY834 Soft Intent n=1 after tip/eng834 Soft Intent 833→834; open stack 13/1/3 Δ0 vs 833/832/831/830/829; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`3d22b453`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@834.
+
+### Batch 834 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 833→834 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`b9a1475` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →834; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 833); Soft Intent single === header →834; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
+### Batch 833 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
+
+- Defect: merge `1b900fe3` left inv tip_sha at `cfb0c728` while Soft Intent/VERIFY833 tip advanced; pin broken (`tip_sha != HEAD^`).
+- Repair: inv tip_sha→precommit `78ebd3b0` so after land tip_sha==HEAD^; Soft Intent n=1 preserved; VERIFY833; research833/peer merges mid-repair (kept Soft Intent 833); `lemma_closed=false`. action=`parent_pin_repair`.
+
+### Batch 833 — research_stack_audit_watch_no_promotion @2f7a5a9 (2026-09-27)
+
+- Path C STATUS_GUARD re-audit at tip VERIFY833 Soft Intent n=1 after tip/eng833 Soft Intent 832→833; open stack 13/1/3 Δ0 vs 832/831/830/829/828; `lemma_closed=false`; Dropbox PR#149 RN-UNIF/D1 remain OPEN (no discharge); no inventable promotion; inv parent-pin @`1b900fe3`.
+- action=`research_stack_audit_watch`; scientific_effect=NONE; Goal OPEN; stamps@833.
+
+### Batch 833 — tip_or_eng TIP_DRIFT keep-prior living current DIFF_COUNT=0 idle + unfreeze 832→833 @2f7a5a9 (2026-09-27)
+
+- TIP_DRIFT LIVE=`cfb0c72` BASE=`2f7a5a9` keep-prior (BASE immutable); Path C IDLE@0019; durable 8/8; VERIFY/last-resort →833; living current DIFF_COUNT=0 idle; Soft Intent n=1; `lemma_closed=false`.
+- Hunt no defect (living current after force republish Soft Intent 832); Soft Intent single === header →833; inv parent_pin. Inventable skipped. action=`idle_no_commit`. Goal OPEN.
+
 ### Batch 832 — tip_or_eng parent-pin repair @2f7a5a9 (2026-09-27)
 
 - Defect: merge `bb24d803` left inv tip_sha at `79d660e7` while Soft Intent/VERIFY832 tip advanced; pin broken (`tip_sha != HEAD^`).
@@ -13,6 +38,7 @@
 - Owner mandate (merge-assist run): focus ready-to-merge trial PRs, assist peers, merge as needed. Scientific effect: **NONE**; `lemma_closed=false`; no claim/premise/prize/lemma touched.
 - **Tip-drift policy (engineering):** hardening moved again mid-run (`e7652a1`→`d4ad3bb`, several merges/hour), so strict `live == BASE_TIP` is a treadmill. New `scripts/tip_drift_class.py` (MATCH / DESCENDANT / BEHIND / DIVERGED / UNKNOWN via GitHub compare; local `merge-base` first where a clone exists). Every gate — `ci.yml` (both tip-drift jobs), `refresh_path_c_bundle.sh --dry-run` (`TIP_DRIFT_DESCENDANT_OK` exit 0), `assert_path_c_ready.sh`, `owner_open_path_c_pr.sh`, `owner_land_path_c.sh`, `path_c_dry_run.py`, `write_path_c_status.py`, `when_writable_land.py` — now treats **DESCENDANT while `VERIFY.path_c_landed=true`** as informational (stack already on tip; refresh at leisure). BEHIND / DIVERGED / UNKNOWN and `BASE_TIP≠VERIFY.base_tip_sha` still fail. JSON consumers: `tip_matches_base` / `tip_match` = MATCH-or-landed-DESCENDANT; strict value kept as `tip_exact_match`; class in `tip_drift_class`. Verified on live `d4ad3bb`: all five gates OK / IDLE_PATH_C_DONE, `apply_all --check` OK, `math_status problems=0 lemma_closed=false`; negative test with a diverged BASE_TIP → exit 1 / die. 15 offline tests `tests/test_tip_drift_class.py`.
 - **Peer-loop defect noted (for tip_or_eng / research_stack_audit_watch):** Batches 811–822 stamped **trial** commit SHAs where hardening SHAs belong — `STATUS_GUARD_SNAPSHOT.tip_sha=fd808d4` (= trial Batch 821) and `AI_AGENT_ACCESS_INVENTORY.sandbox.tip=13638cd` (= trial tip, not sandbox). `test_batch323` / `343` / `346` / `368` were red on `main` from this alone. Repaired here by regenerating both from their scripts (guard baseline = the `e7652a1` hardening snapshot; inventory `preserve_durable`, batch 822 kept). Loops should pass `--tip-sha` from the hardening clone and pin `sandbox.tip` from the sandbox repo.
+- **Guard hardened at source:** `guard_no_status_promotion.py` now treats the audited checkout's git HEAD as authoritative — a `--tip-sha` that disagrees (the trial HEAD the peer loop passes) is overridden with a warning. Batch 832 re-stamped `tip_sha=082604bc` (trial) minutes after the first land and turned 89 living-tip pins red; the peer's next pulse self-corrects with this change. Snapshot regenerated at hardening `a01c72f` (pass, violations=0, baseline in-repo).
 - Second real refresh at the end of this run: BASE_TIP `e7652a1`→**`9ce5c66`** (refresh_batch 822); live tip already `9458b90` by the time STATUS was written → `tip_match=true tip_exact_match=false tip_drift_class=DESCENDANT` — the gates now absorb that instead of going red.
 - `tests/test_intent.py` de-frozen mechanically (no test deleted): `_living_tip` accepts allowlist ∪ current BASE_TIP ∪ verified descendants; `_living_trial_tip` for parent-pin; `_assert_land_status_at_least` for `STATUS (Batch N …)` headers that peers overwrite in place; Batch 538/677/749 accept either recorded outcome.
 - Trial [PR #150](https://github.com/d6g8k5htny-coder/trial/pull/150) (Dropbox → Drive/GitHub gap audit; non-draft, `CONFLICTING` on this log only) — conflict resolved keep-both (main batches + Batch 791 sidecar); `tests/test_dropbox_gap_audit.py` 5 passed; landed on trial `main` via merge push (PR create/merge via App is 403).
