@@ -16,8 +16,13 @@ Machine-readable results: [`portable/dropbox_gap_audit_2026-09-27/`](../portable
 `ZIP_CARRIER_COVERAGE.json`, `DROPBOX_INVENTORY.tsv`). Reproduce with
 [`scripts/dropbox_gap_audit.py`](../scripts/dropbox_gap_audit.py).
 Companion intake digest by a peer agent: `cursor/dropbox-intake-digest-309a`
-(`portable/dropbox_intake_2026-09-27/`) — that branch indexes the corpus; this
-one diffs it.
+(`portable/dropbox_intake_2026-09-27/`, trial PR #149) — that branch indexes the
+corpus; this one diffs it. The two downloads are not byte-identical: the peer's
+zip was 188,397,410 bytes at 16:53 UTC, this one 189,776,398 bytes at ~17:19 UTC,
+so the share may have changed between pulls; `DROPBOX_INVENTORY.tsv` is the
+later snapshot. (The peer `FILE_INDEX.txt` also lists paths differently — e.g.
+`(1)/…` for the duplicate folders and few root files — so its 2,923 lines and
+this audit's 3,325 files are not directly comparable.)
 
 ## How the comparison was done
 
