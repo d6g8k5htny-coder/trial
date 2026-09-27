@@ -1,6 +1,6 @@
 {
   "batch": "784",
-  "generated_at_utc": "2026-09-27T16:49:59Z",
+  "generated_at_utc": "2026-09-27T16:53:47Z",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
   "hardening_tip_short": "2f7a5a9",
   "tip_match": true,
@@ -31,8 +31,10 @@
   "coord_bc": "bc-ee63a10c-59c8-51d7-98d8-9d900a67a0f9",
   "coord_tip_sync_bc": "bc-fae8f3a1-56af-5254-9431-1413ca3708b4",
   "orchestrator_bc": "bc-01a0cf1e-ebff-78a8-8a7a-9140fd59309a",
-  "note": "no-promotion re-audit @2f7a5a9 at tip VERIFY784 after tip/eng784 Soft Intent 783\u2192784; open stack 13/1/3 \u03940 vs BATCH783/782/781/780/779; STATUS_GUARD living; Soft Intent n=1; lemma_closed=false",
+  "note": "no-promotion re-audit @2f7a5a9 catch-up at tip VERIFY785 after tip/eng Soft Intent\u2192785; covers research784 tip-race; open stack 13/1/3 \u03940 vs BATCH783/782/781/780/779; STATUS_GUARD living; Soft Intent n=1 @785; lemma_closed=false",
   "tip_raced_eng784": true,
+  "catch_up_at_verify": 785,
+  "research784_skipped_by_tip_race": true,
   "delta_vs_batch783": {
     "open_premises": 0,
     "open_lemmas": 0,

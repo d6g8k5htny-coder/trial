@@ -1,5 +1,5 @@
 {
-  "batch": "784",
+  "batch": "785",
   "hardening_tip": "2f7a5a9f10c9ed5f5b7792a8f2521318d9208532",
   "tip_match": true,
   "open_premises": 13,
@@ -18,9 +18,14 @@
   "coord_bc": "bc-ee63a10c-59c8-51d7-98d8-9d900a67a0f9",
   "inventable_promoted": false,
   "generated_at_utc": "2026-09-27T16:53:47Z",
-  "tip_raced_eng784": true,
+  "tip_raced_eng785": true,
   "catch_up_at_verify": 785,
   "research784_skipped_by_tip_race": true,
+  "delta_vs_batch784": {
+    "open_premises": 0,
+    "open_lemmas": 0,
+    "open_prizes": 0
+  },
   "delta_vs_batch783": {
     "open_premises": 0,
     "open_lemmas": 0,
@@ -37,11 +42,6 @@
     "open_prizes": 0
   },
   "delta_vs_batch780": {
-    "open_premises": 0,
-    "open_lemmas": 0,
-    "open_prizes": 0
-  },
-  "delta_vs_batch779": {
     "open_premises": 0,
     "open_lemmas": 0,
     "open_prizes": 0
