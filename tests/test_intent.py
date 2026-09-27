@@ -9309,6 +9309,13 @@ def test_batch267_when_writable_dual_daemon_status_race() -> None:
             assert "daemon_lock_held" in (second.stderr or "")
             lock = status.with_name(status.name + ".daemon.lock")
             assert lock.is_file()
+            # The daemon writes its status only after the first cycle; on a busy
+            # CI runner that can outlast the fixed sleep above, so wait (bounded).
+            deadline = time.monotonic() + 40.0
+            while not status.is_file() and time.monotonic() < deadline:
+                assert daemon.poll() is None, (daemon.stderr.read() if daemon.stderr else "")
+                time.sleep(0.25)
+            assert status.is_file(), f"daemon status not written within 40s: {status}"
             data = json.loads(status.read_text(encoding="utf-8"))
             assert data.get("daemon_lock") is True
             assert data.get("lemma_closed") is False
