@@ -1,3 +1,7 @@
+## STATUS (Batch 670 research-audit)
+
+tip `2f7a5a9` tip_match=true; research_stack_audit_watch no-promotion 13/1/3 delta=0 vs 669/667/665/664/663 (catch-up after tip/eng670); STATUS_GUARD pass; stamps@670; inv parent-pin; Soft Intent single-header; durable 8/8; lemma_closed=false; goal OPEN.
+
 ## STATUS (Batch 670 tip-eng-keep-prior)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `38a3e07` tip_moved). tip_or_eng: living script_stale Soft Intent/REFRESH 669→670 republish; Soft Intent single-header; inv parent-pin tip_sha=precommit HEAD; VERIFY.refresh_batch=670; durable 8/8; lemma_closed=false; Path C IDLE@0019; goal OPEN.
