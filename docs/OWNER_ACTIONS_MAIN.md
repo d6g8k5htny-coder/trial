@@ -1,3 +1,12 @@
+## STATUS (Batch 804 tip-eng-idle)
+
+Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `23306c5a` tip_moved). tip_or_eng: living current DIFF_COUNT=0 idle; unfreeze VERIFY/last-resort 803→804; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH804_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
+
+```bash
+./scripts/refresh_path_c_bundle.sh --dry-run
+python3 -m pytest tests/test_intent.py::test_batch804_tip_or_eng_tip_drift_idle_unfreeze -q
+```
+
 ## STATUS (Batch 803 tip-eng-idle)
 
 Hardening tip BASE **stable keep-prior** @ `2f7a5a9` (LIVE `8cf3d9f8` tip_moved). tip_or_eng: living script_stale; unfreeze VERIFY/last-resort 802→803; Soft Intent single-header; inv parent-pin. Evidence: `portable/BATCH803_TIP_ENG_*.json`. Intent soften 441/445 preserved. `lemma_closed=false`. Goal OPEN.
