@@ -47,7 +47,7 @@ emit("STATUS_GEN", d.get("generated_at") or "")
 fi
 [[ -n "$STATUS_TIP" ]] || STATUS_TIP="$BASE_TIP_SHORT"
 
-echo "=== Batch 643 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
+echo "=== Batch 644 — PERMANENT window; Path C BASE_TIP ${BASE_TIP_SHORT}; write ${WRITE_STATE}; tip ${STATUS_TIP}${IDLE_STATUS:+; idle ${IDLE_STATUS}}; unrestricted/auto-approve; HOLD VOID ==="
 echo " Batch 643: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 642/640/639/638/636 (catch-up after tip/eng643); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 642: research_stack_audit_watch_no_promotion — open stack 13/1/3; STATUS_GUARD living @2f7a5a9; no delta vs 640/639/638/636/634 (covers research641 tip-race gap; catch-up at tip VERIFY642 after tip/eng641+642); covers research496/499/501/503/509/514/518/531/538/542/544/550/567 gap"
 echo " Batch 642: tip_or_eng TIP_DRIFT keep-prior idle_no_commit + unfreeze 641→642 @2f7a5a9"
