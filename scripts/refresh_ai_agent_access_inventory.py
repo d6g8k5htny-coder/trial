@@ -495,7 +495,9 @@ def _living_inventory_batch(root: str) -> str:
     # Batch 772: last-resort bumped off frozen "771".
     # Batch 773: last-resort bumped off frozen "772".
     # Batch 774: last-resort bumped off frozen "773".
-    return "775"
+    # Batch 775: last-resort bumped off frozen "774".
+    # Batch 776: last-resort bumped off frozen "775".
+    return "776"
 def _no_durable_probe(
     durable_writable: int,
     durable_sandbox_read: str,
