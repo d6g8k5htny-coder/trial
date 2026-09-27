@@ -1,0 +1,32 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0003",
+  "title": "trial PR #149 (Dropbox intake digest) shows 4 failing checks unrelated to its content",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T19:20:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 149,
+    "issue": null,
+    "branch": "cursor/dropbox-intake-digest-309a",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/pull/149",
+      "https://github.com/d6g8k5htny-coder/trial/actions/runs/36334926204"
+    ]
+  },
+  "blocker": "land-workflows-dry-run, path-c-applied-bundle-dry-apply, portable-patches-on-main fail on the NA-0001 tip-drift gate; sanity fails tests/test_intent.py::test_path_c_dry_run_post_aligned_keep_hardening on tip_matches_base. None of it touches the PR's portable/dropbox_intake_2026-09-27/ files.",
+  "ask": "After NA-0001 lands on main, merge main into the PR branch (or rebase) so checks re-run against the ancestor-tolerant gate.",
+  "write_scope": [],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}

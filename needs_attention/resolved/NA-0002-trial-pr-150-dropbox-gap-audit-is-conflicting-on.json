@@ -1,0 +1,36 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0002",
+  "title": "trial PR #150 (Dropbox gap audit) is CONFLICTING on docs/AUTONOMOUS_48H_LOG.md",
+  "status": "RESOLVED",
+  "opened_at": "2026-09-27T19:20:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": 150,
+    "issue": null,
+    "branch": "cursor/dropbox-gap-audit-48c7",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/pull/150"
+    ]
+  },
+  "blocker": "GitHub reports mergeable=CONFLICTING. Only conflict is docs/AUTONOMOUS_48H_LOG.md: the batch loop prepends a section to that file every ~2 minutes on main while the PR prepends its own Batch 791 sidecar section.",
+  "ask": "Merge origin/main into the PR branch keeping both log sections (union), push to the same branch; no content of the audit changes.",
+  "write_scope": [
+    "docs/AUTONOMOUS_48H_LOG.md"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": "Merged origin/main (df8c942d, Batch 814) into cursor/dropbox-gap-audit-48c7 in a detached worktree; docs/AUTONOMOUS_48H_LOG.md auto-merged keeping both the loop's batch sections and the PR's Batch 791 sidecar. Pushed f78f651b to the PR branch; GitHub now reports mergeable=MERGEABLE (mergeStateStatus UNSTABLE only because trial-ci is red per NA-0001). No audit content changed.",
+  "resolved_at": "2026-09-27T19:31:00Z",
+  "resolved_by": "cursor[bot] (needs-attention helper, branch cursor/needs-attention-inbox-7189)",
+  "resolution_evidence": [
+    "https://github.com/d6g8k5htny-coder/trial/pull/150",
+    "https://github.com/d6g8k5htny-coder/trial/commit/f78f651bd0c534274479cd8643fea8928f007235"
+  ]
+}

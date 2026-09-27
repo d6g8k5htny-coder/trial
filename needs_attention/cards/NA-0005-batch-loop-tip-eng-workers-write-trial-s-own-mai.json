@@ -1,0 +1,36 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0005",
+  "title": "batch-loop tip/eng workers write trial's own main SHA into live_tip / inventory sandbox.tip fields",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T20:05:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/trial",
+  "refs": {
+    "pr": null,
+    "issue": null,
+    "branch": "main",
+    "sha": null,
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/trial/blob/main/portable/BATCH808_TIP_ENG_IDLE.json",
+      "https://github.com/d6g8k5htny-coder/trial/blob/main/portable/AI_AGENT_ACCESS_INVENTORY.json"
+    ]
+  },
+  "blocker": "portable/BATCH808_TIP_ENG_IDLE.json (and every tip_or_eng brief since ~Batch 513) records live_tip=bcac7e7 while bcac7e7 is a trial main commit, not the hardening tip (live hardening was e7652a1 at 19:00Z). AI_AGENT_ACCESS_INVENTORY.json sandbox.tip=bcac7e7 disagrees with details[sandbox].tip_sha=49ae345. Consequences: 'TIP_DRIFT keep-prior' decisions are made on a wrong live_tip; tests/test_intent.py::test_batch323_grant_check_inventory_refresh fails on the sandbox tip mismatch; test_batch538 expects a missing BATCH538_TIP_SYNC_IDLE.json; test_batch677 asserts hunt.defect_found=True against a brief that says false. These three tests are left failing on purpose (data defects, not test defects).",
+  "ask": "tip_or_eng / tip_sync_watch worker: read live_tip from repos/d6g8k5htny-coder/main/commits/chatgpt/drive-github-hardening-20260919 (scripts/write_path_c_status.py already does) and record sandbox.tip from the sandbox repo; regenerate the inventory once. Then either restore BATCH538_TIP_SYNC_IDLE.json or drop test_batch538, and align BATCH677_TIP_ENG_HUNT.json with its test.",
+  "write_scope": [
+    "portable/AI_AGENT_ACCESS_INVENTORY.json",
+    "portable/BATCH*_TIP_ENG_*.json",
+    "tests/test_intent.py"
+  ],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}

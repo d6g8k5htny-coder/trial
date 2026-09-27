@@ -1,0 +1,31 @@
+{
+  "schema": "needs_attention/v1",
+  "id": "NA-0006",
+  "title": "Universal-Law-Workspace PR #3 (Claude public workspace proposal) is CONFLICTING with main",
+  "status": "OPEN",
+  "opened_at": "2026-09-27T20:05:00Z",
+  "opened_by": {
+    "provider": "cursor",
+    "model": null,
+    "agent": "cursor[bot]",
+    "run": "bc-needs-attention-inbox-7189"
+  },
+  "repo": "d6g8k5htny-coder/Universal-Law-Workspace",
+  "refs": {
+    "pr": 3,
+    "issue": 1,
+    "branch": "claude/public-workspace-proposal-20260926",
+    "sha": "96e00590448541f0989a42e899fb5adc764868af",
+    "urls": [
+      "https://github.com/d6g8k5htny-coder/Universal-Law-Workspace/pull/3"
+    ]
+  },
+  "blocker": "GitHub reports mergeable=CONFLICTING against main f832ea1 (competing proposal #2 landed). 24 files touched incl. .gitmodules, repos/* submodule pins, WORKSPACE.json, README.md. The trial integration token has no write access to this repo (push dry-run: 403 'Permission to Universal-Law-Workspace.git denied to cursor[bot]'), and the conflict is a design choice (which workspace map wins), not a mechanical merge.",
+  "ask": "Author (anthropic/claude lane) rebases onto f832ea1 keeping only the deltas #2 did not cover, or marks the PR withdrawn in favour of #2 and closes governance- lease ulw-3-public-workspace-proposal (OFFERED, expired).",
+  "write_scope": [],
+  "scientific_effect": "NONE",
+  "resolution": null,
+  "resolved_at": null,
+  "resolved_by": null,
+  "resolution_evidence": []
+}
