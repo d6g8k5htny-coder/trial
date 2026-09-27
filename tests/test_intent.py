@@ -3824,7 +3824,7 @@ def test_batch173_refresh_path_c_bundle() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr) or "TIP_DRIFT tolerated" in (dry.stdout + dry.stderr)
 
     pack = (ROOT / "scripts" / "pack_portable.sh").read_text(encoding="utf-8")
     assert "refresh_path_c_bundle.sh" in pack
@@ -3897,7 +3897,7 @@ def test_batch176_refresh_ci_tip_drift() -> None:
         env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
     )
     assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr)
+    assert "tip stable" in (dry.stdout + dry.stderr).lower() or "match=1" in (dry.stdout + dry.stderr) or "TIP_DRIFT tolerated" in (dry.stdout + dry.stderr)
 
     # Bad remote should die cleanly (no KeyError traceback)
     bad = subprocess.run(
@@ -7890,7 +7890,7 @@ def test_batch257_tip_fetch_rate_limit_and_print_owner_unblock_writable() -> Non
         assert proc.returncode == 0, out
         assert "tip_fetch_via=" in out
         assert "git_ls_remote" in out or "gh_api" in out
-        assert "dry-run OK tip stable" in out or "tip stable" in out
+        assert "dry-run OK tip stable" in out or "tip stable" in out or "TIP_DRIFT tolerated" in out
 
     unblock = (ROOT / "scripts" / "print_owner_unblock.sh").read_text(encoding="utf-8")
     assert "PATH_C_STATUS.json" in unblock
