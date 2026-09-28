@@ -1,11 +1,13 @@
-# trial
+# Integration Lab
 
-Owner sandbox for Dylan Roy. **Not** the research repository.
+Engineering, portability, and adversarial integration workspace for the Universal Law research federation. **This is not the canonical research home and has no scientific-status authority.**
+
+Start with [main](https://github.com/d6g8k5htny-coder/main) for the public research program, [Math-](https://github.com/d6g8k5htny-coder/Math-) for mathematics, and [Universal-Law-Workspace](https://github.com/d6g8k5htny-coder/Universal-Law-Workspace) for the federation map.
 
 | Repo | Role |
 |------|------|
 | [`d6g8k5htny-coder/main`](https://github.com/d6g8k5htny-coder/main) | q0 / SIDE24 research program (Drive → git). Governing intent lives there. |
-| **this repo** | Empty-by-design testing / agent landing pad. CC0. No scientific authority. |
+| **this repo** | Integration, portability, and adversarial engineering tests. No scientific authority. |
 
 ## Path C — land engineering fixes on main
 
