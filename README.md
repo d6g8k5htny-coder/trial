@@ -9,17 +9,9 @@ Start with [main](https://github.com/d6g8k5htny-coder/main) for the public resea
 | [`d6g8k5htny-coder/main`](https://github.com/d6g8k5htny-coder/main) | q0 / SIDE24 research program (Drive → git). Governing intent lives there. |
 | **this repo** | Integration, portability, and adversarial engineering tests. No scientific authority. |
 
-## Path C — land engineering fixes on main
+## Owner and agent access
 
-Engineering only — `lemma_closed` stays **false**. This README does **not** embed a perishable device user code.
-
-1. Open **https://github.com/login/device** → enter the **current** user code from [`portable/GH_DEVICE_LOGIN.md`](portable/GH_DEVICE_LOGIN.md) (single source of truth; see that file for the live code)
-2. Or: download release **`batch218-path-c-bundle` (prior `batch207-path-c-bundle` / `batch202-path-c-bundle`)`** (or latest `*-path-c-bundle`; prior `batch199-path-c-bundle`) → `./scripts/owner_path_c_oneshot.sh`
-3. Or: grant **all** AI agents (Cursor + ChatGPT/Codex + Claude + Grok) Read/write on every owner repo → [`docs/MULTI_AGENT_ACCESS.md`](docs/MULTI_AGENT_ACCESS.md) / `./scripts/owner_grant_ai_agent_access.sh` → relaunch
-
-## #1 unblock — multi-agent App access (all owner repos)
-
-Install is **trial-only** (`GET /installation/repositories` → only `d6g8k5htny-coder/trial`; `install_has_main=false`). Batch 224: `.cursor/environment.json` lists **all 8** visible owner repos (`google-drive`, `governance-`, `main`, `Math-`, `meta-framework`, `query-`, **`sandbox`**, `trial`) under `repositoryDependencies`. One-shot: `./scripts/owner_grant_ai_agent_access.sh` prints official install URLs for **Cursor**, **ChatGPT Codex Connector**, and **Claude** with clear **select ALL repositories including sandbox**, plus Grok PAT fallback (no verified xAI GitHub App). Current App token cannot read `sandbox` (404) until install adds it. Path C needs at least `d6g8k5htny-coder/main` **Read and write**. Full guide: [`docs/MULTI_AGENT_ACCESS.md`](docs/MULTI_AGENT_ACCESS.md). Steps also: [`docs/OWNER_ACTIONS_MAIN.md`](docs/OWNER_ACTIONS_MAIN.md).
+Path C has already landed and durable write access was recorded by the repository's owner-side tooling. Historical device-flow codes and batch-specific access instructions are retained for provenance under [portable/GH_DEVICE_LOGIN.md](portable/GH_DEVICE_LOGIN.md) and [docs/MULTI_AGENT_ACCESS.md](docs/MULTI_AGENT_ACCESS.md); they are **not current visitor instructions** and should not be treated as credentials.
 
 ## Intent (this repository)
 
